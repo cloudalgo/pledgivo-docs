@@ -1595,7 +1595,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>66 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>67 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1660,6 +1660,12 @@ instead of hardcoding a default.</p>
 <td>Email Brand Color (hex)</td>
 <td>Text</td>
 <td>Hex color (e.g. #25465f) used for the email letterhead, footer bar, and default buttons. Leave blank to use the built-in slate.<br><em>Docs: Hex color used only for transactional email chrome (letterhead, footer, buttons) via SettingsService.emailBrandColor(); a separate concern from Campaign_Design__c.Primary_Color__c, which brands the public donation page. Falls back to the Ember brand coral when blank.</em></td>
+</tr>
+<tr>
+<td><code>Data_Retention_Days__c</code></td>
+<td>Data Retention (Days)</td>
+<td>Number</td>
+<td>How many days of diagnostic logs, Stripe call logs, and completed/failed checkout records to keep before they are automatically and permanently deleted, e.g. 90. Lower this to reduce data storage; raise it to keep history longer.</td>
 </tr>
 <tr>
 <td><code>Debug_Logging__c</code></td>

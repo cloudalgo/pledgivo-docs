@@ -2664,7 +2664,7 @@
 </table>
 <h2 id="campaigns-content">Campaigns &amp; Content<a class="headerlink" href="#campaigns-content" title="Permanent link">#</a></h2>
 <h3 id="campaign">Campaign<a class="headerlink" href="#campaign" title="Permanent link">#</a></h3>
-<p><code>Campaign</code> · <code>standard</code> · <code>47 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>Campaign</code> · <code>standard</code> · <code>46 fields</code> · <code>Campaigns &amp; Content</code></p>
 <p>See the <a href="../campaign/">full reference page</a> for this object.</p>
 <p><strong>Relationships</strong></p>
 <table>
@@ -2911,12 +2911,6 @@
 <td>Event Zip</td>
 <td>Text</td>
 <td>Postal/zip code where this event takes place.</td>
-</tr>
-<tr>
-<td><code>Fee_On_Top_Percent__c</code></td>
-<td>Fee On Top Percent</td>
-<td>Percent</td>
-<td>Fee percentage offered to donors who choose to cover processing fees. Leave blank to use the org-wide default.<br><em>Docs: See the doc note on Donor_Covered_Fees_Enabled__c — this override percentage is not yet read by any checkout/donation Apex path, so setting it has no runtime effect today.</em></td>
 </tr>
 <tr>
 <td><code>Form_Description_Override__c</code></td>
@@ -4092,7 +4086,7 @@
 </tbody>
 </table>
 <h3 id="opportunity">Opportunity<a class="headerlink" href="#opportunity" title="Permanent link">#</a></h3>
-<p><code>Opportunity</code> · <code>standard</code> · <code>41 fields</code> · <code>Donations &amp; Payments</code></p>
+<p><code>Opportunity</code> · <code>standard</code> · <code>34 fields</code> · <code>Donations &amp; Payments</code></p>
 <p>See the <a href="../donation/">full reference page</a> for this object.</p>
 <p><strong>Relationships</strong></p>
 <table>
@@ -4185,42 +4179,6 @@
 <td>Check if the donor asked not to be publicly identified with this gift.<br><em>Docs: This only suppresses the donor's name from public-facing display — it does not blank or mask the underlying Contact__c/Donor_Account__c lookup, and it has no effect on internal reporting or the org's own view of who gave. Anonymity is a presentation rule enforced by the public LWCs, not a data-masking rule enforced in Apex.</em></td>
 </tr>
 <tr>
-<td><code>Applied_Fee_Percent__c</code></td>
-<td>Applied Fee Percent</td>
-<td>Percent</td>
-<td>Fee percentage added to this gift when the donor chose to cover processing fees. Set automatically at checkout.<br><em>Docs: See the doc note on Donor_Covered_Fees__c — despite the description below, nothing currently sets this field automatically; it is safe to read as always blank until the cover-fees checkout flow is implemented.</em></td>
-</tr>
-<tr>
-<td><code>Billing_City__c</code></td>
-<td>Billing City</td>
-<td>Text</td>
-<td>City from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_Country__c</code></td>
-<td>Billing Country</td>
-<td>Text</td>
-<td>Country from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_Postal_Code__c</code></td>
-<td>Billing Postal Code</td>
-<td>Text</td>
-<td>Postal or ZIP code from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_State__c</code></td>
-<td>Billing State</td>
-<td>Text</td>
-<td>State or province from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_Street__c</code></td>
-<td>Billing Street</td>
-<td>Text</td>
-<td>Street address from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
 <td><code>Check_Number__c</code></td>
 <td>Check Number</td>
 <td>Text</td>
@@ -4291,12 +4249,6 @@
 <td>Donation Type</td>
 <td>Picklist</td>
 <td>What kind of donation or purchase this record represents.<br><em>Docs: Recurring_Installment is set once per charge by RecurringDonationService.applyRenewalOutcome() each time RecurringRenewalBatch runs — every installment is its own Opportunity linked back via Recurring_Donation__c, there is no single Opportunity that represents the whole schedule.</em></td>
-</tr>
-<tr>
-<td><code>Donor_Covered_Fees__c</code></td>
-<td>Donor Covered Fees</td>
-<td>Checkbox</td>
-<td>Check if the donor chose to cover the processing fee.<br><em>Docs: The description above describes the intended checkout flow, but no Apex class currently sets this field, Fee_Amount__c, or Applied_Fee_Percent__c, and the public donation form (dfForm) has no cover-fees control to opt a donor in. Corresponds to Campaign.Donor_Covered_Fees_Enabled__c / Fee_On_Top_Percent__c, which are equally unwired.</em></td>
 </tr>
 <tr>
 <td><code>Event_Amount__c</code></td>
@@ -5805,7 +5757,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>66 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>67 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <p><strong>Docs note.</strong> Tier 1 of the three-tier settings model documented in specs/04-data-model.md. Tier 2 is Payment_Gateway__mdt (per-gateway CMDT), Tier 3 is Named Credentials (secrets never live here). As a Hierarchy Custom Setting it resolves Org Defaults, falling back per profile or user only if a future release needs per-role overrides; today every read goes through the Org Default row via SettingsService, which exposes one typed accessor per field or field group rather than callers reading Settings__c.getOrgDefaults() directly, so a field rename or a default-value change only needs one code change.</p>
 <p>See the <a href="../settings/">full reference page</a> for this object.</p>
@@ -5857,6 +5809,12 @@
 <td>Email Brand Color (hex)</td>
 <td>Text</td>
 <td>Hex color (e.g. #25465f) used for the email letterhead, footer bar, and default buttons. Leave blank to use the built-in slate.<br><em>Docs: Hex color used only for transactional email chrome (letterhead, footer, buttons) via SettingsService.emailBrandColor(); a separate concern from Campaign_Design__c.Primary_Color__c, which brands the public donation page. Falls back to the Ember brand coral when blank.</em></td>
+</tr>
+<tr>
+<td><code>Data_Retention_Days__c</code></td>
+<td>Data Retention (Days)</td>
+<td>Number</td>
+<td>How many days of diagnostic logs, Stripe call logs, and completed/failed checkout records to keep before they are automatically and permanently deleted, e.g. 90. Lower this to reduce data storage; raise it to keep history longer.</td>
 </tr>
 <tr>
 <td><code>Debug_Logging__c</code></td>

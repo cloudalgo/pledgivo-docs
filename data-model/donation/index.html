@@ -1595,7 +1595,7 @@
 <p class="fn-dek">The donation itself — a customized standard Opportunity carrying billing details, the Stripe payment trail, and refund/dispute state for a single gift.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>41 fields</code> · <code>Donations &amp; Payments</code></p>
+<p><code>standard</code> · <code>34 fields</code> · <code>Donations &amp; Payments</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1704,42 +1704,6 @@ gift links to the page and team it was raised through via <code>Fundraising_Page
 <td>Check if the donor asked not to be publicly identified with this gift.<br><em>Docs: This only suppresses the donor's name from public-facing display — it does not blank or mask the underlying Contact__c/Donor_Account__c lookup, and it has no effect on internal reporting or the org's own view of who gave. Anonymity is a presentation rule enforced by the public LWCs, not a data-masking rule enforced in Apex.</em></td>
 </tr>
 <tr>
-<td><code>Applied_Fee_Percent__c</code></td>
-<td>Applied Fee Percent</td>
-<td>Percent</td>
-<td>Fee percentage added to this gift when the donor chose to cover processing fees. Set automatically at checkout.<br><em>Docs: See the doc note on Donor_Covered_Fees__c — despite the description below, nothing currently sets this field automatically; it is safe to read as always blank until the cover-fees checkout flow is implemented.</em></td>
-</tr>
-<tr>
-<td><code>Billing_City__c</code></td>
-<td>Billing City</td>
-<td>Text</td>
-<td>City from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_Country__c</code></td>
-<td>Billing Country</td>
-<td>Text</td>
-<td>Country from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_Postal_Code__c</code></td>
-<td>Billing Postal Code</td>
-<td>Text</td>
-<td>Postal or ZIP code from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_State__c</code></td>
-<td>Billing State</td>
-<td>Text</td>
-<td>State or province from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
-<td><code>Billing_Street__c</code></td>
-<td>Billing Street</td>
-<td>Text</td>
-<td>Street address from the donor's billing address entered at checkout.</td>
-</tr>
-<tr>
 <td><code>Check_Number__c</code></td>
 <td>Check Number</td>
 <td>Text</td>
@@ -1810,12 +1774,6 @@ gift links to the page and team it was raised through via <code>Fundraising_Page
 <td>Donation Type</td>
 <td>Picklist</td>
 <td>What kind of donation or purchase this record represents.<br><em>Docs: Recurring_Installment is set once per charge by RecurringDonationService.applyRenewalOutcome() each time RecurringRenewalBatch runs — every installment is its own Opportunity linked back via Recurring_Donation__c, there is no single Opportunity that represents the whole schedule.</em></td>
-</tr>
-<tr>
-<td><code>Donor_Covered_Fees__c</code></td>
-<td>Donor Covered Fees</td>
-<td>Checkbox</td>
-<td>Check if the donor chose to cover the processing fee.<br><em>Docs: The description above describes the intended checkout flow, but no Apex class currently sets this field, Fee_Amount__c, or Applied_Fee_Percent__c, and the public donation form (dfForm) has no cover-fees control to opt a donor in. Corresponds to Campaign.Donor_Covered_Fees_Enabled__c / Fee_On_Top_Percent__c, which are equally unwired.</em></td>
 </tr>
 <tr>
 <td><code>Event_Amount__c</code></td>

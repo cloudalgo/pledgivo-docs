@@ -1,0 +1,3373 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Every packaged Lightning web component, grouped by the folder-prefix scheme, generated from deployed source.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.example.invalid/reference/lwc/">
+      
+      
+        <link rel="prev" href="../apex/">
+      
+      
+        <link rel="next" href="../visualforce/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>LWC Reference - Pledgivo Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/field-notes.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lwc-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pledgivo Documentation" class="md-header__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pledgivo Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LWC Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pledgivo Documentation" class="md-nav__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+
+    </a>
+    Pledgivo Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/connecting-stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/setup-assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donors-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donors & accounts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/campaigns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donations-payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donations & payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/recurring-giving/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring giving
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/events-ticketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Peer-to-peer fundraising
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/settings-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings & integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data-model/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Model Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Model Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/all-objects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/donation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donation (Opportunity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/recurring-donation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring Donation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/fundraising-page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundraising Page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/payment-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Payment Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/first-campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/process-refund/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process a refund
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/recurring-dunning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configure recurring dunning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/publish-donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Code Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LWC
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LWC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-experience-cloud-guest-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public (Experience Cloud guest pages)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public (Experience Cloud guest pages)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publiccampaigngallery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Gallery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicdonationreceipt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Receipt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicdonordashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Dashboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publiceventregistration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publiceventtickets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Tickets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicfundraiserpage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicfundraisersignup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Sign-Up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicfundraisingexperience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Fundraising Experience
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicteampage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lex-internal-lightning-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lex (internal Lightning Experience)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lex (internal Lightning Experience)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lexcampaignprogresscard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Progress Card
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexdonationreceiptprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Receipt Print View
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexdonorsummarycard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Giving Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexembedbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embed &amp; Share
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexfundraisersconsole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraisers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexfundraisingsettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraising Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexopportunitybreakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Payment Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexrecurringwidget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring Donations Widget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexrefunddonation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refund Donation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexstoprecurringdonation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop Recurring Donation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adm-internal-fundraisers-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adm (internal fundraisers-console)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adm (internal fundraisers-console)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admcampaignfaqtab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign FAQ Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admcustomquestionstab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Questions Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admeventcheckin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Check-In Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admeventticketstab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Tickets Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admfundraiseravatar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Type Avatar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admfundraiserdetail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Detail Drawer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-settings-console-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set (settings console panels)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Set (settings console panels)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setdesigns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Page Designs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setdonorportal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Donor Portal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setemail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Email &amp; Receipts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Events &amp; Ticketing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sethealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Health Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setlogging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setorganization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Organization &amp; Donations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setpayments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Payment Accounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setpubliclinks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Public Links
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrecordtypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Record Type Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrecurring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Recurring &amp; Dunning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrefunds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Refunds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setsite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Site &amp; Domain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pf-public-guest-helper-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pf (public guest helper blocks)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pf (public guest helper blocks)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pfhero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Hero
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pfp2pbase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2P Base Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pfpageblocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page Blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pfstyles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Shared Style Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#df-donation-form-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Df (donation form family)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Df (donation form family)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dfdesignationpicker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designation Picker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dfform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutconversational" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Conversational
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutimmersive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Immersive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutmomentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Momentum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutsidebar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Summary Sidebar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutsplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Split Hero
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutspotlight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Spotlight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui-shared-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ui (shared primitives)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ui (shared primitives)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uibase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Base Component
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimodal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ember Modal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimoney" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Money Formatting Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uitoggle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ember Toggle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visualforce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualforce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Integrations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/npsp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NPSP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#public-experience-cloud-guest-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public (Experience Cloud guest pages)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Public (Experience Cloud guest pages)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publiccampaigngallery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Gallery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicdonationreceipt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Receipt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicdonordashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Dashboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publiceventregistration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publiceventtickets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Tickets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicfundraiserpage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Page
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicfundraisersignup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Sign-Up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicfundraisingexperience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Fundraising Experience
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publicteampage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Team Page
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lex-internal-lightning-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lex (internal Lightning Experience)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lex (internal Lightning Experience)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lexcampaignprogresscard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Progress Card
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexdonationreceiptprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Receipt Print View
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexdonorsummarycard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Giving Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexembedbuilder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embed &amp; Share
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexfundraisersconsole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraisers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexfundraisingsettings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraising Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexopportunitybreakdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Payment Breakdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexrecurringwidget" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring Donations Widget
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexrefunddonation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refund Donation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexstoprecurringdonation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stop Recurring Donation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adm-internal-fundraisers-console" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adm (internal fundraisers-console)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adm (internal fundraisers-console)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#admcampaignfaqtab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign FAQ Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admcustomquestionstab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Questions Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admeventcheckin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Check-In Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admeventticketstab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Tickets Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admfundraiseravatar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Type Avatar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admfundraiserdetail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fundraiser Detail Drawer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#set-settings-console-panels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set (settings console panels)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Set (settings console panels)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setdesigns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Page Designs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setdonorportal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Donor Portal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setemail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Email &amp; Receipts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setevents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Events &amp; Ticketing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sethealth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Health Check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setlogging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Logging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setorganization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Organization &amp; Donations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setpayments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Payment Accounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setpubliclinks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Public Links
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrecordtypes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Record Type Mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrecurring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Recurring &amp; Dunning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setrefunds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Refunds
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setsite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Site &amp; Domain
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pf-public-guest-helper-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pf (public guest helper blocks)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pf (public guest helper blocks)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pfhero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Hero
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pfp2pbase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        P2P Base Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pfpageblocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page Blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pfstyles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Shared Style Primitives
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#df-donation-form-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Df (donation form family)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Df (donation form family)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dfdesignationpicker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Designation Picker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dfform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutconversational" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Conversational
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutimmersive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Immersive
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutmomentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Momentum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutsidebar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Summary Sidebar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutsplit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Split Hero
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dflayoutspotlight" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Form Layout - Spotlight
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ui-shared-primitives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ui (shared primitives)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ui (shared primitives)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uibase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Base Component
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimodal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ember Modal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimoney" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Money Formatting Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uitoggle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ember Toggle
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p class="fn-eyebrow">Code Reference</p>
+
+<h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
+<p class="fn-dek">Every packaged Lightning web component — 54 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+
+<div class="admonition note">
+<p class="admonition-title">Generated file</p>
+<p>This page is generated by <code>docs-site/scripts/generate_lwc_docs.py</code>. Don't hand-edit it — edit the bundle's <code>&lt;description&gt;</code> in its <code>.js-meta.xml</code>, or add a <code>// doc: ...</code> line comment, and rerun.</p>
+</div>
+<h2 id="public-experience-cloud-guest-pages">Public (Experience Cloud guest pages)<a class="headerlink" href="#public-experience-cloud-guest-pages" title="Permanent link">#</a></h2>
+<h4 id="publiccampaigngallery">Campaign Gallery<a class="headerlink" href="#publiccampaigngallery" title="Permanent link">#</a></h4>
+<p><code>publicCampaignGallery</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>Browse all active campaigns for Experience Cloud</p>
+<p><strong>Docs note.</strong> Calls CampaignController.getCampaignGalleryData (a single guest-context read, no token or slug needed — it lists all publicly listed campaigns). Dropped standalone into an Experience directory page with no publicFundraisingExperience shell wrapping it, which is why it self-loads brand fonts from the PublicFonts static resource rather than relying on a shell-level font link.</p>
+<h4 id="publicdonationreceipt">Donation Receipt<a class="headerlink" href="#publicdonationreceipt" title="Permanent link">#</a></h4>
+<p><code>publicDonationReceipt</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>Post-donation thank-you and receipt page for Experience Cloud</p>
+<p><strong>Docs note.</strong> Reached via an unguessable Receipt_Token__c in the URL state (?token=...), never by Opportunity Id — this is the guest/magic-link pattern shared with publicEventTickets (?token=... resolves an order the same way). Calls ReceiptController.getReceiptData(token). paymentIntentStatus comes from Stripe's ACH redirect query params (redirect_status), not from Apex — an ACH charge settles asynchronously after the guest is already back on this page, so the receipt shows a pending/processing state until the async webhook/reconciliation path finalizes it.</p>
+<p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
+<h4 id="publicdonordashboard">Donor Dashboard<a class="headerlink" href="#publicdonordashboard" title="Permanent link">#</a></h4>
+<p><code>publicDonorDashboard</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>Magic-link donor self-service portal — giving summary, recurring gifts, history, and saved cards.</p>
+<p><strong>Docs note.</strong> Portal-token gated, not authenticated — a guest with a valid link token calls DonorPortalController.getDashboard/pauseRecurring/resumeRecurring/cancelRecurring/ retryNowRecurring/reinstateRecurring to manage their own recurring gifts, and never addresses a record by Id (IDOR prevention, same pattern as publicDonationReceipt's Receipt_Token__c). requestAccessLink is the token-issuance step for a donor who arrives without one. The card-replace modal reuses the exact same stripePayment.page iframe/postMessage contract as dfForm, but in Stripe's SETUP-intent mode (no charge) via createCardSetupIntent — see the lwc-conventions skill for the shared iframe/postMessage message-type contract.</p>
+<h4 id="publiceventregistration">Event Registration<a class="headerlink" href="#publiceventregistration" title="Permanent link">#</a></h4>
+<p><code>publicEventRegistration</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>Public event ticket selection + attendee capture (Experience Cloud).</p>
+<p><strong>Docs note.</strong> Ticket purchase flow, calling EventRegistrationController (getEventCampaign, getEventTickets, createTicketIntent, checkTicketStatus, getTicketReceiptToken) — the events analog of dfForm's DonationFormController sequence. Deliberately re-implements (not imports — LWCs can't share a JS class across bundles) the ~120 lines of stripePayment.page iframe/postMessage glue from dfForm, adapted to always send a one-time CONFIRM_PAYMENT (tickets never go through CONFIRM_SETUP/recurring). On success it calls getTicketReceiptToken to hand the guest a Receipt_Token__c, then the confirmation surfaces through publicEventTickets' ?token= flow rather than staying inline here.</p>
+<p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code>, <code>eventLayout</code>, <code>showHeader</code></p>
+<h4 id="publiceventtickets">Event Tickets<a class="headerlink" href="#publiceventtickets" title="Permanent link">#</a></h4>
+<p><code>publicEventTickets</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>Printable tickets for one event order — every seat on the order, addressed by its receipt token.</p>
+<p><strong>Docs note.</strong> Guest/magic-link page reached via ?token=... (mirrors publicDonationReceipt's Receipt_Token__c pattern) rather than an Order/Opportunity Id, so a ticket confirmation link can't be walked to view someone else's order. Calls EventTicketsController.getTickets(token) — read-only; the actual purchase/check-in flows live in publicEventRegistration and admEventCheckIn respectively.</p>
+<p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
+<h4 id="publicfundraiserpage">Fundraiser Page<a class="headerlink" href="#publicfundraiserpage" title="Permanent link">#</a></h4>
+<p><code>publicFundraiserPage</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>P2P fundraiser personal page for Experience Cloud</p>
+<p><strong>Docs note.</strong> P2P individual fundraiser page, loaded by pageSlug (not a record Id) via FundraiserPageController.getFundraisingPage — one of the three P2P guest pages built on pfP2pBase rather than uiBase (see pfP2pBase's doc note). A donor lands here from a shared /f/:slug link or from publicFundraiserSignup's post-create redirect.</p>
+<p><strong><code>@api</code> properties:</strong> <code>pageSlug</code></p>
+<h4 id="publicfundraisersignup">Fundraiser Sign-Up<a class="headerlink" href="#publicfundraisersignup" title="Permanent link">#</a></h4>
+<p><code>publicFundraiserSignup</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>Public start-your-fundraiser / join-a-team sign-up form (P2P)</p>
+<p><strong>Docs note.</strong> Calls FundraiserPageController.startFundraiser, the write counterpart to publicFundraiserPage's and publicTeamPage's read-only getFundraisingPage/getTeamDashboard. On success it redirects the browser to the new page's /f/:slug route rather than rendering it inline, so the newly created fundraiser is reached through the normal publicFundraiserPage load path (no special first-load state to keep in sync).</p>
+<p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code>, <code>teamSlug</code></p>
+<h4 id="publicfundraisingexperience">Public Fundraising Experience<a class="headerlink" href="#publicfundraisingexperience" title="Permanent link">#</a></h4>
+<p><code>publicFundraisingExperience</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>Single Experience Cloud shell: layout from Campaign Design, blocks from record type and subtype.</p>
+<p><strong>Docs note.</strong> The shell for the standard (non-embed-widget) guest donation route: one CampaignController.getPublicExperienceConfig call returns the merged campaign + design + theme-token payload that composes pfHero and dfForm underneath it, so those children never call Apex for that shared config themselves. _initialAmount/_initialEmail/_initialName are the embedWidget.js handoff contract — the embed widget's "Give" click appends them as URL state before navigating here (see widget-src/src/widget.jsx <code>navigate()</code> and lexEmbedBuilder's snippet), and this shell forwards them into dfForm as prefill rather than dfForm reading location.search itself, keeping the two entry points (embed vs. direct site visit) on one prefill code path.</p>
+<p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code></p>
+<h4 id="publicteampage">Team Page<a class="headerlink" href="#publicteampage" title="Permanent link">#</a></h4>
+<p><code>publicTeamPage</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+<p>P2P fundraising team leaderboard page for Experience Cloud</p>
+<p><strong>Docs note.</strong> P2P team dashboard, loaded by teamSlug via FundraiserPageController.getTeamDashboard — the team-level counterpart to publicFundraiserPage's individual-page load, sharing the same pfP2pBase (not uiBase) call wrapper and load-once-across-two-possible-triggers pattern (connectedCallback vs. the CurrentPageReference wire, whichever resolves first).</p>
+<p><strong><code>@api</code> properties:</strong> <code>teamSlug</code></p>
+<h2 id="lex-internal-lightning-experience">Lex (internal Lightning Experience)<a class="headerlink" href="#lex-internal-lightning-experience" title="Permanent link">#</a></h2>
+<h4 id="lexcampaignprogresscard">Campaign Progress Card<a class="headerlink" href="#lexcampaignprogresscard" title="Permanent link">#</a></h4>
+<p><code>lexCampaignProgressCard</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Record-page card on Campaign showing a goal-progress ring, amount raised vs. goal, donor count, days remaining, and (for peer-to-peer campaigns) the top 3 fundraisers.</p>
+<p><strong>Docs note.</strong> Most fields come from the UI API record wire (no Apex round trip for the base card); only the "top 3 fundraisers" leaderboard needs a server call, so loadExtras() (which calls RecordPageController.getCampaignProgressExtras) fires only when isP2P is true — a non-P2P campaign never makes that request.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexdonationreceiptprint">Donation Receipt Print View<a class="headerlink" href="#lexdonationreceiptprint" title="Permanent link">#</a></h4>
+<p><code>lexDonationReceiptPrint</code></p>
+<p><code>exposed</code> · <code>RecordPage, AppPage</code></p>
+<p>Record page / app page for Opportunity that renders a printable donation receipt (org branding, donor, amount, designations, EIN) and triggers the browser print dialog.</p>
+<p><strong>Docs note.</strong> Internal-org counterpart to the donor-facing Experience Cloud receipt: same print-via-window.print() approach (no PDF-generation service), but sourced through RecordPageController.getReceiptData for a staff user viewing the Opportunity record page rather than through a donor's magic-link token.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexdonorsummarycard">Donor Giving Summary<a class="headerlink" href="#lexdonorsummarycard" title="Permanent link">#</a></h4>
+<p><code>lexDonorSummaryCard</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Record-page card on Account/Contact summarizing a donor's total and average giving, one-time vs. recurring split, and a monthly-giving sparkline.</p>
+<p><strong>Docs note.</strong> Mounted on Contact, Account, and Person Account record pages (objectApiName tells RecordPageController.getDonorSummary which lookup to resolve donations by) so the same bundle works across both the standard and Person Account donor models without branching on IsPersonAccount in this component.</p>
+<p><strong><code>@api</code> properties:</strong> <code>objectApiName</code>, <code>recordId</code></p>
+<h4 id="lexembedbuilder">Embed &amp; Share<a class="headerlink" href="#lexembedbuilder" title="Permanent link">#</a></h4>
+<p><code>lexEmbedBuilder</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Campaign record-page panel to generate and copy a donation embed snippet (card / form / button) with a live preview.</p>
+<p><strong>Docs note.</strong> Calls EmbedController.getEmbedConfig for the campaign's slug/site URL/REST base, then builds a static-HTML snippet for the embedWidget.js host script; nothing here talks to the widget at runtime. See the class-doc block above for the site-URL-vs-domain-root distinction and the namespace-qualified REST/static-resource paths — those are the gotchas most likely to break on a copy-paste-only reading of this component.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexfundraisersconsole">Fundraisers<a class="headerlink" href="#lexfundraisersconsole" title="Permanent link">#</a></h4>
+<p><code>lexFundraisersConsole</code></p>
+<p><code>exposed</code> · <code>Tab</code></p>
+<p>Internal Lightning app tab listing all fundraisers/campaigns with a create/edit wizard covering campaign details, tickets, questions, FAQs, and fund designations.</p>
+<p><strong>Docs note.</strong> The Fundraisers tab shell — lists all campaigns and drives the create/edit wizard via FundraiserAdminController, plus EventTicketAdminController.saveTicketTypes/getTicketTemplates and CampaignQuestionController/CampaignFaqController for the Tickets/Questions/FAQ wizard steps (Event fundraisers add the tickets step; every subtype gets questions/FAQ). Composes admFundraiserAvatar for row/grid icons and admFundraiserDetail as the slide-in drawer (<c-adm-fundraiser-detail record-id={detailId}>) when a row is opened — the console owns which row is open, the drawer self-fetches everything else. EMBER_THEME mirrors the default brand tokens (see docs/brand-identity.md) as the wizard's page-design preview fallback when a design record leaves a token blank.</p>
+<h4 id="lexfundraisingsettings">Fundraising Settings<a class="headerlink" href="#lexfundraisingsettings" title="Permanent link">#</a></h4>
+<p><code>lexFundraisingSettings</code></p>
+<p><code>exposed</code> · <code>Tab</code></p>
+<p>Internal Lightning app tab hosting the settings console shell, with left navigation across organization, email, payments, refunds, site, public links, page designs, record types, and health-check panels.</p>
+<p><strong>Docs note.</strong> Pure navigation shell for the Settings console — holds no Apex calls itself. Each nav item lazy-renders exactly one set<em> panel component (setOrganization, setEmail, setEvents, setLogging, setPayments, setRefunds, setRecurring, setSite, setPublicLinks, setDesigns, setDonorPortal, setRecordTypes, setHealth) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save.</p>
+<h4 id="lexopportunitybreakdown">Donation Payment Breakdown<a class="headerlink" href="#lexopportunitybreakdown" title="Permanent link">#</a></h4>
+<p><code>lexOpportunityBreakdown</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Record-page card on Opportunity detailing payment status, source, fees, net amount, Stripe payment intent, refund date, and tribute (in honor/memory of) information for a donation.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexrecurringwidget">Recurring Donations Widget<a class="headerlink" href="#lexrecurringwidget" title="Permanent link">#</a></h4>
+<p><code>lexRecurringWidget</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Record-page card on Account/Contact listing that donor's recurring donations with status, monthly value, next-payment date, and overdue/failed-payment indicators.</p>
+<p><strong>Docs note.</strong> Mounted on Contact/Account/Opportunity record pages; objectApiName tells RecordPageController.getRecurringDonations which lookup field to resolve Recurring_Donation__c rows by, so the same bundle covers both the standard and Person Account donor models without branching here.</p>
+<p><strong><code>@api</code> properties:</strong> <code>objectApiName</code>, <code>recordId</code></p>
+<h4 id="lexrefunddonation">Refund Donation<a class="headerlink" href="#lexrefunddonation" title="Permanent link">#</a></h4>
+<p><code>lexRefundDonation</code></p>
+<p><code>exposed</code> · <code>RecordAction</code></p>
+<p>Record action (screen action) on Opportunity that lets a user issue a full or partial Stripe refund for a donation, respecting the org's refunds-enabled setting and remaining-refundable amount.</p>
+<p><strong>Docs note.</strong> Opportunity RecordAction quick action (headless-launched, closes itself via CloseActionScreenEvent). Calls RefundController.refundDonation to issue the Stripe refund and RefundController.getRefundConfig to read the enabled/disabled toggle; the client-side refundsEnabled check is a UX nicety only — RefundController.refundDonation re-checks server-side and is the actual gate. admFundraiserDetail's drawer calls the same two controller methods for its inline row-action refund, so behavior matches whichever entry point a user starts from.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexstoprecurringdonation">Stop Recurring Donation<a class="headerlink" href="#lexstoprecurringdonation" title="Permanent link">#</a></h4>
+<p><code>lexStopRecurringDonation</code></p>
+<p><code>exposed</code> · <code>RecordAction</code></p>
+<p>Record action (screen action) on Recurring_Donation__c that cancels an active recurring donation after the user enters a required cancellation reason.</p>
+<p><strong>Docs note.</strong> Recurring_Donation__c RecordAction quick action (headless-launched, closes itself via CloseActionScreenEvent). Calls StopRecurringDonationController.stopRecurringDonation, the same controller admFundraiserDetail's drawer calls for its inline row-action stop, so cancelling from either entry point behaves identically. FIELD_CONTACT/FIELD_ACCOUNT are read (never both populated) to resolve the donor name across the standard-Contact vs. Person-Account dual-lookup model.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h2 id="adm-internal-fundraisers-console">Adm (internal fundraisers-console)<a class="headerlink" href="#adm-internal-fundraisers-console" title="Permanent link">#</a></h2>
+<h4 id="admcampaignfaqtab">Campaign FAQ Tab<a class="headerlink" href="#admcampaignfaqtab" title="Permanent link">#</a></h4>
+<p><code>admCampaignFaqTab</code></p>
+<p><code>not exposed</code></p>
+<p>Drawer "FAQs" tab — pick reusable FAQ templates or create new ones, reorder, and save the campaign's selection.</p>
+<p><strong>Docs note.</strong> Mounted as one tab of the admFundraiserDetail slide-in drawer (<c-adm-campaign-faq-tab record-id={recordId}>), not a standalone route. Calls three CampaignFaqController methods: getFaqLibrary (all reusable templates), getCampaignFaqs (this campaign's current selection), saveCampaignFaqs (persists the whole ordered list in one call, no per-row DML). Sibling tabs in the same drawer: admCustomQuestionsTab (identical pattern over Custom_Question templates), admEventCheckIn, admEventTicketsTab.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="admcustomquestionstab">Custom Questions Tab<a class="headerlink" href="#admcustomquestionstab" title="Permanent link">#</a></h4>
+<p><code>admCustomQuestionsTab</code></p>
+<p><code>not exposed</code></p>
+<p>Drawer "Questions" tab — pick reusable question templates or create new ones, reorder, and save the campaign's selection.</p>
+<p><strong>Docs note.</strong> Mounted as one tab of the admFundraiserDetail slide-in drawer (<c-adm-custom-questions-tab record-id={recordId}>), not a standalone route. Mirrors admCampaignFaqTab's library-reuse pattern one field over: CampaignQuestionController's getQuestionLibrary/getCampaignQuestions/saveCampaignQuestions instead of the FAQ controller's equivalents. The questions saved here are the same Content_Template__c records (RecordType Custom_Question) that dfForm's Step 4 renders on the guest side.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="admeventcheckin">Event Check-In Tab<a class="headerlink" href="#admeventcheckin" title="Permanent link">#</a></h4>
+<p><code>admEventCheckIn</code></p>
+<p><code>not exposed</code></p>
+<p>Drawer "Check-In" tab (Event fundraisers) — lane board that flips each seat's check-in status at the door.</p>
+<p><strong>Docs note.</strong> Mounted as one tab of the admFundraiserDetail slide-in drawer (<c-adm-event-check-in record-id={recordId}>), shown only when the campaign's subtype is Event_Fundraiser. Calls EventCheckInController.getEventAttendees / setCheckInStatus. Cancelled (refunded) seats are pulled from the same Event_Attendee__c rows publicEventTickets reads, so a refund on the guest receipt side and a door scan here are always looking at the same status field.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="admeventticketstab">Event Tickets Tab<a class="headerlink" href="#admeventticketstab" title="Permanent link">#</a></h4>
+<p><code>admEventTicketsTab</code></p>
+<p><code>not exposed</code></p>
+<p>Drawer "Tickets" tab (Event fundraisers) — list + add/edit/delete ticket tiers.</p>
+<p><strong>Docs note.</strong> Mounted as one tab of the admFundraiserDetail slide-in drawer (<c-adm-event-tickets-tab record-id={recordId}>), Event_Fundraiser campaigns only. Calls EventTicketAdminController (getEventTickets, saveTicketType, deleteTicketType). deleteDisabled once any ticket has sold (sold &gt; 0) — the delete is blocked client-side as a UX nicety, but the server enforces the same guard, so a stale client can't bypass it.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="admfundraiseravatar">Fundraiser Type Avatar<a class="headerlink" href="#admfundraiseravatar" title="Permanent link">#</a></h4>
+<p><code>admFundraiserAvatar</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed helper that renders a small colored icon tile for a fundraiser's subtype (campaign, event, peer-to-peer, open donation) inside the internal fundraisers console.</p>
+<p><strong>Docs note.</strong> Composed (not inherited) into two parents: lexFundraisersConsole's list/grid rows and the admFundraiserDetail drawer header. Both pass only subtype and size; the icon/color mapping lives entirely in this component, so the two parents can never drift out of sync on what a subtype looks like.</p>
+<p><strong><code>@api</code> properties:</strong> <code>size</code>, <code>subtype</code></p>
+<h4 id="admfundraiserdetail">Fundraiser Detail Drawer<a class="headerlink" href="#admfundraiserdetail" title="Permanent link">#</a></h4>
+<p><code>admFundraiserDetail</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed slide-in detail panel used by the Fundraisers console tab, showing a campaign's overview, donations, pages, teams, tickets, questions, FAQ, recurring gifts, and fund across tabs.</p>
+<p><strong>Docs note.</strong> Mounted by lexFundraisersConsole as <c-adm-fundraiser-detail record-id={detailId} onclose= onedit=> — the console owns detailId (which row is open) and passes nothing else down; this component self-fetches everything via FundraiserDetailController. Composes admFundraiserAvatar (header icon) plus four tab children for the drawer's Event-only and always-on sections: admEventTicketsTab, admEventCheckIn, admCustomQuestionsTab, admCampaignFaqTab. Row actions call RefundController.refundDonation and StopRecurringDonationController.stopRecurringDonation directly (same controllers as the lexRefundDonation / lexStopRecurringDonation RecordAction quick actions) so a refund or stop issued from this drawer behaves identically to one issued from the Opportunity highlights bar. Related lists (donations/recurring/pages/teams/tickets) lazy-load per-list on first tab view and support a nested paginated "view all" sheet beyond the 10-row inline cap — see the fundraiser-detail-related-lists-redesign design note.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h2 id="set-settings-console-panels">Set (settings console panels)<a class="headerlink" href="#set-settings-console-panels" title="Permanent link">#</a></h2>
+<h4 id="setdesigns">Settings: Page Designs<a class="headerlink" href="#setdesigns" title="Permanent link">#</a></h4>
+<p><code>setDesigns</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel for creating and editing Campaign_Design__c page-design records — the block canvas and theme-token editor that drive the public donation page's layout and branding.</p>
+<p><strong>Docs note.</strong> The editor half of the CMDT-driven theme-token system: getThemeTokenCatalog reads the same Theme_Token__mdt catalog (via ThemeTokenCatalogService) that CampaignService. normalizeThemeTokensJson() uses as its sole allowlist when a guest page loads a design, so this panel can never offer a token the guest shell won't actually honor. Live preview renders through pfPageBlocks (<c-pf-page-blocks>), the identical component dfForm uses at runtime, so what an admin previews here is what a donor sees. Form_Builder_JSON__c (v2, the unified block list below) is the current schema; Page_Blocks_JSON__c is legacy and no longer read or written by this composer.</p>
+<h4 id="setdonorportal">Settings: Donor Portal<a class="headerlink" href="#setdonorportal" title="Permanent link">#</a></h4>
+<p><code>setDonorPortal</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel controlling which panels appear on the magic-link donor portal and the headline/message copy shown there, all stored on Settings__c.</p>
+<h4 id="setemail">Settings: Email &amp; Receipts<a class="headerlink" href="#setemail" title="Permanent link">#</a></h4>
+<p><code>setEmail</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel for configuring sender/reply addresses, email branding colors, and automatic receipt/recurring-thank-you message text on Settings__c.</p>
+<h4 id="setevents">Settings: Events &amp; Ticketing<a class="headerlink" href="#setevents" title="Permanent link">#</a></h4>
+<p><code>setEvents</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel controlling the event ticket tax-deductible calculation mode and the optional Campaign Member sync for ticket attendees on Settings__c.</p>
+<h4 id="sethealth">Settings: Health Check<a class="headerlink" href="#sethealth" title="Permanent link">#</a></h4>
+<p><code>setHealth</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel that runs and displays org configuration health checks, with a one-click fix action for failing items.</p>
+<p><strong>Docs note.</strong> runHealthCheck/fixHealthCheckItem drive the pass/warn/fail checklist (Named Credential reachability, required permission-set assignments, scheduled-job presence, etc.); getScheduledJobStatus/runJobNow are a separate read-only-plus-manual-trigger surface for the two CRON jobs an admin might need to force off-cycle rather than wait for the next scheduled fire.</p>
+<h4 id="setlogging">Settings: Logging<a class="headerlink" href="#setlogging" title="Permanent link">#</a></h4>
+<p><code>setLogging</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel for choosing the persisted Apex log level and toggling debug echo on Settings__c.</p>
+<h4 id="setorganization">Settings: Organization &amp; Donations<a class="headerlink" href="#setorganization" title="Permanent link">#</a></h4>
+<p><code>setOrganization</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel for general organization and donation defaults, including the configured charge currency, stored on Settings__c.</p>
+<p><strong>Docs note.</strong> Person_Account_Enabled__c and NPSP_Enabled__c are read-only, detectOrgFeatures-populated flags (Schema.describeSObjects() detection at the org level) — this panel surfaces what was detected, it does not let an admin toggle Person Account/NPSP support on or off. All donor resolution downstream still goes through DonorResolutionService regardless of what this panel shows; these flags are informational plus the gate for showNpspSyncOptions.</p>
+<h4 id="setpayments">Settings: Payment Accounts<a class="headerlink" href="#setpayments" title="Permanent link">#</a></h4>
+<p><code>setPayments</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel listing Stripe/other gateway payment accounts with add, edit, test-connection, and delete actions backed by Named Credentials.</p>
+<p><strong>Docs note.</strong> getNamedCredentials lists org Named Credentials for the picker — the actual Stripe secret key is never read into this panel or stored on Payment_Account__c; only the Named Credential reference is saved, per the locked "secrets in Named Credentials only" rule. testPaymentAccount performs a live connectivity check against the configured credential before an admin trusts it for guest checkout.</p>
+<h4 id="setpubliclinks">Settings: Public Links<a class="headerlink" href="#setpubliclinks" title="Permanent link">#</a></h4>
+<p><code>setPublicLinks</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel listing the public donation/campaign URLs (type, slug, status) with a copy-URL row action for each.</p>
+<p><strong>Docs note.</strong> Read-only inventory of every guest-reachable donation URL (campaigns, event registration, P2P pages) built from Settings__c.Experience_Site_URL__c + each record's slug — a cross-check surface, not the place slugs are edited. Complements lexEmbedBuilder (which generates the embeddable snippet for one campaign at a time) by showing every direct link across the org at once.</p>
+<h4 id="setrecordtypes">Settings: Record Type Mapping<a class="headerlink" href="#setrecordtypes" title="Permanent link">#</a></h4>
+<p><code>setRecordTypes</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel mapping the package's logical record-type slots to the org's actual record types per object, with per-row override and reset-to-default actions.</p>
+<p><strong>Docs note.</strong> Maps each packaged "record type slot" (packageRTDeveloperName) to the actual Record Type an org uses for it — the admin-facing override surface for whatever RecordTypeService resolves at runtime, letting an org substitute its own existing Record Type instead of the packaged default without any Apex/trigger change.</p>
+<h4 id="setrecurring">Settings: Recurring &amp; Dunning<a class="headerlink" href="#setrecurring" title="Permanent link">#</a></h4>
+<p><code>setRecurring</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel controlling the retry cadence, grace period, and dunning-email frequency for failed recurring donation payments on Settings__c.</p>
+<h4 id="setrefunds">Settings: Refunds<a class="headerlink" href="#setrefunds" title="Permanent link">#</a></h4>
+<p><code>setRefunds</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel toggling whether refunds are enabled and setting the refund-eligibility window in days on Settings__c.</p>
+<h4 id="setsite">Settings: Site &amp; Domain<a class="headerlink" href="#setsite" title="Permanent link">#</a></h4>
+<p><code>setSite</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel showing whether the Experience Cloud donation site exists and its status, with setup guidance and the sf CLI command to create it.</p>
+<p><strong>Docs note.</strong> createExperienceSite/discoverExperienceSiteURL wrap the org's Experience Cloud site lifecycle (CommunityService is the actual source of truth for the create command — the CLI_FALLBACK string above is only shown if that call fails). embedEnabled is presented inverted from its storage field (Embed_Disabled__c, default false) so the UI reads as an opt-in "Allow embedding" toggle rather than a double-negative opt-out one; setPublicLinks and lexEmbedBuilder both consume the resulting Experience_Site_URL__c once it's set here.</p>
+<h2 id="pf-public-guest-helper-blocks">Pf (public guest helper blocks)<a class="headerlink" href="#pf-public-guest-helper-blocks" title="Permanent link">#</a></h2>
+<h4 id="pfhero">Campaign Hero<a class="headerlink" href="#pfhero" title="Permanent link">#</a></h4>
+<p><code>pfHero</code></p>
+<p><code>not exposed</code></p>
+<p>Campaign header with goal progress bar for Experience Cloud</p>
+<p><strong>Docs note.</strong> Composed by publicFundraisingExperience as the shell's hero block and imported directly by dfForm (the 3-step donation canvas can render its own hero header without going through the shell). Self-fetches via CampaignController.getCampaignBySlug rather than receiving campaign data as a prop, so either parent only needs to pass campaignSlug. Emits a bubbling, composed <code>donate</code> CustomEvent on CTA click — the host page/shell decides what "donate" means (scroll to an embedded dfForm, or navigate to one) rather than this component owning navigation.</p>
+<p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>campaignSlug</code>, <code>ctaLabel</code>, <code>eyebrow</code>, <code>hideCta</code>, <code>showProgressBar</code></p>
+<h4 id="pfp2pbase">P2P Base Utility<a class="headerlink" href="#pfp2pbase" title="Permanent link">#</a></h4>
+<p><code>pfP2pBase</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed base class for public peer-to-peer LWCs, providing a shared Apex-call wrapper that handles the success/data/error envelope, loading spinner, and error toasts.</p>
+<p><strong>Docs note.</strong> Extended by the three peer-to-peer guest pages — publicFundraiserPage, publicTeamPage, publicFundraiserSignup — not by uiBase; those pages predate the base+p2p merge and were never migrated onto uiBase's callApex, so this is a second, functionally-parallel base class rather than a shared one. Keep the two in sync by hand if the envelope-unpacking contract ({ success, data, error }) ever changes.</p>
+<h4 id="pfpageblocks">Page Blocks<a class="headerlink" href="#pfpageblocks" title="Permanent link">#</a></h4>
+<p><code>pfPageBlocks</code></p>
+<p><code>not exposed</code></p>
+<p>Runtime renderer for ordered page content blocks (rich text, image, testimonial, video, gallery, FAQ)</p>
+<p><strong>Docs note.</strong> Composed by both setDesigns (the internal page-design editor's live preview) and dfForm (the actual guest-facing content-block rendering inside the 3-step canvas) as <c-pf-page-blocks blocks-json= campaign-faqs=>, so a design change previews and renders through the identical sanitization/allow-listing logic in this one component — no drift between editor preview and what a donor actually sees.</p>
+<p><strong><code>@api</code> properties:</strong> <code>blocksJson</code>, <code>campaignFaqs</code>, <code>get</code></p>
+<h4 id="pfstyles">Public Shared Style Primitives<a class="headerlink" href="#pfstyles" title="Permanent link">#</a></h4>
+<p><code>pfStyles</code></p>
+<p><code>not exposed</code></p>
+<p>CSS-only shared style module (no JS/markup) defining the token-consuming card, field, and label primitives reused across all guest-facing public LWCs.</p>
+<p><strong>Docs note.</strong> Pulled in via @import by pfHero, pfPageBlocks, publicEventRegistration, dfDesignationPicker, and dfForm — the single point where the shared pf-ui-* primitive tokens turn into actual card/field/label rules, so a guest-page bundle never redefines these locally (avoids the per-component duplicate token systems the theme-token rules prohibit).</p>
+<h2 id="df-donation-form-family">Df (donation form family)<a class="headerlink" href="#df-donation-form-family" title="Permanent link">#</a></h2>
+<h4 id="dfdesignationpicker">Designation Picker<a class="headerlink" href="#dfdesignationpicker" title="Permanent link">#</a></h4>
+<p><code>dfDesignationPicker</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed donation-form field letting a donor allocate their gift to a single fund or split it across multiple designations, showing a live allocated-vs-total balance.</p>
+<p><strong>Docs note.</strong> Composed by dfForm as <c-df-designation-picker designations= total= onchange=> — one field block among the form's reorderable blocks, rendered only when the campaign has active Designation__c funds (dfForm's hasDesignations). The parent rides the emitted selection through as optionsJson.designationId or optionsJson.designations on createDonorAndIntent; server-side DesignationSplits.parse() re-normalizes the split against the captured Stripe total and creates one Donation_Designation__c per fund (never trusts this component's math as final — the client-side balance check here is a UX convenience, not the source of truth).</p>
+<p><strong><code>@api</code> properties:</strong> <code>designations</code>, <code>get</code></p>
+<h4 id="dfform">Donation Form<a class="headerlink" href="#dfform" title="Permanent link">#</a></h4>
+<p><code>dfForm</code></p>
+<p><code>not exposed</code></p>
+<p>Three-step donation canvas (Compose, Payment, Thank You) for Experience Cloud campaigns</p>
+<p><strong>Docs note.</strong> Mounted by the publicFundraisingExperience shell as the guest donation canvas; the shell resolves record-type/subtype/slug and passes campaignSlug (+ builderConfig, thankYouCta, campaignFaqs, and the widget-handoff initialAmount/Email/Name) down as @api props. Composes <c-df-designation-picker> for the designation field block and <c-pf-page-blocks> (via oneBlockArray) for every interleaved content block, so sanitization stays in one place. Layout skin is a CSS-only import, not composition: dfForm.css @imports the six dfLayoutXxx modules and layoutClass() picks the matching <code>.donation-form.df-xxx</code> class per effectiveMode — those overrides must stay compound (see the dfLayoutXxx bundles' own doc notes) or the base 520px width wins regardless of import order.</p>
+<p>Stripe.js iframe/postMessage contract (see the lwc-conventions skill for the general pattern): the iframe (src=VF_PAGE_URL='/apex/stripePayment') mounts once on the compose→pay transition and stays mounted through processing (showStripeIframe spans steps 3-4) so stripe.confirmPayment() never loses its JS context. _handlePostMessage strictly checks event.origin === ALLOWED_ORIGIN (window.location.origin) before acting on STRIPE_READY, IFRAME_HEIGHT, PAYMENT_PROCESSING, PAYMENT_SUCCESS, SETUP_SUCCESS, PAYMENT_ERROR. Outbound: handleIframeLoad sends INIT_STRIPE once _clientSecret is set; submitPayment sends CONFIRM_PAYMENT (one-time) or CONFIRM_SETUP (recurring) to the same target origin — never '*'.</p>
+<p>Server-authoritative finalize: createDonorAndIntent (DonationFormController) inserts a Donation_Staging__c row and returns an opaque accessToken — no Opportunity exists yet. The browser is never trusted to finalize the gift; after Stripe confirms client-side, _onPaymentSuccess polls checkPaymentStatus (Apex → Stripe, authoritative) while the system-context scheduler (StagingReconciliationBatch) is the actual backstop that creates the donation record if the poll window closes first.</p>
+<p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>builderConfig</code>, <code>campaignFaqs</code>, <code>campaignSlug</code>, <code>initialAmount</code>, <code>initialEmail</code>, <code>initialName</code>, <code>mode</code>, <code>props</code>, <code>thankYouCta</code>, <code>the</code></p>
+<h4 id="dflayoutconversational">Donation Form Layout - Conversational<a class="headerlink" href="#dflayoutconversational" title="Permanent link">#</a></h4>
+<p><code>dfLayoutConversational</code></p>
+<p><code>not exposed</code></p>
+<p>CSS-only shared style module (no JS/markup) giving the donation form a calm, centered, large-type stepped-wizard look; one of the public donation page's layout themes.</p>
+<p><strong>Docs note.</strong> Selected by dfForm's layout token and pulled in via @import in dfForm.css alongside the other five df-layout-* modules. Override rules must target the compound selector .donation-form.df-conversational (specificity 0-2-0) — the base .donation-form { max-width: 520px; } rule (0-1-0) wins on a plain .donation-form.max-width tie regardless of @import order, so a bare-class override here would silently collapse back to the 520px default.</p>
+<h4 id="dflayoutimmersive">Donation Form Layout - Immersive<a class="headerlink" href="#dflayoutimmersive" title="Permanent link">#</a></h4>
+<p><code>dfLayoutImmersive</code></p>
+<p><code>not exposed</code></p>
+<p>CSS-only shared style module giving the donation form a full-bleed hero background with a frosted-glass floating form card; one of the public donation page's layout themes.</p>
+<p><strong>Docs note.</strong> Selected by dfForm's layout token and pulled in via @import in dfForm.css alongside the other five df-layout-* modules. Override rules must target the compound selector .donation-form.df-immersive (specificity 0-2-0) to reliably beat the base .donation-form { max-width: 520px; } rule (0-1-0); @import order does not settle the tie. The hero background/card treatment should reference the shared pf brand-bg and pf ui shadow-card tokens with the intended design value as fallback rather than hardcoding colors here.</p>
+<h4 id="dflayoutmomentum">Donation Form Layout - Momentum<a class="headerlink" href="#dflayoutmomentum" title="Permanent link">#</a></h4>
+<p><code>dfLayoutMomentum</code></p>
+<p><code>not exposed</code></p>
+<p>CSS-only shared style module styling the donation form as a centered card with a side goal-progress ring and social-proof panel; one of the public donation page's layout themes.</p>
+<p><strong>Docs note.</strong> Selected by dfForm's layout token and pulled in via @import in dfForm.css alongside the other five df-layout-* modules. Override rules must target the compound selector .donation-form.df-momentum (specificity 0-2-0) — the base .donation-form { max-width: 520px; } rule (0-1-0) otherwise wins regardless of @import order, which would collapse the wider two-column progress-ring layout back to the single-column default width.</p>
+<h4 id="dflayoutsidebar">Donation Form Layout - Summary Sidebar<a class="headerlink" href="#dflayoutsidebar" title="Permanent link">#</a></h4>
+<p><code>dfLayoutSidebar</code></p>
+<p><code>not exposed</code></p>
+<p>CSS-only shared style module laying the donation form out with a sticky running-total summary sidebar beside the fields; one of the public donation page's layout themes.</p>
+<p><strong>Docs note.</strong> Selected by dfForm's layout token and pulled in via @import in dfForm.css alongside the other five df-layout-* modules. Override rules must target the compound selector .donation-form.df-sidebar (specificity 0-2-0) — the base .donation-form { max-width: 520px; } rule (0-1-0) wins over a bare-class override regardless of @import order, which would clip the two-column sidebar layout back to a single narrow column.</p>
+<h4 id="dflayoutsplit">Donation Form Layout - Split Hero<a class="headerlink" href="#dflayoutsplit" title="Permanent link">#</a></h4>
+<p><code>dfLayoutSplit</code></p>
+<p><code>not exposed</code></p>
+<p>CSS-only shared style module rendering a full-height branded rail beside the donation form fields; one of the public donation page's layout themes.</p>
+<p><strong>Docs note.</strong> Selected by dfForm's layout token and pulled in via @import in dfForm.css alongside the other five df-layout-* modules. Override rules must target the compound selector .donation-form.df-split (specificity 0-2-0) to beat the base .donation-form { max-width: 520px; } rule (0-1-0) regardless of @import order. The branded rail should source its color from the shared pf brand-primary and pf brand-bg tokens with the intended design value as fallback, not a hardcoded hex.</p>
+<h4 id="dflayoutspotlight">Donation Form Layout - Spotlight<a class="headerlink" href="#dflayoutspotlight" title="Permanent link">#</a></h4>
+<p><code>dfLayoutSpotlight</code></p>
+<p><code>not exposed</code></p>
+<p>CSS-only shared style module giving the donation form a centered headline over a clean, left-aligned single-column field layout; one of the public donation page's layout themes.</p>
+<p><strong>Docs note.</strong> Selected by dfForm's layout token and pulled in via @import in dfForm.css alongside the other five df-layout-* modules. Because all six modules load together, this module's override rule must be the compound selector .donation-form.df-spotlight (specificity 0-2-0) to beat the base .donation-form { max-width: 520px; } rule (0-1-0) — @import order alone does not decide the winner. See the compound-selector comment already inline in dfLayoutSpotlight.css.</p>
+<h2 id="ui-shared-primitives">Ui (shared primitives)<a class="headerlink" href="#ui-shared-primitives" title="Permanent link">#</a></h2>
+<h4 id="uibase">Internal Base Component<a class="headerlink" href="#uibase" title="Permanent link">#</a></h4>
+<p><code>uiBase</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed base class for internal Lightning Experience LWCs, providing a shared Apex-call wrapper for the success/data/error envelope, loading spinner, and error toasts.</p>
+<p><strong>Docs note.</strong> Extended throughout the internal adm<em>/set</em>/lex* bundles (and by the public 3-step canvas dfForm) as the standard callApex wrapper. The three P2P guest pages (publicFundraiserPage/publicTeamPage/publicFundraiserSignup) do NOT extend this — they extend the separate, functionally-identical pfP2pBase instead (see that bundle's doc note for why there are two copies of the same wrapper rather than one shared class).</p>
+<h4 id="uimodal">Ember Modal<a class="headerlink" href="#uimodal" title="Permanent link">#</a></h4>
+<p><code>uiModal</code></p>
+<p><code>not exposed</code></p>
+<p>Reusable Ember-branded modal shell (header, body, footer, progress) used by the Settings dialogs.</p>
+<p><strong>Docs note.</strong> Composed (as <c-ui-modal>) by the Settings console panels for their add/edit dialogs (e.g. setPayments' account editor, setRecordTypes' override editor) and by admEventTicketsTab's ticket-type add/edit modal — the one modal chrome shared across the internal console, kept deliberately separate from the guest-facing Stripe payment iframe (which is never a modal — it is a stable sibling element, see dfForm's doc note on why it must not remount).</p>
+<p><strong><code>@api</code> properties:</strong> <code>flush</code>, <code>progress</code>, <code>size</code>, <code>subtitle</code>, <code>title</code>, <code>variant</code></p>
+<h4 id="uimoney">Money Formatting Utility<a class="headerlink" href="#uimoney" title="Permanent link">#</a></h4>
+<p><code>uiMoney</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed JS-only utility module (no markup) providing shared currency-aware money formatting and the org's configured charge currency for every donation surface.</p>
+<p><strong>Docs note.</strong> The currency half of this module (formatMoney/currencyOf) is imported by essentially every money-displaying bundle across all groups — dfForm, dfDesignationPicker, pfHero, the lex* record-page cards, the public P2P/event pages, admEventTicketsTab, admFundraiserDetail — each pairing it with its own @wire(getUiConfig) per the LWC1503 static-analysis constraint documented above (the wire adapter itself can't be re-exported through a shared module).</p>
+<h4 id="uitoggle">Ember Toggle<a class="headerlink" href="#uitoggle" title="Permanent link">#</a></h4>
+<p><code>uiToggle</code></p>
+<p><code>not exposed</code></p>
+<p>Reusable Ember-branded switch replacing lightning-input type="toggle".</p>
+<p><strong>Docs note.</strong> Composed (as <c-ui-toggle>) across the Settings console panels (e.g. setOrganization's NPSP sync switches, setSite's embed-enabled toggle) and admEventTicketsTab's active-ticket switch — anywhere a boolean setting needs on-brand styling that lightning-input's toggle variant can't provide (see the class-doc note on the hardcoded SLDS blue it replaces).</p>
+<p><strong><code>@api</code> properties:</strong> <code>activeText</code>, <code>checked</code>, <code>disabled</code>, <code>inactiveText</code>, <code>label</code></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../apex/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Apex">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Apex
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../visualforce/" class="md-footer__link md-footer__link--next" aria-label="Next: Visualforce">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Visualforce
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/cytoscape.min.js"></script>
+      
+        <script src="../../assets/js/data-model-diagram.js"></script>
+      
+    
+  </body>
+</html>

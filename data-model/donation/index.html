@@ -1,0 +1,2064 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The donation itself — a customized standard Opportunity carrying billing details, the Stripe payment trail, and refund/dispute state for a single gift.">
+      
+      
+      
+        <link rel="canonical" href="https://docs.example.invalid/data-model/donation/">
+      
+      
+        <link rel="prev" href="../all-objects/">
+      
+      
+        <link rel="next" href="../campaign/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Opportunity - Pledgivo Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/field-notes.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#opportunity" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pledgivo Documentation" class="md-header__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pledgivo Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Opportunity
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pledgivo Documentation" class="md-nav__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+
+    </a>
+    Pledgivo Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/connecting-stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/setup-assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donors-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donors & accounts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/campaigns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donations-payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donations & payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/recurring-giving/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring giving
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/events-ticketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Peer-to-peer fundraising
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/settings-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings & integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Model Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Model Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../all-objects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donation (Opportunity)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donation (Opportunity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationships
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recurring-donation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring Donation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundraising-page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundraising Page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../payment-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Payment Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/first-campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/process-refund/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process a refund
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/recurring-dunning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configure recurring dunning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/publish-donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Code Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/apex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/lwc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LWC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/visualforce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualforce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Integrations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/npsp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NPSP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-it-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why it exists
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationships
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p class="fn-eyebrow">Data Model Reference</p>
+
+<h1 id="opportunity">Opportunity<a class="headerlink" href="#opportunity" title="Permanent link">#</a></h1>
+<p class="fn-dek">The donation itself — a customized standard Opportunity carrying billing details, the Stripe payment trail, and refund/dispute state for a single gift.</p>
+
+<!-- AUTOGEN:META:START -->
+<p><code>standard</code> · <code>41 fields</code> · <code>Donations &amp; Payments</code></p>
+<!-- AUTOGEN:META:END -->
+
+<h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
+<p>There's no dedicated "Donation" object — every gift, one-time or a single recurring
+installment, is a standard <code>Opportunity</code> extended with 41 custom fields. That keeps donations
+inside Salesforce's native pipeline, reporting, and forecasting tooling instead of reinventing
+it, and it's why the object carries so much: donor billing address, tribute/dedication details,
+company-match flags, the full Stripe payment/refund/dispute trail (<code>Stripe_Payment_Intent_Id__c</code>,
+<code>Payment_Status__c</code>, <code>Dispute_*__c</code>), and fee-coverage math.</p>
+<p>A recurring installment links back to its schedule via <code>Recurring_Donation__c</code>; a peer-to-peer
+gift links to the page and team it was raised through via <code>Fundraising_Page__c</code> /
+<code>Fundraising_Team__c</code>. Note what's <em>not</em> here — see the <a href="../payment-method/">Payment Method reference</a> for why
+<code>Payment_Method__c</code> isn't one of this object's relationships.</p>
+<h2 id="relationships">Relationships<a class="headerlink" href="#relationships" title="Permanent link">#</a></h2>
+<!-- AUTOGEN:RELATIONSHIPS:START -->
+<table>
+<thead>
+<tr>
+<th>Direction</th>
+<th>Field</th>
+<th>Related object</th>
+<th>Relationship type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>→ out</td>
+<td><code>Fundraising_Page__c</code></td>
+<td><a href="../all-objects/#fundraising-page">Fundraising Page</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>→ out</td>
+<td><code>Fundraising_Team__c</code></td>
+<td><a href="../all-objects/#fundraising-team">Fundraising Team</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>→ out</td>
+<td><code>Payment_Account__c</code></td>
+<td><a href="../all-objects/#payment-account">Payment Account</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>→ out</td>
+<td><code>Recurring_Donation__c</code></td>
+<td><a href="../all-objects/#recurring-donation">Recurring Donation</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>→ out</td>
+<td><code>Source_Code__c</code></td>
+<td><a href="../all-objects/#source-code">Source Code</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>← in</td>
+<td><code>Opportunity__c</code> on Custom Answer</td>
+<td><a href="../all-objects/#custom-answer">Custom Answer</a></td>
+<td>MasterDetail</td>
+</tr>
+<tr>
+<td>← in</td>
+<td><code>Opportunity__c</code> on Donation Designation</td>
+<td><a href="../all-objects/#donation-designation">Donation Designation</a></td>
+<td>MasterDetail</td>
+</tr>
+<tr>
+<td>← in</td>
+<td><code>Opportunity__c</code> on Donation Staging</td>
+<td><a href="../all-objects/#donation-staging">Donation Staging</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>← in</td>
+<td><code>Opportunity__c</code> on Event Attendee</td>
+<td><a href="../all-objects/#event-attendee">Event Attendee</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>← in</td>
+<td><code>Opportunity__c</code> on Transaction Log</td>
+<td><a href="../all-objects/#transaction-log">Transaction Log</a></td>
+<td>Lookup</td>
+</tr>
+</tbody>
+</table>
+<!-- AUTOGEN:RELATIONSHIPS:END -->
+
+<h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">#</a></h2>
+<!-- AUTOGEN:FIELDS:START -->
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Label</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Anonymous__c</code></td>
+<td>Anonymous</td>
+<td>Checkbox</td>
+<td>Check if the donor asked not to be publicly identified with this gift.<br><em>Docs: This only suppresses the donor's name from public-facing display — it does not blank or mask the underlying Contact__c/Donor_Account__c lookup, and it has no effect on internal reporting or the org's own view of who gave. Anonymity is a presentation rule enforced by the public LWCs, not a data-masking rule enforced in Apex.</em></td>
+</tr>
+<tr>
+<td><code>Applied_Fee_Percent__c</code></td>
+<td>Applied Fee Percent</td>
+<td>Percent</td>
+<td>Fee percentage added to this gift when the donor chose to cover processing fees. Set automatically at checkout.<br><em>Docs: See the doc note on Donor_Covered_Fees__c — despite the description below, nothing currently sets this field automatically; it is safe to read as always blank until the cover-fees checkout flow is implemented.</em></td>
+</tr>
+<tr>
+<td><code>Billing_City__c</code></td>
+<td>Billing City</td>
+<td>Text</td>
+<td>City from the donor's billing address entered at checkout.</td>
+</tr>
+<tr>
+<td><code>Billing_Country__c</code></td>
+<td>Billing Country</td>
+<td>Text</td>
+<td>Country from the donor's billing address entered at checkout.</td>
+</tr>
+<tr>
+<td><code>Billing_Postal_Code__c</code></td>
+<td>Billing Postal Code</td>
+<td>Text</td>
+<td>Postal or ZIP code from the donor's billing address entered at checkout.</td>
+</tr>
+<tr>
+<td><code>Billing_State__c</code></td>
+<td>Billing State</td>
+<td>Text</td>
+<td>State or province from the donor's billing address entered at checkout.</td>
+</tr>
+<tr>
+<td><code>Billing_Street__c</code></td>
+<td>Billing Street</td>
+<td>Text</td>
+<td>Street address from the donor's billing address entered at checkout.</td>
+</tr>
+<tr>
+<td><code>Check_Number__c</code></td>
+<td>Check Number</td>
+<td>Text</td>
+<td>Check number for this donation, if paid by check.</td>
+</tr>
+<tr>
+<td><code>Company_Match__c</code></td>
+<td>Company Match</td>
+<td>Checkbox</td>
+<td>Check if the donor said their employer will match this gift.</td>
+</tr>
+<tr>
+<td><code>Company_Name__c</code></td>
+<td>Company Name</td>
+<td>Text</td>
+<td>Donor's employer name, for company-matched gifts.</td>
+</tr>
+<tr>
+<td><code>Currency_ISO_Code__c</code></td>
+<td>Currency ISO Code</td>
+<td>Text</td>
+<td>Three-letter currency code this gift was charged in, e.g. USD.<br><em>Docs: A plain custom Text field, not the platform's native CurrencyIsoCode — do not confuse the two. This exists because the package deliberately does not enable Salesforce multi-currency; an org that turns on native multi-currency separately is outside this package's tested scope.</em></td>
+</tr>
+<tr>
+<td><code>Dispute_Amount__c</code></td>
+<td>Dispute Amount</td>
+<td>Currency</td>
+<td>Amount Stripe reports as disputed. Managed automatically — do not edit.</td>
+</tr>
+<tr>
+<td><code>Dispute_Closed_Date__c</code></td>
+<td>Dispute Closed Date</td>
+<td>Date</td>
+<td>Date the dispute on this gift was resolved. Managed automatically.</td>
+</tr>
+<tr>
+<td><code>Dispute_Evidence_Due_Date__c</code></td>
+<td>Dispute Evidence Due Date</td>
+<td>Date</td>
+<td>Deadline to respond to this dispute with evidence.</td>
+</tr>
+<tr>
+<td><code>Dispute_Id__c</code></td>
+<td>Dispute ID</td>
+<td>Text</td>
+<td>Stripe's identifier for the dispute on this gift. Managed automatically.<br><em>Docs: "The reconciler" referenced in the description is RefundReconciliationBatch — the scheduled batch that polls Stripe for dispute state and writes this and the sibling Dispute_</em> fields; there is no dispute-specific webhook handler in StripeEventProcessor.*</td>
+</tr>
+<tr>
+<td><code>Dispute_Opened_Date__c</code></td>
+<td>Dispute Opened Date</td>
+<td>Date</td>
+<td>Date this dispute was opened with Stripe.</td>
+</tr>
+<tr>
+<td><code>Dispute_Reason__c</code></td>
+<td>Dispute Reason</td>
+<td>Text</td>
+<td>Reason the cardholder gave for disputing this charge.</td>
+</tr>
+<tr>
+<td><code>Dispute_Status__c</code></td>
+<td>Dispute Status</td>
+<td>Picklist</td>
+<td>Current status of the dispute with Stripe, if any.</td>
+</tr>
+<tr>
+<td><code>Donation_Type__c</code></td>
+<td>Donation Type</td>
+<td>Picklist</td>
+<td>What kind of donation or purchase this record represents.<br><em>Docs: Recurring_Installment is set once per charge by RecurringDonationService.applyRenewalOutcome() each time RecurringRenewalBatch runs — every installment is its own Opportunity linked back via Recurring_Donation__c, there is no single Opportunity that represents the whole schedule.</em></td>
+</tr>
+<tr>
+<td><code>Donor_Covered_Fees__c</code></td>
+<td>Donor Covered Fees</td>
+<td>Checkbox</td>
+<td>Check if the donor chose to cover the processing fee.<br><em>Docs: The description above describes the intended checkout flow, but no Apex class currently sets this field, Fee_Amount__c, or Applied_Fee_Percent__c, and the public donation form (dfForm) has no cover-fees control to opt a donor in. Corresponds to Campaign.Donor_Covered_Fees_Enabled__c / Fee_On_Top_Percent__c, which are equally unwired.</em></td>
+</tr>
+<tr>
+<td><code>Event_Amount__c</code></td>
+<td>Event Amount</td>
+<td>Currency</td>
+<td>Portion of this gift that is not tax-deductible (e.g. the value of an event ticket).</td>
+</tr>
+<tr>
+<td><code>Event_Deductible_Amount__c</code></td>
+<td>Event Deductible Amount</td>
+<td>Currency</td>
+<td>Tax-deductible portion of an event ticket order, for receipts.</td>
+</tr>
+<tr>
+<td><code>Fee_Amount__c</code></td>
+<td>Fee Amount</td>
+<td>Currency</td>
+<td>Processing fee amount added by the donor, if fee coverage was selected.<br><em>Docs: See the doc note on Donor_Covered_Fees__c — no Apex path currently populates this field; it is not the same thing as the Stripe processing fee the org itself absorbs, which never appears on the Opportunity at all.</em></td>
+</tr>
+<tr>
+<td><code>Fundraising_Page__c</code></td>
+<td>Fundraising Page</td>
+<td>Lookup → <code>Fundraising_Page__c</code></td>
+<td>The fundraiser page this gift was given through, if applicable.<br><em>Docs: Written by P2PAttributionService, subscribed to the DonationFinalized__e platform event that the donation-finalize path publishes. Peer-to-peer was merged into this base package on 2026-07-13; the platform event is kept as an internal decoupling seam between finalize and attribution, not a cross-package boundary.</em></td>
+</tr>
+<tr>
+<td><code>Fundraising_Team__c</code></td>
+<td>Fundraising Team</td>
+<td>Lookup → <code>Fundraising_Team__c</code></td>
+<td>The fundraising team this gift is credited to, if applicable.<br><em>Docs: Written by the same P2PAttributionService subscriber as Fundraising_Page__c, off the DonationFinalized__e event. Only populated when the sourcing Fundraising_Page__c itself belongs to a Fundraising_Team__c — a solo fundraiser page leaves this blank even though the campaign has Allow_Teams__c enabled.</em></td>
+</tr>
+<tr>
+<td><code>Net_Donation_Amount__c</code></td>
+<td>Net Donation Amount</td>
+<td>Currency</td>
+<td>Tax-deductible amount of this gift, shown on the donor's receipt.<br><em>Docs: Despite the description above, no Apex class currently writes this field. ReceiptService computes the deductible split directly from Event_Amount__c/Event_Deductible_Amount__c and never touches this one. Its only consumer is lexOpportunityBreakdown.js (read-only display) and it remains editable on the Donation/Pledge/Grant layouts, so a value entered here has no downstream effect on receipts.</em></td>
+</tr>
+<tr>
+<td><code>Payment_Account__c</code></td>
+<td>Payment Account</td>
+<td>Lookup → <code>Payment_Account__c</code></td>
+<td>The configured payment account this gift was charged against.<br><em>Docs: Matters most in orgs with more than one Payment_Account__c (multi-account/multi-gateway setups via Campaign_Payment_Account__c routing) — a refund or dispute lookup that ignores this field and assumes a single default account will hit the wrong Stripe account's API keys.</em></td>
+</tr>
+<tr>
+<td><code>Payment_Source__c</code></td>
+<td>Payment Source</td>
+<td>Picklist</td>
+<td>Payment method the donor used for this gift.</td>
+</tr>
+<tr>
+<td><code>Payment_Status__c</code></td>
+<td>Payment Status</td>
+<td>Picklist</td>
+<td>Current payment state of this gift. Managed automatically by the payment integration.</td>
+</tr>
+<tr>
+<td><code>Receipt_Token__c</code></td>
+<td>Receipt Token</td>
+<td>Text</td>
+<td>Internal security token for the public receipt link. Do not share or expose this value.</td>
+</tr>
+<tr>
+<td><code>Recurring_Donation__c</code></td>
+<td>Recurring Donation</td>
+<td>Lookup → <code>Recurring_Donation__c</code></td>
+<td>The recurring donation schedule this installment belongs to, if any.<br><em>Docs: Set by RecurringDonationService.applyRenewalOutcome() when the daily RecurringRenewalBatch charges an installment off-session against the parent Recurring_Donation__c's stored Stripe_Customer_Id__c/Stripe_Payment_Method_Id__c. There is no Stripe Subscription object behind this relationship — the schedule is entirely self-managed on this package's side.</em></td>
+</tr>
+<tr>
+<td><code>Refund_Date__c</code></td>
+<td>Refund Date</td>
+<td>Date</td>
+<td>Date this gift was last refunded, if applicable.</td>
+</tr>
+<tr>
+<td><code>Refund_Reason__c</code></td>
+<td>Refund Reason</td>
+<td>LongTextArea</td>
+<td>Reason given for the most recent refund on this gift.</td>
+</tr>
+<tr>
+<td><code>Refunded_Amount__c</code></td>
+<td>Refunded Amount</td>
+<td>Currency</td>
+<td>Total amount refunded to the donor so far. Managed automatically — never edit directly.</td>
+</tr>
+<tr>
+<td><code>Source_Code__c</code></td>
+<td>Source Code</td>
+<td>Lookup → <code>Source_Code__c</code></td>
+<td>Marketing source this gift is attributed to, if tracked.<br><em>Docs: Attribution is independent of CampaignId — a donation can be tied to both the Campaign it funded and a Source_Code__c describing how the donor arrived, or to a Source_Code__c with no Campaign at all (e.g. a general-site link). See the Source_Code__c object doc for a gap in its own rollup fields.</em></td>
+</tr>
+<tr>
+<td><code>Stripe_Payment_Intent_Id__c</code></td>
+<td>Stripe Payment Intent ID</td>
+<td>Text</td>
+<td>Stripe's identifier for the payment behind this gift. Set automatically.</td>
+</tr>
+<tr>
+<td><code>Tribute_Ecard_Requested__c</code></td>
+<td>Tribute Ecard Requested</td>
+<td>Checkbox</td>
+<td>Check if the donor asked for a tribute e-card to be sent.</td>
+</tr>
+<tr>
+<td><code>Tribute_Message__c</code></td>
+<td>Tribute Message</td>
+<td>LongTextArea</td>
+<td>Personal message to include in the tribute notification, if any.</td>
+</tr>
+<tr>
+<td><code>Tribute_Name__c</code></td>
+<td>Tribute Name</td>
+<td>Text</td>
+<td>Name of the person this gift honors or memorializes.</td>
+</tr>
+<tr>
+<td><code>Tribute_Notification_Email__c</code></td>
+<td>Tribute Notification Email</td>
+<td>Email</td>
+<td>Email address to notify about this tribute gift, if applicable.</td>
+</tr>
+<tr>
+<td><code>Tribute_Type__c</code></td>
+<td>Tribute Type</td>
+<td>Picklist</td>
+<td>Select whether this gift is a tribute, and of which kind.</td>
+</tr>
+</tbody>
+</table>
+<!-- AUTOGEN:FIELDS:END -->
+
+<p><a href="../">← Back to the diagram</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../all-objects/" class="md-footer__link md-footer__link--prev" aria-label="Previous: All objects">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                All objects
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../campaign/" class="md-footer__link md-footer__link--next" aria-label="Next: Campaign">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Campaign
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/cytoscape.min.js"></script>
+      
+        <script src="../../assets/js/data-model-diagram.js"></script>
+      
+    
+  </body>
+</html>

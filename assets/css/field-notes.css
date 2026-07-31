@@ -43,10 +43,10 @@
   --fn-ink-faint: #828c9c;
   --fn-line: #dedcd2;
   --fn-line-soft: #eae8de;
-  --fn-accent: #0f7b7f;
-  --fn-accent-ink: #0a5457;
-  --fn-accent-soft: #e1eeec;
-  --fn-accent-soft-line: #bbd7d4;
+  --fn-accent: #e0533d;
+  --fn-accent-ink: #b84632;
+  --fn-accent-soft: #fdf3ee;
+  --fn-accent-soft-line: #f0c4b4;
   --fn-warn: #b4650e;
   --fn-warn-soft: #f8ead7;
   --fn-warn-line: #e4c495;
@@ -120,8 +120,6 @@ body,
   font-family: var(--fn-font-display);
   font-weight: 600;
 }
-.md-header__button.md-logo img,
-.md-header__button.md-logo svg { fill: var(--fn-accent); }
 .md-header__topic:first-child { font-weight: 600; }
 .md-search__input {
   background: var(--fn-paper-dim);
@@ -170,6 +168,12 @@ body,
 }
 .md-nav--secondary .md-nav__link { color: var(--fn-ink-soft); font-size: 0.72rem; }
 .md-nav--secondary .md-nav__link--active { color: var(--fn-accent-ink); font-weight: 600; }
+
+/* ---------- Layout width ----------
+   Material's default 61rem grid leaves most of a normal monitor blank;
+   reference docs are full of wide tables, code blocks, and the data-model
+   diagram, so give the whole shell (header + content) more room. */
+.md-grid { max-width: 90rem; }
 
 /* ---------- Content shell ---------- */
 .md-content__inner { padding-top: 1.6rem; }
@@ -425,6 +429,23 @@ body,
 }
 .dm-domain-btn .sw { width: 7px; height: 7px; border-radius: 50%; }
 .dm-domain-btn.is-off { opacity: 0.4; }
+.dm-fullscreen-btn { margin-left: auto; }
+.dm-app:fullscreen,
+.dm-app:-webkit-full-screen {
+  max-width: none;
+  height: 100vh;
+  margin: 0;
+  border-radius: 0;
+}
+.dm-app:fullscreen .dm-canvas-wrap,
+.dm-app:-webkit-full-screen .dm-canvas-wrap,
+.dm-app:fullscreen #dm-cy,
+.dm-app:-webkit-full-screen #dm-cy,
+.dm-app:fullscreen .dm-panel,
+.dm-app:-webkit-full-screen .dm-panel {
+  height: 100%;
+  max-height: none;
+}
 .dm-zoom-controls {
   position: absolute;
   bottom: 12px;

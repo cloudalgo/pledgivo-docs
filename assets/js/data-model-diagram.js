@@ -69,9 +69,9 @@
           }
         },
         { selector: '.dm-dim', style: { 'opacity': 0.12 } },
-        { selector: '.dm-selected', style: { 'border-color': '#0F7B7F', 'border-width': 3, 'background-opacity': 0.35 } },
-        { selector: '.dm-neighbor', style: { 'border-color': '#0A5457', 'border-width': 2.5 } },
-        { selector: 'edge.dm-active', style: { 'line-color': '#0F7B7F', 'target-arrow-color': '#0F7B7F', 'width': 2.2, 'opacity': 1 } }
+        { selector: '.dm-selected', style: { 'border-color': '#E0533D', 'border-width': 3, 'background-opacity': 0.35 } },
+        { selector: '.dm-neighbor', style: { 'border-color': '#1C2B46', 'border-width': 2.5 } },
+        { selector: 'edge.dm-active', style: { 'line-color': '#E0533D', 'target-arrow-color': '#E0533D', 'width': 2.2, 'opacity': 1 } }
       ],
       layout: { name: 'cose', animate: false, nodeRepulsion: 9000, idealEdgeLength: 130, gravity: 0.35, numIter: 1500 }
     });
@@ -157,6 +157,37 @@
 
     cy.on('tap', 'node', function (evt) { selectNode(evt.target); });
     cy.on('tap', function (evt) { if (evt.target === cy) clearSelection(); });
+
+    var fsBtn = document.getElementById('dm-fullscreen');
+    var dmApp = cyEl.closest('.dm-app');
+    function isFullscreen() {
+      return !!(document.fullscreenElement || document.webkitFullscreenElement);
+    }
+    function updateFsBtn() {
+      if (!fsBtn) return;
+      var active = isFullscreen();
+      fsBtn.textContent = active ? '⤢' : '⛶';
+      fsBtn.title = active ? 'Exit full screen' : 'Full screen';
+    }
+    if (fsBtn && dmApp) {
+      fsBtn.addEventListener('click', function () {
+        if (isFullscreen()) {
+          if (document.exitFullscreen) document.exitFullscreen();
+          else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        } else if (dmApp.requestFullscreen) {
+          dmApp.requestFullscreen();
+        } else if (dmApp.webkitRequestFullscreen) {
+          dmApp.webkitRequestFullscreen();
+        }
+      });
+      ['fullscreenchange', 'webkitfullscreenchange'].forEach(function (evt) {
+        document.addEventListener(evt, function () {
+          updateFsBtn();
+          cy.resize();
+          cy.fit(undefined, 40);
+        });
+      });
+    }
 
     var zoomIn = document.getElementById('dm-zoom-in');
     var zoomOut = document.getElementById('dm-zoom-out');

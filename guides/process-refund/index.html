@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://docs.example.invalid/guides/process-refund/">
+        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/guides/process-refund/">
       
       
         <link rel="prev" href="../first-campaign/">
@@ -92,8 +92,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Pledgivo Documentation" class="md-header__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+  <img src="../../assets/favicon.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -204,8 +203,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Pledgivo Documentation" class="md-nav__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+  <img src="../../assets/favicon.svg" alt="logo">
 
     </a>
     Pledgivo Documentation
@@ -1647,7 +1645,7 @@ by default. Confirm the org-wide refund switch is on: <strong>Settings → Payme
 <code>Refunds_Disabled__c</code>, but the panel presents it as a normal, positive-framed toggle — you
 don't need to think about the inversion.) That panel also sets the refund window — how many
 days after the original gift a refund can still be issued (180 by default).</p>
-<div class="fn-shot"><img src="../assets/images/set-refunds.png" alt="Refunds settings panel"></div>
+<div class="fn-shot"><img src="../../assets/images/set-refunds.png" alt="Refunds settings panel"></div>
 <p class="fn-figure-caption">**What it shows.** The Refunds panel — the "Enable refunds" toggle and the Refund window (days) field, each with helper text explaining what it controls. This is the org-wide switch; it's separate from the per-Opportunity Refund Donation action below.</p>
 
 <h2 id="issue-a-refund-from-salesforce">Issue a refund from Salesforce<a class="headerlink" href="#issue-a-refund-from-salesforce" title="Permanent link">#</a></h2>
@@ -1656,7 +1654,7 @@ days after the original gift a refund can still be issued (180 by default).</p>
 <li>Use the <strong>Refund Donation</strong> action (visible only to users with <code>Process_Refunds</code>).</li>
 <li>Choose full or partial, and confirm.</li>
 </ol>
-<div class="fn-shot"><img src="../assets/images/lex-refund-donation-action.png" alt="Refund Donation action panel"></div>
+<div class="fn-shot"><img src="../../assets/images/lex-refund-donation-action.png" alt="Refund Donation action panel"></div>
 <p class="fn-figure-caption">**What it shows.** The Refund Donation quick action open on an Opportunity, with a Refund Amount field pre-filled with the full remaining refundable amount (edit it down for a partial refund) and a destructive "Refund" button.</p>
 
 <p>This calls <code>RefundService</code>, which issues the refund through Stripe and updates the
@@ -1791,6 +1789,11 @@ cumulative amount, not just the last refund seen.</p>
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Built by <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
+
+    </div>
   
   
     Made with

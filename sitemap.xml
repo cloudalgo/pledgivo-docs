@@ -1,119 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://docs.example.invalid/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/concepts/campaigns/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/concepts/campaigns/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/concepts/donations-payments/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/concepts/donations-payments/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/concepts/donors-accounts/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/concepts/donors-accounts/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/concepts/events-ticketing/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/concepts/events-ticketing/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/concepts/peer-to-peer/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/concepts/peer-to-peer/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/concepts/recurring-giving/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/concepts/recurring-giving/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/concepts/settings-integrations/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/concepts/settings-integrations/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/all-objects/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/all-objects/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/campaign/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/campaign/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/donation/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/donation/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/fundraising-page/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/fundraising-page/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/payment-method/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/payment-method/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/recurring-donation/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/recurring-donation/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/data-model/settings/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/data-model/settings/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/getting-started/connecting-stripe/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/getting-started/connecting-stripe/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/getting-started/installation/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/getting-started/installation/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/getting-started/quick-start/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/getting-started/quick-start/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/getting-started/setup-assistant/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/getting-started/setup-assistant/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/guides/first-campaign/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/guides/first-campaign/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/guides/process-refund/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/guides/process-refund/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/guides/publish-donor-portal/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/guides/publish-donor-portal/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/guides/recurring-dunning/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/guides/recurring-dunning/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/integrations/npsp/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/integrations/npsp/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/integrations/stripe/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/integrations/stripe/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/reference/apex/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/reference/apex/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/reference/lwc/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/reference/lwc/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
     <url>
-         <loc>https://docs.example.invalid/reference/visualforce/</loc>
+         <loc>https://cloudalgo.com/pledgivo-docs/reference/visualforce/</loc>
          <lastmod>2026-07-31</lastmod>
     </url>
 </urlset>

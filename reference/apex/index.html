@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://docs.example.invalid/reference/apex/">
+        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/reference/apex/">
       
       
         <link rel="prev" href="../../guides/publish-donor-portal/">
@@ -92,8 +92,7 @@
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="Pledgivo Documentation" class="md-header__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+  <img src="../../assets/favicon.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -204,8 +203,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../.." title="Pledgivo Documentation" class="md-nav__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
       
-  
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m19 1-5 5v11l5-4.5zm2 4v13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V6c-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1M10 18.41C8.75 18.09 7.5 18 6.5 18c-1.06 0-2.32.19-3.5.5V7.13c.91-.4 2.14-.63 3.5-.63s2.59.23 3.5.63z"/></svg>
+  <img src="../../assets/favicon.svg" alt="logo">
 
     </a>
     Pledgivo Documentation
@@ -6559,7 +6557,7 @@
 </table>
 <h4 id="apex-embedconfigresource">EmbedConfigResource<a class="headerlink" href="#apex-embedconfigresource" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>global without sharing</code></p>
-<p><strong>Docs note.</strong> Backs the embedWidget static resource (an external <script> tag any third-party site can</p>
+<p><strong>Docs note.</strong> Backs the embedWidget static resource (an external &lt;script&gt; tag any third-party site can</p>
 <table>
 <thead>
 <tr>
@@ -7863,7 +7861,7 @@
 <h3 id="services_1">Services<a class="headerlink" href="#services_1" title="Permanent link">#</a></h3>
 <h4 id="apex-designationsplits">DesignationSplits<a class="headerlink" href="#apex-designationsplits" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
-<p>Shared parser/allocator for a donor's fund allocation. One place both the one-time finalize (DonationService) and the recurring schedule (RecurringDonationService) use, so the split contract stays identical across gift types. Options_JSON__c contract (donor allocation), in priority order: 1. "designations": [ { "id": "<Designation Id>", "amount": <Decimal> }, ... ]  (multi-split) 2. "designationId": "<Designation Id>"                                          (single fund) 3. SettingsService.defaultDesignationId()                                       (org default) 4. none → empty list (undesignated gift) Amounts are always NORMALIZED to the authoritative charged total: the parts are scaled to sum EXACTLY to <code>total</code> (remainder on the last row) so a rounding drift or a client that sends amounts not matching the charge can never mis-total the splits.</p>
+<p>Shared parser/allocator for a donor's fund allocation. One place both the one-time finalize (DonationService) and the recurring schedule (RecurringDonationService) use, so the split contract stays identical across gift types. Options_JSON__c contract (donor allocation), in priority order: 1. "designations": [ { "id": "&lt;Designation Id&gt;", "amount": &lt;Decimal&gt; }, ... ]  (multi-split) 2. "designationId": "&lt;Designation Id&gt;"                                          (single fund) 3. SettingsService.defaultDesignationId()                                       (org default) 4. none → empty list (undesignated gift) Amounts are always NORMALIZED to the authoritative charged total: the parts are scaled to sum EXACTLY to <code>total</code> (remainder on the last row) so a rounding drift or a client that sends amounts not matching the charge can never mis-total the splits.</p>
 <table>
 <thead>
 <tr>
@@ -11129,7 +11127,7 @@
 </table>
 <h4 id="apex-preconditions">Preconditions<a class="headerlink" href="#apex-preconditions" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
-<p>Guard clause utilities (Guava-style). Use in service/domain/selector methods to fail fast with a meaningful message instead of a cryptic NullPointerException. Usage: Preconditions.checkNotNull(contactId, 'contactId is required'); Preconditions.checkArgument(amount &gt; 0, 'amount must be positive, got: {0}', new List<Object>{ amount }); Preconditions.checkNotBlank(email, 'email is required');</p>
+<p>Guard clause utilities (Guava-style). Use in service/domain/selector methods to fail fast with a meaningful message instead of a cryptic NullPointerException. Usage: Preconditions.checkNotNull(contactId, 'contactId is required'); Preconditions.checkArgument(amount &gt; 0, 'amount must be positive, got: {0}', new List&lt;Object&gt;{ amount }); Preconditions.checkNotBlank(email, 'email is required');</p>
 <table>
 <thead>
 <tr>
@@ -11173,7 +11171,7 @@
 </table>
 <h4 id="apex-querycondition">QueryCondition<a class="headerlink" href="#apex-querycondition" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public virtual with sharing</code></p>
-<p>Composable SOQL WHERE clause builder. Works with Database.queryWithBinds() (available API 57+) so binding variables are passed as a Map — no Apex scope variable tricks needed. Usage in a selector method: QueryCondition cond = QueryCondition.of('Status = :status', 'status', 'Active') .andWhere(QueryCondition.of('CampaignId = :cid', 'cid', campaignId)); String soql = newQueryFactory().setCondition(cond.getClause()).toSOQL(); return (List<Opportunity>) Database.queryWithBinds( soql, cond.getBindings(), AccessLevel.USER_MODE ); Concrete condition inner classes (recommended for reuse): private class ActiveCondition extends QueryCondition { ActiveCondition() { super('Status__c = :status', new Map<String,Object>{ 'status' =&gt; 'Active' }); } } private class ByCampaignCondition extends QueryCondition { ByCampaignCondition(Set<Id> ids) { super('CampaignId IN :cids', new Map<String,Object>{ 'cids' =&gt; ids }); } } // Compose: QueryCondition cond = new ActiveCondition().andWhere(new ByCampaignCondition(campaignIds));</p>
+<p>Composable SOQL WHERE clause builder. Works with Database.queryWithBinds() (available API 57+) so binding variables are passed as a Map — no Apex scope variable tricks needed. Usage in a selector method: QueryCondition cond = QueryCondition.of('Status = :status', 'status', 'Active') .andWhere(QueryCondition.of('CampaignId = :cid', 'cid', campaignId)); String soql = newQueryFactory().setCondition(cond.getClause()).toSOQL(); return (List&lt;Opportunity&gt;) Database.queryWithBinds( soql, cond.getBindings(), AccessLevel.USER_MODE ); Concrete condition inner classes (recommended for reuse): private class ActiveCondition extends QueryCondition { ActiveCondition() { super('Status__c = :status', new Map&lt;String,Object&gt;{ 'status' =&gt; 'Active' }); } } private class ByCampaignCondition extends QueryCondition { ByCampaignCondition(Set&lt;Id&gt; ids) { super('CampaignId IN :cids', new Map&lt;String,Object&gt;{ 'cids' =&gt; ids }); } } // Compose: QueryCondition cond = new ActiveCondition().andWhere(new ByCampaignCondition(campaignIds));</p>
 <table>
 <thead>
 <tr>
@@ -11555,6 +11553,11 @@
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Built by <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
+
+    </div>
   
   
     Made with

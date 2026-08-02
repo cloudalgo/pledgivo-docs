@@ -2044,6 +2044,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uisegmented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ember Segmented Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uitoggle" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2983,6 +2994,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uisegmented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ember Segmented Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uitoggle" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3018,7 +3040,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 57 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 58 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3332,6 +3354,11 @@
 <p><code>not exposed</code></p>
 <p>Non-exposed JS-only utility module (no markup) providing shared currency-aware money formatting and the org's configured charge currency for every donation surface.</p>
 <p><strong>Docs note.</strong> The currency half of this module (formatMoney/currencyOf) is imported by essentially every money-displaying bundle across all groups — dfForm, dfDesignationPicker, pfHero, the lex* record-page cards, the public P2P/event pages, admEventTicketsTab, admFundraiserDetail — each pairing it with its own @wire(getUiConfig) per the LWC1503 static-analysis constraint documented above (the wire adapter itself can't be re-exported through a shared module).</p>
+<h4 id="uisegmented">Ember Segmented Control<a class="headerlink" href="#uisegmented" title="Permanent link">#</a></h4>
+<p><code>uiSegmented</code></p>
+<p><code>not exposed</code></p>
+<p>Reusable Ember-branded segmented control replacing lightning-radio-group type="button", whose selected-option color is a hardcoded SLDS blue.</p>
+<p><strong><code>@api</code> properties:</strong> <code>label</code>, <code>options</code>, <code>value</code></p>
 <h4 id="uitoggle">Ember Toggle<a class="headerlink" href="#uitoggle" title="Permanent link">#</a></h4>
 <p><code>uiToggle</code></p>
 <p><code>not exposed</code></p>

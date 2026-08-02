@@ -7455,7 +7455,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-debug">AppLogger.debug()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-debug">AppLogger.debug()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9863,6 +9863,16 @@
 </thead>
 <tbody>
 <tr>
+<td><a id="apex-stripegateway-lastrefundslisttruncated"></a><code>lastRefundsListTruncated(0 args)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-stripegateway-lastdisputeslisttruncated"></a><code>lastDisputesListTruncated(0 args)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-stripegateway-init"></a><code>init(1 arg)</code></td>
 <td><code>void</code></td>
 <td></td>
@@ -9899,7 +9909,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-stripeamount-tomajor">StripeAmount.toMajor()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td><em>calls:</em> <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-stripeamount-tomajor">StripeAmount.toMajor()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9928,18 +9938,8 @@
 <td></td>
 </tr>
 <tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
-<td></td>
-</tr>
-<tr>
 <td><a id="apex-stripegateway-listrecentdisputes"></a><code>listRecentDisputes(1 arg)</code></td>
 <td><code>List&lt;[GatewayResult](#apex-gatewayresult).Dispute&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10391,7 +10391,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10650,6 +10650,16 @@
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
+<td><a id="apex-setupcontroller-abortjobfamily"></a><code>abortJobFamily(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-schedulejobfamily"></a><code>scheduleJobFamily(2 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
 <td><a id="apex-setupcontroller-getstuckdonations"></a><code>getStuckDonations(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
@@ -10716,6 +10726,11 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-getrecenterrorlogs"></a><code>getRecentErrorLogs(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-getrecentlogs"></a><code>getRecentLogs(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>

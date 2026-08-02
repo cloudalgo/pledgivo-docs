@@ -2019,6 +2019,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-donationfinalizedsubscriberhandler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DonationFinalizedSubscriberHandler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-donationservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4810,6 +4821,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-donationfinalizedsubscriberhandler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DonationFinalizedSubscriberHandler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-donationservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6666,7 +6688,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 161 classes plus 104 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 162 classes plus 104 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7500,7 +7522,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-refundservice-recordrefundedtotal">RefundService.recordRefundedTotal()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-refundservice-recordrefundedtotal">RefundService.recordRefundedTotal()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-stripeamount-tomajor">StripeAmount.toMajor()</a>, <a href="#apex-applogger-info">AppLogger.info()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -7558,7 +7580,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-debug">AppLogger.debug()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8104,6 +8126,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-opportunitiesselector-selectbyidsforrefund"></a><code>selectByIdsForRefund(1 arg)</code></td>
+<td><code>List&lt;Opportunity&gt;</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-opportunitiesselector-selectowneremailbyid"></a><code>selectOwnerEmailById(1 arg)</code></td>
 <td><code>List&lt;Opportunity&gt;</code></td>
 <td></td>
@@ -8151,6 +8178,30 @@
 <tr>
 <td><a id="apex-designationsplits-allocatebypercentage"></a><code>allocateByPercentage(2 args)</code></td>
 <td><code>List&lt;Split&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="apex-donationfinalizedsubscriberhandler">DonationFinalizedSubscriberHandler<a class="headerlink" href="#apex-donationfinalizedsubscriberhandler" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p>Handles the base package's DonationFinalized__e platform event: fans out to the two optional extension seams that react to a finalized donation (P2P attribution, NPSP allocation sync). Each seam is isolated in its own try/catch — the donation itself has already committed by the time this event fires, so one seam failing must never block the other or cause the whole event batch to redeliver/retry.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-donationfinalizedsubscriberhandler-handle"></a><code>handle(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a></td>
 <td></td>
 </tr>
 </tbody>

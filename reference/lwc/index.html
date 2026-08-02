@@ -1663,6 +1663,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#setdonationmonitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Donation Monitor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setdonorportal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2569,6 +2580,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#setdonationmonitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Donation Monitor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setdonorportal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2952,7 +2974,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 54 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 55 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3045,7 +3067,7 @@
 <p><code>lexFundraisingSettings</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
 <p>Internal Lightning app tab hosting the settings console shell, with left navigation across organization, email, payments, refunds, site, public links, page designs, record types, and health-check panels.</p>
-<p><strong>Docs note.</strong> Pure navigation shell for the Settings console — holds no Apex calls itself. Each nav item lazy-renders exactly one set<em> panel component (setOrganization, setEmail, setEvents, setLogging, setPayments, setRefunds, setRecurring, setSite, setPublicLinks, setDesigns, setDonorPortal, setRecordTypes, setHealth) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save.</p>
+<p><strong>Docs note.</strong> Pure navigation shell for the Settings console — holds no Apex calls itself. Each nav item lazy-renders exactly one set<em> panel component (setOrganization, setEmail, setEvents, setLogging, setPayments, setRefunds, setRecurring, setSite, setPublicLinks, setDesigns, setDonorPortal, setRecordTypes, setHealth) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save; also setDonationMonitor for the stuck-donation admin panel.</p>
 <h4 id="lexopportunitybreakdown">Donation Payment Breakdown<a class="headerlink" href="#lexopportunitybreakdown" title="Permanent link">#</a></h4>
 <p><code>lexOpportunityBreakdown</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
@@ -3112,6 +3134,11 @@
 <p><code>not exposed</code></p>
 <p>Settings-console panel for creating and editing Campaign_Design__c page-design records — the block canvas and theme-token editor that drive the public donation page's layout and branding.</p>
 <p><strong>Docs note.</strong> The editor half of the CMDT-driven theme-token system: getThemeTokenCatalog reads the same Theme_Token__mdt catalog (via ThemeTokenCatalogService) that CampaignService. normalizeThemeTokensJson() uses as its sole allowlist when a guest page loads a design, so this panel can never offer a token the guest shell won't actually honor. Live preview renders through pfPageBlocks (<c-pf-page-blocks>), the identical component dfForm uses at runtime, so what an admin previews here is what a donor sees. Form_Builder_JSON__c (v2, the unified block list below) is the current schema; Page_Blocks_JSON__c is legacy and no longer read or written by this composer.</p>
+<h4 id="setdonationmonitor">Settings: Donation Monitor<a class="headerlink" href="#setdonationmonitor" title="Permanent link">#</a></h4>
+<p><code>setDonationMonitor</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel listing every donation that hasn't finalized into an Opportunity yet, with a per-row "Retry now" action, so an admin can see and act on a stalled webhook-free finalize pipeline.</p>
+<p><strong>Docs note.</strong> getStuckDonations/retryDonationStagingNow back this panel — the list is every non-terminal Donation_Staging__c row (Pending/Payment_Confirmed/Processing/Submitted/Finalizing), oldest first; isStuck (age past ReconciliationHeartbeat.STUCK_MINUTES) drives the red styling. "Retry now" re-runs the exact same callout + outcome logic as the scheduled reconciliation batch for that one record (StagingReconciliationBatch.reconcileOne), so an admin doesn't have to wait for the next scheduled pass.</p>
 <h4 id="setdonorportal">Settings: Donor Portal<a class="headerlink" href="#setdonorportal" title="Permanent link">#</a></h4>
 <p><code>setDonorPortal</code></p>
 <p><code>not exposed</code></p>

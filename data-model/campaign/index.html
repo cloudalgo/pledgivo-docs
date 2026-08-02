@@ -1595,7 +1595,7 @@
 <p class="fn-dek">The fundraising campaign itself — a customized standard Campaign carrying the public page design, default fund designation, and payment routing for everything raised under it.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>46 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>standard</code> · <code>50 fields</code> · <code>Campaigns &amp; Content</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1647,20 +1647,8 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 </tr>
 <tr>
 <td>← in</td>
-<td><code>Campaign__c</code> on Campaign FAQ</td>
-<td><a href="../all-objects/#campaign-faq">Campaign FAQ</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>← in</td>
 <td><code>Campaign__c</code> on Campaign Payment Account</td>
 <td><a href="../all-objects/#campaign-payment-account">Campaign Payment Account</a></td>
-<td>MasterDetail</td>
-</tr>
-<tr>
-<td>← in</td>
-<td><code>Campaign__c</code> on Custom Question</td>
-<td><a href="../all-objects/#custom-question">Custom Question</a></td>
 <td>MasterDetail</td>
 </tr>
 <tr>
@@ -1782,6 +1770,18 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>How ticket sales are capped for this event: no limit, per ticket tier, an overall event total, or both.</td>
 </tr>
 <tr>
+<td><code>Custom_Question_Ids__c</code></td>
+<td>Custom Question Ids</td>
+<td>LongTextArea</td>
+<td>Internal: ordered list of question template ids selected for this campaign. Managed by the Custom Questions picker, not edited directly.</td>
+</tr>
+<tr>
+<td><code>Custom_Questions_Active__c</code></td>
+<td>Custom Questions Active</td>
+<td>Checkbox</td>
+<td>Uncheck to hide the Custom Questions step from the public donation form without losing the saved question selection.</td>
+</tr>
+<tr>
 <td><code>Default_Amount__c</code></td>
 <td>Default Donation Amount</td>
 <td>Currency</td>
@@ -1858,6 +1858,18 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Event Zip</td>
 <td>Text</td>
 <td>Postal/zip code where this event takes place.</td>
+</tr>
+<tr>
+<td><code>FAQ_Ids__c</code></td>
+<td>FAQ Ids</td>
+<td>LongTextArea</td>
+<td>Internal: ordered list of FAQ template ids selected for this campaign. Managed by the FAQ picker, not edited directly.</td>
+</tr>
+<tr>
+<td><code>FAQs_Active__c</code></td>
+<td>FAQs Active</td>
+<td>Checkbox</td>
+<td>Uncheck to hide the FAQ accordion from the public donation page without losing the saved FAQ selection.</td>
 </tr>
 <tr>
 <td><code>Form_Description_Override__c</code></td>

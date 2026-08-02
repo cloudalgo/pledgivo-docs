@@ -1519,6 +1519,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lexrecurringdonationhistory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring Donation Payment History
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexrecurringwidget" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2447,6 +2458,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lexrecurringdonationhistory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring Donation Payment History
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexrecurringwidget" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2996,7 +3018,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 56 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 57 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3066,7 +3088,7 @@
 <p><code>lexDonationReceiptPrint</code></p>
 <p><code>exposed</code> · <code>RecordPage, AppPage</code></p>
 <p>Record page / app page for Opportunity that renders a printable donation receipt (org branding, donor, amount, designations, EIN) and triggers the browser print dialog.</p>
-<p><strong>Docs note.</strong> Internal-org counterpart to the donor-facing Experience Cloud receipt: same print-via-window.print() approach (no PDF-generation service), but sourced through RecordPageController.getReceiptData for a staff user viewing the Opportunity record page rather than through a donor's magic-link token.</p>
+<p><strong>Docs note.</strong> Internal-org counterpart to the donor-facing Experience Cloud receipt, sourced through RecordPageController.getReceiptData for a staff user viewing the Opportunity record page rather than through a donor's magic-link token. Printing builds a standalone HTML document and opens it in an isolated window rather than calling window.print() on this component — the record page has surrounding chrome (tabs, related lists) that a bare window.print() would print alongside the receipt.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexdonorsummarycard">Donor Giving Summary<a class="headerlink" href="#lexdonorsummarycard" title="Permanent link">#</a></h4>
 <p><code>lexDonorSummaryCard</code></p>
@@ -3094,6 +3116,11 @@
 <p><code>lexOpportunityBreakdown</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
 <p>Record-page card on Opportunity detailing payment status, source, fees, net amount, Stripe payment intent, refund date, and tribute (in honor/memory of) information for a donation.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexrecurringdonationhistory">Recurring Donation Payment History<a class="headerlink" href="#lexrecurringdonationhistory" title="Permanent link">#</a></h4>
+<p><code>lexRecurringDonationHistory</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Record-page card on a recurring donation schedule showing its full installment history — every charge, its status, and the schedule's current dunning/cancellation state — so an admin can see how a schedule is performing without leaving the record.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexrecurringwidget">Recurring Donations Widget<a class="headerlink" href="#lexrecurringwidget" title="Permanent link">#</a></h4>
 <p><code>lexRecurringWidget</code></p>

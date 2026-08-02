@@ -2085,6 +2085,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-receiptstatushelper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReceiptStatusHelper
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-refundresult" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4843,6 +4854,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-receiptstatushelper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReceiptStatusHelper
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-refundresult" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6600,7 +6622,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 158 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 159 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -8035,6 +8057,11 @@
 <td><code>List&lt;AggregateResult&gt;</code></td>
 <td></td>
 </tr>
+<tr>
+<td><a id="apex-opportunitiesselector-selectbyrecurringdonationid"></a><code>selectByRecurringDonationId(1 arg)</code></td>
+<td><code>List&lt;Opportunity&gt;</code></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h3 id="services_1">Services<a class="headerlink" href="#services_1" title="Permanent link">#</a></h3>
@@ -8251,6 +8278,25 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="apex-receiptstatushelper">ReceiptStatusHelper<a class="headerlink" href="#apex-receiptstatushelper" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p>Shared receipt/refund status-gate rule. One place both the internal receipt (RecordPageService, viewed on the Opportunity record page) and the guest-facing receipt (ReceiptController, viewed via a donor's magic-link token) resolve the same tax-deductibility outcome from Payment_Status__c, so the rule can never drift between the two surfaces: Succeeded            -&gt; FULL            full letter for the gross Amount Partially_Refunded   -&gt; PARTIAL         letter for the net (Amount - Refunded_Amount__c) Refunded              -&gt; NOT_DEDUCTIBLE  no letter; the gift was fully refunded, nothing to deduct Pending/Processing/Failed/Cancelled/other -&gt; NO_RECEIPT  no letter; payment never completed</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-receiptstatushelper-resolve"></a><code>resolve(3 args)</code></td>
+<td><code>ReceiptStatus</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -10250,6 +10296,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-recurringdonationsselector-selectbyidwithfls"></a><code>selectByIdWithFls(1 arg)</code></td>
+<td><code>List&lt;Recurring_Donation__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-recurringdonationsselector-selectactivebynextpaymentdate"></a><code>selectActiveByNextPaymentDate(1 arg)</code></td>
 <td><code>List&lt;Recurring_Donation__c&gt;</code></td>
 <td></td>
@@ -10473,6 +10524,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-postinstallhandler-seeddefaultlogo"></a><code>seedDefaultLogo(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-postinstallhandler-schedulejobs"></a><code>scheduleJobs(0 args)</code></td>
 <td><code>void</code></td>
 <td></td>
@@ -10585,6 +10641,16 @@
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td></td>
 </tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-receiptstatushelper-resolve">ReceiptStatusHelper.resolve()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recordpageservice-getrecurringdonationhistory"></a><code>getRecurringDonationHistory(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h4 id="apex-setupcontroller">SetupController<a class="headerlink" href="#apex-setupcontroller" title="Permanent link">#</a></h4>
@@ -10636,6 +10702,16 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-savegeneralsettings"></a><code>saveGeneralSettings(2 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-uploadorglogo"></a><code>uploadOrgLogo(3 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-removeorglogo"></a><code>removeOrgLogo(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
@@ -11015,6 +11091,7 @@
 <p>implements <a href="#apex-isettingsservice">ISettingsService</a></p>
 <p><strong>Docs note.</strong> Two distinct API surfaces live in this one class. ISettingsService (getSettings/ saveSettings/detectAndUpdateOrgFeatures) is the instance-based CRUD path used only by SetupController for the admin settings screen. Everything else — the large block of static typed accessors below (logLevel, defaultCurrency, refundsEnabled, retryIntervalDays, donorPortalShowSummary, and so on) — is the canonical, sanctioned way every OTHER class in the package reads a single Settings__c value; callers must never call Settings__c.getInstance() directly or branch on a raw flag. Each accessor has a matching <code>@TestVisible</code> *Override static field so tests can stub one setting without inserting or upserting a Settings__c row.</p>
 <p>Two recurring patterns worth knowing before adding a new accessor: (1) capability gates (personAccountEnabled, npspEnabled, npspGauSyncEnabled, npspRecurringSyncEnabled) are always "detected AND admin-enabled" — detection is authoritative and an admin flag can only opt OUT of a capability the org actually supports, never opt into one it doesn't; (2) several Boolean fields are stored inverted as Hide_<em>/Disabled__c (donorPortalShow</em>, refundsEnabled, isEmbedEnabled) specifically so that a Checkbox field added in a later release, which backfills existing Settings__c rows to false, defaults to the "on"/visible behavior with no data migration required.</p>
+<p>ContentVersion/ContentDistribution are file-handling utility objects, not part of any fflib-registered SObject graph — same rationale as the Settings__c direct-upsert exception above (and AppLogger's direct Log__c insert): routing one-off file plumbing through the UnitOfWork would add nothing but ceremony. DML/SOQL here are deliberate.</p>
 <table>
 <thead>
 <tr>
@@ -11036,6 +11113,26 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-detectandupdateorgfeatures"></a><code>detectAndUpdateOrgFeatures(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-ensuredefaultlogoseeded"></a><code>ensureDefaultLogoSeeded(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-uploadorglogo"></a><code>uploadOrgLogo(3 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-preconditions-checknotblank">Preconditions.checkNotBlank()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-removeorglogo"></a><code>removeOrgLogo(0 args)</code></td>
 <td><code>void</code></td>
 <td></td>
 </tr>
@@ -11181,6 +11278,16 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-receiptfootertext"></a><code>receiptFooterText(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-ein"></a><code>ein(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-orglogourl"></a><code>orgLogoUrl(0 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>
@@ -11630,6 +11737,16 @@
 <tr>
 <td><a id="apex-testdatafactory-createsettings"></a><code>createSettings(1 arg)</code></td>
 <td><code>Settings__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createsampleorglogo"></a><code>createSampleOrgLogo(1 arg)</code></td>
+<td><code>ContentVersion</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-seedorglogoonsettings"></a><code>seedOrgLogoOnSettings(1 arg)</code></td>
+<td><code>void</code></td>
 <td></td>
 </tr>
 <tr>

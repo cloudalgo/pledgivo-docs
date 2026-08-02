@@ -5617,7 +5617,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>67 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>70 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <p><strong>Docs note.</strong> Tier 1 of the three-tier settings model documented in specs/04-data-model.md. Tier 2 is Payment_Gateway__mdt (per-gateway CMDT), Tier 3 is Named Credentials (secrets never live here). As a Hierarchy Custom Setting it resolves Org Defaults, falling back per profile or user only if a future release needs per-role overrides; today every read goes through the Org Default row via SettingsService, which exposes one typed accessor per field or field group rather than callers reading Settings__c.getOrgDefaults() directly, so a field rename or a default-value change only needs one code change.</p>
 <p>See the <a href="../settings/">full reference page</a> for this object.</p>
@@ -5699,6 +5699,18 @@
 <td>Default Fee On Top Percent</td>
 <td>Percent</td>
 <td>Default percentage donors are asked to add to cover processing fees, e.g. 3.00 for 3%. Campaigns can override this.</td>
+</tr>
+<tr>
+<td><code>Default_Org_Logo_Content_Document_Id__c</code></td>
+<td>Default Org Logo Content Document Id</td>
+<td>Text</td>
+<td>Internal cache of the default logo's ContentDocument Id. Do not edit     directly.</td>
+</tr>
+<tr>
+<td><code>Default_Org_Logo_URL__c</code></td>
+<td>Default Org Logo URL</td>
+<td>Url</td>
+<td>Internal cache of the default logo's public link. Do not edit directly.</td>
 </tr>
 <tr>
 <td><code>Default_Suggested_Amounts__c</code></td>
@@ -5827,12 +5839,6 @@
 <td>Hex color (e.g. #1C2B46) for email headings, the gift amount, ledger values, and the footer background. Blank = built-in Midnight.</td>
 </tr>
 <tr>
-<td><code>Email_Logo_Enabled__c</code></td>
-<td>Show Logo in Emails</td>
-<td>Checkbox</td>
-<td>When on, show the organization logo (from Org Logo URL) in email headers instead of the text name.</td>
-</tr>
-<tr>
 <td><code>Email_Signature__c</code></td>
 <td>Email Signature</td>
 <td>TextArea</td>
@@ -5941,10 +5947,22 @@
 <td>Your organization's public-facing name, e.g. "Riverbend Food Bank".</td>
 </tr>
 <tr>
+<td><code>Org_Logo_Content_Document_Id__c</code></td>
+<td>Org Logo Content Document Id</td>
+<td>Text</td>
+<td>Set automatically when you upload a logo in Setup &gt; Organization &gt;     Branding. Do not edit directly.</td>
+</tr>
+<tr>
+<td><code>Org_Logo_Is_Custom__c</code></td>
+<td>Org Logo Is Custom</td>
+<td>Checkbox</td>
+<td>Set automatically when you upload or remove a logo in Setup &gt;     Organization &gt; Branding. Do not edit directly.</td>
+</tr>
+<tr>
 <td><code>Org_Logo_URL__c</code></td>
 <td>Org Logo URL</td>
 <td>Url</td>
-<td>Public URL of your logo image (PNG/JPG/SVG).</td>
+<td>Set automatically when you upload or remove a logo in the Organization panel — do not edit directly.</td>
 </tr>
 <tr>
 <td><code>Org_Mailing_Address__c</code></td>

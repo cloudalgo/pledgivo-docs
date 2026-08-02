@@ -1791,7 +1791,7 @@ gift links to the page and team it was raised through via <code>Fundraising_Page
 <td><code>Fee_Amount__c</code></td>
 <td>Fee Amount</td>
 <td>Currency</td>
-<td>Processing fee amount added by the donor, if fee coverage was selected.<br><em>Docs: See the doc note on Donor_Covered_Fees__c — no Apex path currently populates this field; it is not the same thing as the Stripe processing fee the org itself absorbs, which never appears on the Opportunity at all.</em></td>
+<td>Processing fee amount added by the donor, if fee coverage was selected.<br><em>Docs: Despite the description above, the donor-covered-fees toggle (Campaign. Donor_Covered_Fees_Enabled__c, Settings__c.Default_Fee_On_Top_Percent__c) is configurable in the Settings/Fundraiser admin screens but the donation form never surfaces it to the donor, computes an add-on amount, or includes it in the Stripe charge — the toggle currently has no runtime effect. DonationService/EventPurchaseService/RecurringDonationService therefore all write this field as a hardcoded 0 at finalize rather than leaving it null, so Net_Donation_Amount__c stays internally consistent. Implementing real fee collection (donor checkbox, charge-amount adjustment, non-zero write here) is a separate, larger change. Not the same thing as the Stripe processing fee the org itself absorbs, which never appears on the Opportunity at all.</em></td>
 </tr>
 <tr>
 <td><code>Fundraising_Page__c</code></td>
@@ -1809,7 +1809,7 @@ gift links to the page and team it was raised through via <code>Fundraising_Page
 <td><code>Net_Donation_Amount__c</code></td>
 <td>Net Donation Amount</td>
 <td>Currency</td>
-<td>Tax-deductible amount of this gift, shown on the donor's receipt.<br><em>Docs: Despite the description above, no Apex class currently writes this field. ReceiptService computes the deductible split directly from Event_Amount__c/Event_Deductible_Amount__c and never touches this one. Its only consumer is lexOpportunityBreakdown.js (read-only display) and it remains editable on the Donation/Pledge/Grant layouts, so a value entered here has no downstream effect on receipts.</em></td>
+<td>Tax-deductible amount of this gift, shown on the donor's receipt.<br><em>Docs: Written at finalize by DonationService.processOneTimeStagingRecord, EventPurchaseService. processEventStagingRecord, and RecurringDonationService.processRenewal as Amount (or lineTotal for event orders) minus Event_Amount__c, with Fee_Amount__c currently always 0 (see the doc note on that field — fee coverage isn't collected yet, so nothing to subtract). ReceiptService still computes the deductible split itself from Event_Amount__c/Event_Deductible_Amount__c rather than reading this field — the two are consistent today only because Fee_Amount__c is always 0; once fee coverage is actually collected, ReceiptService should be revisited to use this field instead. Its only other consumer is lexOpportunityBreakdown.js (read-only display); remains editable on the Donation/Pledge/Grant layouts for manual correction.</em></td>
 </tr>
 <tr>
 <td><code>Payment_Account__c</code></td>

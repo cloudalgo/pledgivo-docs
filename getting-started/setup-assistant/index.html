@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A tour of the Settings console — the four navigation groups and thirteen panels that configure the package.">
+        <meta name="description" content="A tour of the Settings console — the four navigation groups and fifteen panels that configure the package.">
       
       
       
@@ -16,7 +16,7 @@
         <link rel="prev" href="../connecting-stripe/">
       
       
-        <link rel="next" href="../../concepts/donors-accounts/">
+        <link rel="next" href="../settings-console-reference/">
       
       
         
@@ -248,6 +248,8 @@
   
     
     
+      
+        
       
         
       
@@ -582,6 +584,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings-console-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings console reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1932,11 +1962,19 @@ tree grouped into four sections, with one panel on the right for whichever item 
 <tbody>
 <tr>
 <td>Record Types</td>
-<td>Read-only detection of your org's account model (standard vs. Person Accounts) and the record types Pledgivo will use</td>
+<td>Detects your org's account model (standard vs. Person Accounts) and lets you override which Record Type the package uses per object — overrides apply to new records only, existing records are never modified</td>
 </tr>
 <tr>
 <td>Health</td>
 <td>A checklist of package health signals — scheduled job status, record type mappings, active payment accounts, SOQL limit usage, and Experience Cloud site status</td>
+</tr>
+<tr>
+<td>Scheduled Jobs</td>
+<td>Cron cadence for the background donation-finalizer and reconciliation jobs, plus manual "Run now" triggers for recurring billing, donor rollups, and log retention purges</td>
+</tr>
+<tr>
+<td>Donation Monitor</td>
+<td>A worklist of donations stuck between "paid on Stripe" and "recorded as an Opportunity," with a per-row retry action</td>
 </tr>
 </tbody>
 </table>
@@ -1946,7 +1984,7 @@ tree grouped into four sections, with one panel on the right for whichever item 
 <h2 id="a-practical-first-pass">A practical first pass<a class="headerlink" href="#a-practical-first-pass" title="Permanent link">#</a></h2>
 <p>For a first-time setup, work through the panels roughly in this order:</p>
 <ol>
-<li><strong>System → Record Types</strong> — confirm org detection (nothing to configure, just verify).</li>
+<li><strong>System → Record Types</strong> — confirm org detection; override a Record Type only if you need something other than the packaged default.</li>
 <li><strong>Payments → Payments</strong> — connect a Stripe account. See <a href="../connecting-stripe/">Connecting Stripe</a>.</li>
 <li><strong>General → Organization</strong> — set your org name and suggested donation amounts.</li>
 <li><strong>Payments → Recurring</strong> — accept the defaults or adjust retry/grace-period behavior.</li>
@@ -1961,6 +1999,12 @@ defaults and can be revisited later.</p>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>
+<li>
+<p><strong>Field-by-field settings reference</strong></p>
+<hr />
+<p>What every setting does, and exactly what happens when you change it.</p>
+<p><a href="../settings-console-reference/">Settings console reference →</a></p>
+</li>
 <li>
 <p><strong>Launch a campaign</strong></p>
 <hr />
@@ -2038,13 +2082,13 @@ defaults and can be revisited later.</p>
         
         
           
-          <a href="../../concepts/donors-accounts/" class="md-footer__link md-footer__link--next" aria-label="Next: Donors &amp; accounts">
+          <a href="../settings-console-reference/" class="md-footer__link md-footer__link--next" aria-label="Next: Settings console reference">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Donors & accounts
+                Settings console reference
               </div>
             </div>
             <div class="md-footer__button md-icon">

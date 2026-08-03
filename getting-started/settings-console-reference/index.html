@@ -1,0 +1,2975 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Every setting in every panel of the Settings console — what it does and exactly what happens when you change it.">
+      
+      
+      
+        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/getting-started/settings-console-reference/">
+      
+      
+        <link rel="prev" href="../setup-assistant/">
+      
+      
+        <link rel="next" href="../../concepts/donors-accounts/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Settings console reference - Pledgivo Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/field-notes.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#settings-console-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Pledgivo Documentation" class="md-header__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
+      
+  <img src="../../assets/favicon.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pledgivo Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Settings console reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pledgivo Documentation" class="md-nav__button md-logo" aria-label="Pledgivo Documentation" data-md-component="logo">
+      
+  <img src="../../assets/favicon.svg" alt="logo">
+
+    </a>
+    Pledgivo Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick-start/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../experience-cloud-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your Experience Cloud site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../connecting-stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup-assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings console reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings console reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organization-donations-general-organization-donations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organization &amp; Donations (General → Organization &amp; Donations)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-receipts-general-email-receipts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email &amp; Receipts (General → Email &amp; Receipts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events-ticketing-general-events-ticketing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events &amp; Ticketing (General → Events &amp; Ticketing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-general-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging (General → Logging)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#payments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Payments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#payment-accounts-payments-payment-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payment Accounts (Payments → Payment Accounts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refunds-payments-refunds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refunds (Payments → Refunds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurring-dunning-payments-recurring-dunning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring &amp; Dunning (Payments → Recurring &amp; Dunning)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experience-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experience Cloud
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Experience Cloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#site-domain-experience-cloud-site-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Site &amp; Domain (Experience Cloud → Site &amp; Domain)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-links-experience-cloud-public-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Links (Experience Cloud → Public Links)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-designs-experience-cloud-page-designs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page Designs (Experience Cloud → Page Designs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#donor-portal-experience-cloud-donor-portal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Portal (Experience Cloud → Donor Portal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-types-system-record-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record Types (System → Record Types)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-check-system-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health Check (System → Health Check)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduled-jobs-system-scheduled-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Jobs (System → Scheduled Jobs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#donation-monitor-system-donation-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Monitor (System → Donation Monitor)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donors-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donors & accounts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/campaigns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donations-payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donations & payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/recurring-giving/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring giving
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/events-ticketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Peer-to-peer fundraising
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/settings-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings & integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data-model/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Model Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data Model Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/all-objects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    All objects
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/donation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donation (Opportunity)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/recurring-donation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring Donation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/fundraising-page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundraising Page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/payment-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Payment Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data-model/settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/first-campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/setup-ticketed-event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/embed-donate-widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embed a donate button on your website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/email-branding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand your receipt and notification emails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/process-refund/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process a refund
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/recurring-dunning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configure recurring dunning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/publish-donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Code Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Code Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/apex/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Apex
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/lwc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LWC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/visualforce/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualforce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Integrations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/npsp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NPSP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organization-donations-general-organization-donations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organization &amp; Donations (General → Organization &amp; Donations)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-receipts-general-email-receipts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Email &amp; Receipts (General → Email &amp; Receipts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#events-ticketing-general-events-ticketing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Events &amp; Ticketing (General → Events &amp; Ticketing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logging-general-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logging (General → Logging)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#payments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Payments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#payment-accounts-payments-payment-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payment Accounts (Payments → Payment Accounts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#refunds-payments-refunds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Refunds (Payments → Refunds)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recurring-dunning-payments-recurring-dunning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recurring &amp; Dunning (Payments → Recurring &amp; Dunning)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experience-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experience Cloud
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Experience Cloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#site-domain-experience-cloud-site-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Site &amp; Domain (Experience Cloud → Site &amp; Domain)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-links-experience-cloud-public-links" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Links (Experience Cloud → Public Links)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-designs-experience-cloud-page-designs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page Designs (Experience Cloud → Page Designs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#donor-portal-experience-cloud-donor-portal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Portal (Experience Cloud → Donor Portal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#record-types-system-record-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Record Types (System → Record Types)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-check-system-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health Check (System → Health Check)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduled-jobs-system-scheduled-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Jobs (System → Scheduled Jobs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#donation-monitor-system-donation-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donation Monitor (System → Donation Monitor)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p class="fn-eyebrow">Getting Started</p>
+
+<h1 id="settings-console-reference">Settings console reference<a class="headerlink" href="#settings-console-reference" title="Permanent link">#</a></h1>
+<p class="fn-dek">A field-by-field reference for the Settings console: what each setting does, and — the part that actually matters day to day — what happens the moment you save it.</p>
+
+<p>This page is the companion to <a href="../setup-assistant/">Setup assistant</a>, which tours the console's
+four groups and fifteen panels. This page goes one level deeper: every field, in every panel,
+with two questions answered for each — <strong>what it does</strong>, and <strong>behavior on update</strong> (does the
+change apply immediately, only to new records going forward, only on the next scheduled batch
+run, or not at all).</p>
+<div class="admonition info">
+<p class="admonition-title">How to read "Behavior on update"</p>
+<ul>
+<li><strong>Immediate</strong> — the very next Apex transaction/page load sees the new value. <code>Settings__c</code>
+  is a Hierarchy Custom Setting; saving it commits instantly with no platform-cache delay.</li>
+<li><strong>Immediate, but browser-cached</strong> — the server-side value changes instantly, but the
+  specific screen that displays it uses a cacheable (<code>@AuraEnabled(cacheable=true)</code>) wire, so
+  an already-open browser tab may keep showing the old value until it reloads or its cache is
+  invalidated.</li>
+<li><strong>New records only</strong> — the setting is a <em>default</em> copied onto a record at creation time.
+  Existing Campaigns, designs, or donations are never touched retroactively.</li>
+<li><strong>Next scheduled run</strong> — a nightly/hourly batch reads the setting; nothing changes until
+  that job next executes (or an admin manually triggers it from <strong>System → Scheduled Jobs</strong>).</li>
+<li><strong>No effect (known gap)</strong> — the field is editable and saves cleanly, but no code anywhere
+  reads it. Flagged explicitly below rather than silently omitted, so you don't waste time
+  troubleshooting a toggle that was never wired to anything.</li>
+</ul>
+</div>
+<hr />
+<h2 id="general">General<a class="headerlink" href="#general" title="Permanent link">#</a></h2>
+<h3 id="organization-donations-general-organization-donations">Organization &amp; Donations (<code>General → Organization &amp; Donations</code>)<a class="headerlink" href="#organization-donations-general-organization-donations" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Org display name</td>
+<td>Org name shown on receipts and portal emails</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Tax ID (EIN)</td>
+<td>Tax ID printed on receipts</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Default currency</td>
+<td>Default currency code applied to new gifts/campaigns</td>
+<td>New records only — existing campaigns keep their own currency</td>
+</tr>
+<tr>
+<td>Default suggested amounts</td>
+<td>Suggested-amount chips (comma-separated) pre-filled on a brand-new fundraiser</td>
+<td>New records only — pre-fills the "New fundraiser" wizard; editing this later never changes an already-created fundraiser's amounts</td>
+</tr>
+<tr>
+<td>Default fee-on-top percent</td>
+<td><em>(No effect — known gap.)</em> Nothing reads this value; "cover the fee" behavior, where implemented, is controlled per-campaign, not by this org default.</td>
+<td></td>
+</tr>
+<tr>
+<td>Donation page path</td>
+<td>Path fragment appended to your Experience site's base URL to build public donation links</td>
+<td>Immediate for the embed widget's REST endpoint and the Fundraisers console's public-links panel; <strong>immediate but browser-cached</strong> for the Campaign Gallery (its donation links come from a cacheable wire, so an already-open gallery tab may show the old path until it reloads)</td>
+</tr>
+<tr>
+<td>Donor options — Allow anonymous giving</td>
+<td>Default for whether a brand-new fundraiser allows anonymous gifts</td>
+<td>New records only, and currently <strong>incomplete</strong>: the value now seeds the "New fundraiser" wizard's toggle, but no donor-facing donation form anywhere renders an "anonymous" option yet, so turning this on has no visible effect for donors until that form-side piece ships</td>
+</tr>
+<tr>
+<td>Donor options — Allow tribute/honoree gifts</td>
+<td>Default for whether a brand-new fundraiser shows a tribute/honoree field</td>
+<td>New records only — seeds the wizard's toggle on <code>Campaign.Allow_Tribute__c</code> at creation; the live donation form reads that Campaign field directly, so editing an <em>existing</em> fundraiser's own toggle (not this org default) is what actually changes its form</td>
+</tr>
+<tr>
+<td>Donor options — Allow company-match prompt</td>
+<td>Default for whether a brand-new fundraiser shows a company-match prompt</td>
+<td>Same pattern as tribute gifts above</td>
+</tr>
+<tr>
+<td>Min / Max donation amount</td>
+<td>Floor/ceiling enforced on gift amounts</td>
+<td>Immediate — enforced server-side before any Stripe callout; also passed to the donation form as a client-side hint</td>
+</tr>
+<tr>
+<td>Donor portal link validity (hours)</td>
+<td>How long a donor's magic-link sign-in stays valid</td>
+<td>Immediate for newly-issued links; does not shorten/lengthen a link already sent to a donor</td>
+</tr>
+<tr>
+<td>Default thank-you CTA URL / label</td>
+<td>Fallback call-to-action button shown after a gift, when a campaign doesn't set its own</td>
+<td>Immediate — a campaign's own thank-you fields, where set, take precedence over this org default</td>
+</tr>
+<tr>
+<td>NPSP: sync recurring donations / sync GAU allocations</td>
+<td>Whether recurring gifts / GAU splits sync into NPSP objects</td>
+<td>Next donation-finalize event only — never retroactively syncs past donations. Only shown once NPSP is detected in your org.</td>
+</tr>
+<tr>
+<td>Person Accounts / NPSP detected (read-only)</td>
+<td>Informational display of what the "Detect capabilities" scan found</td>
+<td>Informational only — actual donor-resolution logic re-checks your org's schema live at donation time regardless of what this panel shows</td>
+</tr>
+<tr>
+<td><strong>Detect capabilities</strong> button</td>
+<td>Re-runs the org-schema scan for Person Accounts / NPSP</td>
+<td>Immediate, but manual — installing NPSP or enabling Person Accounts won't update this panel until you click it</td>
+</tr>
+<tr>
+<td>Logo upload</td>
+<td>Org logo shown on receipts and emails</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td><strong>Reset to defaults</strong> button</td>
+<td>Resets settings to their packaged defaults</td>
+<td>Immediate, but <strong>narrower than the label suggests</strong> — it resets exactly 11 fields (retry/grace/dunning intervals, suggested amounts, default currency, auto-receipt toggle, debug logging, and the three donor-option toggles). It does <strong>not</strong> touch org name, Tax ID, email colors/copy, min/max amounts, portal link validity, thank-you CTA, or NPSP sync toggles.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Anonymous giving isn't wired end to end yet</p>
+<p>"Allow anonymous giving" saves and pre-fills new fundraisers, but no donation form currently
+renders an anonymous-giving option to donors. Treat this toggle as reserved for a future
+release rather than a working feature today.</p>
+</div>
+<h3 id="email-receipts-general-email-receipts">Email &amp; Receipts (<code>General → Email &amp; Receipts</code>)<a class="headerlink" href="#email-receipts-general-email-receipts" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>From name</td>
+<td><em>(No effect — known gap.)</em> Not used by any email template and doesn't set the Salesforce Org-Wide Email Address — the actual send identity is controlled entirely by your org's Org-Wide Email Address / running-user configuration, outside this console.</td>
+<td></td>
+</tr>
+<tr>
+<td>From email</td>
+<td>Displayed as contact text on the Dunning, Failed-Payment, and Re-Auth-Required emails only</td>
+<td>Immediate where shown. Does not set the actual envelope sender — see "Reply-to" below for the field that does something functionally similar.</td>
+</tr>
+<tr>
+<td>Reply-to email</td>
+<td>Sets the Reply-To header on every transactional email the package sends</td>
+<td>Immediate — the one "sender" field that's genuinely wired everywhere</td>
+</tr>
+<tr>
+<td>Support phone</td>
+<td>Shown on Dunning, Failed-Payment, and Re-Auth emails</td>
+<td>Immediate where shown. Not shown on the donation receipt or recurring-confirmation emails — a donor never sees it unless something goes wrong with a payment.</td>
+</tr>
+<tr>
+<td>Brand colors (primary / accent / heading / background)</td>
+<td>Hex colors used on the receipt email</td>
+<td>Immediate. Server-side validated as a 6-digit hex (<code>#rrggbb</code>) — an invalid value is rejected with an error, not silently accepted.</td>
+</tr>
+<tr>
+<td>Auto-send receipt</td>
+<td>Whether a receipt email fires automatically when a donation finalizes</td>
+<td>Immediate, for the next finalized donation</td>
+</tr>
+<tr>
+<td>Receipt email template</td>
+<td>Which classic Email Template to render for receipts</td>
+<td>Immediate — but if the name you enter doesn't resolve to a real template, it silently falls back to the packaged default rather than erroring. A typo won't break receipts; it'll just quietly ignore your custom template.</td>
+</tr>
+<tr>
+<td>Receipt intro message / signature / tax legal text / footer text</td>
+<td>Copy blocks on the receipt email</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Recurring thank-you message</td>
+<td>Copy on the recurring-donation confirmation email</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Org mailing address</td>
+<td>Compliance address printed on receipts</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Donor portal path</td>
+<td>Path fragment for the donor-portal link included in dunning emails</td>
+<td>Immediate, but <strong>inconsistently normalized</strong>: most consumers of this value auto-fix a missing leading slash, but the Dunning email template concatenates it raw. If you omit the leading slash here, the link in dunning emails specifically can come out malformed even though everywhere else treats it the same either way. Enter it with a leading slash (e.g. <code>/donor</code>) to avoid the discrepancy.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events-ticketing-general-events-ticketing">Events &amp; Ticketing (<code>General → Events &amp; Ticketing</code>)<a class="headerlink" href="#events-ticketing-general-events-ticketing" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deductible calculation mode</td>
+<td>Whether the non-deductible portion of a ticket price is computed from each ticket type's Fair Market Value, or as a flat percentage</td>
+<td>New tickets only — only affects orders finalized <em>after</em> the change; already-issued receipts keep the split that was computed at the time</td>
+</tr>
+<tr>
+<td>Sync attendees as Campaign Members</td>
+<td>Whether finalizing a ticket order also creates a Campaign Member for each attendee who resolved to a Contact</td>
+<td>New tickets only. Guest attendees captured as name/email only (no Contact match) are skipped — Campaign Member requires a person record. A sync failure never blocks or reverses the underlying paid order.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="logging-general-logging">Logging (<code>General → Logging</code>)<a class="headerlink" href="#logging-general-logging" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Log level</td>
+<td>Minimum severity the package's internal logger persists to a queryable log record (Off / Error / Warn / Info / Debug)</td>
+<td>Immediate — takes effect on the very next log call anywhere in the org, not just from this console</td>
+</tr>
+<tr>
+<td>Debug echo to Apex debug log</td>
+<td>Also mirrors log calls into <code>System.debug</code> for live viewing in Developer Console</td>
+<td>Immediate. <strong>Does not</strong> change what's persisted as a queryable log record — that's Log level's job exclusively. Turning this on will not make more log history appear in the "Recent diagnostic logs" list below.</td>
+</tr>
+<tr>
+<td>Purge after (days)</td>
+<td>Age threshold at which the nightly retention job permanently deletes old log records, transaction logs, and completed donation-staging bookkeeping rows</td>
+<td><strong>Next scheduled run only</strong> (nightly, 3am) — changing this has zero immediate effect. Deleted rows are not restorable by raising the value back up afterward.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">Purge after (days) feeds a real delete, on demand</p>
+<p>The nightly purge is scheduled, but an admin can also trigger it immediately from
+<strong>System → Scheduled Jobs</strong> ("Retention purge → Run now"). That action deletes using
+<em>whatever value is saved here at the moment you click it</em> — lowering this number and then
+running the purge manually will remove more history at once than the nightly job typically
+would.</p>
+</div>
+<hr />
+<h2 id="payments">Payments<a class="headerlink" href="#payments" title="Permanent link">#</a></h2>
+<h3 id="payment-accounts-payments-payment-accounts">Payment Accounts (<code>Payments → Payment Accounts</code>)<a class="headerlink" href="#payment-accounts-payments-payment-accounts" title="Permanent link">#</a></h3>
+<p>Backed by <code>Payment_Account__c</code> records, not <code>Settings__c</code> — this panel is full CRUD on the
+payment-gateway connections your campaigns charge through.</p>
+<table>
+<thead>
+<tr>
+<th>Field / action</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Display label, Gateway type, Named Credential</td>
+<td>Required fields identifying and connecting the account</td>
+<td>Immediate. Only <strong>Stripe</strong> has a working gateway implementation today — the other listed gateway types are reserved names for future integrations and are blocked from being saved.</td>
+</tr>
+<tr>
+<td>Publishable key</td>
+<td>Stripe's non-secret publishable key, exposed to the donor's browser</td>
+<td>Immediate. The secret key itself is never stored on this record — only the Named Credential reference — by design.</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>Whether the account can be charged through</td>
+<td>Immediate and load-bearing: deactivating an account instantly blocks any campaign linked to it from taking a charge — the next donation attempt is rejected until an active account is linked.</td>
+</tr>
+<tr>
+<td>Supports recurring / Supports ACH</td>
+<td><em>(No effect — known gap.)</em> Nothing in the current Stripe integration reads either flag. Recurring-gift availability is actually controlled by the campaign's own "Allow recurring" setting; the donation form only ever offers card payments today, so an ACH toggle has nothing to gate.</td>
+<td></td>
+</tr>
+<tr>
+<td>Display icon URL, Display order</td>
+<td>Cosmetic / admin-list ordering</td>
+<td>Not currently rendered on the live donation form — display-only within this console's own list today</td>
+</tr>
+<tr>
+<td><strong>Delete</strong> button</td>
+<td>Removes a payment account</td>
+<td>Blocked with an error if any campaign — live or draft — still links to the account. Unlink it from every campaign first.</td>
+</tr>
+<tr>
+<td><strong>Test connection</strong> button</td>
+<td>Verifies the account can reach the gateway</td>
+<td>Runs a real, live connectivity check against the gateway every time you click it — not cached or simulated</td>
+</tr>
+</tbody>
+</table>
+<h3 id="refunds-payments-refunds">Refunds (<code>Payments → Refunds</code>)<a class="headerlink" href="#refunds-payments-refunds" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enable refunds</td>
+<td>Master switch for the entire refund subsystem</td>
+<td>Immediate for new refund attempts, and for the hourly reconciliation job's next run. <strong>Immediate but browser-cached</strong> on the record-page refund button itself — an already-open donation record may show the old enabled/disabled state until refreshed.</td>
+</tr>
+<tr>
+<td>Refund window (days)</td>
+<td>How many days past a gift's close date it can still be refunded from Salesforce</td>
+<td>Immediate for the next refund attempt / reconciliation run</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">Turning off refunds also stops dispute/chargeback syncing</p>
+<p>"Enable refunds" isn't just the refund button's on/off switch — the same flag gates the
+hourly reconciler that pulls <strong>both</strong> refund status <strong>and</strong> dispute/chargeback updates from
+Stripe. Disabling it silently stops chargeback-lifecycle updates from reaching Salesforce too,
+not only new refund attempts — a materially larger blast radius than the label implies.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">A refund window of 0 quietly disables refunds without touching the switch</p>
+<p>Setting the refund window to <code>0</code> days makes essentially every already-closed gift fall
+outside its refund window immediately, functionally freezing refunds org-wide — a subtle way
+to disable refunds without ever touching "Enable refunds."</p>
+</div>
+<h3 id="recurring-dunning-payments-recurring-dunning">Recurring &amp; Dunning (<code>Payments → Recurring &amp; Dunning</code>)<a class="headerlink" href="#recurring-dunning-payments-recurring-dunning" title="Permanent link">#</a></h3>
+<p>All four fields here are read once a day by the nightly recurring-billing batch chain (donor
+rollups → renewal charges → auto-cancel) — none of them take effect immediately.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Failed payment retries</td>
+<td>How many times a declined recurring charge is retried before being marked Failed</td>
+<td>Next scheduled run (nightly)</td>
+</tr>
+<tr>
+<td>Retry interval (days)</td>
+<td>Spacing between consecutive retry attempts</td>
+<td>Next scheduled run (nightly)</td>
+</tr>
+<tr>
+<td>Grace period (days)</td>
+<td>How long a Failed recurring schedule is kept before being auto-canceled</td>
+<td>Next scheduled run (nightly) — specifically, the following night's sweep, since auto-cancel runs last in the nightly chain</td>
+</tr>
+<tr>
+<td>Dunning email frequency (days)</td>
+<td>How often a decline/dunning email is re-sent to a donor with a failing payment method</td>
+<td>Next scheduled run (nightly)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="experience-cloud">Experience Cloud<a class="headerlink" href="#experience-cloud" title="Permanent link">#</a></h2>
+<h3 id="site-domain-experience-cloud-site-domain">Site &amp; Domain (<code>Experience Cloud → Site &amp; Domain</code>)<a class="headerlink" href="#site-domain-experience-cloud-site-domain" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting / action</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site picker + <strong>Use this site</strong></td>
+<td>Connects the console to one of your org's Experience Cloud sites</td>
+<td>Immediate — every other panel/endpoint that resolves "the" site reads the same stored value, so they can never disagree</td>
+</tr>
+<tr>
+<td>Guest permission-set check</td>
+<td>Advisory-only check for whether the site's Guest User has the required permission set assigned</td>
+<td>Runs automatically on load/site-selection; never blocks Save. Assigning the permission set itself is still done in Setup, not from this panel.</td>
+</tr>
+<tr>
+<td><strong>Copy CLI command</strong></td>
+<td>Gives you a command to create a new Experience Cloud site yourself</td>
+<td>Informational only — clicking it does not create anything, even though a site doesn't yet exist when it's shown</td>
+</tr>
+<tr>
+<td>Allow embedding</td>
+<td>Master switch for the JavaScript embed widget</td>
+<td>Immediate — the guest embed endpoint re-checks this on every request, no caching</td>
+</tr>
+<tr>
+<td>Allowed embed origins</td>
+<td>Comma/newline-separated list of origins allowed to embed your donate button</td>
+<td>Immediate. Not validated — an entry missing <code>https://</code> or containing a path will simply never match a real request origin, with no error surfaced anywhere. Double-check each entry is a bare scheme+host.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="public-links-experience-cloud-public-links">Public Links (<code>Experience Cloud → Public Links</code>)<a class="headerlink" href="#public-links-experience-cloud-public-links" title="Permanent link">#</a></h3>
+<p>Entirely read-only — nothing on this panel is a setting you change here. It's a live, always-fresh
+readout of donation/fundraiser/team links built from the <strong>Donation page path</strong> (set in
+Organization &amp; Donations) and the site connected in <strong>Site &amp; Domain</strong>.</p>
+<div class="admonition info">
+<p class="admonition-title">Looking for the donation page path?</p>
+<p>It isn't edited here — it lives on <strong>General → Organization &amp; Donations</strong>, under Gift rules.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">The Campaign Gallery can lag behind this panel</p>
+<p>This panel always shows the current path/links. The public-facing Campaign Gallery page,
+however, loads its donation links through a browser-cached call — a visitor with the gallery
+already open may keep seeing the old donation path until their browser reloads it. The embed
+widget and internal admin links are not cached and reflect changes immediately.</p>
+</div>
+<h3 id="page-designs-experience-cloud-page-designs">Page Designs (<code>Experience Cloud → Page Designs</code>)<a class="headerlink" href="#page-designs-experience-cloud-page-designs" title="Permanent link">#</a></h3>
+<p>Backed by <code>Campaign_Design__c</code> records — themes and layout composed in the Page Canvas builder,
+applied to campaigns by reference.</p>
+<table>
+<thead>
+<tr>
+<th>Setting / action</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Active toggle</td>
+<td>Whether the design can be used</td>
+<td><strong>Immediate and live for every campaign already using it</strong> — not just new ones. Turning a design's Active flag off instantly falls back any campaign pointing at it to your default design, the next time a guest loads that campaign's page.</td>
+</tr>
+<tr>
+<td><strong>Set as default</strong></td>
+<td>Which design campaigns with no design chosen fall back to</td>
+<td>Immediate and live — same instant-fallback behavior as above</td>
+</tr>
+<tr>
+<td>Colors, fonts, logos, hero image, spacing/shadow/radius style</td>
+<td>Visual theme tokens</td>
+<td>Immediate and live for every campaign on that design, on their next page load — no Experience Cloud site republish needed, since this is a data change, not a component/metadata change</td>
+</tr>
+<tr>
+<td>Form layout mode, form side default, form title/description/disclaimer/footer defaults</td>
+<td>Default content/layout for campaigns using this design</td>
+<td>Immediate and live, but a campaign's own override (where set) always wins over the design's default</td>
+</tr>
+<tr>
+<td>Show progress bar</td>
+<td>Whether a goal progress bar renders</td>
+<td>Immediate and live. Only has a visible effect on General/Peer-to-Peer campaigns with a goal amount set — it's a no-op on Event or Open Donation campaigns, or campaigns with no goal, by design, not a bug.</td>
+</tr>
+<tr>
+<td>Show donor wall</td>
+<td><em>(No effect — known gap.)</em> Saved and passed through to the guest page's data, but no guest-facing component currently reads this flag to gate anything.</td>
+<td></td>
+</tr>
+<tr>
+<td>Embed button label</td>
+<td>Label shown on the generated embed-widget button</td>
+<td>Immediate — read only by the embed-widget flow, not the standalone campaign page</td>
+</tr>
+<tr>
+<td>Theme tokens (advanced JSON)</td>
+<td>Raw override of the design's theme-token values</td>
+<td>Immediate. Any token name not on the packaged, protected allow-list is silently dropped when the design is read back — it is not rejected at save time, so a typo in a token name won't error, it'll just be ignored.</td>
+</tr>
+<tr>
+<td>Page Canvas blocks</td>
+<td>The Compose → Payment → Thank You block layout</td>
+<td>Immediate and live</td>
+</tr>
+<tr>
+<td><strong>Delete</strong> button</td>
+<td>Removes a design</td>
+<td>Blocked with an error if any campaign currently references it — you must reassign or clear those campaigns' design first. (The confirmation dialog's own wording implies a silent fallback to the default design instead; the actual behavior is a hard block, not a fallback — don't rely on the dialog text.)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Delete is blocked, not a silent reassignment</p>
+<p>The delete-confirmation dialog reads as if campaigns using the design will simply fall back to
+your default. In practice, the delete is refused outright while any campaign still references
+it — reassign or clear those campaigns' design field first.</p>
+</div>
+<h3 id="donor-portal-experience-cloud-donor-portal">Donor Portal (<code>Experience Cloud → Donor Portal</code>)<a class="headerlink" href="#donor-portal-experience-cloud-donor-portal" title="Permanent link">#</a></h3>
+<p>All fields below feed the donor-facing self-service portal and take effect immediately server-side;
+because the portal's own configuration read is a cacheable wire, a donor who already has the
+portal open may not see a just-changed title, message, or visibility toggle without a page refresh.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show summary / recurring / history / wallet panels</td>
+<td>Which sections of the portal are visible to a donor</td>
+<td>Immediate, browser-cached (see above)</td>
+</tr>
+<tr>
+<td>Request title / subtitle</td>
+<td>Copy on the portal's magic-link request screen</td>
+<td>Immediate, browser-cached</td>
+</tr>
+<tr>
+<td>Confirmation title / message</td>
+<td>Copy shown after a donor requests a magic link</td>
+<td>Immediate, browser-cached</td>
+</tr>
+<tr>
+<td>Empty recurring / history / wallet messages</td>
+<td>Copy shown when a section has nothing to display</td>
+<td>Immediate, browser-cached</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Keep the confirmation message generic</p>
+<p>The same confirmation message is shown whether or not the entered email actually matched a
+donor — this is a deliberate anti-enumeration measure. Nothing in the code enforces this; if
+you customize the message, keep it generic yourself, or you risk leaking whether an email
+address is a donor in your system.</p>
+</div>
+<hr />
+<h2 id="system">System<a class="headerlink" href="#system" title="Permanent link">#</a></h2>
+<h3 id="record-types-system-record-types">Record Types (<code>System → Record Types</code>)<a class="headerlink" href="#record-types-system-record-types" title="Permanent link">#</a></h3>
+<p><strong>This panel is not read-only.</strong> Each row can be overridden to point package logic at a different
+Record Type than the packaged default.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Edit</strong> → choose a record type → <strong>Save</strong></td>
+<td>Overrides which Record Type the package stamps on new records for that object</td>
+<td><strong>New records only</strong> — every record this app creates for that object going forward uses your chosen Record Type. Records already created are never modified.</td>
+</tr>
+<tr>
+<td><strong>Reset</strong> / "Reset to default"</td>
+<td>Clears an override, reverting to the packaged Record Type</td>
+<td>New records only, same as above</td>
+</tr>
+</tbody>
+</table>
+<h3 id="health-check-system-health-check">Health Check (<code>System → Health Check</code>)<a class="headerlink" href="#health-check-system-health-check" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>What it does</th>
+<th>Behavior of its "Fix" button (where shown)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scheduled Jobs</td>
+<td>Confirms the expected donation-finalizer and reconciliation-heartbeat cron jobs are running</td>
+<td><strong>Fix</strong> re-schedules any missing jobs immediately (safe to click even if some are already running — it only adds what's missing)</td>
+</tr>
+<tr>
+<td>Record Type Mappings</td>
+<td>Confirms all expected Record Type slots are mapped</td>
+<td><strong>Fix</strong> adds only the missing default slots — it never overwrites an override you've already set</td>
+</tr>
+<tr>
+<td>Payment Accounts</td>
+<td>Confirms at least one active payment account exists</td>
+<td>No Fix button — go configure one on the Payments panel</td>
+</tr>
+<tr>
+<td>Org Limits</td>
+<td>Reports this request's own SOQL query usage</td>
+<td>Informational only — a per-transaction number, not an ongoing org-wide usage metric</td>
+</tr>
+<tr>
+<td>Experience Cloud Site</td>
+<td>Confirms a site is connected</td>
+<td><em>(Known UI gap.)</em> Its Fix button shows a success message but does not actually create anything — it only returns the same CLI command shown on the Site &amp; Domain panel. The check will still show as failing after you click Fix; you still need to run that command yourself.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">"Fix" on the Experience Cloud Site row doesn't fix it</p>
+<p>Clicking Fix shows a "Fixed" toast, but no site is created — it's informational only, same as
+the "Copy CLI command" action on Site &amp; Domain. Run the CLI command yourself, then reconnect
+from the Site &amp; Domain panel.</p>
+</div>
+<h3 id="scheduled-jobs-system-scheduled-jobs">Scheduled Jobs (<code>System → Scheduled Jobs</code>)<a class="headerlink" href="#scheduled-jobs-system-scheduled-jobs" title="Permanent link">#</a></h3>
+<p>Controls the package's background cron schedule directly — not <code>Settings__c</code> fields.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Run every" cadence + <strong>Save</strong> (per job family)</td>
+<td>Reschedules how often the Donation Finalizer / Reconciliation Heartbeat jobs fire</td>
+<td>Immediate — but this is two separate steps under the hood (abort the old schedule, then create the new one). If the second step fails after the first succeeds, that job family ends up scheduled nowhere until you save again. For the Donation Finalizer family, that means donations stop turning into Opportunities until it's rescheduled — watch for a "0 scheduled" state after a save.</td>
+</tr>
+<tr>
+<td><strong>Run now</strong> — Recurring donations</td>
+<td>Manually kicks off the same nightly recurring-billing chain used at 2am</td>
+<td><strong>Runs immediately, and it is the real thing</strong> — it charges every recurring gift due today exactly as the nightly job would, regardless of whether that nightly job is currently scheduled. Not a preview or dry run.</td>
+</tr>
+<tr>
+<td><strong>Run now</strong> — Donor summary rollups</td>
+<td>Recalculates donor lifetime-giving totals</td>
+<td>Immediate; does not trigger any charges</td>
+</tr>
+<tr>
+<td><strong>Run now</strong> — Retention purge</td>
+<td>Immediately deletes old logs/transaction logs/completed donation-staging rows</td>
+<td>Immediate, using whatever "Purge after (days)" value is currently saved on the Logging panel — not restorable afterward</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition danger">
+<p class="admonition-title">"Run now" for recurring donations places real charges</p>
+<p>This is not a test or preview button. Clicking it charges every donor whose recurring gift is
+due today, the same as if the nightly job had fired. Each charge is protected from being
+accidentally repeated on the same schedule the same day (an unchanged charge won't be billed
+twice), but any schedule not yet charged today will be charged the moment you click this.</p>
+</div>
+<h3 id="donation-monitor-system-donation-monitor">Donation Monitor (<code>System → Donation Monitor</code>)<a class="headerlink" href="#donation-monitor-system-donation-monitor" title="Permanent link">#</a></h3>
+<p>A live worklist of donations stuck between "paid on Stripe" and "recorded as an Opportunity" —
+not settings fields.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Retry now</strong> (per row)</td>
+<td>Re-checks the donation's payment status with Stripe and finalizes/expires it accordingly</td>
+<td>Immediate. This only re-reads the existing payment's current status from Stripe — it never submits a new charge, so retrying cannot cause a double charge. If the payment actually succeeded but finalizing keeps failing (e.g. a validation rule), the record is deliberately never auto-expired, so retrying repeatedly is safe — it just won't self-resolve until whatever is blocking finalization is fixed.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">#</a></h2>
+<div class="grid cards">
+<ul>
+<li>
+<p><strong>Setup assistant tour</strong></p>
+<hr />
+<p>The four groups and every panel, at a glance.</p>
+<p><a href="../setup-assistant/">Setup assistant →</a></p>
+</li>
+<li>
+<p><strong>All settings, by object</strong></p>
+<hr />
+<p>Full field-level reference for <code>Settings__c</code>.</p>
+<p><a href="../../data-model/settings/">Settings data model →</a></p>
+</li>
+<li>
+<p><strong>Settings &amp; integrations concept</strong></p>
+<hr />
+<p>How the three-tier settings model (Settings, CMDT, Named Credentials) fits together.</p>
+<p><a href="../../concepts/settings-integrations/">Settings &amp; integrations →</a></p>
+</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../setup-assistant/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Setup assistant">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Setup assistant
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../concepts/donors-accounts/" class="md-footer__link md-footer__link--next" aria-label="Next: Donors &amp; accounts">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Donors & accounts
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Built by <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/cytoscape.min.js"></script>
+      
+        <script src="../../assets/js/data-model-diagram.js"></script>
+      
+    
+  </body>
+</html>

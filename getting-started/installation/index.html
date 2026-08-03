@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Install the Pledgivo managed package and its FFLib dependency, then assign the admin permission set.">
+        <meta name="description" content="Install the Pledgivo managed package, then assign the admin permission set.">
       
       
       
@@ -257,6 +257,8 @@
       
         
       
+        
+      
     
     
     
@@ -449,6 +451,34 @@
     
   
     Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../experience-cloud-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your Experience Cloud site
   
 
     
@@ -1097,6 +1127,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1157,6 +1193,90 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/setup-ticketed-event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/embed-donate-widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embed a donate button on your website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/email-branding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand your receipt and notification emails
   
 
     
@@ -1636,7 +1756,7 @@
 <p class="fn-eyebrow">Getting Started</p>
 
 <h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">#</a></h1>
-<p class="fn-dek">Pledgivo installs like any AppExchange managed package. It has one hard dependency, one permission set to assign, and one guest-user step for public donation pages.</p>
+<p class="fn-dek">Pledgivo installs like any AppExchange managed package — a single package with no separate dependency to install first. It has one permission set to assign and one guest-user step for public donation pages.</p>
 
 <h2 id="before-you-install">Before you install<a class="headerlink" href="#before-you-install" title="Permanent link">#</a></h2>
 <table>
@@ -1653,11 +1773,7 @@
 </tr>
 <tr>
 <td>Experience Cloud</td>
-<td>Required if you intend to accept donations from the public. Internal-only use (recording gifts staff take over the phone, for example) does not require it.</td>
-</tr>
-<tr>
-<td>fflib-apex-common</td>
-<td>A required dependency, installed separately before Pledgivo.</td>
+<td>Required if you intend to accept donations from the public. Internal-only use (recording gifts staff take over the phone, for example) does not require it. See <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a> — creating the site and its pages is a manual step this package doesn't automate.</td>
 </tr>
 <tr>
 <td>Stripe account</td>
@@ -1665,6 +1781,12 @@
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">No separate FFLib install</p>
+<p>Pledgivo's Apex layer is built on the FFLib Apex Enterprise Patterns library, but it's
+vendored directly inside the package — there's nothing to install separately or manage as
+a dependency. Installing Pledgivo is all you need.</p>
+</div>
 <div class="fn-status-strip">
   <span class="fn-chip">Package type: 2GP managed</span>
   <span class="fn-chip">Namespace: pledgivo</span>
@@ -1673,9 +1795,6 @@
 
 <h2 id="install-steps">Install steps<a class="headerlink" href="#install-steps" title="Permanent link">#</a></h2>
 <ol>
-<li><strong>Install <code>fflib-apex-common</code>.</strong> Pledgivo's Apex layer is built on the FFLib Apex
-   Enterprise Patterns library. Install it from AppExchange or its GitHub release first —
-   the Pledgivo package will fail to install without it.</li>
 <li><strong>Install Pledgivo</strong> from its AppExchange listing (or a package version link, for a
    sandbox/pilot install). Choose "Install for Admins Only" so you control the permission
    set rollout in the next step.</li>
@@ -1688,9 +1807,16 @@
 <li><strong>Work through the Settings console.</strong> See <a href="../setup-assistant/">Setup assistant</a> for
    the full walkthrough — organization defaults, connecting Stripe, and enabling Experience
    Cloud.</li>
-<li><strong>Grant the guest user permission set.</strong> If you're publishing public donation pages,
-   assign <code>Fundraising_GuestDonor</code> to your Experience Cloud site's guest user profile.
-   Without it, guest donors can view campaign pages but the donation form cannot submit.</li>
+<li><strong>If you're publishing public donation pages, create your Experience Cloud site.</strong>
+   Salesforce doesn't provision this for you on install — see
+   <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a> for the full walkthrough:
+   creating the site, building the Donate page and its supporting pages, and publishing.</li>
+<li><strong>Grant the guest user permission set.</strong> Assign <code>Fundraising_GuestDonor</code> to your
+   Experience Cloud site's guest user profile (covered in the guide above).
+   Without it, guest donors can view campaign pages but the donation form cannot submit. If
+   you're also running peer-to-peer fundraising, assign <code>Fundraising_P2P_Guest</code> to the same
+   guest user — it's a separate grant, since it covers <code>Fundraising_Page__c</code>/<code>Fundraising_Team__c</code>
+   rather than donation objects.</li>
 </ol>
 <div class="fn-shot"><img src="../../assets/images/lex-app-launcher-pledgivo.png" alt="App Launcher search for Pledgivo"></div>
 <p class="fn-figure-caption">**What it shows.** The App Launcher with the Pledgivo app tile and its seven tabs (Campaigns, Contacts, Opportunities, Recurring Donations, Designations, Fundraisers, Settings).</p>
@@ -1726,7 +1852,7 @@ for how that works.</p>
 </tr>
 <tr>
 <td>Six permission sets</td>
-<td><code>Fundraising_Admin</code>, <code>Fundraising_User</code>, <code>Fundraising_ReadOnly</code>, <code>Fundraising_GuestDonor</code>, <code>Fundraising_P2P</code> (peer-to-peer fundraiser/team access), <code>Fundraising_P2P_Guest</code> (public peer-to-peer page access)</td>
+<td><code>Fundraising_Admin</code>, <code>Fundraising_User</code>, <code>Fundraising_ReadOnly</code> (staff, scoped by role); <code>Fundraising_GuestDonor</code> (site guest — donation pages); <code>Fundraising_P2P</code> (staff — internal fundraiser/team management, full CRUD); <code>Fundraising_P2P_Guest</code> (site guest — public fundraiser/team pages, read-only plus the sign-up create action)</td>
 </tr>
 <tr>
 <td>Email templates</td>
@@ -1744,7 +1870,7 @@ peer-to-peer fundraiser pages are all built on Experience Cloud (Enhanced LWR). 
 is on Professional edition, or you haven't provisioned an Experience Cloud site yet, Pledgivo
 still installs and works for internally-recorded gifts — you just won't be able to publish a
 public donation page until a site exists. See
-<a href="../../guides/publish-donor-portal/">Publish a donor portal page</a> once you're ready.</p>
+<a href="../experience-cloud-setup/">Set up your Experience Cloud site</a> once you're ready.</p>
 <h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>
@@ -1753,6 +1879,12 @@ public donation page until a site exists. See
 <hr />
 <p>Organization defaults, record types, and org-feature detection.</p>
 <p><a href="../setup-assistant/">Setup assistant →</a></p>
+</li>
+<li>
+<p><strong>Create your Experience Cloud site</strong></p>
+<hr />
+<p>Build the site, its pages, and grant guest access — required for public donation pages.</p>
+<p><a href="../experience-cloud-setup/">Set up your Experience Cloud site →</a></p>
 </li>
 <li>
 <p><strong>Connect a payment account</strong></p>

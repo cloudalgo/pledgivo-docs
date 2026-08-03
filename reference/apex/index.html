@@ -255,6 +255,8 @@
       
         
       
+        
+      
     
     
     
@@ -343,6 +345,34 @@
     
   
     Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/experience-cloud-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your Experience Cloud site
   
 
     
@@ -991,6 +1021,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1051,6 +1087,90 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/setup-ticketed-event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/embed-donate-widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embed a donate button on your website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/email-branding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand your receipt and notification emails
   
 
     
@@ -9472,6 +9592,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-fundraisingpagesselector-selectactivewithpublicslugforadmin"></a><code>selectActiveWithPublicSlugForAdmin(0 args)</code></td>
+<td><code>List&lt;Fundraising_Page__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-fundraisingpagesselector-selectbycampaignpaged"></a><code>selectByCampaignPaged(3 args)</code></td>
 <td><code>List&lt;Fundraising_Page__c&gt;</code></td>
 <td></td>
@@ -9518,6 +9643,11 @@
 </tr>
 <tr>
 <td><a id="apex-fundraisingteamsselector-selectactivebypublicurlslug"></a><code>selectActiveByPublicUrlSlug(1 arg)</code></td>
+<td><code>List&lt;Fundraising_Team__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-fundraisingteamsselector-selectactivewithpublicslugforadmin"></a><code>selectActiveWithPublicSlugForAdmin(0 args)</code></td>
 <td><code>List&lt;Fundraising_Team__c&gt;</code></td>
 <td></td>
 </tr>
@@ -10801,11 +10931,6 @@
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-setupcontroller-discoverexperiencesiteurl"></a><code>discoverExperienceSiteURL(0 args)</code></td>
-<td><code>Map&lt;String, Object&gt;</code></td>
-<td><code>@AuraEnabled</code></td>
-</tr>
-<tr>
 <td><a id="apex-setupcontroller-getrecenterrorlogs"></a><code>getRecentErrorLogs(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
@@ -10827,6 +10952,21 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-createexperiencesite"></a><code>createExperienceSite(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-listexperiencesites"></a><code>listExperienceSites(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-saveexperiencesite"></a><code>saveExperienceSite(2 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-checkguestpermissionset"></a><code>checkGuestPermissionSet(1 arg)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
@@ -11046,6 +11186,36 @@
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td></td>
 </tr>
+<tr>
+<td><a id="apex-communityservice-listsites"></a><code>listSites(0 args)</code></td>
+<td><code>List&lt;Map&lt;String, Object&gt;&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-communityservice-resolvebynetworkid"></a><code>resolveByNetworkId(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-communityservice-checkguestpermissionset"></a><code>checkGuestPermissionSet(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h4 id="apex-icommunityservice">ICommunityService<a class="headerlink" href="#apex-icommunityservice" title="Permanent link">#</a></h4>
@@ -11253,6 +11423,11 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-donorportalpath"></a><code>donorPortalPath(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-experiencenetworkid"></a><code>experienceNetworkId(0 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>

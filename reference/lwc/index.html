@@ -255,6 +255,8 @@
       
         
       
+        
+      
     
     
     
@@ -343,6 +345,34 @@
     
   
     Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/experience-cloud-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your Experience Cloud site
   
 
     
@@ -991,6 +1021,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1051,6 +1087,90 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/setup-ticketed-event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/embed-donate-widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embed a donate button on your website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/email-branding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand your receipt and notification emails
   
 
     
@@ -3079,13 +3199,13 @@
 <p><code>publicFundraiserPage</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
 <p>P2P fundraiser personal page for Experience Cloud</p>
-<p><strong>Docs note.</strong> P2P individual fundraiser page, loaded by pageSlug (not a record Id) via FundraiserPageController.getFundraisingPage — one of the three P2P guest pages built on pfP2pBase rather than uiBase (see pfP2pBase's doc note). A donor lands here from a shared /f/:slug link or from publicFundraiserSignup's post-create redirect.</p>
+<p><strong>Docs note.</strong> P2P individual fundraiser page, loaded by pageSlug (not a record Id) via FundraiserPageController.getFundraisingPage — one of the three P2P guest pages built on pfP2pBase rather than uiBase (see pfP2pBase's doc note). A donor lands here from a shared /f?slug=<slug> link or from publicFundraiserSignup's post-create redirect.</p>
 <p><strong><code>@api</code> properties:</strong> <code>pageSlug</code></p>
 <h4 id="publicfundraisersignup">Fundraiser Sign-Up<a class="headerlink" href="#publicfundraisersignup" title="Permanent link">#</a></h4>
 <p><code>publicFundraiserSignup</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
 <p>Public start-your-fundraiser / join-a-team sign-up form (P2P)</p>
-<p><strong>Docs note.</strong> Calls FundraiserPageController.startFundraiser, the write counterpart to publicFundraiserPage's and publicTeamPage's read-only getFundraisingPage/getTeamDashboard. On success it redirects the browser to the new page's /f/:slug route rather than rendering it inline, so the newly created fundraiser is reached through the normal publicFundraiserPage load path (no special first-load state to keep in sync).</p>
+<p><strong>Docs note.</strong> Calls FundraiserPageController.startFundraiser, the write counterpart to publicFundraiserPage's and publicTeamPage's read-only getFundraisingPage/getTeamDashboard. On success it redirects the browser to the new page's /f?slug=<newSlug> route rather than rendering it inline, so the newly created fundraiser is reached through the normal publicFundraiserPage load path (no special first-load state to keep in sync).</p>
 <p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code>, <code>teamSlug</code></p>
 <h4 id="publicfundraisingexperience">Public Fundraising Experience<a class="headerlink" href="#publicfundraisingexperience" title="Permanent link">#</a></h4>
 <p><code>publicFundraisingExperience</code></p>
@@ -3268,7 +3388,7 @@
 <p><code>setSite</code></p>
 <p><code>not exposed</code></p>
 <p>Settings-console panel showing whether the Experience Cloud donation site exists and its status, with setup guidance and the sf CLI command to create it.</p>
-<p><strong>Docs note.</strong> createExperienceSite/discoverExperienceSiteURL wrap the org's Experience Cloud site lifecycle (CommunityService is the actual source of truth for the create command — the CLI_FALLBACK string above is only shown if that call fails). embedEnabled is presented inverted from its storage field (Embed_Disabled__c, default false) so the UI reads as an opt-in "Allow embedding" toggle rather than a double-negative opt-out one; setPublicLinks and lexEmbedBuilder both consume the resulting Experience_Site_URL__c once it's set here.</p>
+<p><strong>Docs note.</strong> createExperienceSite wraps the org's Experience Cloud site creation lifecycle (CommunityService is the actual source of truth for the create command — the CLI_FALLBACK string above is only shown if that call fails). listExperienceSites/saveExperienceSite back the site picker (docs/plan-dynamic-experience-site-selection-2026-08-03.md): any Experience Cloud site the admin can see is selectable, not just one matching the packaged "Fundraising" name/prefix convention — the chosen Network.Id is what SetupController.resolveExperienceSite() (and every downstream consumer) resolves against from then on. checkGuestPermissionSet backs the guest-permission-set warning, which is deliberately always-visible (not a manual check) — a site with the wrong guest user misses this and every public donation page silently fails. embedEnabled is presented inverted from its storage field (Embed_Disabled__c, default false) so the UI reads as an opt-in "Allow embedding" toggle; setPublicLinks and lexEmbedBuilder both consume the resulting Experience_Site_URL__c once it's set here.</p>
 <h2 id="pf-public-guest-helper-blocks">Pf (public guest helper blocks)<a class="headerlink" href="#pf-public-guest-helper-blocks" title="Permanent link">#</a></h2>
 <h4 id="pfhero">Campaign Hero<a class="headerlink" href="#pfhero" title="Permanent link">#</a></h4>
 <p><code>pfHero</code></p>

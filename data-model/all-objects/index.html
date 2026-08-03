@@ -255,6 +255,8 @@
       
         
       
+        
+      
     
     
     
@@ -343,6 +345,34 @@
     
   
     Quick start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/experience-cloud-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your Experience Cloud site
   
 
     
@@ -1491,6 +1521,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1551,6 +1587,90 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/setup-ticketed-event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/embed-donate-widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embed a donate button on your website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/email-branding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand your receipt and notification emails
   
 
     
@@ -5617,7 +5737,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>70 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>71 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <p><strong>Docs note.</strong> Tier 1 of the three-tier settings model documented in specs/04-data-model.md. Tier 2 is Payment_Gateway__mdt (per-gateway CMDT), Tier 3 is Named Credentials (secrets never live here). As a Hierarchy Custom Setting it resolves Org Defaults, falling back per profile or user only if a future release needs per-role overrides; today every read goes through the Org Default row via SettingsService, which exposes one typed accessor per field or field group rather than callers reading Settings__c.getOrgDefaults() directly, so a field rename or a default-value change only needs one code change.</p>
 <p>See the <a href="../settings/">full reference page</a> for this object.</p>
@@ -5873,6 +5993,12 @@
 <td>Event_Sync_Campaign_Members</td>
 <td>Checkbox</td>
 <td>When on, each ticket buyer/attendee is added as a Campaign Member for reporting. Off by default.<br><em>Docs: Opt-IN, not opt-out: off by default because writing a CampaignMember for every ticket attendee touches Campaign membership automation the subscriber org may already own. When on, finalizing an event order creates a CampaignMember for each attendee that resolved to a Contact.</em></td>
+</tr>
+<tr>
+<td><code>Experience_Network_Id__c</code></td>
+<td>Experience Network Id</td>
+<td>Text</td>
+<td>The Experience Cloud site chosen above for your public donation pages. Leave blank to let the package auto-detect a site named "Fundraising" instead.</td>
 </tr>
 <tr>
 <td><code>Experience_Site_URL__c</code></td>

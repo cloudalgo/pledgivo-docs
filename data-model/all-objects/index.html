@@ -2748,7 +2748,7 @@
 </table>
 <h2 id="campaigns-content">Campaigns &amp; Content<a class="headerlink" href="#campaigns-content" title="Permanent link">#</a></h2>
 <h3 id="campaign">Campaign<a class="headerlink" href="#campaign" title="Permanent link">#</a></h3>
-<p><code>Campaign</code> · <code>standard</code> · <code>50 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>Campaign</code> · <code>standard</code> · <code>49 fields</code> · <code>Campaigns &amp; Content</code></p>
 <p>See the <a href="../campaign/">full reference page</a> for this object.</p>
 <p><strong>Relationships</strong></p>
 <table>
@@ -2840,12 +2840,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>Allow_Anonymous__c</code></td>
-<td>Allow Anonymous</td>
-<td>Checkbox</td>
-<td>When on, donors can choose to hide their name from the public donor wall and gallery.</td>
-</tr>
 <tr>
 <td><code>Allow_Company_Match__c</code></td>
 <td>Allow Company Match</td>
@@ -4254,7 +4248,7 @@
 <td><code>Fee_Amount__c</code></td>
 <td>Fee Amount</td>
 <td>Currency</td>
-<td>Processing fee amount added by the donor, if fee coverage was selected.<br><em>Docs: Despite the description above, the donor-covered-fees toggle (Campaign. Donor_Covered_Fees_Enabled__c, Settings__c.Default_Fee_On_Top_Percent__c) is configurable in the Settings/Fundraiser admin screens but the donation form never surfaces it to the donor, computes an add-on amount, or includes it in the Stripe charge — the toggle currently has no runtime effect. DonationService/EventPurchaseService/RecurringDonationService therefore all write this field as a hardcoded 0 at finalize rather than leaving it null, so Net_Donation_Amount__c stays internally consistent. Implementing real fee collection (donor checkbox, charge-amount adjustment, non-zero write here) is a separate, larger change. Not the same thing as the Stripe processing fee the org itself absorbs, which never appears on the Opportunity at all.</em></td>
+<td>Processing fee amount added by the donor, if fee coverage was selected.<br><em>Docs: The donor-covered-fees toggle (Campaign.Donor_Covered_Fees_Enabled__c) is configurable in the Fundraiser admin screen but the donation form never surfaces it to the donor, computes an add-on amount, or includes it in the Stripe charge — the toggle currently has no runtime effect. The org-level default fee percent that would have driven the calculation (Settings__c.Default_Fee_On_Top_Percent__c) was removed 2026-08-03 as dead config (see specs/04-data-model.md). DonationService/EventPurchaseService/RecurringDonationService therefore all write this field as a hardcoded 0 at finalize rather than leaving it null, so Net_Donation_Amount__c stays internally consistent. Implementing real fee collection (donor checkbox, charge-amount adjustment, non-zero write here) is a separate, larger change. Not the same thing as the Stripe processing fee the org itself absorbs, which never appears on the Opportunity at all.</em></td>
 </tr>
 <tr>
 <td><code>Fundraising_Page__c</code></td>
@@ -5745,7 +5739,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>75 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>73 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <p><strong>Docs note.</strong> Tier 1 of the three-tier settings model documented in specs/04-data-model.md. Tier 2 is Payment_Gateway__mdt (per-gateway CMDT), Tier 3 is Named Credentials (secrets never live here). As a Hierarchy Custom Setting it resolves Org Defaults, falling back per profile or user only if a future release needs per-role overrides; today every read goes through the Org Default row via SettingsService, which exposes one typed accessor per field or field group rather than callers reading Settings__c.getOrgDefaults() directly, so a field rename or a default-value change only needs one code change.</p>
 <p>See the <a href="../settings/">full reference page</a> for this object.</p>
@@ -5762,12 +5756,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>Allow_Anonymous__c</code></td>
-<td>Allow_Anonymous</td>
-<td>Checkbox</td>
-<td>Default anonymous-giving setting for new campaigns. Individual campaigns can override this.</td>
-</tr>
 <tr>
 <td><code>Allow_Company_Match__c</code></td>
 <td>Allow_Company_Match</td>
@@ -5821,12 +5809,6 @@
 <td>Default Designation</td>
 <td>Text</td>
 <td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so SettingsService.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
-</tr>
-<tr>
-<td><code>Default_Fee_On_Top_Percent__c</code></td>
-<td>Default Fee On Top Percent</td>
-<td>Percent</td>
-<td>Default percentage donors are asked to add to cover processing fees, e.g. 3.00 for 3%. Campaigns can override this.</td>
 </tr>
 <tr>
 <td><code>Default_Org_Logo_Content_Document_Id__c</code></td>

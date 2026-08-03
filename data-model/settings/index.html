@@ -1745,7 +1745,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>75 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>73 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1778,12 +1778,6 @@ run, new-records-only, or (for a few) no effect yet — see the
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>Allow_Anonymous__c</code></td>
-<td>Allow_Anonymous</td>
-<td>Checkbox</td>
-<td>Default anonymous-giving setting for new campaigns. Individual campaigns can override this.</td>
-</tr>
 <tr>
 <td><code>Allow_Company_Match__c</code></td>
 <td>Allow_Company_Match</td>
@@ -1837,12 +1831,6 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Default Designation</td>
 <td>Text</td>
 <td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so SettingsService.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
-</tr>
-<tr>
-<td><code>Default_Fee_On_Top_Percent__c</code></td>
-<td>Default Fee On Top Percent</td>
-<td>Percent</td>
-<td>Default percentage donors are asked to add to cover processing fees, e.g. 3.00 for 3%. Campaigns can override this.</td>
 </tr>
 <tr>
 <td><code>Default_Org_Logo_Content_Document_Id__c</code></td>

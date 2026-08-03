@@ -6945,7 +6945,7 @@
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>FundraiserAdminController — internal admin console for launching and managing fundraisers (Campaigns). Lets staff create a whole fundraiser in one flow — Campaign + linked page design + fund (Designation, existing or new) — without opening multiple Salesforce objects. Reads via CampaignsSelector/DesignationsSelector/CampaignDesignsSelector; all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via ControllerAction.run().</p>
 <p><strong>Docs note.</strong> "Fundraiser" is admin-console terminology for a Campaign with a subtype</p>
-<p>org-wide starting values for a new fundraiser's donor-option toggles (see SettingsService.defaultAllowAnonymous/defaultAllowTribute/defaultAllowCompanyMatch); the wizard applies these only when creating a NEW Campaign, never on edit.</p>
+<p>org-wide starting values for a new fundraiser's donor-option toggles (see SettingsService.defaultAllowTribute/defaultAllowCompanyMatch); the wizard applies these only when creating a NEW Campaign, never on edit.</p>
 <table>
 <thead>
 <tr>
@@ -8400,7 +8400,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-autoreceiptenabled">SettingsService.autoReceiptEnabled()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8410,7 +8410,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8440,7 +8440,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8450,7 +8450,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -10884,6 +10884,11 @@
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
+<td><a id="apex-setupcontroller-getactivedesignations"></a><code>getActiveDesignations(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
 <td><a id="apex-setupcontroller-getpubliclinks"></a><code>getPublicLinks(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
@@ -11324,8 +11329,9 @@
 <p><strong>Docs note.</strong> Two distinct API surfaces live in this one class. ISettingsService (getSettings/ saveSettings/detectAndUpdateOrgFeatures) is the instance-based CRUD path used only by SetupController for the admin settings screen. Everything else — the large block of static typed accessors below (logLevel, defaultCurrency, refundsEnabled, retryIntervalDays, donorPortalShowSummary, and so on) — is the canonical, sanctioned way every OTHER class in the package reads a single Settings__c value; callers must never call Settings__c.getInstance() directly or branch on a raw flag. Each accessor has a matching <code>@TestVisible</code> *Override static field so tests can stub one setting without inserting or upserting a Settings__c row.</p>
 <p>Two recurring patterns worth knowing before adding a new accessor: (1) capability gates (personAccountEnabled, npspEnabled, npspGauSyncEnabled, npspRecurringSyncEnabled) are always "detected AND admin-enabled" — detection is authoritative and an admin flag can only opt OUT of a capability the org actually supports, never opt into one it doesn't; (2) several Boolean fields are stored inverted as Hide_<em>/Disabled__c (donorPortalShow</em>, refundsEnabled, isEmbedEnabled) specifically so that a Checkbox field added in a later release, which backfills existing Settings__c rows to false, defaults to the "on"/visible behavior with no data migration required.</p>
 <p>ContentVersion/ContentDistribution are file-handling utility objects, not part of any fflib-registered SObject graph — same rationale as the Settings__c direct-upsert exception above (and AppLogger's direct Log__c insert): routing one-off file plumbing through the UnitOfWork would add nothing but ceremony. DML/SOQL here are deliberate.</p>
-<p>Org-wide starting values for a brand-new Campaign's Allow_Anonymous__c/Allow_Tribute__c/ Allow_Company_Match__c. Read only by FundraiserAdminController.getFundraiserOptions(), which the "New fundraiser" wizard (lexFundraisersConsole) applies to its form defaults before the admin ever touches a toggle. Once the Campaign exists, its own field is authoritative — these accessors are never re-read for an existing Campaign, so changing the org default here does not retroactively change any already-created fundraiser.</p>
+<p>Org-wide starting values for a brand-new Campaign's Allow_Tribute__c/Allow_Company_Match__c. Read only by FundraiserAdminController.getFundraiserOptions(), which the "New fundraiser" wizard (lexFundraisersConsole) applies to its form defaults before the admin ever touches a toggle. Once the Campaign exists, its own field is authoritative — these accessors are never re-read for an existing Campaign, so changing the org default here does not retroactively change any already-created fundraiser.</p>
 <p>RecordTypeMappingService owns the delimited-encoding format (what the string MEANS); this class only owns the mechanics of splitting/joining that string across the 4 physical Settings__c chunk fields (WHERE it's stored). Replaces the former Record_Type_Mapping__c custom object (deleted 2026-08-03) — Custom Settings fields cap at 255 chars with no Long Text Area option, so the encoded table is chunked here instead of living in a dedicated Long-Text-capable object.</p>
+<p>Reads via getOrgDefaults(), never getInstance() — record type mapping config is an org-wide singleton with no profile/user tier, and getInstance()'s hierarchy resolution caches on first call for the rest of the transaction, which previously made this read (when it ran first) silently freeze OTHER getInstance()-based accessors (e.g. eventDeductibleMode()) against later same-transaction Settings__c DML — a real Apex custom-settings platform gotcha, not just a test artifact.</p>
 <table>
 <thead>
 <tr>
@@ -11393,11 +11399,6 @@
 <tr>
 <td><a id="apex-settingsservice-defaultsuggestedamounts"></a><code>defaultSuggestedAmounts(0 args)</code></td>
 <td><code>String</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-settingsservice-defaultallowanonymous"></a><code>defaultAllowAnonymous(0 args)</code></td>
-<td><code>Boolean</code></td>
 <td></td>
 </tr>
 <tr>
@@ -11513,6 +11514,16 @@
 <tr>
 <td><a id="apex-settingsservice-receiptemailtemplate"></a><code>receiptEmailTemplate(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-fromname"></a><code>fromName(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-autoreceiptenabled"></a><code>autoReceiptEnabled(0 args)</code></td>
+<td><code>Boolean</code></td>
 <td></td>
 </tr>
 <tr>

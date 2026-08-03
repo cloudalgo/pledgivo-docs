@@ -3669,32 +3669,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apex-irecordtypemappingsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IRecordTypeMappingsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-paymentaccountsselector" class="md-nav__link">
     <span class="md-ellipsis">
       
         PaymentAccountsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-recordtypemappingsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RecordTypeMappingsSelector
       
     </span>
   </a>
@@ -6471,32 +6449,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apex-irecordtypemappingsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IRecordTypeMappingsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-paymentaccountsselector" class="md-nav__link">
     <span class="md-ellipsis">
       
         PaymentAccountsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-recordtypemappingsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RecordTypeMappingsSelector
       
     </span>
   </a>
@@ -6838,7 +6794,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 162 classes plus 103 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 160 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -11155,9 +11111,6 @@
 <h4 id="apex-ipaymentaccountsselector">IPaymentAccountsSelector<a class="headerlink" href="#apex-ipaymentaccountsselector" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectSelector</p>
-<h4 id="apex-irecordtypemappingsselector">IRecordTypeMappingsSelector<a class="headerlink" href="#apex-irecordtypemappingsselector" title="Permanent link">#</a></h4>
-<p><code>interface</code> · <code>public</code></p>
-<p>extends fflib_ISObjectSelector</p>
 <h4 id="apex-paymentaccountsselector">PaymentAccountsSelector<a class="headerlink" href="#apex-paymentaccountsselector" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-ipaymentaccountsselector">IPaymentAccountsSelector</a></p>
@@ -11204,36 +11157,6 @@
 <tr>
 <td><a id="apex-paymentaccountsselector-selectbyidwithcredentials"></a><code>selectByIdWithCredentials(1 arg)</code></td>
 <td><code>List&lt;Payment_Account__c&gt;</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h4 id="apex-recordtypemappingsselector">RecordTypeMappingsSelector<a class="headerlink" href="#apex-recordtypemappingsselector" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public with sharing</code></p>
-<p>extends fflib_SObjectSelector · implements <a href="#apex-irecordtypemappingsselector">IRecordTypeMappingsSelector</a></p>
-<p><strong>Docs note.</strong> Record_Type_Mapping__c holds exactly one singleton row (Mappings_JSON__c carries every slot as a JSON array). RecordTypeMappingService is the only caller of this selector and the only class that deserializes Mappings_JSON__c — RecordTypeService and everything downstream of it goes through that service, never this selector directly.</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-recordtypemappingsselector-getsobjecttype"></a><code>getSObjectType(0 args)</code></td>
-<td><code>Schema.SObjectType</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-recordtypemappingsselector-getsobjectfieldlist"></a><code>getSObjectFieldList(0 args)</code></td>
-<td><code>List&lt;Schema.SObjectField&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-recordtypemappingsselector-selectsingleton"></a><code>selectSingleton(0 args)</code></td>
-<td><code>List&lt;Record_Type_Mapping__c&gt;</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -11309,17 +11232,17 @@
 <p><code>interface</code> · <code>public</code></p>
 <h4 id="apex-irecordtypemappingservice">IRecordTypeMappingService<a class="headerlink" href="#apex-irecordtypemappingservice" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
-<p>Sole authorized reader/writer of Record_Type_Mapping__c.Mappings_JSON__c. Every class that needs package record-type slot data — RecordTypeService, SetupController, PostInstallHandler — must go through this service; nothing else may query or update the singleton row directly.</p>
+<p>Sole authorized reader/writer of the record-type mapping table (compact-encoded across Settings__c's Record_Type_Mapping_Chunk_1__c..4__c fields). Every class that needs package record-type slot data — RecordTypeService, SetupController, PostInstallHandler — must go through this service; nothing else may read or write those chunk fields directly.</p>
 <h4 id="apex-isettingsservice">ISettingsService<a class="headerlink" href="#apex-isettingsservice" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <h4 id="apex-recordtypemapping">RecordTypeMapping<a class="headerlink" href="#apex-recordtypemapping" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public</code></p>
-<p>Plain value object for one packaged record-type slot — the shape stored, as JSON, inside Record_Type_Mapping__c.Mappings_JSON__c. Serialized/deserialized exclusively by RecordTypeMappingService; every other class that needs slot data goes through that service and works with these objects, never with raw JSON or the underlying field.</p>
+<p>Plain value object for one packaged record-type slot — the shape encoded/decoded exclusively by RecordTypeMappingService into the compact delimited string stored (chunked) across Settings__c's Record_Type_Mapping_Chunk_1__c..4__c fields. Every other class that needs slot data goes through that service and works with these objects, never with the raw encoded string or the underlying Settings__c fields.</p>
 <h4 id="apex-recordtypemappingservice">RecordTypeMappingService<a class="headerlink" href="#apex-recordtypemappingservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>implements <a href="#apex-irecordtypemappingservice">IRecordTypeMappingService</a></p>
-<p>Sole reader/writer of Record_Type_Mapping__c.Mappings_JSON__c. Every slot (object, package record type, and any admin override) lives as one entry in a JSON array on the object's single singleton row — this class is the only place that (de)serializes that JSON; every other caller works with RecordTypeMapping DTOs.</p>
-<p><strong>Docs note.</strong> Fixed Name of the one singleton row this service ever reads or writes — there is intentionally no lookup-by-Id path into this object from outside this class.</p>
+<p>Sole reader/writer of the record-type mapping table. Every slot (object, package record type, and any admin override) is compact-encoded (not JSON — too wide to fit the 255-char field cap) into a single delimited string, which SettingsService chunks across 4 Text(255) fields on Settings__c. This class owns the encoding/decoding of that string; SettingsService owns only the chunk-field storage mechanics. Every other caller works with RecordTypeMapping DTOs and never touches the raw string or the Settings__c fields directly.</p>
+<p><strong>Docs note.</strong> Field separator (U+00A7 "§") and slot separator (U+00B6 "¶") were chosen because neither is a regex metacharacter — String.split() treats its argument as a regex, so a delimiter like "|" would silently mis-split (alternation with empty branches) unless escaped. Both are also characters an admin is very unlikely to type into a record-type name or label; sanitize() strips them from free-text fields before encoding as a defensive backstop. Written as \uXXXX escapes rather than raw literal glyphs — a raw multi-byte character in a .cls source file risks silent corruption on deploy toolchains whose JVM/shell default encoding isn't UTF-8 (Salesforce Help #000387632).</p>
 <table>
 <thead>
 <tr>
@@ -11332,6 +11255,11 @@
 <tr>
 <td><a id="apex-recordtypemappingservice-getallmappings"></a><code>getAllMappings(0 args)</code></td>
 <td><code>List&lt;[RecordTypeMapping](#apex-recordtypemapping)&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-recordtypemappingsraw">SettingsService.recordTypeMappingsRaw()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11397,6 +11325,7 @@
 <p>Two recurring patterns worth knowing before adding a new accessor: (1) capability gates (personAccountEnabled, npspEnabled, npspGauSyncEnabled, npspRecurringSyncEnabled) are always "detected AND admin-enabled" — detection is authoritative and an admin flag can only opt OUT of a capability the org actually supports, never opt into one it doesn't; (2) several Boolean fields are stored inverted as Hide_<em>/Disabled__c (donorPortalShow</em>, refundsEnabled, isEmbedEnabled) specifically so that a Checkbox field added in a later release, which backfills existing Settings__c rows to false, defaults to the "on"/visible behavior with no data migration required.</p>
 <p>ContentVersion/ContentDistribution are file-handling utility objects, not part of any fflib-registered SObject graph — same rationale as the Settings__c direct-upsert exception above (and AppLogger's direct Log__c insert): routing one-off file plumbing through the UnitOfWork would add nothing but ceremony. DML/SOQL here are deliberate.</p>
 <p>Org-wide starting values for a brand-new Campaign's Allow_Anonymous__c/Allow_Tribute__c/ Allow_Company_Match__c. Read only by FundraiserAdminController.getFundraiserOptions(), which the "New fundraiser" wizard (lexFundraisersConsole) applies to its form defaults before the admin ever touches a toggle. Once the Campaign exists, its own field is authoritative — these accessors are never re-read for an existing Campaign, so changing the org default here does not retroactively change any already-created fundraiser.</p>
+<p>RecordTypeMappingService owns the delimited-encoding format (what the string MEANS); this class only owns the mechanics of splitting/joining that string across the 4 physical Settings__c chunk fields (WHERE it's stored). Replaces the former Record_Type_Mapping__c custom object (deleted 2026-08-03) — Custom Settings fields cap at 255 chars with no Long Text Area option, so the encoded table is chunked here instead of living in a dedicated Long-Text-capable object.</p>
 <table>
 <thead>
 <tr>
@@ -11724,6 +11653,16 @@
 <tr>
 <td><a id="apex-settingsservice-donorportalemptywalletmessage"></a><code>donorPortalEmptyWalletMessage(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-recordtypemappingsraw"></a><code>recordTypeMappingsRaw(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-saverecordtypemappingsraw"></a><code>saveRecordTypeMappingsRaw(1 arg)</code></td>
+<td><code>void</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -12055,8 +11994,8 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-testdatafactory-createrecordtypemapping"></a><code>createRecordTypeMapping(2 args)</code></td>
-<td><code>Record_Type_Mapping__c</code></td>
+<td><a id="apex-testdatafactory-seedrecordtypemappings"></a><code>seedRecordTypeMappings(1 arg)</code></td>
+<td><code>void</code></td>
 <td></td>
 </tr>
 <tr>

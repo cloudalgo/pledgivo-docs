@@ -1745,7 +1745,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>71 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>75 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -2155,6 +2155,30 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Receipt Intro Message</td>
 <td>TextArea</td>
 <td>Intro paragraph shown on the donation receipt below the amount. Leave blank to use the default wording.</td>
+</tr>
+<tr>
+<td><code>Record_Type_Mapping_Chunk_1__c</code></td>
+<td>Record Type Mapping Chunk 1</td>
+<td>Text</td>
+<td>Machine-managed. Do not edit — this stores part of the record-type mapping configuration and is only ever changed by the Setup console's record-type mapping screen.<br><em>Docs: Part of a 4-field chunked storage scheme for RecordTypeMappingService's compact-encoded mapping table (field separator U+00A7 "§", slot separator U+00B6 "¶") — replaces the former Record_Type_Mapping__c custom object, deleted 2026-08-03 because Custom Settings fields cap at 255 chars and don't support Long Text Area, so a dedicated Long-Text-capable object was the only other option; chunking across Settings__c fields was chosen instead to avoid a second custom object.</em></td>
+</tr>
+<tr>
+<td><code>Record_Type_Mapping_Chunk_2__c</code></td>
+<td>Record Type Mapping Chunk 2</td>
+<td>Text</td>
+<td>Machine-managed. Do not edit — this stores part of the record-type mapping configuration and is only ever changed by the Setup console's record-type mapping screen.</td>
+</tr>
+<tr>
+<td><code>Record_Type_Mapping_Chunk_3__c</code></td>
+<td>Record Type Mapping Chunk 3</td>
+<td>Text</td>
+<td>Machine-managed. Do not edit — this stores part of the record-type mapping configuration and is only ever changed by the Setup console's record-type mapping screen.</td>
+</tr>
+<tr>
+<td><code>Record_Type_Mapping_Chunk_4__c</code></td>
+<td>Record Type Mapping Chunk 4</td>
+<td>Text</td>
+<td>Machine-managed. Do not edit — this stores part of the record-type mapping configuration and is only ever changed by the Setup console's record-type mapping screen.</td>
 </tr>
 <tr>
 <td><code>Recurring_Thankyou_Message__c</code></td>

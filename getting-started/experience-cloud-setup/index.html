@@ -1839,6 +1839,15 @@ many campaign types you run.</p>
 <p>Publish the site and hard-refresh Experience Builder — a newly-installed component
 sometimes doesn't show up until the org's cache picks up the change.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Built the Donate page at a URL other than <code>donate</code>?</p>
+<p>Set <strong>Donation page path</strong> to match, in the Settings console: <strong>General → Organization &amp;
+Donations → Gift rules</strong>. The Campaign Gallery's donate links, the embed widget's checkout
+handoff, and the Fundraisers console's public-links panel all build their URLs from this
+setting — it defaults to <code>/donate</code>, so leaving it blank while your page lives somewhere else
+silently breaks every one of those links with a 404. Leave it blank if you used the default
+<code>donate</code> path above.</p>
+</div>
 <h2 id="3-build-the-other-pages-you-need">3. Build the other pages you need<a class="headerlink" href="#3-build-the-other-pages-you-need" title="Permanent link">#</a></h2>
 <p>Each of these pages is independently optional, but other pages link to them <strong>by URL</strong> — using
 a different path than the one listed breaks that link with a 404. Build only the ones your

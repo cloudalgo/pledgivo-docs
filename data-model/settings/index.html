@@ -1848,6 +1848,12 @@ instead of hardcoding a default.</p>
 <td>Machine-managed. Do not edit — used internally by the reconciliation batch to avoid re-scanning processed disputes.<br><em>Docs: Machine-managed high-water mark read and advanced only by RefundReconciliationBatch's dispute-polling pass; a separate cursor from Refund_Reconcile_Cursor__c because disputes and refunds are polled from Stripe as two independent event streams within the same batch job.</em></td>
 </tr>
 <tr>
+<td><code>Donation_Page_Path__c</code></td>
+<td>Donation Page Path</td>
+<td>Text</td>
+<td>Only fill this in if you built your Donate page at a URL other than /donate. Enter the path exactly as set in Experience Builder's Page Properties (e.g. /give). Leave blank if you used the default /donate — campaign, fundraiser, and embed links are built using this value.</td>
+</tr>
+<tr>
 <td><code>Donor_Portal_Confirmation_Message__c</code></td>
 <td>Donor Portal Confirmation Message</td>
 <td>TextArea</td>
@@ -2098,12 +2104,6 @@ instead of hardcoding a default.</p>
 <td>Portal Link Expiry (Hours)</td>
 <td>Number</td>
 <td>Hours a donor-portal magic link stays valid before it expires, e.g. 24.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 24h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a magic link effectively permanent). Drives how far ahead of issuance DonorPortalService sets Contact/Account.Portal_Token_Expires_At__c.</em></td>
-</tr>
-<tr>
-<td><code>Post_Donation_Redirect_URL__c</code></td>
-<td>Post_Donation_Redirect_URL</td>
-<td>Text</td>
-<td>Optional URL to send donors to after they complete a donation. Leave blank to show the built-in thank-you screen.</td>
 </tr>
 <tr>
 <td><code>Receipt_Email_Template__c</code></td>

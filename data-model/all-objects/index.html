@@ -5857,6 +5857,12 @@
 <td>Machine-managed. Do not edit — used internally by the reconciliation batch to avoid re-scanning processed disputes.<br><em>Docs: Machine-managed high-water mark read and advanced only by RefundReconciliationBatch's dispute-polling pass; a separate cursor from Refund_Reconcile_Cursor__c because disputes and refunds are polled from Stripe as two independent event streams within the same batch job.</em></td>
 </tr>
 <tr>
+<td><code>Donation_Page_Path__c</code></td>
+<td>Donation Page Path</td>
+<td>Text</td>
+<td>Only fill this in if you built your Donate page at a URL other than /donate. Enter the path exactly as set in Experience Builder's Page Properties (e.g. /give). Leave blank if you used the default /donate — campaign, fundraiser, and embed links are built using this value.</td>
+</tr>
+<tr>
 <td><code>Donor_Portal_Confirmation_Message__c</code></td>
 <td>Donor Portal Confirmation Message</td>
 <td>TextArea</td>
@@ -6109,12 +6115,6 @@
 <td>Hours a donor-portal magic link stays valid before it expires, e.g. 24.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 24h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a magic link effectively permanent). Drives how far ahead of issuance DonorPortalService sets Contact/Account.Portal_Token_Expires_At__c.</em></td>
 </tr>
 <tr>
-<td><code>Post_Donation_Redirect_URL__c</code></td>
-<td>Post_Donation_Redirect_URL</td>
-<td>Text</td>
-<td>Optional URL to send donors to after they complete a donation. Leave blank to show the built-in thank-you screen.</td>
-</tr>
-<tr>
 <td><code>Receipt_Email_Template__c</code></td>
 <td>Receipt_Email_Template</td>
 <td>Text</td>
@@ -6311,9 +6311,9 @@
 </tbody>
 </table>
 <h3 id="record-type-mapping">Record Type Mapping<a class="headerlink" href="#record-type-mapping" title="Permanent link">#</a></h3>
-<p><code>Record_Type_Mapping__c</code> · <code>custom</code> · <code>5 fields</code> · <code>ReadWrite</code> · <code>Platform &amp; Settings</code></p>
-<p>Admin-configurable mapping of each packaged record type slot (e.g. Opportunity, Campaign, Contact) to either the package's own default record type or an org's existing record type. One record per slot, seeded at install. RecordTypeService resolves the active record type ID from these rows at runtime, so domain classes, selectors, and record creation never hardcode a record type Id.</p>
-<p><strong>Docs note.</strong> Rows are seeded at install by the post-install handler, one per packaged record type slot, and read through RecordTypeService.loadMappings() into RT_ID_CACHE/PLEDGIVO_RT_IDS for the transaction. Resolution always checks Schema.RecordTypeInfo.isActive(), never isAvailable() — isAvailable() is profile-scoped and comes back false for the Automated Process user that runs Platform Event trigger handlers, which would silently break record creation from async/event contexts if used here. An admin override on a slot wins over the package default; deleting a mapping row rather than setting Is_Active__c=false is not a supported way to disable a slot.</p>
+<p><code>Record_Type_Mapping__c</code> · <code>custom</code> · <code>1 fields</code> · <code>ReadWrite</code> · <code>Platform &amp; Settings</code></p>
+<p>Admin-configurable mapping of each packaged record type slot (e.g. Opportunity, Campaign, Contact) to either the package's own default record type or an org's existing record type. Holds exactly one singleton row: every slot lives as one entry in the Mappings_JSON__c blob rather than one row per slot, and RecordTypeMappingService is the sole class that reads or writes that JSON. RecordTypeService resolves the active record type ID from it at runtime, so domain classes, selectors, and record creation never hardcode a record type Id.</p>
+<p><strong>Docs note.</strong> This object was collapsed from one-row-per-slot to a single singleton row (Name = "Package Record Type Mappings") holding a JSON array in Mappings_JSON__c, because Custom Settings (the obvious alternative for admin-editable config) cap Text/Text Area fields at 255 characters and do not support Long Text Area at all, ruling out that storage location for a JSON blob of this size. RecordTypeMappingService owns all reads/writes of Mappings_JSON__c; RecordTypeService calls it once per transaction and caches the result into RT_ID_CACHE/PLEDGIVO_RT_IDS. Resolution always checks Schema.RecordTypeInfo.isActive(), never isAvailable() — isAvailable() is profile-scoped and comes back false for the Automated Process user that runs Platform Event trigger handlers, which would silently break record creation from async/event contexts if used here. An admin override on a slot wins over the package default; marking a slot's isActive false in the JSON, not removing its entry, is the supported way to disable it.</p>
 <p><strong>Relationships</strong></p>
 <p><em>No lookup/master-detail relationships to or from this object.</em></p>
 <p><strong>Fields</strong></p>
@@ -6328,34 +6328,10 @@
 </thead>
 <tbody>
 <tr>
-<td><code>Is_Active__c</code></td>
-<td>Is Active</td>
-<td>Checkbox</td>
-<td>Uncheck to have the platform skip this record type slot entirely.</td>
-</tr>
-<tr>
-<td><code>Object_API_Name__c</code></td>
-<td>Object_API_Name</td>
-<td>Text</td>
-<td>Object this record type mapping applies to (e.g. Opportunity, Campaign).<br><em>Docs: Together with Package_RT_Developer_Name__c this forms the natural key RecordTypeService looks a slot up by — there is no formal unique/external-id constraint enforcing one active row per object+package-name pair, so a duplicate row is a data-entry mistake the service does not guard against.</em></td>
-</tr>
-<tr>
-<td><code>Override_RT_Developer_Name__c</code></td>
-<td>Override RT Developer Name</td>
-<td>Text</td>
-<td>Optional: developer name of your own record type to use instead of the package default.<br><em>Docs: When blank, RecordTypeService.resolveRTId() falls back to Package_RT_Developer_Name__c. When set, the override wins outright — there is no per-record-type merge of package and org behavior, so an admin pointing this at an org record type takes on responsibility for that record type's page layout and any validation rules the package's automation assumes are absent.</em></td>
-</tr>
-<tr>
-<td><code>Override_RT_Label__c</code></td>
-<td>Override RT Label</td>
-<td>Text</td>
-<td>Display-only label of the overridden record type. Not editable directly.</td>
-</tr>
-<tr>
-<td><code>Package_RT_Developer_Name__c \*</code></td>
-<td>Package RT Developer Name</td>
-<td>Text</td>
-<td>Default package record type developer name for this slot.<br><em>Docs: Store the bare developer name here (e.g. Donation), never pre-fixed with pledgivo__ — the namespace is only applied by RecordTypeService when it builds the DeveloperName it actually queries Schema with, matching the source-vs-packaged naming rule used everywhere else in this package.</em></td>
+<td><code>Mappings_JSON__c</code></td>
+<td>Mappings JSON</td>
+<td>LongTextArea</td>
+<td>Internal configuration data for this app's record type mapping feature. Do not         edit this field directly — use the Record Types panel in the setup console instead.</td>
 </tr>
 </tbody>
 </table>

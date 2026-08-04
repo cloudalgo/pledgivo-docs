@@ -606,8 +606,6 @@
       
         
       
-        
-      
     
     
     
@@ -800,34 +798,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Peer-to-peer fundraising
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../concepts/settings-integrations/" class="md-nav__link">
         
   
@@ -867,8 +837,6 @@
       
         
           
-        
-      
         
       
         
@@ -1036,34 +1004,6 @@
     
   
     Recurring Donation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../data-model/fundraising-page/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fundraising Page
   
 
     
@@ -1820,7 +1760,7 @@ a dependency. Installing Pledgivo is all you need.</p>
 <div class="fn-status-strip">
   <span class="fn-chip">Package type: 2GP managed</span>
   <span class="fn-chip">Namespace: pledgivo</span>
-  <span class="fn-chip">API version: 66.0</span>
+  <span class="fn-chip">API version: 67.0</span>
 </div>
 
 <h2 id="install-steps">Install steps<a class="headerlink" href="#install-steps" title="Permanent link">#</a></h2>
@@ -1843,10 +1783,7 @@ a dependency. Installing Pledgivo is all you need.</p>
    creating the site, building the Donate page and its supporting pages, and publishing.</li>
 <li><strong>Grant the guest user permission set.</strong> Assign <code>Fundraising_GuestDonor</code> to your
    Experience Cloud site's guest user profile (covered in the guide above).
-   Without it, guest donors can view campaign pages but the donation form cannot submit. If
-   you're also running peer-to-peer fundraising, assign <code>Fundraising_P2P_Guest</code> to the same
-   guest user — it's a separate grant, since it covers <code>Fundraising_Page__c</code>/<code>Fundraising_Team__c</code>
-   rather than donation objects.</li>
+   Without it, guest donors can view campaign pages but the donation form cannot submit.</li>
 </ol>
 <div class="fn-shot"><img src="../../assets/images/lex-app-launcher-pledgivo.png" alt="App Launcher search for Pledgivo"></div>
 <p class="fn-figure-caption">**What it shows.** The App Launcher with the Pledgivo app tile and its seven tabs (Campaigns, Contacts, Opportunities, Recurring Donations, Designations, Fundraisers, Settings).</p>
@@ -1870,7 +1807,7 @@ for how that works.</p>
 <tbody>
 <tr>
 <td>Custom objects</td>
-<td>Recurring Donation, Fundraising Page, Designation, Payment Method, Payment Account, and others — see the <a href="../../data-model/">data model reference</a></td>
+<td>Recurring Donation, Designation, Payment Method, Payment Account, and others — see the <a href="../../data-model/">data model reference</a></td>
 </tr>
 <tr>
 <td>Fields on standard objects</td>
@@ -1881,8 +1818,8 @@ for how that works.</p>
 <td>The one branded component in the package — everything else uses functional naming</td>
 </tr>
 <tr>
-<td>Six permission sets</td>
-<td><code>Fundraising_Admin</code>, <code>Fundraising_User</code>, <code>Fundraising_ReadOnly</code> (staff, scoped by role); <code>Fundraising_GuestDonor</code> (site guest — donation pages); <code>Fundraising_P2P</code> (staff — internal fundraiser/team management, full CRUD); <code>Fundraising_P2P_Guest</code> (site guest — public fundraiser/team pages, read-only plus the sign-up create action)</td>
+<td>Four permission sets</td>
+<td><code>Fundraising_Admin</code>, <code>Fundraising_User</code>, <code>Fundraising_ReadOnly</code> (staff, scoped by role); <code>Fundraising_GuestDonor</code> (site guest — donation pages)</td>
 </tr>
 <tr>
 <td>Email templates</td>
@@ -1895,8 +1832,8 @@ for how that works.</p>
 </tbody>
 </table>
 <h2 id="editions-and-experience-cloud">Editions and Experience Cloud<a class="headerlink" href="#editions-and-experience-cloud" title="Permanent link">#</a></h2>
-<p>Public-facing donation pages, the donor self-service portal, event ticket pages, and
-peer-to-peer fundraiser pages are all built on Experience Cloud (Enhanced LWR). If your org
+<p>Public-facing donation pages, the donor self-service portal, and event ticket pages are all
+built on Experience Cloud (Enhanced LWR). If your org
 is on Professional edition, or you haven't provisioned an Experience Cloud site yet, Pledgivo
 still installs and works for internally-recorded gifts — you just won't be able to publish a
 public donation page until a site exists. See

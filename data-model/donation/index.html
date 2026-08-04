@@ -500,8 +500,6 @@
       
         
       
-        
-      
     
     
     
@@ -694,34 +692,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Peer-to-peer fundraising
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../concepts/settings-integrations/" class="md-nav__link">
         
   
@@ -763,8 +733,6 @@
       
         
           
-        
-      
         
       
         
@@ -1014,34 +982,6 @@
     
   
     Recurring Donation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../fundraising-page/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fundraising Page
   
 
     
@@ -1745,7 +1685,7 @@
 <p class="fn-dek">The donation itself — a customized standard Opportunity carrying billing details, the Stripe payment trail, and refund/dispute state for a single gift.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>34 fields</code> · <code>Donations &amp; Payments</code></p>
+<p><code>standard</code> · <code>32 fields</code> · <code>Donations &amp; Payments</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1755,9 +1695,7 @@ inside Salesforce's native pipeline, reporting, and forecasting tooling instead 
 it, and it's why the object carries so much: donor billing address, tribute/dedication details,
 company-match flags, the full Stripe payment/refund/dispute trail (<code>Stripe_Payment_Intent_Id__c</code>,
 <code>Payment_Status__c</code>, <code>Dispute_*__c</code>), and fee-coverage math.</p>
-<p>A recurring installment links back to its schedule via <code>Recurring_Donation__c</code>; a peer-to-peer
-gift links to the page and team it was raised through via <code>Fundraising_Page__c</code> /
-<code>Fundraising_Team__c</code>. Note what's <em>not</em> here — see the <a href="../payment-method/">Payment Method reference</a> for why
+<p>A recurring installment links back to its schedule via <code>Recurring_Donation__c</code>. Note what's <em>not</em> here — see the <a href="../payment-method/">Payment Method reference</a> for why
 <code>Payment_Method__c</code> isn't one of this object's relationships.</p>
 <h2 id="relationships">Relationships<a class="headerlink" href="#relationships" title="Permanent link">#</a></h2>
 <!-- AUTOGEN:RELATIONSHIPS:START -->
@@ -1771,18 +1709,6 @@ gift links to the page and team it was raised through via <code>Fundraising_Page
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>→ out</td>
-<td><code>Fundraising_Page__c</code></td>
-<td><a href="../all-objects/#fundraising-page">Fundraising Page</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>→ out</td>
-<td><code>Fundraising_Team__c</code></td>
-<td><a href="../all-objects/#fundraising-team">Fundraising Team</a></td>
-<td>Lookup</td>
-</tr>
 <tr>
 <td>→ out</td>
 <td><code>Payment_Account__c</code></td>
@@ -1942,18 +1868,6 @@ gift links to the page and team it was raised through via <code>Fundraising_Page
 <td>Fee Amount</td>
 <td>Currency</td>
 <td>Processing fee amount added by the donor, if fee coverage was selected.<br><em>Docs: The donor-covered-fees toggle (Campaign.Donor_Covered_Fees_Enabled__c) is configurable in the Fundraiser admin screen but the donation form never surfaces it to the donor, computes an add-on amount, or includes it in the Stripe charge — the toggle currently has no runtime effect. The org-level default fee percent that would have driven the calculation (Settings__c.Default_Fee_On_Top_Percent__c) was removed 2026-08-03 as dead config (see specs/04-data-model.md). DonationService/EventPurchaseService/RecurringDonationService therefore all write this field as a hardcoded 0 at finalize rather than leaving it null, so Net_Donation_Amount__c stays internally consistent. Implementing real fee collection (donor checkbox, charge-amount adjustment, non-zero write here) is a separate, larger change. Not the same thing as the Stripe processing fee the org itself absorbs, which never appears on the Opportunity at all.</em></td>
-</tr>
-<tr>
-<td><code>Fundraising_Page__c</code></td>
-<td>Fundraising Page</td>
-<td>Lookup → <code>Fundraising_Page__c</code></td>
-<td>The fundraiser page this gift was given through, if applicable.<br><em>Docs: Written by P2PAttributionService, subscribed to the DonationFinalized__e platform event that the donation-finalize path publishes. Peer-to-peer was merged into this base package on 2026-07-13; the platform event is kept as an internal decoupling seam between finalize and attribution, not a cross-package boundary.</em></td>
-</tr>
-<tr>
-<td><code>Fundraising_Team__c</code></td>
-<td>Fundraising Team</td>
-<td>Lookup → <code>Fundraising_Team__c</code></td>
-<td>The fundraising team this gift is credited to, if applicable.<br><em>Docs: Written by the same P2PAttributionService subscriber as Fundraising_Page__c, off the DonationFinalized__e event. Only populated when the sourcing Fundraising_Page__c itself belongs to a Fundraising_Team__c — a solo fundraiser page leaves this blank even though the campaign has Allow_Teams__c enabled.</em></td>
 </tr>
 <tr>
 <td><code>Net_Donation_Amount__c</code></td>

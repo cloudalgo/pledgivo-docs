@@ -500,8 +500,6 @@
       
         
       
-        
-      
     
     
     
@@ -694,34 +692,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Peer-to-peer fundraising
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../concepts/settings-integrations/" class="md-nav__link">
         
   
@@ -761,8 +731,6 @@
       
         
           
-        
-      
         
       
         
@@ -930,34 +898,6 @@
     
   
     Recurring Donation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../data-model/fundraising-page/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fundraising Page
   
 
     
@@ -1728,12 +1668,12 @@
 </div>
 <h2 id="stripepayment">Stripe Payment<a class="headerlink" href="#stripepayment" title="Permanent link">#</a></h2>
 <p><code>stripePayment.page</code></p>
-<p>API 62.0 · controller <code>StripePaymentPageController</code></p>
+<p>API 67.0 · controller <code>StripePaymentPageController</code></p>
 <p>The Stripe Elements host, loaded inside an iframe embedded by dfForm (the public donation form LWC) and by publicDonorDashboard (wallet "add card" flow). Nothing here talks to Apex directly beyond the controller's allowedOrigin fallback — the payment flow is entirely postMessage-driven: the parent posts INIT_STRIPE (mount Elements from a clientSecret already created server-side), then CONFIRM_PAYMENT or CONFIRM_SETUP to trigger the charge/save. CONFIRM_PAYMENT carries an isRecurring flag: dfForm always sends CONFIRM_PAYMENT (the donation flow only ever mints a PaymentIntent, never a SetupIntent, even for recurring — see DonationService.createDonorAndIntent's setupFutureUsage=off_session), and on success this page replies SETUP_SUCCESS+paymentMethodId for a recurring signup or PAYMENT_SUCCESS for a one-time gift. CONFIRM_SETUP is for the donor-dashboard's genuine SetupIntent ("add a new card" without charging) flow only. This page never sees raw card data — Stripe.js tokenizes inside its own nested iframe, so only paymentMethod.id-shaped results ever leave this page, satisfying the PCI rule documented in AGENTS.md.</p>
 <p>reportHeight()/ResizeObserver exist because the parent LWC has no visibility into this iframe's content height and Stripe's Payment Element resizes itself as the donor picks a payment method (card vs bank vs wallet); without this the iframe would either clip the form or leave dead whitespace. buildReturnUrl() derives the sibling stripePaymentReturn.page URL from window.location.href rather than a hardcoded path so it keeps working whether this page is served from the org domain or an Experience Cloud site's VF page prefix.</p>
 <h2 id="stripepaymentreturn">Stripe Payment Return<a class="headerlink" href="#stripepaymentreturn" title="Permanent link">#</a></h2>
 <p><code>stripePaymentReturn.page</code></p>
-<p>API 62.0 · controller <code>StripePaymentReturnController</code></p>
+<p>API 67.0 · controller <code>StripePaymentReturnController</code></p>
 <p>Stripe's own redirect target after an off-platform step (3DS challenge, bank-auth redirect) that stripePayment.page's confirmPayment/confirmSetup calls can trigger even with redirect: 'if_required' — most flows resolve inline and never hit this page at all. Because the browser top-level navigation (not the iframe) is what Stripe redirects, this page has to work in two different contexts: reloaded top-level after a full-page bank redirect (shows the status card + a View Receipt link) or reloaded inside the original iframe if the donor's browser preserved it (posts the result back to the parent LWC via PARENT_ORIGIN, same postMessage contract as stripePayment.page).</p>
 <p>The 'processing' PaymentIntent/SetupIntent status is intentionally treated as success in the UI copy — this package has no Stripe webhook endpoint (see specs/06-stripe-integration.md), so an async bank payment is actually finalized later by StagingReconciliationBatch/StripePaymentSweep polling Donation_Staging__c, not by this page. Telling the donor "processing" would be accurate but confusing right after they just completed checkout.</p>
 

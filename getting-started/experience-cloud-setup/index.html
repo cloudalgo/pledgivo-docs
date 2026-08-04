@@ -628,8 +628,6 @@
       
         
       
-        
-      
     
     
     
@@ -822,34 +820,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Peer-to-peer fundraising
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../concepts/settings-integrations/" class="md-nav__link">
         
   
@@ -889,8 +859,6 @@
       
         
           
-        
-      
         
       
         
@@ -1058,34 +1026,6 @@
     
   
     Recurring Donation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../data-model/fundraising-page/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fundraising Page
   
 
     
@@ -1830,7 +1770,7 @@
 <p class="fn-eyebrow">Getting Started</p>
 
 <h1 id="set-up-your-experience-cloud-site">Set up your Experience Cloud site<a class="headerlink" href="#set-up-your-experience-cloud-site" title="Permanent link">#</a></h1>
-<p class="fn-dek">Public donation pages, the donor portal, event tickets, and peer-to-peer fundraiser pages all run on an Experience Cloud (Enhanced LWR) site. Pledgivo ships every component that goes *on* that site — it doesn't create the site itself. That's a one-time manual setup you do in Salesforce Setup, not something the package installs for you.</p>
+<p class="fn-dek">Public donation pages, the donor portal, and event tickets all run on an Experience Cloud (Enhanced LWR) site. Pledgivo ships every component that goes *on* that site — it doesn't create the site itself. That's a one-time manual setup you do in Salesforce Setup, not something the package installs for you.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Internal-only orgs can skip this</p>
@@ -1916,35 +1856,10 @@ rollout actually uses:</p>
 <td>Event Tickets</td>
 <td>Event ticketing. The Donor Dashboard links here on every event order — skipping this page breaks that link even if you don't otherwise use the Tickets page directly</td>
 </tr>
-<tr>
-<td>Fundraiser Page</td>
-<td><code>f</code></td>
-<td>Fundraiser Page</td>
-<td>Peer-to-peer — an individual's personal fundraising page. Reached via <code>f?slug=&lt;page slug&gt;</code></td>
-</tr>
-<tr>
-<td>Team Page</td>
-<td><code>t</code></td>
-<td>Team Page</td>
-<td>Peer-to-peer — a team leaderboard page. Reached via <code>t?slug=&lt;team slug&gt;</code></td>
-</tr>
-<tr>
-<td>Fundraiser Sign-Up</td>
-<td><code>start-fundraiser</code></td>
-<td>Fundraiser Sign-Up</td>
-<td>Peer-to-peer — "start your own fundraiser" / "join this team" form. <strong>Must</strong> use this exact URL — the Team Page's "Join this team" link and shared sign-up links are hardcoded to <code>/start-fundraiser</code></td>
-</tr>
 </tbody>
 </table>
 <p>Build each the same way as the Donate page: <strong>New Page → Standard → Flexible Layout</strong>, set the
 URL in Page Properties, drag in the named component, <strong>Save</strong>.</p>
-<div class="admonition note">
-<p class="admonition-title">Only building peer-to-peer? Build all three P2P pages together</p>
-<p>Fundraiser Page, Team Page, and Fundraiser Sign-Up are a set — a team's leaderboard links to
-its members' fundraiser pages, and the "join this team" flow lands on Sign-Up before
-redirecting back to a new Fundraiser Page. Skipping one breaks links from the other two. See
-<a href="../../concepts/peer-to-peer/">Peer-to-peer fundraising</a> for how the three pages fit together.</p>
-</div>
 <h2 id="4-activate-guest-access">4. Activate guest access<a class="headerlink" href="#4-activate-guest-access" title="Permanent link">#</a></h2>
 <p><strong>Setup → Digital Experiences → All Sites → your site → Administration → Members</strong> (or from
 Experience Builder: <strong>Settings → General</strong>). Confirm public access is enabled — the "Build Your
@@ -1955,13 +1870,6 @@ record.</p>
 (or assign it directly to the Guest User record). Without this permission set, guest visitors
 can view campaign pages but the donation form cannot submit — see
 <a href="../installation/">Installation</a>.</p>
-<p>If you built the peer-to-peer pages, also assign <strong><code>Fundraising_P2P_Guest</code></strong> to the same Guest
-User — without it, the guest can view a fundraiser or team page but the "start your own
-fundraiser" / "join this team" form cannot submit. This is a separate permission set from
-<code>Fundraising_GuestDonor</code> because it grants access to different objects
-(<code>Fundraising_Page__c</code>/<code>Fundraising_Team__c</code>, not donation objects). Staff who manage fundraisers
-and teams from inside Salesforce need <code>Fundraising_P2P</code> instead (assigned like any other internal
-permission set, not to the Guest User).</p>
 <h2 id="5-publish">5. Publish<a class="headerlink" href="#5-publish" title="Permanent link">#</a></h2>
 <p>Click <strong>Publish</strong> in Experience Builder (top-right). This is a separate step from saving your
 pages — nothing you build in Builder is visible to guest users until you publish.</p>
@@ -1992,12 +1900,6 @@ publish look like it didn't take effect.</p>
 <hr />
 <p>Give returning donors magic-link access to their giving history.</p>
 <p><a href="../../guides/publish-donor-portal/">Publish a donor portal page →</a></p>
-</li>
-<li>
-<p><strong>Peer-to-peer fundraising</strong></p>
-<hr />
-<p>How Fundraiser Pages, Teams, and attribution fit together.</p>
-<p><a href="../../concepts/peer-to-peer/">Peer-to-peer fundraising →</a></p>
 </li>
 </ul>
 </div>

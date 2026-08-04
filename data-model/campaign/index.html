@@ -500,8 +500,6 @@
       
         
       
-        
-      
     
     
     
@@ -694,34 +692,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Peer-to-peer fundraising
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../concepts/settings-integrations/" class="md-nav__link">
         
   
@@ -763,8 +733,6 @@
       
         
           
-        
-      
         
       
         
@@ -1014,34 +982,6 @@
     
   
     Recurring Donation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../fundraising-page/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fundraising Page
   
 
     
@@ -1745,12 +1685,12 @@
 <p class="fn-dek">The fundraising campaign itself — a customized standard Campaign carrying the public page design, default fund designation, and payment routing for everything raised under it.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>54 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>standard</code> · <code>51 fields</code> · <code>Campaigns &amp; Content</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
 <p>Campaign is the root of the object graph: nearly every other object in the Campaigns &amp;
-Content, Recurring Giving, Events, and Peer-to-Peer domains hangs off a <code>Campaign</code> record.
+Content, Recurring Giving, and Events domains hangs off a <code>Campaign</code> record.
 Reusing the standard object keeps campaign reporting inside Salesforce's native Campaign
 tooling (member statuses, influence, standard reports) instead of building a parallel one.</p>
 <p>The custom fields configure what the <em>public</em> campaign page looks like and does —
@@ -1821,18 +1761,6 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 </tr>
 <tr>
 <td>← in</td>
-<td><code>Campaign__c</code> on Fundraising Page</td>
-<td><a href="../all-objects/#fundraising-page">Fundraising Page</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>← in</td>
-<td><code>Campaign__c</code> on Fundraising Team</td>
-<td><a href="../all-objects/#fundraising-team">Fundraising Team</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>← in</td>
 <td><code>Campaign__c</code> on Recurring Donation</td>
 <td><a href="../all-objects/#recurring-donation">Recurring Donation</a></td>
 <td>Lookup</td>
@@ -1866,22 +1794,10 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>When on, ticket buyers are offered the option to add an extra donation at checkout.</td>
 </tr>
 <tr>
-<td><code>Allow_Participant_Pages__c</code></td>
-<td>Allow Participant Pages</td>
-<td>Checkbox</td>
-<td>When on, supporters can launch their own personal fundraising pages. Applies to Peer-to-peer fundraisers.</td>
-</tr>
-<tr>
 <td><code>Allow_Recurring__c</code></td>
 <td>Allow Recurring</td>
 <td>Checkbox</td>
 <td>When on, donors can choose to make their gift recurring instead of one-time.</td>
-</tr>
-<tr>
-<td><code>Allow_Teams__c</code></td>
-<td>Allow Teams</td>
-<td>Checkbox</td>
-<td>When on, supporters can create teams and recruit members. Applies to Peer-to-peer fundraisers.<br><em>Docs: Peer-to-peer fundraising (Fundraising_Page__c, Fundraising_Team__c, publicTeamPage, P2PAttributionService) was merged into this single base package on 2026-07-13 — it now lives in the same package as everything it gates, not a separate extension, so enabling this is a same-package feature flag rather than a cross-package dependency check.</em></td>
 </tr>
 <tr>
 <td><code>Allow_Tribute__c</code></td>
@@ -1954,12 +1870,6 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Default Designation</td>
 <td>Lookup → <code>Designation__c</code></td>
 <td>The fund this campaign supports. Its exact effect depends on the Designation Mode field above: the locked fund in Assigned mode, the pre-selected default in Selectable mode, or unused in All Active mode.<br><em>Docs: This field predates Designation_Mode__c/Allowed_Designation_Ids__c (2026-08) and is reused by the new mode-based resolution in CampaignDesignationService rather than replaced — see specs/04-data-model.md for the full three-mode contract. A blank value here in Assigned mode falls back to Settings__c.Default_Designation__c via SettingsService.defaultDesignationId(), then to an undesignated gift if that also fails to resolve — never a hardcoded fund.</em></td>
-</tr>
-<tr>
-<td><code>Default_Participant_Goal__c</code></td>
-<td>Default Participant Goal</td>
-<td>Currency</td>
-<td>Suggested individual goal for each supporter's page. They can adjust it. Applies to Peer-to-peer fundraisers.</td>
 </tr>
 <tr>
 <td><code>Design__c</code></td>

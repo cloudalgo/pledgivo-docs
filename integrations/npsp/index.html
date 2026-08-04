@@ -498,8 +498,6 @@
       
         
       
-        
-      
     
     
     
@@ -692,34 +690,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Peer-to-peer fundraising
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../concepts/settings-integrations/" class="md-nav__link">
         
   
@@ -759,8 +729,6 @@
       
         
           
-        
-      
         
       
         
@@ -928,34 +896,6 @@
     
   
     Recurring Donation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../data-model/fundraising-page/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fundraising Page
   
 
     
@@ -1843,9 +1783,7 @@ takes effect for donations processed going forward.</p>
 <p>The two syncs fire at different points, not from a single shared trigger:</p>
 <ul>
 <li><strong>GAU allocation sync</strong> (<code>NpspSyncService.syncAllocations</code>) runs off the <code>DonationFinalized__e</code>
-  platform event — the same internal event that drives peer-to-peer attribution (see
-  <a href="../../concepts/peer-to-peer/">Peer-to-peer fundraising</a>), via the <code>DonationFinalizedSubscriber</code>
-  trigger. This keeps it out of the critical path of confirming a payment: if the sync fails or
+  platform event, via the <code>DonationFinalizedSubscriber</code> trigger. This keeps it out of the critical path of confirming a payment: if the sync fails or
   is slow, it doesn't affect whether a donor's payment is finalized.</li>
 <li><strong>Recurring donation mirror sync</strong> (<code>NpspSyncService.syncRecurringDonations</code>) does not listen
   for <code>DonationFinalized__e</code> at all — it runs synchronously, post-commit, inside

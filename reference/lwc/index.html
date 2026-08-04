@@ -500,8 +500,6 @@
       
         
       
-        
-      
     
     
     
@@ -694,34 +692,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/peer-to-peer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Peer-to-peer fundraising
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../concepts/settings-integrations/" class="md-nav__link">
         
   
@@ -761,8 +731,6 @@
       
         
           
-        
-      
         
       
         
@@ -930,34 +898,6 @@
     
   
     Recurring Donation
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../data-model/fundraising-page/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Fundraising Page
   
 
     
@@ -1531,43 +1471,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#publicfundraiserpage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fundraiser Page
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#publicfundraisersignup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fundraiser Sign-Up
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#publicfundraisingexperience" class="md-nav__link">
     <span class="md-ellipsis">
       
         Public Fundraising Experience
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#publicteampage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Team Page
       
     </span>
   </a>
@@ -1999,17 +1906,6 @@
     <span class="md-ellipsis">
       
         Campaign Hero
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pfp2pbase" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        P2P Base Utility
       
     </span>
   </a>
@@ -2492,43 +2388,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#publicfundraiserpage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fundraiser Page
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#publicfundraisersignup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fundraiser Sign-Up
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#publicfundraisingexperience" class="md-nav__link">
     <span class="md-ellipsis">
       
         Public Fundraising Experience
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#publicteampage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Team Page
       
     </span>
   </a>
@@ -2967,17 +2830,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pfp2pbase" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        P2P Base Utility
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#pfpageblocks" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3212,7 +3064,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 59 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 55 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3247,36 +3099,18 @@
 <p>Printable tickets for one event order — every seat on the order, addressed by its receipt token.</p>
 <p><strong>Docs note.</strong> Guest/magic-link page reached via ?token=... (mirrors publicDonationReceipt's Receipt_Token__c pattern) rather than an Order/Opportunity Id, so a ticket confirmation link can't be walked to view someone else's order. Calls EventTicketsController.getTickets(token) — read-only; the actual purchase/check-in flows live in publicEventRegistration and admEventCheckIn respectively.</p>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
-<h4 id="publicfundraiserpage">Fundraiser Page<a class="headerlink" href="#publicfundraiserpage" title="Permanent link">#</a></h4>
-<p><code>publicFundraiserPage</code></p>
-<p><code>exposed</code> · <code>Page, Default</code></p>
-<p>P2P fundraiser personal page for Experience Cloud</p>
-<p><strong>Docs note.</strong> P2P individual fundraiser page, loaded by pageSlug (not a record Id) via FundraiserPageController.getFundraisingPage — one of the three P2P guest pages built on pfP2pBase rather than uiBase (see pfP2pBase's doc note). A donor lands here from a shared /f?slug=<slug> link or from publicFundraiserSignup's post-create redirect.</p>
-<p><strong><code>@api</code> properties:</strong> <code>pageSlug</code></p>
-<h4 id="publicfundraisersignup">Fundraiser Sign-Up<a class="headerlink" href="#publicfundraisersignup" title="Permanent link">#</a></h4>
-<p><code>publicFundraiserSignup</code></p>
-<p><code>exposed</code> · <code>Page, Default</code></p>
-<p>Public start-your-fundraiser / join-a-team sign-up form (P2P)</p>
-<p><strong>Docs note.</strong> Calls FundraiserPageController.startFundraiser, the write counterpart to publicFundraiserPage's and publicTeamPage's read-only getFundraisingPage/getTeamDashboard. On success it redirects the browser to the new page's /f?slug=<newSlug> route rather than rendering it inline, so the newly created fundraiser is reached through the normal publicFundraiserPage load path (no special first-load state to keep in sync).</p>
-<p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code>, <code>teamSlug</code></p>
 <h4 id="publicfundraisingexperience">Public Fundraising Experience<a class="headerlink" href="#publicfundraisingexperience" title="Permanent link">#</a></h4>
 <p><code>publicFundraisingExperience</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
 <p>Single Experience Cloud shell: layout from Campaign Design, blocks from record type and subtype.</p>
 <p><strong>Docs note.</strong> The shell for the standard (non-embed-widget) guest donation route: one CampaignController.getPublicExperienceConfig call returns the merged campaign + design + theme-token payload that composes pfHero and dfForm underneath it, so those children never call Apex for that shared config themselves. _initialAmount/_initialEmail/_initialName are the embedWidget.js handoff contract — the embed widget's "Give" click appends them as URL state before navigating here (see widget-src/src/widget.jsx <code>navigate()</code> and lexEmbedBuilder's snippet), and this shell forwards them into dfForm as prefill rather than dfForm reading location.search itself, keeping the two entry points (embed vs. direct site visit) on one prefill code path.</p>
 <p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code></p>
-<h4 id="publicteampage">Team Page<a class="headerlink" href="#publicteampage" title="Permanent link">#</a></h4>
-<p><code>publicTeamPage</code></p>
-<p><code>exposed</code> · <code>Page, Default</code></p>
-<p>P2P fundraising team leaderboard page for Experience Cloud</p>
-<p><strong>Docs note.</strong> P2P team dashboard, loaded by teamSlug via FundraiserPageController.getTeamDashboard — the team-level counterpart to publicFundraiserPage's individual-page load, sharing the same pfP2pBase (not uiBase) call wrapper and load-once-across-two-possible-triggers pattern (connectedCallback vs. the CurrentPageReference wire, whichever resolves first).</p>
-<p><strong><code>@api</code> properties:</strong> <code>teamSlug</code></p>
 <h2 id="lex-internal-lightning-experience">Lex (internal Lightning Experience)<a class="headerlink" href="#lex-internal-lightning-experience" title="Permanent link">#</a></h2>
 <h4 id="lexcampaignprogresscard">Campaign Progress Card<a class="headerlink" href="#lexcampaignprogresscard" title="Permanent link">#</a></h4>
 <p><code>lexCampaignProgressCard</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
-<p>Record-page card on Campaign showing a goal-progress ring, amount raised vs. goal, donor count, days remaining, and (for peer-to-peer campaigns) the top 3 fundraisers.</p>
-<p><strong>Docs note.</strong> Most fields come from the UI API record wire (no Apex round trip for the base card); only the "top 3 fundraisers" leaderboard needs a server call, so loadExtras() (which calls RecordPageController.getCampaignProgressExtras) fires only when isP2P is true — a non-P2P campaign never makes that request.</p>
+<p>Record-page card on Campaign showing a goal-progress ring, amount raised vs. goal, donor count, and days remaining.</p>
+<p><strong>Docs note.</strong> Every field comes from the UI API record wire — the card makes no Apex round trip at all, so it renders from the same cached record the rest of the page already loaded.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexdonationreceiptprint">Donation Receipt Print View<a class="headerlink" href="#lexdonationreceiptprint" title="Permanent link">#</a></h4>
 <p><code>lexDonationReceiptPrint</code></p>
@@ -3366,7 +3200,7 @@
 <h4 id="admfundraiseravatar">Fundraiser Type Avatar<a class="headerlink" href="#admfundraiseravatar" title="Permanent link">#</a></h4>
 <p><code>admFundraiserAvatar</code></p>
 <p><code>not exposed</code></p>
-<p>Non-exposed helper that renders a small colored icon tile for a fundraiser's subtype (campaign, event, peer-to-peer, open donation) inside the internal fundraisers console.</p>
+<p>Non-exposed helper that renders a small colored icon tile for a fundraiser's subtype (campaign, event, open donation) inside the internal fundraisers console.</p>
 <p><strong>Docs note.</strong> Composed (not inherited) into two parents: lexFundraisersConsole's list/grid rows and the admFundraiserDetail drawer header. Both pass only subtype and size; the icon/color mapping lives entirely in this component, so the two parents can never drift out of sync on what a subtype looks like.</p>
 <p><strong><code>@api</code> properties:</strong> <code>size</code>, <code>subtype</code></p>
 <h4 id="admfundraiserdetail">Fundraiser Detail Drawer<a class="headerlink" href="#admfundraiserdetail" title="Permanent link">#</a></h4>
@@ -3423,7 +3257,7 @@
 <p><code>setPublicLinks</code></p>
 <p><code>not exposed</code></p>
 <p>Settings-console panel listing the public donation/campaign URLs (type, slug, status) with a copy-URL row action for each.</p>
-<p><strong>Docs note.</strong> Read-only inventory of every guest-reachable donation URL (campaigns, event registration, P2P pages) built from Settings__c.Experience_Site_URL__c + each record's slug — a cross-check surface, not the place slugs are edited. Complements lexEmbedBuilder (which generates the embeddable snippet for one campaign at a time) by showing every direct link across the org at once.</p>
+<p><strong>Docs note.</strong> Read-only inventory of every guest-reachable donation URL (campaigns, event registration) built from Settings__c.Experience_Site_URL__c + each record's slug — a cross-check surface, not the place slugs are edited. Complements lexEmbedBuilder (which generates the embeddable snippet for one campaign at a time) by showing every direct link across the org at once.</p>
 <h4 id="setrecordtypes">Settings: Record Type Mapping<a class="headerlink" href="#setrecordtypes" title="Permanent link">#</a></h4>
 <p><code>setRecordTypes</code></p>
 <p><code>not exposed</code></p>
@@ -3454,11 +3288,6 @@
 <p>Campaign header with goal progress bar for Experience Cloud</p>
 <p><strong>Docs note.</strong> Composed by publicFundraisingExperience as the shell's hero block and imported directly by dfForm (the 3-step donation canvas can render its own hero header without going through the shell). Self-fetches via CampaignController.getCampaignBySlug rather than receiving campaign data as a prop, so either parent only needs to pass campaignSlug. Emits a bubbling, composed <code>donate</code> CustomEvent on CTA click — the host page/shell decides what "donate" means (scroll to an embedded dfForm, or navigate to one) rather than this component owning navigation.</p>
 <p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>campaignSlug</code>, <code>ctaLabel</code>, <code>eyebrow</code>, <code>hideCta</code>, <code>showProgressBar</code></p>
-<h4 id="pfp2pbase">P2P Base Utility<a class="headerlink" href="#pfp2pbase" title="Permanent link">#</a></h4>
-<p><code>pfP2pBase</code></p>
-<p><code>not exposed</code></p>
-<p>Non-exposed base class for public peer-to-peer LWCs, providing a shared Apex-call wrapper that handles the success/data/error envelope, loading spinner, and error toasts.</p>
-<p><strong>Docs note.</strong> Extended by the three peer-to-peer guest pages — publicFundraiserPage, publicTeamPage, publicFundraiserSignup — not by uiBase; those pages predate the base+p2p merge and were never migrated onto uiBase's callApex, so this is a second, functionally-parallel base class rather than a shared one. Keep the two in sync by hand if the envelope-unpacking contract ({ success, data, error }) ever changes.</p>
 <h4 id="pfpageblocks">Page Blocks<a class="headerlink" href="#pfpageblocks" title="Permanent link">#</a></h4>
 <p><code>pfPageBlocks</code></p>
 <p><code>not exposed</code></p>
@@ -3527,7 +3356,7 @@
 <p><code>uiBase</code></p>
 <p><code>not exposed</code></p>
 <p>Non-exposed base class for internal Lightning Experience LWCs, providing a shared Apex-call wrapper for the success/data/error envelope, loading spinner, and error toasts.</p>
-<p><strong>Docs note.</strong> Extended throughout the internal adm<em>/set</em>/lex* bundles (and by the public 3-step canvas dfForm) as the standard callApex wrapper. The three P2P guest pages (publicFundraiserPage/publicTeamPage/publicFundraiserSignup) do NOT extend this — they extend the separate, functionally-identical pfP2pBase instead (see that bundle's doc note for why there are two copies of the same wrapper rather than one shared class).</p>
+<p><strong>Docs note.</strong> Extended throughout the internal adm<em>/set</em>/lex* bundles (and by the public 3-step canvas dfForm) as the standard callApex wrapper.</p>
 <h4 id="uimodal">Ember Modal<a class="headerlink" href="#uimodal" title="Permanent link">#</a></h4>
 <p><code>uiModal</code></p>
 <p><code>not exposed</code></p>
@@ -3538,7 +3367,7 @@
 <p><code>uiMoney</code></p>
 <p><code>not exposed</code></p>
 <p>Non-exposed JS-only utility module (no markup) providing shared currency-aware money formatting and the org's configured charge currency for every donation surface.</p>
-<p><strong>Docs note.</strong> The currency half of this module (formatMoney/currencyOf) is imported by essentially every money-displaying bundle across all groups — dfForm, dfDesignationPicker, pfHero, the lex* record-page cards, the public P2P/event pages, admEventTicketsTab, admFundraiserDetail — each pairing it with its own @wire(getUiConfig) per the LWC1503 static-analysis constraint documented above (the wire adapter itself can't be re-exported through a shared module).</p>
+<p><strong>Docs note.</strong> The currency half of this module (formatMoney/currencyOf) is imported by essentially every money-displaying bundle across all groups — dfForm, dfDesignationPicker, pfHero, the lex* record-page cards, the public event pages, admEventTicketsTab, admFundraiserDetail — each pairing it with its own @wire(getUiConfig) per the LWC1503 static-analysis constraint documented above (the wire adapter itself can't be re-exported through a shared module).</p>
 <h4 id="uisegmented">Ember Segmented Control<a class="headerlink" href="#uisegmented" title="Permanent link">#</a></h4>
 <p><code>uiSegmented</code></p>
 <p><code>not exposed</code></p>

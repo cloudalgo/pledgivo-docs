@@ -707,6 +707,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#controlling-which-funds-a-donor-can-pick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlling which funds a donor can pick
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#where-the-payment-reference-lives" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1767,6 +1778,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#controlling-which-funds-a-donor-can-pick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Controlling which funds a donor can pick
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#where-the-payment-reference-lives" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1868,6 +1890,31 @@ other can never create two Opportunities for the same payment.</p>
 <div class="fn-shot"><img src="../../assets/images/df-donation-form.png" alt="Public donation form"></div>
 <p class="fn-figure-caption">**What it shows.** A live public donation form — amount tiles with a custom-amount input, a One-time/Monthly/Annually frequency toggle, fund designation and split-gift options, donor info fields, tribute/dedication and employer-match blocks, and a sticky gift summary sidebar with "Secure & encrypted" / "Powered by Stripe" trust badges. This is the Compose step described in [Campaigns](campaigns.md) rendered for a guest.</p>
 
+<h2 id="controlling-which-funds-a-donor-can-pick">Controlling which funds a donor can pick<a class="headerlink" href="#controlling-which-funds-a-donor-can-pick" title="Permanent link">#</a></h2>
+<p>By default every campaign's donor picks freely from every active <code>Designation__c</code> (fund) in
+the org — this is the <code>All_Active</code> mode, and it's what every campaign got before this control
+existed, so nothing changes unless you opt in. A campaign's <code>Designation_Mode__c</code> field offers
+two more options, set from the Fundraisers console (<code>lexFundraisersConsole</code>):</p>
+<ul>
+<li><strong>All Active</strong> (default) — the donation form shows every active fund. No configuration
+  needed; this is unchanged, org-wide behavior.</li>
+<li><strong>Assigned</strong> — every gift on this campaign is locked to a single fund
+  (<code>Default_Designation__c</code>). The fund picker doesn't render at all — there's nothing for the
+  donor to choose, so the form skips straight past it.</li>
+<li><strong>Selectable</strong> — the donor sees a picker scoped to an admin-chosen subset of funds
+  (<code>Allowed_Designation_Ids__c</code>), pre-selected to <code>Default_Designation__c</code> when it's one of the
+  offered funds.</li>
+</ul>
+<p><code>CampaignDesignationService.resolveDesignationConfig()</code> is the single place this is resolved,
+and it fails safe rather than fails loud: if an allowed fund was later deactivated or deleted,
+it's silently dropped from the list rather than breaking the donation page; if every configured
+fund turns out to be invalid, the campaign falls back to the org-wide default fund
+(<code>Settings__c.Default_Designation__c</code>) and finally to an undesignated gift. A donor never sees
+an error because of stale fund configuration — worst case, the picker just offers fewer choices
+than intended, which is a config problem for an admin to notice and fix, not something that
+should ever block a gift. The same resolved scope is enforced server-side on submit
+(<code>DonationService</code>/<code>RecurringDonationService</code>), so a donor can't submit a fund outside the
+configured scope by tampering with the client.</p>
 <h2 id="where-the-payment-reference-lives">Where the payment reference lives<a class="headerlink" href="#where-the-payment-reference-lives" title="Permanent link">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Payment_Method__c is for recurring gifts only</p>

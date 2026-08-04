@@ -1745,7 +1745,7 @@
 <p class="fn-dek">The fundraising campaign itself — a customized standard Campaign carrying the public page design, default fund designation, and payment routing for everything raised under it.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>51 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>standard</code> · <code>53 fields</code> · <code>Campaigns &amp; Content</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1890,6 +1890,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>When on, donors can dedicate their gift "in honor of" or "in memory of" someone.</td>
 </tr>
 <tr>
+<td><code>Allowed_Designation_Ids__c</code></td>
+<td>Allowed Designation Ids</td>
+<td>LongTextArea</td>
+<td>Only used when Designation Mode is Selectable — the set of funds donors may choose between on this campaign's donation page. Managed by the fund-scope picker, not edited directly.<br><em>Docs: Mirrors Campaign.FAQ_Ids__c's JSON-array-in-a-field pattern (CampaignFaqService) — deliberately not a junction object, per the locked design decision. A LongTextArea comfortably holds hundreds of 18-char Ids as a JSON array; no realistic campaign approaches that limit.</em></td>
+</tr>
+<tr>
 <td><code>Amount_Impacts_JSON__c</code></td>
 <td>Amount Impacts (JSON)</td>
 <td>LongTextArea</td>
@@ -1947,7 +1953,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Default_Designation__c</code></td>
 <td>Default Designation</td>
 <td>Lookup → <code>Designation__c</code></td>
-<td>The fund this fundraiser supports. The public donation form pre-selects it so gifts default to this designation.<br><em>Docs: This campaign-level default only applies when a donor does not choose another designation on the form; it does not override an explicit donor choice, and a blank value here falls back to whatever default DonationService resolves at gift time, not to a hardcoded fund.</em></td>
+<td>The fund this campaign supports. Its exact effect depends on the Designation Mode field above: the locked fund in Assigned mode, the pre-selected default in Selectable mode, or unused in All Active mode.<br><em>Docs: This field predates Designation_Mode__c/Allowed_Designation_Ids__c (2026-08) and is reused by the new mode-based resolution in CampaignDesignationService rather than replaced — see specs/04-data-model.md for the full three-mode contract. A blank value here in Assigned mode falls back to Settings__c.Default_Designation__c via SettingsService.defaultDesignationId(), then to an undesignated gift if that also fails to resolve — never a hardcoded fund.</em></td>
 </tr>
 <tr>
 <td><code>Default_Participant_Goal__c</code></td>
@@ -1960,6 +1966,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Design</td>
 <td>Lookup → <code>Campaign_Design__c</code></td>
 <td>Which saved design/theme to use for this campaign's public page. Leave blank to use the default design.<br><em>Docs: Resolved by CampaignService.resolveDesign()/selectDesignSystemMode(). The chosen design's theme JSON is normalized by CampaignService.normalizeThemeTokensJson() against the Theme_Token__mdt catalog before it ever reaches the guest page, so an admin cannot smuggle an arbitrary CSS var through a design record — only tokens present in that packaged catalog survive.</em></td>
+</tr>
+<tr>
+<td><code>Designation_Mode__c</code></td>
+<td>Designation Mode</td>
+<td>Picklist</td>
+<td>How donors choose a fund on this campaign's donation page: lock every gift to one fund (default), let them pick from every active fund, or offer a scoped list you choose below.<br><em>Docs: Explicit picklist, not inferred from Allowed_Designation_Ids__c list length — this keeps admin intent stable while the admin is mid-edit of the fund list (e.g. temporarily down to one selected fund should not silently behave like Assigned mode). Default is Assigned — a new campaign locks to its single Default_Designation__c fund unless an admin opts into a broader mode; this field ships new alongside campaign designation scoping, so there is no pre-existing installed base to stay backward compatible with. A picklist default applies only to records created through the record UI — Salesforce does NOT apply it to records created via the API/Apex. Campaigns created by the fundraiser wizard, the seed scripts, or any integration must therefore set this field EXPLICITLY. A record that still ends up blank resolves to All Active, not Assigned, in CampaignDesignationService — a deliberate choice so an unconfigured campaign is not silently narrowed to one fund.</em></td>
 </tr>
 <tr>
 <td><code>Donor_Count__c</code></td>

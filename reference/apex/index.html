@@ -1715,6 +1715,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#apex-campaigndesignationconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignDesignationConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-campaigndesignationservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignDesignationService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-campaignfaqservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1741,6 +1763,17 @@
     <span class="md-ellipsis">
       
         CustomQuestionService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-icampaigndesignationservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICampaignDesignationService
       
     </span>
   </a>
@@ -2051,6 +2084,17 @@
   
     <nav class="md-nav" aria-label="Selectors">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apex-designationnetraised" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DesignationNetRaised
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#apex-designationsselector" class="md-nav__link">
@@ -4495,6 +4539,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#apex-campaigndesignationconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignDesignationConfig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-campaigndesignationservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignDesignationService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-campaignfaqservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4521,6 +4587,17 @@
     <span class="md-ellipsis">
       
         CustomQuestionService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-icampaigndesignationservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ICampaignDesignationService
       
     </span>
   </a>
@@ -4831,6 +4908,17 @@
   
     <nav class="md-nav" aria-label="Selectors">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apex-designationnetraised" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DesignationNetRaised
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#apex-designationsselector" class="md-nav__link">
@@ -6794,7 +6882,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 160 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 164 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -6991,7 +7079,9 @@
 <h4 id="apex-fundraiserdetailcontroller">FundraiserDetailController<a class="headerlink" href="#apex-fundraiserdetailcontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>FundraiserDetailController — powers the fundraiser record drawer in the admin console. Returns a summary + overview aggregates (for the charts) and paginated related lists (donations, participant pages, teams, recurring gifts) so each tab lazy-loads on demand. All SOQL runs through selectors (aggregate/count queries excepted — the fflib QueryFactory can't express them). Every @AuraEnabled returns the { success, data/error } envelope.</p>
-<p><strong>Docs note.</strong> GetPages/GetTeams cross into the fundraising/ (P2P) domain — FundraisingPagesSelector /</p>
+<p><strong>Docs note.</strong> GetPages/GetTeams cross into the fundraising/ (P2P) domain — FundraisingPagesSelector / FundraisingTeamsSelector — even though this controller lives in campaign/, because a participant page/team is always scoped to a parent Campaign. There is no package boundary to respect here: P2P was merged into the single base package on 2026-07-13.</p>
+<p>mirrors CampaignService.buildCampaignResult()'s designation resolution so the drawer's Fund related list shows the same mode-aware, fail-safe-resolved picture the donor sees on the public form — never re-derive fund scope from the raw stored fields.</p>
+<p>Realized fund-split table for the drawer's "Realized fund split" related list — net-raised/donation-count per fund actually used by this campaign's Closed Won gifts, plus the Undesignated bucket. isAllowed diffs each fund's Id against the CURRENT resolved allowed set so a fund removed from the campaign after receiving donations still shows up (marked "not currently allowed" by the LWC), matching the mock's reconciliation intent — this is computed here, not filtered out at the query layer.</p>
 <table>
 <thead>
 <tr>
@@ -7030,6 +7120,11 @@
 <td><a id="apex-fundraiserdetailcontroller-gettickets"></a><code>getTickets(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-fundraiserdetailcontroller-compareto"></a><code>compareTo(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -7202,6 +7297,16 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-campaignsselector-selectwithdesignations"></a><code>selectWithDesignations(1 arg)</code></td>
+<td><code>List&lt;Campaign&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-querycondition-of">QueryCondition.of()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-campaignsselector-countbydesignid"></a><code>countByDesignId(1 arg)</code></td>
 <td><code>Integer</code></td>
 <td></td>
@@ -7316,6 +7421,45 @@
 </tbody>
 </table>
 <h3 id="services">Services<a class="headerlink" href="#services" title="Permanent link">#</a></h3>
+<h4 id="apex-campaigndesignationconfig">CampaignDesignationConfig<a class="headerlink" href="#apex-campaigndesignationconfig" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public</code></p>
+<p>Resolved designation (fund) picker configuration for a campaign, produced by CampaignDesignationService.resolveDesignationConfig(). Carries the effective mode after fail-safe resolution (never blindly Campaign.Designation_Mode__c verbatim — a mode can fall through to 'Assigned' or 'None' when its configured fund(s) turn out stale).</p>
+<p><strong>Docs note.</strong> mode is always one of 'All_Active' / 'Assigned' / 'Selectable' / 'None' — 'None' only occurs when every configured fund (including the Settings__c org default) fails to resolve, meaning the gift proceeds fully undesignated.</p>
+<h4 id="apex-campaigndesignationservice">CampaignDesignationService<a class="headerlink" href="#apex-campaigndesignationservice" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p>implements <a href="#apex-icampaigndesignationservice">ICampaignDesignationService</a></p>
+<p>Resolves which Designation__c (fund) records a campaign's public donation form should offer, per Campaign.Designation_Mode__c. Mirrors CampaignFaqService structurally: a JSON-array-in-a-field (Allowed_Designation_Ids__c) instead of a junction object, with the same silent stale-Id fail-safe as CampaignFaqService.getSelectedFaqs() — a listed Id that no longer resolves to an active Designation__c is dropped, never surfaced as an error. See docs/superpowers/specs/2026-08-04-campaign-designation-scoping-design.md for the full design.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-campaigndesignationservice-resolvedesignationconfig"></a><code>resolveDesignationConfig(1 arg)</code></td>
+<td><code>[CampaignDesignationConfig](#apex-campaigndesignationconfig)</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaigndesignationservice-filterallowedsplits"></a><code>filterAllowedSplits(3 args)</code></td>
+<td><code>List&lt;[DesignationSplits](#apex-designationsplits).Split&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-defaultdesignationid">SettingsService.defaultDesignationId()</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h4 id="apex-campaignfaqservice">CampaignFaqService<a class="headerlink" href="#apex-campaignfaqservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-icampaignfaqservice">ICampaignFaqService</a></p>
@@ -7448,6 +7592,8 @@
 </tr>
 </tbody>
 </table>
+<h4 id="apex-icampaigndesignationservice">ICampaignDesignationService<a class="headerlink" href="#apex-icampaigndesignationservice" title="Permanent link">#</a></h4>
+<p><code>interface</code> · <code>public</code></p>
 <h4 id="apex-icampaignfaqservice">ICampaignFaqService<a class="headerlink" href="#apex-icampaignfaqservice" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <h4 id="apex-icampaignservice">ICampaignService<a class="headerlink" href="#apex-icampaignservice" title="Permanent link">#</a></h4>
@@ -7951,6 +8097,9 @@
 </tbody>
 </table>
 <h3 id="selectors_1">Selectors<a class="headerlink" href="#selectors_1" title="Permanent link">#</a></h3>
+<h4 id="apex-designationnetraised">DesignationNetRaised<a class="headerlink" href="#apex-designationnetraised" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public</code></p>
+<p><strong>Docs note.</strong> DTO returned by DonationDesignationsSelector's per-designation net-raised queries. Replaced a raw AggregateResult return (SUM(Opportunity__r.Refunded_Amount__c) GROUP BY Designation__c) which double-counted a split gift's refund once per fund it touched — SOQL SUM() can't express "prorate this Opportunity's refund across its splits", so the selector queries raw rows and this class carries the per-designation accumulation the selector computes in Apex instead.</p>
 <h4 id="apex-designationsselector">DesignationsSelector<a class="headerlink" href="#apex-designationsselector" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-idesignationsselector">IDesignationsSelector</a></p>
@@ -7984,6 +8133,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-designationsselector-selectbyidsystemmode"></a><code>selectByIdSystemMode(1 arg)</code></td>
+<td><code>List&lt;Designation__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-designationsselector-selectactivedesignations"></a><code>selectActiveDesignations(0 args)</code></td>
 <td><code>List&lt;Designation__c&gt;</code></td>
 <td></td>
@@ -7994,6 +8148,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-idonationdesignationsselector">IDonationDesignationsSelector</a></p>
 <p><strong>Docs note.</strong> Reads the per-fund split rows written by DonationService (one-time) and RecurringDonationService (recurring) via DesignationSplits. selectByOpportunityIdsWithGau feeds NpspSyncService.syncAllocations — the only other consumer of the GAU-mapped variant.</p>
+<p>Per-fund realized split for one campaign's donations — feeds admFundraiserDetail's "Realized fund split" table. Includes funds since removed from the campaign's allowed list (the LWC/controller layer marks those "not currently allowed" by diffing against the current CampaignDesignationConfig, not by filtering them out here). Same net-raised math as selectAggregateRaisedByDesignations, scoped by campaign instead of by designation set.</p>
 <table>
 <thead>
 <tr>
@@ -8030,7 +8185,12 @@
 </tr>
 <tr>
 <td><a id="apex-donationdesignationsselector-selectaggregateraisedbydesignations"></a><code>selectAggregateRaisedByDesignations(1 arg)</code></td>
-<td><code>List&lt;AggregateResult&gt;</code></td>
+<td><code>List&lt;[DesignationNetRaised](#apex-designationnetraised)&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationdesignationsselector-selectaggregateraisedbycampaign"></a><code>selectAggregateRaisedByCampaign(1 arg)</code></td>
+<td><code>List&lt;[DesignationNetRaised](#apex-designationnetraised)&gt;</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -8048,6 +8208,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-iopportunitiesselector">IOpportunitiesSelector</a></p>
 <p><strong>Docs note.</strong> The largest selector in the package — one-time and recurring donation receipts, refunds, disputes, the donor portal dashboard, event-ticket orders, and the internal fundraiser-detail console all read Opportunity through this class rather than ad hoc SOQL elsewhere.</p>
+<p>Won gifts on this campaign with zero Donation_Designation__c rows — the "Undesignated" bucket for admFundraiserDetail's realized fund-split table. Net of refunds, same convention as aggCampaignSummary/selectAggregateRaisedByCampaign.</p>
 <table>
 <thead>
 <tr>
@@ -8239,6 +8400,11 @@
 </tr>
 <tr>
 <td><a id="apex-opportunitiesselector-aggcampaignsummary"></a><code>aggCampaignSummary(1 arg)</code></td>
+<td><code>List&lt;AggregateResult&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-opportunitiesselector-aggundesignatedbycampaign"></a><code>aggUndesignatedByCampaign(1 arg)</code></td>
 <td><code>List&lt;AggregateResult&gt;</code></td>
 <td></td>
 </tr>
@@ -10607,7 +10773,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10637,7 +10803,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
 <td></td>
 </tr>
 <tr>

@@ -3279,6 +3279,7 @@
 <p><code>exposed</code> · <code>Tab</code></p>
 <p>Internal Lightning app tab listing all fundraisers/campaigns with a create/edit wizard covering campaign details, tickets, questions, FAQs, and fund designations.</p>
 <p><strong>Docs note.</strong> The Fundraisers tab shell — lists all campaigns and drives the create/edit wizard via FundraiserAdminController, plus EventTicketAdminController.saveTicketTypes/getTicketTemplates and CampaignQuestionController/CampaignFaqController for the Tickets/Questions/FAQ wizard steps (Event fundraisers add the tickets step; every subtype gets questions/FAQ). Composes admFundraiserAvatar for row/grid icons and admFundraiserDetail as the slide-in drawer (<c-adm-fundraiser-detail record-id={detailId}>) when a row is opened — the console owns which row is open, the drawer self-fetches everything else. EMBER_THEME mirrors the default brand tokens (see docs/brand-identity.md) as the wizard's page-design preview fallback when a design record leaves a token blank.</p>
+<p>'Ended' stays the internal status/filter value (tabs, GANTT_COLOR key) so the existing filter/gantt logic is untouched; "Completed" is a display-only relabel (statusLabel + .pill.completed + a per-stage SVG icon), sourced from the row's Campaign_Closed__c formula field via FundraiserAdminController.GetFundraisers.</p>
 <h4 id="lexfundraisingsettings">Fundraising Settings<a class="headerlink" href="#lexfundraisingsettings" title="Permanent link">#</a></h4>
 <p><code>lexFundraisingSettings</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>

@@ -6945,6 +6945,7 @@
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>FundraiserAdminController — internal admin console for launching and managing fundraisers (Campaigns). Lets staff create a whole fundraiser in one flow — Campaign + linked page design + fund (Designation, existing or new) — without opening multiple Salesforce objects. Reads via CampaignsSelector/DesignationsSelector/CampaignDesignsSelector; all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via ControllerAction.run().</p>
 <p><strong>Docs note.</strong> "Fundraiser" is admin-console terminology for a Campaign with a subtype</p>
+<p>source of truth is the Campaign_Closed__c formula field (EndDate-based),</p>
 <p>org-wide starting values for a new fundraiser's donor-option toggles (see SettingsService.defaultAllowTribute/defaultAllowCompanyMatch); the wizard applies these only when creating a NEW Campaign, never on edit.</p>
 <table>
 <thead>

@@ -1745,7 +1745,7 @@
 <p class="fn-dek">The fundraising campaign itself — a customized standard Campaign carrying the public page design, default fund designation, and payment routing for everything raised under it.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>49 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>standard</code> · <code>50 fields</code> · <code>Campaigns &amp; Content</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1900,6 +1900,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Amount Raised</td>
 <td>Currency</td>
 <td>Total raised toward this campaign's goal so far. Calculated automatically — do not edit directly.<br><em>Docs: Apex-maintained, not a native roll-up (Opportunity to Campaign is a standard lookup, not master-detail). Recomputed by CampaignService.rollupCampaignTotals() from a fresh SUM query every time it runs, so it is always the source of truth rather than an incremental counter; called from the Opportunities domain on insert, on a Closed Won status change, on any post-close Amount change, and on a refund. A goal-crossing detected mid-rollup enqueues CancelGoalReachedRecurringQueueable when Recurring_Behaviour_At_Goal__c is Cancel.</em></td>
+</tr>
+<tr>
+<td><code>Campaign_Closed__c</code></td>
+<td>Closed</td>
+<td>Checkbox</td>
+<td>Automatically checked once this campaign's end date has passed. Drives the "Completed" tag in the Fundraisers console — you don't need to set this manually.<br><em>Docs: Deliberately EndDate-only, matching the console's prior "Ended" derivation (c.EndDate != null &amp;&amp; c.EndDate &lt; today) — Status stays a separate, admin-set field and is not part of this formula. See CampaignsSelector.selectFundraisers (adds this to the query) and FundraiserAdminController.GetFundraisers (reads it as the "Ended" status source).</em></td>
 </tr>
 <tr>
 <td><code>Campaign_Subtype__c</code></td>

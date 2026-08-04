@@ -2748,7 +2748,7 @@
 </table>
 <h2 id="campaigns-content">Campaigns &amp; Content<a class="headerlink" href="#campaigns-content" title="Permanent link">#</a></h2>
 <h3 id="campaign">Campaign<a class="headerlink" href="#campaign" title="Permanent link">#</a></h3>
-<p><code>Campaign</code> · <code>standard</code> · <code>50 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>Campaign</code> · <code>standard</code> · <code>51 fields</code> · <code>Campaigns &amp; Content</code></p>
 <p>See the <a href="../campaign/">full reference page</a> for this object.</p>
 <p><strong>Relationships</strong></p>
 <table>
@@ -2893,6 +2893,12 @@
 <td>Closed</td>
 <td>Checkbox</td>
 <td>Automatically checked once this campaign's end date has passed. Drives the "Completed" tag in the Fundraisers console — you don't need to set this manually.<br><em>Docs: Deliberately EndDate-only, matching the console's prior "Ended" derivation (c.EndDate != null &amp;&amp; c.EndDate &lt; today) — Status stays a separate, admin-set field and is not part of this formula. See CampaignsSelector.selectFundraisers (adds this to the query) and FundraiserAdminController.GetFundraisers (reads it as the "Ended" status source).</em></td>
+</tr>
+<tr>
+<td><code>Campaign_Stage_Icon__c</code></td>
+<td>Stage Icon</td>
+<td>Text</td>
+<td>A quick visual read of this campaign's stage: green means it's live and accepting donations, yellow means it's still a draft, red means it has ended. This is calculated automatically — there's nothing to set here.<br><em>Docs: Uses Salesforce's built-in /img/samples/color_{green,yellow,red}.gif sample images (verified current against Salesforce Developer Docs' "Sample Image Link Formulas" reference, checked 2026-08-04) — no static resource or upload needed. Same three-state logic as Campaign_Closed__c's own doc comment and FundraiserAdminController.GetFundraisers: Status = 'Active' -&gt; Active (green); else Campaign_Closed__c -&gt; Ended (red); else -&gt; Draft (yellow). This is the native record-page counterpart to lexFundraisersConsole's client-side SVG stage icons — that component needs inline markup for styling control, this field exists so the same stage is visible on the standard Campaign layout without opening the console.</em></td>
 </tr>
 <tr>
 <td><code>Campaign_Subtype__c</code></td>

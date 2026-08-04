@@ -2161,6 +2161,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#uiapexerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apex Error Formatting Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uibase" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3111,6 +3122,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#uiapexerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Apex Error Formatting Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uibase" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3190,7 +3212,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 58 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 59 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3352,6 +3374,7 @@
 <p><code>not exposed</code></p>
 <p>Non-exposed slide-in detail panel used by the Fundraisers console tab, showing a campaign's overview, donations, pages, teams, tickets, questions, FAQ, recurring gifts, and fund across tabs.</p>
 <p><strong>Docs note.</strong> Mounted by lexFundraisersConsole as <c-adm-fundraiser-detail record-id={detailId} onclose= onedit=> — the console owns detailId (which row is open) and passes nothing else down; this component self-fetches everything via FundraiserDetailController. Composes admFundraiserAvatar (header icon) plus four tab children for the drawer's Event-only and always-on sections: admEventTicketsTab, admEventCheckIn, admCustomQuestionsTab, admCampaignFaqTab. Row actions call RefundController.refundDonation and StopRecurringDonationController.stopRecurringDonation directly (same controllers as the lexRefundDonation / lexStopRecurringDonation RecordAction quick actions) so a refund or stop issued from this drawer behaves identically to one issued from the Opportunity highlights bar. Related lists (donations/recurring/pages/teams/tickets) lazy-load per-list on first tab view and support a nested paginated "view all" sheet beyond the 10-row inline cap — see the fundraiser-detail-related-lists-redesign design note.</p>
+<p>Which of the org's configured Stripe accounts this fundraiser's gifts settle to</p>
 <p>mirrors the note the mock shows under the mode name — one line summarizing what a donor sees, so an admin can tell the resolved picker behavior without opening Fund below.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h2 id="set-settings-console-panels">Set (settings console panels)<a class="headerlink" href="#set-settings-console-panels" title="Permanent link">#</a></h2>
@@ -3494,6 +3517,12 @@
 <p>CSS-only shared style module giving the donation form a centered headline over a clean, left-aligned single-column field layout; one of the public donation page's layout themes.</p>
 <p><strong>Docs note.</strong> Selected by dfForm's layout token and pulled in via @import in dfForm.css alongside the other five df-layout-* modules. Because all six modules load together, this module's override rule must be the compound selector .donation-form.df-spotlight (specificity 0-2-0) to beat the base .donation-form { max-width: 520px; } rule (0-1-0) — @import order alone does not decide the winner. See the compound-selector comment already inline in dfLayoutSpotlight.css.</p>
 <h2 id="ui-shared-primitives">Ui (shared primitives)<a class="headerlink" href="#ui-shared-primitives" title="Permanent link">#</a></h2>
+<h4 id="uiapexerror">Apex Error Formatting Utility<a class="headerlink" href="#uiapexerror" title="Permanent link">#</a></h4>
+<p><code>uiApexError</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed JS-only utility module (no markup) that turns a raw Apex or DML failure from a controller response envelope into one readable reason per failure plus the field API names it cited, so a console can say what to fix.</p>
+<p><strong>Docs note.</strong> Consumed by lexFundraisersConsole's wizard save-failure panel. Lives here rather than in uiBase because uiBase is a base <em>class</em> (callApex/toast plumbing) — this is a pure function any console can import without inheriting from it, following the uiMoney precedent for JS-only shared utilities.</p>
+<p>Salesforce status codes are SCREAMING_SNAKE and always followed by ", " before the human message. Six-char minimum keeps the pattern off ordinary uppercase words in prose.</p>
 <h4 id="uibase">Internal Base Component<a class="headerlink" href="#uibase" title="Permanent link">#</a></h4>
 <p><code>uiBase</code></p>
 <p><code>not exposed</code></p>

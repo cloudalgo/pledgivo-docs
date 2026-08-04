@@ -1745,7 +1745,7 @@
 <p class="fn-dek">The fundraising campaign itself — a customized standard Campaign carrying the public page design, default fund designation, and payment routing for everything raised under it.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>53 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>standard</code> · <code>54 fields</code> · <code>Campaigns &amp; Content</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1785,6 +1785,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 </tr>
 <tr>
 <td>→ out</td>
+<td><code>Payment_Account__c</code></td>
+<td><a href="../all-objects/#payment-account">Payment Account</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>→ out</td>
 <td><code>Recurring_Migration_Campaign__c</code></td>
 <td><a href="../all-objects/#campaign">Campaign</a></td>
 <td>Lookup</td>
@@ -1794,12 +1800,6 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Recurring_Migration_Campaign__c</code> on Campaign</td>
 <td><a href="../all-objects/#campaign">Campaign</a></td>
 <td>Lookup</td>
-</tr>
-<tr>
-<td>← in</td>
-<td><code>Campaign__c</code> on Campaign Payment Account</td>
-<td><a href="../all-objects/#campaign-payment-account">Campaign Payment Account</a></td>
-<td>MasterDetail</td>
 </tr>
 <tr>
 <td>← in</td>
@@ -1971,7 +1971,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Designation_Mode__c</code></td>
 <td>Designation Mode</td>
 <td>Picklist</td>
-<td>How donors choose a fund on this campaign's donation page: lock every gift to one fund (default), let them pick from every active fund, or offer a scoped list you choose below.<br><em>Docs: Explicit picklist, not inferred from Allowed_Designation_Ids__c list length — this keeps admin intent stable while the admin is mid-edit of the fund list (e.g. temporarily down to one selected fund should not silently behave like Assigned mode). Default is Assigned — a new campaign locks to its single Default_Designation__c fund unless an admin opts into a broader mode; this field ships new alongside campaign designation scoping, so there is no pre-existing installed base to stay backward compatible with. A picklist default applies only to records created through the record UI — Salesforce does NOT apply it to records created via the API/Apex. Campaigns created by the fundraiser wizard, the seed scripts, or any integration must therefore set this field EXPLICITLY. A record that still ends up blank resolves to All Active, not Assigned, in CampaignDesignationService — a deliberate choice so an unconfigured campaign is not silently narrowed to one fund.</em></td>
+<td>How donors choose a fund on this campaign's donation page: lock every gift to one fund (default), let them pick from every active fund, or offer a scoped list you choose below.<br><em>Docs: Explicit picklist, not inferred from Allowed_Designation_Ids__c list length — this keeps admin intent stable while the admin is mid-edit of the fund list (e.g. temporarily down to one selected fund should not silently behave like Assigned mode). Default is Assigned — a new campaign locks to its single Default_Designation__c fund unless an admin opts into a broader mode; this field ships new alongside campaign designation scoping, so there is no pre-existing installed base to stay backward compatible with. This field's Assigned default is NOT what an API/Apex insert actually gets. Measured 2026-08-04 in pledgivo-dev-32376: a Campaign inserted with no RecordTypeId lands on the Fundraising record type, and that record type declares no picklist assignment for this field, so the platform supplies the first available value — All Active — overriding the Assigned default above. Only a caller that omits the field AND the record type is left with a blank. Campaigns created by the fundraiser wizard, the seed scripts, or any integration must therefore set this field EXPLICITLY rather than relying on either default. A record that does end up blank resolves to All Active in CampaignDesignationService — a deliberate choice so an unconfigured campaign is not silently narrowed to one fund, and it matches what the record type supplies. There is no validation rule enforcing this field; the fundraiser wizard's own save guards are the only place a blank mode is blocked.</em></td>
 </tr>
 <tr>
 <td><code>Donor_Count__c</code></td>
@@ -2092,6 +2092,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Match Message</td>
 <td>Text</td>
 <td>Optional short line about a matching offer, shown as a chip on the public donation form (e.g. "Gifts matched 2x tonight"). Leave blank to hide.</td>
+</tr>
+<tr>
+<td><code>Payment_Account__c</code></td>
+<td>Payment Account</td>
+<td>Lookup → <code>Payment_Account__c</code></td>
+<td>Which of your configured Stripe accounts receives donations made to this fundraiser. Add more accounts from the Payments settings panel first. Every fundraiser needs one before it can go live.<br><em>Docs: Replaced the Campaign_Payment_Account__c junction object (removed 2026-08-04). The junction modelled a many-to-many that was never implemented: every consumer took cpas[0] and discarded the rest, and its Is_Default__c was written but never read. Campaigns are many-to-one on payment account by product decision — an org may hold several Stripe accounts, a campaign collects to one. deleteConstraint is Restrict, so a Payment_Account__c still in use by a campaign cannot be deleted; SetupController.DeletePaymentAccount raises the same condition as a friendly admin-facing error before the platform ever gets to enforce it.</em></td>
 </tr>
 <tr>
 <td><code>Percent_Goal_Reached__c</code></td>

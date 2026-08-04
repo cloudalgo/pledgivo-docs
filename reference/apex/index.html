@@ -1610,17 +1610,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#apex-campaignpaymentaccountsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CampaignPaymentAccountsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-campaignsselector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1636,17 +1625,6 @@
     <span class="md-ellipsis">
       
         ContentTemplatesSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-icampaignpaymentaccountsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ICampaignPaymentAccountsSelector
       
     </span>
   </a>
@@ -4434,17 +4412,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#apex-campaignpaymentaccountsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CampaignPaymentAccountsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-campaignsselector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4460,17 +4427,6 @@
     <span class="md-ellipsis">
       
         ContentTemplatesSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-icampaignpaymentaccountsselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ICampaignPaymentAccountsSelector
       
     </span>
   </a>
@@ -6882,7 +6838,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 164 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 162 classes plus 101 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7173,51 +7129,6 @@
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectDomain</p>
 <h3 id="selectors">Selectors<a class="headerlink" href="#selectors" title="Permanent link">#</a></h3>
-<h4 id="apex-campaignpaymentaccountsselector">CampaignPaymentAccountsSelector<a class="headerlink" href="#apex-campaignpaymentaccountsselector" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public inherited sharing</code></p>
-<p>extends fflib_SObjectSelector · implements <a href="#apex-icampaignpaymentaccountsselector">ICampaignPaymentAccountsSelector</a></p>
-<p><strong>Docs note.</strong> Campaign_Payment_Account__c is the junction that ranks which Payment_Account__c(s) a</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-campaignpaymentaccountsselector-newinstance"></a><code>newInstance(0 args)</code></td>
-<td><code>[ICampaignPaymentAccountsSelector](#apex-icampaignpaymentaccountsselector)</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-campaignpaymentaccountsselector-getsobjectfieldlist"></a><code>getSObjectFieldList(0 args)</code></td>
-<td><code>List&lt;Schema.SObjectField&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-campaignpaymentaccountsselector-getsobjecttype"></a><code>getSObjectType(0 args)</code></td>
-<td><code>Schema.SObjectType</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-campaignpaymentaccountsselector-selectbypaymentaccountid"></a><code>selectByPaymentAccountId(1 arg)</code></td>
-<td><code>List&lt;Campaign_Payment_Account__c&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-campaignpaymentaccountsselector-selectbycampaignid"></a><code>selectByCampaignId(1 arg)</code></td>
-<td><code>List&lt;Campaign_Payment_Account__c&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-campaignpaymentaccountsselector-selectbycampaignids"></a><code>selectByCampaignIds(1 arg)</code></td>
-<td><code>List&lt;Campaign_Payment_Account__c&gt;</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 <h4 id="apex-campaignsselector">CampaignsSelector<a class="headerlink" href="#apex-campaignsselector" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-icampaignsselector">ICampaignsSelector</a></p>
@@ -7312,6 +7223,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-campaignsselector-countbypaymentaccountid"></a><code>countByPaymentAccountId(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-campaignsselector-selectfundraisers"></a><code>selectFundraisers(0 args)</code></td>
 <td><code>List&lt;Campaign&gt;</code></td>
 <td></td>
@@ -7373,9 +7289,6 @@
 </tr>
 </tbody>
 </table>
-<h4 id="apex-icampaignpaymentaccountsselector">ICampaignPaymentAccountsSelector<a class="headerlink" href="#apex-icampaignpaymentaccountsselector" title="Permanent link">#</a></h4>
-<p><code>interface</code> · <code>public</code></p>
-<p>extends fflib_ISObjectSelector</p>
 <h4 id="apex-icampaignsselector">ICampaignsSelector<a class="headerlink" href="#apex-icampaignsselector" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectSelector</p>
@@ -11914,7 +11827,7 @@
 <h4 id="apex-application">Application<a class="headerlink" href="#apex-application" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p><strong>Docs note.</strong> The UnitOfWork registration order below is not cosmetic — fflib's UnitOfWork inserts SObjectTypes in list order, so a parent must be registered before any child whose lookup will be resolved via registerRelationship() in the same commit (see the inline comments beside each entry for the specific FK it exists to satisfy). Adding a new object here means finding its true parents in this list, not appending to the end.</p>
-<p>IPaymentGateway is deliberately NOT in the Service map below — PaymentGatewayFactory resolves it dynamically per Payment_Account__c/Campaign_Payment_Account__c record instead of a single static binding, since an org can have more than one active gateway account.</p>
+<p>IPaymentGateway is deliberately NOT in the Service map below — PaymentGatewayFactory resolves it dynamically per Payment_Account__c record instead of a single static binding, since an org can have more than one active gateway account. Which one a given campaign charges against is Campaign.Payment_Account__c.</p>
 <h4 id="apex-controlleraction">ControllerAction<a class="headerlink" href="#apex-controlleraction" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public abstract inherited sharing</code></p>
 <p><strong>Docs note.</strong> This is what produces the { success, data/error } response envelope every @AuraEnabled method in this package must return (see AGENTS.md). A controller method that builds its response map by hand instead of extending this class is the one place that contract can silently drift.</p>
@@ -12179,8 +12092,8 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-testdatafactory-createcampaignpaymentaccount"></a><code>createCampaignPaymentAccount(3 args)</code></td>
-<td><code>Campaign_Payment_Account__c</code></td>
+<td><a id="apex-testdatafactory-linkpaymentaccount"></a><code>linkPaymentAccount(2 args)</code></td>
+<td><code>Campaign</code></td>
 <td></td>
 </tr>
 <tr>

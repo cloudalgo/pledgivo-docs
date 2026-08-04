@@ -1965,7 +1965,7 @@ gift links to the page and team it was raised through via <code>Fundraising_Page
 <td><code>Payment_Account__c</code></td>
 <td>Payment Account</td>
 <td>Lookup → <code>Payment_Account__c</code></td>
-<td>The configured payment account this gift was charged against.<br><em>Docs: Matters most in orgs with more than one Payment_Account__c (multi-account/multi-gateway setups via Campaign_Payment_Account__c routing) — a refund or dispute lookup that ignores this field and assumes a single default account will hit the wrong Stripe account's API keys.</em></td>
+<td>The configured payment account this gift was charged against.<br><em>Docs: Matters most in orgs with more than one Payment_Account__c (an org may configure several Stripe accounts and route each campaign to one via Campaign.Payment_Account__c) — a refund or dispute lookup that ignores this field and assumes a single default account will hit the wrong Stripe account's API keys.</em></td>
 </tr>
 <tr>
 <td><code>Payment_Source__c</code></td>

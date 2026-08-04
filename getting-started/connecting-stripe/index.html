@@ -1838,8 +1838,8 @@
 </tr>
 <tr>
 <td>Routing</td>
-<td><code>Campaign_Payment_Account__c</code></td>
-<td>Junction between a Campaign and a Payment Account — which account a given campaign's donations settle to.</td>
+<td><code>Campaign.Payment_Account__c</code></td>
+<td>A lookup on the Campaign itself — which account that campaign's donations settle to. One account per campaign.</td>
 </tr>
 </tbody>
 </table>
@@ -1868,9 +1868,13 @@ and create a second, <strong>live-mode</strong> Payment Account when you're read
 donations. Route each campaign explicitly — nothing switches automatically.</p>
 </div>
 <h2 id="route-a-campaign-to-an-account">Route a campaign to an account<a class="headerlink" href="#route-a-campaign-to-an-account" title="Permanent link">#</a></h2>
-<p>Every Campaign that accepts donations needs a <code>Campaign_Payment_Account__c</code> link to exactly
-one Payment Account. Set this from the Campaign record (Payment Account related list) or from
-the campaign setup flow in <a href="../../guides/first-campaign/">Set up your first campaign</a>.</p>
+<p>Every Campaign that accepts donations needs its <strong>Payment account</strong> set — the
+<code>Payment_Account__c</code> lookup on the Campaign. Set it from the Fundraisers console wizard's
+<em>Goal &amp; fund</em> step (the wizard won't let you publish without one) or directly on the Campaign
+record. See <a href="../../guides/first-campaign/">Set up your first campaign</a>.</p>
+<p>An org may connect several Stripe accounts, but a campaign settles to exactly one — so this is
+a single picker, not a list. A Payment Account that a campaign still points at can't be
+deleted; the Payments panel says so rather than letting the reference break.</p>
 <h2 id="why-theres-no-webhook-step">Why there's no webhook step<a class="headerlink" href="#why-theres-no-webhook-step" title="Permanent link">#</a></h2>
 <p>Most Stripe integrations ask you to register a webhook endpoint URL in the Stripe Dashboard
 and copy a signing secret back into the app. Pledgivo doesn't have an inbound webhook at all —

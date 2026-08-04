@@ -1247,6 +1247,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="7. Preview and publish">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-the-save-is-rejected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If the save is rejected
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1830,6 +1847,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="7. Preview and publish">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#if-the-save-is-rejected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        If the save is rejected
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1883,10 +1917,13 @@
 <p>Create a standard Salesforce Campaign — any Type. Give it a name donors will recognize; it
 appears on the public page and in receipt emails.</p>
 <h2 id="2-route-it-to-a-payment-account">2. Route it to a Payment Account<a class="headerlink" href="#2-route-it-to-a-payment-account" title="Permanent link">#</a></h2>
-<p>Create a <code>Campaign_Payment_Account__c</code> record linking this Campaign to the Stripe account its
-donations should settle to (the package doesn't ship a dedicated screen for this yet — create
-the record directly, e.g. via Setup → Object Manager → Campaign Payment Account). If your org
-only has one connected account, this is a one-time setup that most campaigns can share.</p>
+<p>Point the campaign at the Stripe account its donations should settle to, using the <strong>Payment
+account</strong> picker on the Fundraisers console wizard's <em>Goal &amp; fund</em> step (it writes the
+Campaign's <code>Payment_Account__c</code> lookup). A campaign settles to exactly one account, so this is
+a single choice, not a list — if your org has only one connected account, every campaign picks
+the same one.</p>
+<p>The wizard won't let you past that step without a payment account: a campaign with no route
+for its money would take donations it can't settle.</p>
 <h2 id="3-optional-add-designations">3. (Optional) Add designations<a class="headerlink" href="#3-optional-add-designations" title="Permanent link">#</a></h2>
 <p>If donors should be able to direct their gift to a specific fund — "Where needed most,"
 "Scholarship fund," and so on — create <code>Designation__c</code> records for the campaign. Skip this
@@ -1930,10 +1967,19 @@ Account you routed it to in step 2.</p>
 <div class="admonition warning">
 <p class="admonition-title">Confirm you're on the right Payment Account before publishing</p>
 <p>If you built and tested this campaign against a test-mode Payment Account, switch the
-<code>Campaign_Payment_Account__c</code> link to your live-mode account before sharing the URL
-publicly. Pledgivo doesn't warn you at publish time if a campaign is still pointed at test
-mode.</p>
+campaign's <strong>Payment account</strong> to your live-mode account before sharing the URL publicly.
+Pledgivo doesn't warn you at publish time if a campaign is still pointed at test mode.</p>
 </div>
+<h3 id="if-the-save-is-rejected">If the save is rejected<a class="headerlink" href="#if-the-save-is-rejected" title="Permanent link">#</a></h3>
+<p>Saving from the wizard's Publish step can still fail — a name over Salesforce's 80-character
+limit, a field your profile can't edit, a validation rule or trigger your org has added. When
+that happens the wizard <strong>stays open with everything you entered intact</strong>. A red panel appears
+directly above the Back/Create buttons explaining what went wrong, in plain language rather
+than the raw platform error, with one line per problem.</p>
+<p>If the problem belongs to an earlier step, the panel offers a button that takes you straight
+there — "Go to Type &amp; basics", for example — with your other answers preserved. Fix the field
+and press Create again. Nothing is saved until every problem is cleared, so a rejected save
+never leaves a half-built campaign behind.</p>
 <h2 id="8-share-it">8. Share it<a class="headerlink" href="#8-share-it" title="Permanent link">#</a></h2>
 <p>The public donation URL is available from <strong>Settings → Experience Cloud → Public Links</strong> — a
 read-only table of ready-to-share URLs (campaigns, donor portal, and more), each with a

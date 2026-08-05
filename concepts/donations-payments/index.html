@@ -727,6 +727,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#marketing-attribution-where-a-gift-came-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Marketing attribution — where a gift came from
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#card-and-ach" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1740,6 +1751,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#marketing-attribution-where-a-gift-came-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Marketing attribution — where a gift came from
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#card-and-ach" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1897,6 +1919,63 @@ off the Opportunity fields, not through <code>Payment_Method__c</code>.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="marketing-attribution-where-a-gift-came-from">Marketing attribution — where a gift came from<a class="headerlink" href="#marketing-attribution-where-a-gift-came-from" title="Permanent link">#</a></h2>
+<p>Every checkout surface captures the query string of the URL the donor arrived on and stamps it
+onto the gift. There is nothing to set up: put whatever tracking parameters you like on a link
+and they land on the donation record.</p>
+<p>The five standard UTM parameters get their own reportable fields on the Opportunity, so you can
+group and filter on them in any report:</p>
+<table>
+<thead>
+<tr>
+<th>Field (on Opportunity)</th>
+<th>From the URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UTM_Source__c</code></td>
+<td><code>utm_source</code> — where the click came from (<code>newsletter</code>, <code>facebook</code>)</td>
+</tr>
+<tr>
+<td><code>UTM_Medium__c</code></td>
+<td><code>utm_medium</code> — the channel (<code>email</code>, <code>cpc</code>, <code>social</code>)</td>
+</tr>
+<tr>
+<td><code>UTM_Campaign__c</code></td>
+<td><code>utm_campaign</code> — your marketing campaign name</td>
+</tr>
+<tr>
+<td><code>UTM_Term__c</code></td>
+<td><code>utm_term</code> — the paid-search keyword</td>
+</tr>
+<tr>
+<td><code>UTM_Content__c</code></td>
+<td><code>utm_content</code> — which creative or link variant was clicked</td>
+</tr>
+<tr>
+<td><code>URL_Parameters__c</code></td>
+<td>Everything else that survived filtering, as JSON — <code>gclid</code>, <code>fbclid</code>, partner ids, and any custom tag you invent</td>
+</tr>
+</tbody>
+</table>
+<p>This works on the donation form, event registration, recurring signups, and the embed widget.
+The widget forwards the query string of the <strong>page it is embedded on</strong>, so a widget dropped onto
+a UTM-tagged landing page still attributes correctly.</p>
+<div class="admonition note">
+<p class="admonition-title">Recurring gifts record acquisition, not last touch</p>
+<p>A Recurring Donation is stamped <strong>once</strong>, at signup, and never refreshed — it answers "how
+did we acquire this monthly donor?" Each renewal installment inherits that same attribution,
+because a renewal is charged by a scheduled job where no URL exists.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">What is deliberately not captured</p>
+<p>Functional and personal parameters are stripped before anything is written: the page's own
+state (<code>slug</code>, <code>amount</code>, <code>designation</code>), anything identifying (<code>email</code>, <code>name</code>, <code>phone</code>), and
+anything credential-like (<code>token</code>, and Stripe's <code>payment_intent</code> / <code>client_secret</code> redirect
+parameters). Attribution data is reportable and widely visible — payment credentials and donor
+PII must never end up there. Capture is also capped at 50 parameters and 4 KB per gift.</p>
+</div>
 <h2 id="card-and-ach">Card and ACH<a class="headerlink" href="#card-and-ach" title="Permanent link">#</a></h2>
 <p>The Stripe Payment Element handles both card and US bank account (ACH) payment methods in the
 same embedded UI — Pledgivo doesn't build separate flows for each. ACH payments settle on a

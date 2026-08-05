@@ -3631,6 +3631,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-attributioncapture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AttributionCapture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-controlleraction" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6250,6 +6261,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-attributioncapture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AttributionCapture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-controlleraction" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6412,7 +6434,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 150 classes plus 101 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 151 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7942,6 +7964,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-idonationservice">IDonationService</a></p>
 <p><strong>Docs note.</strong> finalizeSucceededStaging is the SOLE creator of donation Opportunities and is idempotent on Stripe_Payment_Intent_Id__c, so it is safe to call from more than one path: StagingReconciliationBatch (the normal webhook-free finalizer) and StripePaymentSweep (the orphaned-PaymentIntent repair path) both invoke it directly. It publishes DonationFinalized__e (consumed by DonationFinalizedSubscriber consumed by NpspSyncService) and calls ReceiptService for the donor-facing email.</p>
+<p>This runs on every finalized gift including a recurring gift's first installment, because that installment does have a real URL behind it. Later renewals have no URL at all — they are created by the scheduler — so RecurringDonationService copies the attribution stored on the Recurring_Donation__c instead. See AttributionCapture.copy().</p>
 <table>
 <thead>
 <tr>
@@ -9944,7 +9967,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-attributioncapture-copy">AttributionCapture.copy()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9974,7 +9997,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-attributioncapture-copy">AttributionCapture.copy()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10009,7 +10032,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-attributioncapture-copy">AttributionCapture.copy()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -11090,6 +11113,48 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p><strong>Docs note.</strong> The UnitOfWork registration order below is not cosmetic — fflib's UnitOfWork inserts SObjectTypes in list order, so a parent must be registered before any child whose lookup will be resolved via registerRelationship() in the same commit (see the inline comments beside each entry for the specific FK it exists to satisfy). Adding a new object here means finding its true parents in this list, not appending to the end.</p>
 <p>IPaymentGateway is deliberately NOT in the Service map below — PaymentGatewayFactory resolves it dynamically per Payment_Account__c record instead of a single static binding, since an org can have more than one active gateway account. Which one a given campaign charges against is Campaign.Payment_Account__c.</p>
+<h4 id="apex-attributioncapture">AttributionCapture<a class="headerlink" href="#apex-attributioncapture" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p>Turns the raw query string of a checkout URL into the attribution fields carried by a donation or a recurring gift. Pure utility — no SOQL, no DML, no callouts; it only filters, normalizes and writes onto an in-memory SObject, so the calling service keeps ownership of the Unit of Work. Usage: Map&lt;String, Object&gt; options = (Map&lt;String, Object&gt;) JSON.deserializeUntyped(staging.Options_JSON__c); AttributionCapture.apply(opp, options.get('attribution')); AttributionCapture.copy(recurringDonation, renewalOpportunity);</p>
+<p><strong>Docs note.</strong> Two caps guard the LongTextArea and the org's storage: at most MAX_KEYS parameters survive, each value truncated to MAX_VALUE_LENGTH, and the serialized JSON is dropped whole if it would still exceed MAX_JSON_LENGTH. A donor can put an unbounded query string on a public URL, so none of these are optional.</p>
+<p>EXCLUDED_KEYS is the functional/PII denylist — everything else on the URL is kept. The first group is how the public pages carry state (slug/amount/email/name/ref/ tickets) and would be noise in a marketing report; the second is Stripe's own redirect params and our receipt/dashboard tokens, which are credentials, not attribution, and must never be persisted onto a reportable record.</p>
+<p>The five UTM keys get their own reportable Text(255) columns; everything else that survives the denylist lands in URL_Parameters__c as JSON. Keys here are matched case-insensitively, so ?UTM_Source=Email fills UTM_Source__c just like ?utm_source=email.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-attributioncapture-apply"></a><code>apply(2 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-attributioncapture-copy"></a><code>copy(2 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-attributioncapture-normalize"></a><code>normalize(1 arg)</code></td>
+<td><code>Map&lt;String, String&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h4 id="apex-controlleraction">ControllerAction<a class="headerlink" href="#apex-controlleraction" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public abstract inherited sharing</code></p>
 <p><strong>Docs note.</strong> This is what produces the { success, data/error } response envelope every @AuraEnabled method in this package must return (see AGENTS.md). A controller method that builds its response map by hand instead of extending this class is the one place that contract can silently drift.</p>
@@ -11341,11 +11406,6 @@
 <tr>
 <td><a id="apex-testdatafactory-createcustomanswer"></a><code>createCustomAnswer(3 args)</code></td>
 <td><code>Custom_Answer__c</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-testdatafactory-createsourcecode"></a><code>createSourceCode(1 arg)</code></td>
-<td><code>Source_Code__c</code></td>
 <td></td>
 </tr>
 <tr>

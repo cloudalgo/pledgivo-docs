@@ -1689,7 +1689,7 @@ description: Represents a donor's ongoing recurring giving schedule (subscriptio
 <p class="fn-dek">Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>29 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p><code>custom</code> · <code>35 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1957,6 +1957,42 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Stripe Payment Method Id</td>
 <td>Text</td>
 <td>Internal Stripe reference for the saved card charged each cycle; not for manual entry.</td>
+</tr>
+<tr>
+<td><code>URL_Parameters__c</code></td>
+<td>URL Parameters</td>
+<td>LongTextArea</td>
+<td>The full set of tracking parameters from the link the donor clicked, stored as JSON. Reference only — report on the UTM fields instead.<br><em>Docs: Set once at signup by RecurringDonationService from Donation_Staging__c.Options_JSON__c -&gt; attribution, and is the template every renewal Opportunity copies its UTM fields from. Deliberately never refreshed — it records how the donor was acquired, not how they last interacted.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Campaign__c</code></td>
+<td>UTM Campaign</td>
+<td>Text</td>
+<td>The marketing appeal name from the link, e.g. year-end-2026. This is the marketer's label, not the Salesforce Campaign — filled in automatically.<br><em>Docs: Set once at signup by RecurringDonationService from Donation_Staging__c.Options_JSON__c -&gt; attribution, and is the template every renewal Opportunity copies its UTM fields from. Deliberately never refreshed — it records how the donor was acquired, not how they last interacted.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Content__c</code></td>
+<td>UTM Content</td>
+<td>Text</td>
+<td>Which link or creative variant was clicked, for A/B tests. Filled in automatically — usually blank.<br><em>Docs: Set once at signup by RecurringDonationService from Donation_Staging__c.Options_JSON__c -&gt; attribution, and is the template every renewal Opportunity copies its UTM fields from. Deliberately never refreshed — it records how the donor was acquired, not how they last interacted.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Medium__c</code></td>
+<td>UTM Medium</td>
+<td>Text</td>
+<td>The channel that carried the link, e.g. email, cpc or social. Filled in automatically — leave it alone.<br><em>Docs: Set once at signup by RecurringDonationService from Donation_Staging__c.Options_JSON__c -&gt; attribution, and is the template every renewal Opportunity copies its UTM fields from. Deliberately never refreshed — it records how the donor was acquired, not how they last interacted.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Source__c</code></td>
+<td>UTM Source</td>
+<td>Text</td>
+<td>Where this gift came from, e.g. newsletter or facebook. Filled in automatically from the link the donor clicked — leave it alone.<br><em>Docs: Set once at signup by RecurringDonationService from Donation_Staging__c.Options_JSON__c -&gt; attribution, and is the template every renewal Opportunity copies its UTM fields from. Deliberately never refreshed — it records how the donor was acquired, not how they last interacted.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Term__c</code></td>
+<td>UTM Term</td>
+<td>Text</td>
+<td>The paid-search keyword that led here, if any. Filled in automatically — usually blank.<br><em>Docs: Set once at signup by RecurringDonationService from Donation_Staging__c.Options_JSON__c -&gt; attribution, and is the template every renewal Opportunity copies its UTM fields from. Deliberately never refreshed — it records how the donor was acquired, not how they last interacted.</em></td>
 </tr>
 </tbody>
 </table>

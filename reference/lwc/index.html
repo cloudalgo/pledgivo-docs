@@ -1902,6 +1902,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#pfattribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution Capture Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pfhero" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2819,6 +2830,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#pfattribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attribution Capture Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pfhero" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3064,7 +3086,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 55 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 56 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3282,6 +3304,12 @@
 <p>Settings-console panel showing whether the Experience Cloud donation site exists and its status, with setup guidance and the sf CLI command to create it.</p>
 <p><strong>Docs note.</strong> createExperienceSite wraps the org's Experience Cloud site creation lifecycle (CommunityService is the actual source of truth for the create command — the CLI_FALLBACK string above is only shown if that call fails). listExperienceSites/saveExperienceSite back the site picker (docs/plan-dynamic-experience-site-selection-2026-08-03.md): any Experience Cloud site the admin can see is selectable, not just one matching the packaged "Fundraising" name/prefix convention — the chosen Network.Id is what SetupController.resolveExperienceSite() (and every downstream consumer) resolves against from then on. checkGuestPermissionSet backs the guest-permission-set warning, which is deliberately always-visible (not a manual check) — a site with the wrong guest user misses this and every public donation page silently fails. embedEnabled is presented inverted from its storage field (Embed_Disabled__c, default false) so the UI reads as an opt-in "Allow embedding" toggle; setPublicLinks and lexEmbedBuilder both consume the resulting Experience_Site_URL__c once it's set here.</p>
 <h2 id="pf-public-guest-helper-blocks">Pf (public guest helper blocks)<a class="headerlink" href="#pf-public-guest-helper-blocks" title="Permanent link">#</a></h2>
+<h4 id="pfattribution">Attribution Capture Utility<a class="headerlink" href="#pfattribution" title="Permanent link">#</a></h4>
+<p><code>pfAttribution</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed JS-only utility module (no markup) that reads the checkout URL's query string and returns the marketing-attribution parameters every guest checkout surface sends with its order, so UTM and other tracking tags reach the donation record.</p>
+<p><strong>Docs note.</strong> These mirror AttributionCapture's server-side caps. Both layers enforce them — the client so an absurd URL doesn't bloat the Apex request, the server because a client cap is a courtesy, not a control (anything can POST to the guest endpoint).</p>
+<p>Functional and personal keys the public pages use to carry their own state, plus the redirect/receipt tokens. Kept in sync with AttributionCapture.EXCLUDED_KEYS in Apex — stripping them here as well keeps them out of the network payload entirely, which matters for the credential-ish ones (token, client secrets) more than for the merely noisy ones.</p>
 <h4 id="pfhero">Campaign Hero<a class="headerlink" href="#pfhero" title="Permanent link">#</a></h4>
 <p><code>pfHero</code></p>
 <p><code>not exposed</code></p>

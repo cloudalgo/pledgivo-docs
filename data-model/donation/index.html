@@ -1685,7 +1685,7 @@
 <p class="fn-dek">The donation itself — a customized standard Opportunity carrying billing details, the Stripe payment trail, and refund/dispute state for a single gift.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>32 fields</code> · <code>Donations &amp; Payments</code></p>
+<p><code>standard</code> · <code>37 fields</code> · <code>Donations &amp; Payments</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1719,12 +1719,6 @@ company-match flags, the full Stripe payment/refund/dispute trail (<code>Stripe_
 <td>→ out</td>
 <td><code>Recurring_Donation__c</code></td>
 <td><a href="../all-objects/#recurring-donation">Recurring Donation</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>→ out</td>
-<td><code>Source_Code__c</code></td>
-<td><a href="../all-objects/#source-code">Source Code</a></td>
 <td>Lookup</td>
 </tr>
 <tr>
@@ -1924,12 +1918,6 @@ company-match flags, the full Stripe payment/refund/dispute trail (<code>Stripe_
 <td>Total amount refunded to the donor so far. Managed automatically — never edit directly.</td>
 </tr>
 <tr>
-<td><code>Source_Code__c</code></td>
-<td>Source Code</td>
-<td>Lookup → <code>Source_Code__c</code></td>
-<td>Marketing source this gift is attributed to, if tracked.<br><em>Docs: Attribution is independent of CampaignId — a donation can be tied to both the Campaign it funded and a Source_Code__c describing how the donor arrived, or to a Source_Code__c with no Campaign at all (e.g. a general-site link). See the Source_Code__c object doc for a gap in its own rollup fields.</em></td>
-</tr>
-<tr>
 <td><code>Stripe_Payment_Intent_Id__c</code></td>
 <td>Stripe Payment Intent ID</td>
 <td>Text</td>
@@ -1964,6 +1952,42 @@ company-match flags, the full Stripe payment/refund/dispute trail (<code>Stripe_
 <td>Tribute Type</td>
 <td>Picklist</td>
 <td>Select whether this gift is a tribute, and of which kind.</td>
+</tr>
+<tr>
+<td><code>URL_Parameters__c</code></td>
+<td>URL Parameters</td>
+<td>LongTextArea</td>
+<td>The full set of tracking parameters from the link the donor clicked, stored as JSON. Reference only — report on the UTM fields instead.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Campaign__c</code></td>
+<td>UTM Campaign</td>
+<td>Text</td>
+<td>The marketing appeal name from the link, e.g. year-end-2026. This is the marketer's label, not the Salesforce Campaign — filled in automatically.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Content__c</code></td>
+<td>UTM Content</td>
+<td>Text</td>
+<td>Which link or creative variant was clicked, for A/B tests. Filled in automatically — usually blank.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Medium__c</code></td>
+<td>UTM Medium</td>
+<td>Text</td>
+<td>The channel that carried the link, e.g. email, cpc or social. Filled in automatically — leave it alone.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Source__c</code></td>
+<td>UTM Source</td>
+<td>Text</td>
+<td>Where this gift came from, e.g. newsletter or facebook. Filled in automatically from the link the donor clicked — leave it alone.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+</tr>
+<tr>
+<td><code>UTM_Term__c</code></td>
+<td>UTM Term</td>
+<td>Text</td>
+<td>The paid-search keyword that led here, if any. Filled in automatically — usually blank.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
 </tr>
 </tbody>
 </table>

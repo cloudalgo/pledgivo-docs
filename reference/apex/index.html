@@ -8059,6 +8059,7 @@
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>implements <a href="#apex-ireceiptservice">IReceiptService</a></p>
 <p><strong>Docs note.</strong> Every outbound donor/staff email in the package funnels through this class — donation and event-ticket receipts, recurring confirmation/failed-payment/dunning/re-auth notices, dispute alerts, and tribute notifications. Callers include DonationService.finalizeSucceededStaging, EventPurchaseService, RecurringDonationService, RecurringRenewalBatch, and RefundReconciliationBatch. Every send method is best-effort: a template/limit/missing-email failure is logged via AppLogger and swallowed so it can never roll back an already-finalized donation or payment.</p>
+<p>Split out from sendDisputeAlert so the addressing and body can be asserted without a real send. Messaging.sendEmail is subject to the org's DAILY email allocation even inside a test (the message is never delivered, but the quota check still runs), so a test that asserts on Limits.getEmailInvocations() fails once a suite run exhausts the allocation — in a scratch org that is a matter of a few sends. Asserting the built message is both deterministic and a stronger check than "one send was attempted".</p>
 <table>
 <thead>
 <tr>
@@ -8115,7 +8116,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 <tr>

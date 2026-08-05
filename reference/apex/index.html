@@ -7981,6 +7981,11 @@
 <td><code>Map&lt;String, Id&gt;</code></td>
 <td></td>
 </tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-debug">AppLogger.debug()</a></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h4 id="apex-idonationservice">IDonationService<a class="headerlink" href="#apex-idonationservice" title="Permanent link">#</a></h4>
@@ -8418,6 +8423,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-icontactsselector">IContactsSelector</a></p>
 <p><strong>Docs note.</strong> The CONTACT arm of the donor dual-field strategy — used in standard (non-Person-Account) orgs. Portal_Token_Hash__c / Portal_Token_Expires_At__c back the magic-link donor portal (DonorPortalService) and are deliberately excluded from getSObjectFieldList so a normal USER_MODE query can never leak them to a user without explicit FLS.</p>
+<p>Deduping donors must not depend on the running user's visibility — a caller who can't see an existing Contact would silently create a duplicate donor and a second Stripe Customer, so SYSTEM_MODE is the correct mode for internal callers (finalization batch) too, not a guest workaround. Do NOT "harden" this back to USER_MODE.</p>
 <table>
 <thead>
 <tr>
@@ -8454,6 +8460,11 @@
 </tr>
 <tr>
 <td><a id="apex-contactsselector-selectemailsbyidsystem"></a><code>selectEmailsByIdSystem(1 arg)</code></td>
+<td><code>List&lt;Contact&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-contactsselector-selectdonormatchbyemailsystem"></a><code>selectDonorMatchByEmailSystem(1 arg)</code></td>
 <td><code>List&lt;Contact&gt;</code></td>
 <td></td>
 </tr>
@@ -9199,6 +9210,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-ipaymentmethodsselector">IPaymentMethodsSelector</a></p>
 <p><strong>Docs note.</strong> Three access levels, three different callers — picking the wrong one silently breaks a donor-facing flow rather than throwing. selectById/selectByContactId/selectDefaultByContactId are USER_MODE for internal Lightning contexts where a logged-in user's own sharing/FLS should apply. selectValidByDonorSystem and selectByDonorSystem are SYSTEM_MODE because their only callers are the token-authorized donor portal and the guest recurring-signup path — neither is a real logged-in Salesforce user, so USER_MODE would return zero rows. selectByDonorSystem additionally returns ALL rows (not just Is_Valid__c = true) because PaymentMethodService. saveWalletCard needs the full set to dedup by Fingerprint__c and detect an existing default card in one query.</p>
+<p>newQueryFactory(false, false, true) — SYSTEM_MODE on the query alone is not enough. The bare newQueryFactory() asserts object read at BUILD time, so it throws "Permission to access an Payment_Method__c denied." for the guest user before the SYSTEM_MODE query runs, breaking the recurring signup this method exists to serve. The Guest License holds no read on the wallet by design and must not be granted one — rows are used only internally by saveWalletCard to dedup by Fingerprint__c, and no field reaches the guest. Matches sibling selectValidByDonorSystem.</p>
 <table>
 <thead>
 <tr>
@@ -9302,6 +9314,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-ipaymentmethodservice">IPaymentMethodService</a></p>
 <p><strong>Docs note.</strong> Payment_Method__c is display/dedup metadata for the donor portal's saved-card list, not the billing-critical record — the Stripe payment method id actually charged for a renewal lives on Recurring_Donation__c.Stripe_Payment_Method_Id__c, stamped directly by the caller. That split matters because saveWalletCard() never updates an existing wallet row on a fingerprint match, only inserts new ones: Guest User licenses can never be granted object-level Edit (a hard Salesforce platform restriction, not a policy choice), and every caller of this method runs in guest context.</p>
+<p>Prefer the gateway overload for any synchronous, DML-free caller — passing a stale snapshot here would persist card metadata that no longer matches Stripe.</p>
 <table>
 <thead>
 <tr>
@@ -9318,6 +9331,11 @@
 </tr>
 <tr>
 <td><a id="apex-paymentmethodservice-savewalletcard"></a><code>saveWalletCard(5 args)</code></td>
+<td><code>Payment_Method__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentmethodservice-savewalletcardfromsnapshot"></a><code>saveWalletCardFromSnapshot(5 args)</code></td>
 <td><code>Payment_Method__c</code></td>
 <td></td>
 </tr>
@@ -9777,6 +9795,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-irecurringdonationsselector">IRecurringDonationsSelector</a></p>
 <p><strong>Docs note.</strong> selectDueForRenewalLocator's WHERE clause has two branches: normal due-today schedules (Next_Retry_Date__c = null) and schedules already mid dunning-retry cycle (Next_Retry_Date__c &lt;= today). Next_Retry_Date__c being non-null is what routes a schedule into the retry branch instead of the normal one — RecurringDonationService. processRenewal is what sets and clears it. selectByDonorSystem and selectByStripeCustomerId are the two SYSTEM_MODE reads (see the class comment above) used by the donor portal and the self-managed-signup idempotency check, respectively.</p>
+<p>newQueryFactory(false, false, true) — the CRUD/FLS asserts must be waived, not just the query's AccessLevel. The bare newQueryFactory() asserts object read at BUILD time and threw "Permission to access an Recurring_Donation__c denied." for the guest user, aborting every recurring signup before the SYSTEM_MODE query ever ran. The Guest License holds no read on this object by design and must not be granted one: the result is used solely as an internal boolean (does this Stripe customer already have a schedule?) and no field ever reaches the guest. Same posture as the sibling SYSTEM_MODE read selectByDonorSystem below.</p>
 <table>
 <thead>
 <tr>
@@ -9879,9 +9898,11 @@
 <h4 id="apex-recurringdonationservice">RecurringDonationService<a class="headerlink" href="#apex-recurringdonationservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-irecurringdonationservice">IRecurringDonationService</a></p>
-<p><strong>Docs note.</strong> Self-managed recurring donations (Phase B) — no Stripe Subscription object anywhere in this class. activateRecurringStaging creates the Active Recurring_Donation__c synchronously right after gift #1's PaymentIntent confirms; RecurringRenewalBatch drives every later charge off-session via IPaymentGateway.chargeOffSession, and processRenewal is the dunning state machine that decides what a charge outcome means for the schedule.</p>
+<p><strong>Docs note.</strong> Self-managed recurring donations (Phase B) — no Stripe Subscription object anywhere in this class. Signup is split in two: activateRecurringStaging (guest context) records the donor's mandate on Donation_Staging__c and creates nothing, then createScheduleFromStaging builds the Active Recurring_Donation__c in system context from inside DonationService's finalize path, alongside gift #1's Opportunity; RecurringRenewalBatch drives every later charge off-session via IPaymentGateway.chargeOffSession, and processRenewal is the dunning state machine that decides what a charge outcome means for the schedule.</p>
 <p>processRenewal's three branches: a successful charge creates the installment Opportunity and advances Next_Payment_Date__c (advanceScheduleDate, which anchors off the schedule's OWN due date rather than today, so a late-running batch doesn't drift the billing cycle); requiresAction sets Re_Auth_Required__c and throttles re-auth emails to once per reAuthThrottleDays; a decline checks TERMINAL_DECLINE_CODES (e.g. stolen_card, expired_card) to fail the schedule immediately versus scheduling a retry via SettingsService.retryIntervalDays()/maxFailedPaymentRetries(). INDETERMINATE_DECLINE is the sentinel used when the gateway callout itself failed (timeout, etc.) rather than returning a real decline code — treated as retryable, never terminal.</p>
 <p>Every pause/resume/cancel/reinstate method here mutates Recurring_Donation__c directly and does NOT write a Recurring_Donation_History__c row — see RecurringDonations.onAfterInsert, the only automatic writer of that object.</p>
+<p>This method used to create the whole schedule inline, which could never work: the guest user has no Create on Contact or Recurring_Donation__c, and both objects carry fflib domain triggers whose handleAfterInsert re-asserts object CRUD <em>regardless</em> of the DML's AccessLevel — so a SYSTEM_MODE insert still threw "Permission to create an Contact denied". Guest Users can never be granted that Create (platform restriction), so staging-only is the correct shape, and it matches the one-time path exactly.</p>
+<p>The caller is responsible for the post-commit follow-up (donor confirmation email and the optional NPSP mirror) because neither can run until the schedule has a real Id.</p>
 <table>
 <thead>
 <tr>
@@ -9923,7 +9944,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9953,7 +9974,22 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recurringdonationservice-createschedulefromstaging"></a><code>createScheduleFromStaging(4 args)</code></td>
+<td><code>Recurring_Donation__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recurringdonationservice-completescheduleactivation"></a><code>completeScheduleActivation(1 arg)</code></td>
+<td><code>void</code></td>
 <td></td>
 </tr>
 <tr>

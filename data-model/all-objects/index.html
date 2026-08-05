@@ -3632,7 +3632,7 @@
 </tbody>
 </table>
 <h3 id="donation-staging">Donation Staging<a class="headerlink" href="#donation-staging" title="Permanent link">#</a></h3>
-<p><code>Donation_Staging__c</code> · <code>custom</code> · <code>22 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
+<p><code>Donation_Staging__c</code> · <code>custom</code> · <code>23 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
 <p>Temporary staging record created by the Experience Cloud guest user during donation. Privileged async processing (Platform Event / Automated Process user) converts this into Contact + Opportunity.</p>
 <p><strong>Docs note.</strong> Deliberately breaks the platform's dual-field donor pattern: it carries raw Email__c/First_Name__c/Last_Name__c but no Contact__c or Donor_Account__c lookup, because donor resolution only happens at finalize time (DonorResolutionService, called from DonationService). Read by three converging paths: the guest browser poll (checkStagingPaymentStatus), StagingReconciliationBatch (runs on a schedule), and StripePaymentSweep (an orphan-PaymentIntent safety net matching on Correlation_Id__c). All three can race to finalize the same row, which is why Stripe_Intent_Id__c uniqueness is the idempotency backstop against creating two Opportunities for one PaymentIntent.</p>
 <p><strong>Relationships</strong></p>
@@ -3790,6 +3790,12 @@
 <td>Purchase Type</td>
 <td>Text</td>
 <td>What kind of purchase this checkout is (donation or event ticket).<br><em>Docs: StagingReconciliationBatch and StripePaymentSweep both branch on this value to decide whether a terminal Failed/Expired row also needs EventPurchaseService.releaseReservation called before it is safe to close out.</em></td>
+</tr>
+<tr>
+<td><code>Recurring_Activation_JSON__c</code></td>
+<td>Recurring Activation JSON</td>
+<td>LongTextArea</td>
+<td>Internal record of the donor's recurring authorization and the card they approved. Written automatically at checkout — never edit or clear it, or the recurring schedule cannot be created.<br><em>Docs: This field exists so the recurring schedule can be created in system context by StagingReconciliationBatch instead of inline in guest context. The guest user can never hold Create on Contact or Recurring_Donation__c (both carry fflib domain triggers that re-assert object CRUD), so the browser-facing step records the mandate here and creates nothing. The card snapshot is stored specifically to keep the reconciler callout-free: the batch's execute() is strictly callouts-then-DML, so a gateway.retrievePaymentMethod() at finalize time would throw "uncommitted work pending". See RecurringDonationService.ActivationSnapshot.</em></td>
 </tr>
 <tr>
 <td><code>Reservation_Released__c</code></td>

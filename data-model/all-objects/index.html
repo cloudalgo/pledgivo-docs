@@ -3040,7 +3040,7 @@
 <td><code>Event_Layout__c</code></td>
 <td>Event Layout</td>
 <td>Picklist</td>
-<td>How the ticket order summary is positioned on the event registration page.<br><em>Docs: Layout is consumed at render time only by publicEventRegistration; a design used purely for donation pages (no ticketed campaigns) can safely leave this at its default.</em></td>
+<td>Leave on Summary side unless you specifically want the order summary underneath the ticket form. The rest of the ticket page's design — banner, columns, fonts, colours — comes from Form Layout Mode and the colour fields on this record.<br><em>Docs: Retained deliberately as a legacy narrow override. Until the 2026-08-05 redesign this field WAS the event page's layout decision; the page now wears Form_Layout_Mode__c like every other public page (publicEventRegistration.eventRootClass maps it to a composition class), and this only adds .ev-stackaside, which forces the aside below the form whatever the mode asked for. Consumed at render time only by publicEventRegistration; a design used purely for donation pages can safely leave it at its default.</em></td>
 </tr>
 <tr>
 <td><code>Focus_Ring_Color__c</code></td>

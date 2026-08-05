@@ -10072,6 +10072,8 @@
 <p><code>class</code> · <code>global without sharing</code></p>
 <p>implements InstallHandler</p>
 <p><strong>Docs note.</strong> Every seed* step here is idempotent (upsert or "insert only if absent"), so onInstall is safe to re-run on every package upgrade, not just the first install — it only fills blanks and never overwrites an admin's existing configuration. scheduleJobs() deliberately excludes StripePaymentSweep and RefundReconciliationBatch: both call PaymentGatewayFactory.getDefault() unconditionally, which throws before any Payment_Account__c exists, so scheduling them here would fail the install on a fresh org with no Stripe account configured yet. They are scheduled later, once the admin has connected a gateway, via scripts/apex/schedule-reconciliation-jobs.apex. SetupController's health check (EXPECTED_PIPELINE_JOBS = 17) is the count of ALL scheduled jobs including those two — a fresh install correctly shows a 'warn' state there until that script runs.</p>
+<p>Shell gutter, uniform at 2rem (32px) for the same reason as maxW below — pf-mock.css</p>
+<p>Every layout mode is wide-contained at 1440px — the width decision for the 2026-08-05</p>
 <table>
 <thead>
 <tr>

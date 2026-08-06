@@ -1685,7 +1685,7 @@
 <p class="fn-dek">The donation itself — a customized standard Opportunity carrying billing details, the Stripe payment trail, and refund/dispute state for a single gift.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>37 fields</code> · <code>Donations &amp; Payments</code></p>
+<p><code>standard</code> · <code>36 fields</code> · <code>Donations &amp; Payments</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1767,12 +1767,6 @@ company-match flags, the full Stripe payment/refund/dispute trail (<code>Stripe_
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>Anonymous__c</code></td>
-<td>Anonymous</td>
-<td>Checkbox</td>
-<td>Check if the donor asked not to be publicly identified with this gift.<br><em>Docs: This only suppresses the donor's name from public-facing display — it does not blank or mask the underlying Contact__c/Donor_Account__c lookup, and it has no effect on internal reporting or the org's own view of who gave. Anonymity is a presentation rule enforced by the public LWCs, not a data-masking rule enforced in Apex.</em></td>
-</tr>
 <tr>
 <td><code>Check_Number__c</code></td>
 <td>Check Number</td>

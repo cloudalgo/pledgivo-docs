@@ -2172,11 +2172,6 @@ run, or not at all).</p>
 <td>Immediate for the embed widget's REST endpoint and the Fundraisers console's public-links panel; <strong>immediate but browser-cached</strong> for the Campaign Gallery (its donation links come from a cacheable wire, so an already-open gallery tab may show the old path until it reloads)</td>
 </tr>
 <tr>
-<td>Donor options — Allow anonymous giving</td>
-<td>Default for whether a brand-new fundraiser allows anonymous gifts</td>
-<td>New records only, and currently <strong>incomplete</strong>: the value now seeds the "New fundraiser" wizard's toggle, but no donor-facing donation form anywhere renders an "anonymous" option yet, so turning this on has no visible effect for donors until that form-side piece ships</td>
-</tr>
-<tr>
 <td>Donor options — Allow tribute/honoree gifts</td>
 <td>Default for whether a brand-new fundraiser shows a tribute/honoree field</td>
 <td>New records only — seeds the wizard's toggle on <code>Campaign.Allow_Tribute__c</code> at creation; the live donation form reads that Campaign field directly, so editing an <em>existing</em> fundraiser's own toggle (not this org default) is what actually changes its form</td>
@@ -2224,15 +2219,16 @@ run, or not at all).</p>
 <tr>
 <td><strong>Reset to defaults</strong> button</td>
 <td>Resets settings to their packaged defaults</td>
-<td>Immediate, but <strong>narrower than the label suggests</strong> — it resets exactly 11 fields (retry/grace/dunning intervals, suggested amounts, default currency, auto-receipt toggle, debug logging, and the three donor-option toggles). It does <strong>not</strong> touch org name, Tax ID, email colors/copy, min/max amounts, portal link validity, thank-you CTA, or NPSP sync toggles.</td>
+<td>Immediate, but <strong>narrower than the label suggests</strong> — it resets exactly 10 fields (retry/grace/dunning intervals, suggested amounts, default currency, auto-receipt toggle, debug logging, and the two donor-option toggles). It does <strong>not</strong> touch org name, Tax ID, email colors/copy, min/max amounts, portal link validity, thank-you CTA, or NPSP sync toggles.</td>
 </tr>
 </tbody>
 </table>
-<div class="admonition warning">
-<p class="admonition-title">Anonymous giving isn't wired end to end yet</p>
-<p>"Allow anonymous giving" saves and pre-fills new fundraisers, but no donation form currently
-renders an anonymous-giving option to donors. Treat this toggle as reserved for a future
-release rather than a working feature today.</p>
+<div class="admonition info">
+<p class="admonition-title">Anonymous giving has been removed</p>
+<p>Earlier releases carried an "Allow anonymous giving" toggle here and an <code>Anonymous__c</code> checkbox
+on donations and recurring donations. Nothing ever wrote them — no donation form asked donors
+the question — so they have been removed rather than left as settings that appear to work.
+Anonymous giving may return as a real, end-to-end feature in a later release.</p>
 </div>
 <h3 id="email-receipts-general-email-receipts">Email &amp; Receipts (<code>General → Email &amp; Receipts</code>)<a class="headerlink" href="#email-receipts-general-email-receipts" title="Permanent link">#</a></h3>
 <table>

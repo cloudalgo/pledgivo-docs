@@ -7922,11 +7922,6 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-opportunitiesselector-selectrecentdonorsbycampaignsystem"></a><code>selectRecentDonorsByCampaignSystem(2 args)</code></td>
-<td><code>List&lt;Opportunity&gt;</code></td>
-<td></td>
-</tr>
-<tr>
 <td><a id="apex-opportunitiesselector-selectdonortotalsincesystem"></a><code>selectDonorTotalSinceSystem(3 args)</code></td>
 <td><code>List&lt;AggregateResult&gt;</code></td>
 <td></td>
@@ -8127,7 +8122,7 @@
 <p>implements <a href="#apex-ireceiptservice">IReceiptService</a></p>
 <p><strong>Docs note.</strong> Every outbound donor/staff email in the package funnels through this class — donation and event-ticket receipts, recurring confirmation/failed-payment/dunning/re-auth notices, dispute alerts, and tribute notifications. Callers include DonationService.finalizeSucceededStaging, EventPurchaseService, RecurringDonationService, RecurringRenewalBatch, and RefundReconciliationBatch. Every send method is best-effort: a template/limit/missing-email failure is logged via AppLogger and swallowed so it can never roll back an already-finalized donation or payment.</p>
 <p>Split out from sendDisputeAlert so the addressing and body can be asserted without a real send. Messaging.sendEmail is subject to the org's DAILY email allocation even inside a test (the message is never delivered, but the quota check still runs), so a test that asserts on Limits.getEmailInvocations() fails once a suite run exhausts the allocation — in a scratch org that is a matter of a few sends. Asserting the built message is both deterministic and a stronger check than "one send was attempted".</p>
-<p>Split out from sendTributeNotification for the same reason as buildDisputeAlert — Messaging.sendEmail is metered against the org's DAILY email allocation even inside a test, so a test that depends on a successful send starts failing once a suite run exhausts it. The wording here is the thing worth asserting anyway: the e-card must never disclose the amount and must withhold the donor's name when Anonymous__c is set.</p>
+<p>Split out from sendTributeNotification for the same reason as buildDisputeAlert — Messaging.sendEmail is metered against the org's DAILY email allocation even inside a test, so a test that depends on a successful send starts failing once a suite run exhausts it. The wording here is the thing worth asserting anyway: the e-card must never disclose the gift amount.</p>
 <p>The Contact is fetched by Id rather than traversed from the Opportunity. Opportunity.ContactId has NO relationship name (Schema describe returns null), so "SELECT Contact.FirstName FROM Opportunity" is rejected at query time — the earlier traversal made selectTributeById throw on every call, and because sendTributeNotification is best-effort the failure was swallowed and no tribute e-card ever went out. Account.Name traverses normally; only the Contact parent is unavailable.</p>
 <table>
 <thead>

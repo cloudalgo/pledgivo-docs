@@ -1689,7 +1689,7 @@ description: Represents a donor's ongoing recurring giving schedule (subscriptio
 <p class="fn-dek">Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>35 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p><code>custom</code> · <code>34 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1789,12 +1789,6 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Amount</td>
 <td>Currency</td>
 <td>The amount charged to the donor's card each billing cycle.</td>
-</tr>
-<tr>
-<td><code>Anonymous__c</code></td>
-<td>Anonymous</td>
-<td>Checkbox</td>
-<td>Check if the donor should be shown as anonymous instead of by name.</td>
 </tr>
 <tr>
 <td><code>Campaign__c</code></td>

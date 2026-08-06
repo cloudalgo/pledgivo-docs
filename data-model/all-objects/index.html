@@ -2931,7 +2931,7 @@
 </tbody>
 </table>
 <h3 id="campaign-design">Campaign Design<a class="headerlink" href="#campaign-design" title="Permanent link">#</a></h3>
-<p><code>Campaign_Design__c</code> · <code>custom</code> · <code>47 fields</code> · <code>ReadWrite</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>Campaign_Design__c</code> · <code>custom</code> · <code>46 fields</code> · <code>ReadWrite</code> · <code>Campaigns &amp; Content</code></p>
 <p>A reusable branding/theme configuration (colors, fonts, layout, form copy defaults) that can be applied to one or more Campaigns' public donation pages. There is no standard-object equivalent for shareable page theming, so it is modeled as a custom object. If a Campaign has no Design assigned, the record with Is_Default__c checked is used as fallback. Admin-configurable design overrides only — never hardcode a themeable value in a public component.</p>
 <p><strong>Docs note.</strong> Theme_Tokens_JSON__c on this object is the only field whose overridable key set is governed by Theme_Token__mdt (see that object's doc note) — every other field here is a direct, always-present column read by CampaignService.buildPublicExperienceResult() and the setDesigns internal editor via SetupController. Records are shared across Campaigns many-to-one (one Design, many Campaigns), so editing a Design changes every Campaign that references it; there is intentionally no per-Campaign field override outside the JSON token layer.</p>
 <p><strong>Relationships</strong></p>
@@ -3173,12 +3173,6 @@
 <td>Shadow Style</td>
 <td>Picklist</td>
 <td>How much drop shadow cards have on the public page.</td>
-</tr>
-<tr>
-<td><code>Show_Donor_Wall__c</code></td>
-<td>Show_Donor_Wall</td>
-<td>Checkbox</td>
-<td>When on, shows a list of recent donors below the donation form.</td>
 </tr>
 <tr>
 <td><code>Show_Progress_Bar__c</code></td>
@@ -3730,7 +3724,7 @@
 </tbody>
 </table>
 <h3 id="opportunity">Opportunity<a class="headerlink" href="#opportunity" title="Permanent link">#</a></h3>
-<p><code>Opportunity</code> · <code>standard</code> · <code>37 fields</code> · <code>Donations &amp; Payments</code></p>
+<p><code>Opportunity</code> · <code>standard</code> · <code>36 fields</code> · <code>Donations &amp; Payments</code></p>
 <p>See the <a href="../donation/">full reference page</a> for this object.</p>
 <p><strong>Relationships</strong></p>
 <table>
@@ -3798,12 +3792,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>Anonymous__c</code></td>
-<td>Anonymous</td>
-<td>Checkbox</td>
-<td>Check if the donor asked not to be publicly identified with this gift.<br><em>Docs: This only suppresses the donor's name from public-facing display — it does not blank or mask the underlying Contact__c/Donor_Account__c lookup, and it has no effect on internal reporting or the org's own view of who gave. Anonymity is a presentation rule enforced by the public LWCs, not a data-masking rule enforced in Apex.</em></td>
-</tr>
 <tr>
 <td><code>Check_Number__c</code></td>
 <td>Check Number</td>
@@ -4790,7 +4778,7 @@
 </tbody>
 </table>
 <h3 id="recurring-donation">Recurring Donation<a class="headerlink" href="#recurring-donation" title="Permanent link">#</a></h3>
-<p><code>Recurring_Donation__c</code> · <code>custom</code> · <code>35 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p><code>Recurring_Donation__c</code> · <code>custom</code> · <code>34 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
 <p>Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 <p><strong>Docs note.</strong> The description's "each state change or payment attempt is logged to a child Recurring_Donation_History__c record" is aspirational, not current behavior — see the doc note on Recurring_Donation_History__c: only the initial Created event is written automatically today. Self-managed (Phase B) means there is no Stripe Subscription object anywhere in this flow; RecurringRenewalBatch drives every charge off-session via IPaymentGateway.chargeOffSession against Stripe_Customer_Id__c/Stripe_Payment_Method_Id__c, and RecurringDonationService. processRenewal is the dunning state machine interpreting each charge outcome. When the optional NPSP extension is detected, this object maps to npe03__Recurring_Donation__c rather than replacing it.</p>
 <p>See the <a href="../recurring-donation/">full reference page</a> for this object.</p>
@@ -4877,12 +4865,6 @@
 <td>Amount</td>
 <td>Currency</td>
 <td>The amount charged to the donor's card each billing cycle.</td>
-</tr>
-<tr>
-<td><code>Anonymous__c</code></td>
-<td>Anonymous</td>
-<td>Checkbox</td>
-<td>Check if the donor should be shown as anonymous instead of by name.</td>
 </tr>
 <tr>
 <td><code>Campaign__c</code></td>

@@ -666,6 +666,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#layout-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layout modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#theming" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1674,6 +1685,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#layout-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layout modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#theming" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1782,6 +1804,61 @@ composer — drag blocks into Step 1, leave Step 2 alone, customize Step 3.</p>
 <div class="fn-shot"><img src="../../assets/images/set-page-canvas-compose.png" alt="Page Canvas composer Compose step block list"></div>
 <p class="fn-figure-caption">**What it shows.** The Page Canvas editor showing a sequence of field and content blocks in the Compose step, with a drag handle on each.</p>
 
+<h2 id="layout-modes">Layout modes<a class="headerlink" href="#layout-modes" title="Permanent link">#</a></h2>
+<p>The blocks decide <em>what</em> is on the page; <code>Form_Layout_Mode__c</code> on the design decides <em>how it is
+arranged</em>. Six modes ship with the package, and every one of them is a full-width, wide-contained
+(~1440px) composition built for minimal scrolling:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Arrangement</th>
+<th>Suits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Spotlight</code></td>
+<td>Centered single column under a wide hero banner</td>
+<td>Straightforward appeals; the safe default</td>
+</tr>
+<tr>
+<td><code>Split_Hero</code></td>
+<td>Story rail beside the form, with raised/goal figures</td>
+<td>Appeals that need to argue their case</td>
+</tr>
+<tr>
+<td><code>Summary_Sidebar</code></td>
+<td>Gradient hero over the form, live "Your gift" receipt rail</td>
+<td>Larger or itemized gifts</td>
+</tr>
+<tr>
+<td><code>Conversational</code></td>
+<td>Numbered step indicator, one question at a time, receipt rail</td>
+<td>First-time or hesitant donors</td>
+</tr>
+<tr>
+<td><code>Immersive</code></td>
+<td>Bled full-bleed scene with a cinematic story column</td>
+<td>Photography-led, emotive campaigns</td>
+</tr>
+<tr>
+<td><code>Momentum</code></td>
+<td>Progress-ring panel with raised/goal/days-left figures</td>
+<td>Deadline or goal-driven drives</td>
+</tr>
+</tbody>
+</table>
+<p>Each mode also carries its own type pairing, so a campaign changes character by changing one
+picklist rather than by hand-editing CSS.</p>
+<p><strong>The layout persists through checkout.</strong> Compose and Payment render on the same canvas — when a
+donor presses <em>Continue to payment</em>, only the form column swaps to the Stripe Payment Element.
+The story column, progress figures, gradient hero and receipt rail all stay on screen, so the
+page never drops to a bare payment card mid-transaction. On narrow screens each mode collapses
+to a single column and the side rails stack beneath the form.</p>
+<p><strong>Ticketed events use the same modes.</strong> <code>Event_Layout__c</code> on the design picks the arrangement for
+a campaign's public ticket page, drawing on the same six layouts and the same theme tokens, so an
+event page and a donation page from the same design look like they belong to one organization.</p>
 <h2 id="theming">Theming<a class="headerlink" href="#theming" title="Permanent link">#</a></h2>
 <p>Visual styling — colors, fonts, radius, spacing — is controlled by a token system rather than
 free-form CSS. Every override a campaign design can make is one of a fixed, packaged catalog of

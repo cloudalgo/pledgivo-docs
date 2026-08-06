@@ -1754,6 +1754,10 @@
 <div class="fn-shot"><img src="../../assets/images/public-event-ticketing.png" alt="Public event ticketing page"></div>
 <p class="fn-figure-caption">**What it shows.** A live public event page — hero with an EVENT FUNDRAISER badge, a date/venue/seats-left stat bar, an "Our story" section, and a 4-step wizard (Tickets → Attendees → Your info → Payment) with per-tier pricing, tax-deductible amounts, and a remaining-seats badge on each tier.</p>
 
+<p>The ticket page is themed by the same <code>Campaign_Design__c</code> record as a donation page, and
+<code>Event_Layout__c</code> picks which of the six layout modes it renders in — see
+<a href="../campaigns/#layout-modes">Layout modes</a>. An event and a donation appeal sharing one design
+therefore share hero treatment, type pairing, and theme tokens.</p>
 <h2 id="same-pipeline-different-payload">Same pipeline, different payload<a class="headerlink" href="#same-pipeline-different-payload" title="Permanent link">#</a></h2>
 <p>Event ticket purchases don't get a separate payment system — they go through the identical
 <code>Donation_Staging__c</code> → Stripe → reconcile flow described in

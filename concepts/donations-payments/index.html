@@ -705,6 +705,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#after-the-gift-the-confirmation-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After the gift — the confirmation page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#controlling-which-funds-a-donor-can-pick" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1729,6 +1740,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#after-the-gift-the-confirmation-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After the gift — the confirmation page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#controlling-which-funds-a-donor-can-pick" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1838,7 +1860,7 @@ later than an instant webhook would. In practice this is not noticeable to a don
     Apex-&gt;&gt;Stripe: Create PaymentIntent
     Apex-&gt;&gt;Staging: Insert staging row (no Opportunity yet)
     Form-&gt;&gt;Stripe: Confirm payment (Stripe.js, in iframe)
-    Stripe--&gt;&gt;Donor: Redirect to receipt page
+    Stripe--&gt;&gt;Donor: Redirect to /thank-you?access=…
     Form-&gt;&gt;Apex: checkPaymentStatus() / checkStagingPaymentStatus()
     Apex-&gt;&gt;Stripe: Retrieve PaymentIntent
     Apex-&gt;&gt;Staging: finalizeSucceededStaging() → creates Opportunity
@@ -1852,14 +1874,61 @@ other can never create two Opportunities for the same payment.</p>
 <div class="fn-shot"><img src="../../assets/images/df-donation-form.png" alt="Public donation form"></div>
 <p class="fn-figure-caption">**What it shows.** A live public donation form — amount tiles with a custom-amount input, a One-time/Monthly/Annually frequency toggle, fund designation and split-gift options, donor info fields, tribute/dedication and employer-match blocks, and a sticky gift summary sidebar with "Secure & encrypted" / "Powered by Stripe" trust badges. This is the Compose step described in [Campaigns](campaigns.md) rendered for a guest.</p>
 
+<h2 id="after-the-gift-the-confirmation-page">After the gift — the confirmation page<a class="headerlink" href="#after-the-gift-the-confirmation-page" title="Permanent link">#</a></h2>
+<p>The moment a payment clears, the donor is sent to <strong><code>/thank-you</code></strong> — a real page on its own
+route, not a step inside the form.</p>
+<p>That distinction is the whole point. A step change inside the form leaves the browser sitting on
+<code>/donate?slug=…</code>, so a completed gift looks exactly like an abandoned one and no analytics tool
+can tell them apart. A route produces a distinct URL, and therefore a distinct pageview, at the
+moment of conversion.</p>
+<p><strong>There is no analytics tag to install.</strong> The package ships no SDK, no tracking script and no
+settings field for one. You wire up Google Analytics through Experience Builder's own setting and
+count <code>/thank-you</code> as your goal. That is the entire mechanism.</p>
+<p>The page can be reached two ways:</p>
+<table>
+<thead>
+<tr>
+<th>Link</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/thank-you?token=…</code></td>
+<td>The durable link. Bookmarkable, shareable, and what the receipt email points at.</td>
+</tr>
+<tr>
+<td><code>/thank-you?access=…</code></td>
+<td>The hand-off used the instant a payment clears, while the gift is still being written.</td>
+</tr>
+</tbody>
+</table>
+<p>The donation record is written by a background job that runs every five minutes, so a donor arriving
+on the <code>?access=</code> link normally gets there before the record exists. <strong>They still see the whole
+confirmation</strong> — seal, greeting, amount, impact line, event date and venue, the fund they chose,
+what happens next, share links and the campaign's own call to action. All of it was decided at
+checkout, so the page renders it from the checkout itself rather than waiting for the record.</p>
+<p>Only two things genuinely cannot exist yet: the link to the full receipt, and the per-seat ticket
+codes. In their place the page shows one quiet line — <em>"Your receipt and tickets are on their way to
+you@example.com."</em> — and nothing else changes. The page keeps checking for about two minutes and
+fills those sections in where they stand, then swaps the address bar to the durable <code>?token=</code> link
+on its own. There is no spinner and no holding message, because the donor has nothing to wait for.</p>
+<div class="admonition note">
+<p class="admonition-title">If the donor closes the tab before it fills in</p>
+<p>Nothing is lost. The payment is already captured, and the receipt email always arrives with a
+working <code>?token=</code> link that resolves immediately. Reloading the <code>?access=</code> link works too.</p>
+</div>
+<p>For an event order, the page also carries the tickets. A donor who bought five seats sees one
+ticket and a count rather than five full cards — <code>See all 5 tickets</code> expands the stack. Each seat carries a
+scannable code for its own ticket reference; a refunded seat carries none and is marked
+<strong>not valid for entry</strong>.</p>
 <h2 id="controlling-which-funds-a-donor-can-pick">Controlling which funds a donor can pick<a class="headerlink" href="#controlling-which-funds-a-donor-can-pick" title="Permanent link">#</a></h2>
-<p>By default every campaign's donor picks freely from every active <code>Designation__c</code> (fund) in
-the org — this is the <code>All_Active</code> mode, and it's what every campaign got before this control
-existed, so nothing changes unless you opt in. A campaign's <code>Designation_Mode__c</code> field offers
-two more options, set from the Fundraisers console (<code>lexFundraisersConsole</code>):</p>
+<p>A campaign's <code>Designation_Mode__c</code> field decides how much choice the donation form gives a
+donor over which <code>Designation__c</code> (fund) their gift lands in. It is set from the Fundraisers
+console (<code>lexFundraisersConsole</code>) and has three values:</p>
 <ul>
-<li><strong>All Active</strong> (default) — the donation form shows every active fund. No configuration
-  needed; this is unchanged, org-wide behavior.</li>
+<li><strong>All Active</strong> — the donation form shows every active fund in the org. No further
+  configuration needed.</li>
 <li><strong>Assigned</strong> — every gift on this campaign is locked to a single fund
   (<code>Default_Designation__c</code>). The fund picker doesn't render at all — there's nothing for the
   donor to choose, so the form skips straight past it.</li>
@@ -1867,6 +1936,19 @@ two more options, set from the Fundraisers console (<code>lexFundraisersConsole<
   (<code>Allowed_Designation_Ids__c</code>), pre-selected to <code>Default_Designation__c</code> when it's one of the
   offered funds.</li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Always set the mode explicitly — don't rely on a default</p>
+<p>The picklist declares <strong>Assigned</strong> as its default value, but that is not what an Apex or
+API insert actually lands on. A Campaign inserted without a <code>RecordTypeId</code> gets the
+<code>Fundraising</code> record type, which declares no picklist assignment for this field, so the
+platform supplies the first available value — <strong>All Active</strong> — and the declared default
+never applies. A campaign that ends up with the field genuinely blank also resolves to
+All Active, deliberately: an unconfigured campaign should not be silently narrowed to a
+single fund. The practical rule is that the wizard, the seed scripts, and any integration
+must set <code>Designation_Mode__c</code> explicitly rather than trusting either default. There is no
+validation rule enforcing this — the fundraiser wizard's own save guards are the only
+place a blank mode is blocked.</p>
+</div>
 <p><code>CampaignDesignationService.resolveDesignationConfig()</code> is the single place this is resolved,
 and it fails safe rather than fails loud: if an allowed fund was later deactivated or deleted,
 it's silently dropped from the list rather than breaking the donation page; if every configured

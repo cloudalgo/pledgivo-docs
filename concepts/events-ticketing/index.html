@@ -739,10 +739,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-a-tier-can-say-for-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a tier can say for itself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#same-pipeline-different-payload" class="md-nav__link">
     <span class="md-ellipsis">
       
         Same pipeline, different payload
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-the-purchase-the-ticket-deck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After the purchase — the ticket deck
       
     </span>
   </a>
@@ -1674,10 +1696,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-a-tier-can-say-for-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a tier can say for itself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#same-pipeline-different-payload" class="md-nav__link">
     <span class="md-ellipsis">
       
         Same pipeline, different payload
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#after-the-purchase-the-ticket-deck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        After the purchase — the ticket deck
       
     </span>
   </a>
@@ -1758,6 +1802,34 @@
 <code>Event_Layout__c</code> picks which of the six layout modes it renders in — see
 <a href="../campaigns/#layout-modes">Layout modes</a>. An event and a donation appeal sharing one design
 therefore share hero treatment, type pairing, and theme tokens.</p>
+<h2 id="what-a-tier-can-say-for-itself">What a tier can say for itself<a class="headerlink" href="#what-a-tier-can-say-for-itself" title="Permanent link">#</a></h2>
+<p>A tier name alone rarely answers the buyer's actual question, which is <em>what do I get for this?</em>
+Two fields on <code>Event_Ticket_Type__c</code> cover that, and both are edited in the same place you set the
+tier's price — the Fundraisers console's <strong>Tickets</strong> step when you build the event, and the
+record drawer's <strong>Tickets</strong> tab afterwards.</p>
+<p><strong>Description</strong> (<code>Description__c</code>, 255 characters) is a line or two of what the tier includes —
+"Two premium seats, sparkling reception, and your names in the programme." It renders directly
+under the tier name on the public page. Leave it blank and nothing renders; a tier whose name says
+it all does not need it. It is plain text, not rich text, deliberately: the value is shown to
+unauthenticated visitors, so it can never carry markup. If you type the perks on separate lines
+they come back on separate lines.</p>
+<p><strong>Highlight</strong> (<code>Highlight_Label__c</code>, 40 characters) puts a badge on one tier to steer buyers
+toward it. Switch on <em>Highlight this ticket</em> and the editor seeds <strong>"Most popular"</strong>, which you can
+replace with anything that fits the event — "Best value", "Table of 10", "Sells out first". The
+label <em>is</em> the switch: clear the text and the tier stops being highlighted, so there is no separate
+checkbox to keep in step with it.</p>
+<p>Highlighting is deliberately limited to <strong>one tier per event</strong> — badging one tier clears the badge
+on the others, whichever editor you used. Three tiers all reading "Most popular" recommend nothing.
+The rule is enforced when you save, so it holds even if two people are editing the same event.</p>
+<p>Two things a highlight will not do. It never overrides the buyer's own choice: once they select a
+tier, the selected styling wins. And a <strong>sold-out tier is never highlighted</strong>, because
+advertising something unbuyable only tells the buyer what they missed.</p>
+<div class="admonition note">
+<p class="admonition-title">Loading tiers through the API</p>
+<p>One-highlight-per-event is an editing convention, not a validation rule. A Data Loader or API
+write bypasses it, and the public page renders exactly what it is given — so if you badge three
+tiers by import, three badges appear.</p>
+</div>
 <h2 id="same-pipeline-different-payload">Same pipeline, different payload<a class="headerlink" href="#same-pipeline-different-payload" title="Permanent link">#</a></h2>
 <p>Event ticket purchases don't get a separate payment system — they go through the identical
 <code>Donation_Staging__c</code> → Stripe → reconcile flow described in
@@ -1766,6 +1838,25 @@ discriminator on the staging record: a value of <code>Event_Ticket</code> routes
 <code>EventPurchaseService</code> instead of the plain donation finalizer, which creates the Opportunity
 <strong>plus</strong> <code>OpportunityLineItem</code> rows (one per ticket tier purchased) and an <code>Event_Attendee__c</code>
 record per seat.</p>
+<h2 id="after-the-purchase-the-ticket-deck">After the purchase — the ticket deck<a class="headerlink" href="#after-the-purchase-the-ticket-deck" title="Permanent link">#</a></h2>
+<p>A completed order lands on the same routed confirmation page as a donation
+(<strong><code>/thank-you</code></strong> — see <a href="../donations-payments/#after-the-gift--the-confirmation-page">After the gift</a>),
+with the seats stacked underneath the receipt.</p>
+<p>Someone who bought five seats does <strong>not</strong> get five full cards. They see the first ticket and a
+count — <code>See all 5 tickets</code> expands the stack. Each seat shows its attendee name, tier and its own
+short ticket reference, drawn as a scannable code on the card. A seat nobody was named for reads
+<strong>Unassigned seat</strong> rather than showing a blank line.</p>
+<p>The code encodes the ticket reference and nothing else — not the order link, not the buyer's
+details — so a ticket forwarded to a guest hands over exactly one seat and no access to the order.
+A <strong>refunded or voided seat carries no code at all</strong> and is marked <em>not valid for entry</em>, so a
+screenshot taken before the refund can't be presented at the door.</p>
+<div class="admonition note">
+<p class="admonition-title">There is no door-scanning app yet</p>
+<p>The codes are readable by any standard scanner, and the reference they contain matches the
+<code>Event_Attendee__c</code> record — but the package ships no check-in endpoint or scanning screen in
+this release. Today the code is a fast way for a volunteer to look a guest up, not an automated
+turnstile.</p>
+</div>
 <h2 id="seats-are-reserved-before-the-charge-completes">Seats are reserved before the charge completes<a class="headerlink" href="#seats-are-reserved-before-the-charge-completes" title="Permanent link">#</a></h2>
 <p><code>EventRegistrationController.createTicketIntent</code> increments <code>Quantity_Sold__c</code> on the ticket
 tier — under a row lock (<code>FOR UPDATE</code>) so two donors buying the last seat can't both succeed —

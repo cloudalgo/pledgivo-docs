@@ -2931,7 +2931,7 @@
 </tbody>
 </table>
 <h3 id="campaign-design">Campaign Design<a class="headerlink" href="#campaign-design" title="Permanent link">#</a></h3>
-<p><code>Campaign_Design__c</code> · <code>custom</code> · <code>48 fields</code> · <code>ReadWrite</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>Campaign_Design__c</code> · <code>custom</code> · <code>47 fields</code> · <code>ReadWrite</code> · <code>Campaigns &amp; Content</code></p>
 <p>A reusable branding/theme configuration (colors, fonts, layout, form copy defaults) that can be applied to one or more Campaigns' public donation pages. There is no standard-object equivalent for shareable page theming, so it is modeled as a custom object. If a Campaign has no Design assigned, the record with Is_Default__c checked is used as fallback. Admin-configurable design overrides only — never hardcode a themeable value in a public component.</p>
 <p><strong>Docs note.</strong> Theme_Tokens_JSON__c on this object is the only field whose overridable key set is governed by Theme_Token__mdt (see that object's doc note) — every other field here is a direct, always-present column read by CampaignService.buildPublicExperienceResult() and the setDesigns internal editor via SetupController. Records are shared across Campaigns many-to-one (one Design, many Campaigns), so editing a Design changes every Campaign that references it; there is intentionally no per-Campaign field override outside the JSON token layer.</p>
 <p><strong>Relationships</strong></p>
@@ -3167,12 +3167,6 @@
 <td>Radius Preset</td>
 <td>Picklist</td>
 <td>How rounded corners look across the public page, from square to pill-shaped.<br><em>Docs: Not part of the Theme_Token__mdt catalog; unlike Theme_Tokens_JSON__c overrides, this and the other named style-preset fields (Spacing_Density__c, Button_Style__c, Shadow_Style__c, Content_Max_Width__c) are read directly off the Campaign_Design__c record by publicFundraisingExperience.js, not resolved through the CSS-variable allowlist mechanism.</em></td>
-</tr>
-<tr>
-<td><code>Section_Background_Color__c</code></td>
-<td>Section Background Color</td>
-<td>Text</td>
-<td>Hex color used for content section backgrounds on the public page.</td>
 </tr>
 <tr>
 <td><code>Shadow_Style__c</code></td>
@@ -4539,7 +4533,7 @@
 </tbody>
 </table>
 <h3 id="event-ticket-type">Event Ticket Type<a class="headerlink" href="#event-ticket-type" title="Permanent link">#</a></h3>
-<p><code>Event_Ticket_Type__c</code> · <code>custom</code> · <code>11 fields</code> · <code>ControlledByParent</code> · <code>Events &amp; Ticketing</code></p>
+<p><code>Event_Ticket_Type__c</code> · <code>custom</code> · <code>13 fields</code> · <code>ControlledByParent</code> · <code>Events &amp; Ticketing</code></p>
 <p>Defines one purchasable ticket tier for a specific event (Campaign), such as "General Admission" or "VIP Table," including its price, capacity, sale window, and tax-deductible split. Master-Detail to Campaign so a tier is removed along with its event and its sales roll up into the event's Tickets_Sold__c total; optionally linked to a reusable Product2 ticket-type template that seeds its defaults.</p>
 <p><strong>Docs note.</strong> EventTicketTypesSelector takes a raw-SOQL FOR UPDATE row lock on the selected tiers during reservation (WITH SYSTEM_MODE, since the caller is the guest-context EventPurchaseService and fflib's QueryFactory builder can't express FOR UPDATE) — this is what prevents two concurrent checkouts from both reserving the last seat in a limited-capacity tier.</p>
 <p><strong>Relationships</strong></p>
@@ -4609,10 +4603,22 @@
 <td>% of the ticket price that is tax-deductible (only used in Percentage deduction mode).</td>
 </tr>
 <tr>
+<td><code>Description__c</code></td>
+<td>Description</td>
+<td>TextArea</td>
+<td>Say what the buyer gets for this price (for example "Two premium seats, sparkling reception, and your names in the programme"). Leave blank if the tier name says it all.<br><em>Docs: Plain TextArea, not Rich Text, on purpose: this string is rendered into a guest Experience Cloud page by publicEventRegistration, and plain text cannot carry markup that would need sanitising before it reaches an unauthenticated visitor. Line breaks are preserved by CSS (white-space) rather than by HTML in the value.</em></td>
+</tr>
+<tr>
 <td><code>Fair_Market_Value__c</code></td>
 <td>Fair Market Value</td>
 <td>Currency</td>
 <td>Dollar value of what the ticket buyer receives (e.g. dinner) — reduces the tax-deductible amount.</td>
+</tr>
+<tr>
+<td><code>Highlight_Label__c</code></td>
+<td>Highlight Label</td>
+<td>Text</td>
+<td>Type a short badge such as "Most popular" to draw attention to this tier. Leave blank for every tier you do not want to single out — highlight only one per event, or the badge stops meaning anything.<br><em>Docs: One highlight per event is an editing convention enforced server-side by EventTicketAdminController.demoteOtherHighlights (badging one tier clears the label on the event's others), not a platform constraint — data loaded through the API or Data Loader bypasses that method entirely and can badge several tiers, and publicEventRegistration renders whatever it is given rather than silently picking a winner. Deliberately free text rather than a picklist so an org can say "Sells out first" or "Table of 10" without a package upgrade; it is rendered as text content, never as markup.</em></td>
 </tr>
 <tr>
 <td><code>Is_Active__c</code></td>

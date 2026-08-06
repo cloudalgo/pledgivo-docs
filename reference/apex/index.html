@@ -3664,6 +3664,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-qrcodeencoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrCodeEncoder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-querycondition" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3690,6 +3701,17 @@
     <span class="md-ellipsis">
       
         TestDataFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-thankyoucontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThankYouController
       
     </span>
   </a>
@@ -6294,6 +6316,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-qrcodeencoder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrCodeEncoder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-querycondition" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6320,6 +6353,17 @@
     <span class="md-ellipsis">
       
         TestDataFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-thankyoucontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ThankYouController
       
     </span>
   </a>
@@ -6434,7 +6478,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 151 classes plus 102 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 153 classes plus 104 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7004,6 +7048,7 @@
 <p><strong>Docs note.</strong> Central hub for the guest campaign/event experience — slug/Id resolution, theme-token</p>
 <p>normalizeThemeTokensJson is the SOLE validation authority for page-design theme JSON —</p>
 <p>rollupCampaignTotals enqueues CancelGoalReachedRecurringQueueable when a rollup crosses</p>
+<p>Public because the confirmation moved out of the donation form and onto the routed /thank-you page — ThankYouController resolves the same CTA through this one method so an admin's configured "what next" button survives the hand-off instead of silently disappearing, and so the safe-URL rule has exactly one implementation.</p>
 <table>
 <thead>
 <tr>
@@ -7031,6 +7076,16 @@
 <tr>
 <td><a id="apex-campaignservice-resolveslug"></a><code>resolveSlug(1 arg)</code></td>
 <td><code>SlugResolution</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignservice-resolvethankyoucta"></a><code>resolveThankYouCta(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-defaultthankyouctaurl">SettingsService.defaultThankYouCtaUrl()</a>, <a href="#apex-settingsservice-defaultthankyouctalabel">SettingsService.defaultThankYouCtaLabel()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -7644,6 +7699,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-idonationdesignationsselector">IDonationDesignationsSelector</a></p>
 <p><strong>Docs note.</strong> Reads the per-fund split rows written by DonationService (one-time) and RecurringDonationService (recurring) via DesignationSplits. selectByOpportunityIdsWithGau feeds NpspSyncService.syncAllocations — the only other consumer of the GAU-mapped variant.</p>
+<p>Feeds the Designation row on ThankYouController's thank-you payload.</p>
 <p>Per-fund realized split for one campaign's donations — feeds admFundraiserDetail's "Realized fund split" table. Includes funds since removed from the campaign's allowed list (the LWC/controller layer marks those "not currently allowed" by diffing against the current CampaignDesignationConfig, not by filtering them out here). Same net-raised math as selectAggregateRaisedByDesignations, scoped by campaign instead of by designation set.</p>
 <table>
 <thead>
@@ -7671,6 +7727,11 @@
 </tr>
 <tr>
 <td><a id="apex-donationdesignationsselector-selectbyopportunityids"></a><code>selectByOpportunityIds(1 arg)</code></td>
+<td><code>List&lt;Donation_Designation__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationdesignationsselector-selectbyopportunityidswithfundname"></a><code>selectByOpportunityIdsWithFundName(1 arg)</code></td>
 <td><code>List&lt;Donation_Designation__c&gt;</code></td>
 <td></td>
 </tr>
@@ -7704,6 +7765,7 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-iopportunitiesselector">IOpportunitiesSelector</a></p>
 <p><strong>Docs note.</strong> The largest selector in the package — one-time and recurring donation receipts, refunds, disputes, the donor portal dashboard, event-ticket orders, and the internal fundraiser-detail console all read Opportunity through this class rather than ad hoc SOQL elsewhere.</p>
+<p>Feeds ThankYouController.getThankYou. Adding a field the thank-you page renders? Add it here — the page must never gain a second SOQL round trip for one more label.</p>
 <p>Won gifts on this campaign with zero Donation_Designation__c rows — the "Undesignated" bucket for admFundraiserDetail's realized fund-split table. Net of refunds, same convention as aggCampaignSummary/selectAggregateRaisedByCampaign.</p>
 <table>
 <thead>
@@ -7786,6 +7848,11 @@
 </tr>
 <tr>
 <td><a id="apex-opportunitiesselector-selecteventorderbyreceipttoken"></a><code>selectEventOrderByReceiptToken(1 arg)</code></td>
+<td><code>List&lt;Opportunity&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-opportunitiesselector-selectthankyoubyreceipttoken"></a><code>selectThankYouByReceiptToken(1 arg)</code></td>
 <td><code>List&lt;Opportunity&gt;</code></td>
 <td></td>
 </tr>
@@ -8714,6 +8781,7 @@
 <h4 id="apex-eventticketadmincontroller">EventTicketAdminController<a class="headerlink" href="#apex-eventticketadmincontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>EventTicketAdminController — admin API behind the record-drawer "Tickets" tab. Manages per-event ticket tiers (Event_Ticket_Type__c) and their reusable Product2. Reads via EventTicketTypesSelector; all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via ControllerAction.run(). Scope note (Slice C, Task 1): after the tier's Product2/Event_Ticket_Type__c commit via UoW, saveTicketType/saveTicketTypes call PricebookService.ensureEntriesFor() (direct SOQL/DML, not UoW — PricebookEntry can't be registered against an unsaved Product2) so purchase-time OpportunityLineItems have a PricebookEntry to reference. Price__c on the junction remains the price source of truth — the PricebookEntry.UnitPrice is only a required placeholder.</p>
+<p><strong>Docs note.</strong> Highlight_Label__c is both the badge copy and the on-switch, so "two highlighted tiers" is not something the platform can reject — it just makes the badge meaningless, since three tiers all reading "Most popular" recommend nothing. Both editors (the fundraiser wizard's Tickets step and the drawer's Tickets tab) let an admin highlight a tier without thinking about the others, so the demotion happens here, once, rather than in each editor's client code where a stale list would miss a tier. It is an editing convention, not a data constraint: an API or Data Loader write bypasses this method entirely, and publicEventRegistration renders whatever it is given.</p>
 <table>
 <thead>
 <tr>
@@ -10072,6 +10140,7 @@
 <p><code>class</code> · <code>global without sharing</code></p>
 <p>implements InstallHandler</p>
 <p><strong>Docs note.</strong> Every seed* step here is idempotent (upsert or "insert only if absent"), so onInstall is safe to re-run on every package upgrade, not just the first install — it only fills blanks and never overwrites an admin's existing configuration. scheduleJobs() deliberately excludes StripePaymentSweep and RefundReconciliationBatch: both call PaymentGatewayFactory.getDefault() unconditionally, which throws before any Payment_Account__c exists, so scheduling them here would fail the install on a fresh org with no Stripe account configured yet. They are scheduled later, once the admin has connected a gateway, via scripts/apex/schedule-reconciliation-jobs.apex. SetupController's health check (EXPECTED_PIPELINE_JOBS = 17) is the count of ALL scheduled jobs including those two — a fresh install correctly shows a 'warn' state there until that script runs.</p>
+<p>images.unsplash.com is the only CSP-trusted image host (Unsplash_images.cspTrustedSite). A plus.unsplash.com premium id is a DIFFERENT host and will be blocked — never use one. These are starter defaults an admin is expected to replace with their own imagery; a theme missing from this map simply seeds no hero, which renders the theme's flat background rather than a broken image.</p>
 <p>Shell gutter, uniform at 2rem (32px) for the same reason as maxW below — pf-mock.css</p>
 <p>Every layout mode is wide-contained at 1440px — the width decision for the 2026-08-05</p>
 <p>Page gutter, 40px — the value all seven mocks share. It has to be restated for the</p>
@@ -11229,6 +11298,36 @@
 </tr>
 </tbody>
 </table>
+<h4 id="apex-qrcodeencoder">QrCodeEncoder<a class="headerlink" href="#apex-qrcodeencoder" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p><strong>Docs note.</strong> Written from scratch rather than pulled from a library because the package's CSP trusts no script CDN, and because a QR has to be generated somewhere the print sheet and the receipt email can both reach — which rules out encoding it in the browser. Output is monochrome SVG path data with the quiet zone baked into the viewBox. It carries no theme token and no colour of its own on purpose: a themed QR is a QR that fails at the door, and a page that tightens padding would otherwise eat the quiet zone the scanner needs. Versions stop at 6 so no version-information block is required — a ticket reference is about a dozen characters, and version 6 at ECC M holds 108. Above capacity this throws rather than truncating: a truncated symbol still scans, just to the wrong ticket.</p>
+<p>Apex exposes no byte array, so UTF-8 bytes come out of a hex round-trip through Blob. Encoding the string's characters directly would corrupt any payload outside ASCII. The nibbles are looked up by hand because Integer.valueOf has no radix overload.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-qrcodeencoder-tosvg"></a><code>toSvg(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-qrcodeencoder-tosvgpath"></a><code>toSvgPath(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-qrcodeencoder-modulecount"></a><code>moduleCount(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h4 id="apex-querycondition">QueryCondition<a class="headerlink" href="#apex-querycondition" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public virtual with sharing</code></p>
 <p>Composable SOQL WHERE clause builder. Works with Database.queryWithBinds() (available API 57+) so binding variables are passed as a Map — no Apex scope variable tricks needed. Usage in a selector method: QueryCondition cond = QueryCondition.of('Status = :status', 'status', 'Active') .andWhere(QueryCondition.of('CampaignId = :cid', 'cid', campaignId)); String soql = newQueryFactory().setCondition(cond.getClause()).toSOQL(); return (List&lt;Opportunity&gt;) Database.queryWithBinds( soql, cond.getBindings(), AccessLevel.USER_MODE ); Concrete condition inner classes (recommended for reuse): private class ActiveCondition extends QueryCondition { ActiveCondition() { super('Status__c = :status', new Map&lt;String,Object&gt;{ 'status' =&gt; 'Active' }); } } private class ByCampaignCondition extends QueryCondition { ByCampaignCondition(Set&lt;Id&gt; ids) { super('CampaignId IN :cids', new Map&lt;String,Object&gt;{ 'cids' =&gt; ids }); } } // Compose: QueryCondition cond = new ActiveCondition().andWhere(new ByCampaignCondition(campaignIds));</p>
@@ -11468,6 +11567,26 @@
 <td><a id="apex-testdatafactory-contenttemplatefaq"></a><code>contentTemplateFaq(2 args)</code></td>
 <td><code>Content_Template__c</code></td>
 <td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="apex-thankyoucontroller">ThankYouController<a class="headerlink" href="#apex-thankyoucontroller" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public without sharing</code></p>
+<p><strong>Docs note.</strong> This exists as its own controller rather than two client calls to ReceiptController and EventTicketsController because the page needs one round trip, and because the per-seat QR codes are generated server-side by QrCodeEncoder — the LWC never encodes anything. The page is a real Experience Cloud route (/thank-you) rather than a step inside the donation form specifically so a conversion produces its own pageview for analytics.</p>
+<p>Two payload builders, ONE key set. giftSummary reads the finalized Opportunity; pendingSummary reads the Donation_Staging__c row the donor's own checkout wrote, and returns the same keys with the finalizer-only ones null. That symmetry is deliberate: the finalizer runs on a five-minute cron, so a donor arriving on ?access= usually lands on the pending payload, and the page must render a real confirmation from it rather than a holding message. The null keys are what the page replaces with one quiet placeholder line.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-thankyoucontroller-getthankyou"></a><code>getThankYou(2 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
 </tr>
 </tbody>
 </table>

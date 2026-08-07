@@ -1770,6 +1770,11 @@ at the org-default level through the <a href="../../getting-started/setup-assist
 It covers refunds, recurring/dunning behavior, event defaults, logging verbosity, Experience
 Cloud/embed toggles, donor portal copy, and organization display defaults — see the
 <a href="../../data-model/settings/">Settings data model reference</a> for the complete field list.</p>
+<p>Two of its fields describe your payment processor rather than your fundraising:
+<strong>Fee Coverage Percent</strong> and <strong>Fee Coverage Fixed</strong> hold the rate used to gross up a gift when
+a donor chooses to cover processing fees. Both are optional — blank falls back to the US card
+standard (2.9% + $0.30) — and neither has any effect until a campaign opts in. See
+<a href="../donations-payments/#when-the-donor-covers-the-processing-fee">Donations &amp; payments</a>.</p>
 <p><code>SettingsService</code> is the typed accessor every Apex class reads through — application code
 never queries <code>Settings__c</code> directly, so a field rename or a new default only has to change in
 one place.</p>

@@ -2276,9 +2276,19 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 <td>Immediate — but if the name you enter doesn't resolve to a real template, it silently falls back to the packaged default rather than erroring. A typo won't break receipts; it'll just quietly ignore your custom template.</td>
 </tr>
 <tr>
-<td>Receipt intro message / signature / tax legal text / footer text</td>
+<td>Receipt intro message / signature / footer text</td>
 <td>Copy blocks on the receipt email</td>
 <td>Immediate</td>
+</tr>
+<tr>
+<td>Tax legal text</td>
+<td>The legal sentence at the foot of a receipt. Applies to <strong>every</strong> receipt surface, not just the email — the donor-portal receipt and the printed receipt use it too</td>
+<td>Immediate. When set it is used verbatim and the packaged wording is suppressed entirely, including the wording that would otherwise adapt to whether the donor received goods or services (an event seat). Leave blank to keep that adaptive default.</td>
+</tr>
+<tr>
+<td>Receipt number prefix</td>
+<td>The leading segment of every receipt number — <code>RCPT</code> produces <code>RCPT-2026-000142</code>. Blank uses <code>RCPT</code>.</td>
+<td>Immediate, for the next receipt issued. Letters, digits and underscores only; anything else (including hyphens, which are the separator) is dropped, and the value is upper-cased when the number is built. Changing it never renumbers receipts already issued — the two formats simply coexist, which is fine because the numbers only have to be unique, not uniform.</td>
 </tr>
 <tr>
 <td>Recurring thank-you message</td>
@@ -2678,7 +2688,7 @@ Record Type than the packaged default.</p>
 <tbody>
 <tr>
 <td>Scheduled Jobs</td>
-<td>Confirms the expected donation-finalizer and reconciliation-heartbeat cron jobs are running</td>
+<td>Confirms the expected background jobs are running — the donation finalizer, the reconciliation heartbeat, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep, and the nightly campaign-total rebuild</td>
 <td><strong>Fix</strong> re-schedules any missing jobs immediately (safe to click even if some are already running — it only adds what's missing)</td>
 </tr>
 <tr>
@@ -2739,6 +2749,21 @@ from the Site &amp; Domain panel.</p>
 <td><strong>Run now</strong> — Retention purge</td>
 <td>Immediately deletes old logs/transaction logs/completed donation-staging rows</td>
 <td>Immediate, using whatever "Purge after (days)" value is currently saved on the Logging panel — not restorable afterward</td>
+</tr>
+<tr>
+<td><strong>Run now</strong> — Refunds and disputes</td>
+<td>Pulls refunds issued directly in the Stripe dashboard, and any chargeback activity, back into Salesforce</td>
+<td>Immediate; read-only against Stripe — it records what already happened there and never issues a refund itself. Also runs hourly on its own. Does nothing until Stripe is connected.</td>
+</tr>
+<tr>
+<td><strong>Run now</strong> — Payment sweep</td>
+<td>Finds Stripe payments that succeeded but never became a donation record, and finishes them</td>
+<td>Immediate; re-reads existing payments only, so it cannot double-charge. Also runs hourly on its own. Does nothing until Stripe is connected.</td>
+</tr>
+<tr>
+<td><strong>Run now</strong> — Campaign totals</td>
+<td>Recalculates every campaign's raised amount and donor count from its donations</td>
+<td>Immediate; overwrites the stored totals with what the donations actually say. Use it after a bulk import or any time a campaign's total looks wrong. Also runs nightly on its own.</td>
 </tr>
 </tbody>
 </table>

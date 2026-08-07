@@ -733,6 +733,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#gifts-that-end-on-their-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gifts that end on their own
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-a-charge-fails-dunning" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1696,6 +1707,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#gifts-that-end-on-their-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gifts that end on their own
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-a-charge-fails-dunning" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1781,6 +1803,44 @@ details, which live directly on the Opportunity instead.</p>
 <code>RecurringRenewalBatch</code>, which calls <code>RecurringDonationService.processRenewal()</code> for each —
 this charges the saved payment method off-session through the same <code>IPaymentGateway</code>
 abstraction used for one-time gifts, and creates a new Opportunity for the successful charge.</p>
+<p>If the donor chose to cover processing fees when they signed up, that choice rides on the
+schedule rather than being baked into its amount — the schedule keeps tracking the gift the
+donor picked, and each renewal re-grosses it against the current fee rate. Change your
+processor's rate in Settings and every covered donor's next charge follows automatically. See
+<a href="../donations-payments/#when-the-donor-covers-the-processing-fee">Donations &amp; payments</a>.</p>
+<h2 id="gifts-that-end-on-their-own">Gifts that end on their own<a class="headerlink" href="#gifts-that-end-on-their-own" title="Permanent link">#</a></h2>
+<p>By default a recurring gift runs until someone stops it. Two optional fields on
+<code>Recurring_Donation__c</code> let it finish by itself instead — useful for a pledge the donor framed
+as a promise ("$50 a month for a year") rather than an open commitment:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+<th>When it's checked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Installment Cap</strong></td>
+<td>End after this many successful charges</td>
+<td><em>After</em> each charge — the count is only consumed by money that actually moved</td>
+</tr>
+<tr>
+<td><strong>End Date</strong></td>
+<td>Never charge after this date</td>
+<td><em>Before</em> each charge — the schedule stops being due, inclusive of the end date itself</td>
+</tr>
+</tbody>
+</table>
+<p>A schedule that finishes its term lands on the status <strong>Completed</strong>, not <strong>Cancelled</strong>. That
+distinction is the point: a fulfilled pledge and a donor who walked away are very different
+things to a fundraiser, and lumping them together makes retention reporting lie. <code>Installments
+Paid</code> counts every successful charge including the first gift taken at signup, so a 12-payment
+pledge completes on its twelfth charge.</p>
+<p>Because a skipped cycle, a failed charge, and a retry never increment the count, a donor who
+skips a month still gets all twelve payments they promised — the term just finishes a month
+later.</p>
 <h2 id="when-a-charge-fails-dunning">When a charge fails: dunning<a class="headerlink" href="#when-a-charge-fails-dunning" title="Permanent link">#</a></h2>
 <p>A failed renewal doesn't cancel the recurring gift immediately. It's retried on a schedule,
 with the donor notified by email at a configurable cadence, until either the charge succeeds
@@ -1821,9 +1881,27 @@ or the org's configured retry/grace-period limits are exhausted — at which poi
 <p>See <a href="../../guides/recurring-dunning/">Configure recurring dunning</a> for a walkthrough of tuning
 these.</p>
 <h2 id="donor-self-service">Donor self-service<a class="headerlink" href="#donor-self-service" title="Permanent link">#</a></h2>
-<p>A donor can view their recurring gift, switch which saved card it charges, add a new card, or
-cancel it entirely from the <a href="../../guides/publish-donor-portal/">donor portal</a> — a
-token-authorized page, no login required.</p>
+<p>A donor can manage their recurring gift from the <a href="../../guides/publish-donor-portal/">donor portal</a>
+— a token-authorized page, no login required. From there they can:</p>
+<ul>
+<li><strong>Change the amount</strong> — the new amount takes effect on the next charge; the billing day never
+  moves, so raising a gift doesn't quietly pull the next payment forward. If the schedule splits
+  across several funds by percentage, those splits are re-derived at the new amount.</li>
+<li><strong>Change the fund</strong> — only funds the campaign actually offers are accepted. If the campaign
+  wouldn't allow the requested fund, the change is refused rather than silently redirected to the
+  campaign's default; a donor who asked for the scholarship fund should not end up funding
+  something else without being told.</li>
+<li><strong>Skip the next payment</strong> — moves the next payment date on by one cycle without consuming an
+  installment of a pledge term. Unavailable mid-dunning, where the schedule has a failed charge
+  to resolve first.</li>
+<li><strong>Switch or add a saved card</strong>, or <strong>cancel</strong> the gift entirely.</li>
+</ul>
+<p>Every one of these writes a <code>Recurring_Donation_History__c</code> row. The schedule's own fields keep
+no history of their prior values, so that trail is the only record of what a donor changed and
+when — worth pointing a fundraiser at when they ask why a monthly gift is a different size than
+they remember.</p>
+<p>Each action re-checks that the token actually owns the schedule it names, so a guessed record Id
+gets a refusal rather than someone else's gift.</p>
 <h2 id="related-reference">Related reference<a class="headerlink" href="#related-reference" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

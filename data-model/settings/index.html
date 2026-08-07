@@ -1685,7 +1685,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>73 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>80 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1747,6 +1747,18 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Email Brand Color (hex)</td>
 <td>Text</td>
 <td>Hex color (e.g. #25465f) used for the email letterhead, footer bar, and default buttons. Leave blank to use the built-in slate.<br><em>Docs: Hex color used only for transactional email chrome (letterhead, footer, buttons) via SettingsService.emailBrandColor(); a separate concern from Campaign_Design__c.Primary_Color__c, which brands the public donation page. Falls back to the Ember brand coral when blank.</em></td>
+</tr>
+<tr>
+<td><code>Company_Match_Followup_Days__c</code></td>
+<td>Company Match Follow-up Days</td>
+<td>Number</td>
+<td>How many days staff have to chase an employer match before the follow-up task is due. Leave blank to use 3 days.<br><em>Docs: 3 days rather than same-day because a match request usually needs the donor's employer portal details, which staff rarely have on the day the gift lands; a task due the moment it is created reads as overdue immediately and trains people to ignore the list.</em></td>
+</tr>
+<tr>
+<td><code>Company_Match_Task_Owner_Id__c</code></td>
+<td>Company Match Task Owner Id</td>
+<td>Text</td>
+<td>The 18-character Salesforce User Id of the person who chases employer matches. Leave blank and each follow-up task goes to the owner of the campaign the gift came in on, which is the right answer for most organizations.<br><em>Docs: A Text field rather than a lookup because Custom Settings cannot hold relationship fields — this is the platform's constraint, not a design preference, and it is why CompanyMatchService validates the Id against an active User before using it instead of trusting the stored value. Storing a User Id in config is not the "no hardcoded Ids" violation the security checklist targets: the value is admin-entered per org, never shipped in source.</em></td>
 </tr>
 <tr>
 <td><code>Data_Retention_Days__c</code></td>
@@ -1813,6 +1825,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Donation Page Path</td>
 <td>Text</td>
 <td>Only fill this in if you built your Donate page at a URL other than /donate. Enter the path exactly as set in Experience Builder's Page Properties (e.g. /give). Leave blank if you used the default /donate — campaign, fundraiser, and embed links are built using this value.</td>
+</tr>
+<tr>
+<td><code>Donation_Sync_Campaign_Members__c</code></td>
+<td>Donation_Sync_Campaign_Members</td>
+<td>Checkbox</td>
+<td>When on, a donor who gives to a campaign is added as a Campaign Member on that campaign. Off by default — leave it off if you already add campaign members with your own automation.<br><em>Docs: The donation-side counterpart of Event_Sync_Campaign_Members__c, deliberately a SEPARATE switch: an org that wants event attendance in campaign reporting does not necessarily want every donor added too, and the two write paths run at different times (event orders sync inline in EventPurchaseService; donations sync off the DonationFinalized__e subscriber via CampaignMemberSyncService). Read through SettingsService.donationSyncCampaignMembers().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Confirmation_Message__c</code></td>
@@ -1971,6 +1989,18 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Number of failed payment attempts allowed before a recurring gift is canceled, e.g. 3.<br><em>Docs: Read by SettingsService.maxFailedPaymentRetries() (default 3 when unset): the number of off-session retry attempts a recurring schedule gets before it is marked Failed and starts counting down Grace_Period_Days__c toward cancellation.</em></td>
 </tr>
 <tr>
+<td><code>Fee_Coverage_Fixed__c</code></td>
+<td>Fee Coverage Fixed Amount</td>
+<td>Number</td>
+<td>The flat per-transaction part of your payment processor's fee, e.g. 0.30 for Stripe's standard US card rate. Used only to work out the extra amount a donor pays when they tick "cover the processing fee". Leave blank to use 0.30.<br><em>Docs: Expressed in Default_Currency__c, not converted per gift — the package is single-currency by design (see Settings__c.Default_Currency__c), so there is no rate to apply. A blank falls back to 0.30 for the same reason Fee_Coverage_Percent__c falls back to 2.9: an unconfigured org should produce a plausible Stripe-shaped estimate, not a silently wrong one. Zero IS a legitimate value here (some processors charge no flat component) and is honoured — only blank triggers the default.</em></td>
+</tr>
+<tr>
+<td><code>Fee_Coverage_Percent__c</code></td>
+<td>Fee Coverage Percent</td>
+<td>Number</td>
+<td>The percentage part of your payment processor's fee, e.g. 2.9 for Stripe's standard US card rate. Used only to work out the extra amount a donor pays when they tick "cover the processing fee" — it never changes what your processor actually charges you. Leave blank to use 2.9.<br><em>Docs: Deliberately org-level rather than per-campaign: the rate is a property of the payment processor's pricing, not of an appeal, and an admin who has negotiated a different rate has one place to change it. The old Default_Fee_On_Top_Percent__c was removed 2026-08-03 as dead config because nothing consumed it; this field is its replacement and IS consumed, by FeeCoverageService.computeFee. Blank falls back to 2.9 rather than 0 — a zero rate would silently make every "cover the fee" tick add only the fixed component, which reads as a bug rather than as unconfigured.</em></td>
+</tr>
+<tr>
 <td><code>From_Email__c</code></td>
 <td>From Email</td>
 <td>Email</td>
@@ -2085,6 +2115,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Intro paragraph shown on the donation receipt below the amount. Leave blank to use the default wording.</td>
 </tr>
 <tr>
+<td><code>Receipt_Number_Prefix__c</code></td>
+<td>Receipt Number Prefix</td>
+<td>Text</td>
+<td>Short code that starts every receipt number, for example RCPT gives RCPT-2026-000001. Leave blank to use RCPT. Changing this only affects receipts issued from now on.<br><em>Docs: Kept to 10 characters so the assembled number stays inside Opportunity.Receipt_Number__c (40). ReceiptNumberService upper-cases the value and strips everything outside A-Z, 0-9 and underscore before use — a prefix containing a space, comma or slash would otherwise produce receipt numbers that break the CSV exports and URL-addressed lookups they exist to identify. Hyphens are stripped too, because the hyphen is the separator between prefix, year and sequence: allowing one inside the prefix would make a receipt number ambiguous to parse. A prefix that sanitises away to nothing falls back to RCPT rather than emitting a number that starts with a stray hyphen.</em></td>
+</tr>
+<tr>
 <td><code>Record_Type_Mapping_Chunk_1__c</code></td>
 <td>Record Type Mapping Chunk 1</td>
 <td>Text</td>
@@ -2143,6 +2179,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Retry_Interval_Days</td>
 <td>Number</td>
 <td>Days between automatic retry attempts for a failed recurring payment, e.g. 3.<br><em>Docs: Read by SettingsService.retryIntervalDays() (default 3 when unset). Cadence is flat: every retry waits the same number of days, there is no backoff curve.</em></td>
+</tr>
+<tr>
+<td><code>Soft_Credit_Automation_Enabled__c</code></td>
+<td>Soft_Credit_Automation_Enabled</td>
+<td>Checkbox</td>
+<td>When on, gifts given in honor of someone are automatically credited to that person, and a donor's household is credited alongside them. Turn it off if you assign soft credit yourself or with your own automation.<br><em>Docs: Starts ON for a fresh install, unlike Donation_Sync_Campaign_Members__c which is off for everyone. The difference is what each one writes: campaign membership creates rows in data an org may already own and report on, whereas soft credit only populates package fields that are blank until something fills them, so there is nothing for it to corrupt. The <defaultValue> below governs NEW Settings rows only — Salesforce does not backfill a field default onto records that already exist, so an org upgrading into this release keeps the false its existing Settings row was created with and has to opt in. That asymmetry is intentional: the package will not switch on a new automatic write in an org that is already configured. PostInstallHandler.seedDefaultSettings() sets it explicitly on the fresh-install path so the intent does not rest on the platform default alone. Read through SettingsService.softCreditAutomationEnabled().</em></td>
 </tr>
 <tr>
 <td><code>Support_Phone__c</code></td>

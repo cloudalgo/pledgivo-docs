@@ -1850,11 +1850,15 @@ didn't take.</p>
 <tbody>
 <tr>
 <td>Recurring gifts</td>
-<td>View active recurring gifts; pause or resume; retry a failed charge immediately or reinstate a lapsed gift; switch the saved card a gift charges, or add a new card (via a Stripe SetupIntent); cancel</td>
+<td>View active recurring gifts; change the amount; change which fund the gift supports (limited to the funds the campaign offers); skip the next payment; pause or resume; retry a failed charge immediately or reinstate a lapsed gift; switch the saved card a gift charges, or add a new card (via a Stripe SetupIntent); cancel</td>
 </tr>
 <tr>
 <td>Giving history</td>
 <td>View and download receipts for past gifts</td>
+</tr>
+<tr>
+<td>Annual giving statement</td>
+<td>Pick a tax year and print a single statement covering every receiptable gift in it — the year-end document donors otherwise phone in for</td>
 </tr>
 <tr>
 <td>Event tickets</td>
@@ -1862,6 +1866,15 @@ didn't take.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">The statement is on demand, not a year-end mailing</p>
+<p>Nothing is sent in January. A donor produces their own statement whenever they want one, and
+staff can produce the same document from a Contact or Account record page when a donor asks
+over the phone. The two paths render through the same code, so a donor who prints their own
+statement and one your team emails them are the same document — which matters if the two ever
+end up side by side in front of a tax authority. Only years the donor actually gave in are
+offered, so an empty statement is never produced.</p>
+</div>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

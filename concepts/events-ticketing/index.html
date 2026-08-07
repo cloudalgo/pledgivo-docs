@@ -1890,6 +1890,12 @@ canceled staging row releases its held seats back to inventory via <code>release
 example), the deductible portion is calculated on <code>Event_Deductible_Amount__c</code>, a formula
 field on the Opportunity — so receipts and reports reflect only the tax-deductible portion of
 the ticket price, not the full purchase amount.</p>
+<p>Every receipt surface honours that split, not just the emailed one: a ticket buyer who opens their
+receipt in the donor portal, and an admin who prints one from the Opportunity, both see the gift
+total, the goods-and-services value, and the deductible remainder stated separately. The one case
+with no deductible figure is a <strong>partially refunded</strong> ticket order — see
+<a href="../donations-payments/#what-a-receipt-claims-is-deductible">what a receipt claims is deductible</a>
+for why the package declines to guess there.</p>
 <h2 id="related-reference">Related reference<a class="headerlink" href="#related-reference" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

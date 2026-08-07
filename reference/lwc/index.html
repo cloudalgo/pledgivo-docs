@@ -1576,6 +1576,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lexgivingstatement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annual Giving Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexopportunitybreakdown" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1924,6 +1935,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pfgivingstatement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Portal Giving Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pfhero" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2138,6 +2160,17 @@
     <span class="md-ellipsis">
       
         Ember Segmented Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uistatementprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giving Statement Print Utility
       
     </span>
   </a>
@@ -2526,6 +2559,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lexgivingstatement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annual Giving Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexopportunitybreakdown" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2874,6 +2918,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pfgivingstatement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donor Portal Giving Statement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pfhero" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3095,6 +3150,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uistatementprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Giving Statement Print Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uitoggle" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3130,7 +3196,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 58 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 61 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3146,13 +3212,14 @@
 <p><code>publicDonationReceipt</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
 <p>Post-donation thank-you and receipt page for Experience Cloud</p>
-<p><strong>Docs note.</strong> Reached via an unguessable Receipt_Token__c in the URL state (?token=...), never by Opportunity Id — this is the guest/magic-link pattern shared with publicEventTickets (?token=... resolves an order the same way). Calls ReceiptController.getReceiptData(token). paymentIntentStatus comes from Stripe's ACH redirect query params (redirect_status), not from Apex — an ACH charge settles asynchronously after the guest is already back on this page, so the receipt shows a pending/processing state until the async webhook/reconciliation path finalizes it.</p>
+<p><strong>Docs note.</strong> Reached via an unguessable Receipt_Token__c in the URL state (?token=...), never by Opportunity Id — this is the guest/magic-link pattern shared with publicEventTickets (?token=... resolves an order the same way). Calls ReceiptController.getReceiptData(token). paymentIntentStatus comes from Stripe's ACH redirect query params (redirect_status), not from Apex — an ACH charge settles asynchronously after the guest is already back on this page, so the receipt shows a pending/processing state until the async webhook/reconciliation path finalizes it. The tax figures and the legal statement are all resolved server-side by ReceiptStatusHelper and rendered verbatim — nothing about deductibility is computed in JavaScript, so the web, printed and emailed receipts for one order cannot make three different legal claims.</p>
+<p>The serial number assigned by ReceiptNumberService, read from the server. This used to be the last 8 characters of receiptToken — i.e. part of the bearer credential that authorizes this page — printed onto a document donors email, print and file with an accountant. Never derive a visible reference from the token again.</p>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
 <h4 id="publicdonordashboard">Donor Dashboard<a class="headerlink" href="#publicdonordashboard" title="Permanent link">#</a></h4>
 <p><code>publicDonorDashboard</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
-<p>Magic-link donor self-service portal — giving summary, recurring gifts, history, and saved cards.</p>
-<p><strong>Docs note.</strong> Portal-token gated, not authenticated — a guest with a valid link token calls DonorPortalController.getDashboard/pauseRecurring/resumeRecurring/cancelRecurring/ retryNowRecurring/reinstateRecurring to manage their own recurring gifts, and never addresses a record by Id (IDOR prevention, same pattern as publicDonationReceipt's Receipt_Token__c). requestAccessLink is the token-issuance step for a donor who arrives without one. The card-replace modal reuses the exact same stripePayment.page iframe/postMessage contract as dfForm, but in Stripe's SETUP-intent mode (no charge) via createCardSetupIntent — see the lwc-conventions skill for the shared iframe/postMessage message-type contract.</p>
+<p>Magic-link donor self-service portal — giving summary, history, saved cards, and full management of a recurring gift (pause, resume, cancel, retry, change the amount or fund, skip one payment, replace the card).</p>
+<p><strong>Docs note.</strong> Portal-token gated, not authenticated — a guest with a valid link token calls DonorPortalController.getDashboard/pauseRecurring/resumeRecurring/cancelRecurring/ retryNowRecurring/reinstateRecurring/changeRecurringAmount/changeRecurringDesignation/ skipNextRecurringPayment to manage their own recurring gifts, and never addresses a record by Id (IDOR prevention, same pattern as publicDonationReceipt's Receipt_Token__c). requestAccessLink is the token-issuance step for a donor who arrives without one. The card-replace modal reuses the exact same stripePayment.page iframe/postMessage contract as dfForm, but in Stripe's SETUP-intent mode (no charge) via createCardSetupIntent — see the lwc-conventions skill for the shared iframe/postMessage message-type contract.</p>
 <h4 id="publiceventregistration">Event Registration<a class="headerlink" href="#publiceventregistration" title="Permanent link">#</a></h4>
 <p><code>publicEventRegistration</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
@@ -3162,6 +3229,7 @@
 <p>ONE PAGE, NOT A WIZARD (2026-08-05). Tickets, guests, contact details, extras and payment are all rendered at once, with a live order receipt in the rail and a sticky action bar carrying the running total — a buyer comparing tiers should not have to remember what the previous screen said. The only thing still sequenced is the card itself: a Stripe PaymentIntent is minted for a SPECIFIC amount, so the iframe cannot mount before createTicketIntent has run. That is why the action bar is two-phase ("Continue to payment" → "Complete order") and why _resetIdempotencyKey() tears the intent down again whenever the order changes underneath it.</p>
 <p>The ticket page is not tied to one look. It wears the same Form_Layout_Mode__c the donation form does, so a black-tie gala, a research symposium and a community 5K are this one component wearing three design records rather than three components. The markup is three grid landmarks — banner, form, aside — placed by named grid areas, so a mode only has to re-declare <code>grid-template-areas</code>; nothing in the ticket wizard knows or cares where the banner or the order summary ends up. Event_Layout__c survives as a narrow legacy override on top of that: 'Stacked' drops the aside below the form whatever the mode asked for. It is no longer the layout decision.</p>
 <p>A closed page has a banner, one sentence and maybe a story — nothing to put in a second column. It still emits the mode class, which carries the banner and typography the page should keep; ev-ended only neutralises the mode's grid (see .ev-ended in the stylesheet).</p>
+<p>acceptingDonations is the server's own verdict (Campaign.Accept_Donations_After_End_Date__c — createTicketIntent refuses when it is false), included so the page can never offer a checkout the server would reject. It does not replace isPastEvent: this page has always closed on the day after the event and deliberately still does, which is the STRICTER of the two — an event whose campaign opted to keep taking late gifts still stops selling seats to a night that already happened.</p>
 <p>Highlight_Label__c is the organiser's recommendation ("Most popular"); the field is blank on every tier they did not single out. It never competes with the buyer's own choice — a selected row takes is-active instead, and a sold-out row is not recommended at all, because a badge on something unbuyable only advertises what the buyer has already missed.</p>
 <p>The order is paid; leave the form. /thank-you is a real Experience Cloud route, so a completed purchase produces its own URL and therefore its own pageview — that distinct URL is the entire analytics mechanism. The ACCESS token travels in the query string because no receipt token exists yet; publicThankYou polls for it, renders the ticket deck, and swaps the address bar to ?token= once the reconciler has written the order.</p>
 <p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code>, <code>eventLayout</code>, <code>formLayoutMode</code>, <code>prop</code>, <code>showHeader</code></p>
@@ -3170,6 +3238,7 @@
 <p><code>exposed</code> · <code>Page, Default</code></p>
 <p>Printable tickets for one event order — every seat on the order, addressed by its receipt token.</p>
 <p><strong>Docs note.</strong> Guest/magic-link page reached via ?token=... (mirrors publicDonationReceipt's Receipt_Token__c pattern) rather than an Order/Opportunity Id, so a ticket confirmation link can't be walked to view someone else's order. Calls EventTicketsController.getTickets(token) — read-only; the actual purchase/check-in flows live in publicEventRegistration and admEventCheckIn respectively.</p>
+<p>The order's receipt serial number, from the server. This used to be the last 8 characters of receiptToken — the bearer credential that authorizes this page — printed at the top of a sheet donors hand to a door attendant. Blank for an order placed before receipt numbering shipped; the page shows no reference rather than reviving the token one.</p>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
 <h4 id="publicfundraisingexperience">Public Fundraising Experience<a class="headerlink" href="#publicfundraisingexperience" title="Permanent link">#</a></h4>
 <p><code>publicFundraisingExperience</code></p>
@@ -3201,6 +3270,8 @@
 <p><code>exposed</code> · <code>RecordPage, AppPage</code></p>
 <p>Record page / app page for Opportunity that renders a printable donation receipt (org branding, donor, amount, designations, EIN) and triggers the browser print dialog.</p>
 <p><strong>Docs note.</strong> Internal-org counterpart to the donor-facing Experience Cloud receipt, sourced through RecordPageController.getReceiptData for a staff user viewing the Opportunity record page rather than through a donor's magic-link token. Printing builds a standalone HTML document and opens it in an isolated window rather than calling window.print() on this component — the record page has surrounding chrome (tabs, related lists) that a bare window.print() would print alongside the receipt.</p>
+<p>The serial number assigned by ReceiptNumberService. The letter previously labelled opportunityName as its "Receipt Number", which is an internal record name — not unique, not sequential, and meaningless to a tax authority. Blank for a gift finalized before numbering shipped, in which case the line is omitted rather than back-filled.</p>
+<p>Until 2026-08-06 the printed letter hardcoded its own wording — different from the on-screen letter above it and from the guest receipt — and ignored Settings__c.Tax_Receipt_Legal_Text__c entirely. It now prints the same server-resolved statement (ReceiptStatusHelper.legalStatement) as every other surface.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexdonorsummarycard">Donor Giving Summary<a class="headerlink" href="#lexdonorsummarycard" title="Permanent link">#</a></h4>
 <p><code>lexDonorSummaryCard</code></p>
@@ -3229,6 +3300,13 @@
 <p><code>exposed</code> · <code>Tab</code></p>
 <p>Internal Lightning app tab hosting the settings console shell, with left navigation across organization, email, payments, refunds, site, public links, page designs, record types, and health-check panels.</p>
 <p><strong>Docs note.</strong> Pure navigation shell for the Settings console — holds no Apex calls itself. Each nav item lazy-renders exactly one set<em> panel component (setOrganization, setEmail, setEvents, setLogging, setPayments, setRefunds, setRecurring, setSite, setPublicLinks, setDesigns, setDonorPortal, setRecordTypes, setHealth) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save; also setDonationMonitor for the stuck-donation admin panel.</p>
+<h4 id="lexgivingstatement">Annual Giving Statement<a class="headerlink" href="#lexgivingstatement" title="Permanent link">#</a></h4>
+<p><code>lexGivingStatement</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Contact/Account record page component that builds a donor's year-end giving statement on demand: a tax year picker, that year's receiptable gifts with receipt numbers, the received and deductible totals, and a print action. Reads run as the running user.</p>
+<p><strong>Docs note.</strong> Staff-facing annual giving statement, placed on the Contact and Account record pages. The donor-facing equivalent is pfGivingStatement inside the magic-link donor portal; both print through c/uiStatementPrint so the two copies of a donor's tax document are identical.</p>
+<p>Every read here runs USER_MODE inside GivingStatementService — a fundraiser who cannot see a donor's gifts gets an empty statement, not a privileged one. Only the token-authorized portal path is allowed the system-mode read.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexopportunitybreakdown">Donation Payment Breakdown<a class="headerlink" href="#lexopportunitybreakdown" title="Permanent link">#</a></h4>
 <p><code>lexOpportunityBreakdown</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
@@ -3306,6 +3384,7 @@
 <p>Derived from - and must stay identical to - the Campaign_Design__c.Font_Family__c restricted picklist. Both are restricted, so an option offered here but missing there fails the save with a validation error rather than degrading. Regenerating this list from the field metadata is the safest way to extend it.</p>
 <p>Restricted picklist rather than a free-text font name/URL on purpose: allowing an admin to supply an arbitrary font stylesheet URL on a donor-facing guest page would be a CSS/content-injection risk, so only this pre-approved value set is selectable. The Google_* values are the only ones that trigger a webfont load; System and Modern render with no external request (Modern names Inter, which is deliberately NOT bundled - it falls through to the system UI face). Google_Bricolage/Google_Hanken are the two halves of the Ember default brand pairing referenced in the design brand spec, offered here as opt-in choices rather than as the field default. Widened to 38 faces on 2026-08-05, grouped by category in display order (sorted=false, so the order below IS the admin's dropdown order): grotesque sans, geometric sans, condensed sans, reading serif, slab, display serif, mono. Adding a face means three edits in lockstep - a FAMILIES line in scripts/build/fetch-public-fonts.sh, a value in BOTH this field and Heading_Font_Family__c, and a FONT_STACKS entry in publicFundraisingExperience.js + publicEventRegistration.js. Miss any one and the value renders a fallback face with no visible error.</p>
 <p>Membership is explicit, not substring-matched: the substring test this replaced read 'Serif'/'Fraunces'/'Instrument' and so classified Newsreader, Lora, Bitter and EB Garamond as sans, previewing four serifs in the wrong category. Add new faces here.</p>
+<p>Off for a brand-new design. Interrupting a donor is a choice an admin should make on purpose, not inherit from a default.</p>
 <h4 id="setdonationmonitor">Settings: Donation Monitor<a class="headerlink" href="#setdonationmonitor" title="Permanent link">#</a></h4>
 <p><code>setDonationMonitor</code></p>
 <p><code>not exposed</code></p>
@@ -3319,6 +3398,7 @@
 <p><code>setEmail</code></p>
 <p><code>not exposed</code></p>
 <p>Settings-console panel for configuring sender/reply addresses, email branding colors, and automatic receipt/recurring-thank-you message text on Settings__c.</p>
+<p><strong>Docs note.</strong> Blank means "use the packaged RCPT default" — saving '' instead of null would make an admin who cleared the box look configured while behaving as unconfigured.</p>
 <h4 id="setevents">Settings: Events &amp; Ticketing<a class="headerlink" href="#setevents" title="Permanent link">#</a></h4>
 <p><code>setEvents</code></p>
 <p><code>not exposed</code></p>
@@ -3337,6 +3417,8 @@
 <p><code>not exposed</code></p>
 <p>Settings-console panel for general organization and donation defaults, including the configured charge currency, stored on Settings__c.</p>
 <p><strong>Docs note.</strong> Person_Account_Enabled__c and NPSP_Enabled__c are read-only, detectOrgFeatures-populated flags (Schema.describeSObjects() detection at the org level) — this panel surfaces what was detected, it does not let an admin toggle Person Account/NPSP support on or off. All donor resolution downstream still goes through DonorResolutionService regardless of what this panel shows; these flags are informational plus the gate for showNpspSyncOptions.</p>
+<p>The follow-up routing fields are meaningless while the checkout prompt that produces the matches is switched off, so they only appear once employer matching is enabled.</p>
+<p>Blanking either fee-coverage field is a supported way to fall back to the packaged Stripe US standard (2.9% + $0.30), so the nulls travel deliberately — SaveGeneralSettings guards on containsKey, and a null clears the override.</p>
 <h4 id="setpayments">Settings: Payment Accounts<a class="headerlink" href="#setpayments" title="Permanent link">#</a></h4>
 <p><code>setPayments</code></p>
 <p><code>not exposed</code></p>
@@ -3364,7 +3446,8 @@
 <p><code>setScheduledJobs</code></p>
 <p><code>not exposed</code></p>
 <p>Settings-console panel that groups the pipeline's CronTrigger jobs by family, explains why each family runs as multiple offset jobs, lets an admin change a family's run cadence, and lets an admin trigger a background job on demand.</p>
-<p><strong>Docs note.</strong> This tab reuses the existing SetupController.getScheduledJobStatus read path unchanged — the flat CronTrigger list already carries everything (name, state, next/previous fire) needed to group and label it here; only the cadence-edit actions (abortJobFamily / scheduleJobFamily) are new. Cadence editing is 2 separate Apex round-trips rather than one combined action: aborting and rescheduling a CronTrigger of the same name within a single Apex transaction is not a documented-safe sequence, whereas 2 separate transactions mirrors the abort-then-recreate sequence this pipeline already relies on (PostInstallHandler).</p>
+<p><strong>Docs note.</strong> The last three all run on their own schedule once installed — the two Stripe jobs hourly, campaign totals nightly. They are offered on demand anyway because the hour after an admin connects Stripe is exactly when they need to confirm reconciliation works, chasing a specific missing refund should not mean waiting out a cron cycle, and a campaign total that looks wrong is worth being able to correct on the spot rather than tomorrow morning. The two Stripe jobs no-op safely when Stripe is not connected yet.</p>
+<p>This tab reuses the existing SetupController.getScheduledJobStatus read path unchanged — the flat CronTrigger list already carries everything (name, state, next/previous fire) needed to group and label it here; only the cadence-edit actions (abortJobFamily / scheduleJobFamily) are new. Cadence editing is 2 separate Apex round-trips rather than one combined action: aborting and rescheduling a CronTrigger of the same name within a single Apex transaction is not a documented-safe sequence, whereas 2 separate transactions mirrors the abort-then-recreate sequence this pipeline already relies on (PostInstallHandler).</p>
 <h4 id="setsite">Settings: Site &amp; Domain<a class="headerlink" href="#setsite" title="Permanent link">#</a></h4>
 <p><code>setSite</code></p>
 <p><code>not exposed</code></p>
@@ -3377,6 +3460,13 @@
 <p>Non-exposed JS-only utility module (no markup) that reads the checkout URL's query string and returns the marketing-attribution parameters every guest checkout surface sends with its order, so UTM and other tracking tags reach the donation record.</p>
 <p><strong>Docs note.</strong> These mirror AttributionCapture's server-side caps. Both layers enforce them — the client so an absurd URL doesn't bloat the Apex request, the server because a client cap is a courtesy, not a control (anything can POST to the guest endpoint).</p>
 <p>Functional and personal keys the public pages use to carry their own state, plus the redirect/receipt tokens. Kept in sync with AttributionCapture.EXCLUDED_KEYS in Apex — stripping them here as well keeps them out of the network payload entirely, which matters for the credential-ish ones (token, client secrets) more than for the merely noisy ones.</p>
+<h4 id="pfgivingstatement">Donor Portal Giving Statement<a class="headerlink" href="#pfgivingstatement" title="Permanent link">#</a></h4>
+<p><code>pfGivingStatement</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed child block of the donor portal that lets a donor pick a tax year and download their own annual giving statement. Addressed by the portal's magic-link token, never by a record id, so a donor can only ever produce their own statement.</p>
+<p><strong>Docs note.</strong> Donor-portal block for the annual giving statement, rendered inside publicDonorDashboard. Addressed by the dashboard's magic-link token — never by a record id — so a donor can only ever produce their OWN statement, and DonorPortalController re-validates the token on every call rather than trusting anything this component sends.</p>
+<p>The document itself is built by c/uiStatementPrint, the same module the staff record action (lexGivingStatement) prints from: a donor comparing their download against the copy a fundraiser printed must not find two differently-worded tax documents.</p>
+<p><strong><code>@api</code> properties:</strong> <code>token</code></p>
 <h4 id="pfhero">Campaign Hero<a class="headerlink" href="#pfhero" title="Permanent link">#</a></h4>
 <p><code>pfHero</code></p>
 <p><code>not exposed</code></p>
@@ -3418,7 +3508,13 @@
 <p><strong>Docs note.</strong> Mounted by the publicFundraisingExperience shell as the guest donation canvas; the shell resolves record-type/subtype/slug and passes campaignSlug (+ builderConfig, thankYouCta, campaignFaqs, and the widget-handoff initialAmount/Email/Name) down as @api props. Composes <c-df-designation-picker> for the designation field block and <c-pf-page-blocks> (via oneBlockArray) for every interleaved content block, so sanitization stays in one place, plus <c-pf-trustbar> for the sticky org/security strip that heads every layout mode. Layout skin is a CSS-only import, not composition: dfForm.css @imports the six dfLayoutXxx modules and layoutClass() picks the matching <code>.donation-form.df-xxx</code> class per effectiveMode — those overrides must stay compound (see the dfLayoutXxx bundles' own doc notes) or the base 520px width wins regardless of import order.</p>
 <p>Stripe.js iframe/postMessage contract (see the lwc-conventions skill for the general pattern): the iframe (src=VF_PAGE_URL='/apex/stripePayment') mounts once on the compose→pay transition and stays mounted through processing (showStripeIframe spans steps 3-4) so stripe.confirmPayment() never loses its JS context. _handlePostMessage strictly checks event.origin === ALLOWED_ORIGIN (window.location.origin) before acting on STRIPE_READY, IFRAME_HEIGHT, PAYMENT_PROCESSING, PAYMENT_SUCCESS, SETUP_SUCCESS, PAYMENT_ERROR. Outbound: handleIframeLoad sends INIT_STRIPE once _clientSecret is set; submitPayment always sends CONFIRM_PAYMENT (the server only ever mints a PaymentIntent, never a SetupIntent — see DonationService.createDonorAndIntent) with an isRecurring flag, so stripePayment.page knows whether to reply PAYMENT_SUCCESS or SETUP_SUCCESS+paymentMethodId. Same target origin — never '*'.</p>
 <p>Server-authoritative finalize: createDonorAndIntent (DonationFormController) inserts a Donation_Staging__c row and returns an opaque accessToken — no Opportunity exists yet. The browser is never trusted to finalize the gift; after Stripe confirms client-side, _onPaymentSuccess polls checkPaymentStatus (Apex → Stripe, authoritative) while the system-context scheduler (StagingReconciliationBatch) is the actual backstop that creates the donation record if the poll window closes first.</p>
+<p>Donor-covered processing fee. <code>_feeCoverage</code> is the server's offer description ({percent, fixed}) or null when this campaign doesn't offer it — the presence of the object IS the gate, so the checkbox cannot be made to appear client-side. <code>coverFees</code> is the donor's yes/no and the ONLY part of this the browser sends; Apex recomputes the amount from its own settings, so the estimate below is display-only and a tampered figure changes nothing about what is charged.</p>
+<p>Server-resolved, never derived from EndDate in the browser: whether an ended campaign still takes gifts is a per-campaign admin choice (Campaign.Accept_Donations_After_End_Date__c), and the same rule has to hold on the write path anyway. Defaults to open when the key is absent so an older cached payload cannot close a live campaign.</p>
 <p>The gift is confirmed; leave the form. A routed thank-you page is what lets analytics count a conversion — an in-form step change produces no pageview and no distinct URL. The ACCESS token goes in the URL because the receipt token does not exist yet (the reconciler writes the donation a beat later); publicThankYou polls for it and rewrites the address bar to ?token= the moment it does. Navigating now rather than after the poll is what makes the conversion pageview fire at t=0.</p>
+<p>The native "leave site?" dialog, for the one case it is genuinely right: a charge is mid-flight. This is NOT the exit-intent prompt — see _handleExitIntent for why that cannot be driven from this event.</p>
+<p>Pointer-based exit intent: the cursor crossing out through the TOP edge of the viewport is the one signal that reliably means "heading for the tab bar / address bar" rather than "reaching for the scrollbar or another window". relatedTarget === null distinguishes leaving the document from merely moving between elements inside it.</p>
+<p>This deliberately does NOT use beforeunload, which specs/09 originally called for. A beforeunload handler can only ever produce the browser's own generic dialog — custom in-page UI is ignored, and preventDefault() does not change that (MDN, Window beforeunload). By the time that event fires the page is already leaving, so there is no moment left in which to render a modal. Verified 2026-08-06.</p>
+<p>Pointer-only is also deliberate. Touch devices have no cursor and therefore no honest equivalent signal; the usual substitutes (trapping the back button, guessing from scroll velocity) fire on people who were not leaving, and a prompt that interrupts a donor mid-gift costs more than it recovers.</p>
 <p>Compose and Payment share ONE canvas. Every layout mode keys its grid off .form-step[data-step="single"] — the story column, momentum rail, gradient hero and summary rail all hang off that one selector — so a payment step rendered in its own <div> inherited none of it and the page visibly lost its layout the instant the donor pressed Continue. Rendering both steps inside the same canvas keeps the chrome mounted and swaps only the form column beneath it, which is what a donor expects mid-checkout.</p>
 <p>The story's evidence row renders only when there is at least one real figure to put in it. Each cell is gated separately in the template, so this only decides whether the framed row exists at all — an empty bordered strip under the headline reads as broken.</p>
 <p>The rail's stat strip renders only when there is at least one real figure for it. Each cell is gated separately in the template, so this decides only whether the framed strip exists at all — an empty hairline grid under the ring reads as a broken card.</p>
@@ -3427,6 +3523,7 @@
 <p>The sticky action bar restates the running total and the primary CTA at the bottom of the viewport so a donor who has scrolled past the button never has to scroll back to give. It is suppressed on the thank-you step (nothing left to submit) and while the processing overlay is up (the CTA would be a dead control under a scrim).</p>
 <p>Deliberately NOT gated on "an amount is chosen", the way the redesign plan first drafted it: the Continue button is the only way forward, and hiding it whenever the amount is empty or out of bounds would leave the donor with a validation message and no control. It stays visible and disabled instead (composePrepareDisabled), which is what the pre-redesign markup did.</p>
 <p>Which CARD the rail holds. Summary Sidebar and Conversational both draw the shared c/pfStyles .pf-receipt ledger; Split Hero draws its own story rail (.sp-summary) instead, because there the photo and campaign copy are the rail's reason to exist.</p>
+<p>Mirrors FeeCoverageService.computeFee exactly — a TRUE gross-up, not gift × percent. The processor takes its cut of the total it captures, so covering 2.9% + $0.30 on a $100 gift costs $3.30, not $3.20; charging the naive figure leaves the cause short. This is a display estimate only. Apex recomputes the real figure from Settings__c and never trusts a number from this component.</p>
 <p>Assigned/None modes still populate <code>designations</code> with the single resolved fund (so summary/allocation logic keeps working) but must never show a picker UI for it — there is nothing for the donor to choose. Only Selectable/All_Active render the picker.</p>
 <p>The single biggest scroll saving in the 2026-08-05 redesign. Designation, tribute, employer match and custom questions used to render fully expanded and inline, always — roughly 700px of fields most donors never touch, sitting between the amount they chose and the button they came to press. step1Groups folds them into ONE "+" pill row that expands in place. Nothing is removed; it is only deferred until asked for.</p>
 <p>Admin block ORDER is preserved: the pill row renders at the position of the first optional block in the design's stored list, and the pills within it keep their stored relative order, so a design that puts tribute before designation still reads that way. The required blocks (amount, frequency, donor info) and every content block stay exactly where the admin put them. Two blocks can opt OUT of the pill row and render inline instead. Both exceptions exist for the same reason: a pill is an invitation to skip, so anything the campaign has decided the donor should actually answer must not be behind one. · custom_questions — the moment any question is marked required. A required field behind a collapsed pill is a form a donor can fail to complete without ever seeing why. · designation, when Designation_Mode__c is Selectable — the admin curated a fund list specifically so this campaign's donors would choose from it, which is a different intent from All_Active (every fund in the org offered as a convenience). Selectable therefore keeps the picker at the admin's block position; All_Active stays a pill. Assigned/None never reach here at all — isSectionVisible drops them (showDesignationPicker).</p>
@@ -3491,6 +3588,12 @@
 <p><code>not exposed</code></p>
 <p>Reusable Ember-branded segmented control replacing lightning-radio-group type="button", whose selected-option color is a hardcoded SLDS blue.</p>
 <p><strong><code>@api</code> properties:</strong> <code>label</code>, <code>options</code>, <code>value</code></p>
+<h4 id="uistatementprint">Giving Statement Print Utility<a class="headerlink" href="#uistatementprint" title="Permanent link">#</a></h4>
+<p><code>uiStatementPrint</code></p>
+<p><code>not exposed</code></p>
+<p>Non-exposed JS-only utility module (no markup) that builds and prints the annual giving statement document. Shared by the staff record action and the donor-portal download so both produce a byte-identical tax document.</p>
+<p><strong>Docs note.</strong> Shared print builder for the annual giving statement. Both the staff record action (lexGivingStatement) and the donor-portal block (pfGivingStatement) print the SAME document from this one module — a donor comparing the copy they downloaded against the one a fundraiser printed for them must not find two differently-worded tax documents.</p>
+<p>Every node is built with createElement/textContent, never innerHTML or document.write: donor names, campaign names, and admin-configured legal text all land in this document, and none of them may be interpreted as markup.</p>
 <h4 id="uitoggle">Ember Toggle<a class="headerlink" href="#uitoggle" title="Permanent link">#</a></h4>
 <p><code>uiToggle</code></p>
 <p><code>not exposed</code></p>

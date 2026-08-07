@@ -1689,7 +1689,7 @@ description: Represents a donor's ongoing recurring giving schedule (subscriptio
 <p class="fn-dek">Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>34 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p><code>custom</code> · <code>38 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1827,6 +1827,18 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>The donor for this recurring gift (Person Account orgs).</td>
 </tr>
 <tr>
+<td><code>Donor_Covered_Fees__c</code></td>
+<td>Donor Covered Fees</td>
+<td>Checkbox</td>
+<td>Checked when the donor agreed to cover the processing fee. Each renewal then charges their gift amount plus the current fee, so the amount taken is slightly more than the Amount field. Uncheck it to bill only the gift amount from the next renewal onward.<br><em>Docs: Amount__c on a schedule is always the GIFT, never the grossed-up charge — this flag is what tells RecurringRenewalBatch to add a fee on top at charge time. Storing the gross in Amount__c instead would have been simpler but wrong twice over: the designation splits that every installment inherits would allocate the fee to a fund, and the fee would freeze at whatever the rate was on signup day, so a later Settings__c rate change would never reach existing donors. Recomputing per cycle from FeeCoverageService.computeFee also means the donor's coverage does not silently lapse after month 1, which is what happens if the fee is only ever applied to the signup charge.</em></td>
+</tr>
+<tr>
+<td><code>End_Date__c</code></td>
+<td>End Date</td>
+<td>Date</td>
+<td>The date after which this recurring gift should stop being charged. Leave blank for a gift that continues until the donor stops it.<br><em>Docs: Unlike Installment_Cap__c (enforced after a charge), this one is enforced BEFORE any charge: it is part of RecurringDonationsSelector.dueCondition(), so a schedule past its end date is never even selected, and RecurringRenewalBatch.isStillDue() re-checks it against a freshly read row. Nothing marks such a schedule Completed on the day it expires — it simply stops being due, and processRenewal marks it Completed the next time it would otherwise have renewed.</em></td>
+</tr>
+<tr>
 <td><code>Failed_At__c</code></td>
 <td>Failed At</td>
 <td>DateTime</td>
@@ -1843,6 +1855,18 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Frequency</td>
 <td>Picklist</td>
 <td>How often the donor is charged for this recurring gift.</td>
+</tr>
+<tr>
+<td><code>Installment_Cap__c</code></td>
+<td>Installment Cap</td>
+<td>Number</td>
+<td>Set this to end the gift automatically after a fixed number of payments — enter 12 for a "$50 a month for a year" pledge. Leave blank for a gift that continues until the donor stops it.<br><em>Docs: The cap is enforced AFTER a charge, not before one: RecurringDonationService.processRenewal increments Installments_Paid__c on a successful capture and, when the incremented count reaches this cap, flips Status__c to Completed and clears Next_Payment_Date__c. That is why the due-selector needs no field-to-field comparison (SOQL cannot express one) — a completed schedule simply stops matching the Status__c = 'Active' predicate. A cap lowered below the count already paid therefore ends the schedule at the NEXT successful charge, not retroactively.</em></td>
+</tr>
+<tr>
+<td><code>Installments_Paid__c</code></td>
+<td>Installments Paid</td>
+<td>Number</td>
+<td>A running count of payments successfully collected on this recurring gift. The system maintains this — do not edit it.<br><em>Docs: Maintained by Apex, not a roll-up summary: Recurring_Donation__c ↔ Opportunity is a lookup, not a master-detail, so the platform cannot roll up the installment count. Gift #1 is counted at signup (RecurringDonationService.createScheduleFromStaging sets it to 1) and each later successful renewal increments it in processRenewal's success branch. A schedule created before this field existed starts at 0 and counts forward from its next renewal, so a cap applied to a long-running legacy schedule grants it a full fresh term — deliberate, since the historical count cannot be reconstructed for schedules whose installments predate the field.</em></td>
 </tr>
 <tr>
 <td><code>Last_Dunning_Email_Sent_At__c</code></td>

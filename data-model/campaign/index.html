@@ -1685,7 +1685,7 @@
 <p class="fn-dek">The fundraising campaign itself — a customized standard Campaign carrying the public page design, default fund designation, and payment routing for everything raised under it.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>51 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>standard</code> · <code>52 fields</code> · <code>Campaigns &amp; Content</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1781,6 +1781,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>Accept_Donations_After_End_Date__c</code></td>
+<td>Accept Donations After End Date</td>
+<td>Checkbox</td>
+<td>Leave checked to keep accepting gifts after the end date passes — useful for an appeal whose date is a milestone rather than a deadline. Uncheck it for a campaign that must genuinely stop, such as a time-boxed match or an event that has already happened; donors then see a "no longer accepting donations" message instead of the form. Existing recurring gifts keep renewing either way.<br><em>Docs: Only meaningful alongside a non-blank EndDate — a campaign with no end date is never closed by this field. Deliberately independent of Status and of the Campaign_Closed__c formula: Status = 'Active' is the publicity gate (a non-Active campaign is invisible to guests entirely), Campaign_Closed__c is the console's display flag, and this field is the only one that decides whether an ended-but-still-Active campaign may take a payment. Enforced server-side in CampaignService.assertAcceptingDonations, called from DonationService.createDonorAndIntent and EventRegistrationController.requireActiveCampaign; surfaced to the guest UI as the <code>acceptingDonations</code> key on the campaign payload so the form renders a closed state instead of failing at charge time. Renewal of an ALREADY-ACTIVE recurring schedule is deliberately not gated — see RecurringRenewalBatch and Recurring_Behaviour_At_Goal__c / Recurring_Migration_Campaign__c, which own that policy.</em></td>
+</tr>
 <tr>
 <td><code>Allow_Company_Match__c</code></td>
 <td>Allow Company Match</td>
@@ -1893,7 +1899,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Donor_Covered_Fees_Enabled__c</code></td>
 <td>Donor Covered Fees Enabled</td>
 <td>Checkbox</td>
-<td>When on, donors can choose to cover the processing fee so the full gift amount reaches the campaign.<br><em>Docs: As of this writing this toggle, its sibling Fee_On_Top_Percent__c, and the corresponding Opportunity fields (Donor_Covered_Fees__c, Fee_Amount__c, Applied_Fee_Percent__c) have no Apex writer anywhere in the package, and dfForm (the public donation form) does not render a cover-fees control. Only the internal admin console currently reads/edits these fields. Treat the feature as data-model scaffolding for the checkout flow, not as something live for donors yet.</em></td>
+<td>When on, donors can choose to cover the processing fee so the full gift amount reaches the campaign.<br><em>Docs: This flag is the ONLY gate on the feature — FeeCoverageService.isOffered() reads it, and every fee is recomputed server-side from Settings__c.Fee_Coverage_Percent__c / Fee_Coverage_Fixed__c, never from a browser-supplied number. The guest form sends only the donor's yes/no, so turning this off immediately stops any fee being added even if a stale page still shows the checkbox. The rate lives in Settings__c rather than here on purpose: it is a property of the payment processor, not of the appeal. Event ticket orders deliberately do not offer fee coverage regardless of this flag — a ticket already carries a fair-market-value split to disclose, and layering a second non-gift component on top makes the receipt materially harder to read.</em></td>
 </tr>
 <tr>
 <td><code>Event_Address__c</code></td>

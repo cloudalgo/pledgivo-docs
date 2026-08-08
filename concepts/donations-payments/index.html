@@ -724,6 +724,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Controlling which funds a donor can pick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-fund-is-actually-doing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a fund is actually doing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -821,6 +838,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sending-a-receipt-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sending a receipt again
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#annual-giving-statements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -848,6 +876,45 @@
     <span class="md-ellipsis">
       
         Working the queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tribute-gifts-and-the-e-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tribute gifts and the e-card
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tribute gifts and the e-card">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#editing-what-the-e-card-says" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing what the e-card says
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-the-e-card-is-skipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the e-card is skipped
       
     </span>
   </a>
@@ -1898,6 +1965,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Controlling which funds a donor can pick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-fund-is-actually-doing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a fund is actually doing
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1995,6 +2079,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#sending-a-receipt-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sending a receipt again
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#annual-giving-statements" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2022,6 +2117,45 @@
     <span class="md-ellipsis">
       
         Working the queue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tribute-gifts-and-the-e-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tribute gifts and the e-card
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tribute gifts and the e-card">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#editing-what-the-e-card-says" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing what the e-card says
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-the-e-card-is-skipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the e-card is skipped
       
     </span>
   </a>
@@ -2237,6 +2371,17 @@ than intended, which is a config problem for an admin to notice and fix, not som
 should ever block a gift. The same resolved scope is enforced server-side on submit
 (<code>DonationService</code>/<code>RecurringDonationService</code>), so a donor can't submit a fund outside the
 configured scope by tampering with the client.</p>
+<h3 id="how-a-fund-is-actually-doing">How a fund is actually doing<a class="headerlink" href="#how-a-fund-is-actually-doing" title="Permanent link">#</a></h3>
+<p>The fund's own record page carries a <strong>Fund Performance</strong> card: what it has raised, across how many
+gifts, at what average, which campaigns brought the money in, and — where there are live recurring
+gifts pointed at it — what those commit to over a year.</p>
+<p>Its headline figure is <strong>net</strong> raised: each gift's split minus that split's share of any refund
+against the parent gift. That is deliberately not the same number as the <strong>Total Raised</strong> rollup in
+the record's own fields, which is gross and refund-blind. On a fund that has never been refunded the
+two agree. On one that has, they won't, and the card states the refunded total on its own line so
+the gap reads as the explanation rather than as a bug.</p>
+<p>If you are reconciling a fund against a report, the question to settle first is which of the two
+numbers the report is using.</p>
 <h2 id="where-the-payment-reference-lives">Where the payment reference lives<a class="headerlink" href="#where-the-payment-reference-lives" title="Permanent link">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Payment_Method__c is for recurring gifts only</p>
@@ -2489,10 +2634,14 @@ counsel has approved different wording — or you are not in the US at all — p
 on every receipt, and the package stops substituting its own. Leave it blank to keep the defaults,
 which adapt automatically to whether goods were received.</p>
 <h2 id="the-number-on-the-receipt">The number on the receipt<a class="headerlink" href="#the-number-on-the-receipt" title="Permanent link">#</a></h2>
-<p>Every finalized gift is stamped with a receipt number — <code>RCPT-2026-000142</code> — at the moment it
-finalizes, and it never changes afterwards. The prefix is yours to set (<strong>General → Email &amp;
-Receipts → Receipt number prefix</strong>); the year comes from the gift's close date, and the counter
-restarts at 1 each tax year.</p>
+<p>Every receiptable gift is stamped with a receipt number — <code>RCPT-2026-000142</code> — and it never changes
+afterwards. An online gift gets its number the moment the payment finalizes. A gift you key in
+yourself — a cheque in the post, cash at an event, a row from a spreadsheet import — gets one as soon
+as you mark it <strong>Closed Won</strong>, so the two kinds share a single unbroken series. The prefix is yours
+to set (<strong>General → Email &amp; Receipts → Receipt number prefix</strong>); the year comes from the gift's close
+date, and the counter restarts at 1 each tax year.</p>
+<p>A <strong>Pledge</strong> is the one exception: it is a promise of a future gift, not money you have received, so
+it is left unnumbered until the payment that fulfils it arrives.</p>
 <p>That last part is the point. Tax authorities in several jurisdictions expect receipts to carry a
 serial number that identifies the receipt uniquely within a year, and a donor comparing two receipts
 should be able to tell which year each belongs to without reading the dates.</p>
@@ -2506,6 +2655,56 @@ day into a queue. Uniqueness is what the number is actually for; being consecuti
 <p>Receipts issued before you change the prefix keep the number they were issued with. There is no
 renumbering, ever — a number that has already been printed on a document in a donor's file is not
 something the package will quietly reassign.</p>
+<h2 id="sending-a-receipt-again">Sending a receipt again<a class="headerlink" href="#sending-a-receipt-again" title="Permanent link">#</a></h2>
+<p>"I never got my receipt" is the most common thing a donor calls about, and the usual causes are
+mundane — a typo'd address, an over-eager spam filter, a mailbox that was full on Tuesday.</p>
+<p><strong>Resend Receipt</strong> on the donation record sends another copy. It's on all three Opportunity
+layouts, next to <strong>Refund Donation</strong>.</p>
+<p>The action confirms before it sends, rather than firing on the click. It shows you the amount, the
+date, the receipt number, the exact address the mail will go to, and which of the two templates it
+will use — the donation receipt, or the event-ticket confirmation for a ticket or registration
+order. The address is worth reading: it's the donor's current email, resolved the same way the
+automatic send resolves it, which in a Person Account org means it comes from the Account rather
+than a contact lookup on the donation. If the donor updated their address after the original send,
+the resend goes to the new one.</p>
+<p>Three things stop a resend, and the panel says which:</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Why it's blocked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The payment hasn't settled</td>
+<td>There is no valid receipt yet. Nothing was banked, so nothing is deductible.</td>
+</tr>
+<tr>
+<td>The gift was fully refunded</td>
+<td>The receipt it would send is no longer a true document. Refund the donor's question to a conversation, not a re-issued receipt.</td>
+</tr>
+<tr>
+<td>The donor has no email address</td>
+<td>There is nowhere to send it. Add an address to the contact and the action becomes available.</td>
+</tr>
+</tbody>
+</table>
+<p>A <strong>partially</strong> refunded gift can still be resent — the retained portion is a real gift with a real
+deductible figure, and the receipt reflects the current numbers.</p>
+<div class="admonition note">
+<p class="admonition-title">A resend is a fresh copy, not a stored one</p>
+<p>The email is rendered from the donation as it stands today, not replayed from an archive. If
+something on the record changed since the original send — a corrected amount, an updated
+designation — the new copy shows the corrected figures. The receipt <strong>number</strong> never changes,
+so the donor can see the two documents refer to the same gift.</p>
+<p>The donor isn't told it's a resend, and the automatic-receipt setting doesn't apply: turning
+off automatic receipts stops the send at finalize time, not a person deliberately asking for a
+copy.</p>
+</div>
+<p>Unlike refunds, resending needs no special permission. Anyone who can see the donation record can
+resend its receipt — the mail can only ever reach the donor already on the record, never an address
+someone types in.</p>
 <h2 id="annual-giving-statements">Annual giving statements<a class="headerlink" href="#annual-giving-statements" title="Permanent link">#</a></h2>
 <p>A receipt covers one gift. At tax time a donor who gave twelve times wants one page, and someone on
 your team ends up assembling it by hand from a report.</p>
@@ -2587,6 +2786,51 @@ submission actually went through. Enter the <strong>Company match amount</strong
 sent rather than assuming a 1:1 ratio — matching formulas vary by employer, and many cap annually.</p>
 <p>Setting the status to <em>Received</em> or <em>Declined</em> drops the gift off the list view. Everything else
 keeps it in front of you.</p>
+<h2 id="tribute-gifts-and-the-e-card">Tribute gifts and the e-card<a class="headerlink" href="#tribute-gifts-and-the-e-card" title="Permanent link">#</a></h2>
+<p>Turn on <strong>Allow tribute</strong> on a campaign and the donation form grows a dedication block: <em>in honour
+of</em> or <em>in memory of</em>, the honoree's name, and an optional personal message. Those three land on
+the gift and show up on the donation record, whatever else happens.</p>
+<p>Separately, the donor may tick <strong>send an e-card</strong> and give an address. That sends a short
+notification — who gave, in whose honour or memory, and the donor's message if they wrote one. It
+never states the amount. A gift is not a price tag, and the recipient is often someone the donor
+would never discuss money with.</p>
+<div class="admonition warning">
+<p class="admonition-title">The tick box is the permission, not the address</p>
+<p>The e-card goes out only when <strong>Tribute Ecard Requested</strong> is checked. An address sitting in
+<strong>Tribute Notification Email</strong> is not consent on its own — a donor who types an address and then
+changes their mind gets nothing sent, which is the entire point of the box.</p>
+<p>This matters most for memorial gifts. The address on an <em>in memory of</em> gift belongs to a
+grieving family, and a donor who decides against contacting them has made a deliberate choice
+that the package has to honour. If you are editing a gift by hand and want to stop the
+notification, untick the box — clearing the address is not the mechanism.</p>
+</div>
+<p>The e-card is sent once, when the payment clears, and it is best-effort: if the send fails, the gift
+is still recorded and receipted normally. A failure is logged rather than surfaced to the donor,
+because a bounced notification is not a reason to make someone think their donation didn't go
+through.</p>
+<h3 id="editing-what-the-e-card-says">Editing what the e-card says<a class="headerlink" href="#editing-what-the-e-card-says" title="Permanent link">#</a></h3>
+<p>There are two templates in <strong>Setup → Email Templates → <em>Fundraising</em></strong> — <strong>Tribute In Honor Of</strong> and
+<strong>Tribute In Memory Of</strong> — and the tribute type on the gift decides which one goes out. Edit them
+like any other email template; they merge the org name, logo, address, and signature from your
+<strong>Settings</strong>, plus the donor's name, the honoree's name, and the donor's message from the gift.</p>
+<p>Two templates rather than one because a Salesforce email template can't say "in honour of" for one
+gift and "in memory of" for the next, and because the two shouldn't look alike anyway. The memorial
+one drops the brand colour, has no button to click, and closes on a line of condolence. Change the
+wording freely — but if you are rewriting the memorial template, read it back imagining it arriving
+the week after a funeral.</p>
+<p>Neither template shows the gift amount, and that is worth preserving.</p>
+<div class="admonition note">
+<p class="admonition-title">Keep the footer line about why they received it</p>
+<p>The person receiving an e-card never gave you their address — a donor typed it in. Both
+templates end with a line saying why the message arrived and that the recipient hasn't been added
+to any list. It is the only thing standing between a thoughtful gesture and an unsolicited email
+from an organisation they have no relationship with.</p>
+</div>
+<h3 id="when-the-e-card-is-skipped">When the e-card is skipped<a class="headerlink" href="#when-the-e-card-is-skipped" title="Permanent link">#</a></h3>
+<p>Besides the tick box, a gift with <strong>no donor contact</strong> doesn't send one — an imported row, or a gift
+booked straight to an organisation account. There is nobody to name as the giver, and "a donor has
+made a donation in memory of your mother" from an organisation the recipient has never heard of is
+worse than sending nothing. The skip is recorded in <strong>Application Logs</strong>.</p>
 <h2 id="crediting-someone-who-didnt-pay">Crediting someone who didn't pay<a class="headerlink" href="#crediting-someone-who-didnt-pay" title="Permanent link">#</a></h2>
 <p>A gift has one payer, but often more than one person it should show up for. Someone gives $500 in
 honour of a board member's retirement — the board member never opened their wallet, yet the next time

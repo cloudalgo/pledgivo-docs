@@ -1728,7 +1728,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Allow_Tribute__c</code></td>
 <td>Allow_Tribute</td>
 <td>Checkbox</td>
-<td>Default tribute/dedication setting for new campaigns. Individual campaigns can override this.</td>
+<td>Turn this off to switch tribute gifts off everywhere at once — no campaign will show the "in honor of / in memory of" section and no honoree e-cards will be sent. Leave it on to let each campaign decide for itself.<br><em>Docs: This was a write-once seed for new campaigns until 2026-08-07, when it became a real master switch (gap-audit-2026-08-07 §2.1 — an org had no way to stop honoree e-cards without editing every campaign). Because the field defaults to FALSE, that change would have turned tributes off on upgrade for orgs that never touched it, so PostInstallHandler. adoptTributeMasterSwitch flips it to true when any campaign is visibly using tributes. Enforced in CampaignService (masks the campaign payload) and DonationService (refuses the capture); see SettingsService.tributeEnabled for why both are needed.</em></td>
 </tr>
 <tr>
 <td><code>Allowed_Embed_Origins__c</code></td>

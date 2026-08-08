@@ -1269,6 +1269,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-the-donor-is-told" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the donor is told
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1696,6 +1707,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-the-donor-is-told" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the donor is told
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#related" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1784,6 +1806,35 @@ cumulative amount, not just the last refund seen.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="what-the-donor-is-told">What the donor is told<a class="headerlink" href="#what-the-donor-is-told" title="Permanent link">#</a></h2>
+<p>The donor is emailed automatically once the refund is recorded, using the <strong>Refund Notification</strong>
+template (Setup → Email Templates → <em>Fundraising</em> folder). It states the amount refunded and the
+date, and tells them the refunded portion is no longer tax-deductible — the original receipt they
+were sent is otherwise still sitting in their inbox reading like a valid tax document for money
+they no longer have. The email links back to the donor portal, where the receipt now shows the
+refund reflected.</p>
+<p>Edit the template's wording and branding like any other — it's a standard Salesforce email
+template, and it merges the org name, logo, address, and receipt footer from your <strong>Settings</strong>.</p>
+<p>Both refund paths send it: a refund you issue from Salesforce, and one the hourly reconciler picks
+up from Stripe. Three cases deliberately do <strong>not</strong> send it:</p>
+<ul>
+<li><strong>A re-run of the reconciler over an already-reconciled refund.</strong> The email is triggered by the
+  refunded total <em>increasing</em>, not by the gift merely being refunded — otherwise every hourly run
+  would email the same donor about the same refund again.</li>
+<li><strong>A lost chargeback.</strong> The gift is reversed exactly like a refund, but the donor raised the
+  dispute with their own bank and already knows. A "your gift was refunded" note would be
+  redundant, and tone-deaf in a case you may have contested.</li>
+<li><strong>A gift with no donor Contact</strong> — an offline or imported row with nobody to address.</li>
+</ul>
+<p>The refund reason you type when issuing the refund is stored on the Opportunity but is <strong>not</strong>
+included in the donor's email, so you can write internal notes there freely.</p>
+<div class="admonition note">
+<p class="admonition-title">The email never blocks the refund</p>
+<p>Sending happens after the refund is recorded, and a failure is logged rather than raised. The
+money has already moved at Stripe by that point, so a mail-quota problem or a deleted template
+can never turn a successful refund into an error — but it does mean a failed send isn't retried.
+Check <strong>Application Logs</strong> if a donor says they were never told.</p>
+</div>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

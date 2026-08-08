@@ -1146,10 +1146,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-optional-add-custom-questions" class="md-nav__link">
+  <a href="#4-optional-add-custom-questions-and-faqs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. (Optional) Add custom questions
+        4. (Optional) Add custom questions and FAQs
       
     </span>
   </a>
@@ -1746,10 +1746,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-optional-add-custom-questions" class="md-nav__link">
+  <a href="#4-optional-add-custom-questions-and-faqs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. (Optional) Add custom questions
+        4. (Optional) Add custom questions and FAQs
       
     </span>
   </a>
@@ -1873,10 +1873,27 @@ let donors pick from every active fund (the default), lock every gift to one fun
 picker shown, or scope the picker to a specific subset you choose. See
 <a href="../../concepts/donations-payments/#controlling-which-funds-a-donor-can-pick">Controlling which funds a donor can pick</a>
 for what each mode looks like to a donor.</p>
-<h2 id="4-optional-add-custom-questions">4. (Optional) Add custom questions<a class="headerlink" href="#4-optional-add-custom-questions" title="Permanent link">#</a></h2>
-<p>Add <code>Custom_Question__c</code> records if you need to collect anything beyond name, email, and
-amount — a t-shirt size, a dedication note, how a donor heard about you. Each becomes a field
-block available in the Page Canvas.</p>
+<h2 id="4-optional-add-custom-questions-and-faqs">4. (Optional) Add custom questions and FAQs<a class="headerlink" href="#4-optional-add-custom-questions-and-faqs" title="Permanent link">#</a></h2>
+<p>If you need to collect anything beyond name, email, and amount — a t-shirt size, a dedication note,
+how a donor heard about you — add it as a <strong>custom question</strong>. FAQs work the same way: they're
+content the donation page shows rather than something the donor answers.</p>
+<p>Both are picked from a shared library of <strong>Content Templates</strong>, and you choose which of them this
+campaign uses from its <strong>Custom questions</strong> and <strong>FAQs</strong> cards (on the campaign's record page, or
+in the Fundraisers console). Questions you select become field blocks available in the Page Canvas.</p>
+<div class="admonition warning">
+<p class="admonition-title">A template is shared, not a per-campaign copy</p>
+<p>Every campaign that picks a question points at the <em>same</em> record. Editing the wording changes it
+on all of them at once — which is usually what you want for a typo, and rarely what you want
+when you're tailoring a question to one appeal. To reword it for one campaign, create a new
+template and swap that campaign onto it.</p>
+<p>The template's own record page carries a <strong>Where This Is Used</strong> card listing every campaign
+referencing it, and which of those are showing it to donors right now. Read it before editing
+the wording — it is the blast radius.</p>
+<p>The <strong>Active</strong> checkbox is not a kill switch either. It controls whether a template appears in
+the picker when you're adding one to a campaign; a campaign that has <em>already</em> selected it keeps
+showing it to donors after you untick the box. To take a question down, remove it from the
+campaigns using it — the card names them.</p>
+</div>
 <h2 id="5-attach-a-page-design">5. Attach a page design<a class="headerlink" href="#5-attach-a-page-design" title="Permanent link">#</a></h2>
 <p>Open <strong>Settings → Experience Cloud → Page Designs</strong> and create (or reuse) a <code>Campaign_Design__c</code>
 for this campaign. Start from one of the packaged themes — you can adjust colors and fonts
@@ -1890,7 +1907,8 @@ the first and third; Payment is locked.</p>
 <ol>
 <li><strong>Compose.</strong> Drag in the blocks this campaign needs, in the order you want donors to see
    them: amount/frequency, donor info, your designations (if any), custom questions, and any
-   content blocks (a story, an image, a testimonial, an FAQ pulled from <code>Campaign_FAQ__c</code>).</li>
+   content blocks (a story, an image, a testimonial, an FAQ from the templates you picked in
+   step 4).</li>
 <li><strong>Payment.</strong> The Stripe Payment Element itself is locked in place — it can't be removed or
    reordered — but its surrounding block is still editable (block label, section title, help
    text, submit button label), and you can add extra content blocks to this step.</li>

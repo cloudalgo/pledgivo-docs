@@ -772,6 +772,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#working-the-door" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working the door
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#seats-are-reserved-before-the-charge-completes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1729,6 +1740,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#working-the-door" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working the door
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#seats-are-reserved-before-the-charge-completes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1857,6 +1879,18 @@ screenshot taken before the refund can't be presented at the door.</p>
 this release. Today the code is a fast way for a volunteer to look a guest up, not an automated
 turnstile.</p>
 </div>
+<h2 id="working-the-door">Working the door<a class="headerlink" href="#working-the-door" title="Permanent link">#</a></h2>
+<p>Two surfaces mark people in, and both write the same field on the same record — there is no second
+check-in path to keep in step.</p>
+<p><strong>The board</strong> is for a queue. It lives on the Fundraisers console and, on a ticketed event, on the
+campaign's own record page: search a name, mark them <strong>Checked In</strong> or <strong>No Show</strong>, next guest. See
+<a href="../campaigns/#working-from-the-campaigns-record-page">Working from the campaign's record page</a>.</p>
+<p><strong>The seat record</strong> is for one person. Opening a single Event Attendee record answers what the board
+can't: which tier they bought, what the order actually paid, and who else came in on the same order
+— useful when a family of four arrives and only one of them is in front of you. The same check-in
+control is on it.</p>
+<p>A refunded seat is cancelled, not deleted, and its control is locked rather than hidden. Whoever is
+holding that ticket at the door still needs to see the seat — and to see that it's void.</p>
 <h2 id="seats-are-reserved-before-the-charge-completes">Seats are reserved before the charge completes<a class="headerlink" href="#seats-are-reserved-before-the-charge-completes" title="Permanent link">#</a></h2>
 <p><code>EventRegistrationController.createTicketIntent</code> increments <code>Quantity_Sold__c</code> on the ticket
 tier — under a row lock (<code>FOR UPDATE</code>) so two donors buying the last seat can't both succeed —

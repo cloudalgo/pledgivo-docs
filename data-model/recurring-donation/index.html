@@ -1689,7 +1689,7 @@ description: Represents a donor's ongoing recurring giving schedule (subscriptio
 <p class="fn-dek">Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>38 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p><code>custom</code> · <code>39 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1736,6 +1736,12 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>→ out</td>
 <td><code>Donor_Account__c</code></td>
 <td><a href="../all-objects/#account">Account</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>→ out</td>
+<td><code>Payment_Account__c</code></td>
+<td><a href="../all-objects/#payment-account">Payment Account</a></td>
 <td>Lookup</td>
 </tr>
 <tr>
@@ -1933,6 +1939,12 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Paused Until</td>
 <td>Date</td>
 <td>The date this recurring gift will automatically resume, if paused.</td>
+</tr>
+<tr>
+<td><code>Payment_Account__c</code></td>
+<td>Payment Account</td>
+<td>Lookup → <code>Payment_Account__c</code></td>
+<td>Which of your configured Stripe accounts renewals for this schedule are charged to. Set automatically when the schedule starts — changing the fundraiser's payment account later does not, and must not, move an existing schedule.<br><em>Docs: Second rung of the renewal resolution chain: Payment_Method__r.Payment_Account__c, then this field, then Campaign.Payment_Account__c for rows predating both (see RecurringRenewalBatch). Stamped from Donation_Staging__c.Payment_Account__c, which is already in hand at RecurringDonationService.createScheduleFromStaging — the account was decided at intent time, so this is a snapshot of a known fact rather than a fresh resolution. deleteConstraint omitted (SetNull) for the same reason as Payment_Method__c.Payment_Account__c.</em></td>
 </tr>
 <tr>
 <td><code>Payment_Method__c</code></td>

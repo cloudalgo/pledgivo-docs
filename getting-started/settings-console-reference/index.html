@@ -2173,8 +2173,8 @@ run, or not at all).</p>
 </tr>
 <tr>
 <td>Donor options — Allow tribute/honoree gifts</td>
-<td>Default for whether a brand-new fundraiser shows a tribute/honoree field</td>
-<td>New records only — seeds the wizard's toggle on <code>Campaign.Allow_Tribute__c</code> at creation; the live donation form reads that Campaign field directly, so editing an <em>existing</em> fundraiser's own toggle (not this org default) is what actually changes its form</td>
+<td>Org-wide master switch for tribute/honoree gifts — and the starting value for a brand-new fundraiser's own toggle</td>
+<td>Immediate and org-wide. Off = no fundraiser shows the tribute section, no tribute data is captured, and no honoree e-cards go out, whatever an individual fundraiser's toggle says. On = each fundraiser's own toggle decides. Per-fundraiser choices are never overwritten, so they come back exactly as they were if you switch this off and on again</td>
 </tr>
 <tr>
 <td>Donor options — Allow company-match prompt</td>

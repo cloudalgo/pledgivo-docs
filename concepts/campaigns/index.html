@@ -732,6 +732,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#working-from-the-campaigns-record-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working from the campaign's record page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-a-campaign-can-become" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1795,6 +1806,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#working-from-the-campaigns-record-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Working from the campaign's record page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-a-campaign-can-become" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2029,6 +2051,47 @@ integration — two systems writing the same rows is worse than one.</p>
   or fail a donation. If a membership can't be created, the donation still stands and the problem is
   logged for an admin.</li>
 </ul>
+<h2 id="working-from-the-campaigns-record-page">Working from the campaign's record page<a class="headerlink" href="#working-from-the-campaigns-record-page" title="Permanent link">#</a></h2>
+<p>The <strong>Fundraisers</strong> console tab is where a campaign gets built — the wizard, the page canvas, the
+tier editor. But most days nobody is building anything; they open a campaign record because someone
+asked a question about it. So the four things people come back to are on the record page too, and
+they are the same components the console uses, not lookalikes:</p>
+<table>
+<thead>
+<tr>
+<th>Card</th>
+<th>Shows on</th>
+<th>What it's for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Check-in</strong></td>
+<td>Ticketed events only</td>
+<td>The door board — search an attendee, mark them in or a no-show</td>
+</tr>
+<tr>
+<td><strong>Ticket tiers</strong></td>
+<td>Ticketed events only</td>
+<td>The tier editor: prices, capacity, what each tier says for itself</td>
+</tr>
+<tr>
+<td><strong>Custom questions</strong></td>
+<td>Every campaign</td>
+<td>Which questions the donation form asks on this campaign</td>
+</tr>
+<tr>
+<td><strong>FAQs</strong></td>
+<td>Every campaign</td>
+<td>Which FAQs the donation page shows</td>
+</tr>
+</tbody>
+</table>
+<p>The two event cards are hidden on a campaign that isn't a ticketed event — a donation appeal has no
+door and no tiers, and an empty check-in board on it would just be noise. The other two apply to
+every campaign type, so they always render.</p>
+<p>Edits made here and edits made in the console are the same edits. There is no separate record-page
+copy of a tier or a question to keep in sync.</p>
 <h2 id="what-a-campaign-can-become">What a Campaign can become<a class="headerlink" href="#what-a-campaign-can-become" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

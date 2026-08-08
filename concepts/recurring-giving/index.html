@@ -719,6 +719,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Saved payment methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-breaks-if-a-card-stops-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What breaks if a card stops working
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-saved-card-belongs-to-the-account-that-took-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A saved card belongs to the account that took it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -762,6 +790,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#doing-it-for-them-manage-recurring-gift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doing it for them: Manage Recurring Gift
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Doing it for them: Manage Recurring Gift">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-can-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can use it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1693,6 +1749,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Saved payment methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-breaks-if-a-card-stops-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What breaks if a card stops working
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-saved-card-belongs-to-the-account-that-took-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A saved card belongs to the account that took it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1736,6 +1820,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#doing-it-for-them-manage-recurring-gift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doing it for them: Manage Recurring Gift
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Doing it for them: Manage Recurring Gift">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-can-use-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can use it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1788,6 +1900,61 @@ Salesforce; only Stripe's tokenized reference is.</p>
 <p><code>Payment_Method__c</code> exists <strong>only</strong> for this purpose — see the note in
 <a href="../donations-payments/">Donations &amp; payments</a> if you're looking for a one-time gift's payment
 details, which live directly on the Opportunity instead.</p>
+<h3 id="what-breaks-if-a-card-stops-working">What breaks if a card stops working<a class="headerlink" href="#what-breaks-if-a-card-stops-working" title="Permanent link">#</a></h3>
+<p>An expiring card is only interesting because of what it is paying for. The saved card's record page
+answers that directly: the live recurring schedules charged on it, and what they commit to over a
+year. That is the number to quote when you ask a donor to update their details — "your $40 monthly
+gift" lands differently from "your card is expiring".</p>
+<p>One thing on that card is worth understanding. A schedule can be charged on a saved card in two
+ways: through the card record it points at, or through the raw Stripe token stored on the schedule
+itself. The renewal batch charges the token either way, so both are genuinely billed to this card —
+but only the first says so anywhere on the schedule record. The card flags the second kind rather
+than leaving it invisible, because a schedule you can't see from here is exactly the one that
+breaks without warning.</p>
+<h3 id="a-saved-card-belongs-to-the-account-that-took-it">A saved card belongs to the account that took it<a class="headerlink" href="#a-saved-card-belongs-to-the-account-that-took-it" title="Permanent link">#</a></h3>
+<p>A tokenized card is not portable between Stripe accounts. The token your donor's card became is
+meaningful only to the Stripe account that created it — hand it to a different account and the
+charge is rejected as an unknown payment method, no matter that the card itself is perfectly good.</p>
+<p>That matters because a campaign's <strong>Payment Account</strong> is a field an admin can change, and changing
+it is a legitimate thing to do (a new entity, a rebranded account, a merged program). What must
+<em>not</em> happen is a monthly donor's next charge quietly following the campaign to an account that
+never met their card.</p>
+<p>So each saved card records the account that issued it, and every renewal resolves the account to
+charge in this order:</p>
+<table>
+<thead>
+<tr>
+<th>Order</th>
+<th>Source</th>
+<th>Used when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The saved card's own <strong>Payment Account</strong></td>
+<td>Always, if the schedule has a saved card — this is the only account that can actually charge the token</td>
+</tr>
+<tr>
+<td>2</td>
+<td>The schedule's <strong>Payment Account</strong></td>
+<td>The snapshot taken when the donor signed up, used when the schedule has no saved card</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The campaign's <strong>Payment Account</strong></td>
+<td>Last resort — an older schedule from before either field existed</td>
+</tr>
+</tbody>
+</table>
+<p>The campaign is where the account is chosen for <em>new</em> gifts, and it is the last thing consulted for
+an existing one. Repointing a campaign at a different Stripe account changes where its future
+donations land; it does not migrate the recurring gifts already running against the old account.</p>
+<div class="admonition note">
+<p class="admonition-title">Existing schedules are filled in on upgrade</p>
+<p>Installing the version that added these fields backfills them for schedules and cards that
+predate it, from the campaign each one was signed up against. Nothing needs to be done by hand.</p>
+</div>
 <h2 id="the-renewal-cycle">The renewal cycle<a class="headerlink" href="#the-renewal-cycle" title="Permanent link">#</a></h2>
 <pre class="mermaid"><code>flowchart LR
     A[RecurringDonationScheduler&lt;br/&gt;daily, 2 AM] --&gt; B[RecurringRenewalBatch]
@@ -1902,6 +2069,75 @@ when — worth pointing a fundraiser at when they ask why a monthly gift is a di
 they remember.</p>
 <p>Each action re-checks that the token actually owns the schedule it names, so a guessed record Id
 gets a refusal rather than someone else's gift.</p>
+<h2 id="doing-it-for-them-manage-recurring-gift">Doing it for them: Manage Recurring Gift<a class="headerlink" href="#doing-it-for-them-manage-recurring-gift" title="Permanent link">#</a></h2>
+<p>Donors phone. <strong>Manage Recurring Gift</strong>, on the recurring gift's record page, gives a fundraiser
+the same set of changes the donor has in the portal, without asking them to go find their email.</p>
+<p>The panel opens on the gift's current state — status, amount, frequency, next payment date, any
+failed charges — and offers only the actions that are actually available on a schedule in that
+state. A paused gift offers <strong>Resume</strong>, not <strong>Pause</strong>. A healthy gift offers no <strong>Retry Now</strong>,
+because there is nothing that failed to retry; on a gift mid-dunning it charges immediately instead
+of waiting for the next scheduled attempt.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pause</strong> / <strong>Resume</strong></td>
+<td>Stops charging without ending the gift; resuming picks the existing schedule back up</td>
+</tr>
+<tr>
+<td><strong>Skip next payment</strong></td>
+<td>Moves the next payment on by one cycle, without consuming a pledge installment</td>
+</tr>
+<tr>
+<td><strong>Retry now</strong></td>
+<td>Charges a failed or mid-dunning gift immediately rather than waiting for the next retry</td>
+</tr>
+<tr>
+<td><strong>Change amount</strong></td>
+<td>Takes effect on the next charge; percentage fund splits are re-derived at the new amount</td>
+</tr>
+<tr>
+<td><strong>Change fund</strong></td>
+<td>Offers exactly the funds the campaign offers the donor — the same resolved list, not a wider staff-only one</td>
+</tr>
+<tr>
+<td><strong>Reinstate</strong></td>
+<td>Restarts a cancelled or failed gift: billing resumes today and the dunning counters are cleared</td>
+</tr>
+<tr>
+<td><strong>Switch card</strong></td>
+<td>Moves the gift onto another card the donor has <em>already</em> saved</td>
+</tr>
+</tbody>
+</table>
+<p>Cancelling is deliberately not here — it's the separate <strong>Stop Recurring Donation</strong> action, because
+it's terminal and needs a reason, and an irreversible button sitting one click from the reversible
+ones is a mistake waiting to happen.</p>
+<p>Everything a fundraiser does through this panel writes the same history row a donor's own change
+would, so the audit trail doesn't distinguish based on who was more convenient to ask.</p>
+<div class="admonition warning">
+<p class="admonition-title">There is no way to key in a donor's card</p>
+<p>The card picker lists only cards already on file, and there is no "add a card" path for staff by
+design. Tokenizing a card needs the donor's own browser and their own mandate — a fundraiser
+typing card details into Salesforce would breach both PCI and the donor's consent. When a donor
+needs to put a new card on file, send them their portal link (see
+<a href="../donors-accounts/#sending-a-donor-their-portal-link">Donors &amp; accounts</a>) and let them add it
+themselves. A donor with only one card on file simply sees no switch option, which is the honest
+answer: there is nothing to switch to.</p>
+</div>
+<h3 id="who-can-use-it">Who can use it<a class="headerlink" href="#who-can-use-it" title="Permanent link">#</a></h3>
+<p>The panel is gated by the <strong>Manage Recurring Gifts</strong> custom permission, granted by
+<strong>Fundraising Admin</strong>. Without it the panel still opens — it just renders read-only, so anyone who
+can see the gift can see its state and answer a donor's question, and only someone trusted with the
+permission can change it. Add the permission to another permission set if you want a wider group of
+fundraisers making these changes.</p>
+<p>Every action re-checks the permission and the schedule's own rules on the server. A panel left open
+on a stale screen can't be used to push through a change the schedule no longer allows.</p>
 <h2 id="related-reference">Related reference<a class="headerlink" href="#related-reference" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

@@ -500,6 +500,8 @@
       
         
       
+        
+      
     
     
     
@@ -672,6 +674,34 @@
     
   
     Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
   
 
     
@@ -8187,6 +8217,7 @@
 <h4 id="apex-receiptcontroller">ReceiptController<a class="headerlink" href="#apex-receiptcontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public without sharing</code></p>
 <p><strong>Docs note.</strong> Backs the publicDonationReceipt LWC. Receipt_Token__c is stamped by Opportunities.setReceiptToken on every package donation, so this controller never needs (and never accepts) an Opportunity Id.</p>
+<p>The fund the gift was earmarked for — "Emergency Shelter Fund". Comes from the Donation_Designation__c splits rather than a field on the Opportunity, because a gift can be split across several funds; the receipt names them all rather than picking one and quietly dropping the rest.</p>
 <table>
 <thead>
 <tr>
@@ -8435,6 +8466,7 @@
 <p>Feeds the Designation row on ThankYouController's thank-you payload.</p>
 <p>Per-fund realized split for one campaign's donations — feeds admFundraiserDetail's "Realized fund split" table. Includes funds since removed from the campaign's allowed list (the LWC/controller layer marks those "not currently allowed" by diffing against the current CampaignDesignationConfig, not by filtering them out here). Same net-raised math as selectAggregateRaisedByDesignations, scoped by campaign instead of by designation set.</p>
 <p>Inverse of selectAggregateRaisedByCampaign — one fund's realized total broken down by the campaigns that raised it, feeding lexDesignationPerformance's campaign table. Gifts booked with no campaign are kept under a null key rather than filtered out, so the breakdown always sums back to the headline net-raised figure the same card shows above it.</p>
+<p>"Where it went" on the donor portal — this donor's own giving broken down by fund, net of refunds. SYSTEM_MODE for the same reason as selectByOpportunityIdsWithFundName: the visitor is authorized by a magic-link token, not by sharing on their own split rows, and USER_MODE would render an honest-looking but empty breakdown. The LIMIT is a safety stop — a donor past it loses only the tail of a proportional chart, never a receipt or a total.</p>
 <table>
 <thead>
 <tr>
@@ -8489,6 +8521,11 @@
 <td><code>List&lt;[CampaignNetRaised](#apex-campaignnetraised)&gt;</code></td>
 <td></td>
 </tr>
+<tr>
+<td><a id="apex-donationdesignationsselector-selectaggregateraisedbydonorsystem"></a><code>selectAggregateRaisedByDonorSystem(2 args)</code></td>
+<td><code>List&lt;[DesignationNetRaised](#apex-designationnetraised)&gt;</code></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 <h4 id="apex-idesignationsselector">IDesignationsSelector<a class="headerlink" href="#apex-idesignationsselector" title="Permanent link">#</a></h4>
@@ -8509,11 +8546,16 @@
 <p>extends fflib_SObjectSelector · implements <a href="#apex-iopportunitiesselector">IOpportunitiesSelector</a></p>
 <p><strong>Docs note.</strong> The largest selector in the package — one-time and recurring donation receipts, refunds, disputes, the donor portal dashboard, event-ticket orders, and the internal fundraiser-detail console all read Opportunity through this class rather than ad hoc SOQL elsewhere.</p>
 <p>Receipt_Number__c is deliberately NOT added to getSObjectFieldList(). That list feeds every USER_MODE query this selector builds, and the guest permission set does not grant the field — a guest-reachable USER_MODE read would start failing outright on an FLS violation rather than merely omitting a column. Widening one staff-only query is the narrow version of that change; the guest receipt page reads the number through selectByReceiptToken, which is SYSTEM_MODE and unaffected either way.</p>
+<p>The whole address, not just venue + city. A ticket is the one artifact a donor navigates by — it gets printed, or held up on a phone in a taxi — so the street line has to be on it. The fields already exist on Campaign and the fundraiser wizard already captures them; this selector was simply dropping them, which is why the page could only say "The Grand Ballroom · New York".</p>
+<p>The campaign's public slug, so a fully refunded order can offer "Book again" instead of a dead end. The donate route keys on ?slug=, not a Campaign Id, so CampaignId alone cannot build that link.</p>
 <p>Feeds ThankYouController.getThankYou. Adding a field the thank-you page renders? Add it here — the page must never gain a second SOQL round trip for one more label.</p>
 <p>ContactId + AccountId are the two halves of the Person Account dual-lookup, resolved by DonorResolutionService.resolveReceiptContactId into the Contact the tribute template merges from. This used to select Account.Name instead of AccountId, because the e-card body was assembled in Apex and needed a display name; the body now lives in a packaged EmailTemplate that merges {!Contact.*} directly, so the name is no longer read here. What must NOT come back is Contact.FirstName or any other "Contact." path — Opportunity.ContactId has no relationshipName (Schema describe returns null for it), so the query is rejected at runtime with "Didn't understand relationship 'Contact'". Because the whole tribute send is best-effort, that failure is swallowed and shows up only as a tribute e-card that silently never arrives. Account traverses fine; only Contact doesn't.</p>
 <p>No WHERE clause beyond the id set — unlike the campaign-member sync, there is no single condition that identifies a candidate. A gift may qualify for a tribute credit, a household credit, both, or neither, and the three soft-credit slots are filled independently, so SoftCreditService has to see every row and decide per slot.</p>
 <p>Distinct donors per campaign, resolving each gift's donor exactly the way the rest of the package does: its Contact when it has one, otherwise its Account (the dual-field Person Account convention). Two aggregates rather than one COUNT_DISTINCT over both lookups, because a contact gift ALSO carries that contact's Account — counting both fields would count the same donor twice. Returns a map rather than raw AggregateResults so the pairing of the two halves stays here, next to the reason there are two.</p>
 <p>Bounded by a calendar-year CloseDate range rather than CALENDAR_YEAR(CloseDate) so the filter stays on the indexed raw field. LIMIT 2000 is a safety stop, not an expected ceiling: a donor with more than 2000 receiptable gifts in one year is a data-quality signal, and the statement reports the truncation rather than silently understating a total.</p>
+<p>SUM(Amount) rides along on the aggregate the statement picker already runs, so the donor portal can print a per-year subtotal in each ledger year header without a second query — and without summing the history list client-side, which caps at 100 rows and would under-report a long-standing donor's oldest years.</p>
+<p>Grouped by payment status as well as year (2026-08-08) so ONE query feeds two totals that are deliberately different numbers: the ledger year header, which must equal the gross of every Closed Won row printed beneath it, and the downloadable statement's headline figure, which counts receiptable gifts only and nets out refunds. With a single SUM(Amount) behind both, the portal's statement rail advertised a year total the tax document it generated then contradicted. SUM(Refunded_Amount__c) rides along for the partially-refunded half of that net; GivingStatementService.toYears folds the status rows back into one row per year through ReceiptStatusHelper, so the rule for what counts is still stated in exactly one place.</p>
+<p>MIN(CloseDate) rides along on the same aggregate rather than costing a second query — the lifetime call (since = 1900-01-01) yields the donor's first-ever gift date, which the portal renders as "Giving since &lt;month year&gt;".</p>
 <p>Won gifts on this campaign with zero Donation_Designation__c rows — the "Undesignated" bucket for admFundraiserDetail's realized fund-split table. Net of refunds, same convention as aggCampaignSummary/selectAggregateRaisedByCampaign.</p>
 <table>
 <thead>
@@ -9007,6 +9049,11 @@
 <p>implements <a href="#apex-igivingstatementservice">IGivingStatementService</a></p>
 <p>Builds a donor's annual giving statement — one document listing every receiptable gift they made in a tax year, with the year's totals and the organisation's identifying details. ON DEMAND ONLY. There is deliberately no year-end batch that mails statements to every donor: the two entry points are a donor pulling their own from the magic-link portal, and staff generating one from the donor's Contact or Account record page. INHERITED SHARING is load-bearing. The staff path reaches this class from a <code>with sharing</code> controller and must stay inside the running user's record access; the portal path reaches it from DonorPortalService (<code>without sharing</code>) because an Experience Cloud guest has no sharing on their own Opportunities. Marking this class either way would break one of the two callers — <code>with sharing</code> would hand a donor an official-looking statement listing zero gifts.</p>
 <p><strong>Docs note.</strong> The per-gift figures are NOT recomputed here. Every line's deductible amount comes from ReceiptStatusHelper, the same class the web receipt, the printed receipt and the emailed receipt all use, so a statement can never contradict the individual receipts it summarises — including the deliberate "cannot state a deductible" case for a partially refunded event order, which the statement reports as an unresolved line rather than guessing a number.</p>
+<p>The selector groups by payment status as well as year, so a year arrives as several rows and is folded back into one here. The fold produces TWO totals on purpose. yearTotal / giftCount stay gross over every Closed Won gift — the donor portal's ledger prints them in each year header above the rows themselves, refunded and pending gifts included, and a header that disagreed with the rows under it would read as a broken page. statementTotal / statementGiftCount describe the document the download button actually produces: only the gifts assemble() will list, net of refunds.</p>
+<p>The "which gifts count" rule is NOT restated here. Each status group is passed through ReceiptStatusHelper exactly as assemble() passes each individual gift, which works because resolve() is linear in amount and refund: summing the group and resolving once gives the same figure as resolving each row and summing. That is what keeps the rail's label and the document's TOTAL RECEIVED from drifting apart again.</p>
+<p>Gross Closed Won total for the year. Belongs to the donor portal's giving-history year header, which lists every gift the donor made — including ones that were refunded or never completed — so its subtotal has to be the gross of the rows printed under it. Do NOT label a statement download with this: use statementTotal.</p>
+<p>What buildStatement() will actually report for this year: gifts that produce a receipt line (Succeeded in full, Partially_Refunded net of the refund), with fully refunded and never-completed gifts left out entirely. This is the pair every statement-download surface must label itself with — the donor portal's annual-statement rail and the internal year picker — so the number on the control equals the TOTAL RECEIVED on the document it generates.</p>
+<p>Still not the deductible total. The non-deductible half of an event ticket comes off only inside the built statement, which needs Event_Deductible_Amount__c per gift and cannot be reduced to an aggregate.</p>
 <table>
 <thead>
 <tr>
@@ -9256,7 +9303,7 @@
 <h4 id="apex-receiptstatushelper">ReceiptStatusHelper<a class="headerlink" href="#apex-receiptstatushelper" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>Shared receipt/refund status-gate rule. One place every receipt surface — the internal receipt (RecordPageService, viewed on the Opportunity record page), the guest-facing receipt (ReceiptController, viewed via a donor's magic-link token) and the post-gift confirmation (ThankYouController) — resolves the same tax-deductibility outcome, so the rule can never drift between them: Succeeded            -&gt; FULL            full letter for the gross Amount Partially_Refunded   -&gt; PARTIAL         letter for the net (Amount - Refunded_Amount__c) Refunded             -&gt; NOT_DEDUCTIBLE  no letter; the gift was fully refunded, nothing to deduct Pending/Processing/Failed/Cancelled/other -&gt; NO_RECEIPT  no letter; payment never completed On top of the state gate it resolves the QUID-PRO-QUO split: for an event order the donor received goods or services (a seat, a dinner) in exchange for part of the payment, and only the remainder is a charitable contribution.</p>
-<p><strong>Docs note.</strong> The goods/deductible split lived only in ThankYouController until 2026-08-06. The two older receipt surfaces called the 3-argument resolve(), which cannot see Event_Amount__c, so both published the GROSS as the tax-deductible figure for a gala ticket and then printed "no goods or services were provided" underneath it — while EventTicketConfirmation.email, for the very same order, split it correctly. That is an IRC section 6115 quid-pro-quo disclosure problem for a US 501(c)(3) subscriber, so the logic was moved down here and every surface now reads goodsValue/deductibleAmount/legalStatement from this one class.</p>
+<p><strong>Docs note.</strong> The goods/deductible split lived only in ThankYouController until 2026-08-06. The two older receipt surfaces called the 3-argument resolve(), which cannot see Event_Amount__c, so both published the GROSS as the tax-deductible figure for a gala ticket and then printed "no goods or services were provided" underneath it — while EventTicketConfirmation.email, for the very same order, split it correctly. That is an IRC section 6115 quid-pro-quo disclosure problem for a US 501(c)(3) subscriber, so the logic was moved down here and every surface now reads goodsValue/deductibleAmount/legalStatement from this one class. A second round on 2026-08-08 separated "goods were provided" (goodsProvided) from "here is what they were worth" (goodsValue). Deciding the first from the second meant an event order whose ticket tier had no Fair_Market_Value__c recorded — Event_Amount__c 0, so nothing to print — fell through to the plain-gift wording and denied that the donor received anything.</p>
 <table>
 <thead>
 <tr>
@@ -9277,7 +9324,17 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-receiptstatushelper-legalstatement"></a><code>legalStatement(2 args)</code></td>
+<td><a id="apex-receiptstatushelper-resolve"></a><code>resolve(5 args)</code></td>
+<td><code>ReceiptStatus</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-receiptstatushelper-iseventorder"></a><code>isEventOrder(1 arg)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-receiptstatushelper-legalstatement"></a><code>legalStatement(4 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>
@@ -9629,6 +9686,7 @@
 <p>extends fflib_SObjectSelector · implements <a href="#apex-iaccountsselector">IAccountsSelector</a></p>
 <p><strong>Docs note.</strong> The ACCOUNT arm of the donor dual-field strategy (DonorResolutionService.isPersonAccountOrg decides which arm applies). Only Person Account / organization donors live here — a standard Contact donor's business Account is never rolled up through this selector.</p>
 <p>PersonEmail and IsPersonAccount do not exist as compilable fields in an org without Person Accounts, so this is dynamic SOQL and the caller MUST check DonorResolutionService.isPersonAccountOrg() first — invoking it in a standard org throws an INVALID_FIELD query exception, it does not simply return nothing.</p>
+<p>PersonEmail is the Person Account twin of Contact.Email — the portal's statement panel prints the address the magic link went to so a donor can confirm which record they are about to change. Guarded at read time: on a non-Person-Account org the field does not exist, so the caller resolves it dynamically rather than naming it in the SELECT.</p>
 <table>
 <thead>
 <tr>
@@ -9702,6 +9760,7 @@
 <p>Deduping donors must not depend on the running user's visibility — a caller who can't see an existing Contact would silently create a duplicate donor and a second Stripe Customer, so SYSTEM_MODE is the correct mode for internal callers (finalization batch) too, not a guest workaround. Do NOT "harden" this back to USER_MODE.</p>
 <p>Deliberately NOT selectDonorMatchByEmailSystem — that one is capped at a single row because it answers "who is this one donor?", whereas an event batch can carry many gifts with many honorees and must resolve them in one query rather than one per gift. Email is the only key used: matching an honoree on Tribute_Name__c would credit the wrong person whenever two supporters share a name, and a soft credit is a permanent claim about who gave, not a display string.</p>
 <p>Person Account honorees are resolved through Contact rather than through Account and PersonEmail, even though the credit lands on the Account. A person account's email lives on its person Contact and is only mirrored onto Account.PersonEmail, so the Contact route reaches the same rows — and it hands SoftCreditService two ordinary fields (Id, AccountId) instead of one that cannot be referenced outside a PA org. The Account.IsPersonAccount filter is what keeps a business contact who happens to share the honoree's email from crediting their employer's account. It only exists once Person Accounts are enabled, which is why this is a raw SOQL string and why it is only ever reached behind DonorResolutionService.isPersonAccountOrg().</p>
+<p>Email rides along so the donor portal's statement panel can print the address the magic link was sent to — a donor with two records needs to see WHICH one they are looking at before they change a card or cancel a gift. Renamed from selectFirstNameByIdSystem when the query stopped being first-name-only.</p>
 <table>
 <thead>
 <tr>
@@ -9792,7 +9851,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-contactsselector-selectfirstnamebyidsystem"></a><code>selectFirstNameByIdSystem(1 arg)</code></td>
+<td><a id="apex-contactsselector-selectportalidentitybyidsystem"></a><code>selectPortalIdentityByIdSystem(1 arg)</code></td>
 <td><code>List&lt;Contact&gt;</code></td>
 <td></td>
 </tr>
@@ -9813,6 +9872,7 @@
 <p>The no-send twin. Staff who already have the donor on the phone do not need a mail round trip, and a donor with no address on file cannot be mailed at all — but the link itself works either way, so refusing to produce one would strand exactly the donor who needs staff help most. Token rotation is identical to the send path, which is why the panel warns before either one and offers neither twice.</p>
 <p>Split out of issueAccessLinkForDonor for the same reason as ReceiptService.buildResendReceipt — Messaging.sendEmail is metered against the org's DAILY allocation even inside a test, so a test that depends on a successful send starts failing once a suite run exhausts it. Every eligibility rule and the token rotation itself live here, which makes "would this link be issuable, and to what address?" assertable without spending a send.</p>
 <p>Resolution order is deliberate. Site.getBaseUrl() first, because inside the Experience site it is the host the visitor actually arrived on. Off-site (the staff quick action, any batch) it returns blank, and the configured Experience Site URL is the only value that yields a link a donor can open — URL.getOrgDomainUrl() is the INTERNAL My Domain host, which a guest cannot reach. It stays last purely so the pre-existing guest path keeps a value rather than throwing; a link built from it will not work, which is why staffLinkBlockReason() refuses to send at all when the site URL is unset.</p>
+<p>Every mutation below is bracketed by beginPortalWrite/endPortalWrite. The donor runs as the Guest User, which can never hold Edit on Recurring_Donation__c, so fflib's trigger-level CRUD assertion has to be waived for the write — see RecurringDonations.suppressTriggerCrudCheck for why that is safe and what actually authorizes the change. The bracket is a try/finally, not a bare assignment: a validation failure inside the service must not leave the waiver on for the rest of the transaction.</p>
 <p>The returned <code>mode</code> is the campaign's RESOLVED designation mode, so the portal can hide the control entirely for a campaign that offers no choice ('Assigned' — one fixed fund — or 'None'). It is a display decision only; changeDesignation re-validates the chosen fund against the same config server-side and rejects anything out of scope.</p>
 <table>
 <thead>
@@ -9845,7 +9905,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a>, <a href="#apex-settingsservice-donorportalshowsummary">SettingsService.donorPortalShowSummary()</a>, <a href="#apex-settingsservice-donorportalshowrecurring">SettingsService.donorPortalShowRecurring()</a>, <a href="#apex-settingsservice-donorportalshowhistory">SettingsService.donorPortalShowHistory()</a>, <a href="#apex-settingsservice-donorportalshowwallet">SettingsService.donorPortalShowWallet()</a>, <a href="#apex-settingsservice-donorportalrequesttitle">SettingsService.donorPortalRequestTitle()</a>, <a href="#apex-settingsservice-donorportalrequestsubtitle">SettingsService.donorPortalRequestSubtitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationtitle">SettingsService.donorPortalConfirmationTitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationmessage">SettingsService.donorPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-donorportalemptyrecurringmessage">SettingsService.donorPortalEmptyRecurringMessage()</a>, <a href="#apex-settingsservice-donorportalemptyhistorymessage">SettingsService.donorPortalEmptyHistoryMessage()</a>, <a href="#apex-settingsservice-donorportalemptywalletmessage">SettingsService.donorPortalEmptyWalletMessage()</a>, <a href="#apex-opportunitiesselector-newinstance">OpportunitiesSelector.newInstance()</a>, <a href="#apex-recurringdonationsselector-newinstance">RecurringDonationsSelector.newInstance()</a>, <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a>, <a href="#apex-settingsservice-donorportalshowsummary">SettingsService.donorPortalShowSummary()</a>, <a href="#apex-settingsservice-donorportalshowrecurring">SettingsService.donorPortalShowRecurring()</a>, <a href="#apex-settingsservice-donorportalshowhistory">SettingsService.donorPortalShowHistory()</a>, <a href="#apex-settingsservice-donorportalshowwallet">SettingsService.donorPortalShowWallet()</a>, <a href="#apex-settingsservice-donorportalrequesttitle">SettingsService.donorPortalRequestTitle()</a>, <a href="#apex-settingsservice-donorportalrequestsubtitle">SettingsService.donorPortalRequestSubtitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationtitle">SettingsService.donorPortalConfirmationTitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationmessage">SettingsService.donorPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-donorportalemptyrecurringmessage">SettingsService.donorPortalEmptyRecurringMessage()</a>, <a href="#apex-settingsservice-donorportalemptyhistorymessage">SettingsService.donorPortalEmptyHistoryMessage()</a>, <a href="#apex-settingsservice-donorportalemptywalletmessage">SettingsService.donorPortalEmptyWalletMessage()</a>, <a href="#apex-opportunitiesselector-newinstance">OpportunitiesSelector.newInstance()</a>, <a href="#apex-recurringdonationsselector-newinstance">RecurringDonationsSelector.newInstance()</a>, <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-donationdesignationsselector-newinstance">DonationDesignationsSelector.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10105,6 +10165,8 @@
 <h4 id="apex-eventticketscontroller">EventTicketsController<a class="headerlink" href="#apex-eventticketscontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public without sharing</code></p>
 <p>The public tickets page: every ticket on one event order, printable. WITHOUT SHARING: reached by a guest holding a ticket link. Access is authorized by possession of the unguessable Receipt_Token__c — the same grant the receipt page uses — not by Salesforce sharing, so system context is required to read the order and its attendee rows. The internal Opportunity Id is never accepted from the client: only the token addresses an order. PII: returns attendee name, tier and check-in status only. Never Email__c — the page doesn't render it, so it must not cross the wire.</p>
+<p><strong>Docs note.</strong> The tier's Id and its chosen accent travel together because the page needs both: the accent when an admin picked one, the Id to hash into a stable colour when they didn't. Resolving that here would put a palette in Apex and stop a themed org from overriding it, so the choice is left to publicEventTickets, which owns the colour tokens.</p>
+<p>The street line is assembled here rather than in the LWC because the parts are partly optional and the join rules (comma between street and city, space between state and zip, country only when it differs from the rest of the line) are address formatting, not presentation — and the staff-side ticket component would otherwise have to reimplement them identically.</p>
 <table>
 <thead>
 <tr>
@@ -10160,6 +10222,8 @@
 <p>extends fflib_SObjectSelector · implements <a href="#apex-ieventattendeesselector">IEventAttendeesSelector</a></p>
 <p><strong>Docs note.</strong> No class-level ApexDoc by design — the documentation that matters here is per-method, because each query has a DIFFERENT access-mode rationale (USER_MODE staff-facing vs. SYSTEM_MODE batch/guest-context) and a single class summary would blur that distinction. See IEventAttendeesSelector for the caller-facing contract of each method.</p>
 <p>selectTicketsByOrderIdsForDonor and selectByCampaignPaged both return Cancelled (refunded) seats rather than filtering them out — Check_In_Status__c flips to 'Cancelled' in place instead of deleting the row — so every caller must branch on that field instead of assuming a returned row is a valid admission.</p>
+<p>The TIER record — Event_Ticket_Type__c — is reachable only through the order line. Ticket_Type__c beside it looks like the tier but points at Product2, and is often blank on seats created by the purchase flow, which is why the donor's tickets page showed no tier at all. Name is taken from here first for that reason; Accent_Color__c and the tier Id exist only on this path. The Id matters as much as the colour: Accent_Color__c is usually blank, and the page hashes the Id to give each tier a distinct stub anyway, so a multi-tier event is colour-separated at the door with no setup at all.</p>
+<p>The tier's own blurb — "Includes dinner and a reserved table" — which is what the donor was actually sold. It is admin-authored on the tier record, so it is the one place the ticket can say what the seat entitles someone to without the package inventing copy of its own.</p>
 <table>
 <thead>
 <tr>
@@ -11252,6 +11316,7 @@
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>extends fflib_SObjectDomain · implements <a href="#apex-irecurringdonations">IRecurringDonations</a></p>
 <p><strong>Docs note.</strong> onAfterInsert's createHistoryRecords is the ONLY place Recurring_Donation_History__c gets written automatically in this package — pause/resume/cancel/reinstate/renewal (all in RecurringDonationService) mutate Recurring_Donation__c directly and do not append a History row. A reader looking for a full audit trail of status changes will not find one here beyond the initial "Created" event.</p>
+<p>This is the only fflib CRUD-security waiver in the package. It is scoped to a single transaction window rather than disabled outright in the constructor precisely so an unrelated caller cannot inherit it.</p>
 <table>
 <thead>
 <tr>
@@ -11300,6 +11365,7 @@
 <p>extends fflib_SObjectSelector · implements <a href="#apex-irecurringdesignationsselector">IRecurringDesignationsSelector</a></p>
 <p><strong>Docs note.</strong> Recurring_Designation__c is the multi-split fund-allocation child of Recurring_Donation__c (mirrors Donation_Designation__c on the one-time side). RecurringDonationService reads these via rd.getSObjects('Recurring_Designations__r') on the parent query rather than calling selectByRecurringDonationIds directly, so each renewal installment can copy the same split onto its own Donation_Designation__c rows.</p>
 <p>Live recurring commitment to one fund — the split rows of every schedule still billing, with the parent's frequency and amount so the reader can annualize. USER_MODE (unlike the SYSTEM_MODE renewal read below) because this serves an internal staff card, not guest/batch.</p>
+<p>newQueryFactory(false, false, true) — the CRUD/FLS asserts must be waived, not just the query's AccessLevel. The bare factory asserts object read at BUILD time and threw "Permission to access an Recurring_Designation__c denied." for the guest user, which broke every donor-portal amount/fund change before the SYSTEM_MODE query ever ran. The Guest License holds no read on this object by design and must not be granted one: the split rows are read only so RecurringDonationService can re-derive or delete them, and no field on them ever reaches the donor. Same posture as RecurringDonationsSelector.selectByIdSystem.</p>
 <table>
 <thead>
 <tr>
@@ -12388,6 +12454,7 @@
 <p>Enforced in two places, and it needs both. CampaignService masks Allow_Tribute__c to false on every campaign payload it serves, which is what actually hides the section; and DonationService.applyTributeAndMatch refuses to capture tribute fields off the staging options blob, which is what stops a hand-crafted guest submission writing them anyway. The first is the product behaviour, the second is the enforcement — a client-side gate alone would be advisory on a public endpoint.</p>
 <p>No separate send-time gate in ReceiptService: with capture blocked the Opportunity has no Tribute_Type__c, so buildTributeNotification's existing gates already return null. An in-flight staging row created while the switch was on is finalized through the same capture path, so flipping the switch off stops its e-card too.</p>
 <p>Same field, read for a different purpose: the starting value of a brand-new Campaign's Allow_Tribute__c, applied by FundraiserAdminController.getFundraiserOptions() for the "New fundraiser" wizard (lexFundraisersConsole). Deliberately the same answer as tributeEnabled() — offering the wizard a toggle that defaults to on while the org switch suppresses it everywhere would let an admin create a fundraiser whose tribute section silently never renders.</p>
+<p>Three defaults, not one, because the three cases make mutually exclusive factual claims — see the doc comment on the Receipt_Legal_Text_With_Goods__c field for why the single override this replaced was a correctness bug. These stay textually in step with the LEGAL_* constants in ReceiptStatusHelper, which are the last-resort fallback for an org that clears a seeded field; PostInstallHandler seeds all three from here.</p>
 <p>This is the ONLY way to build a donor-facing link from internal (Lightning) context. Site.getBaseUrl() returns blank off-site and URL.getOrgDomainUrl() returns the internal My Domain host, which a guest cannot open — so an internal sender that falls back to the org domain silently emails a dead link. Prefer Site.getBaseUrl() when running inside the site (it is the host the visitor actually arrived on) and this accessor everywhere else.</p>
 <p>RecordTypeMappingService owns the delimited-encoding format (what the string MEANS); this class only owns the mechanics of splitting/joining that string across the 4 physical Settings__c chunk fields (WHERE it's stored). Replaces the former Record_Type_Mapping__c custom object (deleted 2026-08-03) — Custom Settings fields cap at 255 chars with no Long Text Area option, so the encoded table is chunked here instead of living in a dedicated Long-Text-capable object.</p>
 <p>Reads via getOrgDefaults(), never getInstance() — record type mapping config is an org-wide singleton with no profile/user tier, and getInstance()'s hierarchy resolution caches on first call for the rest of the transaction, which previously made this read (when it ran first) silently freeze OTHER getInstance()-based accessors (e.g. eventDeductibleMode()) against later same-transaction Settings__c DML — a real Apex custom-settings platform gotcha, not just a test artifact.</p>
@@ -12557,7 +12624,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-receiptstatushelper-legalstatement">ReceiptStatusHelper.legalStatement()</a>, <a href="#apex-postinstallhandler-seedeventpricebook">PostInstallHandler.seedEventPricebook()</a></td>
+<td><em>calls:</em> <a href="#apex-postinstallhandler-seedeventpricebook">PostInstallHandler.seedEventPricebook()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12652,6 +12719,16 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-taxreceiptlegaltext"></a><code>taxReceiptLegalText(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-taxreceiptlegaltextwithgoods"></a><code>taxReceiptLegalTextWithGoods(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-taxreceiptlegaltextpartialrefund"></a><code>taxReceiptLegalTextPartialRefund(0 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>

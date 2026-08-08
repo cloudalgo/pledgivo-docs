@@ -500,6 +500,8 @@
       
         
       
+        
+      
     
     
     
@@ -672,6 +674,34 @@
     
   
     Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
   
 
     
@@ -1685,7 +1715,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>80 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>82 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -2106,13 +2136,25 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Receipt_Footer_Text__c</code></td>
 <td>Receipt Footer Text</td>
 <td>TextArea</td>
-<td>Footer copy shown at the bottom of every donation receipt.</td>
+<td>Your organisation's standing details — legal name, tax-exempt status, EIN, address — shown at the bottom of every receipt. Do not put "no goods or services were provided" here: this text also prints on event-ticket receipts, where that statement is false. Use the Receipt Legal Text fields for wording that depends on the type of gift.<br><em>Docs: Case-BLIND, unlike the three Receipt_Legal_Text_</em> fields. This one string is appended to every receipt the package prints — plain gift, event ticket, partial refund alike — so it cannot carry any claim that is only true for some of them. The package's own scratch-org seed script got this wrong until 2026-08-08: it seeded a footer ending "No goods or services were provided in exchange for this gift", which then printed on a gala receipt directly beneath a line itemising $400 of goods received. Anything conditional belongs in Receipt_Legal_Text_With_Goods__c / Receipt_Legal_Text_Partial_Refund__c / Tax_Receipt_Legal_Text__c, which the package selects between per gift.*</td>
 </tr>
 <tr>
 <td><code>Receipt_Intro_Message__c</code></td>
 <td>Receipt Intro Message</td>
 <td>TextArea</td>
 <td>Intro paragraph shown on the donation receipt below the amount. Leave blank to use the default wording.</td>
+</tr>
+<tr>
+<td><code>Receipt_Legal_Text_Partial_Refund__c</code></td>
+<td>Receipt Legal Text (Partly Refunded)</td>
+<td>TextArea</td>
+<td>Wording for the rare receipt covering an event order that was partly refunded. No tax-deductible amount is shown on these, so this text should tell the donor to contact you for it. Leave blank to use the default wording.<br><em>Docs: The third case of the legal-statement split (2026-08-08) — see the doc comment on Receipt_Legal_Text_With_Goods__c for why one override field became three. This one covers the single case the package refuses to compute: a partially refunded order that also carried goods. ReceiptStatusHelper.deductibleAmount returns null there on purpose (apportioning a refund across the deductible and non-deductible halves of a gala ticket is a judgement the package has no basis to make), so the statement has to send the donor to the org rather than state a figure. An org that overrides this must keep that property — wording that asserts a deductible amount would contradict the receipt above it, which deliberately shows none.</em></td>
+</tr>
+<tr>
+<td><code>Receipt_Legal_Text_With_Goods__c</code></td>
+<td>Receipt Legal Text (Goods Received)</td>
+<td>TextArea</td>
+<td>Wording printed on receipts for event tickets and any other gift where the donor got something back. Must NOT say "no goods or services were provided" — that statement is false for these gifts and is regulated in the US. Leave blank to use the default wording.<br><em>Docs: The quid-pro-quo half of the legal-statement split (2026-08-08). Before the split there was one override field, Tax_Receipt_Legal_Text__c, and it won outright on every receipt — so an org that set it to the ordinary "no goods or services were provided" wording had that sentence printed verbatim on a gala receipt itemizing hundreds of dollars of goods received, which is a false IRC section 6115 disclosure. The override is now per-case: the no-goods field keeps its API name and its existing value (no data migration), and the two goods-aware cases get their own fields, blank on upgrade, falling back to the package wording until an admin sets them. Resolved by ReceiptStatusHelper.legalStatement for single receipts and GivingStatementService for annual statements, so the two surfaces can never make different claims about one gift.</em></td>
 </tr>
 <tr>
 <td><code>Receipt_Number_Prefix__c</code></td>
@@ -2194,9 +2236,9 @@ run, new-records-only, or (for a few) no effect yet — see the
 </tr>
 <tr>
 <td><code>Tax_Receipt_Legal_Text__c</code></td>
-<td>Tax Receipt Legal Text</td>
+<td>Receipt Legal Text (No Goods Received)</td>
 <td>TextArea</td>
-<td>Legal disclaimer printed on the tax receipt. Defaults to US 501(c)(3) wording; override for your jurisdiction and entity type.</td>
+<td>Legal disclaimer for ordinary donations where the donor received nothing back. Defaults to US 501(c)(3) wording; override for your jurisdiction and entity type. Event tickets and other gifts with goods received use their own wording.<br><em>Docs: Narrowed from "the receipt's legal statement" to "the plain-gift legal statement" on 2026-08-08. The API name and any stored value are unchanged so no org has to re-enter wording it had reviewed by counsel — but it no longer wins on receipts where the donor received goods, which is what made it a correctness bug rather than a config choice. See the doc comment on Receipt_Legal_Text_With_Goods__c for the full rationale and the other two cases.</em></td>
 </tr>
 </tbody>
 </table>

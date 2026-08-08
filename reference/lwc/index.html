@@ -500,6 +500,8 @@
       
         
       
+        
+      
     
     
     
@@ -672,6 +674,34 @@
     
   
     Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
   
 
     
@@ -2277,6 +2307,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uiqrcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QR Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uisegmented" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3381,6 +3422,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uiqrcode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QR Code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uisegmented" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3438,7 +3490,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 72 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 73 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3453,15 +3505,15 @@
 <h4 id="publicdonationreceipt">Donation Receipt<a class="headerlink" href="#publicdonationreceipt" title="Permanent link">#</a></h4>
 <p><code>publicDonationReceipt</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
-<p>Post-donation thank-you and receipt page for Experience Cloud</p>
-<p><strong>Docs note.</strong> Reached via an unguessable Receipt_Token__c in the URL state (?token=...), never by Opportunity Id — this is the guest/magic-link pattern shared with publicEventTickets (?token=... resolves an order the same way). Calls ReceiptController.getReceiptData(token). paymentIntentStatus comes from Stripe's ACH redirect query params (redirect_status), not from Apex — an ACH charge settles asynchronously after the guest is already back on this page, so the receipt shows a pending/processing state until the async webhook/reconciliation path finalizes it. The tax figures and the legal statement are all resolved server-side by ReceiptStatusHelper and rendered verbatim — nothing about deductibility is computed in JavaScript, so the web, printed and emailed receipts for one order cannot make three different legal claims.</p>
+<p>Guest tax receipt, opened from an unguessable receipt link. Renders the letter, the refund record, and the clearing/failed/not-found states as one printable sheet.</p>
+<p><strong>Docs note.</strong> Reached via an unguessable Receipt_Token__c in the URL state (?token=...), never by Opportunity Id — this is the guest/magic-link pattern shared with publicEventTickets (?token=... resolves an order the same way). Calls ReceiptController.getReceiptData(token). paymentIntentStatus comes from Stripe's ACH redirect query params (redirect_status), not from Apex — an ACH charge settles asynchronously after the guest is already back on this page, so the receipt shows a pending/processing state until the async webhook/reconciliation path finalizes it. The tax figures and the legal statement are all resolved server-side by ReceiptStatusHelper and rendered verbatim — nothing about deductibility is computed in JavaScript, so the web, printed and emailed receipts for one order cannot make three different legal claims. Printing is window.print() against this component's own DOM plus an @media print block, not a rebuilt document in a popup window. The popup version meant the sheet a donor filed with an accountant was a second artifact with its own markup and palette, free to drift from the one on screen; it also died silently behind a popup blocker.</p>
 <p>The serial number assigned by ReceiptNumberService, read from the server. This used to be the last 8 characters of receiptToken — i.e. part of the bearer credential that authorizes this page — printed onto a document donors email, print and file with an accountant. Never derive a visible reference from the token again.</p>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
 <h4 id="publicdonordashboard">Donor Dashboard<a class="headerlink" href="#publicdonordashboard" title="Permanent link">#</a></h4>
 <p><code>publicDonorDashboard</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
 <p>Magic-link donor self-service portal — giving summary, history, saved cards, and full management of a recurring gift (pause, resume, cancel, retry, change the amount or fund, skip one payment, replace the card).</p>
-<p><strong>Docs note.</strong> Portal-token gated, not authenticated — a guest with a valid link token calls DonorPortalController.getDashboard/pauseRecurring/resumeRecurring/cancelRecurring/ retryNowRecurring/reinstateRecurring/changeRecurringAmount/changeRecurringDesignation/ skipNextRecurringPayment to manage their own recurring gifts, and never addresses a record by Id (IDOR prevention, same pattern as publicDonationReceipt's Receipt_Token__c). requestAccessLink is the token-issuance step for a donor who arrives without one. The card-replace modal reuses the exact same stripePayment.page iframe/postMessage contract as dfForm, but in Stripe's SETUP-intent mode (no charge) via createCardSetupIntent — see the lwc-conventions skill for the shared iframe/postMessage message-type contract.</p>
+<p><strong>Docs note.</strong> Portal-token gated, not authenticated — a guest with a valid link token calls DonorPortalController.getDashboard/pauseRecurring/resumeRecurring/cancelRecurring/ retryNowRecurring/reinstateRecurring/changeRecurringAmount/changeRecurringDesignation/ skipNextRecurringPayment to manage their own recurring gifts, and never addresses a record by Id (IDOR prevention, same pattern as publicDonationReceipt's Receipt_Token__c). requestAccessLink is the token-issuance step for a donor who arrives without one. The card-replace modal reuses the exact same stripePayment.page iframe/postMessage contract as dfForm, but in Stripe's SETUP-intent mode (no charge) via createCardSetupIntent — see the lwc-conventions skill for the shared iframe/postMessage message-type contract. Every schedule- or money-changing action is gated behind _openConfirm, which states what will happen, when, and what will NOT happen, and offers the gentler alternative (pause instead of cancel, change amount instead of pause) before the destructive one.</p>
 <h4 id="publiceventregistration">Event Registration<a class="headerlink" href="#publiceventregistration" title="Permanent link">#</a></h4>
 <p><code>publicEventRegistration</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
@@ -3478,8 +3530,9 @@
 <h4 id="publiceventtickets">Event Tickets<a class="headerlink" href="#publiceventtickets" title="Permanent link">#</a></h4>
 <p><code>publicEventTickets</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
-<p>Printable tickets for one event order — every seat on the order, addressed by its receipt token.</p>
-<p><strong>Docs note.</strong> Guest/magic-link page reached via ?token=... (mirrors publicDonationReceipt's Receipt_Token__c pattern) rather than an Order/Opportunity Id, so a ticket confirmation link can't be walked to view someone else's order. Calls EventTicketsController.getTickets(token) — read-only; the actual purchase/check-in flows live in publicEventRegistration and admEventCheckIn respectively.</p>
+<p>Printable tickets for one event order — every seat on the order, addressed by its receipt token. Each seat carries a scannable code the check-in desk reads, and a date stub coloured by ticket tier so a door team can separate tiers at a glance.</p>
+<p><strong>Docs note.</strong> The stub palette, in the order the fallback walks it. These are class suffixes, not colours — every hex lives in publicEventTickets.css so a themed org can restyle the sheet without this file knowing anything about ink. The names match Event_Ticket_Type__c.Accent_Color__c's picklist values exactly; adding a value there means adding it here AND in the CSS.</p>
+<p>Guest/magic-link page reached via ?token=... (mirrors publicDonationReceipt's Receipt_Token__c pattern) rather than an Order/Opportunity Id, so a ticket confirmation link can't be walked to view someone else's order. Calls EventTicketsController.getTickets(token) — read-only; the actual purchase/check-in flows live in publicEventRegistration and admEventCheckIn respectively.</p>
 <p>The order's receipt serial number, from the server. This used to be the last 8 characters of receiptToken — the bearer credential that authorizes this page — printed at the top of a sheet donors hand to a door attendant. Blank for an order placed before receipt numbering shipped; the page shows no reference rather than reviving the token one.</p>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
 <h4 id="publicfundraisingexperience">Public Fundraising Experience<a class="headerlink" href="#publicfundraisingexperience" title="Permanent link">#</a></h4>
@@ -3670,6 +3723,7 @@
 <p><code>not exposed</code></p>
 <p>Drawer "Check-In" tab (Event fundraisers) — lane board that flips each seat's check-in status at the door.</p>
 <p><strong>Docs note.</strong> Mounted as one tab of the admFundraiserDetail slide-in drawer (<c-adm-event-check-in record-id={recordId}>), shown only when the campaign's subtype is Event_Fundraiser. Calls EventCheckInController.getEventAttendees / setCheckInStatus. Cancelled (refunded) seats are pulled from the same Event_Attendee__c rows publicEventTickets reads, so a refund on the guest receipt side and a door scan here are always looking at the same status field.</p>
+<p>a.id is searchable because the QR code on a donor's ticket encodes the attendee Id — a door attendant scanning into this box gets nothing back unless the Id matches.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="admeventticketstab">Event Tickets Tab<a class="headerlink" href="#admeventticketstab" title="Permanent link">#</a></h4>
 <p><code>admEventTicketsTab</code></p>
@@ -3780,10 +3834,11 @@
 <h4 id="pfgivingstatement">Donor Portal Giving Statement<a class="headerlink" href="#pfgivingstatement" title="Permanent link">#</a></h4>
 <p><code>pfGivingStatement</code></p>
 <p><code>not exposed</code></p>
-<p>Non-exposed child block of the donor portal that lets a donor pick a tax year and download their own annual giving statement. Addressed by the portal's magic-link token, never by a record id, so a donor can only ever produce their own statement.</p>
+<p>Non-exposed donor-portal block listing each tax year the donor gave in (count and total) with a per-year statement download. Authorized by the portal's magic-link token, never a record id, so a donor can only ever produce their own statement.</p>
 <p><strong>Docs note.</strong> Donor-portal block for the annual giving statement, rendered inside publicDonorDashboard. Addressed by the dashboard's magic-link token — never by a record id — so a donor can only ever produce their OWN statement, and DonorPortalController re-validates the token on every call rather than trusting anything this component sends.</p>
 <p>The document itself is built by c/uiStatementPrint, the same module the staff record action (lexGivingStatement) prints from: a donor comparing their download against the copy a fundraiser printed must not find two differently-worded tax documents.</p>
-<p><strong><code>@api</code> properties:</strong> <code>token</code></p>
+<p><code>years</code> is an optional passthrough: getDashboard already returns the year list, so the parent hands it over and this component skips its own round trip. Left unset (embedded anywhere else) it still loads the list itself from the token alone.</p>
+<p><strong><code>@api</code> properties:</strong> <code>currencyCode</code>, <code>get</code>, <code>token</code></p>
 <h4 id="pfhero">Campaign Hero<a class="headerlink" href="#pfhero" title="Permanent link">#</a></h4>
 <p><code>pfHero</code></p>
 <p><code>not exposed</code></p>
@@ -3901,6 +3956,14 @@
 <p><code>not exposed</code></p>
 <p>Non-exposed JS-only utility module (no markup) providing shared currency-aware money formatting and the org's configured charge currency for every donation surface.</p>
 <p><strong>Docs note.</strong> The currency half of this module (formatMoney/currencyOf) is imported by essentially every money-displaying bundle across all groups — dfForm, dfDesignationPicker, pfHero, the lex* record-page cards, the public event pages, admEventTicketsTab, admFundraiserDetail — each pairing it with its own @wire(getUiConfig) per the LWC1503 static-analysis constraint documented above (the wire adapter itself can't be re-exported through a shared module).</p>
+<h4 id="uiqrcode">QR Code<a class="headerlink" href="#uiqrcode" title="Permanent link">#</a></h4>
+<p><code>uiQrCode</code></p>
+<p><code>not exposed</code></p>
+<p>Shared primitive that renders a QR symbol as inline SVG with no external library or network request. Used by the public tickets sheet so each seat carries a code the check-in desk can scan, on screen or on paper. Byte mode, ECC level M, versions 1-3.</p>
+<p><strong>Docs note.</strong> A dependency-free QR encoder rendered as an inline SVG path. It exists because the ticket sheet needs a code that can be scanned at a door, and a managed package cannot pull a QR library off a CDN — Experience Cloud CSP blocks it, and an AppExchange package must not depend on an external host for a page that has to work on a phone with no signal.</p>
+<p>Scope is byte mode at error-correction level M, versions 1 to 3. That covers 44 data codewords, far more than the 18-character record Id this actually carries, and each of those versions is a SINGLE error-correction block — from version 4 up, level M splits the payload across blocks that must be interleaved, which is the bulk of a general encoder. Anything longer than version 3 renders nothing rather than a code that cannot be read.</p>
+<p>Correctness was established by decode round-trip, not by eyeballing: every payload was encoded under all eight masks, rasterised, and read back with an independent decoder.</p>
+<p><strong><code>@api</code> properties:</strong> <code>alternativeText</code>, <code>value</code></p>
 <h4 id="uisegmented">Ember Segmented Control<a class="headerlink" href="#uisegmented" title="Permanent link">#</a></h4>
 <p><code>uiSegmented</code></p>
 <p><code>not exposed</code></p>

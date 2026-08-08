@@ -795,6 +795,8 @@
       
         
       
+        
+      
     
     
     
@@ -967,6 +969,34 @@
     
   
     Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
   
 
     
@@ -2281,9 +2311,19 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 <td>Immediate</td>
 </tr>
 <tr>
-<td>Tax legal text</td>
-<td>The legal sentence at the foot of a receipt. Applies to <strong>every</strong> receipt surface, not just the email — the donor-portal receipt and the printed receipt use it too</td>
-<td>Immediate. When set it is used verbatim and the packaged wording is suppressed entirely, including the wording that would otherwise adapt to whether the donor received goods or services (an event seat). Leave blank to keep that adaptive default.</td>
+<td>Receipt legal text — no goods received</td>
+<td>The legal sentence at the foot of a receipt for a plain gift, where the donor received nothing in return. Applies to <strong>every</strong> receipt surface, not just the email — the donor-portal receipt, the printed receipt, and the annual giving statement use it too</td>
+<td>Immediate. When set it is used verbatim for this case and the packaged wording is suppressed. Leave blank for the packaged US 501(c)(3) default. It is never used for an event order — that has its own field.</td>
+</tr>
+<tr>
+<td>Receipt legal text — goods received</td>
+<td>The sentence used instead when the donor got something back (an event or ticket order), including one whose tier carried no fair market value</td>
+<td>Immediate, same surfaces. Must not say "no goods or services were provided" — that is false for these gifts and regulated in the US. Leave blank for the packaged default.</td>
+</tr>
+<tr>
+<td>Receipt legal text — goods received, partly refunded</td>
+<td>The sentence for the rare receipt covering a partly refunded event order, where no deductible figure can be stated</td>
+<td>Immediate, same surfaces. Should tell the donor to contact you for the deductible amount. Leave blank for the packaged default.</td>
 </tr>
 <tr>
 <td>Receipt number prefix</td>

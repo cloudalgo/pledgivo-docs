@@ -500,6 +500,8 @@
       
         
       
+        
+      
     
     
     
@@ -672,6 +674,34 @@
     
   
     Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
   
 
     
@@ -1794,6 +1824,8 @@
 <h1 id="publish-a-donor-portal-page">Publish a donor portal page<a class="headerlink" href="#publish-a-donor-portal-page" title="Permanent link">#</a></h1>
 <p class="fn-dek">Donors don't create an account or log in. A link mailed or emailed to them is the access grant — the token in the URL is the only credential.</p>
 
+<p>This guide covers the admin side. For a walkthrough of what a donor sees and every self-service
+action they can take, with screenshots, see <a href="../../concepts/donor-portal/">The donor portal</a>.</p>
 <h2 id="why-token-based-not-login-based">Why token-based, not login-based<a class="headerlink" href="#why-token-based-not-login-based" title="Permanent link">#</a></h2>
 <p>Requiring donors to create a portal login is friction most never clear — a login they'll
 create once and forget. The donor portal instead uses a signed, single-purpose link
@@ -1849,16 +1881,24 @@ didn't take.</p>
 </thead>
 <tbody>
 <tr>
+<td>Giving summary</td>
+<td>Their own name and email, the month they first gave, lifetime total, this-year total, and lifetime gift count</td>
+</tr>
+<tr>
+<td>Where it went</td>
+<td>A breakdown of their own giving by fund, net of refunds — the four largest funds by name, everything else rolled into "Other funds". Shown only once a donor has given to more than one fund, and only where gifts were split across funds at all</td>
+</tr>
+<tr>
 <td>Recurring gifts</td>
 <td>View active recurring gifts; change the amount; change which fund the gift supports (limited to the funds the campaign offers); skip the next payment; pause or resume; retry a failed charge immediately or reinstate a lapsed gift; switch the saved card a gift charges, or add a new card (via a Stripe SetupIntent); cancel</td>
 </tr>
 <tr>
 <td>Giving history</td>
-<td>View and download receipts for past gifts</td>
+<td>View and download receipts for past gifts, grouped by year with a per-year gift count and total</td>
 </tr>
 <tr>
 <td>Annual giving statement</td>
-<td>Pick a tax year and print a single statement covering every receiptable gift in it — the year-end document donors otherwise phone in for</td>
+<td>Pick a tax year and print a single statement covering every receiptable gift in it — the year-end document donors otherwise phone in for. Each year offered shows its gift count and total before the donor commits to a download</td>
 </tr>
 <tr>
 <td>Event tickets</td>
@@ -1866,6 +1906,13 @@ didn't take.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">The fund breakdown nets out refunds, and a refund follows the split</p>
+<p>A refunded gift does not simply vanish from the breakdown — the refund is apportioned across
+that gift's funds in the same proportion the original gift was, so a $400 gift split 3:1
+between two funds and later refunded $200 reduces those funds by $150 and $50. The percentages
+a donor sees are rounded once, on the server, so the chart and its legend can never disagree.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">The statement is on demand, not a year-end mailing</p>
 <p>Nothing is sent in January. A donor produces their own statement whenever they want one, and
@@ -1878,6 +1925,12 @@ offered, so an empty statement is never produced.</p>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>
+<li>
+<p><strong>The donor portal</strong></p>
+<hr />
+<p>What donors see and can change, screen by screen.</p>
+<p><a href="../../concepts/donor-portal/">Read more →</a></p>
+</li>
 <li>
 <p><strong>Recurring giving</strong></p>
 <hr />

@@ -502,6 +502,8 @@
       
         
       
+        
+      
     
     
     
@@ -1039,6 +1041,34 @@
     
   
     Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
   
 
     
@@ -2627,12 +2657,57 @@ and nothing in the record says which happened. Rather than print a confident wro
 document a donor may hand to a tax authority, the package prints none and points them at you.</p>
 </div>
 <h3 id="replacing-the-legal-wording">Replacing the legal wording<a class="headerlink" href="#replacing-the-legal-wording" title="Permanent link">#</a></h3>
-<p>The sentence at the foot of every receipt ("No goods or services were provided…" or its
-goods-received equivalent) is packaged default wording, chosen to suit a US 501(c)(3). If your
-counsel has approved different wording — or you are not in the US at all — put it in
-<strong>General → Email &amp; Receipts → Tax legal text</strong>. When that field has any value it is used verbatim
-on every receipt, and the package stops substituting its own. Leave it blank to keep the defaults,
-which adapt automatically to whether goods were received.</p>
+<p>The sentence at the foot of a receipt is packaged default wording, chosen to suit a US 501(c)(3).
+If your counsel has approved different wording — or you are not in the US at all — you can replace
+it in <strong>General → Email &amp; Receipts</strong>.</p>
+<p>There are three fields, not one, because the sentence makes a different factual claim in each case
+and one field could only ever be right about one of them:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Used when</th>
+<th>The claim it makes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Receipt legal text — no goods received</td>
+<td>A plain gift</td>
+<td>Nothing was given in return, so the whole amount is deductible</td>
+</tr>
+<tr>
+<td>Receipt legal text — goods received</td>
+<td>An event or ticket order</td>
+<td>Something <em>was</em> given in return, so only the stated amount is deductible</td>
+</tr>
+<tr>
+<td>Receipt legal text — goods received, partly refunded</td>
+<td>A partly refunded event order</td>
+<td>Something was given in return and no deductible figure can be stated — contact us</td>
+</tr>
+</tbody>
+</table>
+<p>Each is independent: fill in one and the other two keep their packaged defaults. Whichever field
+applies is used verbatim, and the package stops substituting its own for that case only.</p>
+<div class="admonition warning">
+<p class="admonition-title">Do not paste the same sentence into all three</p>
+<p>Putting "no goods or services were provided in exchange for this contribution" on an event
+receipt is a false statement about the transaction, and in the US it is a regulated one. The
+three fields exist specifically so a single override cannot leak the wrong claim onto the wrong
+receipt — which is what a single field did.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">A ticket tier with no fair market value still says goods were provided</p>
+<p>The choice is made from what the donor <em>received</em>, not from what it was valued at. If an event
+tier was set up without a fair market value, there is no goods figure to print — but the donor
+still got a seat, so the receipt uses the goods-received wording and states the whole payment as
+deductible. It never claims they received nothing.</p>
+</div>
+<p>The same three fields drive the <a href="../donor-portal/#giving-history-and-the-annual-statement">annual giving statement</a>:
+a year containing any event order uses the goods-received text, a year of plain gifts uses the
+no-goods text. A single gift's receipt and the statement covering it therefore draw on the same
+sentence and can never make different claims about it.</p>
 <h2 id="the-number-on-the-receipt">The number on the receipt<a class="headerlink" href="#the-number-on-the-receipt" title="Permanent link">#</a></h2>
 <p>Every receiptable gift is stamped with a receipt number — <code>RCPT-2026-000142</code> — and it never changes
 afterwards. An online gift gets its number the moment the payment finalizes. A gift you key in

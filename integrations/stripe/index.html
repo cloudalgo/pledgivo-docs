@@ -1932,6 +1932,11 @@ routing finalization to <code>EventPurchaseService</code> instead of the plain d
 </tbody>
 </table>
 <p>No custom field anywhere in the package stores a Stripe secret key.</p>
+<p>The <code>OrgPrincipal</code> on <code>Stripe_External</code> is declared by the package, but the <strong>permission set →
+principal mapping is not</strong> — Salesforce cannot package that link, so <code>Fundraising_Admin</code> and
+<code>Fundraising_GuestDonor</code> ship without it and an admin adds it once after install. Callouts are
+unauthorized until they do; see
+<a href="../../getting-started/connecting-stripe/#first-authorize-the-permission-sets-to-use-the-credential">Connecting Stripe</a>.</p>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

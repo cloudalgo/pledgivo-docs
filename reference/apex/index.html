@@ -3964,6 +3964,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-guestaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GuestAction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-preconditions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6897,6 +6908,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-guestaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GuestAction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-preconditions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7070,7 +7092,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 177 classes plus 119 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 178 classes plus 120 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7253,7 +7275,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-isembedenabled">SettingsService.isEmbedEnabled()</a>, <a href="#apex-settingsservice-donationpagepath">SettingsService.donationPagePath()</a>, <a href="#apex-settingsservice-allowedembedorigins">SettingsService.allowedEmbedOrigins()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-isembedenabled">SettingsService.isEmbedEnabled()</a>, <a href="#apex-settingsservice-donationpagepath">SettingsService.donationPagePath()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-settingsservice-allowedembedorigins">SettingsService.allowedEmbedOrigins()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -7416,7 +7438,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-querycondition-of">QueryCondition.of()</a>, <a href="#apex-querycondition-literal">QueryCondition.literal()</a>, <a href="#apex-recordtypeservice-getpackagerecordtypeids">RecordTypeService.getPackageRecordTypeIds()</a></td>
+<td><em>calls:</em> <a href="#apex-querycondition-of">QueryCondition.of()</a>, <a href="#apex-querycondition-literal">QueryCondition.literal()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -7502,6 +7524,11 @@
 <tr>
 <td><a id="apex-campaignsselector-selectfundraiserbyid"></a><code>selectFundraiserById(1 arg)</code></td>
 <td><code>List&lt;Campaign&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-recordtypeservice-getpackagerecordtypeids">RecordTypeService.getPackageRecordTypeIds()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8965,7 +8992,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-campaignservice-assertacceptingdonations">CampaignService.assertAcceptingDonations()</a>, <a href="#apex-securetokens-uuid">SecureTokens.uuid()</a>, <a href="#apex-securetokens-opaque">SecureTokens.opaque()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-findlinkedstripecustomerid">DonorResolutionService.findLinkedStripeCustomerId()</a></td>
+<td><em>calls:</em> <a href="#apex-campaignservice-assertacceptingdonations">CampaignService.assertAcceptingDonations()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-securetokens-uuid">SecureTokens.uuid()</a>, <a href="#apex-securetokens-opaque">SecureTokens.opaque()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-findlinkedstripecustomerid">DonorResolutionService.findLinkedStripeCustomerId()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10597,6 +10624,11 @@
 <tr>
 <td><a id="apex-paymentgatewayfactory-getbyaccount"></a><code>getByAccount(1 arg)</code></td>
 <td><code>[IPaymentGateway](#apex-ipaymentgateway)</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12994,6 +13026,11 @@
 </tr>
 </tbody>
 </table>
+<h4 id="apex-guestaction">GuestAction<a class="headerlink" href="#apex-guestaction" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public abstract inherited sharing</code></p>
+<p>extends <a href="#apex-controlleraction">ControllerAction</a></p>
+<p>GuestAction — base for every controller action an unauthenticated visitor can reach. ControllerAction's default hands the raw platform message back to the caller, which is the right default for an internal Lightning screen staffed by an admin: it makes a failure diagnosable without opening the log. On a public page it is an information leak. An uncaught fflib CRUD failure prints an internal object API name, a record id and an Apex stack trace straight onto the screen of whoever loaded the URL — no login required, and search engines and support-ticket screenshots carry it further. Extend this instead of ControllerAction whenever the action is reachable from a lightningCommunity__* bundle. AppException — the package's own, donor-worded validation ("Enter an amount greater than zero.") — is passed through unchanged, because that text exists precisely to be read by a donor. Everything else (DmlException, QueryException, fflib's DomainException, a null dereference) collapses to one neutral sentence. ControllerAction.run() has already written the real message and stack trace to AppLogger before this is called, so nothing is lost to whoever has to debug it. Validation errors added with addError() are NOT affected — they never travel this path, and "Amount is required" still reaches the donor verbatim.</p>
+<p><strong>Docs note.</strong> The guest counterpart to ControllerAction. Which controllers must use it is decided by the Fundraising_GuestDonor permission set: every class listed in its &lt;classAccesses&gt; is, by definition, callable by an unauthenticated visitor. UiConfigController is the one member of that list which does NOT extend this — see the rationale comment on the class itself. The passthrough is only as safe as the AppException messages behind it: an AppException raised on a guest-reachable path must be written for a donor and must not embed a record id or an internal API name, because it is printed verbatim.</p>
 <h4 id="apex-preconditions">Preconditions<a class="headerlink" href="#apex-preconditions" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>Guard clause utilities (Guava-style). Use in service/domain/selector methods to fail fast with a meaningful message instead of a cryptic NullPointerException. Usage: Preconditions.checkNotNull(contactId, 'contactId is required'); Preconditions.checkArgument(amount &gt; 0, 'amount must be positive, got: {0}', new List&lt;Object&gt;{ amount }); Preconditions.checkNotBlank(email, 'email is required');</p>

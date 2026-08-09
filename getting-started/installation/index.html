@@ -1814,6 +1814,12 @@ a dependency. Installing Pledgivo is all you need.</p>
 <li><strong>Grant the guest user permission set.</strong> Assign <code>Fundraising_GuestDonor</code> to your
    Experience Cloud site's guest user profile (covered in the guide above).
    Without it, guest donors can view campaign pages but the donation form cannot submit.</li>
+<li><strong>Authorize both permission sets on the Stripe external credential.</strong> Map
+   <code>Fundraising_Admin</code> <em>and</em> <code>Fundraising_GuestDonor</code> to the <code>OrgPrincipal</code> principal on the
+   Stripe External Credential. Salesforce cannot package this mapping, so it is always a manual
+   step — and until it's done, Stripe callouts fail with an authorization error even though the
+   secret key is stored correctly. See
+   <a href="../connecting-stripe/#first-authorize-the-permission-sets-to-use-the-credential">Connecting Stripe</a>.</li>
 </ol>
 <div class="fn-shot"><img src="../../assets/images/lex-app-launcher-pledgivo.png" alt="App Launcher search for Pledgivo"></div>
 <p class="fn-figure-caption">**What it shows.** The App Launcher with the Pledgivo app tile and its seven tabs (Campaigns, Contacts, Opportunities, Recurring Donations, Designations, Fundraisers, Settings).</p>

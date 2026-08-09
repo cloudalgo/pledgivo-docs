@@ -470,6 +470,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#first-authorize-the-permission-sets-to-use-the-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First, authorize the permission sets to use the credential
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#connect-an-account" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1704,6 +1715,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#first-authorize-the-permission-sets-to-use-the-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First, authorize the permission sets to use the credential
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#connect-an-account" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1815,6 +1837,31 @@
 </table>
 <p>A single org can connect more than one Stripe account (for example, separate accounts per
 fiscal sponsee) and route different campaigns to different accounts.</p>
+<h2 id="first-authorize-the-permission-sets-to-use-the-credential">First, authorize the permission sets to use the credential<a class="headerlink" href="#first-authorize-the-permission-sets-to-use-the-credential" title="Permanent link">#</a></h2>
+<div class="admonition danger">
+<p class="admonition-title">One-time step after install — donations fail until you do this</p>
+<p>Salesforce only lets a user authenticate through an External Credential if their permission
+set is explicitly mapped to that credential's <em>principal</em>. That mapping is org configuration
+and <strong>cannot be included in a managed package</strong>, so it's the one thing you have to wire up by
+hand after installing.</p>
+<ol>
+<li><strong>Setup → Security → Named Credentials → External Credentials</strong> tab.</li>
+<li>Open <strong>Stripe External Credential</strong>.</li>
+<li>Under <strong>Principals</strong>, open the row menu on <code>OrgPrincipal</code> and choose <strong>Edit</strong>.</li>
+<li>In <strong>Permission Set Mappings</strong>, add <strong>both</strong>:<ul>
+<li><code>Fundraising_Admin</code> — staff-initiated charges, refunds, and <strong>Test Connection</strong>.</li>
+<li><code>Fundraising_GuestDonor</code> — the public donation form. Donors are anonymous site
+  visitors, so their payments run under the site's guest user; without this mapping the
+  donation page fails at the payment step even though everything else on it works.</li>
+</ul>
+</li>
+<li>Save.</li>
+</ol>
+<p>The symptom of a missing mapping is a callout authorization error rather than a Stripe
+decline — if a freshly installed org reports one, check this first.</p>
+<p>This step grants <em>use of</em> the credential. It never exposes the secret key: no one mapped here
+can read the key back, and the key itself is entered separately in the next section.</p>
+</div>
 <h2 id="connect-an-account">Connect an account<a class="headerlink" href="#connect-an-account" title="Permanent link">#</a></h2>
 <ol>
 <li><strong>Settings → Payments → Payment Accounts.</strong></li>

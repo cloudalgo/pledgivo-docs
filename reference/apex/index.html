@@ -259,6 +259,8 @@
       
         
       
+        
+      
     
     
     
@@ -319,6 +321,34 @@
     
   
     Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/after-you-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    After you install
   
 
     
@@ -11957,7 +11987,8 @@
 </table>
 <h4 id="apex-setupcontroller">SetupController<a class="headerlink" href="#apex-setupcontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
-<p><strong>Docs note.</strong> Backing controller for the entire internal admin setup console — record type mapping, general settings, payment account CRUD/connection test, page-design CRUD, scheduled-job status, org feature detection, and the health check panel. Nearly every read method here is deliberately NOT @AuraEnabled(cacheable=true): the setup screens re-load imperatively after every save/reset so the admin sees their own change immediately, and a cacheable method served imperatively would instead return Lightning's stale client cache. SYSTEM_TEMPLATE_NAMES (below) protects the 10 packaged page-design themes seeded by PostInstallHandler, plus five legacy names from before the 2026-07-24 theme rebuild, from admin edit/delete — see isSystemTemplateName() at the page-design CRUD actions. runHealthCheck()'s scheduled-job check compares against PostInstallHandler.scheduleJobs()'s full job count, which intentionally excludes the two gateway-dependent reconciliation jobs until a Payment_Account__c exists.</p>
+<p><strong>Docs note.</strong> Backing controller for the entire internal admin setup console — record type mapping, general settings, payment account CRUD/connection test, page-design CRUD, scheduled-job status, org feature detection, and the health check panel. Nearly every read method here is deliberately NOT @AuraEnabled(cacheable=true): the setup screens re-load imperatively after every save/reset so the admin sees their own change immediately, and a cacheable method served imperatively would instead return Lightning's stale client cache. SYSTEM_TEMPLATE_NAMES (below) protects the 10 packaged page-design themes seeded by PostInstallHandler, plus five legacy names from before the 2026-07-24 theme rebuild, from admin edit/delete — see isSystemTemplateName() at the page-design CRUD actions. runHealthCheck()'s scheduled-job check and getSetupGuide()'s "background jobs" step share countPipelineJobs(), which counts every cron entry PostInstallHandler.scheduleJobs() creates — see EXPECTED_PIPELINE_JOBS. getSetupGuide() is the backing read for the Get Started panel (setGetStarted): the ordered, live-checked version of the post-install checklist published at docs-site/docs/getting-started/after-you-install.md and pointed at by the package's postInstallUrl. Keep the two in step — a step added here needs a section there, and vice versa, or the page a subscriber is redirected to stops matching what their org shows them.</p>
+<p>The ordered, live-checked post-install checklist behind the Get Started panel. Each step reports its own status from the org rather than from a stored "done" flag, so an admin who undoes a step (deactivates the last payment account, aborts the cron jobs) sees it reopen. That is deliberate: there is no Setup_Step_Complete__c field anywhere, and there should not be one — a checklist that remembers being ticked lies the moment the org drifts.</p>
 <p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that SettingsService defaults to — the nulls below are deliberate, not a failed parse.</p>
 <table>
 <thead>
@@ -11975,6 +12006,11 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-fixhealthcheckitem"></a><code>fixHealthCheckItem(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-getsetupguide"></a><code>getSetupGuide(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A tour of the Settings console — the four navigation groups and fifteen panels that configure the package.">
+        <meta name="description" content="A tour of the Settings console — the Get Started checklist plus the four navigation groups and sixteen panels that configure the package.">
       
       
       
@@ -261,6 +261,8 @@
       
         
       
+        
+      
     
     
     
@@ -321,6 +323,34 @@
     
   
     Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../after-you-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    After you install
   
 
     
@@ -491,6 +521,17 @@
     <span class="md-ellipsis">
       
         Where it lives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start here
       
     </span>
   </a>
@@ -1732,6 +1773,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-four-groups" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1834,15 +1886,32 @@
 <p class="fn-eyebrow">Getting Started</p>
 
 <h1 id="setup-assistant">Setup assistant<a class="headerlink" href="#setup-assistant" title="Permanent link">#</a></h1>
-<p class="fn-dek">All configuration lives in one place — the Settings tab, organized into four groups. There's no separate setup wizard to run first; every panel is available and editable at any time.</p>
+<p class="fn-dek">All configuration lives in one place — the Settings tab. It opens on a <strong>Get Started</strong> checklist of the one-time post-install steps, and every other panel, in four groups below it, is available and editable at any time.</p>
 
 <h2 id="where-it-lives">Where it lives<a class="headerlink" href="#where-it-lives" title="Permanent link">#</a></h2>
 <p>Open the <strong>Pledgivo</strong> app → <strong>Settings</strong> tab (visible only to users with the
 <code>Fundraising_Admin</code> permission set). The tab hosts a single console — a left-hand navigation
-tree grouped into four sections, with one panel on the right for whichever item is selected.</p>
+tree grouped into <strong>Start here</strong> plus four configuration sections, with one panel on the right for
+whichever item is selected. A fresh install lands on <strong>Get Started</strong>; once that reads 7/7 you can
+ignore it and go straight to whatever you came to change.</p>
 <div class="fn-shot"><img src="../../assets/images/set-settings-console.png" alt="Settings console with the Organization & Donations panel active"></div>
 <p class="fn-figure-caption">**What it shows.** The left-hand vertical navigation with its four groups (General, Payments, Experience Cloud, System) and the Organization & Donations panel open on the right — identity fields (org name, Tax ID) and gift rules (currency, fee-on-top, min/max amount, suggested amounts).</p>
 
+<h2 id="start-here">Start here<a class="headerlink" href="#start-here" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Panel</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get Started</td>
+<td>The seven one-time post-install steps, each checked against your org live — permission sets, record types, the Experience site, Stripe, the credential grant, background jobs, and branding. Several have a one-click fix; the rest link to the panel that owns them. See <a href="../after-you-install/">After you install</a>.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="the-four-groups">The four groups<a class="headerlink" href="#the-four-groups" title="Permanent link">#</a></h2>
 <h3 id="general">General<a class="headerlink" href="#general" title="Permanent link">#</a></h3>
 <table>
@@ -1952,7 +2021,9 @@ tree grouped into four sections, with one panel on the right for whichever item 
 <p class="fn-figure-caption">**What it shows.** The Health panel with a status pill per signal — here Record Type Mappings, Payment Accounts, and SOQL Limit read HEALTHY, Experience Cloud Site reads ATTENTION (site is still "Under Construction"), and Scheduled Jobs reads FAILED (0 of 17 running) — plus a Scheduled Jobs section with "Run a job now" actions. This isn't a hypothetical all-green state: it's exactly the kind of mixed result you'll see on a fresh org before every job has been scheduled and the site published.</p>
 
 <h2 id="a-practical-first-pass">A practical first pass<a class="headerlink" href="#a-practical-first-pass" title="Permanent link">#</a></h2>
-<p>For a first-time setup, work through the panels roughly in this order:</p>
+<p>For a first-time setup, start on <strong>Start here → Get Started</strong> and work its list top to bottom —
+it is this order, checked against your org as you go, and it covers the two steps that can only
+be done in Salesforce Setup. Use the sequence below only if you'd rather drive the panels yourself:</p>
 <ol>
 <li><strong>System → Record Types</strong> — confirm org detection; override a Record Type only if you need something other than the packaged default.</li>
 <li><strong>Payments → Payments</strong> — connect a Stripe account. See <a href="../connecting-stripe/">Connecting Stripe</a>.</li>
@@ -1966,6 +2037,8 @@ tree grouped into four sections, with one panel on the right for whichever item 
 </ol>
 <p>Everything else — Email, Events, Refunds, Public Links, Donor Portal, Logging — has sensible
 defaults and can be revisited later.</p>
+<p>Then leave Settings behind: campaigns and ticketed events are created in the <strong>Fundraisers</strong>
+tab, not here. See <a href="../../guides/first-campaign/">Set up your first campaign</a>.</p>
 <h2 id="next">Next<a class="headerlink" href="#next" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

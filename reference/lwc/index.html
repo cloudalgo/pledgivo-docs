@@ -259,6 +259,8 @@
       
         
       
+        
+      
     
     
     
@@ -319,6 +321,34 @@
     
   
     Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/after-you-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    After you install
   
 
     
@@ -1948,6 +1978,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#setgetstarted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Get Started
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sethealth" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3063,6 +3104,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#setgetstarted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Get Started
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#sethealth" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3490,7 +3542,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 73 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 74 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3640,7 +3692,7 @@
 <p><code>lexFundraisingSettings</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
 <p>Internal Lightning app tab hosting the settings console shell, with left navigation across organization, email, payments, refunds, site, public links, page designs, record types, and health-check panels.</p>
-<p><strong>Docs note.</strong> Pure navigation shell for the Settings console — holds no Apex calls itself. Each nav item lazy-renders exactly one set<em> panel component (setOrganization, setEmail, setEvents, setLogging, setPayments, setRefunds, setRecurring, setSite, setPublicLinks, setDesigns, setDonorPortal, setRecordTypes, setHealth) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save; also setDonationMonitor for the stuck-donation admin panel.</p>
+<p><strong>Docs note.</strong> Pure navigation shell for the Settings console — holds no Apex calls itself. Each nav item lazy-renders exactly one set<em> panel component (setOrganization, setEmail, setEvents, setLogging, setPayments, setRefunds, setRecurring, setSite, setPublicLinks, setDesigns, setDonorPortal, setRecordTypes, setHealth) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save; also setDonationMonitor for the stuck-donation admin panel, and setGetStarted for the post-install checklist.</p>
 <h4 id="lexgivingstatement">Annual Giving Statement<a class="headerlink" href="#lexgivingstatement" title="Permanent link">#</a></h4>
 <p><code>lexGivingStatement</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
@@ -3774,6 +3826,11 @@
 <p><code>setEvents</code></p>
 <p><code>not exposed</code></p>
 <p>Settings-console panel controlling the event ticket tax-deductible calculation mode and the optional Campaign Member sync for ticket attendees on Settings__c.</p>
+<h4 id="setgetstarted">Settings: Get Started<a class="headerlink" href="#setgetstarted" title="Permanent link">#</a></h4>
+<p><code>setGetStarted</code></p>
+<p><code>not exposed</code></p>
+<p>Settings-console panel presenting the ordered post-install setup checklist. Each step reports its status live from the org and offers a one-click fix, a jump to the panel that owns it, or a link to the matching section of the after-you-install guide.</p>
+<p><strong>Docs note.</strong> The Get Started panel — the in-org half of the post-install experience. The other half is the published after-you-install page the package's postInstallUrl redirects a subscriber to right after the install finishes; every step here deep-links back to its section there. Steps come from SetupController.getSetupGuide(), which reads their state live from the org rather than from a stored completion flag, so this re-reads after every fix instead of tracking progress locally — a checklist that remembers being ticked lies the moment the org drifts.</p>
 <h4 id="sethealth">Settings: Health Check<a class="headerlink" href="#sethealth" title="Permanent link">#</a></h4>
 <p><code>setHealth</code></p>
 <p><code>not exposed</code></p>

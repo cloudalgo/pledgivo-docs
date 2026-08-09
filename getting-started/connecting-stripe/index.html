@@ -261,6 +261,8 @@
       
         
       
+        
+      
     
     
     
@@ -321,6 +323,34 @@
     
   
     Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../after-you-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    After you install
   
 
     
@@ -1843,19 +1873,21 @@ fiscal sponsee) and route different campaigns to different accounts.</p>
 <p>Salesforce only lets a user authenticate through an External Credential if their permission
 set is explicitly mapped to that credential's <em>principal</em>. That mapping is org configuration
 and <strong>cannot be included in a managed package</strong>, so it's the one thing you have to wire up by
-hand after installing.</p>
+hand after installing. See <a href="../after-you-install/#grant-the-stripe-credential">Grant the Stripe credential</a>.</p>
+<p>The grant has to live on a permission set <strong>you create in your own org</strong> — the packaged
+<code>Fundraising_*</code> sets are managed, and a managed permission set can't be given this
+mapping at all.</p>
 <ol>
-<li><strong>Setup → Security → Named Credentials → External Credentials</strong> tab.</li>
-<li>Open <strong>Stripe External Credential</strong>.</li>
-<li>Under <strong>Principals</strong>, open the row menu on <code>OrgPrincipal</code> and choose <strong>Edit</strong>.</li>
-<li>In <strong>Permission Set Mappings</strong>, add <strong>both</strong>:<ul>
-<li><code>Fundraising_Admin</code> — staff-initiated charges, refunds, and <strong>Test Connection</strong>.</li>
-<li><code>Fundraising_GuestDonor</code> — the public donation form. Donors are anonymous site
-  visitors, so their payments run under the site's guest user; without this mapping the
+<li><strong>Setup → Permission Sets → New.</strong> Name it anything, e.g. <code>Stripe Credential Access</code>.</li>
+<li>Open it → <strong>External Credential Principal Access</strong> → <strong>Edit</strong>.</li>
+<li>Add the Stripe external credential's <code>OrgPrincipal</code> and save.</li>
+<li><strong>Manage Assignments</strong> → assign it to <strong>both</strong>:<ul>
+<li>your fundraising staff — staff-initiated charges, refunds, and <strong>Test Connection</strong>.</li>
+<li>your Experience Cloud site's <strong>guest user</strong> — the public donation form. Donors are
+  anonymous site visitors, so their payments run under the guest user; without this the
   donation page fails at the payment step even though everything else on it works.</li>
 </ul>
 </li>
-<li>Save.</li>
 </ol>
 <p>The symptom of a missing mapping is a callout authorization error rather than a Stripe
 decline — if a freshly installed org reports one, check this first.</p>

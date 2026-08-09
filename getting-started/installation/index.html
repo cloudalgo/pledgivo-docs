@@ -16,7 +16,7 @@
         <link rel="prev" href="../..">
       
       
-        <link rel="next" href="../quick-start/">
+        <link rel="next" href="../after-you-install/">
       
       
         
@@ -261,6 +261,8 @@
       
         
       
+        
+      
     
     
     
@@ -433,6 +435,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../after-you-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    After you install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1794,6 +1824,13 @@ a dependency. Installing Pledgivo is all you need.</p>
 </div>
 
 <h2 id="install-steps">Install steps<a class="headerlink" href="#install-steps" title="Permanent link">#</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Salesforce sends you to the checklist automatically</p>
+<p>When the install finishes, Salesforce redirects you to
+<a href="../after-you-install/">After you install</a> — the written version of the same seven steps,
+with the two that can only be done in Salesforce Setup spelled out. The in-app
+<strong>Settings → Get Started</strong> panel checks each of them against your org live.</p>
+</div>
 <ol>
 <li><strong>Install Pledgivo</strong> from its AppExchange listing (or a package version link, for a
    sandbox/pilot install). Choose "Install for Admins Only" so you control the permission
@@ -1804,9 +1841,10 @@ a dependency. Installing Pledgivo is all you need.</p>
 <li><strong>Open the Pledgivo app.</strong> App Launcher → <strong>Pledgivo</strong>. The app lands on the standard
    Campaign tab by default; the <strong>Settings</strong> tab (visible to <code>Fundraising_Admin</code> users only)
    is where the rest of setup happens.</li>
-<li><strong>Work through the Settings console.</strong> See <a href="../setup-assistant/">Setup assistant</a> for
-   the full walkthrough — organization defaults, connecting Stripe, and enabling Experience
-   Cloud.</li>
+<li><strong>Work through Settings → Get Started.</strong> The console opens on it. Each of its seven steps
+   is checked against your org rather than ticked by hand, and several fix themselves in one
+   click. See <a href="../after-you-install/">After you install</a> for the written walkthrough, and
+   <a href="../setup-assistant/">Setup assistant</a> for a tour of the panels behind it.</li>
 <li><strong>If you're publishing public donation pages, create your Experience Cloud site.</strong>
    Salesforce doesn't provision this for you on install — see
    <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a> for the full walkthrough:
@@ -1814,12 +1852,21 @@ a dependency. Installing Pledgivo is all you need.</p>
 <li><strong>Grant the guest user permission set.</strong> Assign <code>Fundraising_GuestDonor</code> to your
    Experience Cloud site's guest user profile (covered in the guide above).
    Without it, guest donors can view campaign pages but the donation form cannot submit.</li>
-<li><strong>Authorize both permission sets on the Stripe external credential.</strong> Map
-   <code>Fundraising_Admin</code> <em>and</em> <code>Fundraising_GuestDonor</code> to the <code>OrgPrincipal</code> principal on the
-   Stripe External Credential. Salesforce cannot package this mapping, so it is always a manual
-   step — and until it's done, Stripe callouts fail with an authorization error even though the
-   secret key is stored correctly. See
-   <a href="../connecting-stripe/#first-authorize-the-permission-sets-to-use-the-credential">Connecting Stripe</a>.</li>
+<li>
+<p><strong>Authorize the Stripe external credential — in a permission set you create.</strong> Salesforce
+   won't let a <em>managed</em> permission set grant access to an external credential principal, so
+   the package cannot ship this and neither packaged set can be edited to add it. Create your
+   own permission set in your org, give it External Credential Principal Access to the Stripe
+   credential's <code>OrgPrincipal</code>, and assign it to your fundraising users <strong>and</strong> your site's
+   guest user. Until that's done, every Stripe callout fails with an authorization error even
+   though the secret key is stored correctly. See
+   <a href="../after-you-install/#grant-the-stripe-credential">Grant the Stripe credential</a>.</p>
+</li>
+<li>
+<p><strong>Create your first campaign.</strong> Setup is org-wide configuration; the things donors give to
+   are made in the <strong>Fundraisers</strong> tab. See
+   <a href="../../guides/first-campaign/">Set up your first campaign</a>.</p>
+</li>
 </ol>
 <div class="fn-shot"><img src="../../assets/images/lex-app-launcher-pledgivo.png" alt="App Launcher search for Pledgivo"></div>
 <p class="fn-figure-caption">**What it shows.** The App Launcher with the Pledgivo app tile and its seven tabs (Campaigns, Contacts, Opportunities, Recurring Donations, Designations, Fundraisers, Settings).</p>
@@ -1960,13 +2007,13 @@ public donation page until a site exists. See
         
         
           
-          <a href="../quick-start/" class="md-footer__link md-footer__link--next" aria-label="Next: Quick start">
+          <a href="../after-you-install/" class="md-footer__link md-footer__link--next" aria-label="Next: After you install">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Quick start
+                After you install
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -1834,7 +1834,10 @@ with the two that can only be done in Salesforce Setup spelled out. The in-app
 <ol>
 <li><strong>Install Pledgivo</strong> from its AppExchange listing (or a package version link, for a
    sandbox/pilot install). Choose "Install for Admins Only" so you control the permission
-   set rollout in the next step.</li>
+   set rollout in the next step. Salesforce will ask you to approve third-party access — the
+   list is Stripe's five payment domains and nothing else. See
+   <a href="../after-you-install/#third-party-content">Third-party content</a> for what each one does and
+   for the optional hosts (video, stock photos) you can add later if you want them.</li>
 <li><strong>Assign the <code>Fundraising_Admin</code> permission set</strong> to the user who will complete setup.
    This grants full CRUD on every Pledgivo object plus access to the Settings console —
    nothing in setup is reachable without it.</li>

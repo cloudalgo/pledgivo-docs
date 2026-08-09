@@ -1907,7 +1907,10 @@ reference.</p>
 </tbody>
 </table>
 <p>All five are configured as CSP Trusted Sites (<code>context: All</code>, <code>isApplicableToConnectSrc: true</code>,
-<code>isApplicableToFrameSrc: true</code>).</p>
+<code>isApplicableToFrameSrc: true</code>), and they are the <strong>only</strong> trusted sites the package ships — so the
+install-time "Approve Third-Party Access" dialog lists Stripe and nothing else. Hosts behind
+optional features (video embeds, stock photography) are left for the subscriber to add; see
+<a href="../../getting-started/after-you-install/#third-party-content">Third-party content</a>.</p>
 <h2 id="no-inbound-webhook-by-design">No inbound webhook, by design<a class="headerlink" href="#no-inbound-webhook-by-design" title="Permanent link">#</a></h2>
 <p>Pledgivo does not register a Stripe webhook and has no <code>@RestResource</code>/<code>@HttpPost</code> endpoint
 listening for one. Instead, Salesforce confirms payment status by asking Stripe:</p>

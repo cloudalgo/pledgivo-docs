@@ -493,6 +493,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#third-party-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Third-party content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-youre-done" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1872,6 +1883,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#third-party-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Third-party content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-youre-done" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2084,6 +2106,83 @@ not your logo.</p>
 <p>Settings console → <strong>Organization &amp; Donations</strong>: set the display name, upload your logo, and
 set your mailing address (receipts need it).</p>
 <p>Full walkthrough: <a href="../../guides/email-branding/">Brand your receipt and notification emails</a>.</p>
+<hr />
+<h2 id="third-party-content">Third-party content<a class="headerlink" href="#third-party-content" title="Permanent link">#</a></h2>
+<p><span class="fn-chip">Optional — nothing here is required</span></p>
+<p>During the install Salesforce shows you an <strong>Approve Third-Party Access</strong> dialog listing every
+external domain the package wants your org to trust. This package lists <strong>Stripe and nothing
+else</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Domain</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>js.stripe.com</code></td>
+<td>Loads Stripe.js, which collects the card details</td>
+</tr>
+<tr>
+<td><code>api.stripe.com</code></td>
+<td>The payment API the browser confirms against</td>
+</tr>
+<tr>
+<td><code>m.stripe.com</code>, <code>m.stripe.network</code></td>
+<td>Stripe's fraud-signal endpoints — payments fail without them</td>
+</tr>
+<tr>
+<td><code>hooks.stripe.com</code></td>
+<td>3-D Secure / bank authentication screens</td>
+</tr>
+</tbody>
+</table>
+<p>That is deliberate. A fundraising package asking to reach a list of unfamiliar domains reads as a
+warning rather than as a payment integration, so the optional features that use <em>other</em> hosts ship
+without their trusted sites. <strong>You add those yourself, only if you want the feature.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Add this domain</th>
+<th>Directive</th>
+<th>Unlocks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://images.unsplash.com</code></td>
+<td>Image</td>
+<td>Using an Unsplash photo as a campaign hero or social card</td>
+</tr>
+<tr>
+<td><code>https://www.youtube.com</code></td>
+<td>Frame</td>
+<td>A YouTube video in a campaign page video block</td>
+</tr>
+<tr>
+<td><code>https://www.youtube-nocookie.com</code></td>
+<td>Frame</td>
+<td>YouTube privacy-enhanced (no-cookie) embeds</td>
+</tr>
+<tr>
+<td><code>https://player.vimeo.com</code></td>
+<td>Frame</td>
+<td>A Vimeo video in a campaign page video block</td>
+</tr>
+</tbody>
+</table>
+<p>To add one: Setup → <strong>Security → CSP Trusted Sites → New Trusted Site</strong>. Enter the URL exactly as
+written above, name it anything, tick the directive shown, leave <strong>Context</strong> as <em>All</em>, and save.</p>
+<p>The Get Started panel's <strong>Trust the content hosts you actually use</strong> step reads your org's trusted
+sites live and shows which of the four you have. It never counts against your 7 steps and it never
+offers a fix button — Salesforce does not let Apex create a trusted site, so this one is yours.</p>
+<div class="admonition note">
+<p class="admonition-title">Your campaigns start with no hero image</p>
+<p>Because the package trusts no image host, packaged page designs ship with a blank hero rather
+than a stock photo that would be blocked and render broken. Upload your own image in
+<strong>Designs</strong>, or add the Unsplash domain above and paste a photo URL.</p>
+</div>
 <hr />
 <h2 id="when-youre-done">When you're done<a class="headerlink" href="#when-youre-done" title="Permanent link">#</a></h2>
 <p>The Get Started panel shows <strong>7/7</strong> and <em>"Your org is ready to take donations."</em> Setup is

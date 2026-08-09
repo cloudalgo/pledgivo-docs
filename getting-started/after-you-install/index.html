@@ -2178,10 +2178,16 @@ written above, name it anything, tick the directive shown, leave <strong>Context
 sites live and shows which of the four you have. It never counts against your 7 steps and it never
 offers a fix button — Salesforce does not let Apex create a trusted site, so this one is yours.</p>
 <div class="admonition note">
-<p class="admonition-title">Your campaigns start with no hero image</p>
-<p>Because the package trusts no image host, packaged page designs ship with a blank hero rather
-than a stock photo that would be blocked and render broken. Upload your own image in
-<strong>Designs</strong>, or add the Unsplash domain above and paste a photo URL.</p>
+<p class="admonition-title">Your campaigns start with a packaged hero image, not a stock photo</p>
+<p>The package ships its own artwork — a hero backdrop and a social share card, both drawn from
+the brand palette rather than licensed from a stock library — and publishes them into your org
+at install time. Your page designs are stamped with them automatically, so a campaign looks
+finished on day one.</p>
+<p>They are served from your own org's file domain, which browsers allow without a trusted site,
+so nothing on the list above is needed to see them. Replace either one at any time by uploading
+your own image in <strong>Designs</strong>; an image you have chosen is never overwritten by a package
+upgrade. To paste a URL from an outside host instead — Unsplash, your own CDN — that host needs
+a CSP trusted site first, per the table above.</p>
 </div>
 <hr />
 <h2 id="when-youre-done">When you're done<a class="headerlink" href="#when-youre-done" title="Permanent link">#</a></h2>

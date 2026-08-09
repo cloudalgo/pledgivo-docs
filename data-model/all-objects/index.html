@@ -5526,7 +5526,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>82 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>84 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <p><strong>Docs note.</strong> Tier 1 of the three-tier settings model documented in specs/04-data-model.md. Tier 2 is Payment_Gateway__mdt (per-gateway CMDT), Tier 3 is Named Credentials (secrets never live here). As a Hierarchy Custom Setting it resolves Org Defaults, falling back per profile or user only if a future release needs per-role overrides; today every read goes through the Org Default row via SettingsService, which exposes one typed accessor per field or field group rather than callers reading Settings__c.getOrgDefaults() directly, so a field rename or a default-value change only needs one code change.</p>
 <p>See the <a href="../settings/">full reference page</a> for this object.</p>
@@ -5610,6 +5610,12 @@
 <td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so SettingsService.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
 </tr>
 <tr>
+<td><code>Default_Hero_Image_URL__c</code></td>
+<td>Default Hero Image URL</td>
+<td>Url</td>
+<td>Internal cache of the packaged default hero image's public link. Do not edit directly.<br><em>Docs: Idempotency guard as much as a cache — ensureDefaultImagesSeeded() only creates the ContentVersion/ContentDistribution when this is blank, so a package upgrade re-running the post-install script does not stack a duplicate file per upgrade.</em></td>
+</tr>
+<tr>
 <td><code>Default_Org_Logo_Content_Document_Id__c</code></td>
 <td>Default Org Logo Content Document Id</td>
 <td>Text</td>
@@ -5620,6 +5626,12 @@
 <td>Default Org Logo URL</td>
 <td>Url</td>
 <td>Internal cache of the default logo's public link. Do not edit directly.</td>
+</tr>
+<tr>
+<td><code>Default_Social_Share_Image_URL__c</code></td>
+<td>Default Social Share Image URL</td>
+<td>Url</td>
+<td>Internal cache of the packaged default social share image's public link. Do not edit directly.<br><em>Docs: Same idempotency role as Default_Hero_Image_URL__c. Note the downstream field it feeds, Campaign_Design__c.Social_Share_Image_URL__c, is not yet rendered into an og:image tag by anything in this package — seeding it gives admins a sensible default in the Designs panel and a value a future social-preview feature can read.</em></td>
 </tr>
 <tr>
 <td><code>Default_Suggested_Amounts__c</code></td>

@@ -1275,6 +1275,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="8. Share it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-a-donor-sees-when-the-page-cant-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a donor sees when the page can't load
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1875,6 +1892,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="8. Share it">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-a-donor-sees-when-the-page-cant-load" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a donor sees when the page can't load
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2019,6 +2053,49 @@ including the Site-panel settings that gate it.</p>
 <div class="fn-shot"><img src="../../assets/images/adm-campaign-detail.png" alt="Campaign record detail page with the Embed & Share panel"></div>
 <p class="fn-figure-caption">**What it shows.** A live Campaign's Lightning detail page — fundraising progress (raised vs. goal, days left), the Embed & Share panel with its embed code snippet and Preview live / Copy embed code buttons, and the standard Opportunities-in-Campaign rollup fields.</p>
 
+<h3 id="what-a-donor-sees-when-the-page-cant-load">What a donor sees when the page can't load<a class="headerlink" href="#what-a-donor-sees-when-the-page-cant-load" title="Permanent link">#</a></h3>
+<p>Shared links get mangled — an email client truncates a query string, a campaign is unpublished
+while a newsletter is still in flight, Salesforce has a bad minute. The public page handles all
+three itself; there is nothing to configure, but it's worth knowing what your donor is looking
+at when someone forwards you a screenshot.</p>
+<p>Every one of these states carries your <strong>organisation name, logo and EIN</strong> across the top. That
+branding is read from Settings, separately from the campaign itself, so it renders even when the
+campaign can't — a donor who hits a broken link still lands somewhere recognisably yours rather
+than on a bare error page. The campaign's <em>own</em> colours and fonts are not applied here, because
+they arrive with the campaign record that failed to load; these screens use the package's default
+palette instead.</p>
+<table>
+<thead>
+<tr>
+<th>What happened</th>
+<th>What the donor sees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The page is still loading</td>
+<td>Your branding bar, then a grey outline of the real page — hero, form column, sidebar — in the proportions the content will occupy, so it settles into place instead of jumping. A moving rail across the top distinguishes "still working" from "stuck".</td>
+</tr>
+<tr>
+<td>The link has no campaign in it, or points at one that no longer resolves</td>
+<td><em>"This link doesn't point to a campaign"</em>, with the suggestion that the address may have been shortened or cut off in an email, and a <strong>Back to our giving page</strong> button. Deliberately not styled as an error — nothing has gone wrong, the address is just incomplete.</td>
+</tr>
+<tr>
+<td>The load genuinely failed</td>
+<td><em>"We couldn't load this page"</em>, with a <strong>Try again</strong> button that re-runs the request in place, keeping the donor's URL intact.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">The failure message is intentionally vague</p>
+<p>A donor gets one generic sentence, never the underlying platform error. Salesforce error
+text names internal objects, fields and record IDs, and this page is readable by anyone
+holding the link. The full detail is written to the package's log instead — check there,
+not the donor's screenshot, when you're diagnosing a report of this screen.</p>
+</div>
+<p>If a donor reports the "doesn't point to a campaign" screen from a link you sent, compare the
+URL they received against the one in <strong>Settings → Experience Cloud → Public Links</strong>; the usual
+cause is a <code>?slug=</code> that got cut at a line break in an email.</p>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

@@ -1745,7 +1745,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>82 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>84 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1845,6 +1845,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so SettingsService.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
 </tr>
 <tr>
+<td><code>Default_Hero_Image_URL__c</code></td>
+<td>Default Hero Image URL</td>
+<td>Url</td>
+<td>Internal cache of the packaged default hero image's public link. Do not edit directly.<br><em>Docs: Idempotency guard as much as a cache — ensureDefaultImagesSeeded() only creates the ContentVersion/ContentDistribution when this is blank, so a package upgrade re-running the post-install script does not stack a duplicate file per upgrade.</em></td>
+</tr>
+<tr>
 <td><code>Default_Org_Logo_Content_Document_Id__c</code></td>
 <td>Default Org Logo Content Document Id</td>
 <td>Text</td>
@@ -1855,6 +1861,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Default Org Logo URL</td>
 <td>Url</td>
 <td>Internal cache of the default logo's public link. Do not edit directly.</td>
+</tr>
+<tr>
+<td><code>Default_Social_Share_Image_URL__c</code></td>
+<td>Default Social Share Image URL</td>
+<td>Url</td>
+<td>Internal cache of the packaged default social share image's public link. Do not edit directly.<br><em>Docs: Same idempotency role as Default_Hero_Image_URL__c. Note the downstream field it feeds, Campaign_Design__c.Social_Share_Image_URL__c, is not yet rendered into an og:image tag by anything in this package — seeding it gives admins a sensible default in the Designs panel and a value a future social-preview feature can read.</em></td>
 </tr>
 <tr>
 <td><code>Default_Suggested_Amounts__c</code></td>

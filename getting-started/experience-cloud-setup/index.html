@@ -1941,7 +1941,7 @@ rollout actually uses:</p>
 <td>Anyone you email a receipt link to — build this if you send receipts at all</td>
 </tr>
 <tr>
-<td>Donor Dashboard</td>
+<td>Donor portal</td>
 <td><code>donor</code></td>
 <td>Donor Dashboard</td>
 <td>The magic-link donor self-service portal — see <a href="../../guides/publish-donor-portal/">Publish a donor portal page</a></td>
@@ -1979,9 +1979,12 @@ cannot submit — see <a href="../installation/">Installation</a>.</p>
 <p>Finally, grant the Stripe credential to that same Guest User. Salesforce does not let a managed
 permission set grant access to an external credential principal, so this package can never ship
 that grant — you create your own permission set holding the Stripe external credential's
-<code>OrgPrincipal</code> and assign it to the guest user as well as to your fundraising staff. Apex can't
-read the grant back either, so this is <strong>Can't verify</strong> too. Full walkthrough:
-<a href="../after-you-install/#grant-the-stripe-credential">Grant the Stripe credential</a>.</p>
+<code>OrgPrincipal</code> and assign it to the guest user as well as to your fundraising staff. Unlike the
+Public Access toggle above, this one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 5
+reads the grant back via <code>SetupEntityAccess</code> and reports <strong>Done</strong> once a permission set granting
+<code>Stripe_External</code> — <code>OrgPrincipal</code> is assigned to the site's guest user, or <strong>Pending</strong> with the
+specific reason (no grant found at all vs. granted but not assigned to this guest user) otherwise.
+Full walkthrough: <a href="../after-you-install/#grant-the-stripe-credential">Grant the Stripe credential</a>.</p>
 <h2 id="6-publish">6. Publish<a class="headerlink" href="#6-publish" title="Permanent link">#</a></h2>
 <p>Click <strong>Publish</strong> in Experience Builder (top-right). This is a separate step from saving your
 pages — nothing you build in Builder is visible to guest users until you publish.</p>

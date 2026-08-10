@@ -3127,6 +3127,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#apex-paymentgatewayregistry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentGatewayRegistry
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3173,17 +3184,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#apex-ipaymentgatewaymetadataselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IPaymentGatewayMetadataSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-ipaymentmethodsselector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3199,17 +3199,6 @@
     <span class="md-ellipsis">
       
         ITransactionLogsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-paymentgatewaymetadataselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PaymentGatewayMetadataSelector
       
     </span>
   </a>
@@ -3267,10 +3256,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-ipaymentsetupguideservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPaymentSetupGuideService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-paymentmethodservice" class="md-nav__link">
     <span class="md-ellipsis">
       
         PaymentMethodService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-paymentsetupguideservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentSetupGuideService
       
     </span>
   </a>
@@ -6071,6 +6082,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#apex-paymentgatewayregistry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentGatewayRegistry
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -6117,17 +6139,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#apex-ipaymentgatewaymetadataselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        IPaymentGatewayMetadataSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-ipaymentmethodsselector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6143,17 +6154,6 @@
     <span class="md-ellipsis">
       
         ITransactionLogsSelector
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-paymentgatewaymetadataselector" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PaymentGatewayMetadataSelector
       
     </span>
   </a>
@@ -6211,10 +6211,32 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-ipaymentsetupguideservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPaymentSetupGuideService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-paymentmethodservice" class="md-nav__link">
     <span class="md-ellipsis">
       
         PaymentMethodService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-paymentsetupguideservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentSetupGuideService
       
     </span>
   </a>
@@ -7122,7 +7144,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 178 classes plus 120 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 179 classes plus 121 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -8078,7 +8100,7 @@
 <h4 id="apex-stagingreconciliationbatch">StagingReconciliationBatch<a class="headerlink" href="#apex-stagingreconciliationbatch" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public without sharing</code></p>
 <p>implements Database.Batchable&lt;SObject&gt;, Database.AllowsCallouts</p>
-<p>The webhook-free finalizer. Runs in system (batch) context — which HAS External Credential access to Stripe_API (proven by the Task-1 spike) — and is the SOLE creator of donation Opportunities. For each non-terminal staging with a PaymentIntent it re-fetches the PI status from Stripe (authoritative) and: succeeded            → routed by Purchase_Type__c: 'Event_Ticket' goes to IEventPurchaseService.finalizeSucceededEventStaging (one Opportunity + OLIs + attendees); everything else to DonationService.finalizeSucceededStaging (plain donation). Routing on the wrong branch would finalize a paid ticket order as an amount-only donation with no line items/attendees and burn the unique Stripe_Payment_Intent_Id__c, making the order unrepairable. canceled             → staging Failed (event tickets: seats released first) pending past TTL     → staging Expired (event tickets: seats released first) still pending        → left for the next run exception            → Finalization_Error__c recorded; left for retry (event tickets: seats released too if the error pushes the staging past TTL into Expired) Every outcome writes a Transaction_Log__c row (the reconciliation audit trail). execute() is two-phase — ALL Stripe callouts first, THEN all DML (finalize / status / logs) — so callout-before-DML holds at any scope. Keep the scope modest (scheduler uses 5) because each finalize is SOQL/DML-heavy (donor resolution + Opportunity + rollup triggers); do not raise it near the SOQL/DML governor limits.</p>
+<p>The webhook-free finalizer. Runs in system (batch) context — which HAS External Credential access to the payment account's Named Credential (proven by the Task-1 spike) — and is the SOLE creator of donation Opportunities. For each non-terminal staging with a PaymentIntent it re-fetches the PI status from Stripe (authoritative) and: succeeded            → routed by Purchase_Type__c: 'Event_Ticket' goes to IEventPurchaseService.finalizeSucceededEventStaging (one Opportunity + OLIs + attendees); everything else to DonationService.finalizeSucceededStaging (plain donation). Routing on the wrong branch would finalize a paid ticket order as an amount-only donation with no line items/attendees and burn the unique Stripe_Payment_Intent_Id__c, making the order unrepairable. canceled             → staging Failed (event tickets: seats released first) pending past TTL     → staging Expired (event tickets: seats released first) still pending        → left for the next run exception            → Finalization_Error__c recorded; left for retry (event tickets: seats released too if the error pushes the staging past TTL into Expired) Every outcome writes a Transaction_Log__c row (the reconciliation audit trail). execute() is two-phase — ALL Stripe callouts first, THEN all DML (finalize / status / logs) — so callout-before-DML holds at any scope. Keep the scope modest (scheduler uses 5) because each finalize is SOQL/DML-heavy (donor resolution + Opportunity + rollup triggers); do not raise it near the SOQL/DML governor limits.</p>
 <table>
 <thead>
 <tr>
@@ -8123,7 +8145,7 @@
 <h4 id="apex-stagingreconciliationscheduler">StagingReconciliationScheduler<a class="headerlink" href="#apex-stagingreconciliationscheduler" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public without sharing</code></p>
 <p>implements Schedulable</p>
-<p>Schedules the webhook-free finalizer. Scope 1 keeps each record's Stripe callout + finalize DML in its own transaction (callout-before-DML). Schedule as an admin/system user that has Stripe_API External Credential access.</p>
+<p>Schedules the webhook-free finalizer. Scope 1 keeps each record's Stripe callout + finalize DML in its own transaction (callout-before-DML). Schedule as an admin/system user that is assigned the org-local "Fundraising Payment Credentials" permission set — without the external-credential grant it carries, every Stripe callout in the batch fails.</p>
 <table>
 <thead>
 <tr>
@@ -8143,7 +8165,7 @@
 <h4 id="apex-stripepaymentsweep">StripePaymentSweep<a class="headerlink" href="#apex-stripepaymentsweep" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public without sharing</code></p>
 <p>implements Database.Batchable&lt;SObject&gt;, Database.AllowsCallouts, Schedulable</p>
-<p>Orphan-PI safety net. Belt-and-suspenders on top of StagingReconciliationBatch: lists recent succeeded Stripe PaymentIntents tagged source=pledgivo and, for any whose staging exists but was never finalized (no linked Opportunity), repairs it — routed by Purchase_Type__c the same way as the reconciler: 'Event_Ticket' via IEventPurchaseService.finalizeSucceededEventStaging, everything else via DonationService.finalizeSucceededStaging. Guards the rare case where a Pending staging with a real charge slipped past normal reconciliation. Batchable (AllowsCallouts) with a single-row start so the list callout + repair DML run in one execute (callout-before-DML: list first, then finalize). Also Schedulable (hourly enqueue).</p>
+<p>Orphan-PI safety net. Belt-and-suspenders on top of StagingReconciliationBatch: lists recent succeeded PaymentIntents tagged source=pledgivo and, for any whose staging exists but was never finalized (no linked Opportunity), repairs it — routed by Purchase_Type__c the same way as the reconciler: 'Event_Ticket' via IEventPurchaseService.finalizeSucceededEventStaging, everything else via DonationService.finalizeSucceededStaging. Guards the rare case where a Pending staging with a real charge slipped past normal reconciliation. Multi-account: the batch scope is every ACTIVE Payment_Account__c, one per execute(). A PaymentIntent is only visible through the processor account that created it, so an org running two Stripe accounts needs both listed — until 2026-08-10 this job called PaymentGatewayFactory.getDefault() and only ever saw the alphabetically-first account, leaving abandoned checkouts on every other account charged at the processor and unrepaired in Salesforce. One account per execute() also means each gets its own callout budget and its own 150-DML allowance, so a busy account can never starve the next one. Each account carries its own high-water mark in Payment_Sweep_Cursor__c (see that field's doc comment for why this cursor is per-account where the refund/dispute cursors are org-wide). Batchable (AllowsCallouts) with scope 1 so the list callout + repair DML run in one execute (callout-before-DML: list first, then finalize). Also Schedulable (hourly enqueue).</p>
 <p><strong>Docs note.</strong> Scheduled by PostInstallHandler.scheduleJobs() at install. The name and :07 offset match what scripts/apex/schedule-reconciliation-jobs.apex has always used, so an org that ran that dev script before upgrading stays idempotent under scheduleIfAbsent.</p>
 <table>
 <thead>
@@ -8160,6 +8182,11 @@
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-hasactiveaccount">PaymentGatewayFactory.hasActiveAccount()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-stripepaymentsweep-start"></a><code>start(1 arg)</code></td>
 <td><code>Database.QueryLocator</code></td>
 <td></td>
@@ -8167,11 +8194,6 @@
 <tr>
 <td><a id="apex-stripepaymentsweep-execute"></a><code>execute(2 args)</code></td>
 <td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-hasactiveaccount">PaymentGatewayFactory.hasActiveAccount()</a>, <a href="#apex-paymentgatewayfactory-getdefault">PaymentGatewayFactory.getDefault()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9413,7 +9435,7 @@
 <h4 id="apex-refundservice">RefundService<a class="headerlink" href="#apex-refundservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-irefundservice">IRefundService</a></p>
-<p>Salesforce-initiated Stripe refund. Validates the donation is refundable, issues the refund against Stripe, then records the cumulative refunded amount and status via a single Unit of Work commit that happens AFTER the callout (Apex callout-before-DML rule). The gateway is resolved from the donation's Payment_Account__c (stamped at finalize) so a refund routes to the Stripe account the gift was actually charged against in multi-account orgs; legacy rows with no Payment_Account__c fall back to PaymentGatewayFactory.getDefault(). The donor is emailed a refund notification (ReceiptService.sendRefundNotification) after the commit, best-effort. Staff notification remains a deferred follow-up; this service logs via AppLogger instead.</p>
+<p>Salesforce-initiated Stripe refund. Validates the donation is refundable, issues the refund against Stripe, then records the cumulative refunded amount and status via a single Unit of Work commit that happens AFTER the callout (Apex callout-before-DML rule). The gateway is resolved from the donation's Payment_Account__c (stamped at finalize) so a refund routes to the Stripe account the gift was actually charged against in multi-account orgs; rows predating that stamp fall back to the org's sole active account when there is exactly one, and are refused with an explicit "set the Payment Account" error when there is not. The donor is emailed a refund notification (ReceiptService.sendRefundNotification) after the commit, best-effort. Staff notification remains a deferred follow-up; this service logs via AppLogger instead.</p>
 <p><strong>Docs note.</strong> recordRefundedTotal is the single refunded-total → Payment_Status__c mapping, shared with RefundReconciliationBatch for BOTH externally-refunded-in-Stripe totals and lost-dispute reversals — keeping one status transition rule for every path a donation can end up refunded.</p>
 <table>
 <thead>
@@ -9431,7 +9453,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-paymentgatewayfactory-getdefault">PaymentGatewayFactory.getDefault()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-soleactiveaccountid">PaymentGatewayFactory.soleActiveAccountId()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-info">AppLogger.info()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9441,7 +9463,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-paymentgatewayfactory-getdefault">PaymentGatewayFactory.getDefault()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-soleactiveaccountid">PaymentGatewayFactory.soleActiveAccountId()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -10651,11 +10673,14 @@
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <h4 id="apex-ipaymentgateway">IPaymentGateway<a class="headerlink" href="#apex-ipaymentgateway" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
-<p><strong>Docs note.</strong> This is the payment gateway abstraction the rest of the package codes against — DonationService, RecurringDonationService, RefundService, and the reconciliation batches all depend on IPaymentGateway, never on StripeGateway directly. PaymentGatewayFactory resolves a concrete instance per Payment_Account__c at runtime via Payment_Gateway__mdt's Apex_Class_Name__c and Type.forName() — adding a second gateway means writing a new implementation and a new Payment_Gateway__mdt record, not touching any caller. Every method returns a GatewayResult DTO rather than a gateway-native shape, so callers and tests never see Stripe's (or any future gateway's) JSON structures. StripeGateway is currently the only implementation.</p>
+<p><strong>Docs note.</strong> This is the payment gateway abstraction the rest of the package codes against — DonationService, RecurringDonationService, RefundService, and the reconciliation batches all depend on IPaymentGateway, never on StripeGateway directly. PaymentGatewayFactory resolves a concrete instance per Payment_Account__c by looking the account's Gateway__c picklist value up in PaymentGatewayRegistry — adding a second gateway means writing a new implementation, adding one line to that registry and one value to the picklist, not touching any caller. Every method returns a GatewayResult DTO rather than a gateway-native shape, so callers and tests never see Stripe's (or any future gateway's) JSON structures. StripeGateway is currently the only implementation.</p>
+<p>On the interface rather than as a formula field on Stripe's pk_test_/pk_live_ prefix so a second gateway with a different key format needs no data-model change. Implementations must return 'Unknown' rather than guessing — Mode__c drives an admin-facing "this account takes real money" warning, and a wrong Live is worse than an honest Unknown.</p>
 <h4 id="apex-paymentgatewayfactory">PaymentGatewayFactory<a class="headerlink" href="#apex-paymentgatewayfactory" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
-<p><strong>Docs note.</strong> mockGateway is the injection point every test in the package uses to stub out real Stripe callouts — a test assigns PaymentGatewayFactory.mockGateway directly (it is @TestVisible) to an fflib-mocks stub of IPaymentGateway, and both getByAccount() and getDefault() return it instead of resolving a real Payment_Gateway__mdt/Payment_Account__c pair, gated by Test.isRunningTest() so production code never picks up a stray mock. getDefault() (used by the orphan-recovery sweep, which has no per-donation payment account context to key off) simply picks the first active Payment_Account__c — in a single-Stripe-account org that is unambiguous, but it means the orphan sweep cannot reconcile PaymentIntents created under a second, non-default account.</p>
-<p>Exists so the jobs that are SCHEDULED AT INSTALL (StripePaymentSweep, RefundReconciliationBatch) can no-op silently on an org where Stripe has not been connected yet, instead of reaching getDefault()'s throw and logging a gateway error on every hourly fire. Scheduling those jobs at install is what makes refund and dispute reconciliation work in a subscriber org at all — before, only an unpackaged dev script scheduled them, so they never ran outside this repo.</p>
+<p><strong>Docs note.</strong> mockGateway is the injection point every test in the package uses to stub out real Stripe callouts — a test assigns PaymentGatewayFactory.mockGateway directly (it is @TestVisible) to an fflib-mocks stub of IPaymentGateway, and getByAccount() returns it instead of resolving a real Payment_Account__c, gated by Test.isRunningTest() so production code never picks up a stray mock.</p>
+<p>There is deliberately NO getDefault()/"first active account" entry point. One existed until 2026-08-10 and every caller of it was a latent multi-account bug: the orphan sweep only ever recovered payments on the alphabetically-first account, and the refund and event-registration fallbacks could charge or refund against the wrong Stripe account entirely. Callers that have no account context must iterate every active Payment_Account__c (see StripePaymentSweep and RefundReconciliationBatch) rather than guessing at one.</p>
+<p>Exists so the jobs that are SCHEDULED AT INSTALL can no-op silently on an org where no gateway has been connected yet, instead of logging a gateway error on every hourly fire — an alarm for a condition that is simply "not configured yet" trains admins to ignore the log. Scheduling those jobs at install is what makes reconciliation work in a subscriber org at all; before, only an unpackaged dev script scheduled them.</p>
+<p>This replaced getDefault()'s "first active account" rule on 2026-08-10. The distinction is the whole point: with one connected account there is nothing to choose and the answer is certain, so a legacy Opportunity with no Payment_Account__c stamp still refunds and an event campaign with a blank Payment_Account__c still checks out. With two or more, ANY answer is a guess — and a wrong guess here refunds or charges against the wrong processor account, which fails at the processor at best and moves the wrong org's money at worst. So this returns null and the caller must stop and say so, rather than pick alphabetically.</p>
 <table>
 <thead>
 <tr>
@@ -10672,7 +10697,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-paymentgatewayregistry-newgateway">PaymentGatewayRegistry.newGateway()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10681,13 +10706,55 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-paymentgatewayfactory-getdefault"></a><code>getDefault(0 args)</code></td>
+<td><a id="apex-paymentgatewayfactory-soleactiveaccountid"></a><code>soleActiveAccountId(0 args)</code></td>
+<td><code>Id</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="apex-paymentgatewayregistry">PaymentGatewayRegistry<a class="headerlink" href="#apex-paymentgatewayregistry" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p>PaymentGatewayRegistry — the compile-time catalog of payment gateways this package implements. One entry per gateway: the picklist value stored on Payment_Account__c.Gateway__c, the label the Settings console shows, the gateway's pinned API version, and the IPaymentGateway class that implements it. PaymentGatewayFactory resolves an account's gateway through here; the Settings console builds its "Gateway" picker from here. Replaces the Payment_Gateway__mdt custom metadata type (removed 2026-08-10).</p>
+<p><strong>Docs note.</strong> This registry is deliberately Apex rather than custom metadata. Adding a gateway has always required shipping a new IPaymentGateway implementation in the package, so the old CMDT never made a gateway configurable — it only turned a compile-time class reference into a Type.forName() string lookup that could fail at donation time, and left the type subscriber-writable in an unprotected managed CMDT. Holding the class as a System.Type means a bad reference is a compile error in the packaging org instead of a donor-facing "Payments are temporarily unavailable" in a subscriber org.</p>
+<p>Adding a gateway is a three-line change: write the IPaymentGateway class, add an ENTRIES row here, add the matching value to the Payment_Account__c.Gateway__c picklist. PaymentGatewayRegistry_Test asserts the registry and the picklist agree, so the two places cannot drift apart silently.</p>
+<p>Stripe's API version string is the one place a Stripe release upgrade lands. It was previously Payment_Gateway__mdt.Stripe.API_Version__c; moving it here means the pinned version ships and upgrades with the code that parses the responses, which is the only thing that can safely change it.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-paymentgatewayregistry-all"></a><code>all(0 args)</code></td>
+<td><code>Map&lt;String, Entry&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentgatewayregistry-supportedvalues"></a><code>supportedValues(0 args)</code></td>
+<td><code>List&lt;String&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentgatewayregistry-get"></a><code>get(1 arg)</code></td>
+<td><code>Entry</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentgatewayregistry-issupported"></a><code>isSupported(1 arg)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentgatewayregistry-newgateway"></a><code>newGateway(1 arg)</code></td>
 <td><code>[IPaymentGateway](#apex-ipaymentgateway)</code></td>
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-paymentgatewayfactory-getmetadataforaccount"></a><code>getMetadataForAccount(1 arg)</code></td>
-<td><code>Payment_Gateway__mdt</code></td>
+<td><a id="apex-paymentgatewayregistry-apiversionfor"></a><code>apiVersionFor(1 arg)</code></td>
+<td><code>String</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -10729,61 +10796,12 @@
 </tbody>
 </table>
 <h3 id="selectors_4">Selectors<a class="headerlink" href="#selectors_4" title="Permanent link">#</a></h3>
-<h4 id="apex-ipaymentgatewaymetadataselector">IPaymentGatewayMetadataSelector<a class="headerlink" href="#apex-ipaymentgatewaymetadataselector" title="Permanent link">#</a></h4>
-<p><code>interface</code> · <code>public</code></p>
-<p>extends fflib_ISObjectSelector</p>
 <h4 id="apex-ipaymentmethodsselector">IPaymentMethodsSelector<a class="headerlink" href="#apex-ipaymentmethodsselector" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectSelector</p>
 <h4 id="apex-itransactionlogsselector">ITransactionLogsSelector<a class="headerlink" href="#apex-itransactionlogsselector" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectSelector</p>
-<h4 id="apex-paymentgatewaymetadataselector">PaymentGatewayMetadataSelector<a class="headerlink" href="#apex-paymentgatewaymetadataselector" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public inherited sharing</code></p>
-<p>extends fflib_SObjectSelector · implements <a href="#apex-ipaymentgatewaymetadataselector">IPaymentGatewayMetadataSelector</a></p>
-<p><strong>Docs note.</strong> Payment_Gateway__mdt is the type registry PaymentGatewayFactory reads to turn a Payment_Account__c's Gateway_Type__c picklist value into a concrete IPaymentGateway via Type.forName(Apex_Class_Name__c) — this selector is the only place that CMDT is queried. Adding a second gateway type means packaging a new Payment_Gateway__mdt record here, not changing PaymentGatewayFactory. API_Version__c on the 'Stripe' record is also what StripeGateway reads for its Stripe-Version request header, shared across every Stripe Payment_Account__c in the org rather than configured per-account. selectAllActive() makes this CMDT the single source of truth for the gateway-type picker in the setPayments console panel and for SetupController's save-time validation — before 2026-08-10 that panel carried its own hardcoded JS list of gateway names, which could drift from the records actually packaged here.</p>
-<p>A gateway type is absent here for exactly one reason — no Payment_Gateway__mdt record is packaged and active for it — so an admin can never select a gateway the package cannot process. Flipping Is_Active__c off retires a gateway from the picker without deleting the record, leaving existing Payment_Account__c rows that reference it resolvable by selectByDeveloperName (PaymentGatewayFactory does NOT filter on Is_Active__c — in-flight donations against a retired gateway keep working; only new accounts are blocked).</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-paymentgatewaymetadataselector-newinstance"></a><code>newInstance(0 args)</code></td>
-<td><code>[IPaymentGatewayMetadataSelector](#apex-ipaymentgatewaymetadataselector)</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentgatewaymetadataselector-getsobjecttype"></a><code>getSObjectType(0 args)</code></td>
-<td><code>Schema.SObjectType</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentgatewaymetadataselector-getsobjectfieldlist"></a><code>getSObjectFieldList(0 args)</code></td>
-<td><code>List&lt;Schema.SObjectField&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentgatewaymetadataselector-selectbydevelopername"></a><code>selectByDeveloperName(1 arg)</code></td>
-<td><code>List&lt;Payment_Gateway__mdt&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentgatewaymetadataselector-selectbydevelopernames"></a><code>selectByDeveloperNames(1 arg)</code></td>
-<td><code>List&lt;Payment_Gateway__mdt&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentgatewaymetadataselector-selectallactive"></a><code>selectAllActive(0 args)</code></td>
-<td><code>List&lt;Payment_Gateway__mdt&gt;</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 <h4 id="apex-paymentmethodsselector">PaymentMethodsSelector<a class="headerlink" href="#apex-paymentmethodsselector" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-ipaymentmethodsselector">IPaymentMethodsSelector</a></p>
@@ -10910,6 +10928,9 @@
 <h3 id="services_4">Services<a class="headerlink" href="#services_4" title="Permanent link">#</a></h3>
 <h4 id="apex-ipaymentmethodservice">IPaymentMethodService<a class="headerlink" href="#apex-ipaymentmethodservice" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
+<h4 id="apex-ipaymentsetupguideservice">IPaymentSetupGuideService<a class="headerlink" href="#apex-ipaymentsetupguideservice" title="Permanent link">#</a></h4>
+<p><code>interface</code> · <code>public</code></p>
+<p>IPaymentSetupGuideService — reads back the credential an admin built by hand in Setup and reports, step by step, what is still wrong with it. The package builds no credential (see PaymentSetupGuideService's header for why), so this is the whole of its involvement in gateway credentials: tell the admin the exact values to enter, then check their work against the org and name the field that is wrong.</p>
 <h4 id="apex-paymentmethodservice">PaymentMethodService<a class="headerlink" href="#apex-paymentmethodservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-ipaymentmethodservice">IPaymentMethodService</a></p>
@@ -10942,6 +10963,34 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="apex-paymentsetupguideservice">PaymentSetupGuideService<a class="headerlink" href="#apex-paymentsetupguideservice" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public virtual inherited sharing</code></p>
+<p>implements <a href="#apex-ipaymentsetupguideservice">IPaymentSetupGuideService</a></p>
+<p>PaymentSetupGuideService — grades the credential an admin built by hand in Setup against what the account's gateway actually needs, one step at a time. The package creates no credential (owner decision, 2026-08-10: an org may hold several gateway accounts, and a secret must never travel through an @AuraEnabled method), so the Settings → Payments panel is a guide rather than a wizard: it states the exact values, then this service reads the org back and names whichever field is wrong. Every value it checks against comes from PaymentGatewayRegistry.CredentialShape, so the instructions the panel prints and the check that grades them can never disagree. FFLib service layer. Registered as IPaymentSetupGuideService in Application.cls; reached from SetupController.getPaymentSetupGuide.</p>
+<p><strong>Docs note.</strong> Nine steps, and only seven of them can be graded from Apex. A stored secret is never readable back — ConnectApi returns the principal with an empty parameters list — so "paste your secret key" and "prove it works" are reported as 'unverifiable' rather than guessed at. That honesty is the point of the panel: an admin who sees seven greens and two "on demand" knows exactly what is left, where a wizard that claimed success would have lied.</p>
+<p>The two ConnectApi reads are behind @TestVisible protected virtual seams (fetchNamedCredential / fetchExternalCredential) because ConnectApi output classes cannot be constructed outside a test — <code>new ConnectApi.NamedCredential()</code> throws System.UnsupportedOperationException in anonymous Apex. A test subclass overrides the seams and hands back objects it builds itself, which is the only way to exercise the grading logic against a credential shape the test org does not have.</p>
+<p>Names coming out of ConnectApi are namespace-qualified in a namespaced org ("pledgivo_test__Stripe_API") while the merge formula inside the auth header keeps the bare name, so every developer-name comparison here strips a leading prefix before comparing.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-paymentsetupguideservice-buildguide"></a><code>buildGuide(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayregistry-get">PaymentGatewayRegistry.get()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -11028,8 +11077,9 @@
 <h4 id="apex-stripegateway">StripeGateway<a class="headerlink" href="#apex-stripegateway" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-ipaymentgateway">IPaymentGateway</a></p>
-<p>StripeGateway — implements IPaymentGateway for the Stripe payment platform. Credentials are loaded from a specific Payment_Account__c record via init(paymentAccountId). This enables multiple Stripe accounts in one org — each campaign selects which account to use, and the factory calls init() with the correct account Id before handing back the gateway instance. Fields loaded from Payment_Account__c: Named_Credential__c  → Apex Named Credential for API callouts (e.g. 'Stripe_API') Publishable_Key__c   → sent to VF iframe for client-side Stripe.js This package has no inbound webhook: payment outcomes are confirmed by re-fetching the PaymentIntent from Stripe (see retrievePaymentIntent / the reconciliation scheduler), so no webhook signing secret is stored anywhere. API version is read from Payment_Gateway__mdt (DeveloperName = 'Stripe') — shared across all accounts.</p>
+<p>StripeGateway — implements IPaymentGateway for the Stripe payment platform. Credentials are loaded from a specific Payment_Account__c record via init(paymentAccountId). This enables multiple Stripe accounts in one org — each campaign selects which account to use, and the factory calls init() with the correct account Id before handing back the gateway instance. Fields loaded from Payment_Account__c: Named_Credential__c  → Apex Named Credential for API callouts. Org-local, built by hand by the admin in Setup and then selected here — this package ships no credential of its own and creates none. Publishable_Key__c   → sent to VF iframe for client-side Stripe.js This package has no inbound webhook: payment outcomes are confirmed by re-fetching the PaymentIntent from Stripe (see retrievePaymentIntent / the reconciliation scheduler), so no webhook signing secret is stored anywhere. API version is pinned in PaymentGatewayRegistry — shared across all accounts, and shipped with the code that parses Stripe's responses so the two can never disagree.</p>
 <p><strong>Docs note.</strong> StripeCalloutException carries two extra classification signals beyond the message that the off-session dunning path depends on: declineCode (Stripe's granular decline_code, e.g. 'stolen_card') lets the retry logic recognize a terminal decline and stop retrying instead of burning the full retry cadence, and isTransient marks a failure as INDETERMINATE — a 5xx or an unparseable/empty error body, where the charge may actually have gone through on Stripe's side. A caller must treat isTransient=true as "re-verify via retrievePaymentIntent before deciding", never as a confirmed decline, or a retry risks double-charging the donor.</p>
+<p>The pinned Stripe-Version comes from PaymentGatewayRegistry, which ships and upgrades with the response-parsing code in this class — the only thing that can safely change it. It was previously read from Payment_Gateway__mdt.Stripe.API_Version__c on every gateway instantiation, which cost a SOQL query per donation and left the version editable in a subscriber org independently of the code that parses what Stripe sends back.</p>
 <p>Exposes the account init() was called with so a caller can record WHICH Stripe account minted a token without threading the id alongside the gateway instance. PaymentMethodService stamps it onto Payment_Method__c.Payment_Account__c — a cus_/pm_ pair is only chargeable on the account that created it, so the wallet row has to remember which one that was.</p>
 <p>Null is the correct outcome far more often than it looks, and it is NOT an error: Stripe posts the balance transaction when the charge settles, so a PaymentIntent read before that (an ACH debit still processing, a card charge fetched the same instant it succeeded) legitimately has none. Callers must read null as "not known yet" and leave the field alone rather than writing a zero fee, which would look like a free charge.</p>
 <p>Amounts are scaled with the BALANCE TRANSACTION's own currency, not the PaymentIntent's. They differ whenever the charge is settled into a different currency than it was presented in, and it is the settlement currency the fee and net are denominated in — scaling those by the presentment currency would be wrong by up to 100x the moment either side is a zero-decimal currency such as JPY.</p>
@@ -11059,6 +11109,11 @@
 </tr>
 <tr>
 <td><a id="apex-stripegateway-getpublishablekey"></a><code>getPublishableKey(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-stripegateway-classifypublishablekey"></a><code>classifyPublishableKey(1 arg)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>
@@ -11838,7 +11893,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getdefault">PaymentGatewayFactory.getDefault()</a>, <a href="#apex-refundreconciliationbatch-start">RefundReconciliationBatch.start()</a>, <a href="#apex-stripepaymentsweep-execute">StripePaymentSweep.execute()</a>, <a href="#apex-paymentgatewayfactory-hasactiveaccount">PaymentGatewayFactory.hasActiveAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a></td>
+<td><em>calls:</em> <a href="#apex-refundreconciliationbatch-start">RefundReconciliationBatch.start()</a>, <a href="#apex-stripepaymentsweep-execute">StripePaymentSweep.execute()</a>, <a href="#apex-paymentgatewayfactory-hasactiveaccount">PaymentGatewayFactory.hasActiveAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12013,7 +12068,6 @@
 <h4 id="apex-setupcontroller">SetupController<a class="headerlink" href="#apex-setupcontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p><strong>Docs note.</strong> Backing controller for the entire internal admin setup console — record type mapping, general settings, payment account CRUD/connection test, page-design CRUD, scheduled-job status, org feature detection, and the health check panel. Nearly every read method here is deliberately NOT @AuraEnabled(cacheable=true): the setup screens re-load imperatively after every save/reset so the admin sees their own change immediately, and a cacheable method served imperatively would instead return Lightning's stale client cache. SYSTEM_TEMPLATE_NAMES (below) protects the 10 packaged page-design themes seeded by PostInstallHandler, plus five legacy names from before the 2026-07-24 theme rebuild, from admin edit/delete — see isSystemTemplateName() at the page-design CRUD actions. runHealthCheck()'s scheduled-job check and getSetupGuide()'s "background jobs" step share countPipelineJobs(), which counts every cron entry PostInstallHandler.scheduleJobs() creates — see EXPECTED_PIPELINE_JOBS. getSetupGuide() is the backing read for the Get Started panel (setGetStarted): the ordered, live-checked version of the post-install checklist published at docs-site/docs/getting-started/after-you-install.md and pointed at by the package's postInstallUrl. Keep the two in step — a step added here needs a section there, and vice versa, or the page a subscriber is redirected to stops matching what their org shows them.</p>
-<p>Serves the setPayments panel's "Gateway type" picker straight from Payment_Gateway__mdt, so the list of selectable gateways is the list of gateways the package actually implements. This replaced a hardcoded GATEWAY_TYPES array in setPayments.js (2026-08-10) that listed four gateways with no CMDT record or IPaymentGateway class behind them.</p>
 <p>The ordered, live-checked post-install checklist behind the Get Started panel. Each step reports its own status from the org rather than from a stored "done" flag, so an admin who undoes a step (deactivates the last payment account, aborts the cron jobs) sees it reopen. That is deliberate: there is no Setup_Step_Complete__c field anywhere, and there should not be one — a checklist that remembers being ticked lies the moment the org drifts.</p>
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration. The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
 <p>Returns the raw Settings__c on purpose — ControllerAction.run() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on ControllerAction.</p>
@@ -12131,6 +12185,11 @@
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
+<td><a id="apex-setupcontroller-getgatewaycatalog"></a><code>getGatewayCatalog(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
 <td><a id="apex-setupcontroller-savepaymentaccount"></a><code>savePaymentAccount(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
@@ -12142,6 +12201,11 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-testpaymentaccount"></a><code>testPaymentAccount(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-getpaymentsetupguide"></a><code>getPaymentSetupGuide(1 arg)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
@@ -12216,13 +12280,13 @@
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-setupcontroller-getgatewaytypecatalog"></a><code>getGatewayTypeCatalog(0 args)</code></td>
-<td><code>Map&lt;String, Object&gt;</code></td>
-<td><code>@AuraEnabled</code></td>
-</tr>
-<tr>
 <td><a id="apex-setupcontroller-save"></a><code>save(0 args)</code></td>
 <td><code>Id</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayregistry-newgateway">PaymentGatewayRegistry.newGateway()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-pagecanvasblocks-buildunified">PageCanvasBlocks.buildUnified()</a>, <a href="#apex-logsselector-newinstance">LogsSelector.newInstance()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-communityservice-checkstripecredentialaccess">CommunityService.checkStripeCredentialAccess()</a>, <a href="#apex-settingsservice-experiencenetworkid">SettingsService.experienceNetworkId()</a>, <a href="#apex-settingsservice-donationpagepath">SettingsService.donationPagePath()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-postinstallhandler-schedulejobs">PostInstallHandler.scheduleJobs()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -12335,6 +12399,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-paymentaccountsselector-querylocatoractive"></a><code>queryLocatorActive(0 args)</code></td>
+<td><code>Database.QueryLocator</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-paymentaccountsselector-selectall"></a><code>selectAll(0 args)</code></td>
 <td><code>List&lt;Payment_Account__c&gt;</code></td>
 <td></td>
@@ -12401,9 +12470,12 @@
 <p>Matching on PermissionSetId alone also covers a grant delivered through a permission set GROUP — it is not the gap it looks like. Verified against a live org 2026-08-11: adding a granting permission set to a group makes the platform materialize a SECOND SetupEntityAccess row whose ParentId is the group's own backing PermissionSet (Type = 'Group'), and a group assignment's PermissionSetAssignment.PermissionSetId points at that same backing permission set. So queryGrantingPermSetIds() returns the group's id too and this join hits. Guest users can be assigned permission set groups, so the case is reachable.</p>
 <p>SetupEntityType = 'ExternalCredentialParameter' is the discriminator checkStripeCredentialAccess()'s own header already specifies — SetupEntityId alone is not enough, since an arbitrary stand-in id used for test coverage could otherwise collide with an unrelated SetupEntityAccess row of a different entity type that happens to share a key prefix pattern. Pulled into its own @TestVisible protected virtual seam, like queryNetworks()/resolveGuestUserId() above, because SetupEntityAccess.SetupEntityType is a system-derived, non-writeable field (confirmed against a live org, 2026-08-11: DML on an explicit SetupEntityType throws "Field is not writeable") — so a test cannot insert a row whose SetupEntityType is 'ExternalCredentialParameter' without a real ExternalCredentialPrincipal id, which is not creatable via Apex DML. Stubbing this seam (see CommunityService_Test's StubStripeCheck) is the only way to test the join logic without asserting on org state.</p>
 <p>Shared by checkGuestPermissionSet() and checkStripeCredentialAccess() — both need the same site's guest user, resolved by the exact-name convention "&lt;Site Name&gt; Site Guest User" (see checkGuestPermissionSet()'s header for why an exact match, not LIKE). @TestVisible protected virtual, like queryNetworks()/ queryNetworkById() above, so a test can hand back an arbitrary user Id — a real Guest-licensed User cannot be created from Apex DML, so checkStripeCredentialAccess()'s "assignedToGuest=true" test path has no other way to reach the assignment-count query without asserting on org state. More than one active Guest user matching the name convention is treated the same as zero — UNRESOLVABLE, not "pick the first one". A Salesforce Site (Visualforce) and an Experience site can share a display name, so an arbitrary row would let step 4/5 report a false Done off the wrong guest user while real donations keep failing. LIMIT 2 (not 1) is what makes that ambiguity detectable at all — see I1 in the 2026-08-10 site-setup-guide-redesign final review.</p>
-<p>Deliberate duplication of the principal-lookup query inside SetupController.stripeCredentialIsGranted() and of its namespacePrefix() helper — pre-approved, not a bug to "fix" by extracting a shared helper. A separate change is touching SetupController's payments path at the same time this file is edited; sharing a helper would create a merge collision between the two. Reconcile the two copies once both branches merge. The bare-name-then-prefixed-name fallback exists because the developer name is namespaced in a subscriber org and bare in the packaging org, and ConnectApi takes a plain String with no namespace inference.</p>
+<p>Resolved from the org's own payment accounts, never from a credential name this class knows. The package stopped shipping Stripe_API / Stripe_External in 2026-08: the admin builds the External Credential + Named Credential pair by hand in Setup, once per gateway account, and names them whatever they like. A hardcoded lookup would therefore report "no credential" in almost every subscriber org and turn step 5 permanently red. So walk the same chain the payments panel walks — active Payment_Account__c rows name a Named Credential, and each Named Credential names the External Credential whose principals carry the key. An org with several Stripe accounts has several pairs, and a grant on ANY of them lets that account's donations through, so every principal counts. This supersedes the reconcile-after-merge note that stood here while SetupController.paymentCredentialGrantedToGuest() was being written on a sibling branch; the two now differ by intent — that one grades one chosen account, this one asks whether the site's guest user can reach any configured account at all. The name-resolution walk also removes the reason the old bare-name-then-prefixed-name fallback existed: a name read off a Payment_Account__c row is already whatever the admin typed, in whatever form this org stores it, so there is no namespace form to guess at.</p>
+<p>The two ConnectApi reads are split out as overridable seams so the join above is testable at all: its body only runs when getNamedCredential() SUCCEEDS, and no test can make that happen — a test cannot create a Named Credential, and depending on whichever credential this org happens to have is org state a packaged test must never assert on. Without the seams the whole walk (credential → its external credentials → their principals) is permanently unreachable code. They deliberately return plain Apex types rather than the ConnectApi wrappers, so a stub can supply them without constructing a ConnectApi.NamedCredential; see CommunityService_Test.StubCredentialChain.</p>
+<p>Returns the developer names of the external credentials a Named Credential points at, or an empty list if the credential was renamed or never built. That is a finding for the payments panel, not a reason to abandon the org's other payment accounts, so it is logged and swallowed rather than thrown.</p>
 <p>Only NamedPrincipal-type principals count. An external credential may carry several principals of different types, and a grant on one does NOT enable a callout that runs as another: the Stripe callouts this check exists for run as the credential's named principal ("OrgPrincipal"), so a permission set granting, say, a PerUserPrincipal would have satisfied the old unfiltered lookup and shown step 5 as Done on a site whose donations still fail at payment. Verified against a live org 2026-08-11: the packaged credential's sole principal reports principalName 'OrgPrincipal' / principalType NamedPrincipal, and its id is the SetupEntityId the grant rows carry.</p>
 <p>Split out of queryStripePrincipalIds() as a pure static so the filter itself is unit testable: ConnectApi.ExternalCredentialPrincipal cannot be constructed outside a test context (System.UnsupportedOperationException), but inside one it can — so a test can hand this method a hand-built mixed list and assert the filtering, with no live External Credential and no stubbing of the ConnectApi seam.</p>
+<p>@TestVisible protected virtual for the same reason as queryStripePrincipalIds() above — a test needs to drive the principal walk without depending on what the running org has configured.</p>
 <table>
 <thead>
 <tr>

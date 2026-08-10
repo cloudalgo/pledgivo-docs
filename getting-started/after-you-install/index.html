@@ -2037,32 +2037,41 @@ the single most common reason a donation link 404s. The Get Started panel shows 
 <em>Almost</em> until its status is <code>Live</code>.</p>
 <p>Full walkthrough: <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a>.</p>
 <h2 id="connect-stripe">Connect Stripe<a class="headerlink" href="#connect-stripe" title="Permanent link">#</a></h2>
-<p>This package <strong>never ships or stores a payment key of its own.</strong> You add your own Stripe
-keys, under a Named Credential, and the secret never touches a custom field.</p>
-<p>Settings console → <strong>Payment Accounts</strong> → <strong>New</strong>. Until an active payment account exists,
-the donation form cannot take money.</p>
+<p>This package <strong>never ships, stores, or creates a payment credential of its own.</strong> You build the
+External Credential and Named Credential yourself in Setup — that is where your Stripe secret key
+lives, encrypted, and it never touches a custom field or an Apex method.</p>
+<p>Settings console → <strong>Payments</strong> is the guide for that build: nine steps with the exact values to
+paste, each one graded against what your org actually says rather than ticked off by hand. Work
+down it, then add a <strong>Payment Account</strong> pointing at the finished Named Credential. Until an active
+payment account exists, the donation form cannot take money.</p>
 <p>Full walkthrough: <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
 <h2 id="grant-the-stripe-credential">Grant the Stripe credential<a class="headerlink" href="#grant-the-stripe-credential" title="Permanent link">#</a></h2>
-<p><span class="fn-chip">Setup only — cannot be automated</span></p>
-<p><strong>This is the step that catches people out.</strong> Salesforce does not allow a <em>managed</em> permission
-set to grant access to an external credential principal, so this package physically cannot
-ship the grant, and no post-install script can create it either. You have to make your own
-permission set in your own org.</p>
-<p>Every Stripe callout fails until you do — including the donation form, refunds, and the
-reconciliation jobs.</p>
+<p><span class="fn-chip">One assignment — deliberately left to you</span></p>
+<p><strong>This is the step that catches people out.</strong> A credential nobody is granted is a credential
+nobody can use — and granting it to your Experience Cloud site's <strong>guest user</strong> widens what an
+anonymous visitor can reach, so it stays your decision to make. The package never does it.</p>
+<p>Public donations fail at the payment step until you do it. Everything else on the page works,
+which is exactly what makes it easy to miss.</p>
 <ol>
-<li>Setup → <strong>Permission Sets</strong> → <strong>New</strong>. Name it anything, e.g. <code>Stripe Credential Access</code>.</li>
-<li>Open it → <strong>External Credential Principal Access</strong> → <strong>Edit</strong>.</li>
-<li>Add the Stripe external credential's <strong><code>OrgPrincipal</code></strong> and save.</li>
-<li><strong>Manage Assignments</strong> → assign it to your fundraising users <strong>and</strong> to your Experience
-   Cloud site's guest user.</li>
+<li>Setup → <strong>Permission Sets</strong> → the permission set you created for payments (step 6 of the
+   Payments guide), or <strong>New</strong> if you haven't yet.</li>
+<li>On it, <strong>Apps → External Credential Principal Access → Edit</strong> → enable your external
+   credential's principal → <strong>Save</strong>.</li>
+<li><strong>Manage Assignments</strong> → <strong>Add Assignment</strong> → assign your Experience Cloud site's <strong>guest
+   user</strong>, plus any fundraising staff who take payments or issue refunds.</li>
 </ol>
 <div class="admonition danger">
 <p class="admonition-title">Don't forget the guest user</p>
 <p>Assigning it to staff but not to the site guest user is the failure mode that looks
 healthiest: internal testing works, and every public donation fails at payment.</p>
 </div>
-<p>Once any permission set holds the grant, the Get Started panel turns this step green.</p>
+<div class="admonition info">
+<p class="admonition-title">Why the permission set can't be part of the package</p>
+<p>Salesforce does not allow a <em>managed</em> permission set to grant access to an external
+credential principal — the API rejects it outright. That's why this set has to be one you
+create in your own org, and why <code>Fundraising_Admin</code> can never ship with the grant on it.</p>
+</div>
+<p>Once the guest user holds the assignment, the Get Started panel turns this step green.</p>
 <h2 id="background-jobs">Background jobs<a class="headerlink" href="#background-jobs" title="Permanent link">#</a></h2>
 <p>Donations are finalized, payments swept, refunds reconciled, and campaign totals repaired by
 scheduled Apex — <strong>21 cron entries</strong> in total. The install schedules all of them.</p>

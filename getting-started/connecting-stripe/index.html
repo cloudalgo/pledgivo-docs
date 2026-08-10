@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Store Stripe credentials in a Named Credential, create a Payment Account, and route campaigns to it.">
+        <meta name="description" content="Build the Stripe credential in Setup with the Payments panel's guided checklist, then route campaigns to it.">
       
       
       
@@ -493,17 +493,6 @@
     <span class="md-ellipsis">
       
         How the pieces fit together
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#first-authorize-the-permission-sets-to-use-the-credential" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        First, authorize the permission sets to use the credential
       
     </span>
   </a>
@@ -1745,17 +1734,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#first-authorize-the-permission-sets-to-use-the-credential" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        First, authorize the permission sets to use the credential
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#connect-an-account" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1838,25 +1816,25 @@
 <thead>
 <tr>
 <th>Layer</th>
-<th>Object</th>
+<th>Where it lives</th>
 <th>Holds</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Secrets</td>
-<td>Named Credential (<code>Stripe_API</code>) + External Credential (<code>Stripe_External</code>)</td>
-<td>The Stripe secret key. Never stored in a custom field, never visible in Setup to non-admins.</td>
+<td>An External Credential + Named Credential <strong>you build in Setup</strong> — nothing ships with the package, and the package creates nothing</td>
+<td>The Stripe secret key. Never stored in a custom field, never readable back, not even by the admin who entered it.</td>
 </tr>
 <tr>
 <td>Per-account config</td>
 <td><code>Payment_Account__c</code></td>
-<td>One record per Stripe account you connect — publishable key, display label, gateway type, active status, and which capabilities (ACH, recurring) it supports.</td>
+<td>One record per Stripe account you connect — display label, processor, publishable key, live/test mode, active status, and the name of the credential it uses.</td>
 </tr>
 <tr>
 <td>Gateway registry</td>
-<td><code>Payment_Gateway__mdt</code></td>
-<td>Custom metadata identifying which Apex class (<code>StripeGateway</code>) implements a given gateway type, and which API version to call.</td>
+<td><code>PaymentGatewayRegistry</code> (Apex)</td>
+<td>The catalog of processors this package implements, and for each one the class that talks to it and the API version it's written against. It's code, not configuration — there's nothing here to set up.</td>
 </tr>
 <tr>
 <td>Routing</td>
@@ -1867,61 +1845,71 @@
 </table>
 <p>A single org can connect more than one Stripe account (for example, separate accounts per
 fiscal sponsee) and route different campaigns to different accounts.</p>
-<h2 id="first-authorize-the-permission-sets-to-use-the-credential">First, authorize the permission sets to use the credential<a class="headerlink" href="#first-authorize-the-permission-sets-to-use-the-credential" title="Permanent link">#</a></h2>
-<div class="admonition danger">
-<p class="admonition-title">One-time step after install — donations fail until you do this</p>
-<p>Salesforce only lets a user authenticate through an External Credential if their permission
-set is explicitly mapped to that credential's <em>principal</em>. That mapping is org configuration
-and <strong>cannot be included in a managed package</strong>, so it's the one thing you have to wire up by
-hand after installing. See <a href="../after-you-install/#grant-the-stripe-credential">Grant the Stripe credential</a>.</p>
-<p>The grant has to live on a permission set <strong>you create in your own org</strong> — the packaged
-<code>Fundraising_*</code> sets are managed, and a managed permission set can't be given this
-mapping at all.</p>
-<ol>
-<li><strong>Setup → Permission Sets → New.</strong> Name it anything, e.g. <code>Stripe Credential Access</code>.</li>
-<li>Open it → <strong>External Credential Principal Access</strong> → <strong>Edit</strong>.</li>
-<li>Add the Stripe external credential's <code>OrgPrincipal</code> and save.</li>
-<li><strong>Manage Assignments</strong> → assign it to <strong>both</strong>:<ul>
-<li>your fundraising staff — staff-initiated charges, refunds, and <strong>Test Connection</strong>.</li>
-<li>your Experience Cloud site's <strong>guest user</strong> — the public donation form. Donors are
-  anonymous site visitors, so their payments run under the guest user; without this the
-  donation page fails at the payment step even though everything else on it works.</li>
-</ul>
-</li>
-</ol>
-<p>The symptom of a missing mapping is a callout authorization error rather than a Stripe
-decline — if a freshly installed org reports one, check this first.</p>
-<p>This step grants <em>use of</em> the credential. It never exposes the secret key: no one mapped here
-can read the key back, and the key itself is entered separately in the next section.</p>
-</div>
 <h2 id="connect-an-account">Connect an account<a class="headerlink" href="#connect-an-account" title="Permanent link">#</a></h2>
+<p>Your secret key goes into a Salesforce <strong>credential</strong> you build in Setup — never into a field on
+a record, and never through this app. <strong>Settings → Payments</strong> is the guide for that build: it
+lists the nine things that have to be true, gives you the exact values to paste, and then reads
+your org back to tell you which ones are done and which one is wrong.</p>
 <ol>
-<li><strong>Settings → Payments → Payment Accounts.</strong></li>
-<li>Click <strong>New Payment Account</strong> and provide a label (for internal reference — donors never
-   see it) and the Stripe keys for the account you're connecting.</li>
-<li>Pledgivo stores the secret key in the <code>Stripe_API</code> Named Credential and the publishable
-   key on the <code>Payment_Account__c</code> record (publishable keys are safe to expose — they're
-   designed to ship to the browser).</li>
-<li>Click <strong>Test Connection</strong>. This makes a lightweight, read-only Stripe API call to confirm
-   the key works before you route any campaign to it.</li>
+<li><strong>Settings → Payments.</strong> Click <strong>Add account</strong> and give it a <strong>display label</strong> (internal
+   reference — donors never see it), pick the <strong>payment processor</strong>, and paste your Stripe
+   <strong>publishable key</strong>. Leave the named credential blank for now if you haven't built one.</li>
+<li>Work down the guide. Steps 1–5 build the credential pair in <strong>Setup → Named Credentials</strong>:
+   an External Credential with a Named Principal carrying your secret key as an encrypted
+   parameter, an <code>Authorization</code> header that <em>references</em> that parameter, and a Named Credential
+   pointing at <code>https://api.stripe.com</code>. Each step has a <strong>Take me there</strong> link and, where the
+   check can be made, a status read from your org rather than a tick you give yourself.</li>
+<li>Step 6 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
+   Access grant, and assigns it to the staff who take payments or issue refunds.</li>
+<li>Step 7 assigns that same permission set to your Experience Cloud <strong>site guest user</strong> — do this
+   only if you take donations from public pages.</li>
+<li>Step 8 points the Payment Account at the finished Named Credential (edit the account in the
+   list below the guide).</li>
+<li>Step 9, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
+   creates nothing — it just proves the whole chain works before you route a campaign to it.</li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Why <strong>Gateway type</strong> only lists Stripe</p>
-<p>That picker is generated from the gateway types this package actually implements, so it
-lists Stripe and nothing else. It isn't a roadmap — a gateway appears there only once its
-integration ships in a package upgrade, which keeps you from connecting an account that
-would fail at checkout rather than at setup.</p>
+<p>Press <strong>Re-check</strong> at the top of the panel after any change in Setup; the panel re-reads your org
+rather than remembering what it told you last time.</p>
+<div class="admonition tip">
+<p class="admonition-title">The two checkboxes Salesforce gets wrong</p>
+<p>A brand-new Named Credential ships with <strong>Generate Authorization Header</strong> ticked and <strong>Allow
+Formulas in HTTP Header</strong> unticked — exactly backwards for a key carried in a custom header.
+Both fail the same way: Stripe answers <em>"Invalid API Key provided"</em> even though your key is
+perfect. Step 5 of the guide names each checkbox and shows how yours is set right now, which
+is the fastest route out of that error message.</p>
 </div>
-<div class="fn-shot"><img src="../../assets/images/set-add-payment-account.png" alt="New Payment Account form"></div>
-<p class="fn-figure-caption">**What it shows.** The New Payment Account form — Display label, Gateway type, and a **Named credential** picker instead of a raw secret-key field, plus the publishable key (safe to expose) and optional display fields. There is no field anywhere on this form for the Stripe secret key itself; it's created once under Setup → Named Credentials and only referenced here.</p>
-
+<div class="admonition info">
+<p class="admonition-title">Live or test is detected, not chosen</p>
+<p>There's no mode toggle on the form. The app reads your publishable key — <code>pk_test_…</code> versus
+<code>pk_live_…</code> — and stamps the account <strong>Test</strong> or <strong>Live</strong> accordingly, so the badge in the
+account list always reflects the keys actually in use rather than what someone selected.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Two things the guide can't tick for you</p>
+<p>A stored credential parameter is <strong>write-only</strong> — Salesforce reports its own status as
+<em>Unknown</em>, so no check can confirm your secret key is present, correct, or unexpired. And
+nothing but a real call proves the key still works. That's why steps 2 and 9 are marked <em>on
+demand</em> rather than green: step 9's <strong>Test connection</strong> is what settles both, in one call.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Public donations need the guest user grant</p>
+<p>Granting the credential to your site's <strong>guest user</strong> (step 7) is the one step that widens
+what an anonymous visitor can reach through your org, so it is deliberately yours to make —
+the package never does it quietly on your behalf.</p>
+<p>Public donations fail at the payment step until you do it, even though everything else on the
+page works. The symptom is a callout authorization error rather than a Stripe decline.
+Granting <em>use of</em> the credential never exposes the key: no one assigned here can read it back.</p>
+<p>This works only because the principal is a <strong>Named Principal</strong> — Salesforce lets a guest user
+reach a shared org-level identity, never a per-user one.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Test mode vs. live mode</p>
 <p>Stripe test and live keys are separate credential sets tied to separate Stripe API
 objects — a PaymentIntent created with a test key is never visible to a live key, and
 vice versa. Connect a <strong>test-mode</strong> Payment Account while you're building out campaigns,
-and create a second, <strong>live-mode</strong> Payment Account when you're ready to accept real
-donations. Route each campaign explicitly — nothing switches automatically.</p>
+and add a second, <strong>live-mode</strong> account when you're ready to accept real donations. Each
+account gets its own credential. Route each campaign explicitly — nothing switches
+automatically.</p>
 </div>
 <h2 id="route-a-campaign-to-an-account">Route a campaign to an account<a class="headerlink" href="#route-a-campaign-to-an-account" title="Permanent link">#</a></h2>
 <p>Every Campaign that accepts donations needs its <strong>Payment account</strong> set — the

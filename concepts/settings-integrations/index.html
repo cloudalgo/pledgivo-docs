@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A three-tier settings model — a runtime-editable custom setting, a packaged metadata registry, and secrets in Named Credentials.">
+        <meta name="description" content="A three-tier settings model — a runtime-editable custom setting, a packaged gateway registry in code, and secrets in credentials your org creates.">
       
       
       
@@ -1807,14 +1807,14 @@
 </tr>
 <tr>
 <td>2</td>
-<td><code>Payment_Gateway__mdt</code> (Custom Metadata Type)</td>
-<td>Packaged, changes only via package upgrade</td>
-<td>The registry of which Apex class implements which gateway type</td>
+<td>Packaged code and metadata — <code>PaymentGatewayRegistry</code> (Apex), <code>Theme_Token__mdt</code> (Custom Metadata Type)</td>
+<td>Nobody in the subscriber org; changes only via package upgrade</td>
+<td>Facts about what the package itself ships — which class implements which processor, which theme tokens a page design may override</td>
 </tr>
 <tr>
 <td>3</td>
-<td>Named Credentials (<code>Stripe_API</code>) + External Credentials (<code>Stripe_External</code>)</td>
-<td>Admins, through Setup, never through custom Apex/fields</td>
+<td>External + Named Credentials, built by hand in Setup — the package ships none and creates none</td>
+<td>Admins, in Setup only; never through custom Apex or a custom field</td>
 <td>Secrets — API keys, tokens</td>
 </tr>
 </tbody>
@@ -1839,12 +1839,19 @@ standard (2.9% + $0.30) — and neither has any effect until a campaign opts in.
 never queries <code>Settings__c</code> directly, so a field rename or a new default only has to change in
 one place.</p>
 <h2 id="the-payment-gateway-registry">The payment gateway registry<a class="headerlink" href="#the-payment-gateway-registry" title="Permanent link">#</a></h2>
-<p><code>Payment_Gateway__mdt</code> exists so a second payment processor could be added later without
-touching the donation pipeline: it maps a gateway type to an Apex class name (implementing
-<code>IPaymentGateway</code>) and an API version. <code>PaymentGatewayFactory.getByAccount()</code> is the one place
-that resolves a <code>Payment_Account__c</code> to its gateway implementation — nothing else in the
-codebase branches on gateway type. Today, Stripe (<code>StripeGateway</code>) is the only registered
-implementation.</p>
+<p><code>PaymentGatewayRegistry</code> exists so a second payment processor could be added later without
+touching the donation pipeline: it maps a processor to the class implementing <code>IPaymentGateway</code>,
+the API version to call, and the shape of credential that processor needs.
+<code>PaymentGatewayFactory.getByAccount()</code> is the one place that resolves a <code>Payment_Account__c</code> to
+its gateway implementation — nothing else in the codebase branches on the processor. Today,
+Stripe (<code>StripeGateway</code>) is the only registered implementation.</p>
+<p>The registry is Apex rather than custom metadata, which is why tier 2 above is described as
+"packaged code and metadata" rather than "custom metadata". It used to be a CMDT
+(<code>Payment_Gateway__mdt</code>, removed August 2026), and that was the wrong tier for it: every value
+in it named something the package itself ships, so no subscriber could ever meaningfully change
+one — being data bought no flexibility and cost a compile-time check. The rule of thumb it
+produced: if an admin may need to change it between upgrades it belongs in tier 1; if every
+value names a part of the package, it belongs in code.</p>
 <h2 id="npsp-detected-not-required">NPSP, detected not required<a class="headerlink" href="#npsp-detected-not-required" title="Permanent link">#</a></h2>
 <p>Pledgivo works in any org, with or without the Nonprofit Success Pack installed. If NPSP is
 present, <code>NpspSyncService</code> optionally mirrors recurring donations to
@@ -1874,7 +1881,7 @@ its own <code>Settings__c</code> toggle, both off by default. See <a href="../..
 <li>
 <p><strong>Stripe integration</strong></p>
 <hr />
-<p>How <code>IPaymentGateway</code> and <code>Payment_Gateway__mdt</code> fit together.</p>
+<p>How <code>IPaymentGateway</code> and <code>PaymentGatewayRegistry</code> fit together.</p>
 <p><a href="../../integrations/stripe/">Read more →</a></p>
 </li>
 </ul>

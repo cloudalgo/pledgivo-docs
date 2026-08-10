@@ -1651,10 +1651,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#named-credentials" class="md-nav__link">
+  <a href="#credentials" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Named Credentials
+        Credentials
       
     </span>
   </a>
@@ -1811,10 +1811,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#named-credentials" class="md-nav__link">
+  <a href="#credentials" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Named Credentials
+        Credentials
       
     </span>
   </a>
@@ -1868,10 +1868,17 @@ account's processor; nothing else in the codebase branches on gateway type.</p>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── createSetupIntent(...)    → GatewayResult.Intent
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>└── listRecentDisputes(...)   → List&lt;GatewayResult.Dispute&gt;
 </code></pre></div>
-<p><code>StripeGateway</code> is the current, and only, implementation. <code>Payment_Gateway__mdt</code> is the
-packaged registry mapping a gateway type to its implementing Apex class name and API version —
-adding a second processor would mean a new CMDT record and a new class implementing the same
-interface, not a rewrite of <code>DonationService</code> or the reconciliation batches.</p>
+<p><code>StripeGateway</code> is the current, and only, implementation. <code>PaymentGatewayRegistry</code> is the
+catalog that maps a <code>Payment_Account__c.Gateway__c</code> value to its implementing class, its pinned
+API version, and the shape of the credential it needs. <code>PaymentGatewayFactory.getByAccount()</code>
+resolves a gateway from a specific account — never a global default — so an org with several
+Stripe accounts always charges and refunds against the right one.</p>
+<p>The registry is Apex, not custom metadata (it replaced <code>Payment_Gateway__mdt</code> in August 2026).
+Adding a processor always meant shipping a class in the package, so nothing was ever
+configurable about it; holding the class as a compile-time type means a bad reference is a build
+error here instead of a "payments are temporarily unavailable" message in a subscriber org.
+Adding a second processor is a new class, a registry entry, and a picklist value — not a rewrite
+of <code>DonationService</code> or the reconciliation batches.</p>
 <h2 id="pci-scope-card-data-never-touches-apex">PCI scope: card data never touches Apex<a class="headerlink" href="#pci-scope-card-data-never-touches-apex" title="Permanent link">#</a></h2>
 <p>The donation form embeds Stripe's Payment Element inside a same-origin Visualforce page
 (<code>stripePayment</code>), framed as an iframe on the Experience Cloud site, and communicates with the
@@ -1945,31 +1952,53 @@ itself expose a cumulative refunded total, the reconciler retrieves the PaymentI
 <p>Ticket purchases use the same staging pipeline with <code>Purchase_Type__c = 'Event_Ticket'</code>
 routing finalization to <code>EventPurchaseService</code> instead of the plain donation finalizer — see
 <a href="../../concepts/events-ticketing/">Events &amp; ticketing</a>.</p>
-<h2 id="named-credentials">Named Credentials<a class="headerlink" href="#named-credentials" title="Permanent link">#</a></h2>
+<h2 id="credentials">Credentials<a class="headerlink" href="#credentials" title="Permanent link">#</a></h2>
+<p><strong>The package ships no credential, and creates none.</strong> You build the pair by hand in Setup, once
+per Stripe account, and the <strong>Payments</strong> panel in the Settings console walks you through it and
+then reads your org back to say which field is wrong:</p>
 <table>
 <thead>
 <tr>
-<th>Name</th>
+<th>You create</th>
 <th>Holds</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>Stripe_API</code></td>
-<td>The Named Credential referencing the External Credential below</td>
+<td>External Credential (you name it)</td>
+<td>The Stripe secret key, in an encrypted parameter on a Named Principal</td>
 </tr>
 <tr>
-<td><code>Stripe_External</code></td>
-<td>The External Credential storing the actual Stripe secret key</td>
+<td>Named Credential (you name it)</td>
+<td>Points at <code>https://api.stripe.com</code>; its auth header is a merge formula that reads the parameter above</td>
+</tr>
+<tr>
+<td>A permission set of your own</td>
+<td>Grants access to that principal, assigned to staff — and, if you take public donations, to the site guest user</td>
 </tr>
 </tbody>
 </table>
-<p>No custom field anywhere in the package stores a Stripe secret key.</p>
-<p>The <code>OrgPrincipal</code> on <code>Stripe_External</code> is declared by the package, but the <strong>permission set →
-principal mapping is not</strong> — Salesforce cannot package that link, so <code>Fundraising_Admin</code> and
-<code>Fundraising_GuestDonor</code> ship without it and an admin adds it once after install. Callouts are
-unauthorized until they do; see
-<a href="../../getting-started/connecting-stripe/#first-authorize-the-permission-sets-to-use-the-credential">Connecting Stripe</a>.</p>
+<p>Each account gets its own pair, so a multi-account org keeps its keys separated the way Stripe
+does. No custom field anywhere stores a secret key, and nothing reads one back — the merge
+formula is resolved by the platform at callout time. The <code>Payment_Account__c</code> record carries
+only the <em>name</em> of the Named Credential to call, plus the publishable key.</p>
+<p>The permission set is <strong>yours, not packaged</strong>, and that is forced rather than chosen: a managed
+permission set cannot be given a principal mapping (<code>ConnectApi</code> throws
+<code>CANNOT_MODIFY_MANAGED_OBJECT</code>), so <code>Fundraising_Admin</code> and <code>Fundraising_GuestDonor</code> can never
+hold this grant no matter what the package ships.</p>
+<p>Nor can the package build the credential for you: a Named Credential created from Apex is born
+with callouts <strong>disabled</strong>, and no Apex API can enable it — so provisioning could never finish
+the job, only move the manual step somewhere less visible. <code>PaymentSetupGuideService</code> therefore
+verifies instead of creating. It reads the credential chain through <code>ConnectApi</code> and grades nine
+steps as done, action needed, or on demand — naming the exact checkbox that is wrong rather than
+repeating Stripe's "Invalid API Key provided". Two steps it can never grade: a stored secret is
+write-only (Salesforce reports its own status as <em>Unknown</em>), and only a live call proves the key
+works. That call is step 9's <strong>Test connection</strong> — it reads your Stripe account's details and
+moves no money.</p>
+<p>Granting the credential to the <strong>site guest user</strong> is the one step that widens what an anonymous
+visitor can reach, so it stays an explicit decision of yours. Public donations are unauthorized
+until it's done; the guide flags it, and see
+<a href="../../getting-started/connecting-stripe/#connect-an-account">Connecting Stripe</a>.</p>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

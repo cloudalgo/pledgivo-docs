@@ -2449,29 +2449,24 @@ payment-gateway connections your campaigns charge through.</p>
 </thead>
 <tbody>
 <tr>
-<td>Display label, Gateway type, Named Credential</td>
-<td>Required fields identifying and connecting the account</td>
-<td>Immediate. Only <strong>Stripe</strong> has a working gateway implementation today — the other listed gateway types are reserved names for future integrations and are blocked from being saved.</td>
+<td>Display label, Payment processor</td>
+<td>Required fields identifying the account</td>
+<td>Immediate. The processor list is built from what the package actually implements — <strong>Stripe</strong> today. There are no reserved "coming soon" options to pick and then be blocked on.</td>
+</tr>
+<tr>
+<td>Named credential</td>
+<td>Which credential this account authenticates with</td>
+<td>Immediate. There is no secret-key field anywhere in this panel: you build the External Credential and Named Credential yourself in Setup, and the record stores only the credential's <em>name</em>. The guided checklist above the account list walks that build and then reads your org back to grade it.</td>
 </tr>
 <tr>
 <td>Publishable key</td>
 <td>Stripe's non-secret publishable key, exposed to the donor's browser</td>
-<td>Immediate. The secret key itself is never stored on this record — only the Named Credential reference — by design.</td>
+<td>Immediate. It also determines the <strong>Mode</strong> badge: a <code>pk_test_…</code> key marks the account Test, <code>pk_live_…</code> marks it Live. There is no mode field to set — and therefore none to set wrongly.</td>
 </tr>
 <tr>
 <td>Active</td>
 <td>Whether the account can be charged through</td>
 <td>Immediate and load-bearing: deactivating an account instantly blocks any campaign linked to it from taking a charge — the next donation attempt is rejected until an active account is linked.</td>
-</tr>
-<tr>
-<td>Supports recurring / Supports ACH</td>
-<td><em>(No effect — known gap.)</em> Nothing in the current Stripe integration reads either flag. Recurring-gift availability is actually controlled by the campaign's own "Allow recurring" setting; the donation form only ever offers card payments today, so an ACH toggle has nothing to gate.</td>
-<td></td>
-</tr>
-<tr>
-<td>Display icon URL, Display order</td>
-<td>Cosmetic / admin-list ordering</td>
-<td>Not currently rendered on the live donation form — display-only within this console's own list today</td>
 </tr>
 <tr>
 <td><strong>Delete</strong> button</td>
@@ -2892,7 +2887,7 @@ not settings fields.</p>
 <li>
 <p><strong>Settings &amp; integrations concept</strong></p>
 <hr />
-<p>How the three-tier settings model (Settings, CMDT, Named Credentials) fits together.</p>
+<p>How the three-tier settings model (Settings, packaged registry, credentials) fits together.</p>
 <p><a href="../../concepts/settings-integrations/">Settings &amp; integrations →</a></p>
 </li>
 </ul>

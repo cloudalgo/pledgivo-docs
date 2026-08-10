@@ -3852,7 +3852,7 @@
 <p><code>setPayments</code></p>
 <p><code>not exposed</code></p>
 <p>Settings-console panel listing Stripe/other gateway payment accounts with add, edit, test-connection, and delete actions backed by Named Credentials.</p>
-<p><strong>Docs note.</strong> getNamedCredentials lists org Named Credentials for the picker — the actual Stripe secret key is never read into this panel or stored on Payment_Account__c; only the Named Credential reference is saved, per the locked "secrets in Named Credentials only" rule. testPaymentAccount performs a live connectivity check against the configured credential before an admin trusts it for guest checkout.</p>
+<p><strong>Docs note.</strong> getNamedCredentials lists org Named Credentials for the picker — the actual Stripe secret key is never read into this panel or stored on Payment_Account__c; only the Named Credential reference is saved, per the locked "secrets in Named Credentials only" rule. testPaymentAccount performs a live connectivity check against the configured credential before an admin trusts it for guest checkout. The "Gateway type" picker is served by getGatewayTypeCatalog (Payment_Gateway__mdt), so it lists exactly the gateways this package implements — a gateway with no packaged CMDT record is not offerable, and SetupController re-checks the value on save.</p>
 <h4 id="setpubliclinks">Settings: Public Links<a class="headerlink" href="#setpubliclinks" title="Permanent link">#</a></h4>
 <p><code>setPublicLinks</code></p>
 <p><code>not exposed</code></p>

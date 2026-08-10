@@ -10741,7 +10741,8 @@
 <h4 id="apex-paymentgatewaymetadataselector">PaymentGatewayMetadataSelector<a class="headerlink" href="#apex-paymentgatewaymetadataselector" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-ipaymentgatewaymetadataselector">IPaymentGatewayMetadataSelector</a></p>
-<p><strong>Docs note.</strong> Payment_Gateway__mdt is the type registry PaymentGatewayFactory reads to turn a Payment_Account__c's Gateway_Type__c picklist value into a concrete IPaymentGateway via Type.forName(Apex_Class_Name__c) — this selector is the only place that CMDT is queried. Adding a second gateway type means packaging a new Payment_Gateway__mdt record here, not changing PaymentGatewayFactory. API_Version__c on the 'Stripe' record is also what StripeGateway reads for its Stripe-Version request header, shared across every Stripe Payment_Account__c in the org rather than configured per-account.</p>
+<p><strong>Docs note.</strong> Payment_Gateway__mdt is the type registry PaymentGatewayFactory reads to turn a Payment_Account__c's Gateway_Type__c picklist value into a concrete IPaymentGateway via Type.forName(Apex_Class_Name__c) — this selector is the only place that CMDT is queried. Adding a second gateway type means packaging a new Payment_Gateway__mdt record here, not changing PaymentGatewayFactory. API_Version__c on the 'Stripe' record is also what StripeGateway reads for its Stripe-Version request header, shared across every Stripe Payment_Account__c in the org rather than configured per-account. selectAllActive() makes this CMDT the single source of truth for the gateway-type picker in the setPayments console panel and for SetupController's save-time validation — before 2026-08-10 that panel carried its own hardcoded JS list of gateway names, which could drift from the records actually packaged here.</p>
+<p>A gateway type is absent here for exactly one reason — no Payment_Gateway__mdt record is packaged and active for it — so an admin can never select a gateway the package cannot process. Flipping Is_Active__c off retires a gateway from the picker without deleting the record, leaving existing Payment_Account__c rows that reference it resolvable by selectByDeveloperName (PaymentGatewayFactory does NOT filter on Is_Active__c — in-flight donations against a retired gateway keep working; only new accounts are blocked).</p>
 <table>
 <thead>
 <tr>
@@ -10773,6 +10774,11 @@
 </tr>
 <tr>
 <td><a id="apex-paymentgatewaymetadataselector-selectbydevelopernames"></a><code>selectByDeveloperNames(1 arg)</code></td>
+<td><code>List&lt;Payment_Gateway__mdt&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentgatewaymetadataselector-selectallactive"></a><code>selectAllActive(0 args)</code></td>
 <td><code>List&lt;Payment_Gateway__mdt&gt;</code></td>
 <td></td>
 </tr>
@@ -12007,6 +12013,7 @@
 <h4 id="apex-setupcontroller">SetupController<a class="headerlink" href="#apex-setupcontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p><strong>Docs note.</strong> Backing controller for the entire internal admin setup console — record type mapping, general settings, payment account CRUD/connection test, page-design CRUD, scheduled-job status, org feature detection, and the health check panel. Nearly every read method here is deliberately NOT @AuraEnabled(cacheable=true): the setup screens re-load imperatively after every save/reset so the admin sees their own change immediately, and a cacheable method served imperatively would instead return Lightning's stale client cache. SYSTEM_TEMPLATE_NAMES (below) protects the 10 packaged page-design themes seeded by PostInstallHandler, plus five legacy names from before the 2026-07-24 theme rebuild, from admin edit/delete — see isSystemTemplateName() at the page-design CRUD actions. runHealthCheck()'s scheduled-job check and getSetupGuide()'s "background jobs" step share countPipelineJobs(), which counts every cron entry PostInstallHandler.scheduleJobs() creates — see EXPECTED_PIPELINE_JOBS. getSetupGuide() is the backing read for the Get Started panel (setGetStarted): the ordered, live-checked version of the post-install checklist published at docs-site/docs/getting-started/after-you-install.md and pointed at by the package's postInstallUrl. Keep the two in step — a step added here needs a section there, and vice versa, or the page a subscriber is redirected to stops matching what their org shows them.</p>
+<p>Serves the setPayments panel's "Gateway type" picker straight from Payment_Gateway__mdt, so the list of selectable gateways is the list of gateways the package actually implements. This replaced a hardcoded GATEWAY_TYPES array in setPayments.js (2026-08-10) that listed four gateways with no CMDT record or IPaymentGateway class behind them.</p>
 <p>The ordered, live-checked post-install checklist behind the Get Started panel. Each step reports its own status from the org rather than from a stored "done" flag, so an admin who undoes a step (deactivates the last payment account, aborts the cron jobs) sees it reopen. That is deliberate: there is no Setup_Step_Complete__c field anywhere, and there should not be one — a checklist that remembers being ticked lies the moment the org drifts.</p>
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration. The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
 <p>Returns the raw Settings__c on purpose — ControllerAction.run() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on ControllerAction.</p>
@@ -12202,6 +12209,11 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-getthemetokencatalog"></a><code>getThemeTokenCatalog(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-setupcontroller-getgatewaytypecatalog"></a><code>getGatewayTypeCatalog(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>

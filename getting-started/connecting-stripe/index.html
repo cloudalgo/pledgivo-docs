@@ -1905,6 +1905,13 @@ can read the key back, and the key itself is entered separately in the next sect
 <li>Click <strong>Test Connection</strong>. This makes a lightweight, read-only Stripe API call to confirm
    the key works before you route any campaign to it.</li>
 </ol>
+<div class="admonition note">
+<p class="admonition-title">Why <strong>Gateway type</strong> only lists Stripe</p>
+<p>That picker is generated from the gateway types this package actually implements, so it
+lists Stripe and nothing else. It isn't a roadmap — a gateway appears there only once its
+integration ships in a package upgrade, which keeps you from connecting an account that
+would fail at checkout rather than at setup.</p>
+</div>
 <div class="fn-shot"><img src="../../assets/images/set-add-payment-account.png" alt="New Payment Account form"></div>
 <p class="fn-figure-caption">**What it shows.** The New Payment Account form — Display label, Gateway type, and a **Named credential** picker instead of a raw secret-key field, plus the publishable key (safe to expose) and optional display fields. There is no field anywhere on this form for the Stripe secret key itself; it's created once under Setup → Named Credentials and only referenced here.</p>
 

@@ -2561,8 +2561,20 @@ rollups → renewal charges → auto-cancel) — none of them take effect immedi
 stripeCred → pages → publish</code>) with a running progress tally at the top. Every step carries
 exactly one status chip: <strong>Done</strong> (confirmed against your org this load), <strong>Pending</strong> (confirmed
 not done — the action is yours), or <strong>Can't verify</strong> (Salesforce exposes no API to check that
-step, so the panel says so rather than guessing at guest access, the Stripe credential grant, or
-your page list — three things that are permanently unreadable from Apex, not broken).</p>
+step, so the panel says so rather than guessing at guest access or your page list — two things
+that remain permanently unreadable from Apex, not broken).</p>
+<div class="admonition info">
+<p class="admonition-title">Step 5 (Stripe credential grant) is machine-checked, not self-confirmed</p>
+<p>This step shipped permanently <strong>Can't verify</strong> on the assumption that an external-credential
+principal grant is unreadable from Apex — that assumption was wrong. <code>ConnectApi.NamedCredentials
+.getExternalCredential()</code> exposes the credential's principals, <code>SetupEntityAccess</code> names the
+permission sets that grant one, and the site's guest user's own permission-set assignments are
+a plain query — so the panel now reports <strong>Done</strong> (a permission set granting the credential is
+assigned to this site's guest user) or <strong>Pending</strong> (it isn't), the same as every other checked
+step. The package still can never <em>ship</em> this grant — a managed permission set may not grant an
+external-credential principal — so the admin still builds it by hand once; the panel just no
+longer has to ask you to confirm your own work.</p>
+</div>
 <table>
 <thead>
 <tr>

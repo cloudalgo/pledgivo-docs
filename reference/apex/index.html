@@ -12018,6 +12018,7 @@
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration. The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
 <p>Returns the raw Settings__c on purpose — ControllerAction.run() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on ControllerAction.</p>
 <p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that SettingsService defaults to — the nulls below are deliberate, not a failed parse.</p>
+<p>Nests the Stripe-credential check under 'stripeCredential' on the same round trip rather than adding a second @AuraEnabled method — additive so every existing key keeps its meaning, and no permission-set classAccesses change is needed. See CommunityService.checkStripeCredentialAccess().</p>
 <p>One normalization for every donor-facing URL this controller composes. Both the public links panel and the setup checklist's page table append a path to this value, so a trailing slash left on it produces "…/fundraising//donate" — a 404 on Enhanced LWR.</p>
 <p>Attaches the finished public page URLs to a site-status payload so the setup checklist's page table can offer a live "Open" link per page. Composed here rather than in setSite.js deliberately: SettingsService is the single authority for the slash handling on the site URL and the two configurable paths, and a second implementation in JS would drift from it the first time a default changes. siteBaseUrl is passed in rather than always re-read because the hierarchy custom setting is cached within the transaction — right after saveExperienceSite writes a new site URL, a re-read still returns the previous one.</p>
 <table>
@@ -12397,6 +12398,8 @@
 <p>implements <a href="#apex-icommunityservice">ICommunityService</a></p>
 <p>Wraps ConnectApi.Communities so the site-creation call can be stubbed in tests. All Network SOQL uses dynamic Database.query() with a try/catch because the Network object only exists in orgs with Digital Experiences enabled.</p>
 <p><strong>Docs note.</strong> selectPreferredNetwork() resolves which Network row to report when a subscriber org has more than one Experience Cloud site (or a renamed/duplicate one) matching by name or URL prefix — it prefers an exact URL-prefix match that is Live, then any URL-prefix match, then a Live name match, then falls back to the first row queried. This tie-break order exists because "Fundraising"/"fundraising" is only a convention this package seeds, not something enforced — an admin can rename or recreate the site, and the setup console's site-status panel should still find the right one rather than surface a false "no site" result.</p>
+<p>Shared by checkGuestPermissionSet() and checkStripeCredentialAccess() — both need the same site's guest user, resolved by the exact-name convention "&lt;Site Name&gt; Site Guest User" (see checkGuestPermissionSet()'s header for why an exact match, not LIKE). @TestVisible protected virtual, like queryNetworks()/ queryNetworkById() above, so a test can hand back an arbitrary user Id — a real Guest-licensed User cannot be created from Apex DML, so checkStripeCredentialAccess()'s "assignedToGuest=true" test path has no other way to reach the assignment-count query without asserting on org state.</p>
+<p>Deliberate duplication of the principal-lookup query inside SetupController.paymentCredentialGrantedToGuest() and of its namespacePrefix() helper — pre-approved, not a bug to "fix" by extracting a shared helper. A separate change is touching SetupController's payments path at the same time this file is edited; sharing a helper would create a merge collision between the two. Reconcile the two copies once both branches merge. The bare-name-then-prefixed-name fallback exists because the developer name is namespaced in a subscriber org and bare in the packaging org, and ConnectApi takes a plain String with no namespace inference.</p>
 <table>
 <thead>
 <tr>
@@ -12458,6 +12461,16 @@
 </tr>
 <tr>
 <td><a id="apex-communityservice-checkguestpermissionset"></a><code>checkGuestPermissionSet(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-communityservice-checkstripecredentialaccess"></a><code>checkStripeCredentialAccess(1 arg)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td></td>
 </tr>

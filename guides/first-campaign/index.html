@@ -1974,6 +1974,14 @@ content the donation page shows rather than something the donor answers.</p>
 <p>Both are picked from a shared library of <strong>Content Templates</strong>, and you choose which of them this
 campaign uses from its <strong>Custom questions</strong> and <strong>FAQs</strong> cards (on the campaign's record page, or
 in the Fundraisers console). Questions you select become field blocks available in the Page Canvas.</p>
+<p>FAQs need no Page Canvas work at all, and there is no way to leave them off by accident. Whichever
+FAQs you select here are shown to donors automatically, in a <strong>Questions</strong> section at the foot of
+the form column — below the donate button, on both the Compose and Payment steps, so they can never
+end up between a donor and the button they came to press. A small <strong>? Questions</strong> link in the button
+bar jumps straight down to them. A campaign that selects no FAQs shows nothing: no empty heading, no
+placeholder.</p>
+<p>The position is fixed and is not a Page Canvas block, so it is the same on every page design and
+there is nothing to configure. What you select on this card is exactly what a donor sees.</p>
 <div class="admonition warning">
 <p class="admonition-title">A template is shared, not a per-campaign copy</p>
 <p>Every campaign that picks a question points at the <em>same</em> record. Editing the wording changes it
@@ -2001,8 +2009,8 @@ the first and third; Payment is locked.</p>
 <ol>
 <li><strong>Compose.</strong> Drag in the blocks this campaign needs, in the order you want donors to see
    them: amount/frequency, donor info, your designations (if any), custom questions, and any
-   content blocks (a story, an image, a testimonial, an FAQ from the templates you picked in
-   step 4).</li>
+   content blocks (a story, an image, a testimonial). FAQs are not a block — they render in their
+   own fixed <strong>Questions</strong> section below the donate button (see step 4).</li>
 <li><strong>Payment.</strong> The Stripe Payment Element itself is locked in place — it can't be removed or
    reordered — but its surrounding block is still editable (block label, section title, help
    text, submit button label), and you can add extra content blocks to this step.</li>

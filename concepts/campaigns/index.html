@@ -1996,7 +1996,7 @@ year-end push turns it on. The rate itself is org-wide — see
 <ol>
 <li><strong>Compose</strong> — a movable, interleavable sequence of field blocks (amount, frequency, donor
    info, custom questions, designation, tribute/dedication, employer match) and content blocks
-   (rich text, image, video, testimonial, gallery, FAQ).</li>
+   (rich text, image, video, testimonial, gallery).</li>
 <li><strong>Payment</strong> — locked. Always the Stripe Payment Element step, positioned by the framework,
    not the admin.</li>
 <li><strong>Thank You</strong> — the locked confirmation block plus optional share/call-to-action blocks.
@@ -2006,6 +2006,11 @@ year-end push turns it on. The rate itself is org-wide — see
 </ol>
 <p>Admins build this in <strong>Settings → Experience Cloud → Designs</strong>, using the Page Canvas
 composer — drag blocks into Step 1, leave Step 2 alone, customize Step 3.</p>
+<p>FAQs are deliberately <strong>not</strong> a block. Any FAQ selected on the campaign renders automatically in
+an <em>answer shelf</em> below the donation form's action bar on the Compose and Payment steps, with a
+<strong>? Questions</strong> link in the bar that jumps to it. That placement is fixed on every design, so an
+FAQ can never be dropped between the last field and the Donate button, and a campaign that has
+selected FAQs can never end up not showing them. A campaign with no FAQs shows no shelf at all.</p>
 <div class="fn-shot"><img src="../../assets/images/set-page-canvas-compose.png" alt="Page Canvas composer Compose step block list"></div>
 <p class="fn-figure-caption">**What it shows.** The Page Canvas editor showing a sequence of field and content blocks in the Compose step, with a drag handle on each.</p>
 

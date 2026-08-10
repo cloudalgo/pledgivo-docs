@@ -2557,10 +2557,16 @@ rollups → renewal charges → auto-cancel) — none of them take effect immedi
 <hr />
 <h2 id="experience-cloud">Experience Cloud<a class="headerlink" href="#experience-cloud" title="Permanent link">#</a></h2>
 <h3 id="site-domain-experience-cloud-site-domain">Site &amp; Domain (<code>Experience Cloud → Site &amp; Domain</code>)<a class="headerlink" href="#site-domain-experience-cloud-site-domain" title="Permanent link">#</a></h3>
+<p>Not a settings form — a seven-step guided checklist (<code>enable → site → guestAccess → permSet →
+stripeCred → pages → publish</code>) with a running progress tally at the top. Every step carries
+exactly one status chip: <strong>Done</strong> (confirmed against your org this load), <strong>Pending</strong> (confirmed
+not done — the action is yours), or <strong>Can't verify</strong> (Salesforce exposes no API to check that
+step, so the panel says so rather than guessing at guest access, the Stripe credential grant, or
+your page list — three things that are permanently unreadable from Apex, not broken).</p>
 <table>
 <thead>
 <tr>
-<th>Setting / action</th>
+<th>Step / action</th>
 <th>What it does</th>
 <th>Behavior on update</th>
 </tr>
@@ -2572,27 +2578,19 @@ rollups → renewal charges → auto-cancel) — none of them take effect immedi
 <td>Immediate — every other panel/endpoint that resolves "the" site reads the same stored value, so they can never disagree</td>
 </tr>
 <tr>
-<td>Guest permission-set check</td>
-<td>Advisory-only check for whether the site's Guest User has the required permission set assigned</td>
-<td>Runs automatically on load/site-selection; never blocks Save. Assigning the permission set itself is still done in Setup, not from this panel.</td>
-</tr>
-<tr>
-<td><strong>Copy CLI command</strong></td>
-<td>Gives you a command to create a new Experience Cloud site yourself</td>
-<td>Informational only — clicking it does not create anything, even though a site doesn't yet exist when it's shown</td>
-</tr>
-<tr>
-<td>Allow embedding</td>
-<td>Master switch for the JavaScript embed widget</td>
-<td>Immediate — the guest embed endpoint re-checks this on every request, no caching</td>
-</tr>
-<tr>
-<td>Allowed embed origins</td>
-<td>Comma/newline-separated list of origins allowed to embed your donate button</td>
-<td>Immediate. Not validated — an entry missing <code>https://</code> or containing a path will simply never match a real request origin, with no error surfaced anywhere. Double-check each entry is a bare scheme+host.</td>
+<td>Step 6 page table</td>
+<td>Lists all six public pages (Home, Donate, Thank you, Receipt, Donor portal, Tickets) against the path your org is actually configured with, plus a live link to open each one</td>
+<td>Read-only — pages are still built by hand in Experience Builder; this table never writes anything</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Embedding</strong> (Allow embedding master switch + Allowed embed origins) sits as its own always-open
+block at the foot of the panel, deliberately outside the seven-step checklist and its tally — it's
+optional and unrelated to whether the site itself is ready to take donations. Allowed embed
+origins is not validated — an entry missing <code>https://</code> or containing a path will simply never
+match a real request origin, with no error surfaced anywhere; double-check each entry is a bare
+scheme+host.</p>
+<p>Full walkthrough: <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a>.</p>
 <h3 id="public-links-experience-cloud-public-links">Public Links (<code>Experience Cloud → Public Links</code>)<a class="headerlink" href="#public-links-experience-cloud-public-links" title="Permanent link">#</a></h3>
 <p>Entirely read-only — nothing on this panel is a setting you change here. It's a live, always-fresh
 readout of donation/fundraiser/team links built from the <strong>Donation page path</strong> (set in

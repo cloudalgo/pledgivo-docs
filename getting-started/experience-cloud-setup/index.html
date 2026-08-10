@@ -472,10 +472,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-create-the-site" class="md-nav__link">
+  <a href="#1-enable-digital-experiences" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Create the site
+        1. Enable Digital Experiences
       
     </span>
   </a>
@@ -483,10 +483,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-build-the-donate-page" class="md-nav__link">
+  <a href="#2-create-the-site" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Build the Donate page
+        2. Create the site
       
     </span>
   </a>
@@ -494,10 +494,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-build-the-other-pages-you-need" class="md-nav__link">
+  <a href="#3-build-the-donate-page" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Build the other pages you need
+        3. Build the Donate page
       
     </span>
   </a>
@@ -505,10 +505,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-activate-guest-access" class="md-nav__link">
+  <a href="#4-build-the-other-pages-you-need" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Activate guest access
+        4. Build the other pages you need
       
     </span>
   </a>
@@ -516,10 +516,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-publish" class="md-nav__link">
+  <a href="#5-activate-guest-access" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Publish
+        5. Activate guest access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Publish
       
     </span>
   </a>
@@ -1745,10 +1756,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-create-the-site" class="md-nav__link">
+  <a href="#1-enable-digital-experiences" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Create the site
+        1. Enable Digital Experiences
       
     </span>
   </a>
@@ -1756,10 +1767,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-build-the-donate-page" class="md-nav__link">
+  <a href="#2-create-the-site" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Build the Donate page
+        2. Create the site
       
     </span>
   </a>
@@ -1767,10 +1778,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-build-the-other-pages-you-need" class="md-nav__link">
+  <a href="#3-build-the-donate-page" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Build the other pages you need
+        3. Build the Donate page
       
     </span>
   </a>
@@ -1778,10 +1789,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-activate-guest-access" class="md-nav__link">
+  <a href="#4-build-the-other-pages-you-need" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Activate guest access
+        4. Build the other pages you need
       
     </span>
   </a>
@@ -1789,10 +1800,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-publish" class="md-nav__link">
+  <a href="#5-activate-guest-access" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Publish
+        5. Activate guest access
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Publish
       
     </span>
   </a>
@@ -1842,7 +1864,15 @@ donation page, you don't need Experience Cloud at all — skip ahead to
 <p>Confirm your org edition supports Experience Cloud — Enterprise, Unlimited, Performance, or
 Developer. Professional edition can't publish public pages; see
 <a href="../installation/">Installation</a>.</p>
-<h2 id="1-create-the-site">1. Create the site<a class="headerlink" href="#1-create-the-site" title="Permanent link">#</a></h2>
+<h2 id="1-enable-digital-experiences">1. Enable Digital Experiences<a class="headerlink" href="#1-enable-digital-experiences" title="Permanent link">#</a></h2>
+<p><strong>Setup → Digital Experiences → Settings → Enable Digital Experiences.</strong></p>
+<p>Until you tick this, <strong>Digital Experiences does not appear in Setup at all</strong> — there is no
+All Sites list and nothing to create. Salesforce asks you to choose an Enhanced Domain
+subdomain as part of switching it on; that name becomes part of every public donation URL,
+is org-wide, and cannot be undone, so pick one you are happy to publish.</p>
+<p>The Settings console's <strong>Site &amp; Domain</strong> panel is a seven-step checklist that starts with this
+same step, machine-checks it against your org, and links you straight to the Setup page.</p>
+<h2 id="2-create-the-site">2. Create the site<a class="headerlink" href="#2-create-the-site" title="Permanent link">#</a></h2>
 <p><strong>Setup → Digital Experiences → All Sites → New.</strong></p>
 <ol>
 <li>Choose the <strong>Build Your Own (LWR)</strong> template.</li>
@@ -1852,7 +1882,7 @@ Developer. Professional edition can't publish public pages; see
    <strong>Experience Builder → Settings → URL &amp; Access</strong>.</li>
 <li>Click <strong>Create</strong>. Site creation runs as a background job and can take several minutes.</li>
 </ol>
-<h2 id="2-build-the-donate-page">2. Build the Donate page<a class="headerlink" href="#2-build-the-donate-page" title="Permanent link">#</a></h2>
+<h2 id="3-build-the-donate-page">3. Build the Donate page<a class="headerlink" href="#3-build-the-donate-page" title="Permanent link">#</a></h2>
 <p>Campaigns, fundraiser pages, team pages, and event registration all share <strong>one</strong> page and
 <strong>one</strong> component — <code>Public Fundraising Experience</code>. It reads the campaign's record type,
 subtype, and URL slug to decide what to render, so you only build this once regardless of how
@@ -1878,7 +1908,7 @@ setting — it defaults to <code>/donate</code>, so leaving it blank while your 
 silently breaks every one of those links with a 404. Leave it blank if you used the default
 <code>donate</code> path above.</p>
 </div>
-<h2 id="3-build-the-other-pages-you-need">3. Build the other pages you need<a class="headerlink" href="#3-build-the-other-pages-you-need" title="Permanent link">#</a></h2>
+<h2 id="4-build-the-other-pages-you-need">4. Build the other pages you need<a class="headerlink" href="#4-build-the-other-pages-you-need" title="Permanent link">#</a></h2>
 <p>Each of these pages is independently optional, but other pages link to them <strong>by URL</strong> — using
 a different path than the one listed breaks that link with a 404. Build only the ones your
 rollout actually uses:</p>
@@ -1897,6 +1927,12 @@ rollout actually uses:</p>
 <td><code>/</code></td>
 <td>Campaign Gallery</td>
 <td>A public campaign directory — many sites already have a Home page, in which case just add the component to it</td>
+</tr>
+<tr>
+<td>Thank you</td>
+<td><code>thank-you</code></td>
+<td>Thank You</td>
+<td>Event checkout — the buyer is sent here immediately after a successful charge</td>
 </tr>
 <tr>
 <td>Receipt</td>
@@ -1918,19 +1954,35 @@ rollout actually uses:</p>
 </tr>
 </tbody>
 </table>
+<p><code>thank-you</code>, <code>receipt</code> and <code>tickets</code> are fixed paths — build them exactly as written. <code>donate</code>
+and <code>donor</code> are configurable in the Settings console under <strong>General → Organization &amp; Donations</strong>
+and <strong>General → Email &amp; Receipts</strong>. The <strong>Site &amp; Domain</strong> panel's step 6 shows the paths your org
+is actually configured with, plus a live link to each page so you can confirm it loads.</p>
 <p>Build each the same way as the Donate page: <strong>New Page → Standard → Flexible Layout</strong>, set the
 URL in Page Properties, drag in the named component, <strong>Save</strong>.</p>
-<h2 id="4-activate-guest-access">4. Activate guest access<a class="headerlink" href="#4-activate-guest-access" title="Permanent link">#</a></h2>
-<p><strong>Setup → Digital Experiences → All Sites → your site → Administration → Members</strong> (or from
-Experience Builder: <strong>Settings → General</strong>). Confirm public access is enabled — the "Build Your
-Own (LWR)" template turns this on by default, and it's what creates the site's Guest User
-record.</p>
-<p>Then assign <strong><code>Fundraising_GuestDonor</code></strong> to that Guest User's profile:
-<strong>Setup → Users → Profiles → find the Site Guest User profile → Permission Set Assignments</strong>
-(or assign it directly to the Guest User record). Without this permission set, guest visitors
-can view campaign pages but the donation form cannot submit — see
-<a href="../installation/">Installation</a>.</p>
-<h2 id="5-publish">5. Publish<a class="headerlink" href="#5-publish" title="Permanent link">#</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Thank you is not optional if you sell tickets</p>
+<p>Event checkout navigates to <code>thank-you</code> right after the charge succeeds. An org that skipped
+this page takes the buyer's money and lands them on a 404 — the failure happens after payment,
+so nothing earlier in your testing catches it.</p>
+</div>
+<h2 id="5-activate-guest-access">5. Activate guest access<a class="headerlink" href="#5-activate-guest-access" title="Permanent link">#</a></h2>
+<p><strong>Setup → Digital Experiences → All Sites</strong>, then click <strong>Workspaces</strong> next to your site →
+<strong>Builder → Settings → General</strong>. Enable <strong>Public Access</strong> — without it, every visitor gets a
+login page instead of your donation form, no matter what permission sets are assigned below.
+Salesforce exposes no API to read this toggle back, so you're confirming it yourself; the Site &amp;
+Domain panel marks this step <strong>Can't verify</strong> for the same reason, not because anything is wrong.</p>
+<p>Then assign <strong><code>Fundraising_GuestDonor</code></strong> to that Guest User's profile: from the same
+<strong>Workspaces</strong> screen, open <strong>Administration → Members</strong> and assign the permission set to the
+Guest User profile. Without it, guest visitors can view campaign pages but the donation form
+cannot submit — see <a href="../installation/">Installation</a>.</p>
+<p>Finally, grant the Stripe credential to that same Guest User. Salesforce does not let a managed
+permission set grant access to an external credential principal, so this package can never ship
+that grant — you create your own permission set holding the Stripe external credential's
+<code>OrgPrincipal</code> and assign it to the guest user as well as to your fundraising staff. Apex can't
+read the grant back either, so this is <strong>Can't verify</strong> too. Full walkthrough:
+<a href="../after-you-install/#grant-the-stripe-credential">Grant the Stripe credential</a>.</p>
+<h2 id="6-publish">6. Publish<a class="headerlink" href="#6-publish" title="Permanent link">#</a></h2>
 <p>Click <strong>Publish</strong> in Experience Builder (top-right). This is a separate step from saving your
 pages — nothing you build in Builder is visible to guest users until you publish.</p>
 <div class="admonition warning">

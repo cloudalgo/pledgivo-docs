@@ -2021,10 +2021,16 @@ type. Decide now if you are going to.</p>
 <p>Donors give on an Experience Cloud site, not inside Salesforce. Internal-only use — staff
 recording gifts taken over the phone — does not need one; anything public does.</p>
 <ol>
-<li>Settings console → <strong>Site &amp; Domain</strong> → <strong>Create site</strong>. This builds the site and applies
-   the guest-user configuration the donation flow needs.</li>
-<li>Go to Setup → <strong>Digital Experiences → All Sites</strong>, open the site's Builder, and
-   <strong>publish</strong> it.</li>
+<li>If Setup has no <strong>Digital Experiences</strong> menu, switch the feature on first:
+   Setup → <strong>Digital Experiences → Settings → Enable Digital Experiences</strong>. It is org-wide,
+   asks you to pick an Enhanced Domain subdomain, and cannot be undone.</li>
+<li>Settings console → <strong>Site &amp; Domain</strong>. The panel is a seven-step checklist: create or pick your
+   site in step 2, then work down. Steps it can verify against your org are marked Done or
+   Pending; steps Salesforce exposes no API for are marked <strong>Can't verify</strong> and are yours to
+   confirm.</li>
+<li>In Experience Builder, enable <strong>Settings → General → Public Access</strong>, then <strong>publish</strong> the
+   site. Both are required — public access without publishing serves nothing, and publishing
+   without public access serves a login page.</li>
 </ol>
 <p><strong>A site that exists but has never been published serves nothing to the public.</strong> This is
 the single most common reason a donation link 404s. The Get Started panel shows the site as

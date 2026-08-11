@@ -1995,17 +1995,25 @@ hold this grant no matter what the package ships.</p>
 <p>Nor can the package build the credential for you: a Named Credential created from Apex is born
 with callouts <strong>disabled</strong>, and no Apex API can enable it — so provisioning could never finish
 the job, only move the manual step somewhere less visible. <code>PaymentSetupGuideService</code> therefore
-verifies instead of creating. It reads the credential chain through <code>ConnectApi</code> and grades ten
-steps as done, action needed, or on demand — naming the exact checkbox that is wrong rather than
-repeating Stripe's "Invalid API Key provided". Three steps it can never grade from configuration
-alone: a stored secret is write-only (Salesforce reports its own status as <em>Unknown</em>), only a live
-call proves the key works, and only a live call proves the public key is really restricted. The
-first two are settled by step 10's <strong>Test connection</strong>, the third by step 6's probe; both read
-your Stripe account and move no money.</p>
+verifies instead of creating. It grades eleven steps as done, action needed, confirm-this-yourself,
+or on demand — naming the exact checkbox that is wrong rather than repeating Stripe's "Invalid API
+Key provided".</p>
+<p>What it can read is bounded by the platform, not by effort. <code>ConnectApi.NamedCredentials</code> reaches
+only credentials a package created itself, and every credential here is admin-built, so the guide
+reads what SOQL exposes — <code>NamedCredential</code>, two of its three callout-option fields,
+<code>SetupEntityAccess</code> and <code>PermissionSetAssignment</code> — and nothing else. The external credential, the
+stored key, the auth header, the callout URL, <em>Enabled for Callouts</em> and the Allowed Namespaces
+entry are invisible to packaged Apex, so those steps return an amber <strong>confirm this yourself</strong>
+verdict naming the exact screen and value rather than an error. A stored secret is write-only in
+any case (Salesforce reports its own status as <em>Unknown</em>). Two live calls settle the rest: step 7's
+probe proves the public key is really restricted, and step 11's <strong>Test connection</strong> proves the
+whole chain works. Both read your Stripe account and move no money.</p>
 <p>Granting the <strong>public</strong> credential to the <strong>site guest user</strong> is the one step that widens what an
 anonymous visitor can reach, so it stays an explicit decision of yours. Public donations are
-unauthorized until it's done; the guide flags it, and step 8 flags the opposite mistake — a guest
-user holding the admin credential — as a failure. See
+unauthorized until it's done; the guide flags it, and step 9 raises the opposite mistake — a guest
+user holding the admin credential — naming the permission sets the guest holds for you to check,
+since a package cannot see which credential a grant belongs to. Step 7's probe catches the same
+exposure from the other side and does grade it a failure. See
 <a href="../../getting-started/connecting-stripe/#connect-an-account">Connecting Stripe</a>.</p>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">

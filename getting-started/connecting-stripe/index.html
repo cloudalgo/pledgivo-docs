@@ -511,6 +511,18 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-two-stripe-keys-and-what-each-one-may-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two Stripe keys, and what each one may do
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The two Stripe keys, and what each one may do">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#scoping-the-restricted-key" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -518,6 +530,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1767,6 +1784,18 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-two-stripe-keys-and-what-each-one-may-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two Stripe keys, and what each one may do
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The two Stripe keys, and what each one may do">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#scoping-the-restricted-key" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1774,6 +1803,11 @@
       
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1892,31 +1926,47 @@ fiscal sponsee) and route different campaigns to different accounts.</p>
 <h2 id="connect-an-account">Connect an account<a class="headerlink" href="#connect-an-account" title="Permanent link">#</a></h2>
 <p>Your secret keys go into Salesforce <strong>credentials</strong> you build in Setup — never into a field on
 a record, and never through this app. <strong>Settings → Payments</strong> is the guide for that build: it
-lists the ten things that have to be true, gives you the exact values to paste, and then reads
+lists the eleven things that have to be true, gives you the exact values to paste, and then reads
 your org back to tell you which ones are done and which one is wrong.</p>
+<p>Never worked with Stripe's API before? Read
+<a href="#the-two-stripe-keys-and-what-each-one-may-do">The two Stripe keys, and what each one may do</a>
+first — it explains what you're being asked to create and why there are two of them. The same
+explanation sits at the bottom of the Payments panel itself, so you don't have to keep this page
+open beside it.</p>
 <ol>
 <li><strong>Settings → Payments.</strong> On an org that has no payment account yet, the guide is already
-   there — it grades your org itself, so steps 1–8 read as <em>action needed</em> and step 9 tells you
-   the account is still missing. Start at step 1; you do not need a payment account to begin.</li>
-<li>Work down the guide. Steps 1–5 build the credential pair in <strong>Setup → Named Credentials</strong>:
+   there — it grades your org itself, so steps 1–9 read as <em>action needed</em> or <em>confirm this
+   yourself</em>, and step 10 tells you the account is still missing. Start at step 1; you do not
+   need a payment account to begin.</li>
+<li>Work down the guide. Steps 1–6 build the credential pair in <strong>Setup → Named Credentials</strong>:
    an External Credential with a Named Principal carrying your secret key as an encrypted
    parameter, an <code>Authorization</code> header that <em>references</em> that parameter, and a Named Credential
-   pointing at <code>https://api.stripe.com</code>. Each step has a <strong>Take me there</strong> link and, where the
-   check can be made, a status read from your org rather than a tick you give yourself.
-   Do this twice — once for each of the two credentials described under step 9 below.</li>
-<li>Step 6 proves your <strong>public</strong> key really is a restricted one. It is on demand: press the
+   pointing at <code>https://api.stripe.com</code> with the right callout options ticked. Each step has a
+   <strong>Take me there</strong> link and, where the check can be made, a status read from your org rather
+   than a tick you give yourself. Do this twice — once for each of the two credentials described
+   under step 10 below.</li>
+<li>Step 5 is <strong>Allowed Namespaces for Callouts</strong>, and it is the one step whose absence looks like
+   nothing at all. Because this app's Apex ships inside a managed package and the credential is
+   one <em>you</em> built, Salesforce blocks the call unless the package's namespace is listed on the
+   credential. Open the Named Credential → <strong>Edit</strong> → <strong>Allowed Namespaces for Callouts</strong> and add
+   the namespace the guide prints for you; after saving it appears under <em>Managed Package Access</em>
+   on the credential. Until it is there, no Stripe call this app makes will succeed — not a
+   donation, not a refund — however correct everything else is. There are screenshots of the field
+   and of the confirmation it leaves behind in
+   <a href="../after-you-install/#allow-the-packages-namespace-to-make-the-callout">After you install</a>.</li>
+<li>Step 7 proves your <strong>public</strong> key really is a restricted one. It is on demand: press the
    button and the app makes a single read-only call that a restricted key is not allowed to
    make. If that call succeeds, you pasted a full secret key into the credential your guest user
    holds, and the step reports a <strong>failure</strong> rather than a pending item.</li>
-<li>Step 7 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
+<li>Step 8 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
    Access grant, and assigns it to the staff who take payments or issue refunds. In split mode
    there are two grants to make — one per credential — and the step grades both.</li>
-<li>Step 8 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
-   guest user</strong> — do this only if you take donations from public pages. It is also the step that
-   watches for the opposite mistake; see <em>A guest user must never hold the admin credential</em>
-   below.</li>
+<li>Step 9 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
+   guest user</strong> — do this only if you take donations from public pages. It also names every
+   permission set your guest user holds and asks you to confirm none of them grants the <em>admin</em>
+   credential; see <em>A guest user must never hold the admin credential</em> below.</li>
 <li>
-<p>Step 9 is the Payment Account itself. Click <strong>Add account</strong>, give it a <strong>display label</strong>
+<p>Step 10 is the Payment Account itself. Click <strong>Add account</strong>, give it a <strong>display label</strong>
    (internal reference — donors never see it), pick the <strong>payment processor</strong>, choose your
    credentials, and paste your Stripe <strong>publishable key</strong>. If an account already exists, edit it
    in the list below the guide instead.</p>
@@ -1933,7 +1983,7 @@ your org back to tell you which ones are done and which one is wrong.</p>
 <tr>
 <td><strong>Public named credential</strong></td>
 <td>Taking payments — the charge path a public donation page reaches</td>
-<td>Staff <em>and</em> your site guest user (step 8)</td>
+<td>Staff <em>and</em> your site guest user (step 9)</td>
 </tr>
 <tr>
 <td><strong>Admin named credential</strong></td>
@@ -1946,15 +1996,74 @@ your org back to tell you which ones are done and which one is wrong.</p>
 issue refunds. If you'd rather run a single key for now, point both fields at the same
 credential — the app accepts it; it just gives you no separation, and the guide grades the
 affected steps amber rather than green to say so.
-7. Step 10, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
-   creates nothing — it just proves the whole chain works before you route a campaign to it.</p>
+8. Step 11, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
+   creates nothing — it just proves the whole chain works before you route a campaign to it. It
+   is also the only thing that settles the steps the guide asked you to confirm yourself: if the
+   call comes back, the key is present and valid, the header is right, and the namespace grant is
+   in place, because the call could not have completed otherwise.</p>
 </li>
 </ol>
 <p>Press <strong>Re-check</strong> at the top of the panel after any change in Setup; the panel re-reads your org
 rather than remembering what it told you last time.</p>
-<h2 id="scoping-the-restricted-key">Scoping the restricted key<a class="headerlink" href="#scoping-the-restricted-key" title="Permanent link">#</a></h2>
-<p>Create the restricted key in the Stripe Dashboard under <strong>Developers → API keys → Create
-restricted key</strong>. Scope it to exactly this and nothing more:</p>
+<h2 id="the-two-stripe-keys-and-what-each-one-may-do">The two Stripe keys, and what each one may do<a class="headerlink" href="#the-two-stripe-keys-and-what-each-one-may-do" title="Permanent link">#</a></h2>
+<p>If you've never worked with Stripe's API before, start here — the rest of this page assumes it.</p>
+<p>Stripe has no username and password for software. An <strong>API key</strong> is the entire credential: a long
+string, and whoever holds it can do everything that key permits, from anywhere. There is nothing
+else to steal and no second factor behind it. That single fact is why this app asks you for two
+different keys rather than using one everywhere.</p>
+<p>You'll meet three kinds of key, all created and revealed in the Stripe Dashboard under
+<strong>Developers → API keys</strong> (<a href="https://docs.stripe.com/keys">Stripe: API keys</a>):</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Starts with</th>
+<th>Where it goes here</th>
+<th>What it can do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Publishable</strong></td>
+<td><code>pk_live_…</code> / <code>pk_test_…</code></td>
+<td>The <strong>Publishable key</strong> field on the Payment Account record</td>
+<td>Designed to be public. It is sent to the donor's browser so Stripe.js can draw the card form. It cannot charge anyone on its own.</td>
+</tr>
+<tr>
+<td><strong>Restricted</strong></td>
+<td><code>rk_live_…</code> / <code>rk_test_…</code></td>
+<td>The <strong>public</strong> External Credential</td>
+<td>Only what you explicitly grant it, resource by resource. This is the donor-facing key.</td>
+</tr>
+<tr>
+<td><strong>Secret</strong></td>
+<td><code>sk_live_…</code> / <code>sk_test_…</code></td>
+<td>The <strong>admin</strong> External Credential</td>
+<td>Everything your Stripe account can do — unrestricted, with no scopes to choose.</td>
+</tr>
+</tbody>
+</table>
+<p>The restricted key is the one you build by hand. In the Dashboard press <strong>Create restricted key</strong>
+(<a href="https://docs.stripe.com/keys/restricted-api-keys">Stripe: restricted API keys</a>); Stripe lists
+every resource in your account and you set each one to <strong>None</strong>, <strong>Read</strong> or <strong>Write</strong>. Write
+includes Read, so a resource marked Write needs nothing else. Under the covers Stripe maps this to
+HTTP verbs — reading is a <code>GET</code>, creating or changing is a <code>POST</code> — and when a key reaches for
+something it wasn't granted, Stripe answers <code>403 Forbidden</code> rather than doing it quietly.</p>
+<p>The secret key is not something you build; it already exists, and you reveal it. Because it is
+unrestricted, only staff-triggered work touches it here: issuing refunds, reading disputes, the
+nightly reconcilers, off-session recurring renewals, and <strong>Test connection</strong>. Stripe itself now
+recommends using restricted keys wherever a full secret key isn't required, which is exactly the
+split this app enforces.</p>
+<div class="admonition tip">
+<p class="admonition-title">Build the whole thing in test mode first</p>
+<p>A key beginning <code>rk_test_</code> or <code>sk_test_</code> only ever reaches Stripe's test mode: no real card is
+charged and no real money moves (<a href="https://docs.stripe.com/test-mode">Stripe: test mode</a>). Test
+and live are separate worlds — a PaymentIntent created with a test key is invisible to a live
+key, and vice versa. Connect a test-mode Payment Account while you build campaigns, then repeat
+the whole setup with the <code>_live_</code> pair when you're ready to accept real donations.</p>
+</div>
+<h3 id="scoping-the-restricted-key">Scoping the restricted key<a class="headerlink" href="#scoping-the-restricted-key" title="Permanent link">#</a></h3>
+<p>Scope it to exactly this and nothing more — leave every other resource Stripe offers on <strong>None</strong>:</p>
 <table>
 <thead>
 <tr>
@@ -2017,7 +2126,7 @@ watching runs on the admin key instead — and the admin key is never granted to
 That admin credential normally carries your <strong>full</strong> secret key: the app reaches refunds, disputes,
 the recent-PaymentIntents list and your account record through it, and Test connection reads the
 account itself.</p>
-<p>Step 6 of the guide checks the <em>Refunds: None</em> row for you. Stripe answers a restricted key with
+<p>Step 7 of the guide checks the <em>Refunds: None</em> row for you. Stripe answers a restricted key with
 <code>403 Forbidden</code> when it reaches for something it has no permission for, and that refusal is the
 only positive proof available that the key an anonymous visitor's session can reach cannot issue
 a refund.</p>
@@ -2039,7 +2148,7 @@ the difference between "nobody has abused this yet" and "nobody can."</p>
 <p>A brand-new Named Credential ships with <strong>Generate Authorization Header</strong> ticked and <strong>Allow
 Formulas in HTTP Header</strong> unticked — exactly backwards for a key carried in a custom header.
 Both fail the same way: Stripe answers <em>"Invalid API Key provided"</em> even though your key is
-perfect. Step 5 of the guide names each checkbox and shows how yours is set right now, which
+perfect. Step 6 of the guide names each checkbox and shows how yours is set right now, which
 is the fastest route out of that error message.</p>
 </div>
 <div class="admonition info">
@@ -2049,17 +2158,28 @@ is the fastest route out of that error message.</p>
 account list always reflects the keys actually in use rather than what someone selected.</p>
 </div>
 <div class="admonition info">
-<p class="admonition-title">Three things the guide can't tick for you</p>
-<p>A stored credential parameter is <strong>write-only</strong> — Salesforce reports its own status as
-<em>Unknown</em>, so no check can confirm your secret key is present, correct, or unexpired. And
-nothing but a real call proves the key still works, or proves that the key your guest user
-holds is genuinely restricted. That's why steps 2, 6 and 10 stay grey rather than green:
-step 10's <strong>Test connection</strong> settles the first two, and step 6's probe settles the third.
-Both are single read-only calls that move no money.</p>
+<p class="admonition-title">Amber isn't a warning — it's a question the guide can't answer</p>
+<p>Several steps come back in an amber <strong>confirm this yourself</strong> state, with the exact screen and
+value to go and look at. That is a limit of what installed software is allowed to see, not a
+sign anything is wrong.</p>
+<p>Salesforce deliberately hides a subscriber's own credentials from managed-package code: an app
+installed in your org can read the credentials <em>it</em> shipped, and no others. Every credential
+here is one you built by hand, so the app cannot read back your External Credential, your
+stored secret key (which is write-only in any case — not even you can read it back), your
+<code>Authorization</code> header, or your Allowed Namespaces entry. It also can't see the <em>Enabled for
+Callouts</em> checkbox or a credential's URL, because Salesforce doesn't expose either to a query.</p>
+<p>What it genuinely can check, it does: that each Named Credential exists, that two of the three
+callout checkboxes are set correctly, who holds which permission set, and the Payment Account
+itself. What it can't, it says so plainly rather than showing you an error — the one thing this
+panel will never do is state something about your org that it did not actually read.</p>
+<p>Amber never blocks you, and the guide still reaches <strong>ready</strong> with amber steps on it. Two live
+calls settle the rest between them: step 7's probe proves the key your guest user holds really
+is restricted, and step 11's <strong>Test connection</strong> proves the whole chain — key, header, callout
+options, namespace grant — actually works end to end. Both are read-only and move no money.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Public donations need the guest user grant</p>
-<p>Granting the <strong>public</strong> credential to your site's <strong>guest user</strong> (step 8) is the one step that
+<p>Granting the <strong>public</strong> credential to your site's <strong>guest user</strong> (step 9) is the one step that
 widens what an anonymous visitor can reach through your org, so it is deliberately yours to
 make — the package never does it quietly on your behalf.</p>
 <p>Public donations fail at the payment step until you do it, even though everything else on the
@@ -2070,38 +2190,41 @@ reach a shared org-level identity, never a per-user one.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">A guest user must never hold the admin credential</p>
-<p>Step 8 asks two questions, not one. As well as checking that your site guest user <em>does</em> hold
-the public credential, it checks that it does <strong>not</strong> hold the admin one — and if it does, the
-step goes <strong>red</strong>, not amber:</p>
+<p>Step 9 asks two questions, not one. As well as checking that your site guest user <em>does</em> hold
+a credential grant, it asks you to confirm that the grant is the <strong>public</strong> one and not the
+admin one — and it names the exact permission sets your guest user holds so you can go and
+check:</p>
 <blockquote>
-<p>A site guest user holds <code>Stripe_Admin_Auth</code>, the full credential — so an anonymous visitor's
-session can issue refunds. Remove that permission set from the guest user; grant it only the
-<code>Stripe_Public_Auth</code> principal.</p>
+<p>1 site guest user can reach a credential through <code>Stripe_Public_Access</code>, so public donation
+pages can charge a card. Confirm that set grants the PUBLIC credential only — a guest holding
+the admin credential can issue refunds. Step 7 proves it from the other side.</p>
 </blockquote>
 <p>That state is exactly what running two credentials exists to prevent. The admin credential
 carries a full secret key: anything reaching it can refund a charge, read your payout history,
 and act on your Stripe account outside the donation path. A guest user's principal is reachable
 by every anonymous visitor to your public pages, so a grant made there is a live exposure
-rather than a piece of setup still outstanding — which is why the guide grades it a failure and
-keeps the panel out of <em>ready</em>.</p>
-<p><strong>The fix is one change in Setup:</strong> open the permission set that carries the <em>admin</em> External
-Credential Principal Access grant and remove your site guest user from it. The guest user
-should hold one credential and one only — the public, restricted, charge-only one from step 8.
-Then press <strong>Re-check</strong>.</p>
-<p>Two things worth knowing about how it behaves. It is switched off in <strong>shared mode</strong> — when
-both fields point at one credential there is only one principal, so the check would fire
-permanently and say nothing you haven't already been told by step 6's amber verdict. And it
-reports on grants <strong>made by hand in Setup</strong>: the app itself never routes a public donation to
-the admin credential, so this catches a misconfiguration rather than a bug in the package.</p>
+rather than a piece of setup still outstanding.</p>
+<p><strong>Why this is a question rather than a verdict.</strong> Salesforce tells a package <em>that</em> a permission
+set grants an external-credential parameter and <em>which</em> permission set it is, but not which
+credential the grant belongs to — that record isn't queryable from packaged Apex. So the panel
+names the sets rather than claiming a pairing it never actually read. Step 7 catches the same
+exposure from the other direction and does grade it <strong>red</strong>: it makes a real refund-shaped call
+on the key your guest user can reach, and a key that answers instead of refusing is a full
+secret key sitting on the public credential.</p>
+<p><strong>The fix, if the answer is wrong, is one change in Setup:</strong> open the permission set that
+carries the <em>admin</em> External Credential Principal Access grant and remove your site guest user
+from it. The guest user should hold one credential and one only — the public, restricted,
+charge-only one from step 9. Then press <strong>Re-check</strong>.</p>
+<p>One more thing worth knowing: this reports on grants <strong>made by hand in Setup</strong>. The app itself
+never routes a public donation to the admin credential, so what you're checking for is a
+misconfiguration, not a bug in the package.</p>
 </div>
 <div class="admonition warning">
-<p class="admonition-title">Test mode vs. live mode</p>
-<p>Stripe test and live keys are separate credential sets tied to separate Stripe API
-objects — a PaymentIntent created with a test key is never visible to a live key, and
-vice versa. Connect a <strong>test-mode</strong> Payment Account while you're building out campaigns,
-and add a second, <strong>live-mode</strong> account when you're ready to accept real donations. Each
-account gets its own credential. Route each campaign explicitly — nothing switches
-automatically.</p>
+<p class="admonition-title">One account per mode, routed explicitly</p>
+<p>Because test and live are separate worlds (see <em>Build the whole thing in test mode first</em>
+above), each mode needs its <strong>own</strong> Payment Account and its <strong>own</strong> credential — you cannot
+flip one account between them. Route each campaign explicitly; nothing switches automatically
+when you go live.</p>
 </div>
 <h2 id="route-a-campaign-to-an-account">Route a campaign to an account<a class="headerlink" href="#route-a-campaign-to-an-account" title="Permanent link">#</a></h2>
 <p>Every Campaign that accepts donations needs its <strong>Payment account</strong> set — the

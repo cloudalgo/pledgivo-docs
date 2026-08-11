@@ -2467,18 +2467,21 @@ whole integration:</p>
 <tbody>
 <tr>
 <td><strong>Public</strong> — <code>Stripe_Auth</code> + <code>Stripe_Public</code></td>
-<td>A restricted key that can create charges and nothing else</td>
+<td>A restricted key (<code>rk_live_…</code> / <code>rk_test_…</code>) that can create charges and nothing else</td>
 <td>Staff <strong>and</strong> the site's guest user</td>
 </tr>
 <tr>
 <td><strong>Admin</strong> — <code>Stripe_Admin_Auth</code> + <code>Stripe_Admin</code></td>
-<td>Your full secret key — refunds, lookups</td>
+<td>Your full secret key (<code>sk_live_…</code> / <code>sk_test_…</code>) — refunds, lookups</td>
 <td>Staff only. <strong>Never</strong> the guest user</td>
 </tr>
 </tbody>
 </table>
+<p>New to Stripe, or not sure which key is which and what to switch on when you create the restricted
+one? <a href="../connecting-stripe/#the-two-stripe-keys-and-what-each-one-may-do">The two Stripe keys, and what each one may do</a>
+covers it from the start, with the exact permissions to grant.</p>
 <div class="fn-steps">
-<figure class="fn-step" data-title="The Payments guide"><img src="../../assets/images/gs-23-payments-guide.png" alt="Payments panel in the Settings console showing the ten-step credential guide" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Payments</b>. Ten steps with the exact values to paste, plus a live connection test at the end. The console guides the build; it never asks you to type a secret into it.</figcaption></figure>
+<figure class="fn-step" data-title="The Payments guide"><img src="../../assets/images/gs-23-payments-guide.png" alt="Payments panel in the Settings console showing the eleven-step credential guide" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Payments</b>. Eleven steps with the exact values to paste, plus a live connection test at the end. The console guides the build; it never asks you to type a secret into it.</figcaption></figure>
 <figure class="fn-step" data-title="Reference values, per step"><img src="../../assets/images/gs-24-payments-reference-values.png" alt="Reference values shown per step in the Payments guide" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The reference values, per step, with copy affordances — names, protocol, parameter name, and the exact merge-field syntax for the header. Keep this open in a second tab while you work in Setup.</figcaption></figure>
 </div>
 

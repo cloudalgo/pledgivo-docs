@@ -2004,6 +2004,12 @@ script no way to know who on your team does what.</p>
 </tbody>
 </table>
 <p>In Setup → <strong>Permission Sets</strong>, open each one → <strong>Manage Assignments</strong> → <strong>Add Assignment</strong>.</p>
+<p><strong>The Settings console is <code>Fundraising_Admin</code> only.</strong> A <code>Fundraising_User</code> cannot open it, and
+cannot change what it configures by another route either: payment accounts, page designs, and
+every app setting are read-only for that set. They still <em>see</em> those records — picking a design
+or a payment account for a campaign keeps working — they just cannot edit them from a record page,
+the API, or Data Loader. If someone on your team needs to configure payments, designs, or org
+settings, give them <code>Fundraising_Admin</code>; there is no middle tier.</p>
 <p>The Get Started panel can assign <code>Fundraising_Admin</code> to <em>you</em> in one click, which is enough
 to finish the rest of setup. Your team still needs doing by hand.</p>
 <h2 id="record-types">Record types<a class="headerlink" href="#record-types" title="Permanent link">#</a></h2>

@@ -2016,7 +2016,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Embed_Disabled__c</code></td>
 <td>Embed Disabled</td>
 <td>Checkbox</td>
-<td>Global master switch for the embed widget. Inverted polarity: when checked, embed routes render a "not available" notice instead of the campaign card/form. Unchecked (the default, and the value existing rows backfill to on upgrade) leaves embedding ON. Accessed via SettingsService.isEmbedEnabled().<br><em>Docs: Read by SettingsService.isEmbedEnabled() using the same inverted-boolean pattern as Refunds_Disabled__c: unchecked (the backfilled default) reads as enabled. Gates the guest EmbedConfigResource CORS-checked donation widget entirely, not just its styling.</em></td>
+<td>Tick this to switch off every donation widget you have embedded on outside websites. Those pages will show a short "not available" notice instead of the donation form, and no new gifts can come through them — your donation pages on your own site are unaffected. Leave it unticked (the normal setting) to keep embedding on. Use it if a widget is misbehaving or you need to stop external giving quickly.<br><em>Docs: Read by SettingsService.isEmbedEnabled() using the same inverted-boolean pattern as Refunds_Disabled__c: unchecked (the backfilled default) reads as enabled. Gates the guest EmbedConfigResource CORS-checked donation widget entirely, not just its styling.</em></td>
 </tr>
 <tr>
 <td><code>Event_Deductible_Mode__c</code></td>

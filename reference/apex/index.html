@@ -9231,6 +9231,7 @@
 <p><code>class</code> · <code>public without sharing</code></p>
 <p>implements <a href="#apex-inpspsyncservice">INpspSyncService</a></p>
 <p>Optional NPSP (Nonprofit Success Pack) integration. NPSP is an OPTIONAL managed-package dependency — its objects (npsp__Allocation__c, npe03__Recurring_Donation__c) do not exist at compile time in a plain org, so this service reaches them ONLY through dynamic Schema.getGlobalDescribe() + generic SObject.put(). Every entry point is a hard no-op when NPSP is not installed or the matching Settings__c sub-toggle is off (see SettingsService.npsp*). <code>without sharing</code>: it runs from the DonationFinalized__e platform-event subscriber (the Automated Process user) and must write NPSP records the running user has no sharing/CRUD grant on — our permission sets can't grant FLS on another package's fields. which finalizes the same event stream. Writes are best-effort: an NPSP validation/trigger rejection is logged and swallowed so it can never roll back an already-charged donation.</p>
+<p><strong>Docs note.</strong> The sibling read at the top of this method pins SYSTEM_MODE for the same reason.</p>
 <table>
 <thead>
 <tr>
@@ -9746,6 +9747,11 @@
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
+<td><a id="apex-donorportalcontroller-removewalletcard"></a><code>removeWalletCard(2 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
 <td><a id="apex-donorportalcontroller-reinstaterecurring"></a><code>reinstateRecurring(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
@@ -9985,6 +9991,7 @@
 <p>Resolution order is deliberate. Site.getBaseUrl() first, because inside the Experience site it is the host the visitor actually arrived on. Off-site (the staff quick action, any batch) it returns blank, and the configured Experience Site URL is the only value that yields a link a donor can open — URL.getOrgDomainUrl() is the INTERNAL My Domain host, which a guest cannot reach. It stays last purely so the pre-existing guest path keeps a value rather than throwing; a link built from it will not work, which is why staffLinkBlockReason() refuses to send at all when the site URL is unset.</p>
 <p>Every mutation below is bracketed by beginPortalWrite/endPortalWrite. The donor runs as the Guest User, which can never hold Edit on Recurring_Donation__c, so fflib's trigger-level CRUD assertion has to be waived for the write — see RecurringDonations.suppressTriggerCrudCheck for why that is safe and what actually authorizes the change. The bracket is a try/finally, not a bare assignment: a validation failure inside the service must not leave the waiver on for the rest of the transaction.</p>
 <p>The returned <code>mode</code> is the campaign's RESOLVED designation mode, so the portal can hide the control entirely for a campaign that offers no choice ('Assigned' — one fixed fund — or 'None'). It is a display decision only; changeDesignation re-validates the chosen fund against the same config server-side and rejects anything out of scope.</p>
+<p>Idempotent by design — a card already flagged Removed__c returns quietly instead of throwing, because the client may retry a request whose response it never saw. Ownership is resolved through selectByDonorSystem (the UNFILTERED donor-scoped read) rather than selectValidByDonorSystem precisely so the already-removed case is distinguishable from the not-yours case. Promoting a replacement default matters beyond cosmetics: PaymentMethodService.saveWalletCard decides a new card's Is_Default__c from whether the donor already has one, so a wallet left with no default silently makes the next saved card default too.</p>
 <table>
 <thead>
 <tr>
@@ -10137,6 +10144,16 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donorportalservice-removewalletcard"></a><code>removeWalletCard(2 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-info">AppLogger.info()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10863,7 +10880,7 @@
 <h4 id="apex-paymentmethodsselector">PaymentMethodsSelector<a class="headerlink" href="#apex-paymentmethodsselector" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-ipaymentmethodsselector">IPaymentMethodsSelector</a></p>
-<p><strong>Docs note.</strong> Three access levels, three different callers — picking the wrong one silently breaks a donor-facing flow rather than throwing. selectById/selectByContactId/selectDefaultByContactId are USER_MODE for internal Lightning contexts where a logged-in user's own sharing/FLS should apply. selectValidByDonorSystem and selectByDonorSystem are SYSTEM_MODE because their only callers are the token-authorized donor portal and the guest recurring-signup path — neither is a real logged-in Salesforce user, so USER_MODE would return zero rows. selectByDonorSystem additionally returns ALL rows (not just Is_Valid__c = true) because PaymentMethodService. saveWalletCard needs the full set to dedup by Fingerprint__c and detect an existing default card in one query. Payment_Account__c sits in the shared field list rather than being selected per-method (unlike Exp_Month__c/Exp_Year__c) because it is identity, not display detail — it belongs with Stripe_Customer_Id__c, and saveWalletCard's fingerprint dedup cannot run without it.</p>
+<p><strong>Docs note.</strong> Three access levels, three different callers — picking the wrong one silently breaks a donor-facing flow rather than throwing. selectById/selectByContactId/selectDefaultByContactId are USER_MODE for internal Lightning contexts where a logged-in user's own sharing/FLS should apply. selectValidByDonorSystem and selectByDonorSystem are SYSTEM_MODE because their only callers are the token-authorized donor portal and the guest recurring-signup path — neither is a real logged-in Salesforce user, so USER_MODE would return zero rows. selectByDonorSystem additionally returns ALL rows (not just Is_Valid__c = true) because PaymentMethodService. saveWalletCard needs the full set to dedup by Fingerprint__c and detect an existing default card in one query. Payment_Account__c sits in the shared field list rather than being selected per-method (unlike Exp_Month__c/Exp_Year__c) because it is identity, not display detail — it belongs with Stripe_Customer_Id__c, and saveWalletCard's fingerprint dedup cannot run without it. Removed__c is in the shared list for the same reason: PaymentMethodService.saveWalletCard has to see it on a dedup hit to reinstate a card the donor previously removed. Only the two wallet-LISTING methods filter it out (selectValidByDonor, selectValidByDonorSystem) — the dedup method selectByDonorSystem must keep returning removed rows, because Stripe_Payment_Method_Id__c is unique and a hidden removed row would turn a re-add into a DUPLICATE_VALUE failure rather than a reinstatement. Removed_Date__c is deliberately absent: nothing queries on it, so it stays off every caller's FLS surface.</p>
 <p>Exp_Month__c/Exp_Year__c are selected explicitly rather than added to getSObjectFieldList — widening the shared field list would push two more FLS-checked fields onto every other caller of this selector, including ones with no use for an expiry date.</p>
 <p>Exp_Month__c/Exp_Year__c are selected explicitly for the same reason as selectValidByDonor above: widening getSObjectFieldList would push two more FLS-checked fields onto callers with no use for an expiry date. Contact__r.Name / Donor_Account__r.Name are parent fields, which getSObjectFieldList structurally cannot carry, so they need explicit selectField too.</p>
 <p>newQueryFactory(false, false, true) — SYSTEM_MODE on the query alone is not enough. The bare newQueryFactory() asserts object read at BUILD time, so it throws "Permission to access an Payment_Method__c denied." for the guest user before the SYSTEM_MODE query runs, breaking the recurring signup this method exists to serve. The Guest License holds no read on the wallet by design and must not be granted one — rows are used only internally by saveWalletCard to dedup by Fingerprint__c, and no field reaches the guest. Matches sibling selectValidByDonorSystem.</p>
@@ -10992,8 +11009,9 @@
 <h4 id="apex-paymentmethodservice">PaymentMethodService<a class="headerlink" href="#apex-paymentmethodservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-ipaymentmethodservice">IPaymentMethodService</a></p>
-<p><strong>Docs note.</strong> Payment_Method__c is display/dedup metadata for the donor portal's saved-card list, not the billing-critical record — the Stripe payment method id actually charged for a renewal lives on Recurring_Donation__c.Stripe_Payment_Method_Id__c, stamped directly by the caller. That split matters because saveWalletCard() never updates an existing wallet row on a fingerprint match, only inserts new ones: Guest User licenses can never be granted object-level Edit (a hard Salesforce platform restriction, not a policy choice), and every caller of this method runs in guest context.</p>
+<p><strong>Docs note.</strong> Payment_Method__c is display/dedup metadata for the donor portal's saved-card list, not the billing-critical record — the Stripe payment method id actually charged for a renewal lives on Recurring_Donation__c.Stripe_Payment_Method_Id__c, stamped directly by the caller. That split matters because saveWalletCard() leaves an existing wallet row untouched on a dedup match rather than refreshing it: Guest User licenses can never be granted object-level Edit (a hard Salesforce platform restriction, not a policy choice), and every caller of this method runs in guest context. The single exception is reinstateIfRemoved() below — see its header for why a re-added card has to be written back and why that one write is safe.</p>
 <p>Prefer the gateway overload for any synchronous, DML-free caller — passing a stale snapshot here would persist card metadata that no longer matches Stripe. This overload takes paymentAccountId explicitly because it has no gateway instance to read it off; the caller parked the snapshot at intent time and must park the account with it.</p>
+<p>This is the one place saveWalletCard* writes to an EXISTING wallet row; every other match path still returns it untouched, per the class header. It is safe from guest context despite the Guest License never holding object-level Edit, because Payment_Method__c has no trigger (so fflib's domain-layer CRUD re-assertion never runs) and fflib_SObjectUnitOfWork.SimpleDML pins AccessLevel.SYSTEM_MODE. Adding a trigger to this object would break that and must be paired with the suppressTriggerCrudCheck waiver the other guest-written domains use.</p>
 <table>
 <thead>
 <tr>
@@ -11657,6 +11675,7 @@
 <p>No field from this read is ever returned to the guest — it feeds internal decisions only (status gates, campaign scope, the running installment count). Donor scoping is enforced one layer up by DonorPortalService.requireOwnership, which resolves the id from the token-authorized donor's own rows before the service is called at all. Same posture as selectByStripeCustomerId and selectByDonorSystem.</p>
 <p>newQueryFactory(false, false, true) — the CRUD/FLS asserts must be waived, not just the query's AccessLevel. The bare newQueryFactory() asserts object read at BUILD time and threw "Permission to access an Recurring_Donation__c denied." for the guest user, aborting every recurring signup before the SYSTEM_MODE query ever ran. The Guest License holds no read on this object by design and must not be granted one: the result is used solely as an internal boolean (does this Stripe customer already have a schedule?) and no field ever reaches the guest. Same posture as the sibling SYSTEM_MODE read selectByDonorSystem below.</p>
 <p>stripePaymentMethodId is skipped entirely when blank rather than bound as null — a null bind in <code>Stripe_Payment_Method_Id__c = :token</code> matches every schedule that has no token at all, which would report unrelated gifts as depending on this card.</p>
+<p>The guard has to match on BOTH the Payment_Method__c lookup and the Stripe id because a schedule written before the lookup existed carries only the latter, and the Stripe id is what the renewal batch actually charges. Matching on one alone would let a donor remove a card that is still funding a live gift.</p>
 <table>
 <thead>
 <tr>
@@ -11753,6 +11772,11 @@
 </tr>
 <tr>
 <td><a id="apex-recurringdonationsselector-selectbydonorsystem"></a><code>selectByDonorSystem(2 args)</code></td>
+<td><code>List&lt;Recurring_Donation__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recurringdonationsselector-selectcardbindingsbydonorsystem"></a><code>selectCardBindingsByDonorSystem(2 args)</code></td>
 <td><code>List&lt;Recurring_Donation__c&gt;</code></td>
 <td></td>
 </tr>

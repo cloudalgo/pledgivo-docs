@@ -1745,7 +1745,7 @@
 <p class="fn-dek">Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>14 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
+<p><code>custom</code> · <code>16 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1876,6 +1876,18 @@ without the donor re-entering card details each cycle — see <a href="../recurr
 <td>Payment Account</td>
 <td>Lookup → <code>Payment_Account__c</code></td>
 <td>Which of your configured Stripe accounts holds this saved card. Set automatically when the donor saves the card and must not be changed by hand — the card only works with the account listed here.<br><em>Docs: Added 2026-08-07 to close a live renewal bug. Before this field the renewal batch re-derived the Stripe account from Campaign.Payment_Account__c on every run, so re-pointing a campaign at a second Stripe account made every in-flight schedule charge account-A tokens against account B; Stripe answers resource_missing and the batch fed that into the dunning cadence as though the donor's card had declined. deleteConstraint is deliberately omitted (SetNull), matching Opportunity.Payment_Account__c and Donation_Staging__c.Payment_Account__c: this is a historical transactional reference, not a config link. The hard block on deleting an in-use account lives on Campaign.Payment_Account__c (Restrict) plus SetupController.DeletePaymentAccount's friendly guard, and every wallet row is reachable through a campaign, so nothing is lost by not repeating it here.</em></td>
+</tr>
+<tr>
+<td><code>Removed_Date__c</code></td>
+<td>Removed Date</td>
+<td>DateTime</td>
+<td>The date and time the donor removed this card themselves from their online account. Blank means the card is still available to them. Useful when a donor asks why a card stopped being offered, or when reconciling a gift that was charged shortly before the card was removed.<br><em>Docs: Companion to Removed__c — set in the same SYSTEM_MODE update so the two never disagree. Nothing queries on it; it exists so support can answer "when did this card disappear from my account?" without reading field history, which is not enabled on this object.</em></td>
+</tr>
+<tr>
+<td><code>Removed__c</code></td>
+<td>Removed</td>
+<td>Checkbox</td>
+<td>Ticked when the donor removed this card themselves from their online account. The card stays on file so past gifts and any refunds still trace back to it, but it is no longer offered when someone gives again or when a recurring gift is set up. Do not tick or untick this yourself — ask the donor to remove or re-add the card from their donor portal instead.<br><em>Docs: A soft remove, for three reasons: the Guest License can never hold object Delete; historic Donation__c rows need Stripe_Payment_Method_Id__c to stay resolvable for refund traceability; and DonorPortalService.removeWalletCard refuses removal outright while an Active, Paused or Failed Recurring_Donation__c still points at the card, so a removed row can never be one a live schedule depends on (Failed blocks too — a dunning donor who removed the card would have nothing left to fix). Removal makes NO Stripe detach callout — the site-context guard added to the gateway refuses back-office Stripe calls from a site context by design, and the donor's click path must not carry a callout. PaymentMethodsSelector filters Removed__c = true out of the two wallet-listing methods (selectValidByDonor, selectValidByDonorSystem). selectByDonorSystem is deliberately NOT filtered — it is the dedup query, and Stripe_Payment_Method_Id__c is unique, so hiding a removed row there would make re-adding the same card die on the uniqueness constraint instead of reinstating it. selectById / selectDetailById stay unfiltered so back-office lookups still resolve historic rows.</em></td>
 </tr>
 <tr>
 <td><code>Stripe_Customer_Id__c</code></td>

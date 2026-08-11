@@ -821,6 +821,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#saved-cards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saved cards
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1867,6 +1878,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#saved-cards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saved cards
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2051,8 +2073,8 @@ a way to test whether a given person supports your organization.</p>
 <div class="fn-shot"><img src="../../assets/images/public-donor-dashboard.png" alt="Donor portal dashboard"></div>
 <p class="fn-figure-caption">**What it shows.** The full dashboard for a donor with three recurring gifts, three saved cards, two events, and nineteen gifts across three years. The left rail carries identity and totals — lifetime giving, this year, gift count — a *Where it went* donut broken down by fund, saved cards, downloadable annual statements per year, and a trust block. The right column is the working area: monthly giving, events, and giving history.</p>
 
-<p>The left rail is a summary; nothing there is actionable except the statement downloads. Everything
-a donor can <em>change</em> lives in the right column.</p>
+<p>The left rail is mostly summary. Two things there are actionable — the statement downloads and
+removing a saved card. Everything else a donor can <em>change</em> lives in the right column.</p>
 <p>Each panel is independently switchable by an admin, so a smaller organization can run a portal that
 shows only giving history and receipts, with no recurring-gift management at all.</p>
 <h3 id="where-it-went">Where it went<a class="headerlink" href="#where-it-went" title="Permanent link">#</a></h3>
@@ -2061,6 +2083,26 @@ everything else rolled into "Other funds". It appears only once giving has actua
 across more than one fund; a donor who has only ever given to the general fund sees no chart rather
 than a single 100% slice. Percentages are rounded once, on the server, so the chart and its legend
 can never disagree with each other.</p>
+<h3 id="saved-cards">Saved cards<a class="headerlink" href="#saved-cards" title="Permanent link">#</a></h3>
+<p>Every card the donor has given with on this site is listed by brand, last four digits and expiry,
+with the default marked. There is no <em>add a card</em> button — a card joins the wallet by being used
+for a gift, which keeps card entry inside Stripe's own form where it belongs.</p>
+<p>Each card carries a <strong>×</strong> that removes it. The confirmation states the consequences before the
+donor commits: the card stops being offered for new gifts here, past gifts and their receipts are
+untouched, a monthly gift paying with the card has to be moved to another card first, and saving it
+again next time they give is always possible.</p>
+<div class="admonition note">
+<p class="admonition-title">A card funding a monthly gift cannot be removed</p>
+<p>If any live recurring gift is still charging the card — active, paused, or one whose last
+payment failed — the removal is refused and the donor is told to change that gift's card first.
+A failed gift blocks for the obvious reason: a donor mid-dunning who removed the card would be
+left with nothing to fix. This is enforced on the server, not by hiding the button, so it holds
+however the request arrives. Use <strong>Change or update the card</strong> on the gift, then remove the old
+card. Cancelled and completed gifts never charge again and do not block.</p>
+</div>
+<p>Removal hides the card; it does not delete the record. Your team can still trace a refund on a gift
+paid with a card the donor has since removed, and the removal date is stored so support can answer
+<em>when did this card disappear from my account?</em> without guessing.</p>
 <h2 id="monthly-giving">Monthly giving<a class="headerlink" href="#monthly-giving" title="Permanent link">#</a></h2>
 <p>The recurring-gift panel is where the portal earns its keep. A gift row shows its amount, fund,
 status, and next payment date; an active pledge with an end date also shows a segmented progress
@@ -2164,8 +2206,8 @@ produced.</p>
 <td>A public token-authorized page that can rewrite donor records is a data-integrity problem, not a convenience. Changes go through your staff.</td>
 </tr>
 <tr>
-<td>Deleting a saved card</td>
-<td>Deferred — a card can be attached to an active gift, and the portal has no safe way to prove otherwise from the donor's side alone.</td>
+<td>Permanently deleting a saved card</td>
+<td>Removal hides the card from the donor's wallet but keeps the record, so refunds on gifts already paid with it stay traceable.</td>
 </tr>
 <tr>
 <td>Seeing any other donor's data</td>

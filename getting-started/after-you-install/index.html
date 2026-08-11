@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="The one-time setup steps to complete after installing the package — including the two that can only be done in Salesforce Setup.">
+        <meta name="description" content="A screenshot-by-screenshot walkthrough of the one-time setup after installing the package — permission sets, record types, the Experience site, the Stripe credentials, and the credential grant.">
       
       
       
@@ -405,10 +405,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#do-this-in-the-app-instead-if-you-can" class="md-nav__link">
+  <a href="#watch-it-first" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Do this in the app instead, if you can
+        Watch it first
       
     </span>
   </a>
@@ -416,10 +416,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#permission-sets" class="md-nav__link">
+  <a href="#the-seven-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Permission sets
+        The seven steps
       
     </span>
   </a>
@@ -427,10 +427,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#record-types" class="md-nav__link">
+  <a href="#1-permission-sets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Record types
+        1. Permission sets
       
     </span>
   </a>
@@ -438,10 +438,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#experience-site" class="md-nav__link">
+  <a href="#2-record-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Experience site
+        2. Record types
       
     </span>
   </a>
@@ -449,10 +449,160 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#connect-stripe" class="md-nav__link">
+  <a href="#3-the-experience-site" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Connect Stripe
+        3. The Experience site
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. The Experience site">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-the-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the site
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-public-access-and-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable public access and publish
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activate-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activate it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-connect-stripe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Connect Stripe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Connect Stripe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-public-external-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The public external credential
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-public-named-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The public named credential
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-admin-pair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The admin pair
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-the-payment-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add the payment account
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-grant-the-stripe-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Grant the Stripe credential
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Grant the Stripe credential">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assign-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assign them
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow-the-packages-namespace-to-make-the-callout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow the package's namespace to make the callout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-background-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Background jobs
       
     </span>
   </a>
@@ -460,10 +610,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#grant-the-stripe-credential" class="md-nav__link">
+  <a href="#7-organization-name-and-logo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Grant the Stripe credential
+        7. Organization name and logo
       
     </span>
   </a>
@@ -471,21 +621,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#background-jobs" class="md-nav__link">
+  <a href="#finish-step-3-activate-the-site" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Background jobs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#branding" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Branding
+        Finish step 3: activate the site
       
     </span>
   </a>
@@ -1795,10 +1934,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#do-this-in-the-app-instead-if-you-can" class="md-nav__link">
+  <a href="#watch-it-first" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Do this in the app instead, if you can
+        Watch it first
       
     </span>
   </a>
@@ -1806,10 +1945,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#permission-sets" class="md-nav__link">
+  <a href="#the-seven-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Permission sets
+        The seven steps
       
     </span>
   </a>
@@ -1817,10 +1956,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#record-types" class="md-nav__link">
+  <a href="#1-permission-sets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Record types
+        1. Permission sets
       
     </span>
   </a>
@@ -1828,10 +1967,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#experience-site" class="md-nav__link">
+  <a href="#2-record-types" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Experience site
+        2. Record types
       
     </span>
   </a>
@@ -1839,10 +1978,160 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#connect-stripe" class="md-nav__link">
+  <a href="#3-the-experience-site" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Connect Stripe
+        3. The Experience site
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. The Experience site">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-the-site" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create the site
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-public-access-and-publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enable public access and publish
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#activate-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Activate it
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-connect-stripe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Connect Stripe
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Connect Stripe">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-public-external-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The public external credential
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-public-named-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The public named credential
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-admin-pair" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The admin pair
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-the-payment-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Add the payment account
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-grant-the-stripe-credential" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Grant the Stripe credential
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Grant the Stripe credential">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assign-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assign them
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#allow-the-packages-namespace-to-make-the-callout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Allow the package's namespace to make the callout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-background-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Background jobs
       
     </span>
   </a>
@@ -1850,10 +2139,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#grant-the-stripe-credential" class="md-nav__link">
+  <a href="#7-organization-name-and-logo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Grant the Stripe credential
+        7. Organization name and logo
       
     </span>
   </a>
@@ -1861,21 +2150,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#background-jobs" class="md-nav__link">
+  <a href="#finish-step-3-activate-the-site" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Background jobs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#branding" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Branding
+        Finish step 3: activate the site
       
     </span>
   </a>
@@ -1952,28 +2230,113 @@
 <p class="fn-eyebrow">Getting Started</p>
 
 <h1 id="after-you-install">After you install<a class="headerlink" href="#after-you-install" title="Permanent link">#</a></h1>
-<p class="fn-dek">The install seeds everything it is allowed to seed. Seven things are left, and two of them can only be done by a human in Salesforce Setup. This page is the written version of the <strong>Get Started</strong> panel inside the app — work through either one.</p>
+<p class="fn-dek">The install seeds everything it is allowed to seed. Seven things are left, and several of them can only be done by a human in Salesforce Setup. This page is the written version of the <strong>Get Started</strong> panel inside the app — every screenshot below was taken while completing the setup by hand in a brand-new org.</p>
 
 <div class="admonition tip">
 <p class="admonition-title">You were probably sent here automatically</p>
 <p>Salesforce redirects you to this page as soon as the package finishes installing or
 upgrading. Nothing is broken — this is the handover.</p>
 </div>
-<h2 id="do-this-in-the-app-instead-if-you-can">Do this in the app instead, if you can<a class="headerlink" href="#do-this-in-the-app-instead-if-you-can" title="Permanent link">#</a></h2>
-<p>Open the app (<strong>App Launcher → Pledgivo → Settings</strong>) and the console lands on
-<strong>Get Started</strong>. It is the same checklist, except each step is checked against your org
-live, several have a one-click fix, and the rest jump you to the panel that owns them.</p>
-<p>A step there is never a box you tick. It reports what your org actually looks like right
-now — so if someone later deactivates the last payment account or aborts the scheduled
-jobs, the step reopens on its own.</p>
+<h2 id="watch-it-first">Watch it first<a class="headerlink" href="#watch-it-first" title="Permanent link">#</a></h2>
+<div class="fn-video">
+  <video id="fn-setup-video" controls preload="none" poster="../../assets/images/gs-video-poster.png">
+    <source src="../../assets/video/setup-walkthrough.mp4" type="video/mp4">
+    <track kind="captions" srclang="en" label="English" src="../../assets/video/setup-walkthrough.vtt" default>
+    Your browser does not support embedded video. The same 70 screens appear in order on this page.
+  </video>
+</div>
+<ul class="fn-chapters" id="fn-setup-chapters">
+  <li><button type="button" data-t="11"><b>0:11</b> Start here</button></li>
+  <li><button type="button" data-t="17"><b>0:17</b> Permission sets</button></li>
+  <li><button type="button" data-t="65"><b>1:05</b> Record types</button></li>
+  <li><button type="button" data-t="71"><b>1:11</b> Experience site</button></li>
+  <li><button type="button" data-t="136"><b>2:16</b> Connect Stripe</button></li>
+  <li><button type="button" data-t="264"><b>4:24</b> Payment account</button></li>
+  <li><button type="button" data-t="279"><b>4:39</b> Grant the credential</button></li>
+  <li><button type="button" data-t="344"><b>5:44</b> Allowed namespaces</button></li>
+  <li><button type="button" data-t="365"><b>6:05</b> Name and logo</button></li>
+  <li><button type="button" data-t="383"><b>6:23</b> Activate the site</button></li>
+  <li><button type="button" data-t="440"><b>7:20</b> About Pledgivo</button></li>
+</ul>
+<script>
+  (function () {
+    var video = document.getElementById('fn-setup-video');
+    var list = document.getElementById('fn-setup-chapters');
+    if (!video || !list) return;
+    list.addEventListener('click', function (event) {
+      var button = event.target.closest('button[data-t]');
+      if (!button) return;
+      video.currentTime = Number(button.dataset.t);
+      video.play();
+    });
+  })();
+</script>
+<p class="fn-figure-caption"><b>What it is.</b> A narrated 7-minute-46 walkthrough of the whole setup, from the empty Get Started panel to <b>7/7 — your org is ready to take donations</b>. It is built from the 70 numbered screenshots on this page rather than recorded live, so nothing moves faster than you can read: each screen holds for as long as its narration takes, an arrow marks the exact control being clicked, and the banner underneath names the action and where in Salesforce you are. Captions and the chapter jumps above are both on. Pause anywhere — the same screenshot appears further down the page with the full written explanation.</p>
+
+<h2 id="the-seven-steps">The seven steps<a class="headerlink" href="#the-seven-steps" title="Permanent link">#</a></h2>
+<p>The Get Started panel (<strong>App Launcher → Pledgivo → Settings</strong>) is the same checklist, checked
+against your org live. A step there is never a box you tick — it reports what your org actually
+looks like right now, so if someone later deactivates the last payment account or aborts the
+scheduled jobs, the step reopens on its own.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Step</th>
+<th>Where the work happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Give your team access</td>
+<td>Salesforce Setup</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Confirm record type mapping</td>
+<td>Settings console</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Publish your donation site</td>
+<td>Setup + Experience Builder + Workspaces</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Connect your Stripe account</td>
+<td>Salesforce Setup</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Let your donation site use the payment credential</td>
+<td>Salesforce Setup</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Start the background jobs</td>
+<td>Already done by the install</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Set your organization name and logo</td>
+<td>Settings console</td>
+</tr>
+</tbody>
+</table>
+<p>An eighth item — <strong>Trust the content hosts you actually use</strong> — is listed but never counts
+against your seven. See <a href="#third-party-content">Third-party content</a>.</p>
+<div class="fn-shot"><img src="../../assets/images/gs-01-get-started-fresh.png" alt="Get Started panel on a freshly installed org, showing 1 of 7 complete"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The panel on a brand-new install. One step is already green — the install seeds the record type mappings and schedules the jobs for you. Everything else is waiting on a human.</p>
+
 <div class="fn-status-strip">
   <span class="fn-chip">7 steps</span>
-  <span class="fn-chip">2 are Setup-only</span>
-  <span class="fn-chip">~20 minutes</span>
+  <span class="fn-chip">5 need Salesforce Setup</span>
+  <span class="fn-chip">~30 minutes</span>
 </div>
 
 <hr />
-<h2 id="permission-sets">Permission sets<a class="headerlink" href="#permission-sets" title="Permanent link">#</a></h2>
+<h2 id="1-permission-sets">1. Permission sets<a class="headerlink" href="#1-permission-sets" title="Permanent link">#</a></h2>
 <p><strong>Nobody can see a campaign, a donation, or the Settings console without one of the packaged
 permission sets.</strong> The install cannot assign them for you — Salesforce gives a post-install
 script no way to know who on your team does what.</p>
@@ -2003,93 +2366,302 @@ script no way to know who on your team does what.</p>
 </tr>
 </tbody>
 </table>
-<p>In Setup → <strong>Permission Sets</strong>, open each one → <strong>Manage Assignments</strong> → <strong>Add Assignment</strong>.</p>
+<div class="fn-shot"><img src="../../assets/images/gs-02-permission-sets-list.png" alt="Setup Permission Sets list showing the four packaged Fundraising sets"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Permission Sets</b>, filtered to the packaged sets. All four arrive with the install; none of them is assigned to anyone yet.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-03-fundraising-admin-permset.png" alt="Fundraising Admin permission set detail page"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The <code>Fundraising_Admin</code> detail page. This is where you confirm you are looking at the packaged set (it carries the package namespace) rather than a lookalike of your own.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-04-manage-assignments.png" alt="Manage Assignments page for Fundraising Admin, showing no current assignees"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>Manage Assignments</b> from the permission set — useful for auditing <i>who already holds it</i>, which here is nobody. Assigning from this direction is fine when it works, but the route below is the one that behaves consistently on a fresh org, so that is what the rest of these screenshots follow.</p>
+
+<p><strong>The route that always works</strong> is from the user, not from the permission set:</p>
+<ol>
+<li>Setup → <strong>Users → Users</strong> → click the person's name.</li>
+<li>Scroll to the <strong>Permission Set Assignments</strong> related list.</li>
+<li><strong>Edit Assignments</strong>.</li>
+<li>Move the set from <em>Available Permission Sets</em> to <em>Enabled Permission Sets</em> → <strong>Save</strong>.</li>
+</ol>
+<div class="fn-shot"><img src="../../assets/images/gs-05-user-permission-set-assignments.png" alt="A user record with the Permission Set Assignments related list and Edit Assignments button"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The <b>Permission Set Assignments</b> related list on the user record, with the <b>Edit Assignments</b> button. This list is also the fastest way to answer "why can't this person see the console?"</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-06-assign-permission-set-picker.png" alt="The two-column Available / Enabled permission set picker"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The two-column picker. Every permission set in the org appears on the left, including ones from other packages — read the name carefully before adding.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-07-select-fundraising-admin.png" alt="Fundraising Admin selected in the Available Permission Sets column"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <code>Fundraising_Admin</code> selected on the left, before it is moved across.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-08-fundraising-admin-enabled.png" alt="Fundraising Admin moved into the Enabled Permission Sets column"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The set moved into <i>Enabled Permission Sets</i>. Nothing is committed until you press Save.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-09-assignment-confirmed.png" alt="The user record showing Fundraising Admin in the Permission Set Assignments list"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Saved. The assignment now appears on the user record — this is the state the Get Started panel reads.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-10-get-started-2of7.png" alt="Get Started panel now showing 2 of 7 complete"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Back in the console, <b>Give your team access</b> has flipped to <span class="fn-chip">DONE</span> with the evidence line "1 user(s) hold Fundraising Admin or Fundraising User". Nothing was ticked by hand — the panel re-queried the org.</p>
+
 <p><strong>The Settings console is <code>Fundraising_Admin</code> only.</strong> A <code>Fundraising_User</code> cannot open it, and
 cannot change what it configures by another route either: payment accounts, page designs, and
 every app setting are read-only for that set. They still <em>see</em> those records — picking a design
 or a payment account for a campaign keeps working — they just cannot edit them from a record page,
 the API, or Data Loader. If someone on your team needs to configure payments, designs, or org
 settings, give them <code>Fundraising_Admin</code>; there is no middle tier.</p>
-<p>The Get Started panel can assign <code>Fundraising_Admin</code> to <em>you</em> in one click, which is enough
-to finish the rest of setup. Your team still needs doing by hand.</p>
-<h2 id="record-types">Record types<a class="headerlink" href="#record-types" title="Permanent link">#</a></h2>
+<h2 id="2-record-types">2. Record types<a class="headerlink" href="#2-record-types" title="Permanent link">#</a></h2>
 <p>The app writes donations, events, and tributes onto Opportunity and Campaign record types.
 The install seeds a <strong>default mapping of seven records</strong> pointing at the record types it
 ships, so this step is normally already green.</p>
-<p>Change it only if your org already uses its own record types for gifts and you want the app
-to write to those instead. Settings console → <strong>Record Types</strong>.</p>
+<div class="fn-shot"><img src="../../assets/images/gs-11-record-types.png" alt="Record Types panel in the Settings console showing seven seeded mapping records"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Record Types</b>, with all seven mapping records present. Change these only if your org already uses its own record types for gifts and you want the app to write to those instead.</p>
+
 <div class="admonition warning">
 <p class="admonition-title">Change this before you take gifts, not after</p>
 <p>Remapping later does not move donations that were already written under the old record
 type. Decide now if you are going to.</p>
 </div>
-<h2 id="experience-site">Experience site<a class="headerlink" href="#experience-site" title="Permanent link">#</a></h2>
+<h2 id="3-the-experience-site">3. The Experience site<a class="headerlink" href="#3-the-experience-site" title="Permanent link">#</a></h2>
 <p>Donors give on an Experience Cloud site, not inside Salesforce. Internal-only use — staff
 recording gifts taken over the phone — does not need one; anything public does.</p>
-<ol>
-<li>If Setup has no <strong>Digital Experiences</strong> menu, switch the feature on first:
-   Setup → <strong>Digital Experiences → Settings → Enable Digital Experiences</strong>. It is org-wide,
-   asks you to pick an Enhanced Domain subdomain, and cannot be undone.</li>
-<li>Settings console → <strong>Site &amp; Domain</strong>. The panel is a seven-step checklist: create or pick your
-   site in step 2, then work down. Steps it can verify against your org are marked Done or
-   Pending; steps Salesforce exposes no API for are marked <strong>Can't verify</strong> and are yours to
-   confirm.</li>
-<li>In Experience Builder, enable <strong>Settings → General → Public Access</strong>, then <strong>publish</strong> the
-   site. Both are required — public access without publishing serves nothing, and publishing
-   without public access serves a login page.</li>
-</ol>
-<p><strong>A site that exists but has never been published serves nothing to the public.</strong> This is
-the single most common reason a donation link 404s. The Get Started panel shows the site as
-<em>Almost</em> until its status is <code>Live</code>.</p>
+<p><strong>This step has three distinct parts, and skipping the third is the single most common reason
+a donation link 404s:</strong> create the site, enable public access and publish it, then <strong>activate</strong>
+it. Publishing and activating are different operations in different screens.</p>
+<h3 id="create-the-site">Create the site<a class="headerlink" href="#create-the-site" title="Permanent link">#</a></h3>
+<p>If Setup has no <strong>Digital Experiences</strong> menu, switch the feature on first:
+Setup → <strong>Digital Experiences → Settings → Enable Digital Experiences</strong>. It is org-wide,
+asks you to pick an Enhanced Domain subdomain, and cannot be undone.</p>
+<div class="fn-shot"><img src="../../assets/images/gs-12-site-domain-checklist.png" alt="Site &amp; Domain panel in the Settings console, a seven-step checklist"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Site &amp; Domain</b>. Steps the app can verify against your org are marked Done or Pending; steps Salesforce exposes no API for are marked <b>Can't verify</b> and are yours to confirm.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-13-all-sites-empty.png" alt="Setup All Sites page with no sites yet"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Digital Experiences → All Sites</b> before any site exists. <b>New</b> starts the template gallery.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-14-choose-template.png" alt="Experience Cloud template gallery"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The template gallery. Most of these are Aura templates the package does not target.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-15-build-your-own-lwr.png" alt="Build Your Own (LWR) template selected"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>Build Your Own (LWR)</b> — the one to pick. The package's public components are Lightning Web Runtime components; they cannot be dropped onto an Aura template.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-16-name-the-site.png" alt="Site name and URL path dialog"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Naming the site and choosing its URL path. The path becomes part of every public donation link, so pick something short and permanent — <code>/fundraising</code>, not <code>/fundraising-2026-test</code>.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-17-experience-workspaces.png" alt="Experience Workspaces home with Builder, Dashboards, Administration and Guided Setup tiles"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>Experience Workspaces</b> — reached from the <b>Workspaces</b> link next to the site in All Sites. Builder is where you design pages; <b>Administration</b> is where you activate. You will need both.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-18-admin-settings-preview.png" alt="Administration Settings page showing the site status as Preview"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Administration → <b>Settings</b>. A brand-new site starts at status <b>Preview</b>, which means logged-in admins can see it and the public cannot.</p>
+
+<h3 id="enable-public-access-and-publish">Enable public access and publish<a class="headerlink" href="#enable-public-access-and-publish" title="Permanent link">#</a></h3>
+<div class="fn-shot"><img src="../../assets/images/gs-19-builder-settings-general.png" alt="Experience Builder Settings General page"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Experience Builder → the gear icon → <b>Settings → General</b>. Template, public access, published status and the guest user profile all live on this one screen.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-20-public-access-enabled.png" alt="Public Access checkbox enabled in Experience Builder settings"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>Guest users can see and interact with the site without logging in</b>, ticked. Without this, the donation page serves a login screen to donors.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-21-publish-dialog.png" alt="Publish your site dialog in Experience Builder"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The <b>Publish</b> dialog, confirming the URL your changes will go to. The description field is optional and feeds the Change History panel.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-22-publishing.png" alt="Publishing confirmation message"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Publishing is asynchronous — Salesforce emails you when it finishes. Wait for that email before making further changes.</p>
+
+<h3 id="activate-it">Activate it<a class="headerlink" href="#activate-it" title="Permanent link">#</a></h3>
+<div class="admonition danger">
+<p class="admonition-title">Published is not the same as Live</p>
+<p>A published site whose status is still <strong>Preview</strong> serves nothing to the public. The
+<strong>Activate</strong> button is not in Experience Builder — it is in <strong>Workspaces → Administration
+→ Settings</strong>, and it is the only thing that moves the site to <strong>Live</strong>. The Get Started
+panel shows this step as <em>Almost</em> until then.</p>
+</div>
+<p>Because activation is the last thing that happens in a real setup — you publish early and
+activate once everything else works — it is covered at the end of this page, in
+<a href="#finish-step-3-activate-the-site">Finish step 3: activate the site</a>.</p>
 <p>Full walkthrough: <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a>.</p>
-<h2 id="connect-stripe">Connect Stripe<a class="headerlink" href="#connect-stripe" title="Permanent link">#</a></h2>
+<h2 id="4-connect-stripe">4. Connect Stripe<a class="headerlink" href="#4-connect-stripe" title="Permanent link">#</a></h2>
 <p>This package <strong>never ships, stores, or creates a payment credential of its own.</strong> You build the
 External Credential and Named Credential yourself in Setup — that is where your Stripe secret key
 lives, encrypted, and it never touches a custom field or an Apex method.</p>
-<p>Settings console → <strong>Payments</strong> is the guide for that build: ten steps with the exact values to
-paste, each one graded against what your org actually says rather than ticked off by hand. Work
-down it, then add a <strong>Payment Account</strong> pointing at the finished Named Credentials. Until an active
-payment account exists, the donation form cannot take money.</p>
+<p><strong>You build two pairs, not one.</strong> This is deliberate and it is the security boundary of the
+whole integration:</p>
+<table>
+<thead>
+<tr>
+<th>Pair</th>
+<th>Key to use</th>
+<th>Who is allowed to reach it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Public</strong> — <code>Stripe_Auth</code> + <code>Stripe_Public</code></td>
+<td>A restricted key that can create charges and nothing else</td>
+<td>Staff <strong>and</strong> the site's guest user</td>
+</tr>
+<tr>
+<td><strong>Admin</strong> — <code>Stripe_Admin_Auth</code> + <code>Stripe_Admin</code></td>
+<td>Your full secret key — refunds, lookups</td>
+<td>Staff only. <strong>Never</strong> the guest user</td>
+</tr>
+</tbody>
+</table>
+<div class="fn-shot"><img src="../../assets/images/gs-23-payments-guide.png" alt="Payments panel in the Settings console showing the ten-step credential guide"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Payments</b>. Ten steps with the exact values to paste, plus a live connection test at the end. The console guides the build; it never asks you to type a secret into it.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-24-payments-reference-values.png" alt="Reference values shown per step in the Payments guide"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The reference values, per step, with copy affordances — names, protocol, parameter name, and the exact merge-field syntax for the header. Keep this open in a second tab while you work in Setup.</p>
+
+<h3 id="the-public-external-credential">The public external credential<a class="headerlink" href="#the-public-external-credential" title="Permanent link">#</a></h3>
+<div class="fn-shot"><img src="../../assets/images/gs-25-external-credentials-empty.png" alt="Setup Named Credentials page, External Credentials tab, empty"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Security → Named Credentials → External Credentials</b>, before anything exists. External credentials hold the secret; named credentials hold the URL.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-26-new-external-credential.png" alt="New External Credential dialog"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>New</b> on the External Credentials tab.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-27-external-credential-filled.png" alt="External credential form filled with label Stripe Public, name Stripe_Auth, protocol Custom"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Label <b>Stripe Public</b>, name <b>Stripe_Auth</b>, authentication protocol <b>Custom</b>. Custom is correct here — Stripe authenticates with a bearer token, not OAuth.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-28-external-credential-saved.png" alt="Saved external credential with Principals and Custom Headers related lists"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Saved. The <b>Principals</b> and <b>Custom Headers</b> related lists only appear after the first save, which is why this is two steps and not one.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-29-principal-secret-key.png" alt="New principal form with parameter name OrgPrincipal, identity type Named Principal, authentication parameter SecretKey"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The principal: parameter name <b>OrgPrincipal</b>, sequence <b>1</b>, identity type <b>Named Principal</b>, and one authentication parameter named <b>SecretKey</b> whose value is <code>Bearer sk_…</code>. <b>The word <code>Bearer</code> and a space must precede the key</b> — the header is passed through verbatim.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-30-principal-saved.png" alt="Saved principal on the external credential"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Saved. The value is now write-only — Salesforce will never display it again, to you or to any Apex code. If you need to change the key, you overwrite it; you cannot read it back to check.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-31-new-custom-header.png" alt="New custom header dialog on the external credential"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>New</b> under Custom Headers.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-32-custom-header-filled.png" alt="Custom header named Authorization with a credential merge field value"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Header name <b>Authorization</b>, value <code>{!$Credential.Stripe_Auth.SecretKey}</code>. This merge field is how the encrypted secret reaches Stripe without any code ever holding it. The name in the middle must match your external credential's API name exactly.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-33-external-credential-complete.png" alt="Completed public external credential with principal and header"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The finished public external credential — one principal, one header.</p>
+
+<h3 id="the-public-named-credential">The public named credential<a class="headerlink" href="#the-public-named-credential" title="Permanent link">#</a></h3>
+<div class="fn-shot"><img src="../../assets/images/gs-34-named-credentials-empty.png" alt="Named Credentials tab, empty"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The <b>Named Credentials</b> tab, still empty. The external credential you just built is not usable on its own.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-35-new-named-credential.png" alt="New Named Credential form"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>New</b> on the Named Credentials tab.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-36-named-credential-filled.png" alt="Named credential form with URL https://api.stripe.com and the Stripe Public external credential selected"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Label <b>Stripe Public</b>, name <b>Stripe_Public</b>, URL <code>https://api.stripe.com</code> (no trailing path), external credential <b>Stripe Public</b>.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-37-named-credential-saved.png" alt="Saved named credential showing callout options"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The callout options, which matter more than they look. <b>Allow Formulas in HTTP Header</b> must be <b>on</b> or your merge field is sent as literal text. <b>Generate Authorization Header</b> must be <b>off</b> or Salesforce overwrites your header with its own and Stripe returns 401.</p>
+
+<h3 id="the-admin-pair">The admin pair<a class="headerlink" href="#the-admin-pair" title="Permanent link">#</a></h3>
+<p>Repeat all of the above with the admin names and your full secret key.</p>
+<div class="fn-shot"><img src="../../assets/images/gs-38-admin-external-credential.png" alt="Admin external credential Stripe_Admin_Auth"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The second external credential, <b>Stripe_Admin_Auth</b> — identical in shape, different key.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-39-admin-principal.png" alt="Admin principal with its own SecretKey parameter"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Its own <b>OrgPrincipal</b>. The two credentials share no state — that is the point. A leak of one does not expose the other.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-40-admin-named-credential.png" alt="Admin named credential Stripe_Admin"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The admin named credential, same URL, same callout options.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-41-both-named-credentials.png" alt="Named Credentials list showing both Stripe Public and Stripe Admin"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Both named credentials in the list. This is the finished state of step 4.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-42-payments-recheck.png" alt="Payments panel after re-checking against the completed credential build"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Back in the console, <b>Re-check</b> re-reads the org against the finished build.</p>
+
+<h3 id="add-the-payment-account">Add the payment account<a class="headerlink" href="#add-the-payment-account" title="Permanent link">#</a></h3>
+<p>A named credential is plumbing. The <strong>Payment Account</strong> record is what a campaign actually
+charges through — until an active one exists, the donation form cannot take money.</p>
+<div class="fn-shot"><img src="../../assets/images/gs-43-add-payment-account.png" alt="Payment Accounts panel with the Add button"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Payment Accounts</b>.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-44-payment-account-filled.png" alt="Payment account form pointing at both named credentials"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> One account pointing at <b>both</b> named credentials — the public one for charges, the admin one for refunds — and marked active. The label is yours; "Stripe (test mode)" is a useful convention while you are still on test keys.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-45-payment-account-saved.png" alt="Saved payment account row"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Saved and active.</p>
+
 <p>Full walkthrough: <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
-<h2 id="grant-the-stripe-credential">Grant the Stripe credential<a class="headerlink" href="#grant-the-stripe-credential" title="Permanent link">#</a></h2>
-<p><span class="fn-chip">One assignment — deliberately left to you</span></p>
+<h2 id="5-grant-the-stripe-credential">5. Grant the Stripe credential<a class="headerlink" href="#5-grant-the-stripe-credential" title="Permanent link">#</a></h2>
+<p><span class="fn-chip">Two permission sets you create yourself</span></p>
 <p><strong>This is the step that catches people out.</strong> A credential nobody is granted is a credential
 nobody can use — and granting it to your Experience Cloud site's <strong>guest user</strong> widens what an
 anonymous visitor can reach, so it stays your decision to make. The package never does it.</p>
 <p>Public donations fail at the payment step until you do it. Everything else on the page works,
 which is exactly what makes it easy to miss.</p>
-<ol>
-<li>Setup → <strong>Permission Sets</strong> → the permission set you created for payments (step 7 of the
-   Payments guide), or <strong>New</strong> if you haven't yet.</li>
-<li>On it, <strong>Apps → External Credential Principal Access → Edit</strong> → enable your external
-   credential's principal → <strong>Save</strong>.</li>
-<li><strong>Manage Assignments</strong> → <strong>Add Assignment</strong> → assign any fundraising staff who take payments
-   or issue refunds. Assign your Experience Cloud site's <strong>guest user</strong> here only if this set
-   carries the <strong>public</strong>, charge-only credential's principal — the set carrying the <em>admin</em>
-   credential's principal must reach staff and nothing else.</li>
-</ol>
-<div class="admonition danger">
-<p class="admonition-title">Don't forget the guest user — and don't give it the admin credential</p>
-<p>Assigning it to staff but not to the site guest user is the failure mode that looks
-healthiest: internal testing works, and every public donation fails at payment.</p>
-<p>The opposite mistake is worse and just as quiet: putting the guest user on the permission set
-that grants the <strong>admin</strong> credential lets an anonymous visitor's session reach a full secret
-key, refunds included. Step 8 of the Payments guide reports that as a failure with the
-remediation — see <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
-</div>
 <div class="admonition info">
 <p class="admonition-title">Why the permission set can't be part of the package</p>
 <p>Salesforce does not allow a <em>managed</em> permission set to grant access to an external
-credential principal — the API rejects it outright. That's why this set has to be one you
+credential principal — the API rejects it outright. That's why these sets have to be ones you
 create in your own org, and why <code>Fundraising_Admin</code> can never ship with the grant on it.</p>
 </div>
-<p>Once the guest user holds the assignment, the Get Started panel turns this step green.</p>
-<h2 id="background-jobs">Background jobs<a class="headerlink" href="#background-jobs" title="Permanent link">#</a></h2>
+<div class="fn-shot"><img src="../../assets/images/gs-46-new-permission-set.png" alt="New Permission Set form"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Permission Sets → New</b>. This set exists for one purpose: to carry a principal grant.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-47-permission-set-filled.png" alt="Permission set form filled with a payments-related label"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Name it after what it grants, and keep <b>public</b> and <b>admin</b> in separate sets — you are about to assign one of them to an anonymous user and not the other.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-48-permission-set-created.png" alt="Created permission set landing page"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Created, with no grants on it yet.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-49-external-credential-principal-access.png" alt="External Credential Principal Access page under Apps on the permission set"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> On the permission set: <b>Apps → External Credential Principal Access → Edit</b>. This page is easy to miss — it is not under Object Settings or System Permissions.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-50-principal-enabled.png" alt="The public credential's OrgPrincipal moved into the enabled column"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The <b>public</b> credential's <code>OrgPrincipal</code> enabled. Check the credential name in the row — the admin principal looks almost identical in this list.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-51-principal-access-saved.png" alt="Saved principal access on the permission set"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Saved.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-52-admin-principal-access.png" alt="A second permission set granting the admin credential's principal"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The same edit on the <i>second</i> set, granting the <b>admin</b> principal. This set must never reach a guest user.</p>
+
+<h3 id="assign-them">Assign them<a class="headerlink" href="#assign-them" title="Permanent link">#</a></h3>
+<div class="fn-shot"><img src="../../assets/images/gs-53-guest-user-record.png" alt="The Experience Cloud site guest user record in Setup"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The site's guest user. Reach it from Experience Builder → Settings → General → the guest user profile link, or from Setup → Users. Its name is derived from the site name, and it is a real user record with real permission set assignments.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-54-guest-user-assignments.png" alt="Assigning the public payments permission set to the guest user"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The <b>public</b> payments set being assigned to the guest user — and only that one.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-55-guest-assignments-saved.png" alt="Guest user with the public payments permission set assigned"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Saved. From this moment a public donation can reach Stripe.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-56-staff-admin-credential-assigned.png" alt="A staff user holding the admin credential permission set"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Staff holding the <b>admin</b> set — this is what makes refunds work. Give it to the people who take payments and issue refunds, and nobody else.</p>
+
+<div class="admonition danger">
+<p class="admonition-title">Don't forget the guest user — and don't give it the admin credential</p>
+<p>Assigning to staff but not to the site guest user is the failure mode that looks
+healthiest: internal testing works, and every public donation fails at payment.</p>
+<p>The opposite mistake is worse and just as quiet: putting the guest user on the permission set
+that grants the <strong>admin</strong> credential lets an anonymous visitor's session reach a full secret
+key, refunds included.</p>
+</div>
+<h3 id="allow-the-packages-namespace-to-make-the-callout">Allow the package's namespace to make the callout<a class="headerlink" href="#allow-the-packages-namespace-to-make-the-callout" title="Permanent link">#</a></h3>
+<p><span class="fn-chip">Easy to miss — the credential looks finished without it</span></p>
+<p>A named credential built by an admin is, by default, invisible to managed-package code. Salesforce
+gates this with a field on the named credential called <strong>Allowed Namespaces for Callouts</strong>: until
+the package's namespace is listed there, every callout the package attempts through that credential
+is blocked, no matter how correct the credential itself is.</p>
+<p>Do this on <strong>both</strong> named credentials.</p>
+<ol>
+<li>Setup → <strong>Named Credentials</strong> → open <code>Stripe_Public</code>.</li>
+<li><strong>Edit</strong> → find <strong>Allowed Namespaces for Callouts</strong> (a plain comma-separated text field).</li>
+<li>Enter the package namespace → <strong>Save</strong>.</li>
+<li>Repeat for <code>Stripe_Admin</code>.</li>
+</ol>
+<div class="fn-shot"><img src="../../assets/images/gs-57-allowed-namespaces.png" alt="The Allowed Namespaces for Callouts field on a named credential edit form"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The field on the edit form, with the package namespace typed in. It is free text with a <code>namespaceA, namespaceB</code> placeholder — there is no picker, and a typo fails silently at callout time rather than at save time.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-58-namespace-saved.png" alt="Saved named credential showing the namespace under Managed Package Access"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Saved. The namespace now appears under <b>Managed Package Access</b> on the credential's detail page — that section is your confirmation the grant took.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-59-test-connection-pass.png" alt="Payments guide connection test reporting a successful Stripe response with the account id"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> The end of the Payments guide: <b>Prove it works</b> makes a real callout to Stripe under the credential you just built and reports the account id Stripe answered with. This is the only check that exercises the whole chain — key, header, callout options and namespace grant — end to end. If this passes, the credential is correct regardless of what any other check says.</p>
+
+<h2 id="6-background-jobs">6. Background jobs<a class="headerlink" href="#6-background-jobs" title="Permanent link">#</a></h2>
 <p>Donations are finalized, payments swept, refunds reconciled, and campaign totals repaired by
-scheduled Apex — <strong>21 cron entries</strong> in total. The install schedules all of them.</p>
-<p>You only need this step if some were aborted (a deployment that touched a scheduled class
-will do it). Settings console → <strong>Get Started</strong> → <strong>Schedule the missing jobs</strong>, or
-<strong>Scheduled Jobs</strong> for the per-job breakdown and on-demand runs.</p>
+scheduled Apex — <strong>21 cron entries</strong> in total. <strong>The install schedules all of them</strong>, so this step
+arrives green and there is nothing to do.</p>
+<p>You only need it if some were aborted (a deployment that touched a scheduled class will do it).
+Settings console → <strong>Get Started → Schedule the missing jobs</strong>, or <strong>Scheduled Jobs</strong> for the
+per-job breakdown and on-demand runs.</p>
 <table>
 <thead>
 <tr>
@@ -2126,13 +2698,46 @@ will do it). Settings console → <strong>Get Started</strong> → <strong>Sched
 </tr>
 </tbody>
 </table>
-<h2 id="branding">Branding<a class="headerlink" href="#branding" title="Permanent link">#</a></h2>
+<h2 id="7-organization-name-and-logo">7. Organization name and logo<a class="headerlink" href="#7-organization-name-and-logo" title="Permanent link">#</a></h2>
 <p>Your organization name and logo appear on the donation form, the receipt email, and the donor
 portal. The install seeds a <strong>placeholder logo</strong> so nothing renders broken on day one — it is
 not your logo.</p>
-<p>Settings console → <strong>Organization &amp; Donations</strong>: set the display name, upload your logo, and
-set your mailing address (receipts need it).</p>
+<div class="fn-shot"><img src="../../assets/images/gs-60-get-started-5-of-7.png" alt="Get Started panel at 5 of 7 complete"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Five down. The panel names what is left rather than making you compare lists.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-61-organization-blank.png" alt="Organization &amp; Donations panel with empty identity fields"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Organization &amp; Donations</b>, untouched. This panel holds your identity fields (display name, Tax ID, logo) and your gift rules (minimum and maximum amount, suggested amounts, processing-fee percentage and fixed portion, donation page path, donor portal link expiry, default thank-you button). There is no mailing address field here — receipts take their address from your Salesforce company information.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-62-organization-saved.png" alt="Organization &amp; Donations panel saved with a display name and Tax ID"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Display name and Tax ID (EIN) saved. The display name is what a donor reads on the form and the receipt — set it before you send anyone a link.</p>
+
 <p>Full walkthrough: <a href="../../guides/email-branding/">Brand your receipt and notification emails</a>.</p>
+<h2 id="finish-step-3-activate-the-site">Finish step 3: activate the site<a class="headerlink" href="#finish-step-3-activate-the-site" title="Permanent link">#</a></h2>
+<p>Back to the one step publishing did not finish.</p>
+<div class="fn-shot"><img src="../../assets/images/gs-63-all-sites-preview.png" alt="All Sites list showing the site status as Preview"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>All Sites</b>. The site exists, has a real public URL, and its status is <b>Preview</b> — visible to you, invisible to donors.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-64-builder-settings-public-access.png" alt="Experience Builder settings showing public access on and the site already published"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Experience Builder → Settings → General, confirming public access is on and <b>Published Status</b> already reads <i>Published</i> with the live URL. Everything here is correct — and the site is still not reachable by the public. This screen has no Activate control.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-65-builder-publish-dialog.png" alt="Publish dialog in Experience Builder"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Publishing again after the page changes, from the <b>Publish</b> button in the top-right of Builder.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-66-builder-publish-confirm.png" alt="Publishing confirmation"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> "We're publishing your changes now." Publishing succeeded — and the site's status is still Preview.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-67-workspaces-administration-tile.png" alt="Experience Workspaces home with the Administration tile"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>Workspaces</b>, reached from the <b>Workspaces</b> link beside the site in Setup → All Sites. The header reads "Fundraising ( Preview · Published )" — the two states side by side. The tile you need is <b>Administration</b>.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-68-administration-activate.png" alt="Administration Settings page with the Activate button next to the Preview status"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Administration → <b>Settings</b>. Here — and only here — is the <b>Activate</b> button, sitting next to the status. Salesforce warns that activating sends a welcome email to members; you can suppress that beforehand under <b>Emails</b>.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-69-site-live.png" alt="Site status now reading Live after activation"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> Activated. The status is now <b>Live</b>, and the public URL serves the site to anyone.</p>
+
+<div class="fn-shot"><img src="../../assets/images/gs-70-get-started-7-of-7.png" alt="Get Started panel showing 7 of 7 complete and Your org is ready to take donations"></div>
+<p class="fn-figure-caption"><b>What it shows.</b> <b>7/7 — Your org is ready to take donations.</b> Every step was verified against the org, not ticked. The note underneath is the important part: "Steps stay live — if someone deactivates the last payment account or aborts the jobs, this reopens."</p>
+
 <hr />
 <h2 id="third-party-content">Third-party content<a class="headerlink" href="#third-party-content" title="Permanent link">#</a></h2>
 <p><span class="fn-chip">Optional — nothing here is required</span></p>

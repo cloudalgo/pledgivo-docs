@@ -367,6 +367,56 @@ body,
   height: auto;
 }
 
+/* Screen-capture walkthrough video — same frame treatment as .fn-shot. */
+.md-typeset .fn-video {
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  overflow: hidden;
+  margin: 0.8rem 0 0.3rem;
+  box-shadow: 0 2px 14px rgba(28, 43, 70, 0.08);
+  background: var(--fn-paper-dim);
+}
+.md-typeset .fn-video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--fn-paper-dim);
+}
+
+/* Clickable chapter markers under the walkthrough video. Each button seeks the
+   <video> above it; without JS they are inert labels, so nothing is lost. */
+.md-typeset .fn-chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.7rem 0 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+.md-typeset .fn-chapters li { margin: 0; }
+.md-typeset .fn-chapters button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-family: var(--fn-font-mono);
+  font-size: 0.66rem;
+  color: var(--fn-ink-soft);
+  background: var(--fn-paper-dim);
+  border: 1px solid var(--fn-line);
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.md-typeset .fn-chapters button:hover {
+  border-color: var(--fn-accent);
+  color: var(--fn-accent);
+}
+.md-typeset .fn-chapters button b {
+  font-weight: 500;
+  color: var(--fn-ink-faint);
+}
+
 /* ==========================================================================
    Interactive data-model diagram (Cytoscape.js)
    ========================================================================== */

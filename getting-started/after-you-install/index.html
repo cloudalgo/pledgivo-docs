@@ -2326,7 +2326,14 @@ scheduled jobs, the step reopens on its own.</p>
 </table>
 <p>An eighth item — <strong>Trust the content hosts you actually use</strong> — is listed but never counts
 against your seven. See <a href="#third-party-content">Third-party content</a>.</p>
-<div class="fn-shot"><img src="../../assets/images/gs-01-get-started-fresh.png" alt="Get Started panel on a freshly installed org, showing 1 of 7 complete"></div>
+<div class="admonition tip">
+<p class="admonition-title">The screenshots step themselves</p>
+<p>Every run of screens below is one panel showing a single screenshot at a time, with its
+explanation underneath. <strong>Click the screenshot — or the arrows — to move to the next step</strong>,
+or use the numbered row to jump anywhere. Leave it alone and it advances by itself while it
+is on screen; hovering pauses it, and touching any control hands it back to you for good.</p>
+</div>
+<div class="fn-shot"><img src="../../assets/images/gs-01-get-started-fresh.png" alt="Get Started panel on a freshly installed org, showing 1 of 7 complete" loading="lazy" decoding="async"></div>
 <p class="fn-figure-caption"><b>What it shows.</b> The panel on a brand-new install. One step is already green — the install seeds the record type mappings and schedules the jobs for you. Everything else is waiting on a human.</p>
 
 <div class="fn-status-strip">
@@ -2366,15 +2373,6 @@ script no way to know who on your team does what.</p>
 </tr>
 </tbody>
 </table>
-<div class="fn-shot"><img src="../../assets/images/gs-02-permission-sets-list.png" alt="Setup Permission Sets list showing the four packaged Fundraising sets"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Permission Sets</b>, filtered to the packaged sets. All four arrive with the install; none of them is assigned to anyone yet.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-03-fundraising-admin-permset.png" alt="Fundraising Admin permission set detail page"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The <code>Fundraising_Admin</code> detail page. This is where you confirm you are looking at the packaged set (it carries the package namespace) rather than a lookalike of your own.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-04-manage-assignments.png" alt="Manage Assignments page for Fundraising Admin, showing no current assignees"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>Manage Assignments</b> from the permission set — useful for auditing <i>who already holds it</i>, which here is nobody. Assigning from this direction is fine when it works, but the route below is the one that behaves consistently on a fresh org, so that is what the rest of these screenshots follow.</p>
-
 <p><strong>The route that always works</strong> is from the user, not from the permission set:</p>
 <ol>
 <li>Setup → <strong>Users → Users</strong> → click the person's name.</li>
@@ -2382,23 +2380,17 @@ script no way to know who on your team does what.</p>
 <li><strong>Edit Assignments</strong>.</li>
 <li>Move the set from <em>Available Permission Sets</em> to <em>Enabled Permission Sets</em> → <strong>Save</strong>.</li>
 </ol>
-<div class="fn-shot"><img src="../../assets/images/gs-05-user-permission-set-assignments.png" alt="A user record with the Permission Set Assignments related list and Edit Assignments button"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The <b>Permission Set Assignments</b> related list on the user record, with the <b>Edit Assignments</b> button. This list is also the fastest way to answer "why can't this person see the console?"</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-06-assign-permission-set-picker.png" alt="The two-column Available / Enabled permission set picker"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The two-column picker. Every permission set in the org appears on the left, including ones from other packages — read the name carefully before adding.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-07-select-fundraising-admin.png" alt="Fundraising Admin selected in the Available Permission Sets column"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <code>Fundraising_Admin</code> selected on the left, before it is moved across.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-08-fundraising-admin-enabled.png" alt="Fundraising Admin moved into the Enabled Permission Sets column"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The set moved into <i>Enabled Permission Sets</i>. Nothing is committed until you press Save.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-09-assignment-confirmed.png" alt="The user record showing Fundraising Admin in the Permission Set Assignments list"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Saved. The assignment now appears on the user record — this is the state the Get Started panel reads.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-10-get-started-2of7.png" alt="Get Started panel now showing 2 of 7 complete"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Back in the console, <b>Give your team access</b> has flipped to <span class="fn-chip">DONE</span> with the evidence line "1 user(s) hold Fundraising Admin or Fundraising User". Nothing was ticked by hand — the panel re-queried the org.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="The four packaged sets"><img src="../../assets/images/gs-02-permission-sets-list.png" alt="Setup Permission Sets list showing the four packaged Fundraising sets" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>Permission Sets</b>, filtered to the packaged sets. All four arrive with the install; none of them is assigned to anyone yet.</figcaption></figure>
+<figure class="fn-step" data-title="Fundraising Admin detail"><img src="../../assets/images/gs-03-fundraising-admin-permset.png" alt="Fundraising Admin permission set detail page" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <code>Fundraising_Admin</code> detail page. This is where you confirm you are looking at the packaged set (it carries the package namespace) rather than a lookalike of your own.</figcaption></figure>
+<figure class="fn-step" data-title="Manage Assignments — who holds it"><img src="../../assets/images/gs-04-manage-assignments.png" alt="Manage Assignments page for Fundraising Admin, showing no current assignees" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>Manage Assignments</b> from the permission set — useful for auditing <i>who already holds it</i>, which here is nobody. Assigning from this direction is fine when it works, but the route below is the one that behaves consistently on a fresh org, so that is what the rest of these screenshots follow.</figcaption></figure>
+<figure class="fn-step" data-title="Start from the user record"><img src="../../assets/images/gs-05-user-permission-set-assignments.png" alt="A user record with the Permission Set Assignments related list and Edit Assignments button" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <b>Permission Set Assignments</b> related list on the user record, with the <b>Edit Assignments</b> button. This list is also the fastest way to answer "why can't this person see the console?"</figcaption></figure>
+<figure class="fn-step" data-title="The two-column picker"><img src="../../assets/images/gs-06-assign-permission-set-picker.png" alt="The two-column Available / Enabled permission set picker" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The two-column picker. Every permission set in the org appears on the left, including ones from other packages — read the name carefully before adding.</figcaption></figure>
+<figure class="fn-step" data-title="Select Fundraising Admin"><img src="../../assets/images/gs-07-select-fundraising-admin.png" alt="Fundraising Admin selected in the Available Permission Sets column" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <code>Fundraising_Admin</code> selected on the left, before it is moved across.</figcaption></figure>
+<figure class="fn-step" data-title="Move it to Enabled"><img src="../../assets/images/gs-08-fundraising-admin-enabled.png" alt="Fundraising Admin moved into the Enabled Permission Sets column" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The set moved into <i>Enabled Permission Sets</i>. Nothing is committed until you press Save.</figcaption></figure>
+<figure class="fn-step" data-title="Assignment saved"><img src="../../assets/images/gs-09-assignment-confirmed.png" alt="The user record showing Fundraising Admin in the Permission Set Assignments list" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved. The assignment now appears on the user record — this is the state the Get Started panel reads.</figcaption></figure>
+<figure class="fn-step" data-title="Get Started re-checks: 2 of 7"><img src="../../assets/images/gs-10-get-started-2of7.png" alt="Get Started panel now showing 2 of 7 complete" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Back in the console, <b>Give your team access</b> has flipped to <span class="fn-chip">DONE</span> with the evidence line "1 user(s) hold Fundraising Admin or Fundraising User". Nothing was ticked by hand — the panel re-queried the org.</figcaption></figure>
+</div>
 
 <p><strong>The Settings console is <code>Fundraising_Admin</code> only.</strong> A <code>Fundraising_User</code> cannot open it, and
 cannot change what it configures by another route either: payment accounts, page designs, and
@@ -2410,7 +2402,7 @@ settings, give them <code>Fundraising_Admin</code>; there is no middle tier.</p>
 <p>The app writes donations, events, and tributes onto Opportunity and Campaign record types.
 The install seeds a <strong>default mapping of seven records</strong> pointing at the record types it
 ships, so this step is normally already green.</p>
-<div class="fn-shot"><img src="../../assets/images/gs-11-record-types.png" alt="Record Types panel in the Settings console showing seven seeded mapping records"></div>
+<div class="fn-shot"><img src="../../assets/images/gs-11-record-types.png" alt="Record Types panel in the Settings console showing seven seeded mapping records" loading="lazy" decoding="async"></div>
 <p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Record Types</b>, with all seven mapping records present. Change these only if your org already uses its own record types for gifts and you want the app to write to those instead.</p>
 
 <div class="admonition warning">
@@ -2428,39 +2420,23 @@ it. Publishing and activating are different operations in different screens.</p>
 <p>If Setup has no <strong>Digital Experiences</strong> menu, switch the feature on first:
 Setup → <strong>Digital Experiences → Settings → Enable Digital Experiences</strong>. It is org-wide,
 asks you to pick an Enhanced Domain subdomain, and cannot be undone.</p>
-<div class="fn-shot"><img src="../../assets/images/gs-12-site-domain-checklist.png" alt="Site &amp; Domain panel in the Settings console, a seven-step checklist"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Site &amp; Domain</b>. Steps the app can verify against your org are marked Done or Pending; steps Salesforce exposes no API for are marked <b>Can't verify</b> and are yours to confirm.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-13-all-sites-empty.png" alt="Setup All Sites page with no sites yet"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Digital Experiences → All Sites</b> before any site exists. <b>New</b> starts the template gallery.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-14-choose-template.png" alt="Experience Cloud template gallery"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The template gallery. Most of these are Aura templates the package does not target.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-15-build-your-own-lwr.png" alt="Build Your Own (LWR) template selected"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>Build Your Own (LWR)</b> — the one to pick. The package's public components are Lightning Web Runtime components; they cannot be dropped onto an Aura template.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-16-name-the-site.png" alt="Site name and URL path dialog"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Naming the site and choosing its URL path. The path becomes part of every public donation link, so pick something short and permanent — <code>/fundraising</code>, not <code>/fundraising-2026-test</code>.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-17-experience-workspaces.png" alt="Experience Workspaces home with Builder, Dashboards, Administration and Guided Setup tiles"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>Experience Workspaces</b> — reached from the <b>Workspaces</b> link next to the site in All Sites. Builder is where you design pages; <b>Administration</b> is where you activate. You will need both.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-18-admin-settings-preview.png" alt="Administration Settings page showing the site status as Preview"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Administration → <b>Settings</b>. A brand-new site starts at status <b>Preview</b>, which means logged-in admins can see it and the public cannot.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="Site &amp; Domain checklist"><img src="../../assets/images/gs-12-site-domain-checklist.png" alt="Site &amp; Domain panel in the Settings console, a seven-step checklist" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Site &amp; Domain</b>. Steps the app can verify against your org are marked Done or Pending; steps Salesforce exposes no API for are marked <b>Can't verify</b> and are yours to confirm.</figcaption></figure>
+<figure class="fn-step" data-title="All Sites, before any site exists"><img src="../../assets/images/gs-13-all-sites-empty.png" alt="Setup All Sites page with no sites yet" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>Digital Experiences → All Sites</b> before any site exists. <b>New</b> starts the template gallery.</figcaption></figure>
+<figure class="fn-step" data-title="The template gallery"><img src="../../assets/images/gs-14-choose-template.png" alt="Experience Cloud template gallery" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The template gallery. Most of these are Aura templates the package does not target.</figcaption></figure>
+<figure class="fn-step" data-title="Pick Build Your Own (LWR)"><img src="../../assets/images/gs-15-build-your-own-lwr.png" alt="Build Your Own (LWR) template selected" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>Build Your Own (LWR)</b> — the one to pick. The package's public components are Lightning Web Runtime components; they cannot be dropped onto an Aura template.</figcaption></figure>
+<figure class="fn-step" data-title="Name it and set the URL path"><img src="../../assets/images/gs-16-name-the-site.png" alt="Site name and URL path dialog" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Naming the site and choosing its URL path. The path becomes part of every public donation link, so pick something short and permanent — <code>/fundraising</code>, not <code>/fundraising-2026-test</code>.</figcaption></figure>
+<figure class="fn-step" data-title="Experience Workspaces"><img src="../../assets/images/gs-17-experience-workspaces.png" alt="Experience Workspaces home with Builder, Dashboards, Administration and Guided Setup tiles" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>Experience Workspaces</b> — reached from the <b>Workspaces</b> link next to the site in All Sites. Builder is where you design pages; <b>Administration</b> is where you activate. You will need both.</figcaption></figure>
+<figure class="fn-step" data-title="A new site starts at Preview"><img src="../../assets/images/gs-18-admin-settings-preview.png" alt="Administration Settings page showing the site status as Preview" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Administration → <b>Settings</b>. A brand-new site starts at status <b>Preview</b>, which means logged-in admins can see it and the public cannot.</figcaption></figure>
+</div>
 
 <h3 id="enable-public-access-and-publish">Enable public access and publish<a class="headerlink" href="#enable-public-access-and-publish" title="Permanent link">#</a></h3>
-<div class="fn-shot"><img src="../../assets/images/gs-19-builder-settings-general.png" alt="Experience Builder Settings General page"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Experience Builder → the gear icon → <b>Settings → General</b>. Template, public access, published status and the guest user profile all live on this one screen.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-20-public-access-enabled.png" alt="Public Access checkbox enabled in Experience Builder settings"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>Guest users can see and interact with the site without logging in</b>, ticked. Without this, the donation page serves a login screen to donors.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-21-publish-dialog.png" alt="Publish your site dialog in Experience Builder"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The <b>Publish</b> dialog, confirming the URL your changes will go to. The description field is optional and feeds the Change History panel.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-22-publishing.png" alt="Publishing confirmation message"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Publishing is asynchronous — Salesforce emails you when it finishes. Wait for that email before making further changes.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="Builder → Settings → General"><img src="../../assets/images/gs-19-builder-settings-general.png" alt="Experience Builder Settings General page" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Experience Builder → the gear icon → <b>Settings → General</b>. Template, public access, published status and the guest user profile all live on this one screen.</figcaption></figure>
+<figure class="fn-step" data-title="Turn on public access"><img src="../../assets/images/gs-20-public-access-enabled.png" alt="Public Access checkbox enabled in Experience Builder settings" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>Guest users can see and interact with the site without logging in</b>, ticked. Without this, the donation page serves a login screen to donors.</figcaption></figure>
+<figure class="fn-step" data-title="The Publish dialog"><img src="../../assets/images/gs-21-publish-dialog.png" alt="Publish your site dialog in Experience Builder" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <b>Publish</b> dialog, confirming the URL your changes will go to. The description field is optional and feeds the Change History panel.</figcaption></figure>
+<figure class="fn-step" data-title="Publishing is asynchronous"><img src="../../assets/images/gs-22-publishing.png" alt="Publishing confirmation message" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Publishing is asynchronous — Salesforce emails you when it finishes. Wait for that email before making further changes.</figcaption></figure>
+</div>
 
 <h3 id="activate-it">Activate it<a class="headerlink" href="#activate-it" title="Permanent link">#</a></h3>
 <div class="admonition danger">
@@ -2501,81 +2477,50 @@ whole integration:</p>
 </tr>
 </tbody>
 </table>
-<div class="fn-shot"><img src="../../assets/images/gs-23-payments-guide.png" alt="Payments panel in the Settings console showing the ten-step credential guide"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Payments</b>. Ten steps with the exact values to paste, plus a live connection test at the end. The console guides the build; it never asks you to type a secret into it.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-24-payments-reference-values.png" alt="Reference values shown per step in the Payments guide"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The reference values, per step, with copy affordances — names, protocol, parameter name, and the exact merge-field syntax for the header. Keep this open in a second tab while you work in Setup.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="The Payments guide"><img src="../../assets/images/gs-23-payments-guide.png" alt="Payments panel in the Settings console showing the ten-step credential guide" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Payments</b>. Ten steps with the exact values to paste, plus a live connection test at the end. The console guides the build; it never asks you to type a secret into it.</figcaption></figure>
+<figure class="fn-step" data-title="Reference values, per step"><img src="../../assets/images/gs-24-payments-reference-values.png" alt="Reference values shown per step in the Payments guide" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The reference values, per step, with copy affordances — names, protocol, parameter name, and the exact merge-field syntax for the header. Keep this open in a second tab while you work in Setup.</figcaption></figure>
+</div>
 
 <h3 id="the-public-external-credential">The public external credential<a class="headerlink" href="#the-public-external-credential" title="Permanent link">#</a></h3>
-<div class="fn-shot"><img src="../../assets/images/gs-25-external-credentials-empty.png" alt="Setup Named Credentials page, External Credentials tab, empty"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Security → Named Credentials → External Credentials</b>, before anything exists. External credentials hold the secret; named credentials hold the URL.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-26-new-external-credential.png" alt="New External Credential dialog"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>New</b> on the External Credentials tab.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-27-external-credential-filled.png" alt="External credential form filled with label Stripe Public, name Stripe_Auth, protocol Custom"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Label <b>Stripe Public</b>, name <b>Stripe_Auth</b>, authentication protocol <b>Custom</b>. Custom is correct here — Stripe authenticates with a bearer token, not OAuth.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-28-external-credential-saved.png" alt="Saved external credential with Principals and Custom Headers related lists"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Saved. The <b>Principals</b> and <b>Custom Headers</b> related lists only appear after the first save, which is why this is two steps and not one.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-29-principal-secret-key.png" alt="New principal form with parameter name OrgPrincipal, identity type Named Principal, authentication parameter SecretKey"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The principal: parameter name <b>OrgPrincipal</b>, sequence <b>1</b>, identity type <b>Named Principal</b>, and one authentication parameter named <b>SecretKey</b> whose value is <code>Bearer sk_…</code>. <b>The word <code>Bearer</code> and a space must precede the key</b> — the header is passed through verbatim.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-30-principal-saved.png" alt="Saved principal on the external credential"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Saved. The value is now write-only — Salesforce will never display it again, to you or to any Apex code. If you need to change the key, you overwrite it; you cannot read it back to check.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-31-new-custom-header.png" alt="New custom header dialog on the external credential"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>New</b> under Custom Headers.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-32-custom-header-filled.png" alt="Custom header named Authorization with a credential merge field value"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Header name <b>Authorization</b>, value <code>{!$Credential.Stripe_Auth.SecretKey}</code>. This merge field is how the encrypted secret reaches Stripe without any code ever holding it. The name in the middle must match your external credential's API name exactly.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-33-external-credential-complete.png" alt="Completed public external credential with principal and header"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The finished public external credential — one principal, one header.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="External Credentials, empty"><img src="../../assets/images/gs-25-external-credentials-empty.png" alt="Setup Named Credentials page, External Credentials tab, empty" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>Security → Named Credentials → External Credentials</b>, before anything exists. External credentials hold the secret; named credentials hold the URL.</figcaption></figure>
+<figure class="fn-step" data-title="New external credential"><img src="../../assets/images/gs-26-new-external-credential.png" alt="New External Credential dialog" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>New</b> on the External Credentials tab.</figcaption></figure>
+<figure class="fn-step" data-title="Stripe_Auth, protocol Custom"><img src="../../assets/images/gs-27-external-credential-filled.png" alt="External credential form filled with label Stripe Public, name Stripe_Auth, protocol Custom" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Label <b>Stripe Public</b>, name <b>Stripe_Auth</b>, authentication protocol <b>Custom</b>. Custom is correct here — Stripe authenticates with a bearer token, not OAuth.</figcaption></figure>
+<figure class="fn-step" data-title="Saved — the related lists appear"><img src="../../assets/images/gs-28-external-credential-saved.png" alt="Saved external credential with Principals and Custom Headers related lists" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved. The <b>Principals</b> and <b>Custom Headers</b> related lists only appear after the first save, which is why this is two steps and not one.</figcaption></figure>
+<figure class="fn-step" data-title="The principal and its SecretKey"><img src="../../assets/images/gs-29-principal-secret-key.png" alt="New principal form with parameter name OrgPrincipal, identity type Named Principal, authentication parameter SecretKey" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The principal: parameter name <b>OrgPrincipal</b>, sequence <b>1</b>, identity type <b>Named Principal</b>, and one authentication parameter named <b>SecretKey</b> whose value is <code>Bearer sk_…</code>. <b>The word <code>Bearer</code> and a space must precede the key</b> — the header is passed through verbatim.</figcaption></figure>
+<figure class="fn-step" data-title="Saved, and now write-only"><img src="../../assets/images/gs-30-principal-saved.png" alt="Saved principal on the external credential" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved. The value is now write-only — Salesforce will never display it again, to you or to any Apex code. If you need to change the key, you overwrite it; you cannot read it back to check.</figcaption></figure>
+<figure class="fn-step" data-title="New custom header"><img src="../../assets/images/gs-31-new-custom-header.png" alt="New custom header dialog on the external credential" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>New</b> under Custom Headers.</figcaption></figure>
+<figure class="fn-step" data-title="The Authorization merge field"><img src="../../assets/images/gs-32-custom-header-filled.png" alt="Custom header named Authorization with a credential merge field value" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Header name <b>Authorization</b>, value <code>{!$Credential.Stripe_Auth.SecretKey}</code>. This merge field is how the encrypted secret reaches Stripe without any code ever holding it. The name in the middle must match your external credential's API name exactly.</figcaption></figure>
+<figure class="fn-step" data-title="The public credential, finished"><img src="../../assets/images/gs-33-external-credential-complete.png" alt="Completed public external credential with principal and header" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The finished public external credential — one principal, one header.</figcaption></figure>
+</div>
 
 <h3 id="the-public-named-credential">The public named credential<a class="headerlink" href="#the-public-named-credential" title="Permanent link">#</a></h3>
-<div class="fn-shot"><img src="../../assets/images/gs-34-named-credentials-empty.png" alt="Named Credentials tab, empty"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The <b>Named Credentials</b> tab, still empty. The external credential you just built is not usable on its own.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-35-new-named-credential.png" alt="New Named Credential form"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>New</b> on the Named Credentials tab.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-36-named-credential-filled.png" alt="Named credential form with URL https://api.stripe.com and the Stripe Public external credential selected"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Label <b>Stripe Public</b>, name <b>Stripe_Public</b>, URL <code>https://api.stripe.com</code> (no trailing path), external credential <b>Stripe Public</b>.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-37-named-credential-saved.png" alt="Saved named credential showing callout options"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The callout options, which matter more than they look. <b>Allow Formulas in HTTP Header</b> must be <b>on</b> or your merge field is sent as literal text. <b>Generate Authorization Header</b> must be <b>off</b> or Salesforce overwrites your header with its own and Stripe returns 401.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="Named Credentials, empty"><img src="../../assets/images/gs-34-named-credentials-empty.png" alt="Named Credentials tab, empty" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <b>Named Credentials</b> tab, still empty. The external credential you just built is not usable on its own.</figcaption></figure>
+<figure class="fn-step" data-title="New named credential"><img src="../../assets/images/gs-35-new-named-credential.png" alt="New Named Credential form" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>New</b> on the Named Credentials tab.</figcaption></figure>
+<figure class="fn-step" data-title="Stripe_Public → api.stripe.com"><img src="../../assets/images/gs-36-named-credential-filled.png" alt="Named credential form with URL https://api.stripe.com and the Stripe Public external credential selected" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Label <b>Stripe Public</b>, name <b>Stripe_Public</b>, URL <code>https://api.stripe.com</code> (no trailing path), external credential <b>Stripe Public</b>.</figcaption></figure>
+<figure class="fn-step" data-title="The two callout options that matter"><img src="../../assets/images/gs-37-named-credential-saved.png" alt="Saved named credential showing callout options" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The callout options, which matter more than they look. <b>Allow Formulas in HTTP Header</b> must be <b>on</b> or your merge field is sent as literal text. <b>Generate Authorization Header</b> must be <b>off</b> or Salesforce overwrites your header with its own and Stripe returns 401.</figcaption></figure>
+</div>
 
 <h3 id="the-admin-pair">The admin pair<a class="headerlink" href="#the-admin-pair" title="Permanent link">#</a></h3>
 <p>Repeat all of the above with the admin names and your full secret key.</p>
-<div class="fn-shot"><img src="../../assets/images/gs-38-admin-external-credential.png" alt="Admin external credential Stripe_Admin_Auth"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The second external credential, <b>Stripe_Admin_Auth</b> — identical in shape, different key.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-39-admin-principal.png" alt="Admin principal with its own SecretKey parameter"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Its own <b>OrgPrincipal</b>. The two credentials share no state — that is the point. A leak of one does not expose the other.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-40-admin-named-credential.png" alt="Admin named credential Stripe_Admin"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The admin named credential, same URL, same callout options.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-41-both-named-credentials.png" alt="Named Credentials list showing both Stripe Public and Stripe Admin"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Both named credentials in the list. This is the finished state of step 4.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-42-payments-recheck.png" alt="Payments panel after re-checking against the completed credential build"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Back in the console, <b>Re-check</b> re-reads the org against the finished build.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="Stripe_Admin_Auth"><img src="../../assets/images/gs-38-admin-external-credential.png" alt="Admin external credential Stripe_Admin_Auth" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The second external credential, <b>Stripe_Admin_Auth</b> — identical in shape, different key.</figcaption></figure>
+<figure class="fn-step" data-title="Its own OrgPrincipal"><img src="../../assets/images/gs-39-admin-principal.png" alt="Admin principal with its own SecretKey parameter" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Its own <b>OrgPrincipal</b>. The two credentials share no state — that is the point. A leak of one does not expose the other.</figcaption></figure>
+<figure class="fn-step" data-title="The admin named credential"><img src="../../assets/images/gs-40-admin-named-credential.png" alt="Admin named credential Stripe_Admin" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The admin named credential, same URL, same callout options.</figcaption></figure>
+<figure class="fn-step" data-title="Both credentials in place"><img src="../../assets/images/gs-41-both-named-credentials.png" alt="Named Credentials list showing both Stripe Public and Stripe Admin" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Both named credentials in the list. This is the finished state of step 4.</figcaption></figure>
+<figure class="fn-step" data-title="Re-check the guide"><img src="../../assets/images/gs-42-payments-recheck.png" alt="Payments panel after re-checking against the completed credential build" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Back in the console, <b>Re-check</b> re-reads the org against the finished build.</figcaption></figure>
+</div>
 
 <h3 id="add-the-payment-account">Add the payment account<a class="headerlink" href="#add-the-payment-account" title="Permanent link">#</a></h3>
 <p>A named credential is plumbing. The <strong>Payment Account</strong> record is what a campaign actually
 charges through — until an active one exists, the donation form cannot take money.</p>
-<div class="fn-shot"><img src="../../assets/images/gs-43-add-payment-account.png" alt="Payment Accounts panel with the Add button"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Payment Accounts</b>.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-44-payment-account-filled.png" alt="Payment account form pointing at both named credentials"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> One account pointing at <b>both</b> named credentials — the public one for charges, the admin one for refunds — and marked active. The label is yours; "Stripe (test mode)" is a useful convention while you are still on test keys.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-45-payment-account-saved.png" alt="Saved payment account row"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Saved and active.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="Payment Accounts → Add"><img src="../../assets/images/gs-43-add-payment-account.png" alt="Payment Accounts panel with the Add button" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Payment Accounts</b>.</figcaption></figure>
+<figure class="fn-step" data-title="Point it at both credentials"><img src="../../assets/images/gs-44-payment-account-filled.png" alt="Payment account form pointing at both named credentials" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> One account pointing at <b>both</b> named credentials — the public one for charges, the admin one for refunds — and marked active. The label is yours; "Stripe (test mode)" is a useful convention while you are still on test keys.</figcaption></figure>
+<figure class="fn-step" data-title="Saved and active"><img src="../../assets/images/gs-45-payment-account-saved.png" alt="Saved payment account row" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved and active.</figcaption></figure>
+</div>
 
 <p>Full walkthrough: <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
 <h2 id="5-grant-the-stripe-credential">5. Grant the Stripe credential<a class="headerlink" href="#5-grant-the-stripe-credential" title="Permanent link">#</a></h2>
@@ -2591,39 +2536,23 @@ which is exactly what makes it easy to miss.</p>
 credential principal — the API rejects it outright. That's why these sets have to be ones you
 create in your own org, and why <code>Fundraising_Admin</code> can never ship with the grant on it.</p>
 </div>
-<div class="fn-shot"><img src="../../assets/images/gs-46-new-permission-set.png" alt="New Permission Set form"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>Permission Sets → New</b>. This set exists for one purpose: to carry a principal grant.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-47-permission-set-filled.png" alt="Permission set form filled with a payments-related label"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Name it after what it grants, and keep <b>public</b> and <b>admin</b> in separate sets — you are about to assign one of them to an anonymous user and not the other.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-48-permission-set-created.png" alt="Created permission set landing page"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Created, with no grants on it yet.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-49-external-credential-principal-access.png" alt="External Credential Principal Access page under Apps on the permission set"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> On the permission set: <b>Apps → External Credential Principal Access → Edit</b>. This page is easy to miss — it is not under Object Settings or System Permissions.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-50-principal-enabled.png" alt="The public credential's OrgPrincipal moved into the enabled column"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The <b>public</b> credential's <code>OrgPrincipal</code> enabled. Check the credential name in the row — the admin principal looks almost identical in this list.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-51-principal-access-saved.png" alt="Saved principal access on the permission set"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Saved.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-52-admin-principal-access.png" alt="A second permission set granting the admin credential's principal"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The same edit on the <i>second</i> set, granting the <b>admin</b> principal. This set must never reach a guest user.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="New permission set"><img src="../../assets/images/gs-46-new-permission-set.png" alt="New Permission Set form" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>Permission Sets → New</b>. This set exists for one purpose: to carry a principal grant.</figcaption></figure>
+<figure class="fn-step" data-title="Keep public and admin apart"><img src="../../assets/images/gs-47-permission-set-filled.png" alt="Permission set form filled with a payments-related label" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Name it after what it grants, and keep <b>public</b> and <b>admin</b> in separate sets — you are about to assign one of them to an anonymous user and not the other.</figcaption></figure>
+<figure class="fn-step" data-title="Created, no grants on it yet"><img src="../../assets/images/gs-48-permission-set-created.png" alt="Created permission set landing page" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Created, with no grants on it yet.</figcaption></figure>
+<figure class="fn-step" data-title="External Credential Principal Access"><img src="../../assets/images/gs-49-external-credential-principal-access.png" alt="External Credential Principal Access page under Apps on the permission set" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> On the permission set: <b>Apps → External Credential Principal Access → Edit</b>. This page is easy to miss — it is not under Object Settings or System Permissions.</figcaption></figure>
+<figure class="fn-step" data-title="Enable the public principal"><img src="../../assets/images/gs-50-principal-enabled.png" alt="The public credential's OrgPrincipal moved into the enabled column" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <b>public</b> credential's <code>OrgPrincipal</code> enabled. Check the credential name in the row — the admin principal looks almost identical in this list.</figcaption></figure>
+<figure class="fn-step" data-title="Saved"><img src="../../assets/images/gs-51-principal-access-saved.png" alt="Saved principal access on the permission set" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved.</figcaption></figure>
+<figure class="fn-step" data-title="A second set for the admin principal"><img src="../../assets/images/gs-52-admin-principal-access.png" alt="A second permission set granting the admin credential's principal" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The same edit on the <i>second</i> set, granting the <b>admin</b> principal. This set must never reach a guest user.</figcaption></figure>
+</div>
 
 <h3 id="assign-them">Assign them<a class="headerlink" href="#assign-them" title="Permanent link">#</a></h3>
-<div class="fn-shot"><img src="../../assets/images/gs-53-guest-user-record.png" alt="The Experience Cloud site guest user record in Setup"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The site's guest user. Reach it from Experience Builder → Settings → General → the guest user profile link, or from Setup → Users. Its name is derived from the site name, and it is a real user record with real permission set assignments.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-54-guest-user-assignments.png" alt="Assigning the public payments permission set to the guest user"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The <b>public</b> payments set being assigned to the guest user — and only that one.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-55-guest-assignments-saved.png" alt="Guest user with the public payments permission set assigned"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Saved. From this moment a public donation can reach Stripe.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-56-staff-admin-credential-assigned.png" alt="A staff user holding the admin credential permission set"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Staff holding the <b>admin</b> set — this is what makes refunds work. Give it to the people who take payments and issue refunds, and nobody else.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="The site's guest user"><img src="../../assets/images/gs-53-guest-user-record.png" alt="The Experience Cloud site guest user record in Setup" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The site's guest user. Reach it from Experience Builder → Settings → General → the guest user profile link, or from Setup → Users. Its name is derived from the site name, and it is a real user record with real permission set assignments.</figcaption></figure>
+<figure class="fn-step" data-title="Assign the public set — only that one"><img src="../../assets/images/gs-54-guest-user-assignments.png" alt="Assigning the public payments permission set to the guest user" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <b>public</b> payments set being assigned to the guest user — and only that one.</figcaption></figure>
+<figure class="fn-step" data-title="Saved — public donations can charge"><img src="../../assets/images/gs-55-guest-assignments-saved.png" alt="Guest user with the public payments permission set assigned" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved. From this moment a public donation can reach Stripe.</figcaption></figure>
+<figure class="fn-step" data-title="Staff hold the admin set"><img src="../../assets/images/gs-56-staff-admin-credential-assigned.png" alt="A staff user holding the admin credential permission set" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Staff holding the <b>admin</b> set — this is what makes refunds work. Give it to the people who take payments and issue refunds, and nobody else.</figcaption></figure>
+</div>
 
 <div class="admonition danger">
 <p class="admonition-title">Don't forget the guest user — and don't give it the admin credential</p>
@@ -2646,14 +2575,11 @@ is blocked, no matter how correct the credential itself is.</p>
 <li>Enter the package namespace → <strong>Save</strong>.</li>
 <li>Repeat for <code>Stripe_Admin</code>.</li>
 </ol>
-<div class="fn-shot"><img src="../../assets/images/gs-57-allowed-namespaces.png" alt="The Allowed Namespaces for Callouts field on a named credential edit form"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The field on the edit form, with the package namespace typed in. It is free text with a <code>namespaceA, namespaceB</code> placeholder — there is no picker, and a typo fails silently at callout time rather than at save time.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-58-namespace-saved.png" alt="Saved named credential showing the namespace under Managed Package Access"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Saved. The namespace now appears under <b>Managed Package Access</b> on the credential's detail page — that section is your confirmation the grant took.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-59-test-connection-pass.png" alt="Payments guide connection test reporting a successful Stripe response with the account id"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> The end of the Payments guide: <b>Prove it works</b> makes a real callout to Stripe under the credential you just built and reports the account id Stripe answered with. This is the only check that exercises the whole chain — key, header, callout options and namespace grant — end to end. If this passes, the credential is correct regardless of what any other check says.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="Allowed Namespaces for Callouts"><img src="../../assets/images/gs-57-allowed-namespaces.png" alt="The Allowed Namespaces for Callouts field on a named credential edit form" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The field on the edit form, with the package namespace typed in. It is free text with a <code>namespaceA, namespaceB</code> placeholder — there is no picker, and a typo fails silently at callout time rather than at save time.</figcaption></figure>
+<figure class="fn-step" data-title="Saved — Managed Package Access"><img src="../../assets/images/gs-58-namespace-saved.png" alt="Saved named credential showing the namespace under Managed Package Access" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved. The namespace now appears under <b>Managed Package Access</b> on the credential's detail page — that section is your confirmation the grant took.</figcaption></figure>
+<figure class="fn-step" data-title="Prove it works — a real callout"><img src="../../assets/images/gs-59-test-connection-pass.png" alt="Payments guide connection test reporting a successful Stripe response with the account id" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The end of the Payments guide: <b>Prove it works</b> makes a real callout to Stripe under the credential you just built and reports the account id Stripe answered with. This is the only check that exercises the whole chain — key, header, callout options and namespace grant — end to end. If this passes, the credential is correct regardless of what any other check says.</figcaption></figure>
+</div>
 
 <h2 id="6-background-jobs">6. Background jobs<a class="headerlink" href="#6-background-jobs" title="Permanent link">#</a></h2>
 <p>Donations are finalized, payments swept, refunds reconciled, and campaign totals repaired by
@@ -2702,41 +2628,25 @@ per-job breakdown and on-demand runs.</p>
 <p>Your organization name and logo appear on the donation form, the receipt email, and the donor
 portal. The install seeds a <strong>placeholder logo</strong> so nothing renders broken on day one — it is
 not your logo.</p>
-<div class="fn-shot"><img src="../../assets/images/gs-60-get-started-5-of-7.png" alt="Get Started panel at 5 of 7 complete"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Five down. The panel names what is left rather than making you compare lists.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-61-organization-blank.png" alt="Organization &amp; Donations panel with empty identity fields"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Settings console → <b>Organization &amp; Donations</b>, untouched. This panel holds your identity fields (display name, Tax ID, logo) and your gift rules (minimum and maximum amount, suggested amounts, processing-fee percentage and fixed portion, donation page path, donor portal link expiry, default thank-you button). There is no mailing address field here — receipts take their address from your Salesforce company information.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-62-organization-saved.png" alt="Organization &amp; Donations panel saved with a display name and Tax ID"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Display name and Tax ID (EIN) saved. The display name is what a donor reads on the form and the receipt — set it before you send anyone a link.</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="Get Started at 5 of 7"><img src="../../assets/images/gs-60-get-started-5-of-7.png" alt="Get Started panel at 5 of 7 complete" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Five down. The panel names what is left rather than making you compare lists.</figcaption></figure>
+<figure class="fn-step" data-title="Organization &amp; Donations, untouched"><img src="../../assets/images/gs-61-organization-blank.png" alt="Organization &amp; Donations panel with empty identity fields" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Organization &amp; Donations</b>, untouched. This panel holds your identity fields (display name, Tax ID, logo) and your gift rules (minimum and maximum amount, suggested amounts, processing-fee percentage and fixed portion, donation page path, donor portal link expiry, default thank-you button). There is no mailing address field here — receipts take their address from your Salesforce company information.</figcaption></figure>
+<figure class="fn-step" data-title="Display name and Tax ID saved"><img src="../../assets/images/gs-62-organization-saved.png" alt="Organization &amp; Donations panel saved with a display name and Tax ID" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Display name and Tax ID (EIN) saved. The display name is what a donor reads on the form and the receipt — set it before you send anyone a link.</figcaption></figure>
+</div>
 
 <p>Full walkthrough: <a href="../../guides/email-branding/">Brand your receipt and notification emails</a>.</p>
 <h2 id="finish-step-3-activate-the-site">Finish step 3: activate the site<a class="headerlink" href="#finish-step-3-activate-the-site" title="Permanent link">#</a></h2>
 <p>Back to the one step publishing did not finish.</p>
-<div class="fn-shot"><img src="../../assets/images/gs-63-all-sites-preview.png" alt="All Sites list showing the site status as Preview"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Setup → <b>All Sites</b>. The site exists, has a real public URL, and its status is <b>Preview</b> — visible to you, invisible to donors.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-64-builder-settings-public-access.png" alt="Experience Builder settings showing public access on and the site already published"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Experience Builder → Settings → General, confirming public access is on and <b>Published Status</b> already reads <i>Published</i> with the live URL. Everything here is correct — and the site is still not reachable by the public. This screen has no Activate control.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-65-builder-publish-dialog.png" alt="Publish dialog in Experience Builder"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Publishing again after the page changes, from the <b>Publish</b> button in the top-right of Builder.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-66-builder-publish-confirm.png" alt="Publishing confirmation"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> "We're publishing your changes now." Publishing succeeded — and the site's status is still Preview.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-67-workspaces-administration-tile.png" alt="Experience Workspaces home with the Administration tile"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>Workspaces</b>, reached from the <b>Workspaces</b> link beside the site in Setup → All Sites. The header reads "Fundraising ( Preview · Published )" — the two states side by side. The tile you need is <b>Administration</b>.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-68-administration-activate.png" alt="Administration Settings page with the Activate button next to the Preview status"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Administration → <b>Settings</b>. Here — and only here — is the <b>Activate</b> button, sitting next to the status. Salesforce warns that activating sends a welcome email to members; you can suppress that beforehand under <b>Emails</b>.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-69-site-live.png" alt="Site status now reading Live after activation"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> Activated. The status is now <b>Live</b>, and the public URL serves the site to anyone.</p>
-
-<div class="fn-shot"><img src="../../assets/images/gs-70-get-started-7-of-7.png" alt="Get Started panel showing 7 of 7 complete and Your org is ready to take donations"></div>
-<p class="fn-figure-caption"><b>What it shows.</b> <b>7/7 — Your org is ready to take donations.</b> Every step was verified against the org, not ticked. The note underneath is the important part: "Steps stay live — if someone deactivates the last payment account or aborts the jobs, this reopens."</p>
+<div class="fn-steps">
+<figure class="fn-step" data-title="All Sites: still Preview"><img src="../../assets/images/gs-63-all-sites-preview.png" alt="All Sites list showing the site status as Preview" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>All Sites</b>. The site exists, has a real public URL, and its status is <b>Preview</b> — visible to you, invisible to donors.</figcaption></figure>
+<figure class="fn-step" data-title="Published — and still not public"><img src="../../assets/images/gs-64-builder-settings-public-access.png" alt="Experience Builder settings showing public access on and the site already published" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Experience Builder → Settings → General, confirming public access is on and <b>Published Status</b> already reads <i>Published</i> with the live URL. Everything here is correct — and the site is still not reachable by the public. This screen has no Activate control.</figcaption></figure>
+<figure class="fn-step" data-title="Publish again after page changes"><img src="../../assets/images/gs-65-builder-publish-dialog.png" alt="Publish dialog in Experience Builder" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Publishing again after the page changes, from the <b>Publish</b> button in the top-right of Builder.</figcaption></figure>
+<figure class="fn-step" data-title="Publishing succeeded, status unchanged"><img src="../../assets/images/gs-66-builder-publish-confirm.png" alt="Publishing confirmation" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> "We're publishing your changes now." Publishing succeeded — and the site's status is still Preview.</figcaption></figure>
+<figure class="fn-step" data-title="Workspaces → Administration"><img src="../../assets/images/gs-67-workspaces-administration-tile.png" alt="Experience Workspaces home with the Administration tile" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>Workspaces</b>, reached from the <b>Workspaces</b> link beside the site in Setup → All Sites. The header reads "Fundraising ( Preview · Published )" — the two states side by side. The tile you need is <b>Administration</b>.</figcaption></figure>
+<figure class="fn-step" data-title="The Activate button lives here"><img src="../../assets/images/gs-68-administration-activate.png" alt="Administration Settings page with the Activate button next to the Preview status" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Administration → <b>Settings</b>. Here — and only here — is the <b>Activate</b> button, sitting next to the status. Salesforce warns that activating sends a welcome email to members; you can suppress that beforehand under <b>Emails</b>.</figcaption></figure>
+<figure class="fn-step" data-title="Status now Live"><img src="../../assets/images/gs-69-site-live.png" alt="Site status now reading Live after activation" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Activated. The status is now <b>Live</b>, and the public URL serves the site to anyone.</figcaption></figure>
+<figure class="fn-step" data-title="7 of 7 — ready to take donations"><img src="../../assets/images/gs-70-get-started-7-of-7.png" alt="Get Started panel showing 7 of 7 complete and Your org is ready to take donations" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>7/7 — Your org is ready to take donations.</b> Every step was verified against the org, not ticked. The note underneath is the important part: "Steps stay live — if someone deactivates the last payment account or aborts the jobs, this reopens."</figcaption></figure>
+</div>
 
 <hr />
 <h2 id="third-party-content">Third-party content<a class="headerlink" href="#third-party-content" title="Permanent link">#</a></h2>
@@ -2978,6 +2888,8 @@ receipt, refund — works in <em>your</em> org.</p>
         <script src="../../assets/js/cytoscape.min.js"></script>
       
         <script src="../../assets/js/data-model-diagram.js"></script>
+      
+        <script src="../../assets/js/step-viewer.js"></script>
       
     
   </body>

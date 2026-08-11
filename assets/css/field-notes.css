@@ -418,6 +418,160 @@ body,
 }
 
 /* ==========================================================================
+   Step viewer — a run of screenshots collapsed into one click-through panel.
+   Built by assets/js/step-viewer.js. Everything under .fn-steps (no .is-ready)
+   is the no-JS fallback: the same figures, stacked, as a plain screenshot run.
+   ========================================================================== */
+.md-typeset .fn-steps { margin: 1.1rem 0 1.7rem; --fn-step-dwell: 7s; }
+.md-typeset .fn-step { margin: 0 0 1.2rem; }
+.md-typeset .fn-step img { display: block; width: 100%; height: auto; border: 1px solid var(--fn-line); border-radius: var(--fn-radius); }
+.md-typeset .fn-step figcaption,
+.md-typeset .fn-steps__cap {
+  font-family: var(--fn-font-mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: var(--fn-ink-faint);
+  margin: 0.5rem 0 0;
+}
+.md-typeset .fn-step figcaption b,
+.md-typeset .fn-steps__cap b { color: var(--fn-ink-soft); font-weight: 500; }
+
+.md-typeset .fn-steps.is-ready {
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  background: var(--fn-panel);
+  box-shadow: 0 2px 14px rgba(28, 43, 70, 0.08);
+  overflow: hidden;
+}
+.md-typeset .fn-steps.is-ready .fn-step { margin: 0; }
+/* The theme styles `.md-typeset figure` with a display value, which outranks the
+   user-agent [hidden] rule — without this the "hidden" steps still take space. */
+.md-typeset .fn-steps .fn-step[hidden],
+.md-typeset .fn-steps .fn-steps__cap[hidden] { display: none; }
+.md-typeset .fn-steps.is-ready .fn-step img { border: 0; border-radius: 0; aspect-ratio: 8 / 5; object-fit: contain; background: var(--fn-paper-dim); }
+
+/* ---- header: counter, step title, transport, progress meter ---- */
+.fn-steps__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.4rem 0.45rem 0.4rem 0.75rem;
+  background: var(--fn-paper-dim);
+  border-bottom: 1px solid var(--fn-line);
+}
+.fn-steps__count {
+  font-family: var(--fn-font-mono);
+  font-size: 0.66rem;
+  color: var(--fn-ink-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fn-steps__count b { color: var(--fn-accent); font-weight: 500; }
+.fn-steps__count i { font-style: normal; }
+.fn-steps__title {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--fn-font-mono);
+  font-size: 0.66rem;
+  color: var(--fn-ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fn-steps__nav { display: flex; gap: 0.25rem; }
+.fn-steps__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid var(--fn-line);
+  border-radius: 6px;
+  background: var(--fn-panel);
+  color: var(--fn-ink-soft);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.fn-steps__btn svg { width: 0.8rem; height: 0.8rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.fn-steps__btn svg.fn-steps__glyph-play,
+.fn-steps__btn svg.fn-steps__glyph-pause { fill: currentColor; stroke: none; }
+.fn-steps__btn:hover { border-color: var(--fn-accent); color: var(--fn-accent); }
+.fn-steps.is-playing .fn-steps__btn--play {
+  color: var(--fn-accent);
+  border-color: var(--fn-accent-soft-line);
+  background: var(--fn-accent-soft);
+}
+.fn-steps__meter { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; overflow: hidden; }
+.fn-steps__meter i { display: block; width: 0; height: 100%; background: var(--fn-accent); }
+.fn-steps.is-playing .fn-steps__meter i { animation: fn-step-meter var(--fn-step-dwell) linear forwards; }
+.fn-steps.is-suspended .fn-steps__meter i { animation-play-state: paused; }
+@keyframes fn-step-meter { from { width: 0; } to { width: 100%; } }
+
+/* ---- stage: the screenshot itself, click anywhere for the next step ---- */
+.fn-steps__stage { position: relative; cursor: pointer; background: var(--fn-paper-dim); outline: none; }
+.fn-steps__stage:focus-visible { box-shadow: inset 0 0 0 2px var(--fn-accent-soft-line); }
+.fn-steps__hint {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  font-family: var(--fn-font-mono);
+  font-size: 0.6rem;
+  color: #fff;
+  background: rgba(22, 31, 53, 0.74);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.fn-steps__stage:hover .fn-steps__hint,
+.fn-steps__stage:focus-visible .fn-steps__hint { opacity: 1; }
+.fn-steps.is-last .fn-steps__hint::after { content: " (back to 1)"; color: rgba(255, 255, 255, 0.6); }
+
+/* ---- caption: fixed floor so the panel does not jump between steps ---- */
+.md-typeset .fn-steps__caps { padding: 0.65rem 0.85rem 0.15rem; min-height: 4.6rem; }
+.md-typeset .fn-steps__caps .fn-steps__cap { margin: 0; }
+
+/* ---- rail: every step reachable in one click, progress readable at a glance ---- */
+.md-typeset ol.fn-steps__rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0.8rem 0.65rem;
+  border-top: 1px solid var(--fn-line-soft);
+  background: var(--fn-panel);
+}
+.md-typeset ol.fn-steps__rail li { margin: 0; }
+.md-typeset ol.fn-steps__rail li::marker { content: none; }
+.fn-steps__rail button {
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  font-family: var(--fn-font-mono);
+  font-size: 0.62rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--fn-ink-faint);
+  background: var(--fn-panel);
+  border: 1px solid var(--fn-line);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.fn-steps__rail button:hover { border-color: var(--fn-accent); color: var(--fn-accent); }
+.fn-steps__rail button.is-seen { color: var(--fn-ink-soft); background: var(--fn-paper-dim); }
+.fn-steps__rail button.is-on { color: #fff; background: var(--fn-accent); border-color: var(--fn-accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fn-steps.is-playing .fn-steps__meter i { animation: none; width: 100%; }
+  .fn-steps__btn, .fn-steps__rail button, .fn-steps__hint { transition: none; }
+}
+
+/* ==========================================================================
    Interactive data-model diagram (Cytoscape.js)
    ========================================================================== */
 .dm-app {

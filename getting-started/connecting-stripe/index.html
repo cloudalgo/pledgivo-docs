@@ -511,6 +511,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scoping-the-restricted-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scoping the restricted key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-credential-or-two" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One credential, or two?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#route-a-campaign-to-an-account" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1745,6 +1767,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#scoping-the-restricted-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scoping the restricted key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-credential-or-two" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One credential, or two?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#route-a-campaign-to-an-account" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1829,7 +1873,7 @@
 <tr>
 <td>Per-account config</td>
 <td><code>Payment_Account__c</code></td>
-<td>One record per Stripe account you connect — display label, processor, publishable key, live/test mode, active status, and the name of the credential it uses.</td>
+<td>One record per Stripe account you connect — display label, processor, publishable key, live/test mode, active status, and the names of the <strong>two</strong> credentials it uses — a restricted, charge-only one for donor-facing calls and a full one for refunds and back-office jobs.</td>
 </tr>
 <tr>
 <td>Gateway registry</td>
@@ -1846,30 +1890,150 @@
 <p>A single org can connect more than one Stripe account (for example, separate accounts per
 fiscal sponsee) and route different campaigns to different accounts.</p>
 <h2 id="connect-an-account">Connect an account<a class="headerlink" href="#connect-an-account" title="Permanent link">#</a></h2>
-<p>Your secret key goes into a Salesforce <strong>credential</strong> you build in Setup — never into a field on
+<p>Your secret keys go into Salesforce <strong>credentials</strong> you build in Setup — never into a field on
 a record, and never through this app. <strong>Settings → Payments</strong> is the guide for that build: it
-lists the nine things that have to be true, gives you the exact values to paste, and then reads
+lists the ten things that have to be true, gives you the exact values to paste, and then reads
 your org back to tell you which ones are done and which one is wrong.</p>
 <ol>
-<li><strong>Settings → Payments.</strong> Click <strong>Add account</strong> and give it a <strong>display label</strong> (internal
-   reference — donors never see it), pick the <strong>payment processor</strong>, and paste your Stripe
-   <strong>publishable key</strong>. Leave the named credential blank for now if you haven't built one.</li>
+<li><strong>Settings → Payments.</strong> On an org that has no payment account yet, the guide is already
+   there — it grades your org itself, so steps 1–8 read as <em>action needed</em> and step 9 tells you
+   the account is still missing. Start at step 1; you do not need a payment account to begin.</li>
 <li>Work down the guide. Steps 1–5 build the credential pair in <strong>Setup → Named Credentials</strong>:
    an External Credential with a Named Principal carrying your secret key as an encrypted
    parameter, an <code>Authorization</code> header that <em>references</em> that parameter, and a Named Credential
    pointing at <code>https://api.stripe.com</code>. Each step has a <strong>Take me there</strong> link and, where the
-   check can be made, a status read from your org rather than a tick you give yourself.</li>
-<li>Step 6 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
-   Access grant, and assigns it to the staff who take payments or issue refunds.</li>
-<li>Step 7 assigns that same permission set to your Experience Cloud <strong>site guest user</strong> — do this
-   only if you take donations from public pages.</li>
-<li>Step 8 points the Payment Account at the finished Named Credential (edit the account in the
-   list below the guide).</li>
-<li>Step 9, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
-   creates nothing — it just proves the whole chain works before you route a campaign to it.</li>
+   check can be made, a status read from your org rather than a tick you give yourself.
+   Do this twice — once for each of the two credentials described under step 9 below.</li>
+<li>Step 6 proves your <strong>public</strong> key really is a restricted one. It is on demand: press the
+   button and the app makes a single read-only call that a restricted key is not allowed to
+   make. If that call succeeds, you pasted a full secret key into the credential your guest user
+   holds, and the step reports a <strong>failure</strong> rather than a pending item.</li>
+<li>Step 7 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
+   Access grant, and assigns it to the staff who take payments or issue refunds. In split mode
+   there are two grants to make — one per credential — and the step grades both.</li>
+<li>Step 8 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
+   guest user</strong> — do this only if you take donations from public pages. It is also the step that
+   watches for the opposite mistake; see <em>A guest user must never hold the admin credential</em>
+   below.</li>
+<li>
+<p>Step 9 is the Payment Account itself. Click <strong>Add account</strong>, give it a <strong>display label</strong>
+   (internal reference — donors never see it), pick the <strong>payment processor</strong>, choose your
+   credentials, and paste your Stripe <strong>publishable key</strong>. If an account already exists, edit it
+   in the list below the guide instead.</p>
+<p>The form asks for <strong>two</strong> credentials, and both are required:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Used by</th>
+<th>Grant it to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Public named credential</strong></td>
+<td>Taking payments — the charge path a public donation page reaches</td>
+<td>Staff <em>and</em> your site guest user (step 8)</td>
+</tr>
+<tr>
+<td><strong>Admin named credential</strong></td>
+<td>Back-office only: staff refunds, the refund/dispute reconcilers, the orphan-payment sweep, off-session recurring renewals, and <strong>Test connection</strong></td>
+<td>Staff who issue refunds and whoever owns the scheduled jobs — <strong>never</strong> the guest user</td>
+</tr>
+</tbody>
+</table>
+<p>Splitting them is what keeps an anonymous visitor's principal from reaching a key that can
+issue refunds. If you'd rather run a single key for now, point both fields at the same
+credential — the app accepts it; it just gives you no separation, and the guide grades the
+affected steps amber rather than green to say so.
+7. Step 10, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
+   creates nothing — it just proves the whole chain works before you route a campaign to it.</p>
+</li>
 </ol>
 <p>Press <strong>Re-check</strong> at the top of the panel after any change in Setup; the panel re-reads your org
 rather than remembering what it told you last time.</p>
+<h2 id="scoping-the-restricted-key">Scoping the restricted key<a class="headerlink" href="#scoping-the-restricted-key" title="Permanent link">#</a></h2>
+<p>Create the restricted key in the Stripe Dashboard under <strong>Developers → API keys → Create
+restricted key</strong>. Scope it to exactly this and nothing more:</p>
+<table>
+<thead>
+<tr>
+<th>Stripe resource</th>
+<th>Public (restricted) key</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Customers</td>
+<td>Write</td>
+<td>Creating and updating the donor's Stripe customer</td>
+</tr>
+<tr>
+<td>PaymentIntents</td>
+<td>Write</td>
+<td>Starting and confirming a donation or ticket purchase</td>
+</tr>
+<tr>
+<td>SetupIntents</td>
+<td>Write</td>
+<td>Saving a card for a recurring gift</td>
+</tr>
+<tr>
+<td>PaymentMethods</td>
+<td>Write</td>
+<td>Attaching and reading the saved card</td>
+</tr>
+<tr>
+<td>Charges</td>
+<td><strong>Read</strong></td>
+<td>Confirming a gift server-side, and noticing a refund issued in the dashboard</td>
+</tr>
+<tr>
+<td>Balance transactions</td>
+<td><strong>Read</strong></td>
+<td>Recording the processor fee and the net amount on each gift</td>
+</tr>
+<tr>
+<td>Refunds</td>
+<td><strong>None</strong></td>
+<td>The whole point — see below</td>
+</tr>
+<tr>
+<td>Disputes</td>
+<td><strong>None</strong></td>
+<td>Read on the back-office key only</td>
+</tr>
+</tbody>
+</table>
+<p>The two <strong>Read</strong> rows are not optional. Confirming a payment re-reads the PaymentIntent with
+<code>latest_charge.balance_transaction</code> expanded, so a key scoped without them either fails the read
+outright or — worse, because it is silent — returns it without the expansion, leaving every
+donation with a blank processor fee and net, and leaving the refund reconciler blind to refunds
+issued in the Stripe Dashboard.</p>
+<p>The public key's whole job is to let a donor's browser start and complete a payment. Everything
+that reverses money, reads the back-office ledger, or charges a saved card while nobody is
+watching runs on the admin key instead — and the admin key is never granted to your guest user.
+That admin credential normally carries your <strong>full</strong> secret key: the app reaches refunds, disputes,
+the recent-PaymentIntents list and your account record through it, and Test connection reads the
+account itself.</p>
+<p>Step 6 of the guide checks the <em>Refunds: None</em> row for you. Stripe answers a restricted key with
+<code>403 Forbidden</code> when it reaches for something it has no permission for, and that refusal is the
+only positive proof available that the key an anonymous visitor's session can reach cannot issue
+a refund.</p>
+<h2 id="one-credential-or-two">One credential, or two?<a class="headerlink" href="#one-credential-or-two" title="Permanent link">#</a></h2>
+<p>Two is the default and the safer answer. One is supported.</p>
+<p>If you point both fields at the same Named Credential, everything works — the app routes both
+donor-facing and back-office calls to it, and nothing breaks. What you give up is the guarantee:
+your site guest user is granted whatever credential the public field names, so a single shared
+credential means an anonymous visitor's session holds a key that can issue refunds. The Payments
+panel marks that configuration <strong>amber</strong> rather than green and says so plainly, every time you
+open it. It will not stop you, and it will not pretend the setup is finished either.</p>
+<p>Shared mode also switches off the guest-user detector described below: with one principal there is
+nothing to compare, so the check would fire permanently and tell you only what the amber already
+said.</p>
+<p>Split them when you can. It costs one extra credential and one extra permission set, and it is
+the difference between "nobody has abused this yet" and "nobody can."</p>
 <div class="admonition tip">
 <p class="admonition-title">The two checkboxes Salesforce gets wrong</p>
 <p>A brand-new Named Credential ships with <strong>Generate Authorization Header</strong> ticked and <strong>Allow
@@ -1885,22 +2049,50 @@ is the fastest route out of that error message.</p>
 account list always reflects the keys actually in use rather than what someone selected.</p>
 </div>
 <div class="admonition info">
-<p class="admonition-title">Two things the guide can't tick for you</p>
+<p class="admonition-title">Three things the guide can't tick for you</p>
 <p>A stored credential parameter is <strong>write-only</strong> — Salesforce reports its own status as
 <em>Unknown</em>, so no check can confirm your secret key is present, correct, or unexpired. And
-nothing but a real call proves the key still works. That's why steps 2 and 9 are marked <em>on
-demand</em> rather than green: step 9's <strong>Test connection</strong> is what settles both, in one call.</p>
+nothing but a real call proves the key still works, or proves that the key your guest user
+holds is genuinely restricted. That's why steps 2, 6 and 10 stay grey rather than green:
+step 10's <strong>Test connection</strong> settles the first two, and step 6's probe settles the third.
+Both are single read-only calls that move no money.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Public donations need the guest user grant</p>
-<p>Granting the credential to your site's <strong>guest user</strong> (step 7) is the one step that widens
-what an anonymous visitor can reach through your org, so it is deliberately yours to make —
-the package never does it quietly on your behalf.</p>
+<p>Granting the <strong>public</strong> credential to your site's <strong>guest user</strong> (step 8) is the one step that
+widens what an anonymous visitor can reach through your org, so it is deliberately yours to
+make — the package never does it quietly on your behalf.</p>
 <p>Public donations fail at the payment step until you do it, even though everything else on the
 page works. The symptom is a callout authorization error rather than a Stripe decline.
 Granting <em>use of</em> the credential never exposes the key: no one assigned here can read it back.</p>
 <p>This works only because the principal is a <strong>Named Principal</strong> — Salesforce lets a guest user
 reach a shared org-level identity, never a per-user one.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">A guest user must never hold the admin credential</p>
+<p>Step 8 asks two questions, not one. As well as checking that your site guest user <em>does</em> hold
+the public credential, it checks that it does <strong>not</strong> hold the admin one — and if it does, the
+step goes <strong>red</strong>, not amber:</p>
+<blockquote>
+<p>A site guest user holds <code>Stripe_Admin_Auth</code>, the full credential — so an anonymous visitor's
+session can issue refunds. Remove that permission set from the guest user; grant it only the
+<code>Stripe_Public_Auth</code> principal.</p>
+</blockquote>
+<p>That state is exactly what running two credentials exists to prevent. The admin credential
+carries a full secret key: anything reaching it can refund a charge, read your payout history,
+and act on your Stripe account outside the donation path. A guest user's principal is reachable
+by every anonymous visitor to your public pages, so a grant made there is a live exposure
+rather than a piece of setup still outstanding — which is why the guide grades it a failure and
+keeps the panel out of <em>ready</em>.</p>
+<p><strong>The fix is one change in Setup:</strong> open the permission set that carries the <em>admin</em> External
+Credential Principal Access grant and remove your site guest user from it. The guest user
+should hold one credential and one only — the public, restricted, charge-only one from step 8.
+Then press <strong>Re-check</strong>.</p>
+<p>Two things worth knowing about how it behaves. It is switched off in <strong>shared mode</strong> — when
+both fields point at one credential there is only one principal, so the check would fire
+permanently and say nothing you haven't already been told by step 6's amber verdict. And it
+reports on grants <strong>made by hand in Setup</strong>: the app itself never routes a public donation to
+the admin credential, so this catches a misconfiguration rather than a bug in the package.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Test mode vs. live mode</p>

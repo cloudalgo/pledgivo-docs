@@ -1853,11 +1853,12 @@ publish to. If you don't have one yet, do the one-time setup in
    secret key goes, encrypted. The package never stores it in a field and never creates the
    credential for you; each step tells you the exact value to paste and then reads your org
    back to say whether it took.</li>
-<li>Steps 6–7 put the External Credential Principal Access grant on a permission set of your
-   own and assign it to you (and to your site's guest user, for public pages).</li>
+<li>Steps 7–8 put the External Credential Principal Access grant on a permission set of your
+   own and assign it to you (and, for public pages, put the <strong>public</strong> credential's grant on
+   your site's guest user — never the admin one).</li>
 <li><strong>Add account</strong> — display label, Stripe, your <strong>test mode publishable key</strong>, and the name
    of the Named Credential you just built.</li>
-<li>Step 9, <strong>Test connection</strong>, makes one read-only Stripe call. Confirm it passes.</li>
+<li>Step 10, <strong>Test connection</strong>, makes one read-only Stripe call. Confirm it passes.</li>
 </ol>
 <div class="fn-shot"><img src="../../assets/images/set-payment-accounts.png" alt="Payment Accounts panel with a connected Stripe test account"></div>
 <p class="fn-figure-caption">**What it shows.** The Payments panel with a connected Stripe row — a TEST badge (read from the publishable key, not chosen) and an ACTIVE badge — after a successful connection test.</p>

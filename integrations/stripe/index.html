@@ -1953,9 +1953,9 @@ itself expose a cumulative refunded total, the reconciler retrieves the PaymentI
 routing finalization to <code>EventPurchaseService</code> instead of the plain donation finalizer — see
 <a href="../../concepts/events-ticketing/">Events &amp; ticketing</a>.</p>
 <h2 id="credentials">Credentials<a class="headerlink" href="#credentials" title="Permanent link">#</a></h2>
-<p><strong>The package ships no credential, and creates none.</strong> You build the pair by hand in Setup, once
-per Stripe account, and the <strong>Payments</strong> panel in the Settings console walks you through it and
-then reads your org back to say which field is wrong:</p>
+<p><strong>The package ships no credential, and creates none.</strong> You build the credentials by hand in Setup,
+and the <strong>Payments</strong> panel in the Settings console walks you through it and then reads your org back
+to say which field is wrong:</p>
 <table>
 <thead>
 <tr>
@@ -1974,14 +1974,20 @@ then reads your org back to say which field is wrong:</p>
 </tr>
 <tr>
 <td>A permission set of your own</td>
-<td>Grants access to that principal, assigned to staff — and, if you take public donations, to the site guest user</td>
+<td>Grants access to that principal</td>
 </tr>
 </tbody>
 </table>
-<p>Each account gets its own pair, so a multi-account org keeps its keys separated the way Stripe
-does. No custom field anywhere stores a secret key, and nothing reads one back — the merge
+<p>You build that set <strong>twice per Stripe account</strong>, once per role. The <strong>public</strong> credential carries a
+restricted, charge-only key and its permission set goes to payment staff and — if you take public
+donations — the site guest user. The <strong>admin</strong> credential carries the full key used by refunds, the
+reconcilers, the orphan sweep, off-session renewals and Test connection, and its permission set goes
+to staff only, never the guest user. <code>Payment_Account__c</code> names both. Pointing both fields at one
+credential is supported and graded amber, because your guest user then reaches a key that can refund.</p>
+<p>Each account gets its own credentials, so a multi-account org keeps its keys separated the way
+Stripe does. No custom field anywhere stores a secret key, and nothing reads one back — the merge
 formula is resolved by the platform at callout time. The <code>Payment_Account__c</code> record carries
-only the <em>name</em> of the Named Credential to call, plus the publishable key.</p>
+only the <em>names</em> of the Named Credentials to call, plus the publishable key.</p>
 <p>The permission set is <strong>yours, not packaged</strong>, and that is forced rather than chosen: a managed
 permission set cannot be given a principal mapping (<code>ConnectApi</code> throws
 <code>CANNOT_MODIFY_MANAGED_OBJECT</code>), so <code>Fundraising_Admin</code> and <code>Fundraising_GuestDonor</code> can never
@@ -1989,15 +1995,17 @@ hold this grant no matter what the package ships.</p>
 <p>Nor can the package build the credential for you: a Named Credential created from Apex is born
 with callouts <strong>disabled</strong>, and no Apex API can enable it — so provisioning could never finish
 the job, only move the manual step somewhere less visible. <code>PaymentSetupGuideService</code> therefore
-verifies instead of creating. It reads the credential chain through <code>ConnectApi</code> and grades nine
+verifies instead of creating. It reads the credential chain through <code>ConnectApi</code> and grades ten
 steps as done, action needed, or on demand — naming the exact checkbox that is wrong rather than
-repeating Stripe's "Invalid API Key provided". Two steps it can never grade: a stored secret is
-write-only (Salesforce reports its own status as <em>Unknown</em>), and only a live call proves the key
-works. That call is step 9's <strong>Test connection</strong> — it reads your Stripe account's details and
-moves no money.</p>
-<p>Granting the credential to the <strong>site guest user</strong> is the one step that widens what an anonymous
-visitor can reach, so it stays an explicit decision of yours. Public donations are unauthorized
-until it's done; the guide flags it, and see
+repeating Stripe's "Invalid API Key provided". Three steps it can never grade from configuration
+alone: a stored secret is write-only (Salesforce reports its own status as <em>Unknown</em>), only a live
+call proves the key works, and only a live call proves the public key is really restricted. The
+first two are settled by step 10's <strong>Test connection</strong>, the third by step 6's probe; both read
+your Stripe account and move no money.</p>
+<p>Granting the <strong>public</strong> credential to the <strong>site guest user</strong> is the one step that widens what an
+anonymous visitor can reach, so it stays an explicit decision of yours. Public donations are
+unauthorized until it's done; the guide flags it, and step 8 flags the opposite mistake — a guest
+user holding the admin credential — as a failure. See
 <a href="../../getting-started/connecting-stripe/#connect-an-account">Connecting Stripe</a>.</p>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">

@@ -2454,9 +2454,14 @@ payment-gateway connections your campaigns charge through.</p>
 <td>Immediate. The processor list is built from what the package actually implements — <strong>Stripe</strong> today. There are no reserved "coming soon" options to pick and then be blocked on.</td>
 </tr>
 <tr>
-<td>Named credential</td>
-<td>Which credential this account authenticates with</td>
+<td>Public named credential</td>
+<td>The credential donor-facing charges authenticate with — a <strong>restricted, charge-only</strong> key, and the one your site guest user is granted</td>
 <td>Immediate. There is no secret-key field anywhere in this panel: you build the External Credential and Named Credential yourself in Setup, and the record stores only the credential's <em>name</em>. The guided checklist above the account list walks that build and then reads your org back to grade it.</td>
+</tr>
+<tr>
+<td>Admin named credential</td>
+<td>The credential back-office work authenticates with — the <strong>full</strong> key used by refunds, the reconcilers, the orphan sweep, off-session recurring renewals and Test connection</td>
+<td>Immediate. Never grant this one to a site guest user; step 8 of the checklist reports it as a failure if you have. Naming the same credential in both fields is accepted and warns rather than blocks — the checklist then grades the affected steps amber.</td>
 </tr>
 <tr>
 <td>Publishable key</td>
@@ -2475,8 +2480,8 @@ payment-gateway connections your campaigns charge through.</p>
 </tr>
 <tr>
 <td><strong>Test connection</strong> button</td>
-<td>Verifies the account can reach the gateway</td>
-<td>Runs a real, live connectivity check against the gateway every time you click it — not cached or simulated</td>
+<td>Verifies the account can reach the gateway on its <strong>admin</strong> credential</td>
+<td>Runs a real, live connectivity check against the gateway every time you click it — not cached or simulated. It says nothing about the public credential; step 6's <strong>Run the check</strong> button is what settles that one.</td>
 </tr>
 </tbody>
 </table>

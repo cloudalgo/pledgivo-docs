@@ -1976,14 +1976,18 @@ Domain panel marks this step <strong>Can't verify</strong> for the same reason, 
 <strong>Workspaces</strong> screen, open <strong>Administration → Members</strong> and assign the permission set to the
 Guest User profile. Without it, guest visitors can view campaign pages but the donation form
 cannot submit — see <a href="../installation/">Installation</a>.</p>
-<p>Finally, grant the Stripe credential to that same Guest User. Salesforce does not let a managed
-permission set grant access to an external credential principal, so this package can never ship
-that grant — you create your own permission set holding the Stripe external credential's
-<code>OrgPrincipal</code> and assign it to the guest user as well as to your fundraising staff. Unlike the
-Public Access toggle above, this one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 5
-reads the grant back via <code>SetupEntityAccess</code> and reports <strong>Done</strong> once a permission set granting
-<code>Stripe_External</code> — <code>OrgPrincipal</code> is assigned to the site's guest user, or <strong>Pending</strong> with the
-specific reason (no grant found at all vs. granted but not assigned to this guest user) otherwise.
+<p>Finally, grant the <strong>public</strong> Stripe credential to that same Guest User. Salesforce does not let a
+managed permission set grant access to an external credential principal, so this package can never
+ship that grant — you create your own permission set holding that credential's <code>OrgPrincipal</code> and
+assign it to the guest user as well as to your fundraising staff. Keep the <strong>admin</strong> credential's
+grant on a <em>separate</em> permission set that the guest user is never assigned: it carries the full
+secret key, so a guest user holding it can issue refunds. Unlike the Public Access toggle above,
+this one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 5 reads the grant back via
+<code>SetupEntityAccess</code> and reports <strong>Done</strong> once a permission set granting the public credential's
+principal is assigned to the site's guest user, or <strong>Pending</strong> with the specific reason (no grant
+found at all vs. granted but not assigned to this guest user) otherwise. That step grades the
+public credential only — the Payments panel's step 8 is what catches a guest user holding the
+admin one.
 Full walkthrough: <a href="../after-you-install/#grant-the-stripe-credential">Grant the Stripe credential</a>.</p>
 <h2 id="6-publish">6. Publish<a class="headerlink" href="#6-publish" title="Permanent link">#</a></h2>
 <p>Click <strong>Publish</strong> in Experience Builder (top-right). This is a separate step from saving your

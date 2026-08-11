@@ -4274,7 +4274,7 @@
 </tbody>
 </table>
 <h3 id="payment-account">Payment Account<a class="headerlink" href="#payment-account" title="Permanent link">#</a></h3>
-<p><code>Payment_Account__c</code> · <code>custom</code> · <code>7 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
+<p><code>Payment_Account__c</code> · <code>custom</code> · <code>8 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
 <p>Stores one record per set of gateway credentials the org has configured (e.g. a Stripe account used for general donations, or a second Stripe account restricted to one program). Admins create and manage these from the setup console with no metadata deployment required; each account's secret key lives in its own Named Credential and is only referenced here by name. Each campaign points at exactly one of these through Campaign.Payment_Account__c, which is the account every gift on that campaign settles to.</p>
 <p><strong>Docs note.</strong> PaymentGatewayFactory is the join point between this object and the Apex that talks to the processor: it reads Gateway__c off the chosen account and looks the value up in PaymentGatewayRegistry, which returns the IPaymentGateway implementation used for the actual callout. Until 2026-08 that lookup went through a Payment_Gateway__mdt custom metadata type and a Type.forName() on a stored class name; the registry replaced it so an unshippable gateway value can't be configured and the class reference is checked by the compiler. Deactivating a Payment_Account__c (Is_Active__c = false) rather than deleting it is what keeps historical Opportunity/refund references intact.</p>
 <p><strong>Relationships</strong></p>
@@ -4332,6 +4332,12 @@
 </thead>
 <tbody>
 <tr>
+<td><code>Admin_Named_Credential__c \*</code></td>
+<td>Admin Named Credential</td>
+<td>Text</td>
+<td>Named Credential API name holding the full secret key. Grant it to staff who issue refunds and to whoever owns the scheduled jobs — never to your site guest user. May name the same credential as the public field if you prefer to run one key.<br><em>Docs: Added 2026-08-11 to split one credential into two roles. Before this field, every Stripe callout ran on Named_Credential__c, and the setup guide told the admin to grant that one credential to the Experience Cloud guest user - so an anonymous visitor's principal could issue refunds. Named_Credential__c is now the restricted, charge-only key the guest holds; this field is the full key nothing guest-reachable ever names. Required for the same reason Named_Credential__c is: blank resolves the endpoint to 'callout:null', which fails when a refund is attempted rather than when the account is saved. AdminCredentialBackfillBatch fills it from Named_Credential__c on upgrade so no pre-existing account becomes unsavable; those accounts land in shared mode, which the setup guide reports as amber rather than green.</em></td>
+</tr>
+<tr>
 <td><code>Display_Label__c \*</code></td>
 <td>Display_Label</td>
 <td>Text</td>
@@ -4357,9 +4363,9 @@
 </tr>
 <tr>
 <td><code>Named_Credential__c \*</code></td>
-<td>Named_Credential</td>
+<td>Public Named Credential</td>
 <td>Text</td>
-<td>Named Credential API name holding this account's secret key. Never store the secret itself here.<br><em>Docs: StripeGateway builds its callout endpoint as 'callout:' + Named_Credential__c. It is the only source of the endpoint — there is no package-level fallback credential, because the package stopped shipping Named Credentials in 2026-08 (a packaged credential can carry no secret, so it installed as a dead shell an admin still had to fill in). Every account names a credential the subscriber org owns, which is also what lets two accounts point at two different processor accounts. Required: blank makes the endpoint 'callout:null', which fails at the moment a donor pays rather than at the moment the account is saved.</em></td>
+<td>Named Credential API name holding a restricted, charge-only key. Your site guest user is granted this one, so scope the key to Customers, PaymentIntents, SetupIntents and PaymentMethods, plus READ on Charges and Balance transactions — and no Refunds, no Disputes. Those two read scopes are what let the app confirm each gift, record the processor fee, and notice a refund issued in the gateway dashboard. Never store the secret itself here.<br><em>Docs: The Charges and Balance transactions READ scopes are not optional and must not be trimmed back: StripeGateway.retrievePaymentIntent asks the gateway to expand latest_charge.balance_transaction on every payment-intent read, so the request touches a charge and a balance transaction as well as the intent. A key scoped without them either fails the request outright or returns it without the expansion - and the second outcome is silent, leaving every donation with a null processor fee and net, and leaving RefundReconciliationBatch reading latest_charge.amount_refunded as zero, so a refund issued in the gateway dashboard is never detected. That read is reached from the guest donation and event-registration status polls as well as from StagingReconciliationBatch and RefundReconciliationBatch, so the same scope covers both the public and the back-office use.  StripeGateway builds its donor-facing callout endpoints as 'callout:' + Named_Credential__c. Back-office endpoints use Admin_Named_Credential__c instead - see that field's comment for why the pair was split on 2026-08-11. There is no package-level fallback credential, because the package stopped shipping Named Credentials in 2026-08 (a packaged credential can carry no secret, so it installed as a dead shell an admin still had to fill in). Every account names credentials the subscriber org owns, which is also what lets two accounts point at two different processor accounts. Required: blank makes the endpoint 'callout:null', which fails at the moment a donor pays rather than at the moment the account is saved.</em></td>
 </tr>
 <tr>
 <td><code>Payment_Sweep_Cursor__c</code></td>

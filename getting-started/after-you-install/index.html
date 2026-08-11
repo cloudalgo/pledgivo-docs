@@ -2040,9 +2040,9 @@ the single most common reason a donation link 404s. The Get Started panel shows 
 <p>This package <strong>never ships, stores, or creates a payment credential of its own.</strong> You build the
 External Credential and Named Credential yourself in Setup — that is where your Stripe secret key
 lives, encrypted, and it never touches a custom field or an Apex method.</p>
-<p>Settings console → <strong>Payments</strong> is the guide for that build: nine steps with the exact values to
+<p>Settings console → <strong>Payments</strong> is the guide for that build: ten steps with the exact values to
 paste, each one graded against what your org actually says rather than ticked off by hand. Work
-down it, then add a <strong>Payment Account</strong> pointing at the finished Named Credential. Until an active
+down it, then add a <strong>Payment Account</strong> pointing at the finished Named Credentials. Until an active
 payment account exists, the donation form cannot take money.</p>
 <p>Full walkthrough: <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
 <h2 id="grant-the-stripe-credential">Grant the Stripe credential<a class="headerlink" href="#grant-the-stripe-credential" title="Permanent link">#</a></h2>
@@ -2053,17 +2053,23 @@ anonymous visitor can reach, so it stays your decision to make. The package neve
 <p>Public donations fail at the payment step until you do it. Everything else on the page works,
 which is exactly what makes it easy to miss.</p>
 <ol>
-<li>Setup → <strong>Permission Sets</strong> → the permission set you created for payments (step 6 of the
+<li>Setup → <strong>Permission Sets</strong> → the permission set you created for payments (step 7 of the
    Payments guide), or <strong>New</strong> if you haven't yet.</li>
 <li>On it, <strong>Apps → External Credential Principal Access → Edit</strong> → enable your external
    credential's principal → <strong>Save</strong>.</li>
-<li><strong>Manage Assignments</strong> → <strong>Add Assignment</strong> → assign your Experience Cloud site's <strong>guest
-   user</strong>, plus any fundraising staff who take payments or issue refunds.</li>
+<li><strong>Manage Assignments</strong> → <strong>Add Assignment</strong> → assign any fundraising staff who take payments
+   or issue refunds. Assign your Experience Cloud site's <strong>guest user</strong> here only if this set
+   carries the <strong>public</strong>, charge-only credential's principal — the set carrying the <em>admin</em>
+   credential's principal must reach staff and nothing else.</li>
 </ol>
 <div class="admonition danger">
-<p class="admonition-title">Don't forget the guest user</p>
+<p class="admonition-title">Don't forget the guest user — and don't give it the admin credential</p>
 <p>Assigning it to staff but not to the site guest user is the failure mode that looks
 healthiest: internal testing works, and every public donation fails at payment.</p>
+<p>The opposite mistake is worse and just as quiet: putting the guest user on the permission set
+that grants the <strong>admin</strong> credential lets an anonymous visitor's session reach a full secret
+key, refunds included. Step 8 of the Payments guide reports that as a failure with the
+remediation — see <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">Why the permission set can't be part of the package</p>

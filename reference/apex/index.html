@@ -3156,6 +3156,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#apex-admincredentialbackfillbatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AdminCredentialBackfillBatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-paymentaccountbackfillbatch" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -6111,6 +6122,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#apex-admincredentialbackfillbatch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AdminCredentialBackfillBatch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-paymentaccountbackfillbatch" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7144,7 +7166,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 179 classes plus 121 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 180 classes plus 122 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -10760,6 +10782,42 @@
 </tbody>
 </table>
 <h3 id="async-batchqueueableschedulable_2">Async (Batch/Queueable/Schedulable)<a class="headerlink" href="#async-batchqueueableschedulable_2" title="Permanent link">#</a></h3>
+<h4 id="apex-admincredentialbackfillbatch">AdminCredentialBackfillBatch<a class="headerlink" href="#apex-admincredentialbackfillbatch" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public without sharing</code></p>
+<p>implements Database.Batchable&lt;SObject&gt;</p>
+<p>One-time upgrade backfill for Payment_Account__c.Admin_Named_Credential__c. The field was added 2026-08-11 to split one Stripe credential into a restricted, charge-only key the site guest user holds and a full key only back-office operations name. It is required, for the same reason Named_Credential__c is — a blank resolves the callout endpoint to 'callout:null', which fails when a refund is attempted rather than when the account is saved. Making a field required does not fill existing rows; it makes them unsavable. An account created before this release would carry a null the admin could not clear, because opening and re-saving the record is exactly what the requirement blocks. This batch fills each one ONCE from the credential it was already using, which lands it in shared mode — supported, reported as amber by the setup guide rather than green, and split by the admin whenever they choose. Idempotent — the scope is <code>Admin_Named_Credential__c = null</code>, so a re-run after a later upgrade fills only what is still blank and never rewrites a credential an admin deliberately split.</p>
+<p><strong>Docs note.</strong> No chained pass. Unlike PaymentAccountBackfillBatch there is only one thing to resolve here and only one place to resolve it from — the account's own row.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-admincredentialbackfillbatch-start"></a><code>start(1 arg)</code></td>
+<td><code>Database.QueryLocator</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-admincredentialbackfillbatch-execute"></a><code>execute(2 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-admincredentialbackfillbatch-finish"></a><code>finish(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <h4 id="apex-paymentaccountbackfillbatch">PaymentAccountBackfillBatch<a class="headerlink" href="#apex-paymentaccountbackfillbatch" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public without sharing</code></p>
 <p>implements Database.Batchable&lt;SObject&gt;, Database.Stateful</p>
@@ -10970,11 +11028,27 @@
 <h4 id="apex-paymentsetupguideservice">PaymentSetupGuideService<a class="headerlink" href="#apex-paymentsetupguideservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public virtual inherited sharing</code></p>
 <p>implements <a href="#apex-ipaymentsetupguideservice">IPaymentSetupGuideService</a></p>
-<p>PaymentSetupGuideService — grades the credential an admin built by hand in Setup against what the account's gateway actually needs, one step at a time. The package creates no credential (owner decision, 2026-08-10: an org may hold several gateway accounts, and a secret must never travel through an @AuraEnabled method), so the Settings → Payments panel is a guide rather than a wizard: it states the exact values, then this service reads the org back and names whichever field is wrong. Every value it checks against comes from PaymentGatewayRegistry.CredentialShape, so the instructions the panel prints and the check that grades them can never disagree. FFLib service layer. Registered as IPaymentSetupGuideService in Application.cls; reached from SetupController.getPaymentSetupGuide.</p>
-<p><strong>Docs note.</strong> Nine steps, and only seven of them can be graded from Apex. A stored secret is never readable back — ConnectApi returns the principal with an empty parameters list — so "paste your secret key" and "prove it works" are reported as 'unverifiable' rather than guessed at. That honesty is the point of the panel: an admin who sees seven greens and two "on demand" knows exactly what is left, where a wizard that claimed success would have lied.</p>
+<p>PaymentSetupGuideService — grades the credentials an admin built by hand in Setup against what the account's gateway actually needs, one step at a time. The package creates no credential (owner decision, 2026-08-10: an org may hold several gateway accounts, and a secret must never travel through an @AuraEnabled method), so the Settings → Payments panel is a guide rather than a wizard: it states the exact values, then this service reads the org back and names whichever field is wrong. Every value it checks against comes from PaymentGatewayRegistry.CredentialShape, so the instructions the panel prints and the check that grades them can never disagree. FFLib service layer. Registered as IPaymentSetupGuideService in Application.cls; reached from SetupController.getPaymentSetupGuide.</p>
+<p><strong>Docs note.</strong> An account names TWO credentials — a restricted, guest-reachable one that may only take a payment (Named_Credential__c) and a full-access one for refunds and back-office work (Admin_Named_Credential__c). Steps 1-5 are the same build performed twice, so each of them renders one sub-row per credential under 'credentials' and takes the WORSE of the two as its own status. Grading only the public one would leave a broken admin credential invisible until the first refund failed, and a green step sitting above a red sub-row is the exact dishonesty this panel exists to avoid.</p>
+<p>Naming the SAME credential in both fields is legal and is a configuration an admin may choose deliberately — one key to manage. That is "shared mode" ('shared' on the payload): it is read and graded once and collapses to a single sub-row, because showing the same credential twice would read as two independent things to fix. It is supported, and it is never rendered green: a shared row that would otherwise pass is graded 'shared' (amber) and says why, because one credential in both roles means the site guest user reaches the same key the back office issues refunds with. Amber is as far as it goes — sharing never blocks readiness, so an org that has everything else right can still take payments on one credential.</p>
+<p>Ten steps, and only seven of them can be graded from a plain read. A stored secret is never readable back — ConnectApi returns the principal with an empty parameters list — so "paste your secret key", "prove the key is restricted" and "prove it works" are reported as 'unverifiable' until the admin runs them, rather than guessed at. That honesty is the point of the panel: an admin who sees seven greens and three "on demand" knows exactly what is left, where a wizard that claimed success would have lied.</p>
 <p>The two ConnectApi reads are behind @TestVisible protected virtual seams (fetchNamedCredential / fetchExternalCredential) because ConnectApi output classes cannot be constructed outside a test — <code>new ConnectApi.NamedCredential()</code> throws System.UnsupportedOperationException in anonymous Apex. A test subclass overrides the seams and hands back objects it builds itself, which is the only way to exercise the grading logic against a credential shape the test org does not have.</p>
 <p>Names coming out of ConnectApi are namespace-qualified in a namespaced org ("pledgivo_test__Stripe_API") while the merge formula inside the auth header keeps the bare name, so every developer-name comparison here strips a leading prefix before comparing.</p>
+<p>Both credentials' grants are read. Step 7 needs the admin permission set's existence and internal-user headcount to grade whether refunds and back-office jobs can run at all; step 8 needs it to run the regression detector this whole split exists for — whether a site guest user ALSO holds the admin principal, which the guide could not see before this. The admin read only runs in split mode: in shared mode adminReading IS reading, so an unguarded second call here would repeat exactly the duplicate query Task 6 deleted this variable to avoid.</p>
+<p>The tally is built by a separate method rather than inline here, because Apex resolves identifiers case-insensitively: this method already declares a local Boolean named <code>shared</code>, and a same-scope reference to the SHARED status constant resolves to that local variable instead of the class field, which fails to compile ("Comparison arguments must be compatible types: String, Boolean"). tallyStatuses has no such local, so SHARED unambiguously means the constant there.</p>
 <p>The header value is deliberately NOT echoed back in this message. This branch fires precisely when the admin pasted a literal instead of a merge formula, so the value in hand is very often the live secret key itself — printing it would render the key in the console DOM for everyone who can reach SetupController (Fundraising_User, not just admins) and drop it into any screenshot or HAR captured while troubleshooting this very step.</p>
+<p>On demand rather than automatic, matching stepTestConnection — a live callout on every panel render would spend the org's callout budget re-answering a question that changes only when an admin rotates a key. SetupController.probeRestrictedKey is the button.</p>
+<p>Amber, never red, and never green. Sharing is a configuration an admin may choose deliberately — the package supports it — but the consequence is real and is stated rather than softened: the site guest user's principal can issue refunds. Probing here would report a failure for something that was chosen on purpose, so the callout is skipped.</p>
+<p>getByAccount() calls init() internally, so this must not call it again — a second init() would simply re-read the same account and re-derive the same two credential names. getByAccount() resolves the gateway through selectActiveById, not the plain selectById this class uses for the shared-credential check above — so a deactivated account, or one whose Gateway__c no longer matches a registered gateway, makes it throw AppException. That is a finding for this guide to report, not a failure that should escape a probe whose whole contract is that it never throws for a misconfigured org — so it is caught here rather than left to surface the callout-layer's donor-facing message in the setup console.</p>
+<p>"Held by somebody" is not the same question as "held by a member of staff". The branch above only catches a permission set nobody holds at all; a set held solely by the site guest user passes it while leaving every member of staff unable to charge a card — and in shared mode unable to issue a refund either, since that is the same credential. That state graded green before this branch existed, which is the worst possible answer: the panel says ready and the first refund or back-office charge fails.</p>
+<p>The inverted half is the regression detector for the whole credential split. Layers 1 and 2 stop the package from reaching a back-office operation from a guest path; nothing but this tells an admin who granted the wrong permission set by hand. It is graded FAILED rather than PENDING because it is not work outstanding — it is a live exposure.</p>
+<p>Disabled in shared mode, where the two principals ARE the same object: the check would fire permanently and contradict the amber verdict step 6 gives the same configuration.</p>
+<p>This copy is deliberately duplicated in three places that must agree — this step, the two fields' inlineHelpText, and docs-site/docs/getting-started/connecting-stripe.md. An admin reaches whichever one they reach first, and a contradiction between them is worse than the repetition.</p>
+<p>'name' is the value the admin typed into the account field, not a name this service resolved — so it is null on a preview grading, where no account exists to have named anything. A renderer with nothing to print there should fall back to the role.</p>
+<p>The row is never green. Sharing is supported and may well be deliberate, but a step that rendered green would tell an admin by silence that a site guest user reaching the refund key is fine — so a verdict that would otherwise be 'done' is downgraded to 'shared' and carries the sentence explaining what that costs. A real finding outranks the downgrade: a shared credential that was never built still reads 'pending', not amber.</p>
+<p>The step's own oneLine is the WORST row's sentence rather than a summary of both. An admin reading a collapsed step needs the thing that is actually broken, not "one of two credentials has a problem" — the sub-rows are there for which one. Ties go to the first row, which is the public credential: the one that stops donations rather than refunds.</p>
+<p>Ordering is failed &gt; pending &gt; unverifiable &gt; shared &gt; done. That last pair is not plain severity, and it is the one placement worth explaining: SHARED sits immediately above DONE so that it can only ever take a step off green. Sharing one credential between both roles is supported, not a fault, so it must never outrank something the admin actually has to act on — a shared credential that was never built still reads 'pending'. It must also stay clear of FAILED and PENDING, because pendingCount is what the payload's readiness flag is computed from: an org that shares one credential and has everything else right is still ready to take payments, and ranking sharing any higher would have silently told it otherwise. A green step sitting above a red sub-row is the exact dishonesty this panel exists to avoid, which is why the WORSE wins rather than the more common. An unrecognised status ranks as done so that a status added later cannot silently drag every step it touches to red.</p>
+<p>A preview grading has no account, so neither credential has a name to print — the row can only say what to build. The public row keeps the original "this is where the whole chain starts" wording because it still is; the admin row exists so a new admin learns from the first screen that there are two credentials to build, not one they will discover is missing when the account form refuses to save.</p>
 <table>
 <thead>
 <tr>
@@ -10992,6 +11066,16 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-paymentgatewayregistry-get">PaymentGatewayRegistry.get()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentsetupguideservice-proberestrictedkey"></a><code>probeRestrictedKey(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -11078,12 +11162,28 @@
 <h4 id="apex-stripegateway">StripeGateway<a class="headerlink" href="#apex-stripegateway" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-ipaymentgateway">IPaymentGateway</a></p>
-<p>StripeGateway — implements IPaymentGateway for the Stripe payment platform. Credentials are loaded from a specific Payment_Account__c record via init(paymentAccountId). This enables multiple Stripe accounts in one org — each campaign selects which account to use, and the factory calls init() with the correct account Id before handing back the gateway instance. Fields loaded from Payment_Account__c: Named_Credential__c  → Apex Named Credential for API callouts. Org-local, built by hand by the admin in Setup and then selected here — this package ships no credential of its own and creates none. Publishable_Key__c   → sent to VF iframe for client-side Stripe.js This package has no inbound webhook: payment outcomes are confirmed by re-fetching the PaymentIntent from Stripe (see retrievePaymentIntent / the reconciliation scheduler), so no webhook signing secret is stored anywhere. API version is pinned in PaymentGatewayRegistry — shared across all accounts, and shipped with the code that parses Stripe's responses so the two can never disagree.</p>
+<p>StripeGateway — implements IPaymentGateway for the Stripe payment platform. Credentials are loaded from a specific Payment_Account__c record via init(paymentAccountId). This enables multiple Stripe accounts in one org — each campaign selects which account to use, and the factory calls init() with the correct account Id before handing back the gateway instance. Fields loaded from Payment_Account__c: Named_Credential__c        → the RESTRICTED, charge-only credential. Every donor-facing call (customers, payment intents, setup intents, payment methods) runs on it, and it is the credential the site guest user is granted. Admin_Named_Credential__c  → the FULL credential. Refunds, the refund/dispute reconcilers, the orphan sweep, off-session renewals and testConnection run on it, and nothing guest-reachable ever names it. Publishable_Key__c         → sent to VF iframe for client-side Stripe.js Both are org-local, built by hand by the admin in Setup and then selected on the account — this package ships no credential of its own and creates none. Naming the same credential in both fields is supported; the gateway needs no special case for it. The credential split is backed by a second, independent layer: every back-office operation calls assertBackOffice() first and refuses to run inside a public site request. Routing decides which key an operation uses; the guard decides which caller may run it at all. See assertBackOffice for why both are needed. This package has no inbound webhook: payment outcomes are confirmed by re-fetching the PaymentIntent from Stripe (see retrievePaymentIntent / the reconciliation scheduler), so no webhook signing secret is stored anywhere. API version is pinned in PaymentGatewayRegistry — shared across all accounts, and shipped with the code that parses Stripe's responses so the two can never disagree.</p>
 <p><strong>Docs note.</strong> StripeCalloutException carries two extra classification signals beyond the message that the off-session dunning path depends on: declineCode (Stripe's granular decline_code, e.g. 'stolen_card') lets the retry logic recognize a terminal decline and stop retrying instead of burning the full retry cadence, and isTransient marks a failure as INDETERMINATE — a 5xx or an unparseable/empty error body, where the charge may actually have gone through on Stripe's side. A caller must treat isTransient=true as "re-verify via retrievePaymentIntent before deciding", never as a confirmed decline, or a retry risks double-charging the donor.</p>
+<p>Two credentials, one per side of the split. publicCredential is the restricted, charge-only key that the site guest user is granted; adminCredential is the full key that can move money back out. Every callout names one of them explicitly at its call site, so which side an operation sits on is readable in one line rather than inferred from context.</p>
+<p>The BACK-OFFICE set — the operations that name adminCredential — is exactly: refund, listRecentRefunds, listRecentDisputes, listRecentSucceededIntents, chargeOffSession and testConnection. Everything else names publicCredential. chargeOffSession is back-office despite charging a donor's card: it runs from RecurringRenewalBatch against a saved card with nobody present, so it is the one path that moves money unattended and must not be reachable with the key a public page can leak. One exception to "public credential means donor-facing": probePublicKeyScope also names publicCredential, but it is called only from the internal setup console, never from a public page — it exists to READ ABOUT the public key's scope, not to act as the donor.</p>
 <p>The pinned Stripe-Version comes from PaymentGatewayRegistry, which ships and upgrades with the response-parsing code in this class — the only thing that can safely change it. It was previously read from Payment_Gateway__mdt.Stripe.API_Version__c on every gateway instantiation, which cost a SOQL query per donation and left the version editable in a subscriber org independently of the code that parses what Stripe sends back.</p>
+<p>The raw HTTP status Stripe answered with. Added for probePublicKeyScope, which needs the numeric status even on the permissions-failure path, where Stripe returns a parseable JSON error body built from its own <code>error.code</code> rather than the 'http_&lt;status&gt;' synthetic code rawRequest uses for a non-JSON body — so the status is not always recoverable from the message text. Set unconditionally in rawRequest next to isTransient so every caller gets it, not just the probe.</p>
 <p>Exposes the account init() was called with so a caller can record WHICH Stripe account minted a token without threading the id alongside the gateway instance. PaymentMethodService stamps it onto Payment_Method__c.Payment_Account__c — a cus_/pm_ pair is only chargeable on the account that created it, so the wallet row has to remember which one that was.</p>
+<p>retrievePaymentIntent reads through the RESTRICTED public credential even though back-office jobs call it too. It is guest-reachable (the donation and event-registration status polls both land here), so it has to work with the key a public page can reach; the reconcilers simply reuse that read rather than needing a second, more powerful one. Note what that asks of the restricted key: read access to PaymentIntents is not enough on its own, because the request expands latest_charge.balance_transaction and so also reads a Charge and a balance transaction. A key scoped narrower than that breaks the guest status poll and both reconcilers — see the Named_Credential__c field comment for what that silently costs.</p>
 <p>Null is the correct outcome far more often than it looks, and it is NOT an error: Stripe posts the balance transaction when the charge settles, so a PaymentIntent read before that (an ACH debit still processing, a card charge fetched the same instant it succeeded) legitimately has none. Callers must read null as "not known yet" and leave the field alone rather than writing a zero fee, which would look like a free charge.</p>
 <p>Amounts are scaled with the BALANCE TRANSACTION's own currency, not the PaymentIntent's. They differ whenever the charge is settled into a different currency than it was presented in, and it is the settlement currency the fee and net are denominated in — scaling those by the presentment currency would be wrong by up to 100x the moment either side is a zero-decimal currency such as JPY.</p>
+<p>Set only by StripeGateway_Test. Site.getSiteId() returns null in a test by default and nothing in Apex can make it return otherwise, so simulating a public site request needs this seam. It is read only when Test.isRunningTest() is true, so it cannot weaken the guard in a subscriber org.</p>
+<p>The predicate is "am I serving a public site request", not "is this user a guest", for two reasons: it also catches a LOGGED-IN community user on the same path, and it avoids depending on UserInfo.getUserType() returning 'Guest', which this repo has never been able to confirm from official documentation. The User.UserType FIELD value is proven in three places (PaymentSetupGuideService.readGrants, SetupController, CommunityService); the session-level UserInfo equivalent is not, so the guard does not rest on it. Site.getSiteId() is documented to return null when the current request is not a site request, which is exactly the question asked here.</p>
+<p>This is the second of two layers, and it is defence against a FUTURE DEVELOPER rather than against a subscriber admin — which is why it is not redundant with the per-operation credential routing above it. Routing decides WHICH KEY an operation uses, so a leaked public key cannot refund; this guard decides WHICH CALLER may run it at all. Today no guest-reachable code path reaches adminCredential, but a new guest-granted @AuraEnabled controller that called refund() would route to the admin credential perfectly correctly and succeed, with nothing to notice. The first layer makes the wrong key useless; this one makes the wrong caller fail loudly. The log line is written BEFORE the throw because a tripped guard is a code defect, and it must be diagnosable from the log rather than only from whatever the caller does with the message. The message names the operation and nothing else — never a credential name or any part of a key.</p>
+<p>The guard asks where the CALLER is running, not which credential resolved, so an account that names the same credential in both fields (shared mode, a supported configuration) gets exactly the same answer.</p>
+<p>The reverse direction — a back-office operation running on the public credential — is deliberately NOT guarded. It fails loudly at Stripe with an HTTP 403, harms nothing, and the credential routing already prevents it.</p>
+<p>The credential is the first parameter rather than instance state because it is the one thing that varies per operation: a donor-facing call names publicCredential, a back-office call names adminCredential. Passing it explicitly at every call site is what makes the split auditable — StripeGateway_Test asserts the exact set of endpoints each side calls, so a call routed to the wrong credential fails a test rather than silently succeeding at Stripe.</p>
+<p>testConnection is reached only from the internal setup console, and it probes the ADMIN credential: the account read it performs is the one thing that proves the full key is wired up, and that is the credential an admin most needs reassurance about — a broken restricted key shows up the first time a donation is taken, a broken admin key only at the first refund. It therefore says nothing about the restricted public credential.</p>
+<p>Deliberately a READ (<code>GET /v1/refunds?limit=1</code>), never a write. It moves no money, creates nothing, and a key that cannot READ refunds cannot issue them either — Stripe's restricted key permissions are per-resource, so read access is the weaker of the two and its absence proves the stronger one is absent too.</p>
+<p>On the PUBLIC credential specifically. Probing the admin credential would be meaningless: that key is SUPPOSED to reach refunds, so a 200 there is the correct answer.</p>
+<p>The guide calls this on demand behind a button rather than on every panel load — same treatment testConnection gets, and for the same reason: a live callout on every render would spend the org's callout budget to re-answer a question that changes only when an admin rotates a key.</p>
+<p>Deliberately NOT guarded by assertBackOffice — it runs on the public credential and is called from the internal setup console, which is exactly the shape assertBackOffice does not exist to block: the guard protects against a guest-reachable caller landing on the admin credential, and this method never touches that credential at all.</p>
+<p>rawRequest sets StripeCalloutException.statusCode unconditionally, so this simply reads it back. It does NOT parse the status out of the exception message: for a JSON-parseable error body (exactly Stripe's shape for a permissions failure) the message is built from Stripe's own <code>error.code</code>, not the 'http_&lt;status&gt;' synthetic marker rawRequest only uses for a non-JSON body — a regex over the message would return null for precisely the 403 case this probe exists to detect. See StripeCalloutException.statusCode for the field.</p>
 <table>
 <thead>
 <tr>
@@ -11194,6 +11294,11 @@
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-stripegateway-retrievepaymentmethod"></a><code>retrievePaymentMethod(1 arg)</code></td>
 <td><code>[GatewayResult](#apex-gatewayresult).PaymentMethod</code></td>
 <td></td>
@@ -11205,6 +11310,11 @@
 </tr>
 <tr>
 <td><a id="apex-stripegateway-testconnection"></a><code>testConnection(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-stripegateway-probepublickeyscope"></a><code>probePublicKeyScope(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td></td>
 </tr>
@@ -11845,7 +11955,7 @@
 <p><code>class</code> · <code>global without sharing</code></p>
 <p>implements InstallHandler</p>
 <p><strong>Docs note.</strong> Every seed* step here is idempotent (upsert or "insert only if absent"), so onInstall is safe to re-run on every package upgrade, not just the first install — it only fills blanks and never overwrites an admin's existing configuration. scheduleJobs() deliberately excludes StripePaymentSweep and RefundReconciliationBatch: both call PaymentGatewayFactory.getDefault() unconditionally, which throws before any Payment_Account__c exists, so scheduling them here would fail the install on a fresh org with no Stripe account configured yet. They are scheduled later, once the admin has connected a gateway, via scripts/apex/schedule-reconciliation-jobs.apex. SetupController's health check (EXPECTED_PIPELINE_JOBS = 17) is the count of ALL scheduled jobs including those two — a fresh install correctly shows a 'warn' state there until that script runs. Every step is individually guarded and only ever logged, never rethrown. A post-install script that throws makes the whole package version UNINSTALLABLE — the subscriber sees nothing but "The post install script failed." with no stack trace, and the script runs as a per-package system user that does not exist before runtime, so it cannot be traced in advance either. Seeding is convenience: every step only fills a blank an admin can set by hand afterwards, so degrading one default is always preferable to bricking the install. A failure lands in Log__c under the step's own name — that is the only diagnostic channel available for this context, so keep it, and never "simplify" a guard away.</p>
-<p>Upgrade-only step for the 2026-08-07 Payment_Account__c change. Recurring_Donation__c and Payment_Method__c now remember which Stripe account minted the cus_/pm_ pair they carry, because re-deriving it from Campaign.Payment_Account__c at renewal time redirected every in-flight schedule the moment an admin re-pointed the campaign. Rows created before the fields existed are blank, so PaymentAccountBackfillBatch resolves each ONE time from its campaign and freezes it. See the batch's own header for the two passes and what it deliberately leaves blank.</p>
+<p>Upgrade-only step for the 2026-08-07 Payment_Account__c change. Recurring_Donation__c and Payment_Method__c now remember which Stripe account minted the cus_/pm_ pair they carry, because re-deriving it from Campaign.Payment_Account__c at renewal time redirected every in-flight schedule the moment an admin re-pointed the campaign. Rows created before the fields existed are blank, so PaymentAccountBackfillBatch resolves each ONE time from its campaign and freezes it. See the batch's own header for the two passes and what it deliberately leaves blank. AdminCredentialBackfillBatch does the same for Payment_Account__c.Admin_Named_Credential__c, which is required and therefore makes every pre-existing account unsavable until it is filled.</p>
 <p>Runs AFTER seedDefaultPageDesign, not before, and the ordering is load-bearing twice over. (1) seedDefaultSettings only switches Auto_Receipt_Enabled__c and Soft_Credit_Automation_Enabled__c on when NO Settings__c row exists yet; this step's ensureDefaultImagesSeeded() creates that row, so running it earlier would silently disable both on every fresh install. (2) buildTheme rewrites both image fields to null on each re-seed like every other packaged-theme field, so the stamp has to come after the designs are written or an upgrade would leave them blank.</p>
 <p>The two Stripe jobs used to be deliberately EXCLUDED, on the grounds that both reach PaymentGatewayFactory.getDefault() unconditionally and would throw on an org with no active Payment_Account__c. That left them schedulable only by scripts/apex/schedule-reconciliation-jobs.apex — which lives outside base/ and is therefore never packaged, so in a subscriber org refund and dispute reconciliation simply never ran. Both are now fresh-org safe (RefundReconciliationBatch.start() returns an empty scope when selectAllActive() is empty; StripePaymentSweep.execute() checks PaymentGatewayFactory.hasActiveAccount()), so they are scheduled at install and no-op quietly until an admin connects Stripe. Names and offsets match the dev script's, so scheduleIfAbsent leaves an already-scripted org alone.</p>
 <p>Re-seeding rewrites this to false like every other field on a preinstalled style;</p>
@@ -12073,6 +12183,7 @@
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration. The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
 <p>Returns the raw Settings__c on purpose — ControllerAction.run() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on ControllerAction.</p>
 <p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that SettingsService defaults to — the nulls below are deliberate, not a failed parse.</p>
+<p>SavePaymentAccount answers with { id, warning } rather than a bare Id so the console can say something at the moment a shared credential is chosen. A WARNING, never a block. Running one credential in both roles is a configuration an admin may choose deliberately, and blocking it would fight a decision they have just made. The value here is timing: it catches the exposure at the moment it is created rather than on the next guide load, which the admin may never open again.</p>
 <p>Nests the Stripe-credential check under 'stripeCredential' on the same round trip rather than adding a second @AuraEnabled method — additive so every existing key keeps its meaning, and no permission-set classAccesses change is needed. See CommunityService.checkStripeCredentialAccess().</p>
 <p>One normalization for every donor-facing URL this controller composes. Both the public links panel and the setup checklist's page table append a path to this value, so a trailing slash left on it produces "…/fundraising//donate" — a 404 on Enhanced LWR.</p>
 <p>Attaches the finished public page URLs to a site-status payload so the setup checklist's page table can offer a live "Open" link per page. Composed here rather than in setSite.js deliberately: SettingsService is the single authority for the slash handling on the site URL and the two configurable paths, and a second implementation in JS would drift from it the first time a default changes. siteBaseUrl is passed in rather than always re-read because the hierarchy custom setting is cached within the transaction — right after saveExperienceSite writes a new site URL, a re-read still returns the previous one.</p>
@@ -12211,6 +12322,11 @@
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
+<td><a id="apex-setupcontroller-proberestrictedkey"></a><code>probeRestrictedKey(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
 <td><a id="apex-setupcontroller-getpagedesigns"></a><code>getPageDesigns(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
@@ -12282,12 +12398,12 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-save"></a><code>save(0 args)</code></td>
-<td><code>Id</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
 <td></td>
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayregistry-newgateway">PaymentGatewayRegistry.newGateway()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-pagecanvasblocks-buildunified">PageCanvasBlocks.buildUnified()</a>, <a href="#apex-logsselector-newinstance">LogsSelector.newInstance()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-communityservice-checkstripecredentialaccess">CommunityService.checkStripeCredentialAccess()</a>, <a href="#apex-settingsservice-experiencenetworkid">SettingsService.experienceNetworkId()</a>, <a href="#apex-settingsservice-donationpagepath">SettingsService.donationPagePath()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-postinstallhandler-schedulejobs">PostInstallHandler.scheduleJobs()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayregistry-newgateway">PaymentGatewayRegistry.newGateway()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -12374,7 +12490,7 @@
 <h4 id="apex-paymentaccountsselector">PaymentAccountsSelector<a class="headerlink" href="#apex-paymentaccountsselector" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-ipaymentaccountsselector">IPaymentAccountsSelector</a></p>
-<p><strong>Docs note.</strong> selectByIdWithCredentials is what StripeGateway.init() calls to load Named_Credential__c and Publishable_Key__c before making any Stripe callout — it deliberately skips Security.stripInaccessible because it runs in both admin and guest donation-page context, and stripping Named_Credential__c on a guest profile would resolve the callout endpoint to 'callout:null'. No Stripe signing secret is ever read here or anywhere in this package — the webhook-free architecture confirms payment outcomes by re-fetching the PaymentIntent instead (see IPaymentGateway.retrievePaymentIntent).</p>
+<p><strong>Docs note.</strong> selectByIdWithCredentials is what StripeGateway.init() calls to load Named_Credential__c, Admin_Named_Credential__c and Publishable_Key__c before making any Stripe callout — the gateway picks between the two credentials per operation, so both have to be on the record it loads once. It deliberately skips Security.stripInaccessible because it runs in both admin and guest donation-page context, and stripping Named_Credential__c on a guest profile would resolve the callout endpoint to 'callout:null'. No Stripe signing secret is ever read here or anywhere in this package — the webhook-free architecture confirms payment outcomes by re-fetching the PaymentIntent instead (see IPaymentGateway.retrievePaymentIntent).</p>
 <table>
 <thead>
 <tr>
@@ -12401,6 +12517,11 @@
 </tr>
 <tr>
 <td><a id="apex-paymentaccountsselector-querylocatoractive"></a><code>queryLocatorActive(0 args)</code></td>
+<td><code>Database.QueryLocator</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentaccountsselector-selectmissingadmincredentiallocator"></a><code>selectMissingAdminCredentialLocator(0 args)</code></td>
 <td><code>Database.QueryLocator</code></td>
 <td></td>
 </tr>
@@ -12477,6 +12598,7 @@
 <p>Only NamedPrincipal-type principals count. An external credential may carry several principals of different types, and a grant on one does NOT enable a callout that runs as another: the Stripe callouts this check exists for run as the credential's named principal ("OrgPrincipal"), so a permission set granting, say, a PerUserPrincipal would have satisfied the old unfiltered lookup and shown step 5 as Done on a site whose donations still fail at payment. Verified against a live org 2026-08-11: the packaged credential's sole principal reports principalName 'OrgPrincipal' / principalType NamedPrincipal, and its id is the SetupEntityId the grant rows carry.</p>
 <p>Split out of queryStripePrincipalIds() as a pure static so the filter itself is unit testable: ConnectApi.ExternalCredentialPrincipal cannot be constructed outside a test context (System.UnsupportedOperationException), but inside one it can — so a test can hand this method a hand-built mixed list and assert the filtering, with no live External Credential and no stubbing of the ConnectApi seam.</p>
 <p>@TestVisible protected virtual for the same reason as queryStripePrincipalIds() above — a test needs to drive the principal walk without depending on what the running org has configured.</p>
+<p>PUBLIC CREDENTIAL ONLY, and deliberately so. Payment_Account__c has carried a second credential since the 2026-08-11 split (Admin_Named_Credential__c, the full key that can issue refunds), and adding it here looks like an obvious completeness fix. It is the opposite. This set feeds checkStripeCredentialAccess(), whose assignedToGuest flag the Site &amp; Domain panel renders as step 5 — and on that step assignedToGuest = true is the SUCCESS condition, because the site guest user is SUPPOSED to hold the restricted, charge-only credential. Fold the admin credential in and a guest user holding the FULL key — the exact exposure the split exists to prevent — would light that step green. The consequence is that this check cannot see the guest-holds-admin fault at all. That is covered elsewhere on purpose: PaymentSetupGuideService step 8 detects it and reports it as a failure, and setSite's step 5 copy defers to the Payments panel for it in so many words. If a future caller needs the admin credential's name, give it its own method rather than widening this one.</p>
 <table>
 <thead>
 <tr>

@@ -1,294 +1,294 @@
 WEBVTT
 
 1
-00:00:00.000 --> 00:00:10.990
+00:00:00.000 --> 00:00:15.670
 <v Pledgivo>Post-install setup walkthrough
 
 2
-00:00:10.990 --> 00:00:16.660
+00:00:15.670 --> 00:00:25.920
 <v Start here>The Get Started panel — Open App Launcher > Pledgivo > Settings
 
 3
-00:00:16.660 --> 00:00:22.940
+00:00:25.920 --> 00:00:39.370
 <v 1. Permission sets>The four sets the package installs — Look, don't change - none of them is assigned yet
 
 4
-00:00:22.940 --> 00:00:27.720
+00:00:39.370 --> 00:00:45.350
 <v 1. Permission sets>Fundraising Admin — Confirm it carries the package namespace
 
 5
-00:00:27.720 --> 00:00:34.120
+00:00:45.350 --> 00:01:00.050
 <v 1. Permission sets>Manage Assignments — This lists who already holds the set - it is not how you add yourself
 
 6
-00:00:34.120 --> 00:00:39.910
+00:01:00.050 --> 00:01:07.250
 <v 1. Permission sets>The route that always works — Open your user, scroll to Permission Set Assignments
 
 7
-00:00:39.910 --> 00:00:43.910
+00:01:07.250 --> 00:01:11.930
 <v 1. Permission sets>The assignment picker — Click Edit Assignments
 
 8
-00:00:43.910 --> 00:00:49.230
+00:01:11.930 --> 00:01:18.660
 <v 1. Permission sets>Choose the set — Select Fundraising Admin under Available Permission Sets
 
 9
-00:00:49.230 --> 00:00:53.230
+00:01:18.660 --> 00:01:23.040
 <v 1. Permission sets>Move it across — Click Add, then Save
 
 10
-00:00:53.230 --> 00:00:57.930
+00:01:23.040 --> 00:01:29.040
 <v 1. Permission sets>Assigned — Confirm Fundraising Admin now appears on the user
 
 11
-00:00:57.930 --> 00:01:05.300
+00:01:29.040 --> 00:01:39.710
 <v 1. Permission sets>Step 1 closes itself — Reload the console - the panel re-queries the org, you never tick a box
 
 12
-00:01:05.300 --> 00:01:11.120
+00:01:39.710 --> 00:01:48.780
 <v 2. Record types>Record type mapping — Nothing to do - the install seeds all seven records
 
 13
-00:01:11.120 --> 00:01:17.650
+00:01:48.780 --> 00:02:00.700
 <v 3. Experience site>The Site & Domain checklist — Read which steps the app can verify and which are yours to confirm
 
 14
-00:01:17.650 --> 00:01:21.650
+00:02:00.700 --> 00:02:10.320
 <v 3. Experience site>No site yet — Click New
 
 15
-00:01:21.650 --> 00:01:27.570
+00:02:10.320 --> 00:02:18.540
 <v 3. Experience site>The template gallery — Ignore the Aura templates - the package does not target them
 
 16
-00:01:27.570 --> 00:01:33.510
+00:02:18.540 --> 00:02:23.920
 <v 3. Experience site>Pick the right template — Choose Build Your Own (LWR), then Get Started
 
 17
-00:01:33.510 --> 00:01:40.310
+00:02:23.920 --> 00:02:33.970
 <v 3. Experience site>Name it — Enter a name and a short, permanent URL path - it lands in every donation link
 
 18
-00:01:40.310 --> 00:01:48.060
+00:02:33.970 --> 00:02:43.040
 <v 3. Experience site>Experience Workspaces — Note both tiles: Builder designs pages, Administration activates the site
 
 19
-00:01:48.060 --> 00:01:54.810
+00:02:43.040 --> 00:02:51.090
 <v 3. Experience site>A new site starts at Preview — Read the status - Preview means admins only, not the public
 
 20
-00:01:54.810 --> 00:02:00.160
+00:02:51.090 --> 00:02:57.240
 <v 3. Experience site>Builder settings — Open the gear icon > Settings > General
 
 21
-00:02:00.160 --> 00:02:06.160
+00:02:57.240 --> 00:03:05.770
 <v 3. Experience site>Let guests in — Tick 'guest users can see and interact with the site without logging in'
 
 22
-00:02:06.160 --> 00:02:10.160
+00:03:05.770 --> 00:03:09.870
 <v 3. Experience site>Publish — Click Publish, then confirm
 
 23
-00:02:10.160 --> 00:02:16.470
+00:03:09.870 --> 00:03:19.220
 <v 3. Experience site>Publishing is asynchronous — Wait for the confirmation email before changing anything else
 
 24
-00:02:16.470 --> 00:02:22.100
+00:03:19.220 --> 00:03:28.620
 <v 4. Connect Stripe>The Payments guide — Keep this panel open in a second tab while you work in Setup
 
 25
-00:02:22.100 --> 00:02:28.200
+00:03:28.620 --> 00:03:37.370
 <v 4. Connect Stripe>The values to paste — Copy each value from here - never type a secret into this app
 
 26
-00:02:28.200 --> 00:02:35.510
+00:03:37.370 --> 00:03:47.790
 <v 4. Connect Stripe>External Credentials — The external credential holds the secret; the named credential holds the URL
 
 27
-00:02:35.510 --> 00:02:40.660
+00:03:47.790 --> 00:03:54.290
 <v 4. Connect Stripe>New external credential — Click New on the External Credentials tab
 
 28
-00:02:40.660 --> 00:02:47.010
+00:03:54.290 --> 00:04:00.990
 <v 4. Connect Stripe>The public credential — Label 'Stripe Public', name 'Stripe_Auth', protocol Custom
 
 29
-00:02:47.010 --> 00:02:52.730
+00:04:00.990 --> 00:04:12.560
 <v 4. Connect Stripe>Saved — The Principals and Custom Headers lists appear only after this first save
 
 30
-00:02:52.730 --> 00:03:03.410
+00:04:12.560 --> 00:04:26.110
 <v 4. Connect Stripe>The principal — Named Principal 'OrgPrincipal', parameter SecretKey = Bearer sk_...
 
 31
-00:03:03.410 --> 00:03:09.140
+00:04:26.110 --> 00:04:35.860
 <v 4. Connect Stripe>Write-only from here on — The key is now unreadable - to change it you overwrite it
 
 32
-00:03:09.140 --> 00:03:13.140
+00:04:35.860 --> 00:04:40.690
 <v 4. Connect Stripe>Custom header — Click New under Custom Headers
 
 33
-00:03:13.140 --> 00:03:21.110
+00:04:40.690 --> 00:04:50.490
 <v 4. Connect Stripe>The merge field — Name Authorization, value {!$Credential.Stripe_Auth.SecretKey}
 
 34
-00:03:21.110 --> 00:03:27.540
+00:04:50.490 --> 00:04:57.820
 <v 4. Connect Stripe>Public credential complete — One principal, one header - check both before moving on
 
 35
-00:03:27.540 --> 00:03:32.860
+00:04:57.820 --> 00:05:05.650
 <v 4. Connect Stripe>Named Credentials — The external credential is not usable on its own
 
 36
-00:03:32.860 --> 00:03:37.440
+00:05:05.650 --> 00:05:11.680
 <v 4. Connect Stripe>New named credential — Click New on the Named Credentials tab
 
 37
-00:03:37.440 --> 00:03:46.840
+00:05:11.680 --> 00:05:22.980
 <v 4. Connect Stripe>Point it at Stripe — Name Stripe_Public, URL https://api.stripe.com, EC = Stripe Public
 
 38
-00:03:46.840 --> 00:03:54.710
+00:05:22.980 --> 00:05:33.830
 <v 4. Connect Stripe>The two callout options that matter — Allow Formulas in HTTP Header ON, Generate Authorization Header OFF
 
 39
-00:03:54.710 --> 00:03:59.710
+00:05:33.830 --> 00:05:39.630
 <v 4. Connect Stripe>Now the admin pair — Repeat with name Stripe_Admin_Auth
 
 40
-00:03:59.710 --> 00:04:05.900
+00:05:39.630 --> 00:05:46.480
 <v 4. Connect Stripe>Its own principal — Same shape, different key - the two credentials share no state
 
 41
-00:04:05.900 --> 00:04:12.640
+00:05:46.480 --> 00:05:54.180
 <v 4. Connect Stripe>The admin named credential — Name Stripe_Admin, same URL, same callout options
 
 42
-00:04:12.640 --> 00:04:18.340
+00:05:54.180 --> 00:06:05.980
 <v 4. Connect Stripe>Both credentials exist — Public charges cards; admin issues refunds
 
 43
-00:04:18.340 --> 00:04:23.550
+00:06:05.980 --> 00:06:12.130
 <v 4. Connect Stripe>Re-check — Back in the console, click Re-check to grade the finished build
 
 44
-00:04:23.550 --> 00:04:29.010
+00:06:12.130 --> 00:06:20.080
 <v 4. Payment account>Payment Accounts — Click Add - a credential alone cannot take a donation
 
 45
-00:04:29.010 --> 00:04:35.010
+00:06:20.080 --> 00:06:26.080
 <v 4. Payment account>Wire it up — Point it at BOTH named credentials and tick Active
 
 46
-00:04:35.010 --> 00:04:39.010
+00:06:26.080 --> 00:06:31.030
 <v 4. Payment account>Saved and active — The org can now reach Stripe
 
 47
-00:04:39.010 --> 00:04:45.680
+00:06:31.030 --> 00:06:40.930
 <v 5. Grant the credential>A permission set you build yourself — Click New - a managed permission set cannot carry this grant
 
 48
-00:04:45.680 --> 00:04:52.210
+00:06:40.930 --> 00:06:49.530
 <v 5. Grant the credential>Name it for payments — Keep public and admin in separate sets - one is going to a guest user
 
 49
-00:04:52.210 --> 00:04:56.090
+00:06:49.530 --> 00:06:54.030
 <v 5. Grant the credential>Created, empty — No grants on it yet
 
 50
-00:04:56.090 --> 00:05:02.730
+00:06:54.030 --> 00:07:07.830
 <v 5. Grant the credential>The page nobody finds — Apps > External Credential Principal Access > Edit
 
 51
-00:05:02.730 --> 00:05:09.310
+00:07:07.830 --> 00:07:17.280
 <v 5. Grant the credential>Enable the principal — Enable the PUBLIC credential's OrgPrincipal - check the credential name
 
 52
-00:05:09.310 --> 00:05:12.310
+00:07:17.280 --> 00:07:20.460
 <v 5. Grant the credential>Saved — Click Save
 
 53
-00:05:12.310 --> 00:05:18.310
+00:07:20.460 --> 00:07:27.460
 <v 5. Grant the credential>The admin set — Repeat on the second set for the ADMIN principal - staff only
 
 54
-00:05:18.310 --> 00:05:25.620
+00:07:27.460 --> 00:07:35.780
 <v 5. Grant the credential>The site's guest user — Find it via Builder > Settings > General > guest user profile
 
 55
-00:05:25.620 --> 00:05:32.620
+00:07:35.780 --> 00:07:45.900
 <v 5. Grant the credential>Assign the public set — Assign the PUBLIC payments set to the guest user - never the admin one
 
 56
-00:05:32.620 --> 00:05:37.790
+00:07:45.900 --> 00:07:51.780
 <v 5. Grant the credential>Guest user ready — From this moment a public donation can reach Stripe
 
 57
-00:05:37.790 --> 00:05:44.120
+00:07:51.780 --> 00:07:59.330
 <v 5. Grant the credential>Staff get the admin set — Assign it only to the people who take payments and issue refunds
 
 58
-00:05:44.120 --> 00:05:51.120
+00:07:59.330 --> 00:08:09.130
 <v 5. Allowed namespaces>The field that blocks packaged callouts — Edit the named credential, enter the package namespace
 
 59
-00:05:51.120 --> 00:05:57.830
+00:08:09.130 --> 00:08:17.410
 <v 5. Allowed namespaces>Managed Package Access — Confirm the namespace appears here, then repeat on the other credential
 
 60
-00:05:57.830 --> 00:06:04.900
+00:08:17.410 --> 00:08:26.530
 <v 5. Allowed namespaces>Prove it end to end — Click Prove it works - a real callout, answered by your Stripe account
 
 61
-00:06:04.900 --> 00:06:10.380
+00:08:26.530 --> 00:08:34.030
 <v 7. Name and logo>Five down — The panel names what is left rather than making you compare lists
 
 62
-00:06:10.380 --> 00:06:17.740
+00:08:34.030 --> 00:08:43.030
 <v 7. Name and logo>Organization & Donations — Identity fields on the left, gift rules below - no mailing address here
 
 63
-00:06:17.740 --> 00:06:23.170
+00:08:43.030 --> 00:08:50.760
 <v 7. Name and logo>Your name on the receipt — Set the display name and Tax ID, then Save
 
 64
-00:06:23.170 --> 00:06:29.600
+00:08:50.760 --> 00:09:01.180
 <v Activate the site>Still Preview — Read the status column - the site has a URL but serves nothing publicly
 
 65
-00:06:29.600 --> 00:06:37.260
+00:09:01.180 --> 00:09:11.150
 <v Activate the site>Everything here is already correct — Public Access on, Published - and there is no Activate button on this screen
 
 66
-00:06:37.260 --> 00:06:41.260
+00:09:11.150 --> 00:09:15.600
 <v Activate the site>Publish the page changes — Click Publish
 
 67
-00:06:41.260 --> 00:06:47.990
+00:09:15.600 --> 00:09:24.320
 <v Activate the site>Published, still not live — Publishing succeeded and the status is unchanged - this is the trap
 
 68
-00:06:47.990 --> 00:06:54.880
+00:09:24.320 --> 00:09:31.970
 <v Activate the site>Preview - Published, side by side — Open Workspaces, then the Administration tile
 
 69
-00:06:54.880 --> 00:07:01.880
+00:09:31.970 --> 00:09:40.420
 <v Activate the site>The Activate button — Click Activate - here and nowhere else. Accept the members-email warning
 
 70
-00:07:01.880 --> 00:07:06.880
+00:09:40.420 --> 00:09:46.220
 <v Activate the site>Live — The public URL now serves the site to anyone
 
 71
-00:07:06.880 --> 00:07:14.880
+00:09:46.220 --> 00:09:56.570
 <v Done>7 of 7 — Your org is ready to take donations - steps stay live and reopen if something breaks
 
 72
-00:07:14.880 --> 00:07:19.910
-<v Done>Your org is ready to take donations.
+00:09:56.570 --> 00:10:02.970
+<v Wrap up>Your org is ready to take donations.
 
 73
-00:07:19.910 --> 00:07:46.340
-<v About Pledgivo>Fundraising and donation management, native to Salesforce — a product by CloudAlgo. Docs: cloudalgo.com/pledgivo-docs
+00:10:02.970 --> 00:10:32.650
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: cloudalgo.com/pledgivo-docs
 

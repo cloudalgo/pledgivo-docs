@@ -1934,18 +1934,34 @@ first — it explains what you're being asked to create and why there are two of
 explanation sits at the bottom of the Payments panel itself, so you don't have to keep this page
 open beside it.</p>
 <ol>
-<li><strong>Settings → Payments.</strong> On an org that has no payment account yet, the guide is already
+<li>
+<p><strong>Settings → Payments.</strong> On an org that has no payment account yet, the guide is already
    there — it grades your org itself, so steps 1–9 read as <em>action needed</em> or <em>confirm this
    yourself</em>, and step 10 tells you the account is still missing. Start at step 1; you do not
-   need a payment account to begin.</li>
-<li>Work down the guide. Steps 1–6 build the credential pair in <strong>Setup → Named Credentials</strong>:
+   need a payment account to begin.</p>
+<p>Above the eleven steps is a short <strong>Before you start</strong> map. Read it before you open Setup:
+the steps cross three different places, and the map says which. Collect your three Stripe
+keys first (it links straight to the API keys page for the mode this account is in), then
+do the Setup work, then come back to this panel for the two checks. Every step title also
+carries a tag — <strong>Salesforce Setup</strong> or <strong>This page</strong> — so you can see at a glance where
+the next one happens.
+2. Work down the guide. Steps 1–6 build the credential pair in <strong>Setup → Named Credentials</strong>:
    an External Credential with a Named Principal carrying your secret key as an encrypted
    parameter, an <code>Authorization</code> header that <em>references</em> that parameter, and a Named Credential
    pointing at <code>https://api.stripe.com</code> with the right callout options ticked. Each step has a
    <strong>Take me there</strong> link and, where the check can be made, a status read from your org rather
    than a tick you give yourself. Do this twice — once for each of the two credentials described
-   under step 10 below.</li>
-<li>Step 5 is <strong>Allowed Namespaces for Callouts</strong>, and it is the one step whose absence looks like
+   under step 10 below.</p>
+<p>The panel suggests a name for <strong>both</strong> credentials (<code>Stripe_Auth_Public</code> and
+<code>Stripe_Auth_Admin</code>, and <code>Stripe_Public</code> / <code>Stripe_Admin</code> for the two Named Credentials) —
+two credentials cannot share a name. Once you have built them, it stops suggesting and
+prints the names your org actually uses.</p>
+<p><strong>Step 2 asks for a different key on each credential</strong> and says which is which: the
+restricted <code>rk_…</code> key on the public credential, the full <code>sk_…</code> secret key on the admin one.
+This is the one place where getting them the wrong way round is silent — both keys
+authenticate perfectly well, so a secret key on the public credential works, and hands the
+public internet a refund button. Step 7 is what catches it.
+3. Step 5 is <strong>Allowed Namespaces for Callouts</strong>, and it is the one step whose absence looks like
    nothing at all. Because this app's Apex ships inside a managed package and the credential is
    one <em>you</em> built, Salesforce blocks the call unless the package's namespace is listed on the
    credential. Open the Named Credential → <strong>Edit</strong> → <strong>Allowed Namespaces for Callouts</strong> and add
@@ -1953,20 +1969,19 @@ open beside it.</p>
    on the credential. Until it is there, no Stripe call this app makes will succeed — not a
    donation, not a refund — however correct everything else is. There are screenshots of the field
    and of the confirmation it leaves behind in
-   <a href="../after-you-install/#allow-the-packages-namespace-to-make-the-callout">After you install</a>.</li>
-<li>Step 7 proves your <strong>public</strong> key really is a restricted one. It is on demand: press the
+   <a href="../after-you-install/#allow-the-packages-namespace-to-make-the-callout">After you install</a>.
+4. Step 7 proves your <strong>public</strong> key really is a restricted one. It is on demand: press the
    button and the app makes a single read-only call that a restricted key is not allowed to
    make. If that call succeeds, you pasted a full secret key into the credential your guest user
-   holds, and the step reports a <strong>failure</strong> rather than a pending item.</li>
-<li>Step 8 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
+   holds, and the step reports a <strong>failure</strong> rather than a pending item.
+5. Step 8 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
    Access grant, and assigns it to the staff who take payments or issue refunds. In split mode
-   there are two grants to make — one per credential — and the step grades both.</li>
-<li>Step 9 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
+   there are two grants to make — one per credential — and the step grades both.
+6. Step 9 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
    guest user</strong> — do this only if you take donations from public pages. It also names every
    permission set your guest user holds and asks you to confirm none of them grants the <em>admin</em>
-   credential; see <em>A guest user must never hold the admin credential</em> below.</li>
-<li>
-<p>Step 10 is the Payment Account itself. Click <strong>Add account</strong>, give it a <strong>display label</strong>
+   credential; see <em>A guest user must never hold the admin credential</em> below.
+7. Step 10 is the Payment Account itself. Click <strong>Add account</strong>, give it a <strong>display label</strong>
    (internal reference — donors never see it), pick the <strong>payment processor</strong>, choose your
    credentials, and paste your Stripe <strong>publishable key</strong>. If an account already exists, edit it
    in the list below the guide instead.</p>

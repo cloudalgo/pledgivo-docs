@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/concepts/donations-payments/">
       
       
-        <link rel="prev" href="../campaigns/">
+        <link rel="prev" href="../page-sections/">
       
       
         <link rel="next" href="../recurring-giving/">
@@ -534,6 +534,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -639,6 +645,62 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -719,6 +781,17 @@
     <span class="md-ellipsis">
       
         The flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#watching-the-pipeline-the-donation-monitor-tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watching the pipeline — the Donation Monitor tab
       
     </span>
   </a>
@@ -1119,6 +1192,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../settings-integrations/" class="md-nav__link">
         
   
@@ -1424,6 +1525,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1512,6 +1617,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1652,6 +1785,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1988,6 +2149,17 @@
     <span class="md-ellipsis">
       
         The flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#watching-the-pipeline-the-donation-monitor-tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watching the pipeline — the Donation Monitor tab
       
     </span>
   </a>
@@ -2342,6 +2514,38 @@ there is deliberately no Opportunity yet at that point, so an abandoned or faile
 never creates a donation record. Finalization is idempotent: it's keyed on
 <code>Opportunity.Stripe_Payment_Intent_Id__c</code>, so a guest poll and the backup batch racing each
 other can never create two Opportunities for the same payment.</p>
+<h2 id="watching-the-pipeline-the-donation-monitor-tab">Watching the pipeline — the Donation Monitor tab<a class="headerlink" href="#watching-the-pipeline-the-donation-monitor-tab" title="Permanent link">#</a></h2>
+<p><strong>Donation Monitor</strong> in the app navigation lists every staging row that has not yet become an
+Opportunity. It answers one question: is anything stuck between "donor started paying" and
+"donation recorded", and if so, what. For the filters, the retry action and a worked sequence that
+carries a stuck gift's correlation id over to the Diagnostic Logs tab, see
+<a href="../../guides/monitor-and-diagnose/">Monitor donations and read the logs</a>.</p>
+<p>The list opens filtered to <strong>Needs attention</strong>, and that default is the point of the page. Most
+rows in a healthy org are abandoned checkouts — someone opened the form, thought better of it, and
+closed the tab. Nobody was charged, nothing is owed, and there is nothing to do. Showing those
+beside genuine failures makes an ordinary Tuesday look like an outage: an org with 21 abandoned
+carts reads as an org with 21 broken payments. So the default shows only rows that actually need a
+person — a donor who confirmed and whose gift has not landed, a row carrying an error, or an
+expired event hold that never gave its seats back.</p>
+<p>Nothing is hidden silently. When abandoned rows are being filtered out, the page says how many and
+offers to include them; switch <strong>Show</strong> to <em>Abandoned only</em> or <em>Everything</em> to see them, where they
+render dimmed rather than alarming. <strong>Search</strong> matches donor, email, staging number, campaign, and
+the Stripe intent and correlation ids — paste an intent id from Stripe and land on the row. <strong>Type</strong>,
+<strong>Status</strong> and <strong>Created</strong> narrow further, and <strong>Reset</strong> puts everything back.</p>
+<p>Each row carries what you would otherwise open the record to read: donor and amount, the campaign,
+how long it has been waiting, and its expiry window. For an event order the wording changes to
+<em>held until</em>, and an expired hold names how many seats it is still keeping off sale — the number
+that decides whether you release it now or after the event.</p>
+<p><strong>Retry now</strong> re-runs the same reconciliation the scheduled job performs, for that one row, instead
+of waiting for the next pass. It is safe to press twice.</p>
+<p>:::warning The banner that outranks everything else
+If the page shows <strong>"The finalizer job isn't scheduled"</strong>, stop reading the rows. Nothing in the
+list can advance until that job runs, so a growing list means nothing more than a stopped clock —
+and expired ticket holds will keep their seats off sale the whole time. Schedule the Finalizer
+family under <strong>Settings → System → Scheduled Jobs</strong>, then come back and refresh.
+:::</p>
+<p>The tab is visible to both the admin and the standard fundraising permission set, since working
+this queue is day-to-day operations rather than setup.</p>
 <h2 id="what-the-donor-sees">What the donor sees<a class="headerlink" href="#what-the-donor-sees" title="Permanent link">#</a></h2>
 <div class="fn-shot"><img src="../../assets/images/df-donation-form.png" alt="Public donation form"></div>
 <p class="fn-figure-caption">**What it shows.** A live public donation form — amount tiles with a custom-amount input, a One-time/Monthly/Annually frequency toggle, fund designation and split-gift options, donor info fields, tribute/dedication and employer-match blocks, and a sticky gift summary sidebar with "Secure & encrypted" / "Powered by Stripe" trust badges. This is the Compose step described in [Campaigns](campaigns.md) rendered for a guest.</p>
@@ -3051,7 +3255,7 @@ chargeback/dispute lifecycle tracking. See <a href="../../guides/process-refund/
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../campaigns/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Campaigns">
+          <a href="../page-sections/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Sections &amp; the contact band">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3061,7 +3265,7 @@ chargeback/dispute lifecycle tracking. See <a href="../../guides/process-refund/
                 Previous
               </span>
               <div class="md-ellipsis">
-                Campaigns
+                Sections & the contact band
               </div>
             </div>
           </a>

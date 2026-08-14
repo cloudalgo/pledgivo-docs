@@ -688,6 +688,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -776,6 +782,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -888,6 +950,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1213,6 +1303,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1301,6 +1395,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1441,6 +1563,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -2011,12 +2161,17 @@ ignore it and go straight to whatever you came to change.</p>
 <td>Scheduled Jobs</td>
 <td>Cron cadence for the background donation-finalizer and reconciliation jobs, plus manual "Run now" triggers for recurring billing, donor rollups, log retention purges, refund/dispute reconciliation, the Stripe payment sweep, and campaign-total recalculation</td>
 </tr>
-<tr>
-<td>Donation Monitor</td>
-<td>A worklist of donations stuck between "paid on Stripe" and "recorded as an Opportunity," with a per-row retry action</td>
-</tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Two things that are <em>not</em> in this console</p>
+<p><strong>Donation Monitor</strong> and <strong>Diagnostic Logs</strong> are their own tabs in the app navigation, not
+Settings panels. Both are recurring operational work — checking whether a payment is stuck,
+reading what the app recorded during an incident — rather than one-time configuration, and
+reaching them shouldn't mean walking into the console that changes the org's settings. The
+Logging panel above still sets <em>what</em> gets logged; the Diagnostic Logs tab is where you read it.
+See <a href="../../guides/monitor-and-diagnose/">Monitor donations and read the logs</a>.</p>
+</div>
 <div class="fn-shot"><img src="../../assets/images/set-health-check.png" alt="Health Check panel showing a mix of healthy, attention, and failed signals"></div>
 <p class="fn-figure-caption">**What it shows.** The Health panel with a status pill per signal — here Record Type Mappings, Payment Accounts, and SOQL Limit read HEALTHY, Experience Cloud Site reads ATTENTION (site is still "Under Construction"), and Scheduled Jobs reads FAILED (0 of 17 running) — plus a Scheduled Jobs section with "Run a job now" actions. This isn't a hypothetical all-green state: it's exactly the kind of mixed result you'll see on a fresh org before every job has been scheduled and the site published.</p>
 

@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/concepts/settings-integrations/">
       
       
-        <link rel="prev" href="../donor-portal/">
+        <link rel="prev" href="../guest-requests/">
       
       
         <link rel="next" href="../../data-model/">
@@ -534,6 +534,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -622,6 +628,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -751,6 +813,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -831,6 +921,17 @@
     <span class="md-ellipsis">
       
         Settings__c in practice
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-what-the-logger-wrote-the-diagnostic-logs-tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading what the logger wrote — the Diagnostic Logs tab
       
     </span>
   </a>
@@ -1163,6 +1264,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1251,6 +1356,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1391,6 +1524,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1734,6 +1895,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#reading-what-the-logger-wrote-the-diagnostic-logs-tab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading what the logger wrote — the Diagnostic Logs tab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-payment-gateway-registry" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1838,6 +2010,27 @@ standard (2.9% + $0.30) — and neither has any effect until a campaign opts in.
 <p><code>SettingsService</code> is the typed accessor every Apex class reads through — application code
 never queries <code>Settings__c</code> directly, so a field rename or a new default only has to change in
 one place.</p>
+<h2 id="reading-what-the-logger-wrote-the-diagnostic-logs-tab">Reading what the logger wrote — the Diagnostic Logs tab<a class="headerlink" href="#reading-what-the-logger-wrote-the-diagnostic-logs-tab" title="Permanent link">#</a></h2>
+<p>Logging verbosity is a setting; reading the logs is not. <strong>Diagnostic Logs</strong> in the app navigation
+lists the most recent entries the package wrote about its own behaviour — newest first, capped at
+200, and the page says so rather than presenting a truncated list as the whole story. The Logging
+panel in the Settings console still decides <em>what</em> gets recorded. This tab is where you read it,
+and it deliberately sits outside that console: troubleshooting happens repeatedly, during an
+incident, and often by someone who has no business changing the org's settings on the way past.</p>
+<p>The part worth understanding is what an empty list means, because on its own it means nothing. The
+page reads both logging settings back and says which case you are in: if Log level is <strong>Off</strong>
+nothing is being written at all, and a banner says so; at the <strong>Error</strong> default the info or debug
+entry you are hunting for was never recorded; and because the nightly retention job deletes by age,
+an incident from last quarter can be gone rather than absent. Only once none of those apply does an
+empty list actually mean the org is clean — and that is the one reading a log viewer must never get
+wrong.</p>
+<p>Who sees it follows from who can already read the underlying records. <code>Log__c</code> is Private, and
+<code>AppLogger</code> writes each entry as whoever ran the transaction, so the tab is granted to
+<strong>Fundraising_Admin</strong> and <strong>Fundraising_ReadOnly</strong> — the two sets holding <em>View All</em> on the object —
+and deliberately not to <strong>Fundraising_User</strong>, which would see only its own sessions and read that
+partial list as an all-clear.</p>
+<p>See <a href="../../guides/monitor-and-diagnose/#diagnostic-logs">Monitor donations and read the logs</a> for the
+filters and a worked sequence.</p>
 <h2 id="the-payment-gateway-registry">The payment gateway registry<a class="headerlink" href="#the-payment-gateway-registry" title="Permanent link">#</a></h2>
 <p><code>PaymentGatewayRegistry</code> exists so a second payment processor could be added later without
 touching the donation pipeline: it maps a processor to the class implementing <code>IPaymentGateway</code>,
@@ -1926,7 +2119,7 @@ its own <code>Settings__c</code> toggle, both off by default. See <a href="../..
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../donor-portal/" class="md-footer__link md-footer__link--prev" aria-label="Previous: The donor portal">
+          <a href="../guest-requests/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Guest requests">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1936,7 +2129,7 @@ its own <code>Settings__c</code> toggle, both off by default. See <a href="../..
                 Previous
               </span>
               <div class="md-ellipsis">
-                The donor portal
+                Guest requests
               </div>
             </div>
           </a>

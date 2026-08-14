@@ -762,10 +762,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#donation-monitor-system-donation-monitor" class="md-nav__link">
+  <a href="#donation-monitor-app-tab-no-longer-a-settings-panel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Donation Monitor (System → Donation Monitor)
+        Donation Monitor (app tab — no longer a Settings panel)
       
     </span>
   </a>
@@ -812,6 +812,12 @@
   
     
     
+      
+        
+      
+        
+      
+        
       
         
       
@@ -935,6 +941,62 @@
   
   
     <li class="md-nav__item">
+      <a href="../../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../concepts/donations-payments/" class="md-nav__link">
         
   
@@ -1027,6 +1089,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1352,6 +1442,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1440,6 +1534,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1580,6 +1702,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -2118,10 +2268,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#donation-monitor-system-donation-monitor" class="md-nav__link">
+  <a href="#donation-monitor-app-tab-no-longer-a-settings-panel" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Donation Monitor (System → Donation Monitor)
+        Donation Monitor (app tab — no longer a Settings panel)
       
     </span>
   </a>
@@ -2273,8 +2423,28 @@ run, or not at all).</p>
 </tr>
 <tr>
 <td>Logo upload</td>
-<td>Org logo shown on receipts and emails</td>
+<td>Org logo shown on receipts, emails <strong>and the public donation page header</strong></td>
 <td>Immediate</td>
+</tr>
+<tr>
+<td>Public page footer — footer text</td>
+<td>The copyright/attribution line in the footer band of every public donation page</td>
+<td>Immediate and live on the next page load. A campaign can override it on its own record; leave a campaign's override blank to use this.</td>
+</tr>
+<tr>
+<td>Public page footer — terms / privacy URLs</td>
+<td>The two policy links in that footer band</td>
+<td>Immediate and live. Leave one blank and the footer simply omits that link rather than rendering a dead one. Same per-campaign override.</td>
+</tr>
+<tr>
+<td>Public page footer — X (Twitter) / Facebook / Instagram URLs</td>
+<td>The social icons in that footer band</td>
+<td>Immediate and live. Each is independent — an unset network shows no icon. Same per-campaign override.</td>
+</tr>
+<tr>
+<td>Social share image URL</td>
+<td>The 1200x630 card a social network shows when someone pastes a campaign link</td>
+<td>Saved and resolved, but <strong>not yet rendered into an <code>og:image</code> tag by anything in this package</strong> — it is stored ready for a social-preview feature. Blank falls back to the packaged card published at install.</td>
 </tr>
 <tr>
 <td><strong>Reset to defaults</strong> button</td>
@@ -2417,7 +2587,7 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 <tr>
 <td>Debug echo to Apex debug log</td>
 <td>Also mirrors log calls into <code>System.debug</code> for live viewing in Developer Console</td>
-<td>Immediate. <strong>Does not</strong> change what's persisted as a queryable log record — that's Log level's job exclusively. Turning this on will not make more log history appear in the "Recent diagnostic logs" list below.</td>
+<td>Immediate. <strong>Does not</strong> change what's persisted as a queryable log record — that's Log level's job exclusively. Turning this on will not make more log history appear on the Diagnostic Logs tab.</td>
 </tr>
 <tr>
 <td>Purge after (days)</td>
@@ -2426,6 +2596,15 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">This panel sets the level — the <strong>Diagnostic Logs</strong> tab is where you read the result</p>
+<p>The entries these settings produce are on their own tab in the app navigation, filterable by
+severity, context and date and searchable across messages and stack traces. It reads both
+settings back: if Log level is <strong>Off</strong> the tab says so outright, and it names the purge window,
+so an empty list can never be misread as "nothing went wrong" when the real answer is "nothing
+was written" or "it was already deleted."
+See <a href="../../guides/monitor-and-diagnose/#diagnostic-logs">Monitor donations and read the logs</a>.</p>
+</div>
 <div class="admonition danger">
 <p class="admonition-title">Purge after (days) feeds a real delete, on demand</p>
 <p>The nightly purge is scheduled, but an admin can also trigger it immediately from
@@ -2621,6 +2800,14 @@ widget and internal admin links are not cached and reflect changes immediately.<
 <h3 id="page-designs-experience-cloud-page-designs">Page Designs (<code>Experience Cloud → Page Designs</code>)<a class="headerlink" href="#page-designs-experience-cloud-page-designs" title="Permanent link">#</a></h3>
 <p>Backed by <code>Campaign_Design__c</code> records — themes and layout composed in the Page Canvas builder,
 applied to campaigns by reference.</p>
+<div class="admonition info">
+<p class="admonition-title">Your logo, footer and social links are no longer part of a design</p>
+<p>Each design record used to carry its own logo URL, footer text, terms/privacy links and social
+handles. Those describe your organization, not a theme, so a campaign switching from one style to
+another silently changed which privacy policy its donors were pointed at. They now live once, in
+<strong>General → Organization &amp; Donations</strong>, and every design renders the same set. A campaign that
+genuinely needs its own — a joint appeal, say — overrides them on its own record.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -2637,17 +2824,22 @@ applied to campaigns by reference.</p>
 </tr>
 <tr>
 <td><strong>Set as default</strong></td>
-<td>Which design campaigns with no design chosen fall back to</td>
-<td>Immediate and live — same instant-fallback behavior as above</td>
+<td>Which design campaigns with no design chosen fall back to — <strong>and the theme every public page that is not a donation page paints itself from</strong> (the campaign gallery, the donor portal, the thank-you page, receipts and the ticket wallet)</td>
+<td>Immediate and live — same instant-fallback behavior as above. Exactly one design can hold the flag: marking a design default clears it from whichever design held it before, wherever the change was made — this console, the Salesforce record page, a data load or an import.</td>
 </tr>
 <tr>
-<td>Colors, fonts, logos, hero image, spacing/shadow/radius style</td>
+<td>Colors, fonts, hero image, spacing/shadow/radius style</td>
 <td>Visual theme tokens</td>
 <td>Immediate and live for every campaign on that design, on their next page load — no Experience Cloud site republish needed, since this is a data change, not a component/metadata change</td>
 </tr>
 <tr>
-<td>Form layout mode, form side default, form title/description/disclaimer/footer defaults</td>
-<td>Default content/layout for campaigns using this design</td>
+<td>Column ratio</td>
+<td>How the public page splits between the story column and the payment box, and which side the payment box sits on — 60/40, 50/50 or 40/60</td>
+<td>Immediate and live. A campaign can override it on its own record.</td>
+</tr>
+<tr>
+<td>Form title/description/disclaimer/footer defaults</td>
+<td>Default form copy for campaigns using this design</td>
 <td>Immediate and live, but a campaign's own override (where set) always wins over the design's default</td>
 </tr>
 <tr>
@@ -2661,27 +2853,56 @@ applied to campaigns by reference.</p>
 <td></td>
 </tr>
 <tr>
-<td>Embed button label</td>
-<td>Label shown on the generated embed-widget button</td>
-<td>Immediate — read only by the embed-widget flow, not the standalone campaign page</td>
-</tr>
-<tr>
 <td>Theme tokens (advanced JSON)</td>
 <td>Raw override of the design's theme-token values</td>
 <td>Immediate. Any token name not on the packaged, protected allow-list is silently dropped when the design is read back — it is not rejected at save time, so a typo in a token name won't error, it'll just be ignored.</td>
 </tr>
-<tr>
-<td>Page Canvas blocks</td>
-<td>The Compose → Payment → Thank You block layout</td>
-<td>Immediate and live</td>
-</tr>
-<tr>
-<td><strong>Delete</strong> button</td>
-<td>Removes a design</td>
-<td>Blocked with an error if any campaign currently references it — you must reassign or clear those campaigns' design first. (The confirmation dialog's own wording implies a silent fallback to the default design instead; the actual behavior is a hard block, not a fallback — don't rely on the dialog text.)</td>
-</tr>
 </tbody>
 </table>
+<div class="admonition tip">
+<p class="admonition-title">The advanced token list grew a lot</p>
+<p>The <strong>Add override</strong> dropdown on a design's Advanced tab now carries 147 tokens, grouped by
+what they affect. Five of those groups — <strong>Story</strong>, <strong>Sections</strong>, <strong>Tabs</strong>, <strong>Donation box</strong>
+and <strong>Footer</strong> — cover the two-column public page: the hero crop and its overlay, the story
+column's line length and paragraph rhythm, the documents/updates/FAQ tab strip, every surface
+of the donation box down to the progress bar, and the contact band at the foot of the page.
+Anything you can see on a public donation page that isn't the campaign's own content is a
+token you can change here, which is what lets two designs look like two different products
+rather than two colour schemes of the same one.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">One design is default, and it dresses more than the fallback</p>
+<p>Only a donation page follows its own campaign's design. Every other public page — the campaign
+gallery, the donor portal, the thank-you page, receipts and the ticket wallet — has no campaign
+to read, so it paints itself from whichever design is marked default. Changing the default
+therefore restyles all of them at once: colours, fonts, corner radius and spacing. That includes
+the donor portal's buttons and its statement and trust panels, which take the default design's
+primary colour rather than a fixed one.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Warnings follow the theme; errors deliberately do not</p>
+<p>Each packaged design also sets its own <strong>caution</strong> colours — the amber used for a pending refund
+line, a "few tickets left" chip, or an expiring card notice — so a warning sits in the same
+temperature as the rest of the page. Marigold is the exception and warns in terracotta, because
+its own brand colour is already ochre and an amber warning would read as a second heading rather
+than as a warning.</p>
+<p><strong>Error</strong> colours are the same on all six designs (<code>#C7362B</code> with its tint and hairline) and
+intentionally so. An error is a safety signal: a failed card, a closed campaign, a form that
+won't submit. If it took each design's own palette it could end up looking like the brand — the
+donate button and the "your payment failed" box in the same red. You can still override the
+error tokens on a design's Advanced tab, but think twice before pointing them at your primary
+colour.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">The hero is sized by proportion, not by height</p>
+<p>A design sets <strong>Hero aspect ratio</strong> (<code>--pf-hero-ratio</code>, e.g. <code>21 / 8</code>) rather than a pixel
+height. A fixed height crops the same photo to a different slice of itself on a phone than on
+a desktop; a ratio keeps the crop identical at every width. The old <code>--pf-hero-header-height</code>
+token was retired — a design that still lists it in its advanced JSON will have that entry
+dropped on the next read, with no error.</p>
+</div>
+<p>| Page Canvas blocks | The Compose → Payment → Thank You block layout | Immediate and live |
+| <strong>Delete</strong> button | Removes a design | Blocked with an error if any campaign currently references it — you must reassign or clear those campaigns' design first. (The confirmation dialog's own wording implies a silent fallback to the default design instead; the actual behavior is a hard block, not a fallback — don't rely on the dialog text.) |</p>
 <div class="admonition warning">
 <p class="admonition-title">Delete is blocked, not a silent reassignment</p>
 <p>The delete-confirmation dialog reads as if campaigns using the design will simply fall back to
@@ -2801,6 +3022,13 @@ from the Site &amp; Domain panel.</p>
 </div>
 <h3 id="scheduled-jobs-system-scheduled-jobs">Scheduled Jobs (<code>System → Scheduled Jobs</code>)<a class="headerlink" href="#scheduled-jobs-system-scheduled-jobs" title="Permanent link">#</a></h3>
 <p>Controls the package's background cron schedule directly — not <code>Settings__c</code> fields.</p>
+<p>Every scheduled job appears as a card showing what it does, when it runs, and whether it is
+waiting or paused. The two <strong>families</strong> — Donation Finalizer and Reconciliation Heartbeat —
+expand to a cadence editor, because they need to run more often than once an hour and Salesforce
+can only express that as several jobs spaced across the hour (which is why one family shows a
+dozen rows; they are not duplicates). Every other job runs on a fixed schedule and its card is
+read-only: to move one, use Salesforce <strong>Setup → Scheduled Jobs</strong> and search for the job name
+printed at the bottom of its card.</p>
 <table>
 <thead>
 <tr>
@@ -2810,6 +3038,11 @@ from the Site &amp; Domain panel.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><strong>Schedule missing jobs</strong> (panel header, and the button on the empty state)</td>
+<td>Schedules every background job the package expects — the finalizer and heartbeat families, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep and the nightly campaign-total rebuild</td>
+<td>Immediate, and safe to click at any time: a job that already exists is left exactly as it is, including a cadence you customized below. This is the same action as <strong>Fix</strong> on the Health Check row and "Schedule the missing jobs" on Get Started. If the panel is empty, this is the only control that can start the schedule — the cadence editor only appears once a family has jobs to edit.</td>
+</tr>
 <tr>
 <td>"Run every" cadence + <strong>Save</strong> (per job family)</td>
 <td>Reschedules how often the Donation Finalizer / Reconciliation Heartbeat jobs fire</td>
@@ -2854,9 +3087,12 @@ due today, the same as if the nightly job had fired. Each charge is protected fr
 accidentally repeated on the same schedule the same day (an unchanged charge won't be billed
 twice), but any schedule not yet charged today will be charged the moment you click this.</p>
 </div>
-<h3 id="donation-monitor-system-donation-monitor">Donation Monitor (<code>System → Donation Monitor</code>)<a class="headerlink" href="#donation-monitor-system-donation-monitor" title="Permanent link">#</a></h3>
+<h3 id="donation-monitor-app-tab-no-longer-a-settings-panel">Donation Monitor (app tab — no longer a Settings panel)<a class="headerlink" href="#donation-monitor-app-tab-no-longer-a-settings-panel" title="Permanent link">#</a></h3>
 <p>A live worklist of donations stuck between "paid on Stripe" and "recorded as an Opportunity" —
-not settings fields.</p>
+not settings fields. It lives on the <strong>Donation Monitor</strong> tab in the app navigation, not in this
+console; it is documented here because its one action changes records. For the filters and a
+worked troubleshooting sequence see
+<a href="../../guides/monitor-and-diagnose/#donation-monitor">Monitor donations and read the logs</a>.</p>
 <table>
 <thead>
 <tr>

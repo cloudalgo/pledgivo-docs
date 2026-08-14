@@ -534,6 +534,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -622,6 +628,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -736,6 +798,17 @@
     <span class="md-ellipsis">
       
         Why self-managed billing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-donor-picks-a-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the donor picks a frequency
       
     </span>
   </a>
@@ -916,6 +989,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1241,6 +1342,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1329,6 +1434,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1469,6 +1602,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1801,6 +1962,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-the-donor-picks-a-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the donor picks a frequency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#saved-payment-methods" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1951,6 +2123,18 @@ and reconciling that disagreement means either polling Stripe constantly or stan
 webhook. Pledgivo instead treats <code>Recurring_Donation__c</code> as the single source of truth for the
 billing schedule, and charges the donor's saved card <strong>off-session</strong> (no browser involved) on
 that schedule.</p>
+<h2 id="how-the-donor-picks-a-frequency">How the donor picks a frequency<a class="headerlink" href="#how-the-donor-picks-a-frequency" title="Permanent link">#</a></h2>
+<p>The donation form's frequency block is a segmented control — One-time, Monthly, Annually — with a
+sliding marker showing the current choice. Directly beneath it, a line restates the choice in the
+donor's own numbers: pick $40 and switch to Monthly and it reads <strong>$40 every month</strong> — $480 over a
+year. Cancel anytime.</p>
+<p>That annualised figure is the point of the block. The commitment a donor is actually weighing on a
+recurring gift is the yearly one, and asking them to work it out in their head is the moment most
+of them fall back to a single gift. Monthly also carries a <strong>Most popular</strong> badge; recurring donors
+are worth several times a one-time donor over their lifetime, so that option gets a visible reason
+rather than sitting as one of three equal-weight tabs.</p>
+<p>Nothing here is configurable per campaign beyond the block's title, help text, and the three option
+labels (Settings → Experience Cloud → Designs). The readout wording and the badge are fixed.</p>
 <h2 id="saved-payment-methods">Saved payment methods<a class="headerlink" href="#saved-payment-methods" title="Permanent link">#</a></h2>
 <p>When a donor sets up a recurring gift, Stripe tokenizes their card into a reusable payment
 method, which Salesforce stores a reference to on <code>Payment_Method__c</code> — linked to the

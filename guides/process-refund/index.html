@@ -532,6 +532,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -620,6 +626,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -732,6 +794,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1059,6 +1149,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1147,6 +1241,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1307,6 +1429,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#when-the-donor-asked-for-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the donor asked for it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#refunds-issued-outside-salesforce" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1402,6 +1535,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1745,6 +1906,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#when-the-donor-asked-for-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the donor asked for it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#refunds-issued-outside-salesforce" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1818,7 +1990,7 @@ by default. Confirm the org-wide refund switch is on: <strong>Settings → Payme
 don't need to think about the inversion.) That panel also sets the refund window — how many
 days after the original gift a refund can still be issued (180 by default).</p>
 <div class="fn-shot"><img src="../../assets/images/set-refunds.png" alt="Refunds settings panel"></div>
-<p class="fn-figure-caption">**What it shows.** The Refunds panel — the "Enable refunds" toggle and the Refund window (days) field, each with helper text explaining what it controls. This is the org-wide switch; it's separate from the per-Opportunity Refund Donation action below.</p>
+<p class="fn-figure-caption">**What it shows.** The Refunds panel — the "Enable refunds" toggle, the "Let donors request a refund" toggle, and the Refund window (days) field, each with helper text explaining what it controls. These are the org-wide switches; they're separate from the per-Opportunity Refund Donation action below.</p>
 
 <h2 id="issue-a-refund-from-salesforce">Issue a refund from Salesforce<a class="headerlink" href="#issue-a-refund-from-salesforce" title="Permanent link">#</a></h2>
 <ol>
@@ -1832,6 +2004,33 @@ days after the original gift a refund can still be issued (180 by default).</p>
 <p>This calls <code>RefundService</code>, which issues the refund through Stripe and updates the
 Opportunity's refund fields immediately — you don't have to wait for the reconciliation job to
 see it reflected.</p>
+<h2 id="when-the-donor-asked-for-it">When the donor asked for it<a class="headerlink" href="#when-the-donor-asked-for-it" title="Permanent link">#</a></h2>
+<p>Donors can request a refund from their own portal, if you turn on <strong>Let donors request a refund</strong>
+in the same Refunds panel. It is off until you switch it on. Nothing is refunded by asking — each
+request lands in the <strong>Guest Requests</strong> tab at <em>Awaiting Review</em>, and the gift's owner and your
+reply-to address are emailed.</p>
+<p>When you open <strong>Refund Donation</strong> on a gift that has a request waiting, the donor's own words are
+quoted at the top of the panel, above everything else, with the date they asked and the request's
+name.</p>
+<p>You then have two ways to answer it, and they are not symmetrical:</p>
+<ul>
+<li><strong>To approve</strong> — issue the refund here as normal. That closes the request automatically, marks it
+  Completed, and records that it was approved for the donor to see on their portal. You do not
+  touch the Guest Request record at all.</li>
+<li><strong>To turn it down</strong> — open the named Guest Request record and set its <strong>Status</strong> to <em>Declined</em>.
+  Put the reason in <strong>Message to the donor</strong>; that is the text the portal shows them. The <strong>Admin
+  note</strong> field is the internal counterpart and is never shown.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Closing the request never issues a refund, and issuing one never leaves the request open</p>
+<p>The automation runs in one direction only. Marking a request reviewed moves no money — the
+refund is always a deliberate act on the donation record. But the reverse is wired up, so a
+refunded gift can't leave a donor staring at a request that still says it is waiting.</p>
+<p>If the auto-close ever fails, the refund still stands. The money moved at Stripe first, and the
+request is simply left for you to close by hand.</p>
+</div>
+<p>See <a href="../../concepts/guest-requests/">Guest requests</a> for the queue itself, and
+<a href="../../concepts/donor-portal/#requesting-a-refund">The donor portal</a> for what the donor sees.</p>
 <h2 id="refunds-issued-outside-salesforce">Refunds issued outside Salesforce<a class="headerlink" href="#refunds-issued-outside-salesforce" title="Permanent link">#</a></h2>
 <p>If a refund or a chargeback is initiated directly in the Stripe dashboard (or by Stripe itself,
 in a dispute), Salesforce doesn't see it immediately — there's no webhook pushing that event
@@ -1893,7 +2092,8 @@ included in the donor's email, so you can write internal notes there freely.</p>
 <p>Sending happens after the refund is recorded, and a failure is logged rather than raised. The
 money has already moved at Stripe by that point, so a mail-quota problem or a deleted template
 can never turn a successful refund into an error — but it does mean a failed send isn't retried.
-Check <strong>Application Logs</strong> if a donor says they were never told.</p>
+Check the <strong>Diagnostic Logs</strong> tab if a donor says they were never told —
+see <a href="../monitor-and-diagnose/#diagnostic-logs">Monitor donations and read the logs</a>.</p>
 </div>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">

@@ -532,6 +532,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -620,6 +626,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -732,6 +794,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1141,6 +1231,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1229,6 +1323,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1369,6 +1491,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1745,7 +1895,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>84 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>94 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1819,6 +1969,18 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Company Match Task Owner Id</td>
 <td>Text</td>
 <td>The 18-character Salesforce User Id of the person who chases employer matches. Leave blank and each follow-up task goes to the owner of the campaign the gift came in on, which is the right answer for most organizations.<br><em>Docs: A Text field rather than a lookup because Custom Settings cannot hold relationship fields — this is the platform's constraint, not a design preference, and it is why CompanyMatchService validates the Id against an active User before using it instead of trusting the stored value. Storing a User Id in config is not the "no hardcoded Ids" violation the security checklist targets: the value is admin-entered per org, never shipped in source.</em></td>
+</tr>
+<tr>
+<td><code>Contact_Email__c</code></td>
+<td>Contact Email</td>
+<td>Email</td>
+<td>The address donors should write to when they have a question before giving.<br><em>Docs: Read through SettingsService.contactEmail(), never Settings__c.getInstance() directly. Deliberately separate from Reply_To_Email__c: that one is a transactional sender identity, this one is published on a public page for humans to write to.</em></td>
+</tr>
+<tr>
+<td><code>Contact_Hours__c</code></td>
+<td>Contact Hours</td>
+<td>Text</td>
+<td>When someone will actually answer. Setting expectations here reduces unanswered calls.<br><em>Docs: Free text rather than structured hours on purpose — orgs describe availability in wildly different ways and no parser consumes this; it is printed verbatim in the contact band. No per-campaign override exists: hours are an org fact.</em></td>
 </tr>
 <tr>
 <td><code>Data_Retention_Days__c</code></td>
@@ -1977,6 +2139,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Heading shown above the email field when a donor requests portal access. Leave blank to use the default wording.</td>
 </tr>
 <tr>
+<td><code>Donor_Refund_Requests_Enabled__c</code></td>
+<td>Donor Refund Requests Enabled</td>
+<td>Checkbox</td>
+<td>Check this to let donors ask for a refund from their donor portal. Nothing is refunded automatically — each request lands in the Guest Requests tab for a person to approve and process. Leave unchecked if you would rather donors phone or email you.<br><em>Docs: Read by SettingsService.donorRefundRequestsEnabled(). Deliberately NOT inverted, unlike Refunds_Disabled__c: a Checkbox backfills to false on an upgraded org row, and false must mean "off" here so an existing org never starts inviting refund requests it did not ask for. Edited in the Refunds panel of the settings console (setRefunds), not the donor-portal panel, because it is bounded by the same master switch and window as staff-issued refunds.</em></td>
+</tr>
+<tr>
 <td><code>Dunning_Email_Frequency__c</code></td>
 <td>Dunning_Email_Frequency</td>
 <td>Number</td>
@@ -2071,6 +2239,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Fee Coverage Percent</td>
 <td>Number</td>
 <td>The percentage part of your payment processor's fee, e.g. 2.9 for Stripe's standard US card rate. Used only to work out the extra amount a donor pays when they tick "cover the processing fee" — it never changes what your processor actually charges you. Leave blank to use 2.9.<br><em>Docs: Deliberately org-level rather than per-campaign: the rate is a property of the payment processor's pricing, not of an appeal, and an admin who has negotiated a different rate has one place to change it. The old Default_Fee_On_Top_Percent__c was removed 2026-08-03 as dead config because nothing consumed it; this field is its replacement and IS consumed, by FeeCoverageService.computeFee. Blank falls back to 2.9 rather than 0 — a zero rate would silently make every "cover the fee" tick add only the fixed component, which reads as a bug rather than as unconfigured.</em></td>
+</tr>
+<tr>
+<td><code>Footer_Text__c</code></td>
+<td>Public Page Footer Text</td>
+<td>Text</td>
+<td>The line at the very bottom of your public pages, usually a copyright notice such as "© 2026 Your Organization". Campaigns can override it if one needs different wording.<br><em>Docs: Read through SettingsService.footerText(). Distinct from Receipt_Footer_Text__c, which is the legal block printed on receipts — this one is a single display line at the foot of a web page and carries no tax claim. Moved off Campaign_Design__c on 2026-08-12, where every packaged theme carried an identical copy of the same sentence.</em></td>
 </tr>
 <tr>
 <td><code>From_Email__c</code></td>
@@ -2169,6 +2343,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Hours a donor-portal magic link stays valid before it expires, e.g. 24.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 24h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a magic link effectively permanent). Drives how far ahead of issuance DonorPortalService sets Contact/Account.Portal_Token_Expires_At__c.</em></td>
 </tr>
 <tr>
+<td><code>Privacy_URL__c</code></td>
+<td>Privacy URL</td>
+<td>Url</td>
+<td>Web address of your privacy policy. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through SettingsService.privacyUrl(). Same 2026-08-12 move off Campaign_Design__c as Terms_URL__c, for the same reason. Campaign.Privacy_URL_Override__c wins when set.</em></td>
+</tr>
+<tr>
 <td><code>Receipt_Email_Template__c</code></td>
 <td>Receipt_Email_Template</td>
 <td>Text</td>
@@ -2265,6 +2445,30 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Days between automatic retry attempts for a failed recurring payment, e.g. 3.<br><em>Docs: Read by SettingsService.retryIntervalDays() (default 3 when unset). Cadence is flat: every retry waits the same number of days, there is no backoff curve.</em></td>
 </tr>
 <tr>
+<td><code>Social_Facebook_URL__c</code></td>
+<td>Social — Facebook URL</td>
+<td>Url</td>
+<td>Full web address of your organization's Facebook page. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialFacebookUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
+</tr>
+<tr>
+<td><code>Social_Instagram_URL__c</code></td>
+<td>Social — Instagram URL</td>
+<td>Url</td>
+<td>Full web address of your organization's Instagram profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialInstagramUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
+</tr>
+<tr>
+<td><code>Social_Share_Image_URL__c</code></td>
+<td>Social Share Image URL</td>
+<td>Url</td>
+<td>The picture that appears when someone shares one of your public pages on social media. Best at 1200x630 pixels. Leave blank to use the packaged default image.<br><em>Docs: Read through SettingsService.socialShareImageUrl(), which falls back to Default_Social_Share_Image_URL__c when this is blank. The two are deliberately separate: this one is the admin's choice, the Default_ one caches the ContentDistribution link to the packaged artwork that SettingsService.ensureDefaultImagesSeeded() creates, and an upgrade re-seeds the cache without ever touching an admin's own picture.</em></td>
+</tr>
+<tr>
+<td><code>Social_Twitter_URL__c</code></td>
+<td>Social — X (Twitter) URL</td>
+<td>Url</td>
+<td>Full web address of your organization's X (Twitter) profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialTwitterUrl(). The three social fields are separate rather than one multi-value field so the footer can render each network's own icon and omit the ones an org does not use, without parsing a delimited string on the guest path.</em></td>
+</tr>
+<tr>
 <td><code>Soft_Credit_Automation_Enabled__c</code></td>
 <td>Soft_Credit_Automation_Enabled</td>
 <td>Checkbox</td>
@@ -2274,13 +2478,19 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Support_Phone__c</code></td>
 <td>Support Phone</td>
 <td>Phone</td>
-<td>Phone number shown in payment-failure and final-notice emails so donors can reach you.</td>
+<td>Phone number donors can call for help. Shown in payment-failure and final-notice emails, and on public campaign pages that do not set their own contact number.</td>
 </tr>
 <tr>
 <td><code>Tax_Receipt_Legal_Text__c</code></td>
 <td>Receipt Legal Text (No Goods Received)</td>
 <td>TextArea</td>
 <td>Legal disclaimer for ordinary donations where the donor received nothing back. Defaults to US 501(c)(3) wording; override for your jurisdiction and entity type. Event tickets and other gifts with goods received use their own wording.<br><em>Docs: Narrowed from "the receipt's legal statement" to "the plain-gift legal statement" on 2026-08-08. The API name and any stored value are unchanged so no org has to re-enter wording it had reviewed by counsel — but it no longer wins on receipts where the donor received goods, which is what made it a correctness bug rather than a config choice. See the doc comment on Receipt_Legal_Text_With_Goods__c for the full rationale and the other two cases.</em></td>
+</tr>
+<tr>
+<td><code>Terms_URL__c</code></td>
+<td>Terms URL</td>
+<td>Url</td>
+<td>Web address of your terms and conditions page. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through SettingsService.termsUrl(), never Settings__c.getInstance() directly. Lived on Campaign_Design__c until 2026-08-12, where switching a campaign from one theme to another silently changed which terms document donors were pointed at — a policy is a fact about the organisation, not about a colour scheme. Campaign.Terms_URL_Override__c wins when set; CampaignService.resolveIdentity owns that precedence, not this field.</em></td>
 </tr>
 </tbody>
 </table>

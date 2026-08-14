@@ -532,6 +532,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -620,6 +626,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -732,6 +794,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1057,6 +1147,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1145,6 +1239,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1285,6 +1407,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1731,6 +1881,7 @@
 <p>API 67.0 · controller <code>StripePaymentPageController</code></p>
 <p>The Stripe Elements host, loaded inside an iframe embedded by dfForm (the public donation form LWC) and by publicDonorDashboard (wallet "add card" flow). Nothing here talks to Apex directly beyond the controller's allowedOrigin fallback — the payment flow is entirely postMessage-driven: the parent posts INIT_STRIPE (mount Elements from a clientSecret already created server-side), then CONFIRM_PAYMENT or CONFIRM_SETUP to trigger the charge/save. CONFIRM_PAYMENT carries an isRecurring flag: dfForm always sends CONFIRM_PAYMENT (the donation flow only ever mints a PaymentIntent, never a SetupIntent, even for recurring — see DonationService.createDonorAndIntent's setupFutureUsage=off_session), and on success this page replies SETUP_SUCCESS+paymentMethodId for a recurring signup or PAYMENT_SUCCESS for a one-time gift. CONFIRM_SETUP is for the donor-dashboard's genuine SetupIntent ("add a new card" without charging) flow only. This page never sees raw card data — Stripe.js tokenizes inside its own nested iframe, so only paymentMethod.id-shaped results ever leave this page, satisfying the PCI rule documented in AGENTS.md.</p>
 <p>reportHeight()/ResizeObserver exist because the parent LWC has no visibility into this iframe's content height and Stripe's Payment Element resizes itself as the donor picks a payment method (card vs bank vs wallet); without this the iframe would either clip the form or leave dead whitespace. buildReturnUrl() derives the sibling stripePaymentReturn.page URL from window.location.href rather than a hardcoded path so it keeps working whether this page is served from the org domain or an Experience Cloud site's VF page prefix.</p>
+<p>Stripe Link is switched off on the Payment Element (wallets.link='never'), so donors never see the "Save my information for faster checkout" enrolment box or Link's bank-funded payment path. Link is a wallet rather than a PaymentIntent payment method, so it cannot be excluded server-side the way ACH is (StripeGateway pins every intent to payment_method_types[]=card) — this Element option is the only place it can be turned off in code, short of disabling Link for the whole account in the Stripe Dashboard.</p>
 <h2 id="stripepaymentreturn">Stripe Payment Return<a class="headerlink" href="#stripepaymentreturn" title="Permanent link">#</a></h2>
 <p><code>stripePaymentReturn.page</code></p>
 <p>API 67.0 · controller <code>StripePaymentReturnController</code></p>

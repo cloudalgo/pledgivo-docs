@@ -534,6 +534,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -622,6 +628,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -771,10 +833,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-the-checkout-is-paced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the checkout is paced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-a-tier-can-say-for-itself" class="md-nav__link">
     <span class="md-ellipsis">
       
         What a tier can say for itself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-buyer-sees-when-the-seats-run-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the buyer sees when the seats run out
       
     </span>
   </a>
@@ -882,6 +966,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1207,6 +1319,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1295,6 +1411,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1435,6 +1579,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1767,10 +1939,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-the-checkout-is-paced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the checkout is paced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-a-tier-can-say-for-itself" class="md-nav__link">
     <span class="md-ellipsis">
       
         What a tier can say for itself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-buyer-sees-when-the-seats-run-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the buyer sees when the seats run out
       
     </span>
   </a>
@@ -1878,12 +2072,37 @@
 
 <h2 id="what-donors-see">What donors see<a class="headerlink" href="#what-donors-see" title="Permanent link">#</a></h2>
 <div class="fn-shot"><img src="../../assets/images/public-event-ticketing.png" alt="Public event ticketing page"></div>
-<p class="fn-figure-caption">**What it shows.** A live public event page — hero with an EVENT FUNDRAISER badge, a date/venue/seats-left stat bar, an "Our story" section, and a 4-step wizard (Tickets → Attendees → Your info → Payment) with per-tier pricing, tax-deductible amounts, and a remaining-seats badge on each tier.</p>
+<p class="fn-figure-caption">**What it shows.** A live public event page — a banner carrying the date, venue and seats left, the story and the documents/updates/FAQ well down the page, and a stepped checkout (Tickets → Who's coming → Payment, with the middle step appearing only when there is more than one seat or an organiser question to ask) with per-tier pricing, tax-deductible amounts, and a remaining-seats badge on each tier.</p>
 
-<p>The ticket page is themed by the same <code>Campaign_Design__c</code> record as a donation page, and
-<code>Event_Layout__c</code> picks which of the six layout modes it renders in — see
-<a href="../campaigns/#layout-modes">Layout modes</a>. An event and a donation appeal sharing one design
-therefore share hero treatment, type pairing, and theme tokens.</p>
+<p>The ticket page is themed by the same <code>Campaign_Design__c</code> record as a donation page, and it is the
+same two-column page: checkout in one column, the event's story and its documents/updates/FAQ well
+in the other. What the design record varies is the proportion between them — see
+<a href="../column-ratio/">The column ratio</a>. An event and a donation appeal sharing one design therefore
+share column proportion, hero treatment, type pairing, and theme tokens.</p>
+<h2 id="how-the-checkout-is-paced">How the checkout is paced<a class="headerlink" href="#how-the-checkout-is-paced" title="Permanent link">#</a></h2>
+<p>Buying a seat is three steps, and the buyer only ever sees the ones that have something on them.</p>
+<ol>
+<li><strong>Tickets</strong> — pick the tiers and quantities, add an optional gift on top, and give the name and
+   email the tickets should go to. Contact details sit on this step, not a later one: they are the
+   only thing the purchase strictly needs, and asking for them first means an abandoned checkout
+   still leaves you someone to follow up with.</li>
+<li><strong>Who's coming</strong> — a card per seat, grouped under the tier that bought it. One card is open at a
+   time and the rest collapse to a row showing the name entered so far, so a table of eight is eight
+   short rows rather than eight full forms. Seat 1 is the buyer, pre-filled and locked. Any seat can
+   copy its details from a seat already named. Guest emails are optional — every ticket is
+   deliverable to the buyer regardless. Custom questions, if the event has any, are answered here.</li>
+<li><strong>Payment</strong> — the card field and the total.</li>
+</ol>
+<p><strong>Step 2 disappears when it would be a formality.</strong> With a single seat and no custom questions the
+step's only content would be the buyer's own name, already filled in and locked, so it is removed
+rather than shown empty — and because the step numbers are positional, Payment becomes step 2.</p>
+<p><strong>"I'll name them later"</strong> takes the whole guest list off the buyer's hands. The seats are still
+held and the tickets still issue; the names can be filled in afterwards. Use it when someone is
+buying a table before they know who is sitting at it.</p>
+<p>A completed step turns clickable, so a buyer can go back and change an answer without losing the
+rest of the order. Anything that blocks the next step is reported inline, next to the button that
+refused to advance — and when a missing guest name is the reason, that seat's card opens and
+scrolls into view so there is nothing to hunt for.</p>
 <h2 id="what-a-tier-can-say-for-itself">What a tier can say for itself<a class="headerlink" href="#what-a-tier-can-say-for-itself" title="Permanent link">#</a></h2>
 <p>A tier name alone rarely answers the buyer's actual question, which is <em>what do I get for this?</em>
 Two fields on <code>Event_Ticket_Type__c</code> cover that, and both are edited in the same place you set the
@@ -1911,6 +2130,32 @@ advertising something unbuyable only tells the buyer what they missed.</p>
 <p>One-highlight-per-event is an editing convention, not a validation rule. A Data Loader or API
 write bypasses it, and the public page renders exactly what it is given — so if you badge three
 tiers by import, three badges appear.</p>
+</div>
+<h2 id="what-the-buyer-sees-when-the-seats-run-out">What the buyer sees when the seats run out<a class="headerlink" href="#what-the-buyer-sees-when-the-seats-run-out" title="Permanent link">#</a></h2>
+<p>Two caps can bind, and the public page keeps them straight so the buyer is never quoted a number
+the checkout will refuse to honour.</p>
+<p><strong>A tier never advertises more seats than the event has left.</strong> On an Event Total (or Both) event,
+each tier's remaining-stock chip is clamped to whatever is smaller — the tier's own remaining
+capacity, or the event's. An event with 11 seats left shows "Only 11 left" on every open tier, even
+on a tier holding 88 of its own, because those 88 are not sellable. Without the clamp the page tells
+three true statements that add up to a false impression.</p>
+<p><strong>The section hint speaks for the event.</strong> Above the tier list, <em>Choose your tickets</em> carries a
+short hint: how many tickets you have selected once you start, and before that, when the event
+itself is close to full, how many the event has left in total. The per-tier chips cannot say this —
+each one only knows its own stock.</p>
+<p><strong>A closed event says so instead of showing a dead price list.</strong> When the event has reached
+capacity, or when every tier is closed (each one sold out, or its sale window over), the tier list
+is replaced by a single quiet notice — "Every seat for this event has been claimed. Registration is
+closed", or "Ticket sales for this event have closed." The page previously rendered the full price
+list with every stepper disabled, which reads as a broken page rather than a closed one. The rest of
+the page — story, updates, contact details — still renders, so a visitor who arrives late still
+learns what the event is.</p>
+<div class="admonition warning">
+<p class="admonition-title">Event Capacity must clear what the tiers have already sold</p>
+<p><code>Event_Capacity__c</code> is checked against <code>Tickets_Sold__c</code>, a roll-up of every tier's
+<code>Quantity_Sold__c</code>. Setting the event capacity <em>below</em> the number already sold makes the event
+read as full and closes registration immediately, even though each tier still reports stock of
+its own. If you lower the cap mid-sale, check the campaign's Tickets Sold first.</p>
 </div>
 <h2 id="same-pipeline-different-payload">Same pipeline, different payload<a class="headerlink" href="#same-pipeline-different-payload" title="Permanent link">#</a></h2>
 <p>Event ticket purchases don't get a separate payment system — they go through the identical

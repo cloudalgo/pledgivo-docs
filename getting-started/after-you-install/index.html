@@ -860,6 +860,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -948,6 +954,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -1060,6 +1122,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1385,6 +1475,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1473,6 +1567,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1613,6 +1735,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -2631,9 +2781,14 @@ per-job breakdown and on-demand runs.</p>
 <p>Your organization name and logo appear on the donation form, the receipt email, and the donor
 portal. The install seeds a <strong>placeholder logo</strong> so nothing renders broken on day one — it is
 not your logo.</p>
+<p>The same panel holds the rest of your public-facing identity: the footer line, terms and privacy
+links, and social handles that render in the footer band of every public donation page. They live
+here rather than on a page design because they describe your organization, not a visual style — so
+changing a campaign's style never changes which privacy policy its donors are pointed at. Leave any
+of them blank and the footer simply omits it.</p>
 <div class="fn-steps">
 <figure class="fn-step" data-title="Get Started at 5 of 7"><img src="../../assets/images/gs-60-get-started-5-of-7.png" alt="Get Started panel at 5 of 7 complete" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Five down. The panel names what is left rather than making you compare lists.</figcaption></figure>
-<figure class="fn-step" data-title="Organization &amp; Donations, untouched"><img src="../../assets/images/gs-61-organization-blank.png" alt="Organization &amp; Donations panel with empty identity fields" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Organization &amp; Donations</b>, untouched. This panel holds your identity fields (display name, Tax ID, logo) and your gift rules (minimum and maximum amount, suggested amounts, processing-fee percentage and fixed portion, donation page path, donor portal link expiry, default thank-you button). There is no mailing address field here — receipts take their address from your Salesforce company information.</figcaption></figure>
+<figure class="fn-step" data-title="Organization &amp; Donations, untouched"><img src="../../assets/images/gs-61-organization-blank.png" alt="Organization &amp; Donations panel with empty identity fields" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Organization &amp; Donations</b>, untouched. This panel holds your identity fields (display name, Tax ID, logo, public-page footer text, terms and privacy links, social handles) and your gift rules (minimum and maximum amount, suggested amounts, processing-fee percentage and fixed portion, donation page path, donor portal link expiry, default thank-you button). There is no mailing address field here — receipts take their address from your Salesforce company information.</figcaption></figure>
 <figure class="fn-step" data-title="Display name and Tax ID saved"><img src="../../assets/images/gs-62-organization-saved.png" alt="Organization &amp; Donations panel saved with a display name and Tax ID" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Display name and Tax ID (EIN) saved. The display name is what a donor reads on the form and the receipt — set it before you send anyone a link.</figcaption></figure>
 </div>
 
@@ -2726,12 +2881,12 @@ offers a fix button — Salesforce does not let Apex create a trusted site, so t
 <p class="admonition-title">Your campaigns start with a packaged hero image, not a stock photo</p>
 <p>The package ships its own artwork — a hero backdrop and a social share card, both drawn from
 the brand palette rather than licensed from a stock library — and publishes them into your org
-at install time. Your page designs are stamped with them automatically, so a campaign looks
-finished on day one.</p>
+at install time. Your page designs are stamped with the hero automatically and the share card
+resolves org-wide, so a campaign looks finished on day one.</p>
 <p>They are served from your own org's file domain, which browsers allow without a trusted site,
-so nothing on the list above is needed to see them. Replace either one at any time by uploading
-your own image in <strong>Designs</strong>; an image you have chosen is never overwritten by a package
-upgrade. To paste a URL from an outside host instead — Unsplash, your own CDN — that host needs
+so nothing on the list above is needed to see them. Replace the hero at any time by uploading
+your own image in <strong>Designs</strong>, or the share card in <strong>Organization &amp; Donations</strong>; an image you
+have chosen is never overwritten by a package upgrade. To paste a URL from an outside host instead — Unsplash, your own CDN — that host needs
 a CSP trusted site first, per the table above.</p>
 </div>
 <hr />

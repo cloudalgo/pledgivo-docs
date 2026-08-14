@@ -532,6 +532,12 @@
       
         
       
+        
+      
+        
+      
+        
+      
     
     
     
@@ -620,6 +626,62 @@
     
   
     Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
   
 
     
@@ -732,6 +794,34 @@
     
   
     The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
   
 
     
@@ -1141,6 +1231,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1229,6 +1323,34 @@
     
   
     Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
   
 
     
@@ -1369,6 +1491,34 @@
     
   
     Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
   
 
     
@@ -1745,7 +1895,7 @@
 <p class="fn-dek">The fundraising campaign itself — a customized standard Campaign carrying the public page design, default fund designation, and payment routing for everything raised under it.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>standard</code> · <code>51 fields</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>standard</code> · <code>63 fields</code> · <code>Campaigns &amp; Content</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1803,6 +1953,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 </tr>
 <tr>
 <td>← in</td>
+<td><code>Campaign__c</code> on Campaign Post</td>
+<td><a href="../all-objects/#campaign-post">Campaign Post</a></td>
+<td>Lookup</td>
+</tr>
+<tr>
+<td>← in</td>
 <td><code>Campaign__c</code> on Donation Staging</td>
 <td><a href="../all-objects/#donation-staging">Donation Staging</a></td>
 <td>Lookup</td>
@@ -1818,6 +1974,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Campaign__c</code> on Event Ticket Type</td>
 <td><a href="../all-objects/#event-ticket-type">Event Ticket Type</a></td>
 <td>MasterDetail</td>
+</tr>
+<tr>
+<td>← in</td>
+<td><code>Campaign__c</code> on Guest Request</td>
+<td><a href="../all-objects/#guest-request">Guest Request</a></td>
+<td>Lookup</td>
 </tr>
 <tr>
 <td>← in</td>
@@ -1912,6 +2074,24 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Capacity Mode</td>
 <td>Picklist</td>
 <td>How ticket sales are capped for this event: no limit, per ticket tier, an overall event total, or both.</td>
+</tr>
+<tr>
+<td><code>Column_Ratio_Override__c</code></td>
+<td>Column Ratio Override</td>
+<td>Picklist</td>
+<td>Leave blank unless this one campaign needs a different split from its design — for example a short appeal whose story does not need the wide column.<br><em>Docs: Replaces Form_Layout_Mode_Override__c and Form_Side_Override__c, which were the per-campaign half of the retired layout-mode pair. Blank means "use the design's ratio" — CampaignService reads it through the same campaign-over-design rule every other override on this page uses, so a blank never renders as a missing layout.</em></td>
+</tr>
+<tr>
+<td><code>Contact_Email_Override__c</code></td>
+<td>Contact Email Override</td>
+<td>Email</td>
+<td>Only fill this in if this campaign is handled by someone other than your usual contact. Otherwise leave blank and the org default is used.<br><em>Docs: Named </em>_Override__c to match Form_Title_Override__c and its siblings: the suffix is how the next reader knows a blank means "fall back to the org default", not "this campaign has no contact". Resolved in CampaignService, never read directly by the LWC.*</td>
+</tr>
+<tr>
+<td><code>Contact_Phone_Override__c</code></td>
+<td>Contact Phone Override</td>
+<td>Phone</td>
+<td>Only fill this in if this campaign is handled by someone other than your usual contact. Otherwise leave blank and the org default is used.<br><em>Docs: Named </em>_Override__c to match Form_Title_Override__c and its siblings: the suffix is how the next reader knows a blank means "fall back to the org default", not "this campaign has no contact". Resolved in CampaignService, never read directly by the LWC.*</td>
 </tr>
 <tr>
 <td><code>Custom_Question_Ids__c</code></td>
@@ -2016,6 +2196,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Uncheck to hide the FAQ accordion from the public donation page without losing the saved FAQ selection.</td>
 </tr>
 <tr>
+<td><code>Footer_Text_Override__c</code></td>
+<td>Public Page Footer Text Override</td>
+<td>Text</td>
+<td>Only fill this in if this campaign's pages need a different bottom line from the rest of your site.<br><em>Docs: Named </em>_Override__c to match Contact_Email_Override__c and its siblings: the suffix is how the next reader knows a blank means "use the org-wide value from Setup", not "show nothing". Resolved in CampaignService.resolveIdentity, never read directly by an LWC.*</td>
+</tr>
+<tr>
 <td><code>Form_Description_Override__c</code></td>
 <td>Form Description Override</td>
 <td>LongTextArea</td>
@@ -2032,18 +2218,6 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Form Footer Override</td>
 <td>LongTextArea</td>
 <td>Custom footer text for this campaign's donation form. Leave blank to use the design's default text.</td>
-</tr>
-<tr>
-<td><code>Form_Layout_Mode_Override__c</code></td>
-<td>Form Layout Mode Override</td>
-<td>Picklist</td>
-<td>Custom form layout for this campaign only. Leave as Default to use the design's layout mode.<br><em>Docs: Representative of a shared pattern across all five Form_</em>_Override__c fields on this object (Description, Disclaimer, Footer, LayoutMode, Side, Title): each is a per-campaign escape hatch that wins over the corresponding Campaign_Design__c value when set, and falls back to the design's value (Default / blank) otherwise. Same precedence shape as Thank_You_CTA_URL__c, one level earlier in the chain.*</td>
-</tr>
-<tr>
-<td><code>Form_Side_Override__c</code></td>
-<td>Form Side Override</td>
-<td>Picklist</td>
-<td>Which side the form appears on for this campaign only. Leave as Default to use the design's setting.</td>
 </tr>
 <tr>
 <td><code>Form_Title_Override__c</code></td>
@@ -2082,6 +2256,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Percentage of the goal reached so far. Calculated automatically.<br><em>Docs: The formula intentionally returns the raw fraction (0.5), not 0 to 100 — Percent-type fields render the stored decimal already multiplied by 100, so a formula that also multiplies by 100 would display 50 as 5000%. Do not add a </em>100 term if this formula is ever revised.*</td>
 </tr>
 <tr>
+<td><code>Privacy_URL_Override__c</code></td>
+<td>Privacy URL Override</td>
+<td>Url</td>
+<td>Only fill this in if this campaign publishes a different privacy policy from the rest of your site. Otherwise leave blank.<br><em>Docs: Named </em>_Override__c to match Contact_Email_Override__c and its siblings: the suffix is how the next reader knows a blank means "use the org-wide value from Setup", not "show nothing". Resolved in CampaignService.resolveIdentity, never read directly by an LWC.*</td>
+</tr>
+<tr>
 <td><code>Public_URL__c</code></td>
 <td>Public URL</td>
 <td>Text</td>
@@ -2100,16 +2280,64 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Where to move active recurring gifts once this campaign closes. Leave blank to keep them here indefinitely.<br><em>Docs: The description above states the intended behavior, but as of this writing no batch or service actually re-attributes recurring donations when a campaign closes; CampaignsSelector reads this field but nothing writes Recurring_Donation__c.Campaign__c off of it. Treat it as reserved for a not-yet-built migration job, not as evidence that closing a campaign moves anything automatically.</em></td>
 </tr>
 <tr>
+<td><code>Show_Contact__c</code></td>
+<td>Show Contact</td>
+<td>Checkbox</td>
+<td>Leave on so donors can reach a person before giving. Contact details fall back to the org defaults in Setup when this campaign leaves them blank.<br><em>Docs: The band renders below both columns, full width. It resolves its email and phone through the three-tier fallback Campaign override then Settings__c org default; with the toggle on and both tiers blank the band renders nothing rather than an empty shell.</em></td>
+</tr>
+<tr>
+<td><code>Show_Documents__c</code></td>
+<td>Show Documents</td>
+<td>Checkbox</td>
+<td>Leave on to show donors your supporting files. The tab hides itself when there are no documents to show.<br><em>Docs: Two conditions gate the tab: this flag AND at least one published Campaign_Post__c of type Document. The emptiness check lives in the guest component, not here, so an admin can pre-enable the tab before uploading the first file.</em></td>
+</tr>
+<tr>
+<td><code>Show_Story__c</code></td>
+<td>Show Story</td>
+<td>Checkbox</td>
+<td>Leave on to tell donors why you are asking. Turn off if this campaign needs nothing but a payment form.<br><em>Docs: Defaults to true so a campaign that has a story shows it without an extra click. Read by CampaignService into the guest payload as sections.story; the guest shell also requires non-empty story content, so the toggle can hide a story but never conjure one.</em></td>
+</tr>
+<tr>
+<td><code>Show_Updates__c</code></td>
+<td>Show Updates</td>
+<td>Checkbox</td>
+<td>Leave on to report progress to donors. The tab hides itself when there are no updates to show.<br><em>Docs: Same two-condition gate as Show_Documents__c — this flag AND at least one published Campaign_Post__c of type Update.</em></td>
+</tr>
+<tr>
+<td><code>Social_Facebook_URL_Override__c</code></td>
+<td>Social — Facebook URL Override</td>
+<td>Url</td>
+<td>Only fill this in if this campaign has its own Facebook page. Otherwise leave blank and your organization's page is shown.<br><em>Docs: Named </em>_Override__c to match Contact_Email_Override__c and its siblings: the suffix is how the next reader knows a blank means "use the org-wide value from Setup", not "show nothing". Resolved in CampaignService.resolveIdentity, never read directly by an LWC.*</td>
+</tr>
+<tr>
+<td><code>Social_Instagram_URL_Override__c</code></td>
+<td>Social — Instagram URL Override</td>
+<td>Url</td>
+<td>Only fill this in if this campaign has its own Instagram account. Otherwise leave blank and your organization's account is shown.<br><em>Docs: Named </em>_Override__c to match Contact_Email_Override__c and its siblings: the suffix is how the next reader knows a blank means "use the org-wide value from Setup", not "show nothing". Resolved in CampaignService.resolveIdentity, never read directly by an LWC.*</td>
+</tr>
+<tr>
+<td><code>Social_Share_Image_URL_Override__c</code></td>
+<td>Social Share Image URL Override</td>
+<td>Url</td>
+<td>Only fill this in if you want a different picture to appear when this campaign's page is shared on social media. Best at 1200x630 pixels.<br><em>Docs: Named </em>_Override__c to match Contact_Email_Override__c and its siblings: the suffix is how the next reader knows a blank means "use the org-wide value from Setup", not "show nothing". Resolved in CampaignService.resolveIdentity, never read directly by an LWC.*</td>
+</tr>
+<tr>
 <td><code>Social_Share_Text__c</code></td>
 <td>Social Share Text</td>
 <td>LongTextArea</td>
 <td>Suggested caption pre-filled when someone shares this campaign on social media.</td>
 </tr>
 <tr>
+<td><code>Social_Twitter_URL_Override__c</code></td>
+<td>Social — X (Twitter) URL Override</td>
+<td>Url</td>
+<td>Only fill this in if this campaign has its own X (Twitter) account. Otherwise leave blank and your organization's account is shown.<br><em>Docs: Named </em>_Override__c to match Contact_Email_Override__c and its siblings: the suffix is how the next reader knows a blank means "use the org-wide value from Setup", not "show nothing". Resolved in CampaignService.resolveIdentity, never read directly by an LWC.*</td>
+</tr>
+<tr>
 <td><code>Story__c</code></td>
 <td>Story</td>
 <td>LongTextArea</td>
-<td>Tell donors why this campaign matters. Shown as the main story on the public page.</td>
+<td>Tell donors why this campaign matters. Shown as the main story on the public page. Leave a blank line between paragraphs, and start a paragraph with "&gt;" to pull it out as a highlighted quote. Long stories are folded behind a Read the full story link.</td>
 </tr>
 <tr>
 <td><code>Suggested_Amounts__c</code></td>
@@ -2122,6 +2350,12 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td>Tagline</td>
 <td>Text</td>
 <td>A short phrase shown below the campaign title on the public page.</td>
+</tr>
+<tr>
+<td><code>Terms_URL_Override__c</code></td>
+<td>Terms URL Override</td>
+<td>Url</td>
+<td>Only fill this in if this campaign is governed by different terms from the rest of your site — a sponsored appeal with its own conditions, for example.<br><em>Docs: Named </em>_Override__c to match Contact_Email_Override__c and its siblings: the suffix is how the next reader knows a blank means "use the org-wide value from Setup", not "show nothing". Resolved in CampaignService.resolveIdentity, never read directly by an LWC.*</td>
 </tr>
 <tr>
 <td><code>Thank_You_CTA_Label__c</code></td>

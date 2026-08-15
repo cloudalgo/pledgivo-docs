@@ -14130,7 +14130,9 @@
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>extends fflib_SObjectSelector · implements <a href="#apex-icampaigndesignsselector">ICampaignDesignsSelector</a></p>
 <p><strong>Docs note.</strong> The user-mode methods (selectAll/selectById/selectDefault) and the SYSTEM_MODE guest methods below look alike but exist for genuinely different callers — the setup console's page-design editor uses the former, the public donation experience shell uses the latter. The SystemModeQuery inner class exists because Campaign_Design__c has a Private OWD and the guest user has no sharing access to it: AccessLevel.SYSTEM_MODE lifts CRUD/FLS but NOT sharing, so a plain <code>with sharing</code> SYSTEM_MODE query still returned zero rows for guests until this <code>without sharing</code> wrapper was added.</p>
-<p>Every row flagged default, deliberately WITHOUT the LIMIT 1 that selectDefault() carries — its caller (the CampaignDesigns domain) exists precisely to clean up the case where more than one row holds the flag, so a capped query would hide the very rows it has to demote.</p>
+<p>Every row flagged default, for the CampaignDesigns domain. Deliberately WITHOUT the LIMIT 1 that selectDefault() above carries — the domain exists precisely to clean up the case where more than one row holds the flag, so a capped query would hide the very rows it must demote.</p>
+<p>SYSTEM_MODE, and there is no USER_MODE twin on purpose: the USER_MODE version this replaced was a landmine with no safe caller. A trigger runs as whoever performed the DML, and that writer is not always someone who can SEE this object's fields — the post-install script is the case that proved it. Its system user holds object-level CRUD on Campaign_Design__c but no field-level access, and a USER_MODE query reports a field the running user cannot see as one that does not exist: "No such column 'Accent_Color__c' on entity 'Campaign_Design__c'". That threw inside onAfterInsert, rolled back PostInstallHandler.seedDefaultPageDesign's whole upsert, and shipped 1.0.0-15 subscriber orgs with ZERO page designs — every public page but the donation page paints from the org-default record, so the site came up unthemed.</p>
+<p>SYSTEM_MODE is safe here in a way it would not be on a caller-facing read: these rows are never returned to anyone. The domain reads Ids solely to write Is_Default__c = false on them, so there is no field to leak and no id to confuse — the IDOR concern that governs the SYSTEM_MODE rule elsewhere in this package has no counterpart here.</p>
 <table>
 <thead>
 <tr>
@@ -14166,12 +14168,12 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-campaigndesignsselector-selectdefaults"></a><code>selectDefaults(0 args)</code></td>
+<td><a id="apex-campaigndesignsselector-selectbyidsystemmode"></a><code>selectByIdSystemMode(1 arg)</code></td>
 <td><code>List&lt;Campaign_Design__c&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-campaigndesignsselector-selectbyidsystemmode"></a><code>selectByIdSystemMode(1 arg)</code></td>
+<td><a id="apex-campaigndesignsselector-selectdefaultssystemmode"></a><code>selectDefaultsSystemMode(0 args)</code></td>
 <td><code>List&lt;Campaign_Design__c&gt;</code></td>
 <td></td>
 </tr>

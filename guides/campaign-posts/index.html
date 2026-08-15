@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Fill the Documents and Updates tabs on a public page — write a progress update, publish a file donors can download, and control the order they appear in.">
+        <meta name="description" content="Use the Updates and Documents panels to write a progress update, publish a file donors can download, control the order they appear in, and switch either section off.">
       
       
       
@@ -1323,10 +1323,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#before-you-start" class="md-nav__link">
+  <a href="#where-the-panels-are" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Before you start
+        Where the panels are
       
     </span>
   </a>
@@ -1373,6 +1373,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#showing-and-hiding-the-whole-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Showing and hiding the whole section
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#where-they-show-up" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1395,10 +1406,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#unpublishing" class="md-nav__link">
+  <a href="#unpublishing-and-deleting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unpublishing
+        Unpublishing and deleting
       
     </span>
   </a>
@@ -1901,10 +1912,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#before-you-start" class="md-nav__link">
+  <a href="#where-the-panels-are" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Before you start
+        Where the panels are
       
     </span>
   </a>
@@ -1951,6 +1962,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#showing-and-hiding-the-whole-section" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Showing and hiding the whole section
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#where-they-show-up" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1973,10 +1995,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#unpublishing" class="md-nav__link">
+  <a href="#unpublishing-and-deleting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unpublishing
+        Unpublishing and deleting
       
     </span>
   </a>
@@ -2014,79 +2036,93 @@
 <p class="fn-eyebrow">Guides</p>
 
 <h1 id="post-campaign-updates-and-documents">Post campaign updates and documents<a class="headerlink" href="#post-campaign-updates-and-documents" title="Permanent link">#</a></h1>
-<p class="fn-dek">Updates and documents are the same record with a different Type. Both live on the campaign, both appear in the tabbed well on its public page, and both stay invisible until you say otherwise.</p>
+<p class="fn-dek">Two panels, two jobs. **Updates** is where you write plain-text progress posts. **Documents** is where you publish files donors download. They are independent — a campaign can carry documents with no updates, or the other way round — and each one owns the switch that shows or hides its own tab on the public page.</p>
 
-<h2 id="before-you-start">Before you start<a class="headerlink" href="#before-you-start" title="Permanent link">#</a></h2>
-<p>Posts are created from the <strong>Campaign Posts</strong> related list on a fundraising campaign. If you do not
-see it, the campaign is on the stock Salesforce layout rather than the one this package ships.</p>
-<div class="admonition note">
-<p class="admonition-title">Assign the Fundraising Campaign layout</p>
-<p>Go to <strong>Setup → Object Manager → Campaign → Page Layouts → Page Layout Assignment</strong>, and set
-the <strong>Fundraising Campaign Layout</strong> for the record type your fundraising campaigns use. This is
-a one-time step per org — the same one the <a href="../../concepts/donors-accounts/">donor layouts</a> need,
-and for the same reason: a package cannot assign layouts to your profiles on your behalf.</p>
-</div>
+<h2 id="where-the-panels-are">Where the panels are<a class="headerlink" href="#where-the-panels-are" title="Permanent link">#</a></h2>
+<p>Both panels appear in two places, and they are the same editor either way — whatever you do in one
+shows up in the other:</p>
+<ul>
+<li><strong>On the campaign record</strong> — open a fundraising campaign and go to the <strong>Updates &amp; Documents</strong> tab.</li>
+<li><strong>In the Fundraisers console</strong> — open a campaign's detail drawer and use the <strong>Updates</strong> and
+  <strong>Documents</strong> quick links to jump to them.</li>
+</ul>
+<p>Everything below can be done from either place. You never need the campaign's Related tab, and you
+never pick a "type" — the panel you are in decides that for you.</p>
 <h2 id="write-an-update">Write an update<a class="headerlink" href="#write-an-update" title="Permanent link">#</a></h2>
 <ol>
-<li>Open the campaign, go to <strong>Related</strong>, and click <strong>New</strong> on <strong>Campaign Posts</strong>.</li>
-<li>Leave <strong>Type</strong> on <em>Update</em>.</li>
+<li>Click <strong>＋ Add update</strong>.</li>
 <li>Give it a <strong>Title</strong>. It is the headline a donor reads in the timeline, so make it specific —
    "Trail restoration begins on the eastern ridge", not "Update 3".</li>
-<li>Write the <strong>Body</strong>. Plain text, as long as you like.</li>
-<li>Set the <strong>Posted Date</strong> to the date the thing happened, not the date you wrote it up. Donors see
-   this date and a timeline that jumps around reads as if it were backfilled.</li>
-<li>Tick <strong>Is Published</strong> and save.</li>
+<li>Write the <strong>Update</strong> body. It is plain text: line breaks are kept, formatting is not. Write as
+   much as you like.</li>
+<li>Set the <strong>Date</strong> to the date the thing happened, not the date you wrote it up. Donors see this
+   date, and a timeline that jumps around reads as if it were backfilled.</li>
+<li>Leave <strong>Published</strong> off if you want to come back to it, or switch it on to go live.</li>
+<li><strong>Save</strong>.</li>
 </ol>
-<p><strong>Post Name</strong> fills itself in (<code>POST-00001</code> and up) — it is a filing reference, not something a
-donor ever sees.</p>
-<p>Nothing appears on the public page until <strong>Is Published</strong> is ticked. That is the drafting mechanism:
-write it, leave it unticked, come back to it.</p>
+<p>Every row in the list carries its own <strong>Publish</strong> / <strong>Unpublish</strong> button, a pencil to edit, and — if
+your permission set allows deleting posts — a cross to remove one. Drafts stay in the list with a
+<em>Draft</em> tag so a half-written update is never lost from view.</p>
 <h2 id="publish-a-document">Publish a document<a class="headerlink" href="#publish-a-document" title="Permanent link">#</a></h2>
-<p>A document post is the same record with two extra moves: set the Type, then attach the file.</p>
+<p>A document is created in two steps, because a file needs a record to attach to before it can be
+uploaded.</p>
 <ol>
-<li><strong>New</strong> on <strong>Campaign Posts</strong>, set <strong>Type</strong> to <em>Document</em>.</li>
+<li>Click <strong>＋ Add document</strong>.</li>
 <li><strong>Title</strong> it the way a donor would ask for it — "2025 audited accounts", "Where your $50 goes".
    The title is the only label on the download card.</li>
-<li>Leave <strong>Body</strong> blank. It is not rendered on a document.</li>
-<li>Save.</li>
-<li>On the post's own record page, use the <strong>Files</strong> related list to upload the file.</li>
-<li>Tick <strong>Is Published</strong>.</li>
+<li>Set the <strong>Date</strong> and, if you want it pinned, the <strong>Order</strong>. Then <strong>Save</strong> — the document is saved
+   as a draft.</li>
+<li>The panel moves straight on to the upload step. Drop the file in, or browse for it. PDF, Office,
+   CSV, text and image files are accepted.</li>
+<li>Click <strong>Done</strong>, then <strong>Publish</strong> on the row.</li>
 </ol>
-<p>The file has to be attached to the <em>post</em>, not to the campaign. A file on the campaign has no post
-to render it.</p>
+<p>Until a file is attached, the row shows a <strong>No file</strong> tag and its <strong>Publish</strong> button stays disabled.
+That is deliberate: the public download card is a link wrapped around the file, so publishing one
+with nothing behind it would put a card on your page that looks live and does nothing.</p>
+<p>To replace a file later, use <strong>Replace file</strong> on the row and upload a new one. The old file is
+deleted with it, and its download link stops working — the row and the public card only ever show
+one file, so a superseded file left behind would be invisible to you while its link went on serving
+the wrong document to anyone who kept it.</p>
 <h3 id="how-a-file-becomes-a-public-link">How a file becomes a public link<a class="headerlink" href="#how-a-file-becomes-a-public-link" title="Permanent link">#</a></h3>
 <p>Attaching the file is the whole of it. Behind the scenes, the package mints a public download link
-for the file and stores it on the post, together with the file's type and size — that is what fills
-in the read-only <strong>File URL</strong>, <strong>File Type</strong> and <strong>File Size</strong> fields you can see on the record.</p>
+for the file and stores it on the post, together with the file's type and size — that is what the
+row's file tag and size read back, and what the public card uses.</p>
 <p>It has to work this way round because a website visitor has no permission to read a Salesforce file
 at all. The link is resolved once, by you, and the public page just plays back what was stored.</p>
-<div class="admonition tip">
-<p class="admonition-title">If File URL is ever blank on a published document</p>
-<p>Save the post again. The stamp reruns on every save, so a re-save repairs a post whose file was
-attached in an unusual order or replaced later. Do not type a URL in by hand — the next save
-overwrites it.</p>
-</div>
-<p>The download link is permanent and public: anyone with the URL can open the file, whether or not
+<p>Use <strong>Open the file donors download</strong> on any row to check the exact link a donor gets.</p>
+<div class="admonition warning">
+<p class="admonition-title">A published file is public to anyone with the URL</p>
+<p>The download link is permanent and public: anyone holding it can open the file, whether or not
 the post is published and whether or not they came from your page. Treat "attach it here" as
-"publish it to the internet", and keep anything you would not hand to a stranger out of a document
-post.</p>
+"publish it to the internet", and keep anything you would not hand to a stranger out of a
+document post.</p>
+</div>
+<h2 id="showing-and-hiding-the-whole-section">Showing and hiding the whole section<a class="headerlink" href="#showing-and-hiding-the-whole-section" title="Permanent link">#</a></h2>
+<p>Each panel has a <strong>Show updates on the public page</strong> / <strong>Show documents on the public page</strong> switch
+at the top. It is the same per-campaign toggle described in
+<a href="../../concepts/page-sections/">Sections and the contact band</a>, surfaced where you are working so you
+do not have to go looking for it on the campaign's fields.</p>
+<p>Turn it off and the tab disappears from the public page even if there are published posts behind it.
+Publishing a post while the switch is off puts it nowhere — the panel's caption says so rather than
+leaving you to find out.</p>
 <h2 id="where-they-show-up">Where they show up<a class="headerlink" href="#where-they-show-up" title="Permanent link">#</a></h2>
 <p>Both types land in the tabbed well under the story on the campaign's public page — documents in
-<strong>Documents</strong>, updates in <strong>Updates</strong>. The tabs only render when there is something published behind
-them, and each tab carries its own count. See
-<a href="../../concepts/page-sections/">Sections and the contact band</a> for the full rule, including the
-per-campaign toggles that can switch either tab off.</p>
+<strong>Documents</strong>, updates in <strong>Updates</strong>. A tab renders only when it is switched on <em>and</em> has something
+published behind it, and each tab carries its own count.</p>
 <h2 id="controlling-the-order">Controlling the order<a class="headerlink" href="#controlling-the-order" title="Permanent link">#</a></h2>
-<p>Within a tab, posts are ordered by <strong>Sort Order</strong> first and then by <strong>Posted Date</strong>, newest first.</p>
-<p>Leave <strong>Sort Order</strong> blank and you get pure date ordering, which is what you want almost always — a
-blank sorts <em>after</em> every numbered post, so an unordered timeline is never pushed below a single
-pinned item.</p>
+<p>Within a tab, posts are ordered by <strong>Order</strong> first and then by <strong>Date</strong>, newest first.</p>
+<p>Leave <strong>Order</strong> blank and you get pure date ordering, which is what you want almost always — a blank
+sorts <em>after</em> every numbered post, so an unordered timeline is never pushed below a single pinned
+item.</p>
 <p>Fill it in only to pin something to the top: give that one post a low number (<code>1</code>) and leave the rest
 blank. The annual report that should sit above the newsletters, the venue map that should be the
 first thing a ticket-holder sees.</p>
-<h2 id="unpublishing">Unpublishing<a class="headerlink" href="#unpublishing" title="Permanent link">#</a></h2>
-<p>Untick <strong>Is Published</strong> and save. The post drops out of the tab immediately, and if it was the last
-one there, the tab goes with it. Nothing is deleted, so you can put it back the same way.</p>
+<h2 id="unpublishing-and-deleting">Unpublishing and deleting<a class="headerlink" href="#unpublishing-and-deleting" title="Permanent link">#</a></h2>
+<p><strong>Unpublish</strong> drops a post out of its tab immediately, and if it was the last one there, the tab goes
+with it. Nothing is deleted, so you can put it back with <strong>Publish</strong>.</p>
+<p><strong>Delete</strong> is permanent, and asks first. Deleting a document deletes its attached file too, and the
+public download link stops working — which is the point: a file left behind would go on serving
+itself to anyone who kept the URL.</p>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../../concepts/page-sections/">Sections and the contact band</a> — which sections a campaign renders.</li>

@@ -1671,6 +1671,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-campaignpostcontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignPostController
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-campaignquestioncontroller" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4998,6 +5009,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-campaignpostcontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignPostController
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-campaignquestioncontroller" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8038,7 +8060,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 202 classes plus 138 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 203 classes plus 139 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -8176,6 +8198,49 @@
 </tr>
 <tr>
 <td><a id="apex-campaignfaqcontroller-savecampaignfaqs"></a><code>saveCampaignFaqs(3 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="apex-campaignpostcontroller">CampaignPostController<a class="headerlink" href="#apex-campaignpostcontroller" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p>CampaignPostController — admin API behind the two campaign authoring panels: admCampaignUpdatesTab (text updates) and admCampaignDocumentsTab (downloadable files). Reads via CampaignPostsSelector; all DML runs through CampaignPostService and the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via ControllerAction.run().</p>
+<p><strong>Docs note.</strong> One controller serves two panels because one object (Campaign_Post__c) backs both — see that object's header for why. Every method therefore takes a postType and passes it straight through to the service, which scopes the query and the Campaign visibility toggle by it. The panels stay independent: neither can read, edit or delete the other's rows, and neither ever sends a type the admin chose — each panel hardcodes its own.</p>
+<p>No read here is cacheable=true. Both panels are editors that reload their own list straight after every save, and a cached read hands back the pre-save list until the page is reloaded.</p>
+<p>The panel hides its delete buttons when this is false rather than letting the admin press one and read a permission error. Fundraising_User ships with allowDelete=false on Campaign_Post__c, so this is the common case, not an edge.</p>
+<p>The campaign and the type both come from the STORED row, never from the client. Trusting the posted campaignId would let a caller pair a campaign they can see with a post Id belonging to one they cannot and edit it anyway; trusting the posted type would let the Updates panel retype a document row (and so publish a document card with no file behind it, past the service's guard) or hide a row from the panel that owns it.</p>
+<p>fflib's Unit of Work commits at SYSTEM_MODE, so nothing downstream re-checks delete permission — without this the service would delete for any user who can reach the class. See ControllerAction.requireDeletable.</p>
+<p>Campaign_Post__c is a Lookup child with an org-wide default of Public Read/Write, so its own sharing refuses nobody and a campaignId arriving from an LWC is unvetted. The record it belongs to is the thing worth protecting, so every action asks the same question the fundraisers console asks: can the running user see the parent Campaign? Same shape as EventTicketAdminController.requireCampaignVisible, and for the same reason the message is caller-supplied — a distinct "no access" reply would confirm the record exists.</p>
+<p>Rejecting an unknown type in doValidate, rather than letting it fall through to the service's "anything that is not a Document is an Update" default, keeps a typo in a future panel from silently listing and writing Update rows while the developer believes they are working on a third type. Returns the message rather than calling addError itself because addError is protected on ControllerAction — only the inner action classes can reach it.</p>
+<p>Campaign__c and Type__c are deliberately absent — both are set once, at insert, by the caller above. A post never moves campaign and never changes type; letting either arrive through the form is the whole attack surface this controller is guarding.</p>
+<p>What the Documents panel keys its "attach a file" prompt and its publish toggle off. File_URL__c and not the presence of a ContentDocumentLink, because the URL is the only thing the public card can actually use — a file that is attached but has no stored URL would still render a dead card.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-campaignpostcontroller-getposts"></a><code>getPosts(2 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostcontroller-savepost"></a><code>savePost(2 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostcontroller-deletepost"></a><code>deletePost(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostcontroller-setvisibility"></a><code>setVisibility(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
@@ -8444,6 +8509,8 @@
 <p>Reads Campaign_Post__c rows for the fundraisers console (user mode) and the public donation/event page (system mode). FFLib role: Selector.</p>
 <p><strong>Docs note.</strong> The guest method mirrors CampaignDesignsSelector.selectByIdSystemMode — AccessLevel SYSTEM_MODE lifts CRUD and FLS but NOT sharing, so the without-sharing inner class below is what actually lets an unauthenticated visitor read a published post. The user-mode method deliberately does not filter on Is_Published__c: an admin editing a campaign needs to see drafts, and a guest must never see them.</p>
 <p>The three file fields are read here rather than resolved from Salesforce Files at render time, because a site guest cannot query a file at all — ContentDocumentLink, ContentVersion and ContentDistribution are gated by the Query All Files permission, which a Guest licence cannot hold. CampaignPostService stamps them as an internal user; this query is the only thing the public document card needs.</p>
+<p>The read behind admCampaignUpdatesTab and admCampaignDocumentsTab. Drafts are included on purpose — an admin has to see what is not yet live — and the Type__c filter is what keeps the two panels independent of each other even though one object backs both. User mode, unlike the guest method below: an internal editor must obey the running user's sharing and FLS, and CampaignPostController has already checked that they can see the parent Campaign.</p>
+<p>Used by the save and delete paths to re-read a post the client named, so the controller can gate on its parent Campaign and read back the stored File_URL__c before allowing a document to be published.</p>
 <p>Sort_Order__c leads with NULLS LAST so a blank value falls through to pure date ordering rather than pinning every unordered post above the ordered ones.</p>
 <table>
 <thead>
@@ -8471,6 +8538,16 @@
 </tr>
 <tr>
 <td><a id="apex-campaignpostsselector-selectbycampaignids"></a><code>selectByCampaignIds(1 arg)</code></td>
+<td><code>List&lt;Campaign_Post__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostsselector-selectbycampaignidandtype"></a><code>selectByCampaignIdAndType(2 args)</code></td>
+<td><code>List&lt;Campaign_Post__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostsselector-selectbyid"></a><code>selectById(1 arg)</code></td>
 <td><code>List&lt;Campaign_Post__c&gt;</code></td>
 <td></td>
 </tr>
@@ -8667,6 +8744,7 @@
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectSelector</p>
 <p>Selector contract for Campaign_Post__c — the documents and updates shown on a public page. FFLib role: Selector. All Campaign_Post__c SOQL lives behind this interface.</p>
+<p><strong>Docs note.</strong> The admin editors' read. Drafts included and one Type__c only, because Updates and Documents are two separate panels that must not see each other's rows.</p>
 <h4 id="apex-icampaignsselector">ICampaignsSelector<a class="headerlink" href="#apex-icampaignsselector" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectSelector</p>
@@ -8795,14 +8873,21 @@
 <p><code>class</code> · <code>public with sharing</code></p>
 <p>implements <a href="#apex-icampaignpostservice">ICampaignPostService</a></p>
 <p>Turns published Campaign_Post__c rows into the two lists the public page renders: a document shelf and an update timeline. Also keeps each Document post's stored file details in step with the file attached to it. FFLib role: Service. Deliberate FFLib exception: ContentDocumentLink, ContentVersion and ContentDistribution are read with inline SOQL and ContentDistribution is inserted directly rather than through a selector and Unit of Work. These are platform file objects with no package selector, and DistributionPublicUrl is populated by the platform only after commit — a UoW-deferred insert could not return the URL in the same transaction, which is the whole point of the call.</p>
-<p><strong>Docs note.</strong> Set while stampFromVersions saves its own results. That save fires the Campaign_Post__c before-update trigger, which calls applyFileDetails and would re-resolve from ContentDocumentLink — and inside a ContentVersion after-insert trigger the link row for a just-attached file is not queryable yet, so the second pass would find nothing and clear the values the first one had just worked out. The flag makes the write authoritative.</p>
+<p><strong>Docs note.</strong> The two Type__c values, public so CampaignPostController can validate the type its panels send without a second copy of the strings. They are a discriminator, not a user choice — the admin never picks one, because each authoring panel owns exactly one type and passes it on the admin's behalf. Anything that is not a Document is read as an Update, so a row carrying an unexpected value still renders as text rather than as a document card with no file behind it.</p>
+<p>Set while stampFromVersions saves its own results. That save fires the Campaign_Post__c before-update trigger, which calls applyFileDetails and would re-resolve from ContentDocumentLink — and inside a ContentVersion after-insert trigger the link row for a just-attached file is not queryable yet, so the second pass would find nothing and clear the values the first one had just worked out. The flag makes the write authoritative.</p>
 <p>No file object is touched here. A site guest cannot query ContentDocumentLink, ContentVersion or ContentDistribution at all — that access is gated by the Query All Files permission, which a Guest licence cannot hold and which a fundraising app has no business asking for. Resolving the download link while the public page rendered therefore returned nothing, and every document rendered as an untyped, unsized, unclickable card. The details are resolved once by an internal user and stored on the post instead; this read just plays them back.</p>
+<p>This block serves the two internal authoring panels; the rest of the class serves the public page. They meet only at the record. The panels are independent by design — an update is text and a document is a file, and neither needs the other — so every method here is scoped by postType and no admin path ever sees both types at once.</p>
+<p>A Document is created first and its file attached afterwards, because lightning-file-upload needs a record to attach to. That ordering is the reason for the publish guard: between those two steps the row is a document with no file, and publishing it would put a card on the public page whose href is null — pfSectionTabs renders &lt;a href={doc.url}&gt;, so the donor gets a card that looks live and does nothing. The stored File_URL__c is the only signal available here, and it is the right one: it is what the public page actually reads, so if it is blank the card would be dead whatever the file situation looks like elsewhere.</p>
+<p>The file is read BEFORE the post is deleted and deleted AFTER, because the platform cascades ContentDocumentLink away with the record — asking afterwards finds nothing and the file survives as an orphan with a live public URL. Deleting the ContentDocument (not the link) is deliberate: the link alone would leave the ContentDistribution serving the file to anyone who kept the URL.</p>
+<p>SYSTEM_MODE because deleting the file is cleanup the app owes the record, not an action the admin asked for in its own right — they deleted a post. The caller has already checked they may delete Campaign_Post__c (ControllerAction.requireDeletable).</p>
 <p>Assigns rather than saves, because the caller is a before-update trigger and a before trigger must not run DML on its own records. A Document post with nothing attached any more has its three fields cleared, which is what makes "save the record again" the repair action the field help tells the admin to use.</p>
 <p>FirstPublishLocationId is the record the file was attached to, and for a brand-new file it is the only link available here — the ContentDocumentLink row the platform writes alongside the version is not queryable from this trigger yet. A new version of a file that is ALREADY attached carries no FirstPublishLocationId, and for those the link does exist by now, so the two lookups together cover both ways a file can arrive.</p>
 <p>A version that names where it was first published has already answered the question, so a file attached to anything else costs one type check and no query — which matters, because this trigger sees every file uploaded in the org.</p>
 <p>FileExtension is derived by the platform during the save, so it is still null on the trigger's own copy of the record and a post stamped straight from Trigger.new came out with no file type at all. Re-reading is the fix, and it happens only for the versions that survived the filter above — an unrelated file upload still costs no query.</p>
+<p>Attaching a file to a post that already has one is a REPLACEMENT, not a second attachment — the row renders a single download card and File_URL__c holds a single link, so the superseded file becomes invisible to every screen the app has while its ContentDistribution goes on serving it to anyone holding the URL. That is the same orphan deletePost exists to prevent, and it matters more here: "Replace file" is what an admin reaches for after uploading the wrong document, so leaving the old one live defeats the one repair the UI offers. Runs after the stamp commit so the post already points at the survivor, and keeps by ContentDocumentId rather than by what the link query returns — the link row for a just-attached file is not queryable yet on the FirstPublishLocationId path.</p>
+<p>SYSTEM_MODE for the same reason as deletePost — revoking the file the admin just replaced is cleanup the record owes itself, not a delete they asked for by name.</p>
 <p>ContentDistribution is queried before it is created. A distribution is per ContentVersion and permanent, so minting one on every save would leak a fresh public URL each time an admin touched the record and eventually hit the daily DML ceiling.</p>
-<p>Formatting lives here rather than in the stored value so there is one rounding rule in one place, and so File_Size__c stays a plain byte count that nothing downstream has to reparse.</p>
+<p>Formatting lives here rather than in the stored value so there is one rounding rule in one place, and so File_Size__c stays a plain byte count that nothing downstream has to reparse. Static and public because CampaignPostController renders the same label in the Documents editor — an admin comparing the console against the live page should not be reading two different roundings of the same file. It is not on ICampaignPostService: a pure formatter has no behaviour worth mocking, and putting it on the interface would force every test double to stub it.</p>
 <table>
 <thead>
 <tr>
@@ -8828,6 +8913,31 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-campaignpostservice-getadminposts"></a><code>getAdminPosts(2 args)</code></td>
+<td><code>List&lt;Campaign_Post__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-campaignpostsselector-newinstance">CampaignPostsSelector.newInstance()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostservice-savepost"></a><code>savePost(1 arg)</code></td>
+<td><code>Campaign_Post__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostservice-deletepost"></a><code>deletePost(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostservice-setvisibility"></a><code>setVisibility(3 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-campaignpostservice-applyfiledetails"></a><code>applyFileDetails(1 arg)</code></td>
 <td><code>void</code></td>
 <td></td>
@@ -8835,6 +8945,11 @@
 <tr>
 <td><a id="apex-campaignpostservice-stampfromversions"></a><code>stampFromVersions(1 arg)</code></td>
 <td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostservice-filesizelabel"></a><code>fileSizeLabel(1 arg)</code></td>
+<td><code>String</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -9012,7 +9127,11 @@
 <h4 id="apex-icampaignpostservice">ICampaignPostService<a class="headerlink" href="#apex-icampaignpostservice" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <p>Service contract for turning published Campaign_Post__c rows into the public page's document shelf and update timeline, and for keeping each Document post's stored file details in step with the file actually attached to it. FFLib role: Service interface.</p>
-<p><strong>Docs note.</strong> Fills File_URL__c/File_Type__c/File_Size__c on the records handed in, in memory, and clears them when nothing is attached any more. Called from CampaignPosts.onBeforeUpdate, which is why it assigns rather than saves — a before trigger must not update its own records.</p>
+<p><strong>Docs note.</strong> The three admin methods below back CampaignPostController, which is what the Updates and Documents editors call. They take a postType because one object serves both panels and neither may see the other's rows — see the object's own header for why it is one object.</p>
+<p>Upsert. Refuses to publish a Document that has no stored File_URL__c, because the public document card is an anchor around that URL and renders as an unclickable dead card without it.</p>
+<p>Deletes the post AND the file attached to it. Leaving the file behind would leave its ContentDistribution public URL live after the record that offered it is gone.</p>
+<p>Writes the one Campaign toggle that owns this post type's public tab (Show_Updates__c / Show_Documents__c), so each editor can own its own tab's visibility without sending the admin to the campaign's field layout.</p>
+<p>Fills File_URL__c/File_Type__c/File_Size__c on the records handed in, in memory, and clears them when nothing is attached any more. Called from CampaignPosts.onBeforeUpdate, which is why it assigns rather than saves — a before trigger must not update its own records.</p>
 <p>The attach-after-save path. Called from the ContentVersion trigger with the versions just inserted; resolves which Campaign_Post__c rows they belong to and saves the file details onto them.</p>
 <h4 id="apex-icampaignservice">ICampaignService<a class="headerlink" href="#apex-icampaignservice" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>

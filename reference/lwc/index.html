@@ -1720,6 +1720,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#lexcampaigndocuments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Documents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexcampaignfaqs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1746,6 +1757,17 @@
     <span class="md-ellipsis">
       
         Campaign Custom Questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexcampaignupdates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Updates
       
     </span>
   </a>
@@ -2034,10 +2056,32 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#admcampaigndocumentstab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Documents Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#admcampaignfaqtab" class="md-nav__link">
     <span class="md-ellipsis">
       
         Campaign FAQ Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admcampaignupdatestab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Updates Tab
       
     </span>
   </a>
@@ -2890,6 +2934,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#lexcampaigndocuments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Documents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexcampaignfaqs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2916,6 +2971,17 @@
     <span class="md-ellipsis">
       
         Campaign Custom Questions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lexcampaignupdates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Updates
       
     </span>
   </a>
@@ -3204,10 +3270,32 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#admcampaigndocumentstab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Documents Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#admcampaignfaqtab" class="md-nav__link">
     <span class="md-ellipsis">
       
         Campaign FAQ Tab
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admcampaignupdatestab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Updates Tab
       
     </span>
   </a>
@@ -3780,7 +3868,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 78 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 82 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3899,6 +3987,13 @@
 <p>This page is the whole route, not a block on one, so the Experience Builder section wrapping it must give up its padding — otherwise the paper ground and the footer band both stop 16px short of the glass and the page reads as a card floating on white. The trust bar's 100vw bleed needs the same treatment (the section clips it).</p>
 <p><strong><code>@api</code> properties:</strong> <code>accessToken</code>, <code>receiptToken</code></p>
 <h2 id="lex-internal-lightning-experience">Lex (internal Lightning Experience)<a class="headerlink" href="#lex-internal-lightning-experience" title="Permanent link">#</a></h2>
+<h4 id="lexcampaigndocuments">Campaign Documents<a class="headerlink" href="#lexcampaigndocuments" title="Permanent link">#</a></h4>
+<p><code>lexCampaignDocuments</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Campaign record page component for publishing the files donors download from this campaign's public page — annual reports, budgets, impact statements — and for switching that section on or off.</p>
+<p><strong>Docs note.</strong> Thin exposure shim around the non-exposed admCampaignDocumentsTab bundle, which the Fundraisers console drawer also mounts. Both entry points read and write Campaign_Post__c rows of type Document through CampaignPostController, plus the Campaign.Show_Documents__c toggle that governs the public section. A document row is saved first and the file attached second, because the upload needs a record Id to hang the file on; publishing is blocked until a file exists, so donors never meet a card that downloads nothing.</p>
+<p>Campaign record-page shim for the admCampaignDocumentsTab editor, which the admFundraiserDetail drawer also mounts. There is no subtype gate — any fundraiser may publish downloadable files — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure. Its twin is lexCampaignUpdates. The two are deliberately separate: a document is a file and an update is text, neither depends on the other, and an admin who only publishes files should not have to scroll past a writing panel to reach the upload button.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexcampaignfaqs">Campaign FAQs<a class="headerlink" href="#lexcampaignfaqs" title="Permanent link">#</a></h4>
 <p><code>lexCampaignFaqs</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
@@ -3918,6 +4013,13 @@
 <p>Campaign record page component for choosing which extra questions the donation form asks on this campaign, and whether they are switched on. Answers are stored against each donation so staff can report on them afterwards.</p>
 <p><strong>Docs note.</strong> Thin exposure shim around the non-exposed admCustomQuestionsTab bundle, which the Fundraisers console drawer also mounts. Both entry points read and write the same Campaign.Custom_Question_Ids__c / Custom_Questions_Active__c pair through CampaignQuestionController — the questions themselves are Content_Template__c records, so this picker selects from a shared library rather than authoring per-campaign copies.</p>
 <p>Campaign record-page shim for the admCustomQuestionsTab picker, previously reachable only through the admFundraiserDetail drawer on the Fundraisers console tab. Unlike the two event shims there is no subtype gate — custom questions apply to every fundraiser type — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexcampaignupdates">Campaign Updates<a class="headerlink" href="#lexcampaignupdates" title="Permanent link">#</a></h4>
+<p><code>lexCampaignUpdates</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Campaign record page component for writing the plain-text progress updates donors read on this campaign's public page, and for switching that section on or off. Regular updates are what keep past donors giving again.</p>
+<p><strong>Docs note.</strong> Thin exposure shim around the non-exposed admCampaignUpdatesTab bundle, which the Fundraisers console drawer also mounts. Both entry points read and write Campaign_Post__c rows of type Update through CampaignPostController, plus the Campaign.Show_Updates__c toggle that governs the public section. Its twin for files is lexCampaignDocuments — the two panels are independent and neither can see the other's rows.</p>
+<p>Campaign record-page shim for the admCampaignUpdatesTab editor, which the admFundraiserDetail drawer also mounts. Like lexCampaignFaqs there is no subtype gate — every fundraiser type can post updates — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure. Its twin is lexCampaignDocuments; the two are separate components because updates and documents are independent (text posts and downloadable files never depend on each other), and an admin who only wants one should not be handed the other.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexcontenttemplateusage">Where This Is Used<a class="headerlink" href="#lexcontenttemplateusage" title="Permanent link">#</a></h4>
 <p><code>lexContentTemplateUsage</code></p>
@@ -4076,11 +4178,29 @@
 <p><strong>Docs note.</strong> Recurring_Donation__c RecordAction quick action (headless-launched, closes itself via CloseActionScreenEvent). Calls StopRecurringDonationController.stopRecurringDonation, the same controller admFundraiserDetail's drawer calls for its inline row-action stop, so cancelling from either entry point behaves identically. FIELD_CONTACT/FIELD_ACCOUNT are read (never both populated) to resolve the donor name across the standard-Contact vs. Person-Account dual-lookup model.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h2 id="adm-internal-fundraisers-console">Adm (internal fundraisers-console)<a class="headerlink" href="#adm-internal-fundraisers-console" title="Permanent link">#</a></h2>
+<h4 id="admcampaigndocumentstab">Campaign Documents Tab<a class="headerlink" href="#admcampaigndocumentstab" title="Permanent link">#</a></h4>
+<p><code>admCampaignDocumentsTab</code></p>
+<p><code>not exposed</code></p>
+<p>Campaign "Documents" editor — create a document, attach the file donors download, publish or unpublish it, and switch the whole Documents section on or off.</p>
+<p><strong>Docs note.</strong> Mounted two ways: as the lexCampaignDocuments record-page shim on Campaign_Detail, and as a related list in the admFundraiserDetail drawer. Both pass record-id and nothing else. Documents are independent of updates — a campaign can carry files with no update posts at all — and admCampaignUpdatesTab is the separate editor for those. Neither panel can see or edit the other's rows; CampaignPostController enforces that server-side. The two-step "create the row, then attach the file" flow is not a style choice: lightning-file-upload attaches to a record that already exists, so there is no record to bind to until the draft is saved. That is also why a new document is always created as a draft — between the two steps it is a document with no file, and the service refuses to publish one because the public card is an anchor around File_URL__c and would be dead.</p>
+<p>Publish is blocked, not merely discouraged, while the row has no file — the server refuses it too, and a button that only ever produced an error would be a worse way to say the same thing.</p>
+<p>The switch writes Campaign.Show_Documents__c, which is what publicFundraisingExperience reads to decide whether the Documents tab exists at all. Publishing a document while this is off puts it nowhere, so the caption says so rather than leaving it to be found.</p>
+<p>Publishing sends the whole row back, not a one-field patch: CampaignPostController.savePost is an upsert of the form, so a partial payload would blank every field it omitted.</p>
+<p>The upload itself is what stamps File_URL__c / File_Type__c / File_Size__c onto the row — the ContentVersion trigger does it via CampaignPostService.stampFromVersions, because a site guest cannot read a Salesforce file and the public card needs a plain URL. So the only thing to do here is re-read the list and let the row report what landed.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="admcampaignfaqtab">Campaign FAQ Tab<a class="headerlink" href="#admcampaignfaqtab" title="Permanent link">#</a></h4>
 <p><code>admCampaignFaqTab</code></p>
 <p><code>not exposed</code></p>
 <p>Drawer "FAQs" tab — pick reusable FAQ templates or create new ones, reorder, and save the campaign's selection.</p>
 <p><strong>Docs note.</strong> Mounted as one tab of the admFundraiserDetail slide-in drawer (<c-adm-campaign-faq-tab record-id={recordId}>), not a standalone route. Calls three CampaignFaqController methods: getFaqLibrary (all reusable templates), getCampaignFaqs (this campaign's current selection), saveCampaignFaqs (persists the whole ordered list in one call, no per-row DML). Sibling tabs in the same drawer: admCustomQuestionsTab (identical pattern over Custom_Question templates), admEventCheckIn, admEventTicketsTab.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="admcampaignupdatestab">Campaign Updates Tab<a class="headerlink" href="#admcampaignupdatestab" title="Permanent link">#</a></h4>
+<p><code>admCampaignUpdatesTab</code></p>
+<p><code>not exposed</code></p>
+<p>Campaign "Updates" editor — write, publish and delete the plain-text progress posts that appear in the Updates timeline on the public page, and switch that whole section on or off.</p>
+<p><strong>Docs note.</strong> Mounted two ways: as the lexCampaignUpdates record-page shim on Campaign_Detail, and as a related list in the admFundraiserDetail drawer. Both pass record-id and nothing else. Updates are TEXT ONLY and have no relationship to documents — admCampaignDocumentsTab is the separate editor for files, and neither panel can see or edit the other's rows. That independence is enforced server-side by CampaignPostController, which takes the post type from this component (never from the admin) and from the stored row on every edit. The body is a plain textarea, not a rich-text editor: pfSectionTabs renders it inside a <code>white-space: pre-line</code> block, so line breaks survive and markup would not.</p>
+<p>The switch writes Campaign.Show_Updates__c, which is what publicFundraisingExperience reads to decide whether the Updates tab exists at all. Publishing a post while this is off puts it nowhere, so the caption says so rather than leaving the admin to discover it.</p>
+<p>Publishing sends the whole row back, not a one-field patch: CampaignPostController.savePost is an upsert of the form, so a partial payload would blank every field it omitted.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="admcustomquestionstab">Custom Questions Tab<a class="headerlink" href="#admcustomquestionstab" title="Permanent link">#</a></h4>
 <p><code>admCustomQuestionsTab</code></p>

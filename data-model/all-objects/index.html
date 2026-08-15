@@ -2661,7 +2661,7 @@
 </div>
 <h2 id="donors">Donors<a class="headerlink" href="#donors" title="Permanent link">#</a></h2>
 <h3 id="account">Account<a class="headerlink" href="#account" title="Permanent link">#</a></h3>
-<p><code>Account</code> · <code>standard</code> · <code>6 fields</code> · <code>Donors</code></p>
+<p><code>Account</code> · <code>standard</code> · <code>7 fields</code> · <code>Donors</code></p>
 <p><strong>Relationships</strong></p>
 <table>
 <thead>
@@ -2741,6 +2741,12 @@
 <td>System-managed security value for the donor portal. Never edit or expose this field.<br><em>Docs: Read in SYSTEM_MODE only, by DonorPortalService; this field intentionally has no FLS grant in any permission set (see the field description); granting it would let a non-system context match a donor by their raw magic-link token.</em></td>
 </tr>
 <tr>
+<td><code>Portal_Token_Issued_At__c</code></td>
+<td>Portal Token Issued At</td>
+<td>DateTime</td>
+<td>System-managed. Records when this donor's portal link was last issued, so repeated requests for a new link are ignored for a short cooldown period. Not intended for manual entry.</td>
+</tr>
+<tr>
 <td><code>Stripe_Customer_Id__c</code></td>
 <td>Stripe Customer ID</td>
 <td>Text</td>
@@ -2755,7 +2761,7 @@
 </tbody>
 </table>
 <h3 id="contact">Contact<a class="headerlink" href="#contact" title="Permanent link">#</a></h3>
-<p><code>Contact</code> · <code>standard</code> · <code>6 fields</code> · <code>Donors</code></p>
+<p><code>Contact</code> · <code>standard</code> · <code>7 fields</code> · <code>Donors</code></p>
 <p><strong>Relationships</strong></p>
 <table>
 <thead>
@@ -2827,6 +2833,12 @@
 <td>Portal Token Hash</td>
 <td>Text</td>
 <td>System-managed security value for the donor portal. Never edit or expose this field.<br><em>Docs: Read in SYSTEM_MODE only, by DonorPortalService; this field intentionally has no FLS grant in any permission set (see the field description); granting it would let a non-system context match a donor by their raw magic-link token.</em></td>
+</tr>
+<tr>
+<td><code>Portal_Token_Issued_At__c</code></td>
+<td>Portal Token Issued At</td>
+<td>DateTime</td>
+<td>System-managed. Records when this donor's portal link was last issued, so repeated requests for a new link are ignored for a short cooldown period. Not intended for manual entry.</td>
 </tr>
 <tr>
 <td><code>Stripe_Customer_Id__c</code></td>
@@ -6253,13 +6265,13 @@
 <td><code>Person_Account_Enabled__c</code></td>
 <td>Person_Account_Enabled</td>
 <td>Checkbox</td>
-<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: Not the sole source of truth for whether Person Accounts are active; SettingsService.personAccountEnabled() only returns true when this flag AND runtime detection (Account.IsPersonAccount describe presence) both agree. An admin cannot switch this on in an org that does not support Person Accounts; the flag can only opt OUT of a detected capability, never opt in to one that is not there. Never branch on this field directly; go through DonorResolutionService or SettingsService.personAccountEnabled().</em></td>
+<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SettingsService.detectAndUpdateOrgFeatures() and SetupController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. SettingsService.personAccountEnabled() would combine the two, but has no production caller — see the note above that method for why pointing isPersonAccountOrg() at it would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
 </tr>
 <tr>
 <td><code>Portal_Token_TTL_Hours__c</code></td>
 <td>Portal Link Expiry (Hours)</td>
 <td>Number</td>
-<td>Hours a donor-portal magic link stays valid before it expires, e.g. 24.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 24h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a magic link effectively permanent). Drives how far ahead of issuance DonorPortalService sets Contact/Account.Portal_Token_Expires_At__c.</em></td>
+<td>Hours a donor-portal magic link stays valid before it expires, e.g. 3. Leave blank for the 3-hour default. Raise it only if donors report links dying before they get to them - the link is a bearer credential sitting in an inbox, so a longer window is a longer exposure.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 3h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a magic link effectively permanent). Drives how far ahead of issuance DonorPortalService sets Contact/Account.Portal_Token_Expires_At__c. The default was 24h through 1.0.0-16; it was cut to 3h because the token is neither single-use nor device-bound, so the expiry window is the whole of its security.</em></td>
 </tr>
 <tr>
 <td><code>Privacy_URL__c</code></td>

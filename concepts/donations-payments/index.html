@@ -871,10 +871,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#card-and-ach" class="md-nav__link">
+  <a href="#which-payment-methods-donors-can-use" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Card and ACH
+        Which payment methods donors can use
       
     </span>
   </a>
@@ -2269,10 +2269,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#card-and-ach" class="md-nav__link">
+  <a href="#which-payment-methods-donors-can-use" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Card and ACH
+        Which payment methods donors can use
       
     </span>
   </a>
@@ -2775,11 +2775,17 @@ anything credential-like (<code>token</code>, and Stripe's <code>payment_intent<
 parameters). Attribution data is reportable and widely visible — payment credentials and donor
 PII must never end up there. Capture is also capped at 50 parameters and 4 KB per gift.</p>
 </div>
-<h2 id="card-and-ach">Card and ACH<a class="headerlink" href="#card-and-ach" title="Permanent link">#</a></h2>
-<p>The Stripe Payment Element handles both card and US bank account (ACH) payment methods in the
-same embedded UI — Pledgivo doesn't build separate flows for each. ACH payments settle on a
-delay; the receipt page and donor communications reflect a pending state until Stripe confirms
-funds have cleared.</p>
+<h2 id="which-payment-methods-donors-can-use">Which payment methods donors can use<a class="headerlink" href="#which-payment-methods-donors-can-use" title="Permanent link">#</a></h2>
+<p><strong>Cards only, in this release.</strong> Every payment the donation form creates is pinned to <code>card</code>
+server-side, so credit and debit cards — including the card-backed wallets Stripe presents inside
+the same embedded Payment Element, Apple Pay and Google Pay — are what a donor can pay with.</p>
+<p>US bank account (ACH) debits are <strong>not</strong> available. Cards confirm while the donor is still on the
+page, which is what lets a gift be receipted the moment it succeeds; an ACH debit clears one to
+four business days later and would need a whole pending-then-settled lifecycle behind it. That
+lifecycle is planned, not built, so offering the method today would take money the app could not
+correctly follow through to a receipt.</p>
+<p>Nothing in the setup console turns ACH on — there is no switch to find, and enabling
+<code>us_bank_account</code> on the connected Stripe account has no effect on the donation form.</p>
 <h2 id="when-the-donor-covers-the-processing-fee">When the donor covers the processing fee<a class="headerlink" href="#when-the-donor-covers-the-processing-fee" title="Permanent link">#</a></h2>
 <p>Every card charge costs you a percentage plus a flat amount, so a $100 gift arrives as rather
 less than $100. A campaign can offer donors the chance to make up that difference: tick
@@ -2847,10 +2853,10 @@ renewal alike — a monthly donor pays a fee every month, so each installment ca
 record disagree with the dashboard it exists to reconcile against.</p>
 <div class="admonition warning">
 <p class="admonition-title">Blank is not zero</p>
-<p>A gift shows <strong>Processor Fee</strong> blank when the charge hasn't settled yet — an ACH debit still
-clearing, or a card gift finalized in the same second it succeeded. That is normal, and it is
-not a fee of $0. If you sum this column in a report, blank rows are gifts whose cost isn't
-known yet, not free ones. They stay blank; nothing backfills them later.</p>
+<p>A gift shows <strong>Processor Fee</strong> blank when the charge hasn't settled yet — most often a gift
+finalized in the same second it succeeded, before Stripe has posted the settlement line. That
+is normal, and it is not a fee of $0. If you sum this column in a report, blank rows are gifts
+whose cost isn't known yet, not free ones. They stay blank; nothing backfills them later.</p>
 </div>
 <p><strong>Processor Fee is not Fee Amount.</strong> They look alike and mean opposite things. <em>Fee Amount</em> is money
 the <strong>donor</strong> volunteered on top of their gift, worked out from the rate you configured. <em>Processor

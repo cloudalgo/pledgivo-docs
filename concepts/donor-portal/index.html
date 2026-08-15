@@ -2317,15 +2317,20 @@ writing the request-link copy, publishing the site — see
 <a href="../../guides/publish-donor-portal/">Publish a donor portal page</a>.</p>
 <h2 id="getting-in">Getting in<a class="headerlink" href="#getting-in" title="Permanent link">#</a></h2>
 <p>There is no sign-up and no password. A donor asks for a link, the link arrives by email, and the
-token in that link is the credential. Links are single-purpose and expire.</p>
+token in that link is the credential. Links expire — three hours after they're issued by default,
+adjustable in Settings.</p>
 <div class="fn-shot"><img src="../../assets/images/public-donor-request-link.png" alt="Donor portal request-a-link screen"></div>
-<p class="fn-figure-caption">**What it shows.** The no-token landing page at `/donor`. One email field, one button, and the terms stated plainly underneath: one-time link, expires in 24 hours, and we never reveal whether an address is on file. The three blocks below it answer the question a first-time visitor actually has — *no password to remember*, *your card is never stored here*, *everything in one place*.</p>
+<p class="fn-figure-caption">**What it shows.** The no-token landing page at `/donor`. One email field, one button, and the terms stated plainly underneath: the link expires in three hours, and we never reveal whether an address is on file. (The screenshot predates the current default of three hours and the wording is generated from your own **Donor portal link validity** setting, so what a donor actually reads is whatever you have configured.) The three blocks below it answer the question a first-time visitor actually has — *no password to remember*, *your card is never stored here*, *everything in one place*.</p>
 
 <div class="admonition note">
 <p class="admonition-title">The same response either way</p>
 <p>Submitting an address that isn't on file produces the identical confirmation screen as one that
 is. The portal never confirms or denies that someone is a donor — that would turn the form into
 a way to test whether a given person supports your organization.</p>
+<p>The same holds for a donor who asks twice. Requests inside a five-minute window don't mint a new
+link — the confirmation screen still appears, but the link already in the donor's inbox keeps
+working. Without that, anyone who knew a donor's email address could invalidate every link the
+moment it was sent, simply by submitting the form again.</p>
 </div>
 <h2 id="the-dashboard">The dashboard<a class="headerlink" href="#the-dashboard" title="Permanent link">#</a></h2>
 <div class="fn-shot"><img src="../../assets/images/public-donor-dashboard.png" alt="Donor portal dashboard"></div>

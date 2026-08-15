@@ -1479,6 +1479,8 @@
       
         
       
+        
+      
     
     
     
@@ -1539,6 +1541,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -2874,6 +2904,19 @@ without their trusted sites. <strong>You add those yourself, only if you want th
 </table>
 <p>To add one: Setup → <strong>Security → CSP Trusted Sites → New Trusted Site</strong>. Enter the URL exactly as
 written above, name it anything, tick the directive shown, leave <strong>Context</strong> as <em>All</em>, and save.</p>
+<div class="admonition note">
+<p class="admonition-title">A video in a <strong>campaign story</strong> is a narrower case</p>
+<p>The story field's <code>@[…](youtube:…)</code> block only ever embeds <code>https://www.youtube-nocookie.com</code>,
+and only when <strong>Play story videos on the page</strong> is switched on in <em>Settings → General →
+Organization &amp; Donations → Story media</em>. Left off — the default — a story video is a poster card that
+links out to YouTube in a new tab and needs <strong>no trusted site at all</strong>.</p>
+<p>If you do switch it on, the Organization panel prints the exact recipe: URL
+<code>https://www.youtube-nocookie.com</code>, <strong>frame-src</strong> only, and Context <strong>Experience Builder Sites</strong>
+(narrower than <em>All</em>, because a story only ever renders on a public site). See
+<a href="../../guides/writing-a-campaign-story/#playing-the-video-on-the-page-instead">Write a campaign story</a>.
+<code>www.youtube.com</code> and <code>player.vimeo.com</code> above are for the Page Canvas <strong>video block</strong>, which is
+a different feature and accepts both hosts.</p>
+</div>
 <p>The Get Started panel's <strong>Trust the content hosts you actually use</strong> step reads your org's trusted
 sites live and shows which of the four you have. It never counts against your 7 steps and it never
 offers a fix button — Salesforce does not let Apex create a trusted site, so this one is yours.</p>

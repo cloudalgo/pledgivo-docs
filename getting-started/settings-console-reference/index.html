@@ -1446,6 +1446,8 @@
       
         
       
+        
+      
     
     
     
@@ -1506,6 +1508,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -2445,6 +2475,11 @@ run, or not at all).</p>
 <td>Social share image URL</td>
 <td>The 1200x630 card a social network shows when someone pastes a campaign link</td>
 <td>Saved and resolved, but <strong>not yet rendered into an <code>og:image</code> tag by anything in this package</strong> — it is stored ready for a social-preview feature. Blank falls back to the packaged card published at install.</td>
+</tr>
+<tr>
+<td>Story media — Play story videos on the page</td>
+<td>Whether a video block in a campaign story plays inline, or stays a click-out poster card. <strong>Off by default, and off is a working state</strong> — the card loads nothing from YouTube until a donor clicks it</td>
+<td>Immediate and live on the next page load. On is only half the job: inline playback also needs a CSP Trusted Site for <code>https://www.youtube-nocookie.com</code> (frame-src, context <em>Experience Builder Sites</em>) that <strong>you create yourself</strong> in Setup — the package ships none, deliberately, so the install-time third-party access dialog stays payment-processor-only. With the toggle on and no trusted site the browser blocks the frame silently; no Salesforce API can tell the app whether you created it, so the panel states the requirement rather than grading it. See <a href="../../guides/writing-a-campaign-story/#playing-the-video-on-the-page-instead">Write a campaign story</a></td>
 </tr>
 <tr>
 <td><strong>Reset to defaults</strong> button</td>

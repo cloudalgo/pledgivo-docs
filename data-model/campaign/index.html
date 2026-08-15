@@ -1235,6 +1235,8 @@
       
         
       
+        
+      
     
     
     
@@ -1295,6 +1297,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -2337,7 +2367,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Story__c</code></td>
 <td>Story</td>
 <td>LongTextArea</td>
-<td>Tell donors why this campaign matters. Shown as the main story on the public page. Leave a blank line between paragraphs, and start a paragraph with "&gt;" to pull it out as a highlighted quote. Long stories are folded behind a Read the full story link.</td>
+<td>The narrative donors read on the public page — who you help, why it matters, what their gift does. Written in Markdown using the toolbar on the Story step of the fundraiser wizard: ## for a heading, <strong>bold</strong>, a bullet list, a pull quote, an image URL, a YouTube link. Type it as plain paragraphs and it still renders correctly.<br><em>Docs: Holds Markdown, never HTML. Every write from the fundraiser wizard passes through CampaignService.normalizeStoryMarkdown(), which strips HTML tags, blanks javascript:/data: URLs, drops malformed YouTube ids and throws above the byte ceiling. The public page renders it through uiMarkdownParser.js -&gt; c-ui-markdown as a token tree of escaped LWC text bindings, so no author string ever reaches innerHTML. Stories written before Markdown (plain paragraphs, a leading "&gt;" pull quote) are already valid Markdown and needed no migration. The length is the platform maximum and is one-way: a shipped field's length can be raised but never lowered, so 131072 is a permanent contract with every subscriber org.</em></td>
 </tr>
 <tr>
 <td><code>Suggested_Amounts__c</code></td>

@@ -760,6 +760,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#writing-the-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing the story
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-tabbed-well" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1257,6 +1268,8 @@
       
         
       
+        
+      
     
     
     
@@ -1317,6 +1330,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -1884,6 +1925,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#writing-the-story" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing the story
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-tabbed-well" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1994,6 +2046,64 @@ documents were there to prove.</p>
 switch because it does not need one: an empty FAQ list is already an absent tab, and the
 selection <em>is</em> the switch. Deselect the FAQs and the tab goes.</p>
 </div>
+<h2 id="writing-the-story">Writing the story<a class="headerlink" href="#writing-the-story" title="Permanent link">#</a></h2>
+<p>The Story field is Markdown, not rich text and not HTML. A donor sees:</p>
+<table>
+<thead>
+<tr>
+<th>Type this</th>
+<th>Get this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>## Heading</code> / <code>### Subheading</code></td>
+<td>A section heading, in the page's own type scale</td>
+</tr>
+<tr>
+<td><code>**bold**</code> / <code>*italic*</code></td>
+<td>Emphasis</td>
+</tr>
+<tr>
+<td><code>[link text](https://...)</code></td>
+<td>A link that always opens in a new tab</td>
+</tr>
+<tr>
+<td><code>- item</code> or <code>1. item</code></td>
+<td>A bullet or numbered list</td>
+</tr>
+<tr>
+<td><code>&gt; a line</code></td>
+<td>A pull quote, set off with the page's quote styling</td>
+</tr>
+<tr>
+<td><code>---</code> on its own line</td>
+<td>A horizontal rule</td>
+</tr>
+<tr>
+<td><code>![caption](image-url)</code></td>
+<td>An image, with the caption shown underneath</td>
+</tr>
+<tr>
+<td><code>@[label](youtube:VIDEO_ID poster-url)</code></td>
+<td>An embedded video block</td>
+</tr>
+</tbody>
+</table>
+<p>Anything the syntax above doesn't recognize — a stray <code>&lt;</code>, a pasted HTML tag — shows up as the
+literal characters typed, not as markup. HTML has never been an accepted input in the Story
+field, and pasting it does not do anything harmful: it is just text on the page.</p>
+<p>A story written before this change, as plain paragraphs with a blank line between them and an
+occasional line starting with <code>&gt;</code> for a pull quote, is already valid Markdown and needs no
+rewrite — it renders exactly as it did.</p>
+<p>The video block is a link to YouTube by default: a poster image with a play button that opens
+the video in a new tab, so a story never loads a third-party player without an admin's say-so.
+It only becomes a real inline player when the org has both switched on <strong>Play story videos on
+the page</strong> (<em>Settings → General → Organization &amp; Donations → Story media</em>) and registered the
+matching CSP Trusted Site — see
+<a href="../../getting-started/after-you-install/#third-party-content">Third-party content</a>.</p>
+<p>For the toolbar, the full accepted syntax, where to host images and video, and the exact trusted-site
+recipe, see <a href="../../guides/writing-a-campaign-story/">Write a campaign story</a>.</p>
 <h2 id="the-tabbed-well">The tabbed well<a class="headerlink" href="#the-tabbed-well" title="Permanent link">#</a></h2>
 <p>Documents, Updates and FAQ share one tabbed area under the story. Only the tabs that survive the
 rules above are rendered, and the well itself disappears when none do. One tab renders as a single

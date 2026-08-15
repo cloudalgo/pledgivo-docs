@@ -1151,6 +1151,8 @@
       
         
       
+        
+      
     
     
     
@@ -1211,6 +1213,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -1686,6 +1716,17 @@
     <span class="md-ellipsis">
       
         CampaignQuestionController
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-campaignstorycontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignStoryController
       
     </span>
   </a>
@@ -5031,6 +5072,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-campaignstorycontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignStoryController
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-embedconfigresource" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8060,7 +8112,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class — 203 classes plus 139 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-dek">Every packaged Apex class — 204 classes plus 140 test classes — generated straight from `base/main/default/classes/`, grouped by domain and FFLib layer. The vendored `fflib-apex-mocks`/`apex-common` library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -8276,6 +8328,34 @@
 </tr>
 </tbody>
 </table>
+<h4 id="apex-campaignstorycontroller">CampaignStoryController<a class="headerlink" href="#apex-campaignstorycontroller" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p>CampaignStoryController — read and write a single campaign's story from the Campaign record page. Backs the "Story" tab (c/lexCampaignStory): load the Markdown plus the publish flag, and save them back. Two fields, nothing else — a record-page tab must never round-trip the whole fundraiser form the way FundraiserAdminController.applyForm does, because a payload that omits a key there blanks the field it stands for. Every @AuraEnabled returns the { success, data/error } envelope via ControllerAction.run().</p>
+<p><strong>Docs note.</strong> This is the SECOND write path to Campaign.Story__c, after the fundraiser wizard's FundraiserAdminController.applyForm. Both funnel through CampaignService.normalizeStoryMarkdown for exactly that reason: the sanitizer is the choke point, so adding an entry point must never mean adding a way around it. A third caller that assigns Story__c directly reopens the hole. The read is deliberately NOT cacheable=true. The tab loads imperatively and reloads after its own save; a cached read would serve the pre-save value back to the component that just wrote it and the story would appear to revert until the page was reloaded.</p>
+<p>Drives whether the tab renders an Edit button at all. It is a UI courtesy, not the control — SaveStory re-checks the same two fields server-side, because a client can call the save method whatever the read told it.</p>
+<p>Sent so the tab's reading view shows the same video treatment the donor gets: a facade unless the org opted in. The component never reads Settings itself.</p>
+<p>The whole reason this controller exists rather than a lightning-record-edit-form bound straight to Story__c: a raw field edit would let anything into the field, and the public renderer's safety rests on what this method guarantees.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-campaignstorycontroller-getstory"></a><code>getStory(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-campaignstorycontroller-savestory"></a><code>saveStory(3 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+</tbody>
+</table>
 <h4 id="apex-embedconfigresource">EmbedConfigResource<a class="headerlink" href="#apex-embedconfigresource" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>global without sharing</code></p>
 <p><strong>Docs note.</strong> Backs the embedWidget static resource (an external &lt;script&gt; tag any third-party site can drop in) — this is the ONLY REST-callable surface in this domain; every other public read goes through @AuraEnabled/LWC on the Experience site. Reuses CampaignService.getPublicExperienceConfig so the embed widget and the full Experience donation page never drift on theme tokens, FAQs, or ticket tiers. CORS is opt-in per request Origin against Settings__c.Allowed_Embed_Origins__c (managed on the setup screen via EmbedController) — there is no wildcard fallback.</p>
@@ -8302,11 +8382,13 @@
 </table>
 <h4 id="apex-fundraiseradmincontroller">FundraiserAdminController<a class="headerlink" href="#apex-fundraiseradmincontroller" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
-<p>FundraiserAdminController — internal admin console for launching and managing fundraisers (Campaigns). Lets staff create a whole fundraiser in one flow — Campaign + linked page design + fund (Designation, existing or new) — without opening multiple Salesforce objects. Reads via CampaignsSelector/DesignationsSelector/CampaignDesignsSelector; all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via ControllerAction.run().</p>
+<p>FundraiserAdminController — internal admin console for launching and managing fundraisers (Campaigns). Lets staff create a whole fundraiser in one flow — Campaign + linked page design + fund (Designation, existing or new) — without opening multiple Salesforce objects. Reads via CampaignsSelector/DesignationsSelector/CampaignDesignsSelector; all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via ControllerAction.run(). applyForm is also the enforcement point for story normalization: it routes every wizard save through CampaignService.normalizeStoryMarkdown before Story__c is written.</p>
 <p><strong>Docs note.</strong> "Fundraiser" is admin-console terminology for a Campaign with a subtype (Campaign_Subtype__c) — there is no separate Fundraiser object. This controller and FundraiserDetailController both operate directly on Campaign/CampaignsSelector.</p>
 <p>source of truth is the Campaign_Closed__c formula field (EndDate-based), not inline date math — see the field's doc comment for why.</p>
 <p>The logo is the same for every design because it is org identity, not a theme: it comes off Settings__c.Org_Logo_URL__c, which the logo-upload flow maintains as a ContentDistribution link. The wizard's design cards still show it so an admin previews the real masthead, but picking a different design can never change it.</p>
 <p>org-wide starting values for a new fundraiser's donor-option toggles (see SettingsService.defaultAllowTribute/defaultAllowCompanyMatch); the wizard applies these only when creating a NEW Campaign, never on edit.</p>
+<p>Not a fundraiser setting — it is what the Story step's preview needs to render video the way the donor will see it. Without it the preview always shows the facade card, so an org that opted into inline playback would show its authors the one thing they cannot check by looking. The record page's Story tab gets the same value from CampaignStoryController.getStory.</p>
+<p>Not a plain sVal assignment, and deliberately so — this is the choke point every story passes through, so a client that skips the editor cannot land markup or a hostile URL. See CampaignService.normalizeStoryMarkdown.</p>
 <table>
 <thead>
 <tr>
@@ -8978,6 +9060,19 @@
 <p>The public page is always two columns; this decides only the proportion and which side the payment box sits on. It replaces resolveFormLayoutMode and resolveFormSide, whose six layout modes and separate side field could disagree with each other. The value is a bare picklist string ('60/40' | '50/50' | '40/60'); the grid template is derived from it in the shell, deliberately NOT overridable as a theme token, so the two columns can never be themed into disagreement.</p>
 <p>EndDate was presentation-only until 2026-08-06 — the public page counted down to it, the Fundraisers console tagged the row "Ended", and the donation form went on charging cards forever. That is right for an appeal whose date is a milestone and wrong for a time-boxed match or an event that already happened, so the choice is per campaign rather than global. The default is "keep accepting", which is why the field is phrased as a permission rather than a deadline: an org upgrading into this release sees no behaviour change at all until an admin unchecks the box on a specific campaign.</p>
 <p>Public because the confirmation moved out of the donation form and onto the routed /thank-you page — ThankYouController resolves the same CTA through this one method so an admin's configured "what next" button survives the hand-off instead of silently disappearing, and so the safe-URL rule has exactly one implementation.</p>
+<p>The sole server-side authority on what may live in Story__c. FundraiserAdminController's applyForm — the shared helper behind both createFundraiser and updateFundraiser — routes every wizard save through this method, so a client that bypasses the editor entirely — a Data Loader import, a Flow, a hand-rolled API call — still cannot land markup or a hostile URL through that path. HTML stripping here is best-effort defense-in-depth, not a guarantee: see STORY_HTML_TAG's comment for the prose collision it accepts. The actual guarantee against markup execution is that the renderer never uses innerHTML, so even markup that slipped past this method still renders as literal text there — stripping at save is a second, independent layer so a future renderer change cannot resurrect it on its own.</p>
+<p>Strip-then-scan is applied REPEATEDLY, to a fixed point, because each half can manufacture fresh work for the other out of its own output. Four directions are known, three of them found as live defects.</p>
+<p>Stripping creates markup. Deleting a tag closes the gap around it, so a ']' and a '(' that were separated in the source become adjacent. The minimal repro needs the tag to become strippable only AFTER a scan, since a leading strip would otherwise remove it first: "[a]&lt;b <a href="javascript:y"></a> &gt;(javascript:x)" matches no tag on the first strip (the "<a href="..."></a>" inside "&lt;b ... &gt;" is not a legal attribute), scans to "[a]&lt;b  &gt;(javascript:x)", and only then does the second strip remove "&lt;b  &gt;" and leave the live link "<a href="javascript:x">a</a>".</p>
+<p>Scanning creates tags. "&lt;img <a href="javascript:y"></a>src=x onerror=alert(1)&gt;" survives the strip intact — "<a href="..."></a>" in the middle is not a legal attribute, so the tag grammar does not match — and then dropping the unsafe link splices the fragments into the live tag "&lt;img src=x onerror=alert(1)&gt;".</p>
+<p>Scanning creates markup. This is the subtle one: a re-emitted ']' can land against a following '(' when the characters between them are dropped, so the 21-character "[a][(javascript:evil)" — not a link, because the '[' before the '(' has no ']' — comes out of a single pass as "<a href="javascript:evil">a</a>", which is. A 600,000-case fuzz found 66 distinct outputs of this shape. The scanner's contract holds over its INPUT; only re-running it over its own OUTPUT extends that guarantee to what actually ships.</p>
+<p>Scanning creates reference links, and this fourth direction is NOT closed by the fixed point. When the scanner neutralizes a construct it emits the bare label "[x]", which is itself a valid CommonMark shortcut reference; if the story also carries a definition "[x]: javascript:alert(1)" the pair is a live anchor. It survives because the scanner never examines it, not because it was checked — so iterating cannot help, and the guarantee below is scoped accordingly.</p>
+<p>Termination is bounded by the loop counter alone (five iterations), NOT by the fact that both halves only delete or shorten — a length-preserving two-cycle would satisfy monotonicity and still never converge. What monotonicity buys is that a fixed point, once reached, is a real one: scan(strip(r)) == r forces strip to have changed no length, hence strip(r) == r and scan(r) == r, so both halves are the identity on the returned value rather than merely composing to it. In practice legitimate content is stable on the second pass. The cap exists for the pathological case, and reaching it is not treated as success: the fallback puts a space into every remaining "](", which cannot be a link in CommonMark (the '(' must immediately follow the ']'), so the output is inert by construction rather than by exhaustion.</p>
+<p>The guarantee, stated precisely, and it is narrower than "the output is safe". On return, stripStoryHtmlTags and normalizeStoryMarkup both leave the value unchanged; since the scanner rewrites any INLINE construct whose destination fails validation, a value it leaves unchanged contains no such inline construct. Two shapes are deliberately NOT modelled by the scanner and therefore reach a fixed point unexamined: CommonMark reference links ("[a][b]", the shortcut "[a]", and the definition "[b]: dest") — including the bare "[label]" this scanner itself emits when neutralizing — and angle autolinks ("&lt;javascript:...&gt;", which STORY_HTML_TAG does not match because "javascript:" is not a tag name). THE RENDERER MUST NOT RESOLVE EITHER. Idempotence is the guarantee for inline constructs only; for those two shapes it is the absence of a check wearing the same clothes, and a renderer built on the assumption that this method closed them will ship a live javascript: anchor.</p>
+<p>One further non-guarantee, accepted rather than fixed: the third direction above is closed for SAFETY but not for AUTHORSHIP. When the manufactured destination passes validation the fixed point keeps it, so "[Donate securely][(https://evil.example/pay)" returns "<a href="https://evil.example/pay">Donate securely</a>" — an anchor the author never wrote, with attacker-chosen text and an attacker-chosen https destination. It is accepted because it crosses no privilege boundary (a story author can type that link directly), and because the obvious blanket remedy — spacing every "](" whose adjacency is new — would also break the legitimate links elsewhere in the same story. Closing it properly needs per-character provenance in the scanner, not another pass.</p>
+<p>A hand-written single-pass character scanner over every <a href="url">text</a> / <img alt="text" src="url" /> / @<a href="youtube:id [poster]">text</a> construct. It replaced a regular expression, deliberately and permanently — do not put one back.</p>
+<p>WHY NOT A REGEX. Two independent reasons, each fatal on its own. (1) A regex cannot count. CommonMark permits BALANCED BRACKETS inside link text, so "<a href="javascript:evil">[x]</a>" is a live anchor whose label is "[x]". Every regex this method has carried failed to match that shape and therefore copied it through byte-for-byte — the single worst class of bug possible here, since the output is rendered on a public unauthenticated page. Widening the grammar to one nesting level only moved the goalposts ("<a href="javascript:evil">[[a](https://ok.com)](https://mid.com)</a>" still escaped); arbitrary nesting is not expressible in a regular language at all. A counter expresses it in one integer. (2) Every widening attempt bought catastrophic backtracking. The last grammar's nested alternation cost 1,358 ms on a 211-byte input ("[" + "<img alt="a" src="b" />" x30) against a 131,072-byte field ceiling. An Apex CPU LimitException cannot be caught, so that is not a slow save — it is an uncatchable failure an attacker triggers by typing into the story box. The scanner touches each character a bounded number of times and has no lookahead and no nested loop over the same span, so its cost is linear in the input length.</p>
+<p>THE CONTRACT: nothing is emitted unexamined. For every '[', '![' or '@[' the scanner reaches exactly one of two outcomes — the construct fully validates and is RE-EMITTED FROM ITS VALIDATED PARTS, or it is NEUTRALIZED (destination dropped, brackets rendered inert). There is deliberately no "I don't understand this, pass it along" path; that path is what every previous round's bug was.</p>
+<p>HOW. A stack of label frames plus at most one destination frame. '[' (with its optional '!'/'@' marker) pushes a frame; ']' pops it and, only if the very next character is '(', opens the destination frame; the closing ')' is found by counting parens, so "https://en.wikipedia.org/wiki/X_(disambiguation)" survives. Text accumulates into whichever frame is innermost, so an inner construct is fully normalized BEFORE its enclosing label is judged — which is why the nested payloads above collapse: the outer unsafe destination drops to a label whose own contents were already validated. A frame that never closes is unwound at end of input (and at a blank line, since a CommonMark link cannot span one) with its '[' dropped and any destination text stripped of brackets, so no unmatched '[' and no raw "](" can survive into the output to be re-parsed by a client renderer. Nesting is capped at STORY_MAX_LABEL_DEPTH frames; brackets past the cap are treated as ordinary text, which bounds heap on a pathological "[[[[..." input. Output accumulates into List&lt;String&gt; and is joined once — Apex has no StringBuilder, and += over a 131,072-byte input copies the whole accumulator per append.</p>
 <p>Donor_Count__c is written here and nowhere else. Until 2026-08-06 nothing in the package wrote it at all, so the "donors" figure on the public fundraiser page and the internal campaign console sat at whatever it was created with — zero — for the life of the appeal.</p>
 <table>
 <thead>
@@ -9061,6 +9156,11 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-settingsservice-defaultthankyouctaurl">SettingsService.defaultThankYouCtaUrl()</a>, <a href="#apex-settingsservice-defaultthankyouctalabel">SettingsService.defaultThankYouCtaLabel()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignservice-normalizestorymarkdown"></a><code>normalizeStoryMarkdown(1 arg)</code></td>
+<td><code>String</code></td>
 <td></td>
 </tr>
 <tr>
@@ -14608,6 +14708,7 @@
 <p>No separate send-time gate in ReceiptService: with capture blocked the Opportunity has no Tribute_Type__c, so buildTributeNotification's existing gates already return null. An in-flight staging row created while the switch was on is finalized through the same capture path, so flipping the switch off stops its e-card too.</p>
 <p>Same field, read for a different purpose: the starting value of a brand-new Campaign's Allow_Tribute__c, applied by FundraiserAdminController.getFundraiserOptions() for the "New fundraiser" wizard (lexFundraisersConsole). Deliberately the same answer as tributeEnabled() — offering the wizard a toggle that defaults to on while the org switch suppresses it everywhere would let an admin create a fundraiser whose tribute section silently never renders.</p>
 <p>This is only the donor-facing ask. It grants nothing on its own — a request parks at Awaiting Review for a person, and refundsEnabled()/refundWindowDays() still bound whether the refund itself can be issued afterwards.</p>
+<p>Turning this on is only half the job — inline playback also needs a CSP Trusted Site for https://www.youtube-nocookie.com that the admin creates themselves. This package ships no trusted site of its own (see the posture note above createLogoDistribution), so the flag is an intent switch, not a capability check. With it on and no trusted site, the browser blocks the frame; the setup panel therefore states the requirement next to the toggle.</p>
 <p>Three defaults, not one, because the three cases make mutually exclusive factual claims — see the doc comment on the Receipt_Legal_Text_With_Goods__c field for why the single override this replaced was a correctness bug. These stay textually in step with the LEGAL_* constants in ReceiptStatusHelper, which are the last-resort fallback for an org that clears a seeded field; PostInstallHandler seeds all three from here.</p>
 <p>This is the ONLY way to build a donor-facing link from internal (Lightning) context. Site.getBaseUrl() returns blank off-site and URL.getOrgDomainUrl() returns the internal My Domain host, which a guest cannot open — so an internal sender that falls back to the org domain silently emails a dead link. Prefer Site.getBaseUrl() when running inside the site (it is the host the visitor actually arrived on) and this accessor everywhere else.</p>
 <p>The three org-wide fallbacks behind the public page's contact band. Each returns null when unset so the band can omit the line entirely rather than print an empty label — a contact block showing "Phone:" with nothing after it reads as broken, which is the opposite of the trust the band exists to build. A campaign's own Contact_*_Override__c wins over these; CampaignService resolves that precedence, not this class.</p>
@@ -14726,6 +14827,11 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-donorrefundrequestsenabled"></a><code>donorRefundRequestsEnabled(0 args)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-inlinevideoembedsenabled"></a><code>inlineVideoEmbedsEnabled(0 args)</code></td>
 <td><code>Boolean</code></td>
 <td></td>
 </tr>

@@ -1151,6 +1151,8 @@
       
         
       
+        
+      
     
     
     
@@ -1211,6 +1213,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -1764,6 +1794,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lexcampaignstory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Story
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexcampaignupdates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2535,6 +2576,39 @@
     <span class="md-ellipsis">
       
         Font Stack Allowlist
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimarkdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdown Renderer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimarkdowneditor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdown Editor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimarkdownparser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdown Parser
       
     </span>
   </a>
@@ -2978,6 +3052,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#lexcampaignstory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaign Story
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#lexcampaignupdates" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3756,6 +3841,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uimarkdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdown Renderer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimarkdowneditor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdown Editor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uimarkdownparser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Markdown Parser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uimodal" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3868,7 +3986,7 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Lightning web component — 82 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
+<p class="fn-dek">Every packaged Lightning web component — 86 bundles — generated straight from `base/main/default/lwc/`, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3920,6 +4038,7 @@
 <p>Set on the HOST, not on a wrapper div: this component declares its own primitives on :host as var(--pf-…, fallback), and a custom property is substituted on the element that declares it. See c/uiPageTheme.</p>
 <p>The campaign's own design, from the same designToMap payload the donation shell themes itself with — so the geometry (radii, shadow, gutters, column width) and the palette come from one record instead of two, and an admin who sets Radius to Sharp on a gala's design gets sharp corners on the gala's ticket page.</p>
 <p>The optional page sections, resolved server-side by CampaignService.resolveSections and CampaignPostService — the same two keys the donation shell reads, off the same helper. A ticket page is a whole page, not a form on someone else's, so it renders the campaign's story and its documents / updates / FAQ well exactly as a donation page does.</p>
+<p>Facade-vs-iframe choice for video blocks inside the story's Markdown, resolved server-side by SettingsService so this shell never reads Settings__c directly. Defaults false and is only ever set from the === true check in _load's onSuccess below — a missing key must read as false, never undefined, or c-ui-markdown's inline-video-enabled prop becomes a silent facade/iframe coin-flip.</p>
 <p>The ticket page is not tied to one look. It wears the same Column_Ratio__c the donation page does, so a black-tie gala, a research symposium and a community 5K are this one component wearing three design records rather than three components. The markup is three grid landmarks — banner, form, aside — placed by named grid areas, so a ratio only has to re-declare <code>grid-template-areas</code>; nothing in the ticket wizard knows or cares where the banner or the order summary ends up.</p>
 <p>A closed page has a banner, one sentence and maybe a story — nothing to put in a second column. It still emits the ratio class, which carries the banner and typography the page should keep; ev-ended only neutralises the grid (see .ev-ended in the stylesheet).</p>
 <p>The seats rail duplicated the banner's own remaining-seats chip, and only ever appeared on the retired Momentum layout mode. With one canonical layout there is no mode to hang it on and no reason to state the same number twice, so it is off everywhere.</p>
@@ -3964,7 +4083,8 @@
 <p>Section toggles resolved server-side (CampaignService.resolveSections) — the campaign's own Show_* flags, each already defaulted. Consumed by the tabbed well below and, from Task 10 on, by c-pf-story / c-pf-section-tabs / c-pf-contact-band.</p>
 <p>Contact and identity arrive already resolved through their per-campaign overrides (CampaignService.resolveContact / resolveIdentity), so the band below is handed finished values and never has to know an override exists.</p>
 <p>The toggle alone is not enough: an org that has filled in neither an email nor a phone anywhere — campaign override or Settings — would otherwise get a band headed "Talk to a real person" with no way to reach one, which is worse than no band. Venue does not count; an address answers "where", not "who do I ask".</p>
-<p>The story is the campaign's own Story__c, handed straight to c-pf-story, which decides whether it is prose or markup. showStory gates on the toggle AND on there being text, so a campaign that switched the section on and never wrote anything renders no heading.</p>
+<p>The story is the campaign's own Story__c, handed straight to c-pf-story, which renders it as Markdown through c-ui-markdown. showStory gates on the toggle AND on there being text, so a campaign that switched the section on and never wrote anything renders no heading.</p>
+<p>Facade-vs-iframe choice for video blocks inside the story's Markdown, resolved server-side by SettingsService so this shell never reads Settings__c directly. A missing key must read as false — the safe, no-third-party-script default — never as undefined, which would leave c-ui-markdown's inline-video-enabled prop in a silent facade/iframe coin-flip.</p>
 <p>Events only, in practice. Before the event a ticket-holder's next question is how to get in, so Documents leads; once EndDate is past the page's job is reporting, so Updates leads. A campaign with no end date never flips — it has no "after".</p>
 <p>Every donation page is the two-column page now, so the form owns it unconditionally. The one exception is unchanged: an Event slug renders c-public-event-registration, which embeds the donation form itself — the bare form must not hijack that page.</p>
 <p>The design's content blocks, lifted out of the donation form in the 2026-08-12 redesign. An admin arranges rich text, images, video, testimonials and galleries on the page-design canvas; those used to render interleaved between the form's own field blocks, which made sense only while the form was the whole page. Now the wide column owns narrative and the rail is just the ask, so they render here instead — same blocks, same stored order, same sanitization-safe c-pf-page-blocks renderer, different column.</p>
@@ -4013,6 +4133,13 @@
 <p>Campaign record page component for choosing which extra questions the donation form asks on this campaign, and whether they are switched on. Answers are stored against each donation so staff can report on them afterwards.</p>
 <p><strong>Docs note.</strong> Thin exposure shim around the non-exposed admCustomQuestionsTab bundle, which the Fundraisers console drawer also mounts. Both entry points read and write the same Campaign.Custom_Question_Ids__c / Custom_Questions_Active__c pair through CampaignQuestionController — the questions themselves are Content_Template__c records, so this picker selects from a shared library rather than authoring per-campaign copies.</p>
 <p>Campaign record-page shim for the admCustomQuestionsTab picker, previously reachable only through the admFundraiserDetail drawer on the Fundraisers console tab. Unlike the two event shims there is no subtype gate — custom questions apply to every fundraiser type — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure.</p>
+<p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+<h4 id="lexcampaignstory">Campaign Story<a class="headerlink" href="#lexcampaignstory" title="Permanent link">#</a></h4>
+<p><code>lexCampaignStory</code></p>
+<p><code>exposed</code> · <code>RecordPage</code></p>
+<p>Campaign record page component for reading and editing the fundraiser's story, and for choosing whether it is shown publicly. It renders the story exactly as a donor sees it, so what you approve here is what they read.</p>
+<p><strong>Docs note.</strong> Reads with c/uiMarkdown and edits with c/uiMarkdownEditor, the same two bundles the public donation page and the fundraiser wizard use, so the record page, the wizard and the donor page can never disagree about how a story renders. Saving goes through CampaignStoryController, never a lightning-record-edit-form bound to Story__c: a raw field edit would skip CampaignService.normalizeStoryMarkdown, and the public renderer's safety rests on that sanitizer having seen every byte in the field.</p>
+<p>The Campaign record page's Story tab. It reads as a published page and edits as one — the same c/uiMarkdown renderer the donor sees and the same c/uiMarkdownEditor the fundraiser wizard uses, so an admin who edits here and an admin who edits in the wizard are looking at identical output. This bundle owns only the read/edit switch and the save round trip. Deliberately NOT a lightning-record-edit-form on Story__c. A raw field edit would bypass CampaignService.normalizeStoryMarkdown, and that sanitizer is what the public renderer's safety rests on — every write to this field has to go through CampaignStoryController.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
 <h4 id="lexcampaignupdates">Campaign Updates<a class="headerlink" href="#lexcampaignupdates" title="Permanent link">#</a></h4>
 <p><code>lexCampaignUpdates</code></p>
@@ -4086,13 +4213,14 @@
 <h4 id="lexfundraisersconsole">Fundraisers<a class="headerlink" href="#lexfundraisersconsole" title="Permanent link">#</a></h4>
 <p><code>lexFundraisersConsole</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
-<p>Internal Lightning app tab listing all fundraisers/campaigns with a create/edit wizard covering campaign details, tickets, questions, FAQs, and fund designations.</p>
+<p>Internal Lightning app tab listing all fundraisers/campaigns with a create/edit wizard covering campaign details, story, tickets, questions, FAQs, and fund designations.</p>
 <p><strong>Docs note.</strong> labels/classes for the list-view Designation Mode badge (Campaign.Designation_Mode__c), mirroring the picklist's 3 stored values (see the field's own description for the semantics).</p>
-<p>The Fundraisers tab shell — lists all campaigns and drives the create/edit wizard via FundraiserAdminController, plus EventTicketAdminController.saveTicketTypes/getTicketTemplates and CampaignQuestionController/CampaignFaqController for the Tickets/Questions/FAQ wizard steps (Event fundraisers add the tickets step; every subtype gets questions/FAQ). Composes admFundraiserAvatar for row/grid icons and admFundraiserDetail as the slide-in drawer (<c-adm-fundraiser-detail record-id={detailId}>) when a row is opened — the console owns which row is open, the drawer self-fetches everything else. EMBER_THEME mirrors the default brand tokens (see docs/brand-identity.md) as the wizard's page-design preview fallback when a design record leaves a token blank.</p>
+<p>The Fundraisers tab shell — lists all campaigns and drives the create/edit wizard via FundraiserAdminController, plus EventTicketAdminController.saveTicketTypes/getTicketTemplates and CampaignQuestionController/CampaignFaqController for the Tickets/Questions/FAQ wizard steps (Event fundraisers add the tickets step; every subtype gets questions/FAQ). The Story step composes c-ui-markdown-editor (its own bundle) rather than a lightning-textarea — it is invisible to the wizard's lightning-* reportValidity() sweep, so validateCurrentStep() calls its @api reportValidity() directly, and every step eyebrow now reads the currentStepNumber getter instead of a hardcoded index so inserting/removing a step can never desync the number from the step's actual position. Composes admFundraiserAvatar for row/grid icons and admFundraiserDetail as the slide-in drawer (<c-adm-fundraiser-detail record-id={detailId}>) when a row is opened — the console owns which row is open, the drawer self-fetches everything else. EMBER_THEME mirrors the default brand tokens (see docs/brand-identity.md) as the wizard's page-design preview fallback when a design record leaves a token blank.</p>
 <p>'Ended' stays the internal status/filter value (tabs, GANTT_COLOR key) so the existing filter/gantt logic is untouched; "Completed" is a display-only relabel (statusLabel + .pill.completed + a per-stage SVG icon), sourced from the row's Campaign_Closed__c formula field via FundraiserAdminController.GetFundraisers.</p>
 <p>blank Designation_Mode__c resolves to All_Active at read time (CampaignDesignationService.resolveDesignationConfig) — mirror that fallback here so the badge never shows an empty/unlabeled state for pre-existing campaigns.</p>
 <p>Highlight_Label__c is both the on-switch and the badge copy — blank means "not highlighted" — so the toggle writes a default label on and clears it off, and turning one tier on clears every other row. One badge per event is the whole point of a badge: three tiers all shouting "Most popular" recommend nothing. The clearing here is only so the staged rows show a single lit toggle before anything is saved — EventTicketAdminController.demoteOtherHighlights is what actually enforces it, once, for both editors. Even that is an editing convention rather than a data constraint: an API/Data Loader import can still badge several tiers, and the public page renders what it is given instead of silently picking a winner.</p>
 <p>The allowed-funds picker is hand-built rather than a lightning-dual-listbox so it can carry the console's own field styling; it keeps the dueling list's one substantive capability — explicit ordering — because CampaignDesignationService.resolveSelectable walks Allowed_Designation_Ids__c in stored order, so this array's order is literally the order donors see in the donation form's fund picker.</p>
+<p><strong><code>@api</code> properties:</strong> <code>reportValidity</code></p>
 <h4 id="lexfundraisingsettings">Fundraising Settings<a class="headerlink" href="#lexfundraisingsettings" title="Permanent link">#</a></h4>
 <p><code>lexFundraisingSettings</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
@@ -4120,7 +4248,7 @@
 <p>recordId is read through a setter, not a plain @api field + connectedCallback. The action is launched from the record page's action overflow, where the platform assigns recordId AFTER connectedCallback has already run — loading from connectedCallback called Apex with a null id and the panel opened on "rdId is required". lexStopRecurringDonation does not hit this because its @wire(getRecord) is reactive on '$recordId' and simply re-fires.</p>
 <p>retryNow only moves Next_Retry_Date__c — the charge itself goes out with the next renewal-batch run. The toast says "queued" rather than "charged" so nobody reads a result into an attempt that has not happened yet.</p>
 <p>Reinstating restarts billing from today and clears the dunning counters, so it is worded as "billing restarts" rather than "resumed" — staff need to know a charge is now imminent.</p>
-<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>get</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
 <h4 id="lexopportunitybreakdown">Donation Payment Breakdown<a class="headerlink" href="#lexopportunitybreakdown" title="Permanent link">#</a></h4>
 <p><code>lexOpportunityBreakdown</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
@@ -4149,7 +4277,7 @@
 <p><code>exposed</code> · <code>RecordAction</code></p>
 <p>Record action (screen action) on Opportunity that lets a user issue a full or partial Stripe refund for a donation, respecting the org's refunds-enabled setting and remaining-refundable amount.</p>
 <p><strong>Docs note.</strong> Opportunity RecordAction quick action (headless-launched, closes itself via CloseActionScreenEvent). Calls RefundController.refundDonation to issue the Stripe refund and RefundController.getRefundConfig to read the enabled/disabled toggle; the client-side refundsEnabled check is a UX nicety only — RefundController.refundDonation re-checks server-side and is the actual gate. admFundraiserDetail's drawer calls the same two controller methods for its inline row-action refund, so behavior matches whichever entry point a user starts from.</p>
-<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>get</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
 <h4 id="lexrefundrequests">Refund Requests<a class="headerlink" href="#lexrefundrequests" title="Permanent link">#</a></h4>
 <p><code>lexRefundRequests</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
@@ -4163,14 +4291,14 @@
 <p>Record action on Opportunity that re-sends the donation or event-ticket receipt to the donor on the record. Confirms the resolved recipient address and template first, and is unavailable for gifts that have not settled or were fully refunded.</p>
 <p><strong>Docs note.</strong> Opportunity RecordAction quick action that re-sends a donation or event-ticket receipt to the donor already on the record. "I never got my receipt" is the most common inbound donor request, and until this existed the only answer was to re-trigger the automated path or mail a copy by hand. The panel is confirm-then-send rather than one-click: it shows exactly which address the mail will reach and which template it will use, because the recipient is derived (Person Account orgs resolve it through the Account, not Opportunity.ContactId) and staff should see the resolved answer before an email leaves the org. Unlike lexManageRecurringGift this panel closes on success — a receipt send is one-shot, so leaving it open would only invite an accidental duplicate.</p>
 <p>recordId via setter, not a plain @api field read in connectedCallback: the platform assigns it AFTER connectedCallback for actions launched from the action overflow, so a connectedCallback load calls Apex with a null id. Same fix as lexManageRecurringGift.</p>
-<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>get</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
 <h4 id="lexsendportallink">Send Portal Sign-In Link<a class="headerlink" href="#lexsendportallink" title="Permanent link">#</a></h4>
 <p><code>lexSendPortalLink</code></p>
 <p><code>exposed</code> · <code>RecordAction</code></p>
 <p>Record action on Contact and Account that emails a donor a fresh sign-in link to the donor portal. Confirms the resolved address first, then shows the link that was sent so staff can read it out to a donor on the phone.</p>
 <p><strong>Docs note.</strong> Contact / Account RecordAction quick action that issues a donor a fresh magic-link sign-in to the donor portal. The portal is passwordless by design, so the only way in is a link the donor requests themselves — which strands anyone whose link expired, who deleted the mail, or who is on the phone with staff right now. This is the staff-side door into that same flow. Confirm-then-issue rather than one-click: the panel shows the exact address the mail will reach before it leaves, because in a Person Account org the address lives on the Account and staff should see which one the server resolved. Two ways out, because the support call has two shapes. Send Link emails it. Show Link mints the same link and puts it on screen with a copy button, for the donor already on the phone — and for the donor with no address on file at all, who can be handed a link but never mailed one. Both mint, so the confirm step warns about rotation before either. The panel does NOT close afterwards. It stays open showing the exact link that was issued, with a copy button — reading the link out is the whole point of a staff-side issue. That link carries a live token, so it is a bearer credential: it is shown only once it exists (never before — there is nothing to show), never logged, and gone as soon as the panel closes. Issuing is one-shot — a second press would mint a new token and silently invalidate the link just handed over — so both buttons are replaced by Done rather than left pressable.</p>
 <p>recordId via setter, not a plain @api field read in connectedCallback: the platform assigns it AFTER connectedCallback for actions launched from the action overflow, so a connectedCallback load calls Apex with a null id. Same fix as lexResendReceipt.</p>
-<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>get</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
 <h4 id="lexstoprecurringdonation">Stop Recurring Donation<a class="headerlink" href="#lexstoprecurringdonation" title="Permanent link">#</a></h4>
 <p><code>lexStopRecurringDonation</code></p>
 <p><code>exposed</code> · <code>RecordAction</code></p>
@@ -4294,6 +4422,7 @@
 <p><strong>Docs note.</strong> Person_Account_Enabled__c and NPSP_Enabled__c are read-only, detectOrgFeatures-populated flags (Schema.describeSObjects() detection at the org level) — this panel surfaces what was detected, it does not let an admin toggle Person Account/NPSP support on or off. All donor resolution downstream still goes through DonorResolutionService regardless of what this panel shows; these flags are informational plus the gate for showNpspSyncOptions.</p>
 <p>The follow-up routing fields are meaningless while the checkout prompt that produces the matches is switched off, so they only appear once employer matching is enabled.</p>
 <p>Blanking either fee-coverage field is a supported way to fall back to the packaged Stripe US standard (2.9% + $0.30), so the nulls travel deliberately — SaveGeneralSettings guards on containsKey, and a null clears the override.</p>
+<p>Off by default; on only unlocks inline playback once the admin has hand-created the CSP Trusted Site this package deliberately does not ship (see the Story media section copy). Must be listed here explicitly — handleSave sends an allowlist, not everything in this.settings, so an omitted key here never reaches the server.</p>
 <p>The public-page footer band. These moved here from the page-design record on 2026-08-12 — a privacy policy is a fact about the organization, so changing a campaign's theme must not change which policy its donors are pointed at. Blanks travel as nulls on purpose: an empty link is omitted from the footer, never rendered dead. Each campaign can still override its own on the campaign record.</p>
 <h4 id="setpayments">Settings: Payment Accounts<a class="headerlink" href="#setpayments" title="Permanent link">#</a></h4>
 <p><code>setPayments</code></p>
@@ -4356,7 +4485,7 @@
 <p>Spaces, brackets and dashes are how a phone number should READ, and exactly what a tel: URI must not contain — so the displayed value and the dialled one are formatted separately from the same field.</p>
 <p>A map search rather than a dead '#'. The venue row only ever renders for an event, where "how do I get there" is the question, and a maps query on the name plus address is the one destination that works without the package storing coordinates.</p>
 <p>An unset network is omitted rather than rendered as a dead link — an org with only a Facebook page should show one icon, not three, two of which go nowhere.</p>
-<p><strong><code>@api</code> properties:</strong> <code>ein</code>, <code>get</code>, <code>isEvent</code>, <code>isPostGift</code>, <code>orgName</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>contact</code>, <code>ein</code>, <code>identity</code>, <code>isEvent</code>, <code>isPostGift</code>, <code>orgName</code></p>
 <h4 id="pfgivingstatement">Donor Portal Giving Statement<a class="headerlink" href="#pfgivingstatement" title="Permanent link">#</a></h4>
 <p><code>pfGivingStatement</code></p>
 <p><code>not exposed</code></p>
@@ -4364,7 +4493,7 @@
 <p><strong>Docs note.</strong> Donor-portal block for the annual giving statement, rendered inside publicDonorDashboard. Addressed by the dashboard's magic-link token — never by a record id — so a donor can only ever produce their OWN statement, and DonorPortalController re-validates the token on every call rather than trusting anything this component sends.</p>
 <p>The document itself is built by c/uiStatementPrint, the same module the staff record action (lexGivingStatement) prints from: a donor comparing their download against the copy a fundraiser printed must not find two differently-worded tax documents.</p>
 <p><code>years</code> is an optional passthrough: getDashboard already returns the year list, so the parent hands it over and this component skips its own round trip. Left unset (embedded anywhere else) it still loads the list itself from the token alone.</p>
-<p><strong><code>@api</code> properties:</strong> <code>currencyCode</code>, <code>get</code>, <code>token</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>currencyCode</code>, <code>token</code>, <code>years</code></p>
 <h4 id="pfhero">Campaign Hero<a class="headerlink" href="#pfhero" title="Permanent link">#</a></h4>
 <p><code>pfHero</code></p>
 <p><code>not exposed</code></p>
@@ -4377,7 +4506,7 @@
 <p><code>not exposed</code></p>
 <p>Runtime renderer for ordered page content blocks (rich text, image, testimonial, video, gallery, FAQ)</p>
 <p><strong>Docs note.</strong> Composed by both setDesigns (the internal page-design editor's live preview) and dfForm (the actual guest-facing content-block rendering inside the 3-step canvas) as <c-pf-page-blocks blocks-json= campaign-faqs=>, so a design change previews and renders through the identical sanitization/allow-listing logic in this one component — no drift between editor preview and what a donor actually sees.</p>
-<p><strong><code>@api</code> properties:</strong> <code>blocksJson</code>, <code>campaignFaqs</code>, <code>get</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>blocks</code>, <code>blocksJson</code>, <code>campaignFaqs</code></p>
 <h4 id="pfsectiontabs">Public Campaign Reference Tabs<a class="headerlink" href="#pfsectiontabs" title="Permanent link">#</a></h4>
 <p><code>pfSectionTabs</code></p>
 <p><code>not exposed</code></p>
@@ -4387,18 +4516,19 @@
 <p>Webfonts arrive after first paint and every tab label changes width when they do, so the pill measured during the first render lands a pixel or two off the tab it is meant to sit under. Re-measuring once the face the tabs are actually drawn in has loaded is the fix; a resize needs the same treatment for the same reason.</p>
 <p>The pill is positioned from the live geometry of the active tab, never from a fixed percentage — label widths differ per language and per count, so a hard-coded offset lands on the wrong tab.</p>
 <p>Every panel that has content stays in the DOM and is hidden with the <code>hidden</code> attribute rather than removed, so the documents and answers a search engine, a printer or a screen reader should see are all present regardless of which tab the donor left open.</p>
-<p><strong><code>@api</code> properties:</strong> <code>documents</code>, <code>faqs</code>, <code>get</code>, <code>meta</code>, <code>sections</code>, <code>updates</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>defaultTab</code>, <code>documents</code>, <code>faqs</code>, <code>meta</code>, <code>sections</code>, <code>updates</code></p>
 <h4 id="pfstory">Public Campaign Story<a class="headerlink" href="#pfstory" title="Permanent link">#</a></h4>
 <p><code>pfStory</code></p>
 <p><code>not exposed</code></p>
 <p>Renders a campaign's narrative on the public page as a stacked, full-width editorial section with a numbered heading, an optional drop cap and pull quotes, and a fade clamp with a read-more toggle for long stories.</p>
-<p><strong>Docs note.</strong> Guest helper for the public two-column page shell; it takes the story text already resolved by CampaignService and never queries. Markup stories go through lightning-formatted-rich-text for platform sanitization, plain-text stories are split into paragraphs here so the story, drop-cap and quote theme tokens have real elements in this bundle's shadow root to style.</p>
-<p>The story is the one block on the page a donor reads rather than scans, so it renders stacked at full content width rather than sharing the tabbed well with the reference material. It is a non-exposed guest helper: the shell owns the payload and hands the already-resolved narrative down, so this bundle never talks to Apex.</p>
+<p><strong>Docs note.</strong> Guest helper for the public two-column page shell; it takes the story text already resolved by CampaignService and never queries. The narrative is delegated to c-ui-markdown, which is shared with the authoring console's preview; this bundle owns only the section chrome — heading, ledger rule, fade clamp and the read-more toggle.</p>
+<p>The section shell around a story: heading, ledger rule, fade clamp and read-more toggle. The narrative itself is rendered by c-ui-markdown, which is shared with the authoring console's live preview so the admin sees exactly what a donor will.</p>
+<p>The old dual path (lightning-formatted-rich-text for markup, hand-split paragraphs for plain text) is gone. Story__c holds Markdown now, and the plain-text stories that predate it — blank-line paragraphs, a leading "&gt;" pull quote — are already valid Markdown, so they render unchanged with no migration. A story that still contains stored HTML renders as literal text rather than markup, which is the correct outcome: markup was never a supported input.</p>
 <p>The heading is a prop, not a literal, so a campaign whose narrative is not a "story" (a grant report, a case for support) can title the section for what it actually is.</p>
 <p>There is deliberately no section number alongside it. Numbering only earns its keep when a reader can count — and the sections below the story are tabbed, so at most one of them is on screen at a time. A lone "01" over the only numbered section on the page labels a sequence that does not exist.</p>
 <p>The clamp stays on until the measurement below has run, because the measurement needs it: scrollHeight only exceeds clientHeight while the max-height is applied. Once measured, a story that fits drops the class — otherwise its last paragraph kept the fade mask with no toggle to reveal anything, so short stories rendered as if they were cut off when they were complete.</p>
 <p>Whether the story overflows the clamp is a question about rendered text, not about character count — a 900-character story in a large-type design can be taller than a 1,500-character one. So it is measured once per story, after the first paint, and the _measured latch keeps that measurement from re-entering the render loop it triggers.</p>
-<p><strong><code>@api</code> properties:</strong> <code>get</code>, <code>heading</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>heading</code>, <code>inlineVideoEnabled</code>, <code>story</code></p>
 <h4 id="pfstyles">Public Shared Style Primitives<a class="headerlink" href="#pfstyles" title="Permanent link">#</a></h4>
 <p><code>pfStyles</code></p>
 <p><code>not exposed</code></p>
@@ -4419,7 +4549,7 @@
 <p><strong>Docs note.</strong> Composed by dfForm as <c-df-designation-picker designations= default-designation-id= total= onchange=>. In Selectable mode dfForm renders it INLINE at the admin's block position; in All_Active mode it sits behind the optional "+ Direct my gift" pill (see dfForm's _addonTypes). Assigned/None never render it at all — there is nothing to choose.</p>
 <p>The parent rides the emitted selection through as optionsJson.designationId or optionsJson.designations on createDonorAndIntent; server-side DesignationSplits.parse() re-normalizes the split against the captured Stripe total and creates one Donation_Designation__c per fund. This component's arithmetic is a UX convenience — never the source of truth.</p>
 <p>ALLOCATION MODEL (2026-08-06 redesign). The previous control was a repeating row builder: "+ Add fund", pick a fund, type an amount, three interactions per fund, with the gift unbalanced the whole time and an "Allocated $0.00 of $100.00" message reporting it. This version holds one invariant instead — the parts ALWAYS sum to the gift — so the invalid state is unreachable and there is no error to display. Selecting a fund gives it an even share; editing one fund takes the difference out of the others in proportion to what they currently hold. Amounts are held in integer cents so repeated rebalancing can't accumulate float drift, and split in whole units whenever the gift is a whole-unit amount ($100 across three funds is 34/33/33, not 33.34/33.33/33.33).</p>
-<p><strong><code>@api</code> properties:</strong> <code>designations</code>, <code>get</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>defaultDesignationId</code>, <code>designations</code>, <code>total</code></p>
 <h4 id="dfform">Donation Form<a class="headerlink" href="#dfform" title="Permanent link">#</a></h4>
 <p><code>dfForm</code></p>
 <p><code>not exposed</code></p>
@@ -4483,6 +4613,39 @@
 <p>The map must stay in step with the picklist value sets on both fields and with the FAMILIES list in scripts/build/fetch-public-fonts.sh — an entry here whose family has no @font-face rule in the PublicFonts static resource silently falls through to the next name in its own stack. 'Modern' is the one deliberate exception: it names no bundled face and resolves to the system UI stack by design.</p>
 <p>publicFundraisingExperience and publicEventRegistration still carry private copies of this map that have already drifted apart from each other on Serif/Modern/System. They should be migrated onto this module — that migration changes how those two pages render three picklist values, so it is a deliberate change, not a refactor to slip into an unrelated PR.</p>
 <p>Token in, CSS font-family stack out. Anything unrecognised — blank, 'Inherit', a value an older package version wrote, or an outright injection attempt — returns <code>fallback</code>, so the caller always has a safe string and never has to test the result.</p>
+<h4 id="uimarkdown">Markdown Renderer<a class="headerlink" href="#uimarkdown" title="Permanent link">#</a></h4>
+<p><code>uiMarkdown</code></p>
+<p><code>not exposed</code></p>
+<p>Renders a Markdown story as headings, emphasis, links, lists, pull quotes, rules, images and video, using only escaped text bindings. Shared by the public campaign page and the authoring console's live preview so the two can never diverge.</p>
+<p><strong>Docs note.</strong> Takes Markdown through @api value and a facade/iframe choice through @api inline-video-enabled. It never queries and never touches innerHTML: uiMarkdownParser.js turns the source into a token array which this bundle's template walks with for:each and lwc:if, so every author-supplied string lands in an auto-escaped LWC text node. That is the whole XSS defence, and it is structural — there is no sanitizer to keep current.</p>
+<p>The only component that knows what a story block looks like. It takes Markdown and renders the token array from uiMarkdownParser through for:each/lwc:if — there is no innerHTML here and there must never be one, because that is the whole XSS story for this feature. Every string the parser produced lands in a {value} text binding so the LWC engine escapes it; anything the parser could not validate is already literal text by the time it reaches this template.</p>
+<p>Facade unless the org opted in AND created its own CSP Trusted Site. Resolved server-side and handed down, so this component never reads Settings. The setter is a strict allowlist rather than a truthiness check, so any unexpected value lands on the facade — the side that loads nothing from YouTube until a donor clicks.</p>
+<p><strong><code>@api</code> properties:</strong> <code>inlineVideoEnabled</code>, <code>value</code></p>
+<h4 id="uimarkdowneditor">Markdown Editor<a class="headerlink" href="#uimarkdowneditor" title="Permanent link">#</a></h4>
+<p><code>uiMarkdownEditor</code></p>
+<p><code>not exposed</code></p>
+<p>Story authoring surface for the internal console: a textarea with a caret-aware formatting toolbar, inline prompts for links, images and video, a byte counter against the field limit, and a live preview using the same renderer as the public page.</p>
+<p><strong>Docs note.</strong> Uses a raw textarea rather than lightning-textarea because caret-aware insertion needs selectionStart/selectionEnd, which a base component does not expose. That also puts it outside the wizard's reportValidity() sweep, so it exposes an @api reportValidity() the step calls explicitly. Nothing in this bundle imports Apex — images and video posters are external URLs the admin pastes, so there is no upload path to authorise. Every link/image/video label and destination the popovers are about to insert is re-checked against uiMarkdownParser's own construct grammar before insertion (see labelError / destinationError / posterError in the .js) — safeUrl/safeImageUrl only validate scheme, not shape, so a value that passes them can still fail to round-trip through the parser and render as literal Markdown source on the donor's page.</p>
+<p>A raw <textarea>, not lightning-textarea, and deliberately so: caret-aware insertion needs selectionStart/selectionEnd, and a base component does not expose its inner element (reaching into another component's shadow root is not permitted). contenteditable is never used — that is where a WYSIWYG editor would need a third-party library, and this feature has none.</p>
+<p>There is no upload affordance. Images and video posters are external URLs the admin pastes, exactly as the Hero image field on the same wizard step has always worked.</p>
+<p>The textarea carries no content binding at all (no value={...} attribute/property, no child text node) — renderedCallback() below is the only thing that ever writes area.value, and it only writes when the DOM value has drifted from _value. This sidesteps an unverified question about whether the template compiler resolves <code>value</code> on a raw <textarea> as a property or an inert content attribute (HTMLTextAreaElement has no <code>value</code> content attribute, so getting this wrong would silently render an empty box). commit() sets area.value synchronously for the same reason: no re-render is guaranteed to run before the caret needs to move.</p>
+<p>These three mirror uiMarkdownParser's own construct grammar (INLINE_LINK / IMAGE_LINE's shared destination class, and VIDEO_LINE's stricter poster class) so the editor never emits Markdown its own preview — and the public page's parser — would refuse to match. safeUrl/ safeImageUrl only check the scheme; they do not check shape, so a value that passes them can still break the block/inline grammar and round-trip back as literal Markdown source instead of a link, image or video. Keep DESTINATION_VALID in lockstep with uiMarkdownParser.js's INLINE_LINK/IMAGE_LINE destination group if either changes.</p>
+<p>The poster sits in VIDEO_LINE's second destination group, <code>[^)\s]+</code> — which excludes only the closing paren and whitespace. An opening paren is legal there and round-trips, so rejecting it too would turn away addresses the story format actually accepts.</p>
+<p>Bold and Italic wrap whatever the author selected, and that selection is Markdown SOURCE, not rendered text — so an asterisk inside it would close the emphasis early and strand the rest of the selection as literal text on the donor's page. The parser treats a backslash-escaped delimiter as content (see findDelimiter), so escaping is a lossless repair rather than a refusal: the reader sees exactly the characters the author selected. An asterisk that is ALREADY escaped is left alone — re-escaping it would change <code>\*</code> from "a literal asterisk" into "a backslash followed by an asterisk", which is not what the author wrote. Any backslash is copied together with the character behind it for the same reason.</p>
+<p>Forwarded to the preview's c/uiMarkdown untouched. Preview fidelity is the pane's whole purpose, and without this an org that enabled inline playback would show its author a facade card while donors got a player — the one difference an author cannot discover by looking. The editor never reads Settings itself; the host passes down what the server resolved. Same strict allowlist as uiMarkdown's own setter, so an attribute string coerces the same way in both.</p>
+<p>Cancelling must release the range openPopover captured. replaceSelection prefers <code>_selection</code> over the live caret, so a stale one survives the popover it was taken for: select a phrase, open Link, Cancel, click elsewhere, then Divider — and the rule lands on the abandoned range, deleting the phrase at an offset the user is no longer looking at. A textarea edit is not undoable through the component, so that deletion is permanent.</p>
+<p>The stopPropagation is load-bearing, not defensive tidying. lightning-input dispatches its <code>change</code> as bubbles + composed, so without this it escapes this component's shadow root and arrives at the host's own onchange handler — which reasonably assumes any <code>change</code> from <c-ui-markdown-editor> is the story value and reads event.detail.value. The popover field's partial text would then overwrite the whole story on every keystroke, invisibly, because the popover is layered over the textarea. Any new listener added inside this component must do the same: this bundle emits exactly one <code>change</code> to the outside world, from commit().</p>
+<p>Prefixes EVERY line the selection touches, not just the one the caret sits on. Selecting three lines and clicking Bulleted list is the ordinary way anyone writes a list, and every Markdown editor an author has met behaves this way. <code>prefix</code> may be a function of the line's index within the selection, which is how the ordered list counts up.</p>
+<p>Blank lines inside a multi-line selection are skipped: a lone <code>-</code> renders as an empty bullet and a lone <code>&gt;</code> as an empty quote line, neither of which the author asked for. A single line is always prefixed even when empty — that is the "start a list here" case.</p>
+<p><strong><code>@api</code> properties:</strong> <code>inlineVideoEnabled</code>, <code>label</code>, <code>maxBytes</code>, <code>reportValidity</code>, <code>value</code></p>
+<h4 id="uimarkdownparser">Markdown Parser<a class="headerlink" href="#uimarkdownparser" title="Permanent link">#</a></h4>
+<p><code>uiMarkdownParser</code></p>
+<p><code>not exposed</code></p>
+<p>Shared service module: turns a campaign story's Markdown into a plain token array, validating every link, image and video destination it emits. The public renderer and the authoring console's preview both parse through it, so the two cannot diverge.</p>
+<p><strong>Docs note.</strong> Markdown -&gt; plain token array. A JS-only service bundle, like c/uiFontStacks. Deliberately NOT a Markdown-to-HTML converter: c-ui-markdown renders these tokens through for:each/lwc:if bindings, so every author string lands in an auto-escaped LWC text node. There is no innerHTML and no lwc:dom="manual" anywhere in this feature, which is what makes stored-XSS structurally impossible rather than sanitizer- dependent. CampaignService.normalizeStoryMarkdown is the server-side authority; the gates here are defence in depth and the editor's live preview.</p>
+<p>Keep this file import-free. scripts/lint/markdown-parser-check.mjs loads it as a data: URL module to test the shipped source directly, and a data: module cannot resolve bare specifiers. <code>npm run lint:markdown</code> fails loudly if an import appears.</p>
+<p>Reference-link syntax (<code>[label]: dest</code>, <code>[text][label]</code>, <code>[text][]</code>, bare <code>[label]</code>, and their <code>![...]</code> image forms) is DELIBERATELY never resolved anywhere in this file. The Apex sanitizer's own neutralization step can emit a bare <code>[x]</code> when it defuses a hostile nested construct (see CampaignService.cls's normalizeStoryMarkup header) — if this parser resolved shortcut references, that defused text would turn back into a live link on every neutralized input, not just crafted ones. INLINE_LINK only matches when <code>[...]</code> is immediately followed by <code>(...)</code>, so every reference-link shape simply falls through to literal text. Do not add reference-link resolution here.</p>
+<p>Also assume attribute-bearing HTML tag text reaches this file unstripped. CampaignService's sanitizer has parked, known gaps (<code>&lt;img src="x"onerror=alert(1)&gt;</code>, <code>&lt;svg onload = alert(1)&gt;</code> — see task-5-review.md P-1/P-2) that survive every round of the Apex scanner rewrite. This file has no <code>&lt;...&gt;</code> handling at all — every <code>&lt;</code> is a literal character, always — so that is what actually stops those two shapes from becoming a live tag, not the Apex strip.</p>
 <h4 id="uimodal">Ember Modal<a class="headerlink" href="#uimodal" title="Permanent link">#</a></h4>
 <p><code>uiModal</code></p>
 <p><code>not exposed</code></p>

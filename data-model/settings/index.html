@@ -1235,6 +1235,8 @@
       
         
       
+        
+      
     
     
     
@@ -1295,6 +1297,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -1895,7 +1925,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>94 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>95 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -2263,6 +2293,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Grace_Period_Days</td>
 <td>Number</td>
 <td>Days to wait after the last failed attempt before canceling a recurring gift, e.g. 7.<br><em>Docs: Read by SettingsService.gracePeriodDays() (default 7 when unset). Counts days a recurring schedule may sit Failed (Failed_At__c) before RecurringAutoCancelBatch cancels it outright.</em></td>
+</tr>
+<tr>
+<td><code>Inline_Video_Embeds_Enabled__c</code></td>
+<td>Inline Video Embeds Enabled</td>
+<td>Checkbox</td>
+<td>Play story videos directly on the public page instead of opening YouTube in a new tab. This only works after you create a CSP Trusted Site for https://www.youtube-nocookie.com yourself — see the Story media section of the Organization setup panel for the exact values. Leave off and videos show a poster card that links out, which needs no setup.<br><em>Docs: Read by SettingsService.inlineVideoEmbedsEnabled() and emitted to the guest page as the inlineVideoEnabled key on the CampaignService payload. Turning it on without creating the trusted site produces a blocked iframe, not an error, so the setup panel states the requirement next to the toggle rather than trying to detect it.</em></td>
 </tr>
 <tr>
 <td><code>Log_Level__c</code></td>

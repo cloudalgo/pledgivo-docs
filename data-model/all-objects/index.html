@@ -1601,6 +1601,8 @@
       
         
       
+        
+      
     
     
     
@@ -1661,6 +1663,34 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
   
 
     
@@ -3240,7 +3270,7 @@
 <td><code>Story__c</code></td>
 <td>Story</td>
 <td>LongTextArea</td>
-<td>Tell donors why this campaign matters. Shown as the main story on the public page. Leave a blank line between paragraphs, and start a paragraph with "&gt;" to pull it out as a highlighted quote. Long stories are folded behind a Read the full story link.</td>
+<td>The narrative donors read on the public page — who you help, why it matters, what their gift does. Written in Markdown using the toolbar on the Story step of the fundraiser wizard: ## for a heading, <strong>bold</strong>, a bullet list, a pull quote, an image URL, a YouTube link. Type it as plain paragraphs and it still renders correctly.<br><em>Docs: Holds Markdown, never HTML. Every write from the fundraiser wizard passes through CampaignService.normalizeStoryMarkdown(), which strips HTML tags, blanks javascript:/data: URLs, drops malformed YouTube ids and throws above the byte ceiling. The public page renders it through uiMarkdownParser.js -&gt; c-ui-markdown as a token tree of escaped LWC text bindings, so no author string ever reaches innerHTML. Stories written before Markdown (plain paragraphs, a leading "&gt;" pull quote) are already valid Markdown and needed no migration. The length is the platform maximum and is one-way: a shipped field's length can be raised but never lowered, so 131072 is a permanent contract with every subscriber org.</em></td>
 </tr>
 <tr>
 <td><code>Suggested_Amounts__c</code></td>
@@ -5794,7 +5824,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>94 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>95 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <p><strong>Docs note.</strong> Tier 1 of the three-tier settings model documented in specs/04-data-model.md. Tier 2 is Payment_Account__c (one record per set of connected processor credentials — it replaced the Payment_Gateway__mdt CMDT tier in 2026-08), Tier 3 is Named Credentials (secrets never live here). As a Hierarchy Custom Setting it resolves Org Defaults, falling back per profile or user only if a future release needs per-role overrides; today every read goes through the Org Default row via SettingsService, which exposes one typed accessor per field or field group rather than callers reading Settings__c.getOrgDefaults() directly, so a field rename or a default-value change only needs one code change.</p>
 <p>See the <a href="../settings/">full reference page</a> for this object.</p>
@@ -6146,6 +6176,12 @@
 <td>Grace_Period_Days</td>
 <td>Number</td>
 <td>Days to wait after the last failed attempt before canceling a recurring gift, e.g. 7.<br><em>Docs: Read by SettingsService.gracePeriodDays() (default 7 when unset). Counts days a recurring schedule may sit Failed (Failed_At__c) before RecurringAutoCancelBatch cancels it outright.</em></td>
+</tr>
+<tr>
+<td><code>Inline_Video_Embeds_Enabled__c</code></td>
+<td>Inline Video Embeds Enabled</td>
+<td>Checkbox</td>
+<td>Play story videos directly on the public page instead of opening YouTube in a new tab. This only works after you create a CSP Trusted Site for https://www.youtube-nocookie.com yourself — see the Story media section of the Organization setup panel for the exact values. Leave off and videos show a poster card that links out, which needs no setup.<br><em>Docs: Read by SettingsService.inlineVideoEmbedsEnabled() and emitted to the guest page as the inlineVideoEnabled key on the CampaignService payload. Turning it on without creating the trusted site produces a blocked iframe, not an error, so the setup panel states the requirement next to the toggle rather than trying to detect it.</em></td>
 </tr>
 <tr>
 <td><code>Log_Level__c</code></td>

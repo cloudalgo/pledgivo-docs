@@ -2050,7 +2050,7 @@ Developer. Professional edition can't publish public pages; see
 All Sites list and nothing to create. Salesforce asks you to choose an Enhanced Domain
 subdomain as part of switching it on; that name becomes part of every public donation URL,
 is org-wide, and cannot be undone, so pick one you are happy to publish.</p>
-<p>The Settings console's <strong>Site &amp; Domain</strong> panel is a seven-step checklist that starts with this
+<p>The Settings console's <strong>Site &amp; Domain</strong> panel is an eight-step checklist that starts with this
 same step, machine-checks it against your org, and links you straight to the Setup page.</p>
 <h2 id="2-create-the-site">2. Create the site<a class="headerlink" href="#2-create-the-site" title="Permanent link">#</a></h2>
 <p><strong>Setup → Digital Experiences → All Sites → New.</strong></p>
@@ -2136,7 +2136,7 @@ rollout actually uses:</p>
 </table>
 <p><code>thank-you</code>, <code>receipt</code> and <code>tickets</code> are fixed paths — build them exactly as written. <code>donate</code>
 and <code>donor</code> are configurable in the Settings console under <strong>General → Organization &amp; Donations</strong>
-and <strong>General → Email &amp; Receipts</strong>. The <strong>Site &amp; Domain</strong> panel's step 6 shows the paths your org
+and <strong>General → Email &amp; Receipts</strong>. The <strong>Site &amp; Domain</strong> panel's step 7 shows the paths your org
 is actually configured with, plus a live link to each page so you can confirm it loads.</p>
 <p>Build each the same way as the Donate page: <strong>New Page → Standard → Flexible Layout</strong>, set the
 URL in Page Properties, drag in the named component, <strong>Save</strong>.</p>
@@ -2156,13 +2156,23 @@ Domain panel marks this step <strong>Can't verify</strong> for the same reason, 
 <strong>Workspaces</strong> screen, open <strong>Administration → Members</strong> and assign the permission set to the
 Guest User profile. Without it, guest visitors can view campaign pages but the donation form
 cannot submit — see <a href="../installation/">Installation</a>.</p>
+<p>Next, grant that Guest User <strong>Read</strong> on the standard <strong>Campaign</strong> object. Fundraisers are
+Campaign records, and Salesforce does not let a managed package ship permissions on standard
+objects — they are removed when the package version is built — so <code>Fundraising_GuestDonor</code>
+carries every custom object and field grant your public pages need and can never carry this one.
+Without it a visitor gets an error on every campaign, donation and ticket page. Do it in
+<strong>Setup → Profiles → your site's guest user profile → Object Settings → Campaigns → Edit</strong>:
+tick <strong>Read</strong> and nothing else. A guest user must never hold Create, Edit or Delete on Campaign.
+Granting it through a permission set of your own and assigning that to the guest user works
+equally well. This one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 5 reads the grant
+back and reports <strong>Done</strong> or <strong>Pending</strong>.</p>
 <p>Finally, grant the <strong>public</strong> Stripe credential to that same Guest User. Salesforce does not let a
 managed permission set grant access to an external credential principal, so this package can never
 ship that grant — you create your own permission set holding that credential's <code>OrgPrincipal</code> and
 assign it to the guest user as well as to your fundraising staff. Keep the <strong>admin</strong> credential's
 grant on a <em>separate</em> permission set that the guest user is never assigned: it carries the full
 secret key, so a guest user holding it can issue refunds. Unlike the Public Access toggle above,
-this one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 5 reads the grant back via
+this one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 6 reads the grant back via
 <code>SetupEntityAccess</code> and reports <strong>Done</strong> once a permission set granting the public credential's
 principal is assigned to the site's guest user, or <strong>Pending</strong> with the specific reason (no grant
 found at all vs. granted but not assigned to this guest user) otherwise. That step grades the

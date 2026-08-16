@@ -2553,6 +2553,18 @@ script no way to know who on your team does what.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">The guest user needs one grant the package cannot give it</p>
+<p>Salesforce does not allow a managed package to ship permissions on <strong>standard</strong> objects, so
+<code>Fundraising_GuestDonor</code> carries every custom object and field your public pages read and no
+access to <strong>Campaign</strong> — which is the object a fundraiser <em>is</em>. Grant the site's guest user
+profile <strong>Read</strong> on Campaign by hand (Setup → <strong>Profiles</strong> → the guest user profile →
+<strong>Object Settings → Campaigns</strong>), or put the grant on a permission set of your own and assign
+that to the guest user. Without it every public campaign, donation and ticket page fails to
+load. The Settings console's <strong>Site &amp; Domain</strong> panel checks this for you at step 5. The same
+limitation is why the three staff sets grant no standard object either — staff on a standard
+Salesforce profile already have that access, so nothing extra is needed for them.</p>
+</div>
 <p><strong>The route that always works</strong> is from the user, not from the permission set:</p>
 <ol>
 <li>Setup → <strong>Users → Users</strong> → click the person's name.</li>
@@ -2601,7 +2613,7 @@ it. Publishing and activating are different operations in different screens.</p>
 Setup → <strong>Digital Experiences → Settings → Enable Digital Experiences</strong>. It is org-wide,
 asks you to pick an Enhanced Domain subdomain, and cannot be undone.</p>
 <div class="fn-steps">
-<figure class="fn-step" data-title="Site &amp; Domain checklist"><img src="../../assets/images/gs-12-site-domain-checklist.png" alt="Site &amp; Domain panel in the Settings console, a seven-step checklist" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Site &amp; Domain</b>. Steps the app can verify against your org are marked Done or Pending; steps Salesforce exposes no API for are marked <b>Can't verify</b> and are yours to confirm.</figcaption></figure>
+<figure class="fn-step" data-title="Site &amp; Domain checklist"><img src="../../assets/images/gs-12-site-domain-checklist.png" alt="Site &amp; Domain panel in the Settings console, a step-by-step checklist" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Settings console → <b>Site &amp; Domain</b>. Steps the app can verify against your org are marked Done or Pending; steps Salesforce exposes no API for are marked <b>Can't verify</b> and are yours to confirm.</figcaption></figure>
 <figure class="fn-step" data-title="All Sites, before any site exists"><img src="../../assets/images/gs-13-all-sites-empty.png" alt="Setup All Sites page with no sites yet" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>Digital Experiences → All Sites</b> before any site exists. <b>New</b> starts the template gallery.</figcaption></figure>
 <figure class="fn-step" data-title="The template gallery"><img src="../../assets/images/gs-14-choose-template.png" alt="Experience Cloud template gallery" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The template gallery. Most of these are Aura templates the package does not target.</figcaption></figure>
 <figure class="fn-step" data-title="Pick Build Your Own (LWR)"><img src="../../assets/images/gs-15-build-your-own-lwr.png" alt="Build Your Own (LWR) template selected" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>Build Your Own (LWR)</b> — the one to pick. The package's public components are Lightning Web Runtime components; they cannot be dropped onto an Aura template.</figcaption></figure>

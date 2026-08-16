@@ -2032,9 +2032,14 @@ with the two that can only be done in Salesforce Setup spelled out. The in-app
    Salesforce doesn't provision this for you on install — see
    <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a> for the full walkthrough:
    creating the site, building the Donate page and its supporting pages, and publishing.</li>
-<li><strong>Grant the guest user permission set.</strong> Assign <code>Fundraising_GuestDonor</code> to your
-   Experience Cloud site's guest user profile (covered in the guide above).
-   Without it, guest donors can view campaign pages but the donation form cannot submit.</li>
+<li><strong>Grant the guest user permission set — and Campaign read on its profile.</strong> Assign
+   <code>Fundraising_GuestDonor</code> to your Experience Cloud site's guest user profile (covered in the
+   guide above). Without it, guest donors can view campaign pages but the donation form cannot
+   submit. Then grant that guest user profile <strong>Read</strong> on the standard <strong>Campaign</strong> object,
+   which the permission set cannot do for you: a managed package is not allowed to ship
+   standard object permissions, so this one grant is always yours to make. Without it every
+   public campaign, donation and ticket page fails to load. The Settings console's
+   <strong>Site &amp; Domain</strong> panel checks both against your org — steps 4 and 5.</li>
 <li>
 <p><strong>Authorize the Stripe external credential — in a permission set you create.</strong> Salesforce
    won't let a <em>managed</em> permission set grant access to an external credential principal, so
@@ -2086,6 +2091,10 @@ for how that works.</p>
 <tr>
 <td>Four permission sets</td>
 <td><code>Fundraising_Admin</code>, <code>Fundraising_User</code>, <code>Fundraising_ReadOnly</code> (staff, scoped by role); <code>Fundraising_GuestDonor</code> (site guest — donation pages)</td>
+</tr>
+<tr>
+<td>…but not standard object access</td>
+<td>Salesforce does not allow a managed package to ship permissions on <strong>standard</strong> objects, so none of the four sets grants Campaign, Opportunity, Contact, Account or Product2 itself. Staff on a standard Salesforce profile already have that access; the site guest user does not, which is why step 6 above grants it by hand</td>
 </tr>
 <tr>
 <td>Email templates</td>

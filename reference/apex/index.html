@@ -96,8 +96,14 @@
         class="fn-brand"
         aria-label="Pledgivo Documentation"
         data-md-component="logo"
-      >
-        <span class="fn-brand__mark" aria-hidden="true">P</span>
+      ><img
+          class="fn-brand__mark"
+          src="../../assets/favicon.svg"
+          alt=""
+          aria-hidden="true"
+          width="32"
+          height="32"
+        >
         <span class="fn-brand__word">Pledgivo</span>
         
           <span class="fn-brand__ver">1.0.0-18</span>
@@ -14645,7 +14651,7 @@
 <p>Both this step and "Set up your payment account" send the admin to the same panel, and a first-run walkthrough arrived with no way to tell which of the two it had come for (2026-08-17, finding 7). Each summary now names the step on the Payments panel it corresponds to — by name, never by number, because <a href="#apex-paymentsetupguideservice"><code>PaymentSetupGuideService</code></a> assigns those numbers positionally.</p>
 <p>The route to the guest user is spelled out in full because the two routes an admin reaches for first are both dead ends: "Administration → Members" manages which profiles and permission sets may be MEMBERS of the site, and the guest user is not listed under Setup → Users at all. This checklist named both of them until 2026-08-17, when a first-run walkthrough followed them and got nowhere. Route verified against Salesforce Help, "Assign the Permission Sets to Experience Cloud Site Guest Users" (Summer '26); the Site &amp; Domain and Payments panels carry the same wording.</p>
 <p>This description states the consequence rather than the mechanism because the previous wording ("the install schedules all of them; re-run this if any were aborted") read as reassurance, and a 2026-08-17 fresh-install run skipped the step on the strength of it, then took a real card payment that no record was ever created for. The donation form does NOT check this step — nothing stops a gift being charged while the finalizer is missing, so the warning has to carry the whole weight.</p>
-<p>Every step's "read more" is this URL plus the docsAnchor its buildGuideStep call passes. Those anchors are NOT derived from the headings on that page — MkDocs would slug "## 4. Connect Stripe" as <code>4-connect-stripe</code>, and for the whole release before 2026-08-17 seven of the eight links pointed at ids that did not exist, landing the admin at the top of a 450-line page with no indication anything had gone wrong. The page now pins each heading's id with an attr_list <code>{ #slug }</code> so the anchor survives renumbering and rewording. Adding a step here means adding a section AND its <code>{ #slug }</code> there.</p>
+<p>Every step's "read more" is this URL plus the docsAnchor its buildGuideStep call passes. Those anchors are NOT derived from the headings on that page — MkDocs would slug "## 4. Connect Stripe" as <code>4-connect-stripe</code>, and for the whole release before 2026-08-17 seven of the eight links pointed at ids that did not exist, landing the admin at the top of a 450-line page with no indication anything had gone wrong. The page now pins each heading's id with an attr_list <code>{ #slug }</code> so the anchor survives renumbering and rewording. Adding a step here means adding a section AND its <code>{ #slug }</code> there. Four of them had drifted apart again by 2026-08-18, so the pairing is no longer trusted to reviewers: docs-site/scripts/mkdocs_hooks.py reads the anchors back out of this class and fails the docs build when one is missing from that page. A renamed section now breaks a build instead of quietly breaking a link.</p>
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration. The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
 <p>Returns the raw Settings__c on purpose — <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
 <p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that <a href="#apex-settingsservice"><code>SettingsService</code></a> defaults to — the nulls below are deliberate, not a failed parse.</p>

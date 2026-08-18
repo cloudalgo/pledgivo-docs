@@ -72,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#run-fundraising-natively-on-salesforce" class="md-skip">
+        <a href="#fundraising-that-never-leaves-salesforce" class="md-skip">
           Skip to content
         </a>
       
@@ -94,8 +94,14 @@
         class="fn-brand"
         aria-label="Pledgivo Documentation"
         data-md-component="logo"
-      >
-        <span class="fn-brand__mark" aria-hidden="true">P</span>
+      ><img
+          class="fn-brand__mark"
+          src="assets/favicon.svg"
+          alt=""
+          aria-hidden="true"
+          width="32"
+          height="32"
+        >
         <span class="fn-brand__word">Pledgivo</span>
         
           <span class="fn-brand__ver">1.0.0-18</span>
@@ -317,7 +323,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -354,24 +362,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="." class="md-nav__link md-nav__link--active">
         
   
@@ -388,60 +378,6 @@
   
 
       </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-does" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it does
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-native-matters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why native matters
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to start
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1944,7 +1880,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1958,47 +1896,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-it-does" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What it does
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#why-native-matters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why native matters
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to start
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -2011,136 +1908,337 @@
               <article class="md-content__inner md-typeset">
                 
                   
+  
 
 
+
+
+<!-- doc: This is the one page in the site that is not documentation. A reader
+     arriving here has not decided to use this product yet, so the page makes a
+     claim, gives evidence for it, shows the flow the claim is about, and offers
+     one obvious next click — rather than being a table of contents with a
+     headline on it.
+
+     The markup is deliberately hand-written HTML and not markdown card grids.
+     Every block below has a matching rule in the "Home" section at the foot of
+     assets/css/field-notes.css; the two are a pair, and neither is used by any
+     other page. Links here are plain relative URLs rather than `.md` paths
+     because MkDocs only rewrites links it parsed from markdown — they are
+     checked instead by mkdocs_hooks.on_post_build, which resolves every one of
+     them against the built site and fails the build on a miss. -->
+
+<!-- doc: The background field. Six stroke-only sketches, each a real thing in
+     the product: the donation form, the recurring loop, the goal bar, the org,
+     the object graph, the receipt. They are hand-drawn rather than photographic
+     because this theme is paper, black and one printer's red — the usual ways
+     to warm a page up (photography, gradients) would fight it, and margin
+     drawings do not. aria-hidden because none of it carries meaning a screen
+     reader would want. -->
+<div class="fn-field" aria-hidden="true">
+
+  <div class="fn-sk fn-sk--form">
+    <svg viewBox="0 0 200 240">
+      <rect x="14" y="10" width="172" height="220" rx="12"/>
+      <path d="M32 44h84"/><path d="M32 58h52"/>
+      <rect x="32" y="80" width="136" height="26" rx="6"/>
+      <rect x="32" y="116" width="64" height="26" rx="6"/>
+      <rect x="104" y="116" width="64" height="26" rx="6"/>
+      <rect x="32" y="158" width="136" height="34" rx="9"/>
+      <path d="M92 172c0-4 3-7 7-7 3 0 5 2 6 4 1-2 3-4 6-4 4 0 7 3 7 7 0 7-13 13-13 13s-13-6-13-13Z"/>
+      <path d="M32 208h74"/>
+    </svg>
+  </div>
+
+  <div class="fn-sk fn-sk--loop fn-sk--red">
+    <svg viewBox="0 0 200 200">
+      <path d="M100 26a74 74 0 1 1-58 28"/>
+      <path d="M32 20l10 36 36-10"/>
+      <circle cx="100" cy="100" r="34"/>
+      <path d="M100 82v20l14 9"/>
+    </svg>
+  </div>
+
+  <div class="fn-sk fn-sk--goal">
+    <svg viewBox="0 0 220 130">
+      <rect x="10" y="60" width="200" height="26" rx="13"/>
+      <path d="M23 60h114a13 13 0 0 1 0 26H23a13 13 0 0 1 0-26Z"/>
+      <path d="M150 60V16"/><path d="M150 20l42 10-42 12"/>
+      <path d="M10 104h64"/><path d="M146 104h64"/>
+    </svg>
+  </div>
+
+  <div class="fn-sk fn-sk--org">
+    <svg viewBox="0 0 220 180">
+      <path d="M56 84a30 30 0 0 1 55-16 24 24 0 0 1 41 13 24 24 0 0 1-5 47H74a25 25 0 0 1-18-44Z"/>
+      <ellipse cx="110" cy="132" rx="46" ry="14"/>
+      <path d="M64 132v26c0 8 21 14 46 14s46-6 46-14v-26"/>
+      <path d="M110 118v-24"/><path d="M103 102l7 8 7-8"/>
+    </svg>
+  </div>
+
+  <div class="fn-sk fn-sk--graph">
+    <svg viewBox="0 0 200 180">
+      <circle cx="42" cy="46" r="20"/><circle cx="158" cy="60" r="20"/><circle cx="96" cy="140" r="20"/>
+      <path d="M60 54l80 4"/><path d="M52 64l34 58"/><path d="M147 78l-38 46"/>
+    </svg>
+  </div>
+
+  <div class="fn-sk fn-sk--receipt">
+    <svg viewBox="0 0 140 200">
+      <path d="M18 12h104v162l-13-9-13 9-13-9-13 9-13-9-13 9-13-9-13 9Z"/>
+      <path d="M38 46h64"/><path d="M38 66h64"/><path d="M38 86h40"/>
+      <path d="M38 118h64"/><path d="M38 138h30"/>
+    </svg>
+  </div>
+
+</div>
 
 <p class="fn-eyebrow">Pledgivo Documentation</p>
 
-<h1 id="run-fundraising-natively-on-salesforce">Run fundraising natively on Salesforce<a class="headerlink" href="#run-fundraising-natively-on-salesforce" title="Permanent link">#</a></h1>
-<p class="fn-dek">Pledgivo is a managed package for donation processing, recurring giving, campaigns, and events — installed directly into your org, with donor data that never leaves it.</p>
+<h1 class="fn-home-h1" id="fundraising-that-never-leaves-salesforce">Fundraising that <em>never leaves</em> Salesforce.<a class="headerlink" href="#fundraising-that-never-leaves-salesforce" title="Permanent link">#</a></h1>
+<p class="fn-dek fn-hero__dek">A native AppExchange managed package for donations, recurring giving,
+campaigns and ticketed events. The donation form, the payment processing and the donor records all
+run inside your org — no external platform, no sync job, no second permission model.</p>
 
-<p>Most fundraising platforms ask you to run donor data through an external system and sync it
-back to Salesforce on a schedule. Pledgivo skips that step. The donation form, the payment
-processing, the recurring billing, and the donor records all live on the same Salesforce
-instance as your Contacts, Accounts, and Opportunities — queryable the moment a gift lands,
-reportable with standard Salesforce reports, and governed by your org's existing sharing
-model.</p>
+<div class="fn-cta">
+  <a class="fn-btn fn-btn--primary" href="getting-started/installation/">
+    Install the package
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v12"/><path d="m7 12 5 5 5-5"/><path d="M5 20h14"/></svg>
+  </a>
+  <a class="fn-btn fn-btn--ghost" href="guides/first-campaign/">
+    Set up your first campaign
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+  </a>
+</div>
+
 <div class="fn-status-strip">
   <span class="fn-chip">2GP managed package</span>
   <span class="fn-chip">Namespace: pledgivo</span>
   <span class="fn-chip">API 67.0</span>
   <span class="fn-chip">Enhanced LWR</span>
   <span class="fn-chip">Stripe payments</span>
+  <span class="fn-chip">Person Accounts</span>
 </div>
 
-<h2 id="what-it-does">What it does<a class="headerlink" href="#what-it-does" title="Permanent link">#</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><strong>Donations &amp; payments</strong></p>
-<hr />
-<p>A public, guest-accessible donation form backed by Stripe's Payment Element — card and
-card-backed wallets, one-time or recurring — with donation records landing directly on the
-standard Opportunity object.</p>
-<p><a href="concepts/donations-payments/">Learn about donations &amp; payments →</a></p>
-</li>
-<li>
-<p><strong>Recurring giving</strong></p>
-<hr />
-<p>Salesforce owns the billing schedule and charges the donor's saved card off-session on
-its own cadence, with built-in dunning for failed payments — no external subscription
-system to reconcile.</p>
-<p><a href="concepts/recurring-giving/">Learn about recurring giving →</a></p>
-</li>
-<li>
-<p><strong>Campaigns</strong></p>
-<hr />
-<p>Every fundraising ask is a standard Salesforce Campaign, themed with a reusable page
-design and composed from movable content and field blocks — no page-builder platform
-bolted on the side.</p>
-<p><a href="concepts/campaigns/">Learn about campaigns →</a></p>
-</li>
-<li>
-<p><strong>Events &amp; ticketing</strong></p>
-<hr />
-<p>Ticketed events with tiered pricing and seat capacity, built on the same donation
-pipeline as every other gift.</p>
-<p><a href="concepts/events-ticketing/">Learn about events &amp; ticketing →</a></p>
-</li>
-</ul>
+<!-- doc: Four numbers, each a consequence of being native rather than a claim a
+     competitor could match by writing better marketing. All four are checkable
+     against the source: there is no @RestResource for Stripe anywhere in the
+     package (the only one is EmbedConfigResource), nothing writes donor data
+     anywhere but Salesforce, PostInstallHandler.expectedJobCount() returns 24,
+     and AGENTS.md Rule 2 gates every Apex change at 90%. If one of those facts
+     changes, this strip is wrong and has to change with it. -->
+<div class="fn-proof">
+  <div><b>0</b><span>webhooks to secure — Salesforce re-fetches payment status from Stripe</span></div>
+  <div><b>0</b><span>sync jobs — a gift is queryable the instant it is taken</span></div>
+  <div><b>24</b><span>scheduled Apex jobs, installed and started for you</span></div>
+  <div><b>90%</b><span>Apex test coverage, gated on every change</span></div>
 </div>
-<h2 id="why-native-matters">Why native matters<a class="headerlink" href="#why-native-matters" title="Permanent link">#</a></h2>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Typical external platform</th>
-<th>Pledgivo</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Donor data</td>
-<td>Synced back to Salesforce on a schedule</td>
-<td>Written directly to Salesforce, no sync job</td>
-</tr>
-<tr>
-<td>Payment confirmation</td>
-<td>Inbound webhook to a public endpoint</td>
-<td>Salesforce re-fetches payment status from Stripe — no webhook to secure</td>
-</tr>
-<tr>
-<td>Reporting</td>
-<td>Requires a connector or export</td>
-<td>Standard Salesforce reports and dashboards</td>
-</tr>
-<tr>
-<td>Sharing &amp; security</td>
-<td>A second permission model to maintain</td>
-<td>Your org's existing sharing rules and permission sets</td>
-</tr>
-<tr>
-<td>Person Accounts</td>
-<td>Usually unsupported or bolted on</td>
-<td>Detected at runtime, supported throughout</td>
-</tr>
-</tbody>
+
+<section class="fn-home-sec">
+
+<div class="fn-sec-head">
+  <span class="fn-sec-head__n">01</span>
+  <h2>What it does</h2>
+  <p>Four capabilities, one pipeline, one set of records.</p>
+</div>
+
+<div class="fn-home-cards">
+
+  <div class="fn-home-card">
+    <div class="fn-home-card__icon"><svg viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="8" y="6" width="48" height="52" rx="7"/><path d="M18 20h20"/><path d="M18 28h12"/>
+      <rect x="18" y="36" width="28" height="12" rx="6"/>
+      <path d="M25 41c0-2 1.4-3.2 3-3.2 1.4 0 2.3.9 2.8 1.8.5-.9 1.4-1.8 2.8-1.8 1.6 0 3 1.2 3 3.2 0 3.2-5.8 6-5.8 6s-5.8-2.8-5.8-6Z"/>
+    </svg></div>
+    <h3>Donations &amp; payments</h3>
+    <p>A public, guest-accessible donation form backed by Stripe's Payment Element — card and
+       card-backed wallets, one-time or recurring — landing directly on the standard Opportunity
+       object.</p>
+    <a href="concepts/donations-payments/">Donations &amp; payments</a>
+  </div>
+
+  <div class="fn-home-card">
+    <div class="fn-home-card__icon"><svg viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M32 8a24 24 0 1 1-19 9"/><path d="M8 6l3 12 12-3"/>
+      <circle cx="32" cy="32" r="11"/><path d="M32 26v6l5 3"/>
+    </svg></div>
+    <h3>Recurring giving</h3>
+    <p>Salesforce owns the billing schedule and charges the saved card off-session on its own
+       cadence, with built-in dunning for failed payments — no external subscription system to
+       reconcile.</p>
+    <a href="concepts/recurring-giving/">Recurring giving</a>
+  </div>
+
+  <div class="fn-home-card">
+    <div class="fn-home-card__icon"><svg viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="6" y="26" width="52" height="14" rx="7"/>
+      <path d="M13 26h24a7 7 0 0 1 0 14H13a7 7 0 0 1 0-14Z"/>
+      <path d="M44 26V8"/><path d="M44 10l13 4-13 5"/><path d="M6 50h20"/><path d="M38 50h20"/>
+    </svg></div>
+    <h3>Campaigns</h3>
+    <p>Every fundraising ask is a standard Salesforce Campaign, themed with a reusable page design
+       and composed from movable content and field blocks — no page-builder platform bolted on the
+       side.</p>
+    <a href="concepts/campaigns/">Campaigns</a>
+  </div>
+
+  <div class="fn-home-card">
+    <div class="fn-home-card__icon"><svg viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M8 20a4 4 0 0 0 4-4h40a4 4 0 0 0 4 4v6a6 6 0 0 0 0 12v6a4 4 0 0 0-4 4H12a4 4 0 0 0-4-4v-6a6 6 0 0 0 0-12Z"/>
+      <path d="M24 18v4"/><path d="M24 30v4"/><path d="M24 42v4"/><path d="M36 32h12"/>
+    </svg></div>
+    <h3>Events &amp; ticketing</h3>
+    <p>Ticketed events with tiered pricing and seat capacity, built on the same donation pipeline —
+       and the same reporting — as every other gift.</p>
+    <a href="concepts/events-ticketing/">Events &amp; ticketing</a>
+  </div>
+
+</div>
+
+</section>
+
+<!-- doc: The one question a fundraising buyer actually has and which no feature
+     grid answers: where does the money go, and where does the record land. -->
+<section class="fn-home-sec">
+
+<div class="fn-sec-head">
+  <span class="fn-sec-head__n">02</span>
+  <h2>How a gift travels</h2>
+  <p>Three hops, and none of them leave your org.</p>
+</div>
+
+<div class="fn-flow">
+  <div class="fn-flow__rail">
+
+    <div class="fn-flow__step">
+      <div class="fn-flow__art"><svg viewBox="0 0 70 78" aria-hidden="true">
+        <rect x="6" y="4" width="58" height="70" rx="8"/><path d="M18 22h26"/>
+        <rect x="18" y="32" width="34" height="11" rx="5"/><rect x="18" y="50" width="34" height="12" rx="6"/>
+      </svg></div>
+      <b>Donor gives</b>
+      <span>On your Experience Cloud site. Stripe.js tokenizes the card in the browser — no card
+            number ever reaches Apex.</span>
+    </div>
+
+    <div class="fn-flow__arrow"><svg viewBox="0 0 60 24" aria-hidden="true">
+      <path class="fn-dash" d="M2 12h48"/><path d="M44 5l8 7-8 7"/>
+    </svg></div>
+
+    <div class="fn-flow__step">
+      <div class="fn-flow__art"><svg viewBox="0 0 78 78" aria-hidden="true">
+        <path d="M20 34a17 17 0 0 1 31-9 14 14 0 0 1 23 8 13 13 0 0 1-3 26H32a14 14 0 0 1-12-25Z"/>
+        <path d="M39 46v16"/><path d="M32 55l7 8 7-8"/>
+      </svg></div>
+      <b>Salesforce confirms</b>
+      <span>Scheduled Apex asks Stripe what happened, rather than waiting on an inbound webhook you
+            would have to secure.</span>
+    </div>
+
+    <div class="fn-flow__arrow"><svg viewBox="0 0 60 24" aria-hidden="true">
+      <path class="fn-dash" d="M2 12h48"/><path d="M44 5l8 7-8 7"/>
+    </svg></div>
+
+    <div class="fn-flow__step">
+      <div class="fn-flow__art"><svg viewBox="0 0 70 78" aria-hidden="true">
+        <path d="M10 6h44v66l-8-6-7 6-7-6-7 6-7-6-8 6Z"/>
+        <path d="M22 26h20"/><path d="M22 38h20"/><path d="M22 50h12"/>
+      </svg></div>
+      <b>Records land</b>
+      <span>An Opportunity, a donor Contact or Person Account, a receipt — reportable with standard
+            Salesforce reports, immediately.</span>
+    </div>
+
+  </div>
+  <p class="fn-flow__note">Your Stripe secret key lives in a <b>Named Credential you build in
+     Setup</b>. This package never ships, stores, or creates a payment credential of its own.</p>
+</div>
+
+</section>
+
+<section class="fn-home-sec">
+
+<div class="fn-sec-head">
+  <span class="fn-sec-head__n">03</span>
+  <h2>Why native matters</h2>
+  <p>The same five questions, answered two ways.</p>
+</div>
+
+<table class="fn-ledger">
+  <thead>
+    <tr><th></th><th>Typical external platform</th><th>Pledgivo</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Donor data</td><td>Synced back to Salesforce on a schedule</td><td>Written directly to Salesforce, no sync job</td></tr>
+    <tr><td>Payment confirmation</td><td>Inbound webhook to a public endpoint</td><td>Salesforce re-fetches status from Stripe — no webhook to secure</td></tr>
+    <tr><td>Reporting</td><td>Requires a connector or an export</td><td>Standard Salesforce reports and dashboards</td></tr>
+    <tr><td>Sharing &amp; security</td><td>A second permission model to maintain</td><td>Your org's existing sharing rules and permission sets</td></tr>
+    <tr><td>Person Accounts</td><td>Usually unsupported or bolted on</td><td>Detected at runtime, supported throughout</td></tr>
+  </tbody>
 </table>
-<h2 id="where-to-start">Where to start<a class="headerlink" href="#where-to-start" title="Permanent link">#</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><strong>New to Pledgivo</strong></p>
-<hr />
-<p>Install the package, connect Stripe, and take the setup assistant through org detection
-and record types.</p>
-<p><a href="getting-started/installation/">Start with installation →</a></p>
-</li>
-<li>
-<p><strong>Ready to launch a campaign</strong></p>
-<hr />
-<p>A guided walkthrough from creating a Campaign to publishing its donation page.</p>
-<p><a href="guides/first-campaign/">Set up your first campaign →</a></p>
-</li>
-<li>
-<p><strong>Looking for a specific object or field</strong></p>
-<hr />
-<p>The full data model reference — every custom object, every field, with an interactive
-relationship diagram.</p>
-<p><a href="data-model/">Browse the data model →</a></p>
-</li>
-<li>
-<p><strong>Integrating with Stripe or NPSP</strong></p>
-<hr />
-<p>Technical reference for the payment gateway architecture and the optional NPSP sync.</p>
-<p><a href="integrations/stripe/">Stripe integration →</a></p>
-</li>
-</ul>
+
+</section>
+
+<section class="fn-home-sec">
+
+<div class="fn-sec-head">
+  <span class="fn-sec-head__n">04</span>
+  <h2>Where to start</h2>
+  <p>Pick the one that matches what you came here for.</p>
 </div>
+
+<div class="fn-home-paths">
+
+  <div class="fn-home-path">
+    <b>New here</b>
+    <h3>Install &amp; connect</h3>
+    <p>Install the package, build the Stripe credentials, and take the setup assistant through
+       record types.</p>
+    <a href="getting-started/installation/">Installation →</a>
+  </div>
+
+  <div class="fn-home-path">
+    <b>Ready to launch</b>
+    <h3>Your first campaign</h3>
+    <p>A guided walkthrough from creating a Campaign to publishing its donation page.</p>
+    <a href="guides/first-campaign/">First campaign →</a>
+  </div>
+
+  <div class="fn-home-path">
+    <b>Looking something up</b>
+    <h3>The data model</h3>
+    <p>Every custom object and field, with an interactive relationship diagram.</p>
+    <a href="data-model/">Data model →</a>
+  </div>
+
+  <div class="fn-home-path">
+    <b>Integrating</b>
+    <h3>Stripe &amp; NPSP</h3>
+    <p>The payment gateway architecture, and the optional NPSP allocation sync.</p>
+    <a href="integrations/stripe/">Integrations →</a>
+  </div>
+
+</div>
+
+</section>
+
+<div class="fn-closer">
+  <div class="fn-closer__art"><svg viewBox="0 0 240 200" aria-hidden="true">
+    <circle cx="50" cy="46" r="22"/><circle cx="180" cy="66" r="22"/><circle cx="112" cy="152" r="22"/>
+    <path d="M70 52l88 8"/><path d="M60 66l40 66"/><path d="M168 86l-42 50"/>
+    <path d="M120 12v18"/><path d="M112 24l8 9 8-9"/>
+  </svg></div>
+  <div class="fn-closer__body">
+    <h2>Everything you raise money with lives in one tab.</h2>
+    <p>Campaigns, events, page designs and donation monitoring, all in the Fundraisers console —
+       and the whole install checklist is graded against your org, live.</p>
+  </div>
+  <a class="fn-btn fn-btn--primary" href="getting-started/after-you-install/">Read the install guide</a>
+</div>
+
 <div class="admonition note">
 <p class="admonition-title">Working title</p>
-<p>"Pledgivo" is a working product name. It does not appear in any Salesforce API name,
-field, or record type — see the data model reference for the actual packaged names.</p>
+<p>"Pledgivo" is a working product name. It does not appear in any Salesforce API name, field, or
+record type — see the <a href="data-model/">data model reference</a> for the actual packaged names.</p>
 </div>
 
 
@@ -2154,6 +2252,8 @@ field, or record type — see the data model reference for the actual packaged n
 
 
 
+
+  
 
 
 
@@ -2178,6 +2278,8 @@ field, or record type — see the data model reference for the actual packaged n
   <footer class="md-footer">
   
     
+      
+        
       
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         

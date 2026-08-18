@@ -103,8 +103,7 @@
           aria-hidden="true"
           width="32"
           height="32"
-        >
-        <span class="fn-brand__word">Pledgivo</span>
+        ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
           <span class="fn-brand__ver">1.0.0-19</span>
         
@@ -2033,7 +2032,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>95 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>96 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -2379,6 +2378,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>The percentage part of your payment processor's fee, e.g. 2.9 for Stripe's standard US card rate. Used only to work out the extra amount a donor pays when they tick "cover the processing fee" — it never changes what your processor actually charges you. Leave blank to use 2.9.<br><em>Docs: Deliberately org-level rather than per-campaign: the rate is a property of the payment processor's pricing, not of an appeal, and an admin who has negotiated a different rate has one place to change it. The old Default_Fee_On_Top_Percent__c was removed 2026-08-03 as dead config because nothing consumed it; this field is its replacement and IS consumed, by FeeCoverageService.computeFee. Blank falls back to 2.9 rather than 0 — a zero rate would silently make every "cover the fee" tick add only the fixed component, which reads as a bug rather than as unconfigured.</em></td>
 </tr>
 <tr>
+<td><code>Finalizer_Heartbeat__c</code></td>
+<td>Finalizer Heartbeat</td>
+<td>DateTime</td>
+<td>Machine-managed. Do not edit — the finalizer job stamps this every time it completes a pass, and the setup console reads it to tell you whether gifts are still being turned into records.<br><em>Docs: This exists because a scheduled-job COUNT cannot detect a job that is scheduled but not running. The setup console's "background jobs" check counts CronTrigger rows, which stay at 24/24 even when every run is aborting; this marker is written from inside the job itself, so it only advances when a pass genuinely completed. The guest donation path reads it before creating a PaymentIntent and, when it is stale, still takes the gift (a donor-facing outage is worse than a delayed record) but writes a PIPELINE_STALE Transaction_Log__c row so the admin's Recent Errors panel and Get Started step both go red. Staleness threshold lives in SettingsService.FINALIZER_STALE_MINUTES; the finalizer itself runs every 5 minutes, so 30 minutes is six missed passes.</em></td>
+</tr>
+<tr>
 <td><code>Footer_Text__c</code></td>
 <td>Public Page Footer Text</td>
 <td>Text</td>
@@ -2674,64 +2679,64 @@ run, new-records-only, or (for a few) no effect yet — see the
         
       </main>
       
-  <footer class="md-footer">
-  
+  <footer class="md-footer fn-foot">
+  <div class="fn-foot__inner md-grid">
     
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      <nav class="fn-foot__nav" aria-label="Footer">
         
-          
-          <a href="../payment-method/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Payment Method">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Payment Method
-              </div>
-            </div>
+          <a
+            href="../payment-method/"
+            class="fn-foot__page fn-foot__page--prev"
+            rel="prev"
+          >
+            <span class="fn-foot__dir">Previous</span>
+            <span class="fn-foot__pagetitle">Payment Method</span>
           </a>
         
         
-          
-          <a href="../../guides/first-campaign/" class="md-footer__link md-footer__link--next" aria-label="Next: Set up your first campaign">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Set up your first campaign
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
+          <a
+            href="../../guides/first-campaign/"
+            class="fn-foot__page fn-foot__page--next"
+            rel="next"
+          >
+            <span class="fn-foot__dir">Next</span>
+            <span class="fn-foot__pagetitle">Set up your first campaign</span>
           </a>
         
       </nav>
     
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
-  
-    <div class="md-copyright__highlight">
-      &copy; 2026 <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
 
-    </div>
-  
-  
-    Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
-    </a>
-  
-</div>
+    <section class="fn-foot__help" aria-labelledby="fn-foot-help">
+      <div>
+        <p class="fn-foot__helptitle" id="fn-foot-help">Need a hand with any of this?</p>
+        <p class="fn-foot__helpnote">
+          CloudAlgo can install and configure the package for you, or build the
+          customisations your fundraising program needs on top of it.
+        </p>
+      </div>
+      <a class="fn-foot__cta" href="https://cloudalgo.com/contact/" target="_blank" rel="noopener">
+        Contact us
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
+          <path fill="currentColor" d="M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z"/>
+        </svg>
+      </a>
+    </section>
+
+    <div class="fn-foot__meta">
+      <a class="fn-foot__lockup" href="https://cloudalgo.com/" target="_blank" rel="noopener">
+        <span class="fn-foot__lead">A product by</span>
+        <img
+          class="fn-foot__logo"
+          src="../../assets/images/cloudalgo-logo-dark.svg"
+          alt="CloudAlgo"
+          width="291"
+          height="53"
+          loading="lazy"
+        >
+      </a>
+      
+        <p class="fn-foot__copy">&copy; 2026 <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
+</p>
       
     </div>
   </div>

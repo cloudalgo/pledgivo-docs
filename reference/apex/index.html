@@ -103,8 +103,7 @@
           aria-hidden="true"
           width="32"
           height="32"
-        >
-        <span class="fn-brand__word">Pledgivo</span>
+        ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
           <span class="fn-brand__ver">1.0.0-19</span>
         
@@ -9700,6 +9699,10 @@
 <p><code>class</code> · <code>public without sharing</code></p>
 <p>implements Database.Batchable&lt;SObject&gt;, Database.AllowsCallouts</p>
 <p>The webhook-free finalizer. Runs in system (batch) context — which HAS External Credential access to the payment account's Named Credential (proven by the Task-1 spike) — and is the SOLE creator of donation <a href="#apex-opportunities"><code>Opportunities</code></a>. For each non-terminal staging it re-fetches the PI status from Stripe (authoritative) and: succeeded            → routed by Purchase_Type__c: 'Event_Ticket' goes to <a href="#apex-ieventpurchaseservice"><code>IEventPurchaseService</code></a>.finalizeSucceededEventStaging (one Opportunity + OLIs + attendees); everything else to <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a> (plain donation). Routing on the wrong branch would finalize a paid ticket order as an amount-only donation with no line items/attendees and burn the unique Stripe_Payment_Intent_Id__c, making the order unrepairable. canceled             → staging Failed (event tickets: seats released first) pending past TTL     → staging Expired (event tickets: seats released first) still pending        → left for the next run no intent at all     → nothing to re-fetch; retired on the TTL fallback like any unpaid row exception            → Finalization_Error__c recorded; left for retry (event tickets: seats released too if the error pushes the staging past TTL into Expired) Every outcome writes a Transaction_Log__c row (the reconciliation audit trail). execute() is two-phase — ALL Stripe callouts first, THEN all DML (finalize / status / logs) — so callout-before-DML holds at any scope. Keep the scope modest (scheduler uses 5) because each finalize is SOQL/DML-heavy (donor resolution + Opportunity + rollup triggers); do not raise it near the SOQL/DML governor limits.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Direct DML, not UnitOfWork, and SYSTEM_MODE — same reasoning as <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a>'s cursor: this is the job's own bookkeeping on a config record, written after the finalize work has already committed through its own services, and the scheduled user (whoever installed the package) may hold no FLS on the field. Swallowed on failure: a missed stamp costs a false stale alarm, which is far cheaper than failing a pass that already recorded real gifts.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -10737,6 +10740,9 @@
 <p>finalizeSucceededStaging is the SOLE creator of donation <a href="#apex-opportunities"><code>Opportunities</code></a> and is idempotent on Stripe_Payment_Intent_Id__c, so it is safe to call from more than one path: <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> (the normal webhook-free finalizer) and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> (the orphaned-PaymentIntent repair path) both invoke it directly. It publishes DonationFinalized__e (consumed by DonationFinalizedSubscriber consumed by <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a>) and calls <a href="#apex-receiptservice"><code>ReceiptService</code></a> for the donor-facing email.</p>
 <p>The org-wide master switch is re-checked here and not merely on the way out to the form. Options_JSON__c comes from a guest-callable endpoint, so "the form didn't show the section" is a statement about the browser, not about what can reach this method. Refusing the capture is also what makes the switch a real off switch: with no Tribute_Type__c on the Opportunity, ReceiptService.buildTributeNotification returns null on its existing gates and no e-card goes out.</p>
 <p>This runs on every finalized gift including a recurring gift's first installment, because that installment does have a real URL behind it. Later renewals have no URL at all — they are created by the scheduler — so <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a> copies the attribution stored on the Recurring_Donation__c instead. See <a href="#apex-attributioncapture-copy"><code>AttributionCapture.copy</code></a>().</p>
+<p>Raises the "gifts are being charged but not recorded" alarm without touching the donor's journey. Called from the guest path after the staging row is committed, so the log row can point at the specific gift at risk.</p>
+<p>Channel is Transaction_Log__c at Status__c = 'Failed', which is precisely what the setup console's Recent Errors panel queries (<a href="#apex-transactionlogsselector-selectrecenterrors"><code>TransactionLogsSelector.selectRecentErrors</code></a>) — so the alarm surfaces to the admin with no new UI and no new permission. It needs no guest grant either: the insert is <code>as system</code>, the same mechanism StripePaymentSweep.logSweep uses, and Transaction_Log__c has no trigger to re-assert CRUD. Fundraising_GuestDonor still grants nothing on the object, which is the rule that matters — a guest must not be able to READ the org's payment-failure log.</p>
+<p>Everything here is swallowed. This method exists to report a problem; it must never become one, and an alarm that could abort a paid donation would be worse than the outage it warns about. <a href="#apex-applogger-error"><code>AppLogger.error</code></a> is the fallback so the signal is not lost entirely if the log insert itself fails.</p>
 </div>
 <table>
 <thead>
@@ -11279,6 +11285,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>Donation_Staging__c is the pending-donation session record created by <a href="#apex-donationformcontroller-createdonorandintent"><code>DonationFormController.createDonorAndIntent</code></a> and addressed only by its unguessable Access_Token__c — never by Id — until <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a> links it to a real Opportunity. No CRUD/FLS enforcement (constructor below): every caller is either the unauthenticated guest or an Automated Process batch/scheduler.</p>
 <p>Intent-less rows are deliberately INCLUDED (they were excluded until 2026-08-14). A row with no Stripe_Intent_Id__c has nothing to re-fetch, but excluding it left it non-terminal forever: no pass ever selected it, so it could never expire and sat in the admin monitor permanently. The batch now selects it and retires it on the TTL fallback instead (<a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a>.effectiveExpiry). No production path creates such a row — <a href="#apex-donationservice"><code>DonationService</code></a> and <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a> both mint an intent before insert — but seed scripts and hand-built rows do, and an unreachable terminal state is a defect regardless of who writes the row.</p>
+<p>SYSTEM_MODE for the same reason every other read on this object is: Donation_Staging__c carries the guest's own submission and is never granted to a reading user directly.</p>
 </div>
 <table>
 <thead>
@@ -11317,6 +11324,11 @@
 <tr>
 <td><a id="apex-donationstagingselector-selectstucksubmitted"></a><code>selectStuckSubmitted(1 arg)</code></td>
 <td><code>List&lt;Donation_Staging__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationstagingselector-countstucksubmitted"></a><code>countStuckSubmitted(1 arg)</code></td>
+<td><code>Integer</code></td>
 <td></td>
 </tr>
 <tr>
@@ -14651,7 +14663,7 @@
 <p>One task, one noun. This step used to be titled "Connect your Stripe account", described in terms of a Named Credential, and evidenced as "N active payment account(s)" — three names for the same piece of work, which a first-run walkthrough read as three separate things it had failed to do (2026-08-17). "Payment account" is the noun that survives, because it is the record the admin actually creates on the Payments panel and the one every later check names.</p>
 <p>Both this step and "Set up your payment account" send the admin to the same panel, and a first-run walkthrough arrived with no way to tell which of the two it had come for (2026-08-17, finding 7). Each summary now names the step on the Payments panel it corresponds to — by name, never by number, because <a href="#apex-paymentsetupguideservice"><code>PaymentSetupGuideService</code></a> assigns those numbers positionally.</p>
 <p>The route to the guest user is spelled out in full because the two routes an admin reaches for first are both dead ends: "Administration → Members" manages which profiles and permission sets may be MEMBERS of the site, and the guest user is not listed under Setup → Users at all. This checklist named both of them until 2026-08-17, when a first-run walkthrough followed them and got nowhere. Route verified against Salesforce Help, "Assign the Permission Sets to Experience Cloud Site Guest Users" (Summer '26); the Site &amp; Domain and Payments panels carry the same wording.</p>
-<p>This description states the consequence rather than the mechanism because the previous wording ("the install schedules all of them; re-run this if any were aborted") read as reassurance, and a 2026-08-17 fresh-install run skipped the step on the strength of it, then took a real card payment that no record was ever created for. The donation form does NOT check this step — nothing stops a gift being charged while the finalizer is missing, so the warning has to carry the whole weight.</p>
+<p>This description states the consequence rather than the mechanism because the previous wording ("the install schedules all of them; re-run this if any were aborted") read as reassurance, and a 2026-08-17 fresh-install run skipped the step on the strength of it, then took a real card payment that no record was ever created for. The donation form still does not REFUSE a gift while the finalizer is down — blocking a donation to guard against a delay would be the larger outage — so this description carries the consequence. Since 2026-08-18 (F-36) it does raise the alarm: each such gift writes a PIPELINE_STALE Transaction_Log__c row, and the heartbeat read below turns this step red even when all 24 jobs are present but none of them is running.</p>
 <p>Every step's "read more" is this URL plus the docsAnchor its buildGuideStep call passes. Those anchors are NOT derived from the headings on that page — MkDocs would slug "## 4. Connect Stripe" as <code>4-connect-stripe</code>, and for the whole release before 2026-08-17 seven of the eight links pointed at ids that did not exist, landing the admin at the top of a 450-line page with no indication anything had gone wrong. The page now pins each heading's id with an attr_list <code>{ #slug }</code> so the anchor survives renumbering and rewording. Adding a step here means adding a section AND its <code>{ #slug }</code> there. Four of them had drifted apart again by 2026-08-18, so the pairing is no longer trusted to reviewers: docs-site/scripts/mkdocs_hooks.py reads the anchors back out of this class and fails the docs build when one is missing from that page. A renamed section now breaks a build instead of quietly breaking a link.</p>
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration. The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
 <p>Returns the raw Settings__c on purpose — <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
@@ -14665,6 +14677,7 @@
 <p>Attaches the finished public page URLs to a site-status payload so the setup checklist's page table can offer a live "Open" link per page. Composed here rather than in setSite.js deliberately: SettingsService is the single authority for the slash handling on the site URL and the two configurable paths, and a second implementation in JS would drift from it the first time a default changes. siteBaseUrl is passed in rather than always re-read because the hierarchy custom setting is cached within the transaction — right after saveExperienceSite writes a new site URL, a re-read still returns the previous one.</p>
 <p>This was a hardcoded 21 until 2026-08-17. The three guest-request sweep jobs were added to scheduleJobs() afterwards and the literal was not, so a correctly-scheduled org reported "24/21 jobs are scheduled" under a green tick — arithmetic that reads as a defect to the admin looking at it. Deriving it from PostInstallHandler.expectedJobCount() means the two cannot drift again.</p>
 <p>Counts jobs that are still LIVE, not just jobs sitting in WAITING. CronTrigger.State cycles WAITING → ACQUIRED → EXECUTING and back on every single fire, per the CronTrigger Object Reference (Summer '26 / API 67.0). With twelve finalizer jobs on a five-minute cadence, one of them is very often mid-fire — so the old <code>State = 'WAITING'</code> filter under-counted at random. A first-run walkthrough pressed Re-check seven times with no action in between and read 24, 24, 23, 24, 24, 24, 24; on the 23 the console dropped the org's score and offered a "Schedule the missing jobs" button for a job that was never missing (2026-08-17, finding 4). A health check that flickers is worse than no health check: it teaches the admin to fix things that are not broken. The live test is instead — the row exists, it has a next fire time, and it is not in one of the three terminal states. COMPLETE is documented as "fired and is not scheduled to fire again"; DELETED and ERROR speak for themselves. A job removed with System.abortJob() leaves no CronTrigger row at all, which this counts as missing — correctly. Source: https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_crontrigger.htm</p>
+<p>One sentence shared by the health-check panel and the Get Started step so the two can never disagree about how bad things are. Quantifies the damage from the staging rows themselves (confirmed gifts with a PaymentIntent that no Opportunity was ever created for) rather than from the heartbeat alone — "gifts are being charged but not recorded" is only actionable with a number attached.</p>
 </div>
 <table>
 <thead>
@@ -15323,6 +15336,7 @@
 <p>Same field, read for a different purpose: the starting value of a brand-new Campaign's Allow_Tribute__c, applied by <a href="#apex-fundraiseradmincontroller-getfundraiseroptions"><code>FundraiserAdminController.getFundraiserOptions</code></a>() for the "New fundraiser" wizard (lexFundraisersConsole). Deliberately the same answer as tributeEnabled() — offering the wizard a toggle that defaults to on while the org switch suppresses it everywhere would let an admin create a fundraiser whose tribute section silently never renders.</p>
 <p>This is only the donor-facing ask. It grants nothing on its own — a request parks at Awaiting Review for a person, and refundsEnabled()/refundWindowDays() still bound whether the refund itself can be issued afterwards.</p>
 <p>Turning this on is only half the job — inline playback also needs a CSP Trusted Site for https://www.youtube-nocookie.com that the admin creates themselves. This package ships no trusted site of its own (see the posture note above createLogoDistribution), so the flag is an intent switch, not a capability check. With it on and no trusted site, the browser blocks the frame; the setup panel therefore states the requirement next to the toggle.</p>
+<p>Answers "is the job that turns confirmed gifts into <a href="#apex-opportunities"><code>Opportunities</code></a> actually running?" — a question a CronTrigger count cannot answer, because a job can be scheduled and still abort on every fire. Settings__c.Finalizer_Heartbeat__c is written from INSIDE <a href="#apex-stagingreconciliationbatch-finish"><code>StagingReconciliationBatch.finish</code></a>(), so it only advances when a pass genuinely completed. Two callers: the guest donation path (<a href="#apex-donationservice-createdonorandintent"><code>DonationService.createDonorAndIntent</code></a>, which alarms but never refuses the gift) and the setup console (SetupController's health check and the "Start the background jobs" Get Started step).</p>
 <p>The default was 24h through 1.0.0-16 and was cut to 3h. A magic link is a bearer credential sitting in an inbox: it is not one-time-use and it is not device-bound, so its whole security story is how long the window stays open. Three hours is long enough for a donor who steps away from the machine and comes back, and short enough that a forwarded or shoulder-surfed mail is usually already dead. Admins who need longer raise Portal_Token_TTL_Hours__c; nothing hard-codes the number except this line, because every surface that states it to a donor reads it back through this accessor.</p>
 <p>Three defaults, not one, because the three cases make mutually exclusive factual claims — see the doc comment on the Receipt_Legal_Text_With_Goods__c field for why the single override this replaced was a correctness bug. These stay textually in step with the LEGAL_* constants in <a href="#apex-receiptstatushelper"><code>ReceiptStatusHelper</code></a>, which are the last-resort fallback for an org that clears a seeded field; PostInstallHandler seeds all three from here.</p>
 <p>This is the ONLY way to build a donor-facing link from internal (Lightning) context. Site.getBaseUrl() returns blank off-site and URL.getOrgDomainUrl() returns the internal My Domain host, which a guest cannot open — so an internal sender that falls back to the org domain silently emails a dead link. Prefer Site.getBaseUrl() when running inside the site (it is the host the visitor actually arrived on) and this accessor everywhere else.</p>
@@ -15474,6 +15488,16 @@
 <tr>
 <td><a id="apex-settingsservice-dunningemailfrequencydays"></a><code>dunningEmailFrequencyDays(0 args)</code></td>
 <td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-finalizerheartbeat"></a><code>finalizerHeartbeat(0 args)</code></td>
+<td><code>Datetime</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-isfinalizerpipelinestale"></a><code>isFinalizerPipelineStale(0 args)</code></td>
+<td><code>Boolean</code></td>
 <td></td>
 </tr>
 <tr>
@@ -16541,64 +16565,64 @@
         
       </main>
       
-  <footer class="md-footer">
-  
+  <footer class="md-footer fn-foot">
+  <div class="fn-foot__inner md-grid">
     
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      <nav class="fn-foot__nav" aria-label="Footer">
         
-          
-          <a href="../../guides/monitor-and-diagnose/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Monitor donations and read the logs">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Monitor donations and read the logs
-              </div>
-            </div>
+          <a
+            href="../../guides/monitor-and-diagnose/"
+            class="fn-foot__page fn-foot__page--prev"
+            rel="prev"
+          >
+            <span class="fn-foot__dir">Previous</span>
+            <span class="fn-foot__pagetitle">Monitor donations and read the logs</span>
           </a>
         
         
-          
-          <a href="../lwc/" class="md-footer__link md-footer__link--next" aria-label="Next: LWC">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                LWC
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
+          <a
+            href="../lwc/"
+            class="fn-foot__page fn-foot__page--next"
+            rel="next"
+          >
+            <span class="fn-foot__dir">Next</span>
+            <span class="fn-foot__pagetitle">LWC</span>
           </a>
         
       </nav>
     
-  
-  <div class="md-footer-meta md-typeset">
-    <div class="md-footer-meta__inner md-grid">
-      <div class="md-copyright">
-  
-    <div class="md-copyright__highlight">
-      &copy; 2026 <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
 
-    </div>
-  
-  
-    Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
-    </a>
-  
-</div>
+    <section class="fn-foot__help" aria-labelledby="fn-foot-help">
+      <div>
+        <p class="fn-foot__helptitle" id="fn-foot-help">Need a hand with any of this?</p>
+        <p class="fn-foot__helpnote">
+          CloudAlgo can install and configure the package for you, or build the
+          customisations your fundraising program needs on top of it.
+        </p>
+      </div>
+      <a class="fn-foot__cta" href="https://cloudalgo.com/contact/" target="_blank" rel="noopener">
+        Contact us
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
+          <path fill="currentColor" d="M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z"/>
+        </svg>
+      </a>
+    </section>
+
+    <div class="fn-foot__meta">
+      <a class="fn-foot__lockup" href="https://cloudalgo.com/" target="_blank" rel="noopener">
+        <span class="fn-foot__lead">A product by</span>
+        <img
+          class="fn-foot__logo"
+          src="../../assets/images/cloudalgo-logo-dark.svg"
+          alt="CloudAlgo"
+          width="291"
+          height="53"
+          loading="lazy"
+        >
+      </a>
+      
+        <p class="fn-foot__copy">&copy; 2026 <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
+</p>
       
     </div>
   </div>

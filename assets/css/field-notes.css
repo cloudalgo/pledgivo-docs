@@ -11,6 +11,20 @@
   font-display: swap;
   src: url("../fonts/fraunces.woff2") format("woff2");
 }
+/* The product wordmark's own face, and nothing else's. docs/brand-identity.md
+   sets `Pledgivo` in Bricolage Grotesque 800 with `ivo` in Ember, and the
+   masthead is the one place on this site where the product's identity outranks
+   the Field Notes type system. Subset to the eight glyphs of the word — 2 KB,
+   against 39 KB for the full latin cut — so it costs the page essentially
+   nothing and can never be reached for as a general display face. SIL OFL 1.1;
+   see assets/fonts/LICENSES.md. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+  src: url("../fonts/bricolage800.woff2") format("woff2");
+}
 @font-face {
   font-family: "IBM Plex Sans";
   font-weight: 400 700;
@@ -1630,6 +1644,12 @@ body::after {
 
 /* ---- brand lockup ---- */
 .fn-brand {
+  /* Ember, the product's coral — deliberately NOT --fn-accent, which is this
+     theme's printer's red and means "active/current". They are close enough on
+     screen to be mistaken for one another, so they are kept as separate names:
+     if the brand colour ever moves, nothing about the page's own state colours
+     moves with it. */
+  --fn-brand-ember: #e0533d;
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -1654,11 +1674,19 @@ body::after {
   border-radius: 0.35rem;
   box-shadow: 0 2px 5px -1px rgba(11, 11, 11, 0.35);
 }
+/* The lockup, not a heading: Bricolage Grotesque 800 with the `ivo` in Ember,
+   exactly as the Salesforce app's own top bar sets it. The two surfaces are
+   the product's two front doors and they now say the name the same way. The
+   colour is Midnight rather than this theme's ink for the same reason — the
+   wordmark is brand artwork that happens to be live text, so it keeps the
+   brand's values rather than the page's. */
 .fn-brand__word {
-  font: 600 0.96rem/1 var(--fn-font-display);
-  letter-spacing: -0.01em;
+  font: 800 1.02rem/1 "Bricolage Grotesque", var(--fn-font-body);
+  letter-spacing: -0.02em;
+  color: #1c2b46;
   white-space: nowrap;
 }
+.fn-brand__word b { font-weight: 800; color: var(--fn-brand-ember); }
 .fn-brand__ver {
   font: 400 0.6rem/1 var(--fn-font-mono);
   color: var(--fn-ink-faint);

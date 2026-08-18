@@ -95,6 +95,26 @@
       });
     }
 
+    // A packaged API name runs to 39 characters with no spaces in it, which is
+    // wider than the panel column. CSS can only break that mid-identifier
+    // ("Donor_Portal_Empty_Recurr / ing_Message__c"), so offer the browser a
+    // break at each underscore instead — the one place a reader expects one.
+    // The trailing suffix is kept whole: breaking inside "__c" reads as a typo.
+    function breakableApi(api) {
+      var m = (api || '').match(/(__[a-z]+)$/);
+      var suffix = m ? m[1] : '';
+      var base = m ? api.slice(0, -suffix.length) : (api || '');
+      return escapeHtml(base).replace(/_/g, '_<wbr>') + escapeHtml(suffix);
+    }
+
+    // Label, a hairline that takes up the slack, then the count. The count used
+    // to be a bare <span> with no styling, which rendered "Fields4" and read as
+    // "FIELDS4" once the title was uppercased.
+    function sectionTitle(label, count) {
+      return '<p class="dm-panel-section-title"><span class="t">' + escapeHtml(label) +
+        '</span><span class="rule"></span><span class="n">' + count + '</span></p>';
+    }
+
     function selectNode(node) {
       var id = node.id();
       cy.elements().addClass('dm-dim');
@@ -115,42 +135,64 @@
       });
       var related = relatedOut.concat(relatedIn);
 
+      // The type used to carry " → <target>" as well, which made the longest
+      // label 36 monospace characters — wider than the panel at any viewport,
+      // so the row overflowed and squeezed the name column to nothing. The
+      // target is not lost: every reference field on this model has an edge, so
+      // the Relationships section above already names it, and does it with a
+      // click-to-jump the field row never had.
       var fieldsHtml = (d.fields || []).map(function (f) {
-        var typeLabel = f.type + (f.referenceTo ? (' → ' + f.referenceTo) : '');
-        return '<div class="dm-field-row"><span class="dm-field-name">' + escapeHtml(f.apiName) +
+        return '<div class="dm-field-row"><span class="dm-field-name">' + breakableApi(f.apiName) +
           (f.required ? '<span class="req">*</span>' : '') + '</span><span class="dm-field-type">' +
-          escapeHtml(typeLabel) + '</span></div>';
+          escapeHtml(f.type) + '</span></div>';
       }).join('');
 
+      // Rows, not pills. A pill holding "Recurring Donation → Recurring_Donation__c"
+      // is 40 characters wide and wrapped inside its own border in this column,
+      // which read as a broken chip rather than a link. A row gives the object
+      // name and the field that points at it their own lines, and makes the
+      // whole strip the click target instead of a wrapped pill.
       var relHtml = related.map(function (r) {
         var arrow = r.dir === 'out' ? '→' : '←';
         var label = r.other ? r.other.label : r.otherId;
-        return '<span class="dm-rel-chip" data-jump="' + r.otherId + '">' + escapeHtml(label) +
-          ' <span class="arrow">' + arrow + ' ' + escapeHtml(r.field) + '</span></span>';
+        return '<div class="dm-rel-row" data-jump="' + escapeHtml(r.otherId) + '" role="button" tabindex="0">' +
+          '<span class="dm-rel-dir" aria-hidden="true">' + arrow + '</span>' +
+          '<span class="dm-rel-main"><span class="dm-rel-obj">' + escapeHtml(label) + '</span>' +
+          '<span class="dm-rel-field">' + breakableApi(r.field) + '</span></span></div>';
       }).join('');
 
       if (!panelEl) return;
+      // The identity block is its own element so CSS can pin it: a 40-field list
+      // scrolls for several screens inside this panel, and without a pinned head
+      // there is nothing on screen saying which object the fields belong to.
       panelEl.innerHTML =
+        '<div class="dm-panel-head">' +
         '<p class="dm-panel-kicker">' + escapeHtml((domainMeta[d.domain] && domainMeta[d.domain].label) || d.domain) + '</p>' +
         '<h3 class="dm-panel-title">' + escapeHtml(d.label) + '</h3>' +
-        '<p class="dm-panel-api">' + escapeHtml(d.apiName) + '</p>' +
+        '<p class="dm-panel-api">' + breakableApi(d.apiName) + '</p>' +
         '<div class="dm-panel-meta">' +
         '<span class="dm-meta-chip">' + escapeHtml(d.kind) + '</span>' +
         '<span class="dm-meta-chip">' + d.fieldCount + ' fields</span>' +
         (d.sharingModel ? '<span class="dm-meta-chip">' + escapeHtml(d.sharingModel) + '</span>' : '') +
-        '</div>' +
+        '</div></div>' +
         '<p class="dm-panel-desc">' + escapeHtml(d.description || 'No description on the deployed metadata yet.') + '</p>' +
-        (related.length ? '<p class="dm-panel-section-title">Relationships<span>' + related.length + '</span></p><div>' + relHtml + '</div>' : '') +
-        '<p class="dm-panel-section-title">Fields<span>' + (d.fields ? d.fields.length : 0) + '</span></p>' +
-        '<div>' + fieldsHtml + '</div>';
+        (related.length ? sectionTitle('Relationships', related.length) + '<div class="dm-rel-list">' + relHtml + '</div>' : '') +
+        sectionTitle('Fields', d.fields ? d.fields.length : 0) +
+        '<div class="dm-field-list">' + fieldsHtml + '</div>';
+      panelEl.scrollTop = 0;
 
-      panelEl.querySelectorAll('[data-jump]').forEach(function (chip) {
-        chip.addEventListener('click', function () {
-          var target = cy.getElementById(chip.getAttribute('data-jump'));
+      panelEl.querySelectorAll('[data-jump]').forEach(function (row) {
+        function jump() {
+          var target = cy.getElementById(row.getAttribute('data-jump'));
           if (target && target.length) {
             selectNode(target);
             cy.animate({ center: { eles: target }, zoom: Math.max(cy.zoom(), 1) }, { duration: 260 });
           }
+        }
+        row.addEventListener('click', jump);
+        // A div with role="button" gets no key handling for free.
+        row.addEventListener('keydown', function (ev) {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); jump(); }
         });
       });
     }

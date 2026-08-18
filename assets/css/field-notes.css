@@ -1081,7 +1081,7 @@ body,
    ========================================================================== */
 .dm-app {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr) 360px;
   gap: 0;
   border: 1px solid var(--fn-line);
   border-radius: var(--fn-radius);
@@ -1191,20 +1191,54 @@ body,
   z-index: 5;
 }
 
+/* --------------------------------------------------------------------------
+   Detail panel
+   --------------------------------------------------------------------------
+   The panel is a 360px column that has to hold a 39-character API name, a
+   type, and up to forty of each. Everything here follows from that: the width
+   is the constraint, not the styling.
+
+   It used to lay a field row out as `flex; justify-content: space-between`
+   with a `nowrap` type. Once the type carried its reference target the label
+   ran to 36 monospace characters — wider than the column — and since a nowrap
+   flex item will not shrink, the type ate the row, the name column collapsed
+   toward zero, and the name wrapped one character per line. The row overflowed
+   and put a horizontal scrollbar under the panel.
+
+   The fix is structural: a two-track grid where the name track is explicitly
+   allowed to shrink (`minmax(0, 1fr)` plus `min-width: 0`, since a grid item's
+   automatic minimum is its content) and the type track takes only what it
+   needs. The target moved to the Relationships rows, which is where a reader
+   can click it.
+   -------------------------------------------------------------------------- */
 .dm-panel {
   border-left: 1px solid var(--fn-line);
-  padding: 1rem 1rem 1.2rem;
+  padding: 0 1.05rem 1.3rem;
   overflow-y: auto;
+  overscroll-behavior: contain;
   max-height: 640px;
   background: var(--fn-panel);
 }
 .dm-panel-empty {
   color: var(--fn-ink-faint);
   font-size: 0.72rem;
-  padding-top: 2rem;
+  padding-top: 2.6rem;
   text-align: center;
 }
 .dm-panel-empty svg { width: 26px; height: 26px; margin-bottom: 0.6rem; opacity: 0.5; }
+
+/* Pinned: a long field list scrolls for several screens, and a heading that
+   scrolls away leaves the reader holding a column of API names with nothing on
+   screen saying which object they belong to. */
+.dm-panel-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--fn-panel);
+  padding: 1.05rem 0 0.7rem;
+  border-bottom: 1px solid var(--fn-line-soft);
+  margin-bottom: 0.9rem;
+}
 .dm-panel-kicker {
   font-family: var(--fn-font-mono);
   font-size: 0.62rem;
@@ -1213,55 +1247,142 @@ body,
   color: var(--fn-accent-ink);
   margin-bottom: 0.3rem;
 }
-.dm-panel-title { font-family: var(--fn-font-display); font-weight: 600; font-size: 1.15rem; margin: 0 0 0.2rem; }
-.dm-panel-api { font-family: var(--fn-font-mono); font-size: 0.68rem; color: var(--fn-ink-faint); margin-bottom: 0.7rem; word-break: break-all; }
-.dm-panel-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; }
+.dm-panel-title {
+  font-family: var(--fn-font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  margin: 0 0 0.25rem;
+}
+/* `break-all` here would split an identifier anywhere; the markup supplies a
+   <wbr> at each underscore instead, so this only has to allow the break. */
+.dm-panel-api {
+  font-family: var(--fn-font-mono);
+  font-size: 0.68rem;
+  color: var(--fn-ink-faint);
+  margin-bottom: 0.6rem;
+  overflow-wrap: break-word;
+}
+.dm-panel-meta { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0; }
 .dm-meta-chip {
   font-family: var(--fn-font-mono);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   color: var(--fn-ink-soft);
   background: var(--fn-paper-dim);
   border: 1px solid var(--fn-line);
   border-radius: 20px;
-  padding: 0.18rem 0.6rem;
+  padding: 0.16rem 0.55rem;
+  white-space: nowrap;
 }
-.dm-panel-desc { font-size: 0.74rem; color: var(--fn-ink-soft); margin-bottom: 0.9rem; line-height: 1.55; }
+.dm-panel-desc {
+  font-size: 0.74rem;
+  color: var(--fn-ink-soft);
+  margin-bottom: 0.2rem;
+  line-height: 1.6;
+}
+
+/* Label, a hairline taking up the slack, then the count. The count was an
+   unstyled <span> before, so it butted straight onto the uppercased label and
+   rendered as "FIELDS4". */
 .dm-panel-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
   font-family: var(--fn-font-mono);
   font-size: 0.62rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--fn-ink-faint);
-  margin: 1rem 0 0.5rem;
+  margin: 1.4rem 0 0.5rem;
 }
+.dm-panel-section-title .rule {
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--fn-line-soft);
+}
+.dm-panel-section-title .n {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--fn-ink-soft);
+}
+
 .dm-field-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.6rem;
-  padding: 0.4rem 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 0.7rem;
+  padding: 0.42rem 0.4rem;
+  margin: 0 -0.4rem;
+  border-radius: 5px;
   border-bottom: 1px solid var(--fn-line-soft);
   font-size: 0.7rem;
 }
 .dm-field-row:last-child { border-bottom: none; }
-.dm-field-name { font-family: var(--fn-font-mono); color: var(--fn-accent-ink); word-break: break-word; }
-.dm-field-name .req { color: var(--fn-danger); }
-.dm-field-type { font-family: var(--fn-font-mono); color: var(--fn-ink-faint); white-space: nowrap; text-align: right; }
-.dm-rel-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
+/* The name and its type can end up a column apart; tinting the whole row on
+   hover is what lets the eye carry one across to the other. */
+.dm-field-row:hover { background: var(--fn-paper-dim); }
+.dm-field-name {
+  min-width: 0;
   font-family: var(--fn-font-mono);
-  font-size: 0.68rem;
-  border: 1px solid var(--fn-line);
-  border-radius: 20px;
-  padding: 0.3rem 0.65rem;
-  margin: 0 0.35rem 0.35rem 0;
-  cursor: pointer;
-  color: var(--fn-ink-soft);
-  background: var(--fn-panel);
+  color: var(--fn-accent-ink);
+  overflow-wrap: break-word;
+  line-height: 1.45;
 }
-.dm-rel-chip:hover { border-color: var(--fn-accent-soft-line); color: var(--fn-accent-ink); background: var(--fn-accent-soft); }
-.dm-rel-chip .arrow { color: var(--fn-ink-faint); }
+.dm-field-name .req { color: var(--fn-danger); }
+.dm-field-type {
+  font-family: var(--fn-font-mono);
+  color: var(--fn-ink-faint);
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* Relationships are rows rather than pills. A pill holding an object label and
+   a 21-character field name wrapped inside its own border, which read as a
+   broken chip; a row gives each part a line and makes the whole strip the
+   target. */
+.dm-rel-list { display: flex; flex-direction: column; gap: 0.1rem; }
+.dm-rel-row {
+  display: grid;
+  grid-template-columns: 1rem minmax(0, 1fr);
+  gap: 0 0.5rem;
+  align-items: start;
+  padding: 0.42rem 0.4rem;
+  margin: 0 -0.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.dm-rel-row:hover,
+.dm-rel-row:focus-visible {
+  background: var(--fn-accent-soft);
+  border-color: var(--fn-accent-soft-line);
+  outline: none;
+}
+.dm-rel-dir {
+  font-family: var(--fn-font-mono);
+  font-size: 0.72rem;
+  color: var(--fn-ink-faint);
+  line-height: 1.5;
+}
+.dm-rel-row:hover .dm-rel-dir { color: var(--fn-accent-ink); }
+.dm-rel-main { min-width: 0; }
+.dm-rel-obj {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--fn-ink);
+  line-height: 1.35;
+}
+.dm-rel-row:hover .dm-rel-obj { color: var(--fn-accent-ink); }
+/* Which field carries the relationship — apparatus, so mono and quieter than
+   the object name it hangs under. */
+.dm-rel-field {
+  display: block;
+  font-family: var(--fn-font-mono);
+  font-size: 0.64rem;
+  color: var(--fn-ink-faint);
+  overflow-wrap: break-word;
+  line-height: 1.4;
+}
 
 .dm-app + .legend-strip {
   margin-top: -1.8rem;
@@ -1285,7 +1406,7 @@ body,
 
 @media (max-width: 76.1875em) {
   .dm-app { grid-template-columns: 1fr; }
-  .dm-panel { border-left: none; border-top: 1px solid var(--fn-line); max-height: 320px; }
+  .dm-panel { border-left: none; border-top: 1px solid var(--fn-line); max-height: 420px; }
 }
 
 /* ==========================================================================

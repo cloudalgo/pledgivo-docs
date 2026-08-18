@@ -2245,9 +2245,14 @@ open beside it.</p>
 <ol>
 <li>
 <p><strong>Settings → Payments.</strong> On an org that has no payment account yet, the guide is already
-   there — it grades your org itself, so steps 1–9 read as <em>action needed</em> or <em>confirm this
-   yourself</em>, and step 10 tells you the account is still missing. Start at step 1; you do not
-   need a payment account to begin.</p>
+   there — it grades your org itself, and step 9 tells you the account is still missing. Start
+   at step 1; you do not need a payment account to begin.</p>
+<p><strong>Steps 1–6 read <em>Not checked yet</em> until you finish step 9, and that is not a fault.</strong> Every
+check in that stage looks a credential up <em>by name</em>, and the name lives on the payment
+account — which cannot be created until the credentials it names exist. So the order is
+genuinely circular for exactly one lap: build the pair, create the account, then press
+<strong>Re-check</strong> and all six grade themselves at once. They are shown in neutral grey rather than
+red for that reason: the panel has no verdict on them yet, not a bad one.</p>
 <p>Above the eleven steps is a short <strong>Before you start</strong> map. Read it before you open Setup:
 the steps cross three different places, and the map says which. Collect your three Stripe
 keys first (it links straight to the API keys page for the mode this account is in), then
@@ -2260,7 +2265,7 @@ the next one happens.
    pointing at <code>https://api.stripe.com</code> with the right callout options ticked. Each step has a
    <strong>Take me there</strong> link and, where the check can be made, a status read from your org rather
    than a tick you give yourself. Do this twice — once for each of the two credentials described
-   under step 10 below.</p>
+   under step 9 below.</p>
 <p>The panel suggests a name for <strong>both</strong> credentials (<code>Stripe_Auth_Public</code> and
 <code>Stripe_Auth_Admin</code>, and <code>Stripe_Public</code> / <code>Stripe_Admin</code> for the two Named Credentials) —
 two credentials cannot share a name. Once you have built them, it stops suggesting and
@@ -2270,7 +2275,7 @@ charge-only restricted <code>rk_…</code> key on the public credential, and a b
 admin one — best a <em>second</em> restricted key scoped to refunds and reads, or your full <code>sk_…</code>
 secret key if you would rather not scope one. This is the one place where getting them the
 wrong way round is silent — both keys authenticate perfectly well, so an admin key on the
-public credential works, and hands the public internet a refund button. Step 7 is what
+public credential works, and hands the public internet a refund button. Step 10 is what
 catches it.
 3. Step 5 is <strong>Allowed Namespaces for Callouts</strong>, and it is the one step whose absence looks like
    nothing at all. Because this app's Apex ships inside a managed package and the credential is
@@ -2281,22 +2286,28 @@ catches it.
    donation, not a refund — however correct everything else is. There are screenshots of the field
    and of the confirmation it leaves behind in
    <a href="../after-you-install/#build-the-credential-pair">After you install</a>.
-4. Step 7 proves your <strong>public</strong> key really is scoped charge-only. It is on demand: press the
-   button and the app makes a single read-only call that a charge-only key is not allowed to
-   make. If that call succeeds, the credential your guest user holds carries a key with refund
-   rights — your admin key or your secret key — and the step reports a <strong>failure</strong> rather than a
-   pending item.
-5. Step 8 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
+4. Step 7 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
    Access grant, and assigns it to the staff who take payments or issue refunds. In split mode
    there are two grants to make — one per credential — and the step grades both.
-6. Step 9 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
+5. Step 8 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
    guest user</strong> — do this only if you take donations from public pages. It also names every
    permission set your guest user holds and asks you to confirm none of them grants the <em>admin</em>
-   credential; see <em>A guest user must never hold the admin credential</em> below.
-7. Step 10 is the Payment Account itself. Click <strong>Add account</strong>, give it a <strong>display label</strong>
-   (internal reference — donors never see it), pick the <strong>payment processor</strong>, choose your
-   credentials, and paste your Stripe <strong>publishable key</strong>. If an account already exists, edit it
-   in the list below the guide instead.</p>
+   credential; see <em>A guest user must never hold the admin credential</em> below.</p>
+<p><strong>This step has a prerequisite nothing else on the page mentions: the site itself.</strong> There is
+no site guest user until an Experience Cloud site exists, so on a fresh org every instruction
+here points at screens that aren't there yet. Build the site first — <strong>Settings → Site &amp;
+Domain</strong> walks it through — then come back. The step says so itself when it can see the org
+has no site.
+6. Step 9 is the Payment Account itself, and the form opens <strong>on the step</strong> — there is no hop to
+   another tab. On a fresh org the step shows an <strong>Add account</strong> button; click it, give the record
+   a <strong>display label</strong> (internal reference — donors never see it), pick the <strong>payment processor</strong>,
+   choose your credentials, and paste your Stripe <strong>publishable key</strong>.</p>
+<p>Once an account exists the step stops offering to create one and shows that single account
+instead, with <strong>Edit</strong>, <strong>Test</strong> and <strong>Delete</strong> on the row. That is deliberate: step 9 is about
+the one account these eleven steps are grading, and a second account is a separate decision
+that belongs on the <strong>Payment accounts</strong> tab, where the whole list is visible. If you run more
+than one account, the step names which one it is grading and the <strong>Showing</strong> switcher at the
+top of the panel moves the eleven steps to another.</p>
 <p>The form asks for <strong>two</strong> credentials, and both are required:</p>
 <table>
 <thead>
@@ -2310,7 +2321,7 @@ catches it.
 <tr>
 <td><strong>Public named credential</strong></td>
 <td>Taking payments — the charge path a public donation page reaches</td>
-<td>Staff <em>and</em> your site guest user (step 9)</td>
+<td>Staff <em>and</em> your site guest user (step 8)</td>
 </tr>
 <tr>
 <td><strong>Admin named credential</strong></td>
@@ -2323,6 +2334,11 @@ catches it.
 issue refunds. If you'd rather run a single key for now, point both fields at the same
 credential — the app accepts it; it just gives you no separation, and the guide grades the
 affected steps amber rather than green to say so.
+7. Step 10 proves your <strong>public</strong> key really is scoped charge-only. It is on demand: press the
+   button and the app makes a single read-only call that a charge-only key is not allowed to
+   make. If that call succeeds, the credential your guest user holds carries a key with refund
+   rights — your admin key or your secret key — and the step reports a <strong>failure</strong> rather than a
+   pending item.
 8. Step 11, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
    creates nothing — it just proves the whole chain works before you route a campaign to it. It
    is also the only thing that settles the steps the guide asked you to confirm yourself: if the
@@ -2515,7 +2531,7 @@ second read-only call the admin key must be able to make anyway (listing refunds
 the key as <strong>working, without the account name</strong>. That is the expected result on a scoped key.
 <strong>Never widen a key just to make this button print a name.</strong></p>
 </div>
-<p>Step 7 of the guide checks the <em>Refunds: None</em> row for you. Stripe answers a restricted key with
+<p>Step 10 of the guide checks the <em>Refunds: None</em> row for you. Stripe answers a restricted key with
 <code>403 Forbidden</code> when it reaches for something it has no permission for, and that refusal is the
 only positive proof available that the key an anonymous visitor's session can reach cannot issue
 a refund.</p>
@@ -2562,13 +2578,13 @@ callout checkboxes are set correctly, who holds which permission set, and the Pa
 itself. What it can't, it says so plainly rather than showing you an error — the one thing this
 panel will never do is state something about your org that it did not actually read.</p>
 <p>Amber never blocks you, and the guide still reaches <strong>ready</strong> with amber steps on it. Two live
-calls settle the rest between them: step 7's probe proves the key your guest user holds really
+calls settle the rest between them: step 10's probe proves the key your guest user holds really
 is restricted, and step 11's <strong>Test connection</strong> proves the whole chain — key, header, callout
 options, namespace grant — actually works end to end. Both are read-only and move no money.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Public donations need the guest user grant</p>
-<p>Granting the <strong>public</strong> credential to your site's <strong>guest user</strong> (step 9) is the one step that
+<p>Granting the <strong>public</strong> credential to your site's <strong>guest user</strong> (step 8) is the one step that
 widens what an anonymous visitor can reach through your org, so it is deliberately yours to
 make — the package never does it quietly on your behalf.</p>
 <p>Public donations fail at the payment step until you do it, even though everything else on the
@@ -2579,14 +2595,15 @@ reach a shared org-level identity, never a per-user one.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">A guest user must never hold the admin credential</p>
-<p>Step 9 asks two questions, not one. As well as checking that your site guest user <em>does</em> hold
+<p>Step 8 asks two questions, not one. As well as checking that your site guest user <em>does</em> hold
 a credential grant, it asks you to confirm that the grant is the <strong>public</strong> one and not the
 admin one — and it names the exact permission sets your guest user holds so you can go and
 check:</p>
 <blockquote>
 <p>1 site guest user can reach a credential through <code>Stripe_Public_Access</code>, so public donation
 pages can charge a card. Confirm that set grants the PUBLIC credential only — a guest holding
-the admin credential can issue refunds. Step 7 proves it from the other side.</p>
+the admin credential can issue refunds. "Prove the public key is restricted" proves it from
+the other side.</p>
 </blockquote>
 <p>That state is exactly what running two credentials exists to prevent. Whether the admin
 credential carries a scoped key or the full secret key, anything reaching it can refund a
@@ -2597,14 +2614,14 @@ rather than a piece of setup still outstanding.</p>
 <p><strong>Why this is a question rather than a verdict.</strong> Salesforce tells a package <em>that</em> a permission
 set grants an external-credential parameter and <em>which</em> permission set it is, but not which
 credential the grant belongs to — that record isn't queryable from packaged Apex. So the panel
-names the sets rather than claiming a pairing it never actually read. Step 7 catches the same
+names the sets rather than claiming a pairing it never actually read. Step 10 catches the same
 exposure from the other direction and does grade it <strong>red</strong>: it makes a real refund-shaped call
 on the key your guest user can reach, and a key that answers instead of refusing is a key with
 refund rights sitting on the public credential — either your admin key or your secret key.</p>
 <p><strong>The fix, if the answer is wrong, is one change in Setup:</strong> open the permission set that
 carries the <em>admin</em> External Credential Principal Access grant and remove your site guest user
 from it. The guest user should hold one credential and one only — the public, restricted,
-charge-only one from step 9. Then press <strong>Re-check</strong>.</p>
+charge-only one from step 8. Then press <strong>Re-check</strong>.</p>
 <p>One more thing worth knowing: this reports on grants <strong>made by hand in Setup</strong>. The app itself
 never routes a public donation to the admin credential, so what you're checking for is a
 misconfiguration, not a bug in the package.</p>

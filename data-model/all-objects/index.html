@@ -6041,7 +6041,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>96 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>97 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -6126,6 +6126,12 @@
 <td>Debug_Logging</td>
 <td>Checkbox</td>
 <td>Turns on extra System.debug() output for troubleshooting. Does not control what is saved to the Log object — see Log Level for that.<br><em>Docs: Legacy flag: controls only the AppLogger System.debug() console echo. It does NOT gate Log__c persistence any more; that is Log_Level__c's job. Keep both in mind when a Log__c record is expected but missing: check Log_Level__c, not this field.</em></td>
+</tr>
+<tr>
+<td><code>Default_Campaign_Type__c</code></td>
+<td>Default_Campaign_Type</td>
+<td>Text</td>
+<td>Pick the Campaign Type new fundraisers should be created with — this is the field standard Salesforce campaign reports group by. Many organizations add their own "Fundraising" or "Appeal" value first. Leave blank to keep whatever default your org already set.<br><em>Docs: Deliberately Text, not a picklist: Campaign.Type is a STANDARD picklist whose values are org-specific, and a packaged picklist could not offer the value a subscriber actually uses. The Settings console renders the org's live Campaign.Type entries with the getPicklistValues wire adapter instead, and SettingsService.defaultCampaignType() re-checks the stored value against the live describe before it is applied, so a value later removed from the picklist degrades to "leave the org default alone" rather than failing the create. Seeded to 'Other' on fresh install by PostInstallHandler (never on upgrade). Applied by FundraiserAdminController.CreateFundraiser only — an existing campaign's Type is never rewritten by an edit.</em></td>
 </tr>
 <tr>
 <td><code>Default_Currency__c</code></td>

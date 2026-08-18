@@ -2725,10 +2725,26 @@ different answers:</p>
 <li>Setup → <strong>Permission Sets → New</strong>. Leave <strong>License</strong> as <code>--None--</code>.</li>
 <li>On the set: <strong>Apps → External Credential Principal Access → Edit</strong>.</li>
 <li>Enable the entry for your credential's principal — it reads like <code>Stripe_Auth_Public - OrgPrincipal</code> → <strong>Save</strong>.</li>
+<li>On the same set: <strong>Object Settings → User External Credentials → Edit</strong>, tick <strong>Read</strong> and
+   <strong>Create</strong> → <strong>Save</strong>.</li>
 <li><strong>Manage Assignments</strong> → add the people who take payments (public set) or issue refunds (admin set).</li>
 <li>Assign the <strong>public</strong> set — and only the public set — to the site guest user, via
    <a href="#the-guest-user">the Public Access Settings route</a>.</li>
 </ol>
+<div class="admonition danger">
+<p class="admonition-title">Step 4 is not optional, and it is a different page from step 3</p>
+<p>A credential callout needs <strong>two</strong> grants: the principal (step 3) <em>and</em> Read + Create on the
+standard <strong>User External Credential</strong> object (step 4). Miss the second and the donation fails
+at exactly the same point as missing the first — the donor sees a generic apology and the real
+error only appears in <strong>Diagnostic Logs</strong>:</p>
+<blockquote>
+<p>You don't have read permissions on the User External Credential object.</p>
+</blockquote>
+<p>The package ships this grant in its own permission set, and Salesforce strips it during
+packaging: a managed permission set cannot carry standard-object permissions, and the build
+reports success anyway. That is why it has to be yours. The Settings console's <strong>Site &amp;
+domain</strong> panel checks for it and will tell you if it is missing.</p>
+</div>
 <div class="fn-steps">
 <figure class="fn-step" data-title="External Credential Principal Access"><img src="../../assets/images/gs-36-extcred-principal-access.png" alt="External Credential Principal Access page listing both principals" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The page that is easy to miss — it is under <b>Apps</b> on the permission set, not under Object Settings or System Permissions. Both principals are listed, and they look almost identical: read the credential name in the row before you enable one.</figcaption></figure>
 <figure class="fn-step" data-title="Granted"><img src="../../assets/images/gs-37-extcred-access-granted.png" alt="Permission set showing the enabled external credential principal" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The grant saved on the permission set. One set can carry the grants for every gateway account you connect — you do not need a new one per account — but keep public and admin apart, because one of them is about to be assigned to an anonymous user.</figcaption></figure>

@@ -783,6 +783,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#every-donor-gets-a-household-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Every donor gets a household Account
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#donations-opportunities" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2049,6 +2060,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#every-donor-gets-a-household-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Every donor gets a household Account
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#donations-opportunities" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2171,9 +2193,30 @@ branch.</p>
 existing donor by email before creating a new one — a returning donor's second gift lands on
 their existing Contact or Person Account, not a duplicate. The exact matching rule is
 email-based; donors are not asked to log in to give.</p>
+<h2 id="every-donor-gets-a-household-account">Every donor gets a household Account<a class="headerlink" href="#every-donor-gets-a-household-account" title="Permanent link">#</a></h2>
+<p>In a <strong>Person Account</strong> org the donor <em>is</em> an Account, and there is nothing to decide. In a
+<strong>standard Contact/Account</strong> org a Contact created on its own would be what Salesforce calls a
+private contact — a Contact with no Account behind it. That is a real problem rather than a
+cosmetic one: an Opportunity requires an Account to appear on any Account-related list, and every
+standard Salesforce report grouped by Account silently drops gifts that have none.</p>
+<p>So when a first-time donor gives, the package creates a <strong>household Account</strong> alongside their
+Contact, named after them — <em>"Maria Alvarez Household"</em> — and books the gift against it. A
+returning donor reuses the household their Contact already sits in. A donor who was already in your
+org without an Account (imported, hand-entered, or created by an earlier release) gets one
+back-filled on their next gift, once.</p>
+<div class="admonition note">
+<p class="admonition-title">Households are matched by donor, never by name</p>
+<p>The dedup key is the donor's <strong>email</strong>, exactly as it always was, and the household simply
+follows whichever Contact that email resolved to. Accounts are deliberately never matched on
+name — <em>"Smith Household"</em> would quietly merge every unrelated Smith who ever gave into one
+household, and nothing in the data says they belong together. If two members of a real
+household should share one Account, merge them yourself; the package will not guess.</p>
+</div>
 <h2 id="donations-opportunities">Donations (Opportunities)<a class="headerlink" href="#donations-opportunities" title="Permanent link">#</a></h2>
 <p>A donation is a standard Salesforce <strong>Opportunity</strong>, related back to the donor through the
 standard <code>Contact</code> (via Contact Role or Account) or <code>AccountId</code> in the Person Account case.
+In a standard org <code>AccountId</code> holds the donor's household (above); in a Person Account org it holds
+the donor. Either way it is filled, so a gift never falls out of an Account-grouped report.
 See <a href="../donations-payments/">Donations &amp; payments</a> for the full Opportunity field picture.</p>
 <h2 id="donor-facing-self-service">Donor-facing self-service<a class="headerlink" href="#donor-facing-self-service" title="Permanent link">#</a></h2>
 <p>Returning donors can manage their own recurring gifts, view their giving history, and update

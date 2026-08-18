@@ -12774,6 +12774,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The single entry point for the Person Account dual-field donor strategy — <a href="#apex-donationservice"><code>DonationService</code></a>, <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>, <a href="#apex-paymentmethodservice"><code>PaymentMethodService</code></a>, <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, and the donor portal (<a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a>/<a href="#apex-donorportalservice"><code>DonorPortalService</code></a>) all resolve or create a donor through resolveOrCreateDonor rather than branching on IsPersonAccount directly. DonorContext exposes contactId/accountId as computed getters (falling back to the pre-existing Id when the donor already existed) so a caller can read the resolved Id immediately after uow.commitWork() without a second query.</p>
+<p>Standard orgs get a HOUSEHOLD Account too, not a bare private Contact: Contact.AccountId and Opportunity.AccountId are both populated, so a gift shows on an Account's related list, in every standard Opportunity report grouped by Account, and in orgs whose validation rules require Contact.AccountId — where an Account-less donor insert would otherwise fail the finalize with an error the donor never sees. It is also what makes <a href="#apex-softcreditservice"><code>SoftCreditService</code></a>.applyHouseholds() do anything in a standard org. See newHousehold() for why households are never matched by name.</p>
 </div>
 <table>
 <thead>
@@ -13364,7 +13365,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-pricebookservice-eventpricebookid">PricebookService.eventPricebookId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-pricebookservice-eventpricebookid">PricebookService.eventPricebookId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-settingsservice-eventsynccampaignmembers">SettingsService.eventSyncCampaignMembers()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-settingsservice-eventdonationproductid">SettingsService.eventDonationProductId()</a>, <a href="#apex-settingsservice-eventdeductiblemode">SettingsService.eventDeductibleMode()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15634,7 +15635,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-attributioncapture-copy">AttributionCapture.copy()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15743,6 +15744,9 @@
 <p>The two Stripe jobs used to be deliberately EXCLUDED, on the grounds that both reach <a href="#apex-paymentgatewayfactory"><code>PaymentGatewayFactory</code></a>.getDefault() unconditionally and would throw on an org with no active Payment_Account__c. That left them schedulable only by scripts/apex/schedule-reconciliation-jobs.apex — which lives outside base/ and is therefore never packaged, so in a subscriber org refund and dispute reconciliation simply never ran. Both are now fresh-org safe (<a href="#apex-refundreconciliationbatch-start"><code>RefundReconciliationBatch.start</code></a>() returns an empty scope when selectAllActive() is empty; <a href="#apex-stripepaymentsweep-execute"><code>StripePaymentSweep.execute</code></a>() checks <a href="#apex-paymentgatewayfactory-hasactiveaccount"><code>PaymentGatewayFactory.hasActiveAccount</code></a>()), so they are scheduled at install and no-op quietly until an admin connects Stripe. Names and offsets match the dev script's, so scheduleIfAbsent leaves an already-scripted org alone.</p>
 <p>The cadences scheduleJobs() runs on, named rather than inlined so expectedJobCount() below can derive the total from the same numbers the loops use. A literal count kept in a second class is a count that drifts: SetupController's health check hardcoded 21 and went on reporting "24/21 jobs are scheduled" — a green step showing failing arithmetic — for the whole release after the three guest-request sweeps were added here.</p>
 <p>Derived, never a literal. Every term traces to the loop or list scheduleJobs() actually iterates, so adding a job family without updating this count is not possible: the count IS the families.</p>
+<p><code>present</code> is the set of job names that are scheduled AND fit to keep — existing names minus anything abortOrphanedJobs() just aborted. Reading it rather than re-querying is deliberate: whether an aborted CronTrigger disappears from SOQL within the same transaction is not contractual, and getting that wrong would silently skip exactly the jobs the reclaim exists to fix. Aborting frees the name, so rescheduling it is safe.</p>
+<p>Keyed by job name, carrying OwnerId, so both questions scheduleJobs() has to answer — "is this one already scheduled?" and "is its owner still a real person?" — come out of one query instead of one per job plus a re-read.</p>
+<p>A CronTrigger row survives its owner: deactivating a user does not stop their scheduled Apex, it just leaves the job running as someone nobody can reach. That is the same failure as the install-time system user, one department reshuffle later, which is why the test is "resolves to an ACTIVE User" and not "is a real Id".</p>
 <p>Runs AFTER the upsert above, never before — the survivor it reassigns to has to exist by the time a campaign is pointed at it, and on a fresh-ish org (installed before the cull, upgraded after) Sanctuary and Grove are only created by that same upsert.</p>
 <p>Guarded in its own right rather than relying on onInstall's guard: a delete that fails because an admin locked a record must not roll back the six designs the upsert just wrote. An unguarded throw in a post-install script makes the whole package version uninstallable.</p>
 <p>A retired design an admin has RENAMED is invisible here and survives untouched, which is the right outcome — a renamed record is the admin's, not the package's.</p>
@@ -15831,6 +15835,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-postinstallhandler-schedulejobs"></a><code>scheduleJobs(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-guestrequestsweepscheduler-jobnamefor">GuestRequestSweepScheduler.jobNameFor()</a>, <a href="#apex-guestrequestsweepscheduler-cronfor">GuestRequestSweepScheduler.cronFor()</a>, <a href="#apex-applogger-error">AppLogger.error()</a></td>
 <td></td>
@@ -15838,6 +15847,16 @@
 <tr>
 <td><a id="apex-postinstallhandler-expectedjobcount"></a><code>expectedJobCount(0 args)</code></td>
 <td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-postinstallhandler-alljobnames"></a><code>allJobNames(0 args)</code></td>
+<td><code>Set&lt;String&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-guestrequestsweepscheduler-jobnamefor">GuestRequestSweepScheduler.jobNameFor()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15989,7 +16008,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-receiptstatushelper-resolve">ReceiptStatusHelper.resolve()</a>, <a href="#apex-receiptstatushelper-legalstatement">ReceiptStatusHelper.legalStatement()</a></td>
+<td><em>calls:</em> <a href="#apex-receiptstatushelper-resolve">ReceiptStatusHelper.resolve()</a>, <a href="#apex-settingsservice-defaultcurrency">SettingsService.defaultCurrency()</a>, <a href="#apex-receiptstatushelper-legalstatement">ReceiptStatusHelper.legalStatement()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -16687,11 +16706,6 @@
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td></td>
 </tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
-<td></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -16851,6 +16865,7 @@
 <p>They ship as packaged static resources and are served from the org's own &lt;org&gt;.file.force.com domain, which a guest LWR site allows in img-src with no CSP Trusted Site. That is the whole reason for the ContentDistribution round trip: a remotely-hosted stock photo would need a packaged CspTrustedSite, and every packaged trusted site shows up in the install-time "Approve Third-Party Access" dialog — which this package deliberately keeps to Stripe only.</p>
 <p>WITHOUT SHARING, deliberately and narrowly. Seeding runs from <a href="#apex-postinstallhandler"><code>PostInstallHandler</code></a>, which executes as a per-package system user, and in that context a <code>with sharing</code> class cannot resolve StaticResource at all — the query dies with "sObject type 'StaticResource' is not supported" and the whole install used to abort there. Found 2026-08-09 by install-testing into a real subscriber org; it is invisible in a dev org, where an admin can read the resource in any sharing mode.</p>
 <p>This class is the ONLY part of logo handling that runs without sharing, and it only ever touches the package's own packaged resources plus the documents it creates from them. Admin- and donor-supplied images stay on the USER_MODE path in uploadOrgLogo() — do not route them through here.</p>
+<p>Describe result is cached by the platform per transaction, so the wizard pays this once.</p>
 <p>Enforced in two places, and it needs both. <a href="#apex-campaignservice"><code>CampaignService</code></a> masks Allow_Tribute__c to false on every campaign payload it serves, which is what actually hides the section; and <a href="#apex-donationservice"><code>DonationService</code></a>.applyTributeAndMatch refuses to capture tribute fields off the staging options blob, which is what stops a hand-crafted guest submission writing them anyway. The first is the product behaviour, the second is the enforcement — a client-side gate alone would be advisory on a public endpoint.</p>
 <p>No separate send-time gate in <a href="#apex-receiptservice"><code>ReceiptService</code></a>: with capture blocked the Opportunity has no Tribute_Type__c, so buildTributeNotification's existing gates already return null. An in-flight staging row created while the switch was on is finalized through the same capture path, so flipping the switch off stops its e-card too.</p>
 <p>Same field, read for a different purpose: the starting value of a brand-new Campaign's Allow_Tribute__c, applied by <a href="#apex-fundraiseradmincontroller-getfundraiseroptions"><code>FundraiserAdminController.getFundraiserOptions</code></a>() for the "New fundraiser" wizard (lexFundraisersConsole). Deliberately the same answer as tributeEnabled() — offering the wizard a toggle that defaults to on while the org switch suppresses it everywhere would let an admin create a fundraiser whose tribute section silently never renders.</p>
@@ -16933,6 +16948,16 @@
 <tr>
 <td><a id="apex-settingsservice-currencycodeforgateway"></a><code>currencyCodeForGateway(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-defaultcampaigntype"></a><code>defaultCampaignType(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-isactivecampaigntype"></a><code>isActiveCampaignType(1 arg)</code></td>
+<td><code>Boolean</code></td>
 <td></td>
 </tr>
 <tr>

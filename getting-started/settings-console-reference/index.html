@@ -2504,6 +2504,11 @@ run, or not at all).</p>
 <td>New records only — existing campaigns keep their own currency</td>
 </tr>
 <tr>
+<td>Campaign type for new fundraisers</td>
+<td>The <strong>Campaign Type</strong> stamped on fundraisers you create from now on — the field standard Salesforce campaign reports and dashboards group by</td>
+<td>New fundraisers only; an existing campaign's type is never rewritten by an edit. The dropdown lists <em>your org's</em> Campaign Type picklist, so add a "Fundraising" value in Setup first if you want one. Leave it on <strong>"Use the org's own default"</strong> to keep whatever default your org already set — but be aware Salesforce's own stock default is <em>Conference</em>, which is why fresh installs are seeded to <em>Other</em></td>
+</tr>
+<tr>
 <td>Default suggested amounts</td>
 <td>Suggested-amount chips (comma-separated) pre-filled on a brand-new fundraiser</td>
 <td>New records only — pre-fills the "New fundraiser" wizard; editing this later never changes an already-created fundraiser's amounts</td>
@@ -2527,6 +2532,16 @@ run, or not at all).</p>
 <td>Donor options — Allow company-match prompt</td>
 <td>Default for whether a brand-new fundraiser shows a company-match prompt</td>
 <td>Same pattern as tribute gifts above</td>
+</tr>
+<tr>
+<td>Donor options — Add donors as Campaign Members</td>
+<td>Adds each donor to the Campaign their gift came in on, so <strong>Contacts in Campaign</strong> / <strong>Responses in Campaign</strong> and the standard campaign reports stop reading zero</td>
+<td><strong>Off by default</strong>, and off is a working state — the app's own Fundraising Progress card and rollups are correct either way. On applies to gifts finalized from now on; it never back-fills past donations. Leave it off if your org already adds campaign members with its own automation. Event attendees have their own separate switch under Events. See <a href="../../concepts/campaigns/">Campaigns</a></td>
+</tr>
+<tr>
+<td>Donor options — Assign soft credit automatically</td>
+<td>Credits a gift given in honor of someone to that person, and credits a donor's household alongside them</td>
+<td><strong>On</strong> by default. Never changes who paid or how much — it only adds credit rows so both parties appear in giving history without the gift being double-counted</td>
 </tr>
 <tr>
 <td>Min / Max donation amount</td>

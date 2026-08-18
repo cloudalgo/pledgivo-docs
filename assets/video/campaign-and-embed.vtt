@@ -1,0 +1,42 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:21.250
+<v Pledgivo>A campaign, a gift, and your own website
+
+2
+00:00:21.250 --> 00:00:40.370
+<v 1. The campaign>Three lookups do all the work — Designation, payment account and design decide everything downstream
+
+3
+00:00:40.370 --> 00:00:55.370
+<v 2. The donor's path>The page a donor actually gets — Story on the left, the whole gift on the right - no page changes
+
+4
+00:00:55.370 --> 00:01:15.190
+<v 2. The donor's path>Card details, and only card details — The Stripe element is the one place a card number is ever typed
+
+5
+00:01:15.190 --> 00:01:42.890
+<v 2. The donor's path>Confirmed - but not yet recorded — Salesforce writes the donation later, from a scheduled job
+
+6
+00:01:42.890 --> 00:02:03.310
+<v 3. On your own website>Copy the snippet — A script tag plus one div; the mode toggle rewrites both
+
+7
+00:02:03.310 --> 00:02:24.780
+<v 3. On your own website>Running on a site that is not Salesforce — Card, button and form - carrying the campaign's own colours across
+
+8
+00:02:24.780 --> 00:02:50.150
+<v 3. On your own website>The handoff — Amount, name and email arrive on the donation page already filled in
+
+9
+00:02:50.150 --> 00:03:11.750
+<v Wrap up>One campaign, live in two places.
+
+10
+00:03:11.750 --> 00:03:38.680
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: cloudalgo.com/pledgivo-docs
+

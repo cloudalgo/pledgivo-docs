@@ -35,26 +35,38 @@
 
 :root,
 [data-md-color-scheme="default"] {
-  --fn-paper: #f6f5f0;
-  --fn-paper-dim: #efede5;
+  /* Swiss. Neutral paper, true black, and exactly one chromatic colour: a
+     single printer's red, used sparingly enough that it still means something.
+     The second axis is not a second hue but weight — black carries what a
+     generator produced (layer tags, domain rules, entry identity), red carries
+     what a person decided (active nav, section ticks, the current heading).
+     Danger is therefore separated from the accent by depth and border weight
+     rather than by hue, which is the only way to keep one red meaningful. */
+  --fn-paper: #efefec;
+  --fn-paper-dim: #e4e4e0;
   --fn-panel: #ffffff;
-  --fn-ink: #161f35;
-  --fn-ink-soft: #4b5670;
-  --fn-ink-faint: #828c9c;
-  --fn-line: #dedcd2;
-  --fn-line-soft: #eae8de;
-  --fn-accent: #e0533d;
-  --fn-accent-ink: #b84632;
-  --fn-accent-soft: #fdf3ee;
-  --fn-accent-soft-line: #f0c4b4;
-  --fn-warn: #b4650e;
-  --fn-warn-soft: #f8ead7;
-  --fn-warn-line: #e4c495;
-  --fn-danger: #a13d3d;
-  --fn-danger-soft: #f6e4e2;
-  --fn-danger-line: #e3b7b0;
+  --fn-ink: #0b0b0b;
+  --fn-ink-soft: #494949;
+  --fn-ink-faint: #8a8a86;
+  --fn-line: #d3d3ce;
+  --fn-line-soft: #e3e3de;
+  --fn-accent: #d0021b;
+  --fn-accent-ink: #a80217;
+  --fn-accent-soft: #fbe9eb;
+  --fn-accent-soft-line: #efb3bb;
+  --fn-warn: #8a6a00;
+  --fn-warn-soft: #f4eed8;
+  --fn-warn-line: #ddcd9c;
+  --fn-danger: #6f0411;
+  --fn-danger-soft: #f2e2e4;
+  --fn-danger-line: #cfa4ab;
+  /* The neutral axis — everything a generator emitted rather than a person. */
+  --fn-gen: #0b0b0b;
+  --fn-gen-soft: #e9e9e5;
+  --fn-gen-line: #b8b8b3;
   --fn-radius: 10px;
-  --fn-shadow: 0 1px 2px rgba(22, 31, 53, 0.04), 0 10px 24px -14px rgba(22, 31, 53, 0.18);
+  --fn-shadow: 0 1px 2px rgba(11, 11, 11, 0.04), 0 10px 24px -14px rgba(11, 11, 11, 0.16);
+  --fn-shadow-pop: 0 18px 44px -18px rgba(11, 11, 11, 0.34);
   --fn-font-display: "Fraunces", Georgia, "Iowan Old Style", serif;
   --fn-font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --fn-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -130,7 +142,6 @@ body,
 .md-search__form { border-radius: 8px; }
 .md-header__option .md-icon,
 .md-header__button:not(.md-logo) { color: var(--fn-ink-soft); }
-.md-tabs { display: none; }
 
 /* ---------- Sidebar navigation ---------- */
 .md-nav { font-family: var(--fn-font-body); }
@@ -262,11 +273,21 @@ body,
   margin: 0;
 }
 
-/* ---------- Admonitions ---------- */
+/* ---------- Admonitions ----------
+   One shape, four temperatures. Material ships a distinct hue per type — teal
+   for tip, blue for note, purple for example — which against a one-ink palette
+   reads as eight unrelated colours arriving from somewhere else. Every type's
+   title bar and icon are therefore flattened back to the box's own colour
+   first, then re-assigned to one of four temperatures that mean something
+   here: red for anything the reader must act on, neutral black for anything a
+   generator or the platform merely reports, gold for a warning, and the deeper
+   red for genuine danger. The left stripe carries the temperature so the
+   distinction survives at a glance without a second hue. */
 .md-typeset .admonition,
 .md-typeset details {
-  border-radius: var(--fn-radius);
+  border-radius: 0 var(--fn-radius) var(--fn-radius) 0;
   border: 1px solid var(--fn-accent-soft-line);
+  border-left: 3px solid var(--fn-accent);
   background: var(--fn-accent-soft);
   box-shadow: none;
   font-size: 0.74rem;
@@ -277,26 +298,82 @@ body,
   font-size: 0.66rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: transparent;
   color: var(--fn-accent-ink);
 }
-.md-typeset .admonition-title::before,
-.md-typeset summary::before { background-color: var(--fn-accent-ink); }
+/* Flatten Material's per-type title bar and icon. Both of its rules are
+   `.md-typeset .<type> > .admonition-title`, so the same three-class shape is
+   needed here to reach them — a shorter selector loses however late it loads. */
+.md-typeset .admonition > .admonition-title,
+.md-typeset details > summary {
+  background-color: transparent;
+  color: var(--fn-accent-ink);
+}
+.md-typeset .admonition > .admonition-title::before,
+.md-typeset details > summary::before { background-color: var(--fn-accent-ink); }
+
+/* Neutral — what the platform or a generator reports, not what you must do. */
+.md-typeset .admonition.tip,
+.md-typeset .admonition.success,
+.md-typeset .admonition.abstract,
+.md-typeset .admonition.example,
+.md-typeset .admonition.quote,
+.md-typeset details.tip,
+.md-typeset details.abstract,
+.md-typeset details.example {
+  border-color: var(--fn-gen-line);
+  border-left-color: var(--fn-gen);
+  background: var(--fn-gen-soft);
+}
+.md-typeset .tip > .admonition-title,
+.md-typeset .success > .admonition-title,
+.md-typeset .abstract > .admonition-title,
+.md-typeset .example > .admonition-title,
+.md-typeset .quote > .admonition-title,
+.md-typeset details.tip > summary,
+.md-typeset details.abstract > summary,
+.md-typeset details.example > summary { color: var(--fn-gen); }
+.md-typeset .tip > .admonition-title::before,
+.md-typeset .success > .admonition-title::before,
+.md-typeset .abstract > .admonition-title::before,
+.md-typeset .example > .admonition-title::before,
+.md-typeset .quote > .admonition-title::before,
+.md-typeset details.tip > summary::before,
+.md-typeset details.abstract > summary::before,
+.md-typeset details.example > summary::before { background-color: var(--fn-gen); }
+
 .md-typeset .admonition.warning,
-.md-typeset .admonition.caution {
+.md-typeset .admonition.caution,
+.md-typeset .admonition.attention,
+.md-typeset details.warning {
   border-color: var(--fn-warn-line);
+  border-left-color: var(--fn-warn);
   background: var(--fn-warn-soft);
 }
 .md-typeset .warning > .admonition-title,
-.md-typeset .caution > .admonition-title { color: var(--fn-warn); }
+.md-typeset .caution > .admonition-title,
+.md-typeset .attention > .admonition-title,
+.md-typeset details.warning > summary { color: var(--fn-warn); }
 .md-typeset .warning > .admonition-title::before,
-.md-typeset .caution > .admonition-title::before { background-color: var(--fn-warn); }
-.md-typeset .admonition.danger {
+.md-typeset .caution > .admonition-title::before,
+.md-typeset .attention > .admonition-title::before,
+.md-typeset details.warning > summary::before { background-color: var(--fn-warn); }
+
+.md-typeset .admonition.danger,
+.md-typeset .admonition.failure,
+.md-typeset .admonition.bug,
+.md-typeset details.danger {
   border-color: var(--fn-danger-line);
+  border-left-color: var(--fn-danger);
   background: var(--fn-danger-soft);
 }
-.md-typeset .danger > .admonition-title { color: var(--fn-danger); }
-.md-typeset .danger > .admonition-title::before { background-color: var(--fn-danger); }
+.md-typeset .danger > .admonition-title,
+.md-typeset .failure > .admonition-title,
+.md-typeset .bug > .admonition-title,
+.md-typeset details.danger > summary { color: var(--fn-danger); }
+.md-typeset .danger > .admonition-title::before,
+.md-typeset .failure > .admonition-title::before,
+.md-typeset .bug > .admonition-title::before,
+.md-typeset details.danger > summary::before { background-color: var(--fn-danger); }
 
 /* ---------- Code blocks ---------- */
 .md-typeset pre > code,
@@ -782,3 +859,863 @@ body,
   .dm-app { grid-template-columns: 1fr; }
   .dm-panel { border-left: none; border-top: 1px solid var(--fn-line); max-height: 320px; }
 }
+
+/* ==========================================================================
+   Reference prose — reading measure and rhythm
+   --------------------------------------------------------------------------
+   The generated reference pages (reference/*.md, data-model/*.md) are long-form
+   technical prose sitting in a 90rem grid. Before this block nothing capped
+   paragraph width, so body text ran the full ~1000px column at roughly 120-140
+   characters per line — about double a comfortable measure, which is what made
+   the generated pages read as walls.
+
+   The model is the field guide this theme is named for: narrative runs in a
+   measured column, while the technical apparatus (tables, code blocks, method
+   signatures, diagrams) runs full width as plates do. Only the flowing
+   elements are constrained, and only at the top level of the typeset, so
+   prose nested inside a table cell, admonition, or card is untouched.
+   ========================================================================== */
+:root {
+  --fn-measure: 74ch;
+  --fn-prose-leading: 1.72;
+}
+
+.md-typeset > p,
+.md-typeset > ul,
+.md-typeset > ol,
+.md-typeset > blockquote,
+.md-typeset > dl {
+  max-width: var(--fn-measure);
+}
+
+/* Leading and inter-paragraph rhythm. Long technical prose carries long
+   identifiers that force the eye back across the line; the extra leading and
+   the clear paragraph gap are what let a reader find the next line again. */
+.md-typeset > p,
+.md-typeset > ul,
+.md-typeset > ol {
+  line-height: var(--fn-prose-leading);
+  margin-top: 0;
+  margin-bottom: 1.05em;
+}
+
+/* Identifiers are the landmarks in this prose — `CONFIRM_PAYMENT`, `dfForm`,
+   `PaymentIntent`. At the inherited 0.72em they read smaller than the text
+   around them and disappear into it; at 0.84em with a hairline they become
+   scannable anchors, which is most of what makes a dense paragraph navigable. */
+.md-typeset > p code,
+.md-typeset > ul code,
+.md-typeset > ol code {
+  font-size: 0.84em;
+  background: var(--fn-paper-dim);
+  border: 1px solid var(--fn-line-soft);
+  padding: 0.1em 0.34em;
+  color: var(--fn-ink);
+}
+
+/* Class/bundle entry headings. h4 is the per-symbol heading on the reference
+   pages and had no size of its own, so it landed at body size and gave the
+   page no scannable rhythm between one symbol and the next. */
+.md-typeset h4 {
+  font-family: var(--fn-font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  margin: 1.9rem 0 0.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--fn-line-soft);
+}
+.md-typeset h3 + h4 { border-top: none; padding-top: 0; margin-top: 0.9rem; }
+
+/* Wide apparatus. Tables and code blocks are plates, not prose — they keep the
+   full column so a method signature or a long SOQL line does not wrap. */
+.md-typeset > table:not([class]),
+.md-typeset > .highlight,
+.md-typeset > .tabbed-set { max-width: none; }
+
+/* ==========================================================================
+   Docs note — rationale set apart from summary
+   --------------------------------------------------------------------------
+   A reference entry carries two kinds of prose that used to look identical:
+   the summary (what this class/bundle IS) and the doc note (why it exists,
+   what is easy to get wrong). Only the first paragraph of a note ever carried
+   the "Docs note." lead-in, so every paragraph after it read as more summary.
+   The container is now labelled once and marked with a rule in the margin —
+   the field guide's aside, not another paragraph of body copy.
+   ========================================================================== */
+.md-typeset .fn-docnote {
+  margin: 1.1rem 0 1.4rem;
+  padding: 0.15rem 0 0.15rem 1.1rem;
+  border-left: 2px solid var(--fn-accent-soft-line);
+  max-width: calc(var(--fn-measure) + 1.1rem);
+}
+.md-typeset .fn-docnote > p {
+  color: var(--fn-ink-soft);
+  line-height: var(--fn-prose-leading);
+  margin: 0 0 0.9em;
+}
+.md-typeset .fn-docnote > p:last-child { margin-bottom: 0; }
+.md-typeset .fn-docnote > ul,
+.md-typeset .fn-docnote > ol {
+  color: var(--fn-ink-soft);
+  line-height: var(--fn-prose-leading);
+}
+.md-typeset .fn-docnote__label {
+  font-family: var(--fn-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--fn-accent-ink);
+  margin: 0 0 0.45em !important;
+}
+.md-typeset .fn-docnote code {
+  font-size: 0.84em;
+  background: var(--fn-paper-dim);
+  border: 1px solid var(--fn-line-soft);
+  padding: 0.1em 0.34em;
+}
+
+/* ==========================================================================
+   Atmosphere and motion
+   --------------------------------------------------------------------------
+   Everything here is decoration and must behave like it: nothing moves the
+   text the reader is on, nothing runs on the main thread, and nothing is
+   required to understand the page.
+
+   Scroll-driven animations (`animation-timeline`) are used rather than an
+   IntersectionObserver because the reference pages carry ~1000 entries —
+   observing them all would cost real main-thread work on every scroll, while
+   a scroll timeline is composited. They sit inside @supports so a browser
+   without them shows the finished state rather than a half-applied one.
+   ========================================================================== */
+
+/* ---- Paper. A warm grain plus two very slow colour drifts. The grain is
+   static (a moving grain is nausea, not texture); only the wash moves, at a
+   speed closer to weather than animation. ---- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 12% -10%, rgba(208, 2, 27, 0.032), transparent 60%),
+    radial-gradient(50rem 38rem at 105% 15%, rgba(11, 11, 11, 0.045), transparent 62%);
+  animation: fn-wash 72s ease-in-out infinite alternate;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+/* Lift the chrome above the animated wash and the grain overlay. Both washes
+   are positioned at z-index 0, so unpositioned in-flow content paints under
+   them and the page reads through a film; each element that holds text has to
+   be lifted past them explicitly.
+
+   Which elements, though, is load-bearing, and two earlier shapes of this
+   rule were wrong in ways that took a while to see:
+
+   * `position` is deliberately NOT set on the header or the sidebars.
+     Material gives both a position that changes with the breakpoint — sticky
+     on the wide layout, fixed for the drawer — and forcing `relative` here
+     silently overrode both, which unstuck the masthead and left the phone
+     drawer sitting in the flow, taking 242px out of the content column.
+   * The lift is on `.md-content`, NOT on `.md-main`. The drawer is a child of
+     `.md-main`, and a stacking context there at z-index 1 traps it below the
+     dimming overlay's z-index 5 however high the drawer's own z-index goes.
+     The visible symptom was a drawer that opened and looked right but whose
+     every link was dead: each tap landed on `label.md-overlay` above it, and
+     closed the drawer instead of navigating. Lifting only the text container
+     leaves Material's own sidebar/overlay stacking intact. */
+.md-content, .md-footer { position: relative; z-index: 1; }
+.md-header { z-index: 1; }
+/* The sidebar's own lift is wide-layout ONLY — below the breakpoint it is the
+   drawer, and Material has already stacked it correctly against the overlay. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar { z-index: 1; }
+}
+
+@keyframes fn-wash {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-2.5%, 1.5%, 0) scale(1.06); }
+}
+
+/* ---- Reading progress. A hairline in the accent, tied to document scroll —
+   on a 470KB reference page the scrollbar alone is a poor gauge of how much
+   is left. ---- */
+@supports (animation-timeline: scroll()) {
+  .md-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 100%;
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--fn-accent), var(--fn-warn));
+    animation: fn-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes fn-progress {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}
+
+/* ---- Entry reveal. Each reference entry lifts into place as it enters the
+   viewport and settles well before it reaches reading height, so the text is
+   never moving by the time the eye arrives.
+
+   The range is a fixed scroll distance (`entry 0%` → `entry 360px`), not a
+   percentage. Every percentage in a view() range is relative to the element's
+   own height, so a block taller than the viewport can never finish its reveal
+   while you are reading it: a 2000px docs note deep-linked from the contents
+   grid sat at opacity 0.35 with no way to scroll it to 1 except past the point
+   of reading it. A length is height-independent — anything that enters the
+   viewport is fully opaque 360px later, whether it is a heading or a page. ---- */
+@supports (animation-timeline: view()) {
+  .md-typeset h2,
+  .md-typeset h4,
+  .md-typeset > table:not([class]),
+  .md-typeset .grid.cards > ul > li {
+    animation: fn-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 360px;
+  }
+  @keyframes fn-rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* The docs-note rule draws itself in — a small reward for scrolling that
+     costs one composited transform. The note itself never fades: it is body
+     prose, often the longest block on the page, and the one thing a deep link
+     lands on. Motion here is the rule only, which cannot make text unreadable
+     however far it stalls. */
+  .md-typeset .fn-docnote {
+    border-left-color: transparent;
+    background-image: linear-gradient(var(--fn-accent-soft-line), var(--fn-accent-soft-line));
+    background-repeat: no-repeat;
+    background-size: 2px 100%;
+    background-position: 0 0;
+    animation: fn-rule linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 300px;
+  }
+  @keyframes fn-rule {
+    from { background-size: 2px 0%; }
+    to   { background-size: 2px 100%; }
+  }
+}
+
+/* ---- Page load. One orchestrated masthead reveal, staggered. Page-load
+   motion is spent here and nowhere else. ---- */
+.md-content__inner > .fn-eyebrow,
+.md-content__inner > h1,
+.md-content__inner > .fn-dek,
+.md-content__inner > .fn-status-strip {
+  animation: fn-enter 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.md-content__inner > .fn-eyebrow     { animation-delay: 0.02s; }
+.md-content__inner > h1              { animation-delay: 0.09s; }
+.md-content__inner > .fn-dek         { animation-delay: 0.17s; }
+.md-content__inner > .fn-status-strip { animation-delay: 0.25s; }
+
+@keyframes fn-enter {
+  from { opacity: 0; transform: translateY(10px); filter: blur(3px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* ---- Micro-interactions ---- */
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4 { scroll-margin-top: 4.2rem; }
+
+.md-typeset .headerlink {
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  transform: translateX(-3px);
+}
+.md-typeset h1:hover .headerlink,
+.md-typeset h2:hover .headerlink,
+.md-typeset h3:hover .headerlink,
+.md-typeset h4:hover .headerlink,
+.md-typeset .headerlink:focus { opacity: 1; transform: translateX(0); }
+
+/* An identifier in prose is a destination — say so before it is clicked. */
+.md-typeset > p a code,
+.md-typeset .fn-docnote a code {
+  transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+}
+.md-typeset a:hover code {
+  background: var(--fn-accent-soft);
+  border-color: var(--fn-accent-soft-line);
+  color: var(--fn-accent-ink);
+}
+
+.md-nav--secondary .md-nav__link {
+  transition: color 0.16s ease, padding-left 0.16s ease;
+  border-left: 2px solid transparent;
+  padding-left: 0.5rem;
+}
+.md-nav--secondary .md-nav__link--active {
+  border-left-color: var(--fn-accent);
+  color: var(--fn-accent-ink);
+}
+.md-nav--secondary .md-nav__link:hover { padding-left: 0.72rem; }
+
+/* ---- The whole of the above is optional. Honour the system setting. ---- */
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+  .md-content__inner > .fn-eyebrow,
+  .md-content__inner > h1,
+  .md-content__inner > .fn-dek,
+  .md-content__inner > .fn-status-strip { animation: none; }
+  @supports (animation-timeline: view()) {
+    .md-typeset h2,
+    .md-typeset h4,
+    .md-typeset .fn-docnote,
+    .md-typeset > table:not([class]),
+    .md-typeset .grid.cards > ul > li { animation: none; }
+    .md-typeset .fn-docnote {
+      border-left-color: var(--fn-accent-soft-line);
+      background-image: none;
+    }
+  }
+  .md-header::after { animation: none; }
+  * { transition-duration: 0.01ms !important; }
+}
+
+/* ---------- Contents grid on generated reference pages ----------
+   A generated reference page is one very long document on purpose: every
+   cross-reference the generators emit, and every URL already published,
+   resolves to an anchor within it. The theme's "On this page" rail turns that
+   length into a single undifferentiated column, so the page gets its own
+   overview at the top instead — the domain groups, their size, and a link
+   into each. It reuses the site's existing card grid rather than introducing
+   a second card style, and only tightens the parts that differ: the link rows
+   inside a card are dense navigation, not prose, so they drop to a smaller
+   size and a tighter measure than the reading-measure rules above set. */
+.md-typeset .fn-contents__label {
+  font-family: var(--fn-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fn-ink-soft);
+  margin: 2.2rem 0 0;
+}
+.md-typeset .grid.cards.fn-contents > ul {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 0.7rem;
+}
+.md-typeset .grid.cards.fn-contents > ul > li {
+  padding: 0.95rem 1.05rem;
+}
+.md-typeset .grid.cards.fn-contents > ul > li > p {
+  max-width: none;
+  line-height: 1.6;
+}
+/* The count line — "36 classes" — is a label, not a sentence. */
+.md-typeset .grid.cards.fn-contents > ul > li > p:nth-of-type(2) {
+  font-family: var(--fn-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--fn-ink-soft);
+  margin-bottom: 0.35rem;
+}
+.md-typeset .grid.cards.fn-contents > ul > li > p:last-child {
+  font-size: 0.78rem;
+  color: var(--fn-ink-soft);
+  margin-bottom: 0;
+}
+.md-typeset .grid.cards.fn-contents > ul > li > p:last-child a {
+  color: var(--fn-ink-soft);
+  border-bottom: 1px solid transparent;
+}
+.md-typeset .grid.cards.fn-contents > ul > li > p:last-child a:hover {
+  color: var(--fn-accent-ink);
+  border-bottom-color: var(--fn-accent-soft-line);
+}
+
+/* ==========================================================================
+   Masthead — brand, section tabs, search, repo in ONE row
+   --------------------------------------------------------------------------
+   The site has 40 pages across six sections. Before this block every one of
+   them lived in a single flat sidebar column, which made the sidebar carry the
+   whole navigation load and gave a reader no sense of which part of the
+   documentation they were in. The six sections are now the primary axis and
+   live in the masthead; the sidebar carries only the current section.
+
+   The row itself is composed in `overrides/main.html`, not here. Material
+   renders the tabs as a SEPARATE ROW below the header, and CSS cannot move one
+   flow element into another — the first attempt overlaid the tab row on the
+   header with `position: fixed`, which aligned the two only by coincidence and
+   came apart the moment Material's own JS hid the tabs on scroll. With the
+   tabs rendered inside `.md-header__inner`, everything below is ordinary
+   styling of one flex row.
+
+   The brand block is exactly as wide as the primary sidebar, so the tabs begin
+   on the same vertical line as the page content and the hairline under the
+   brand continues the sidebar's own right edge. Below Material's layout
+   breakpoint the tabs give way to the drawer, so the tab and brand rules that
+   assume the wide layout are scoped to it and the mobile header is untouched.
+   ========================================================================== */
+:root {
+  --fn-masthead: 3rem;
+  --fn-brand-w: 12.1rem;
+}
+
+.md-header {
+  /* An earlier rule puts every chrome element into its own stacking context so
+     the animated background sits behind them; `position: relative` there also
+     silently dropped Material's sticky header, which only showed once the tab
+     row stopped being a fixed overlay covering the gap. */
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--fn-masthead);
+  background: rgba(239, 239, 236, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--fn-line);
+  box-shadow: none;
+}
+.md-header[data-md-state="shadow"],
+.md-header--shadow { box-shadow: none; }
+.md-header__inner {
+  height: var(--fn-masthead);
+  align-items: stretch;
+  padding: 0;
+  gap: 0;
+}
+
+/* ---- brand lockup ---- */
+.fn-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+  height: 100%;
+  padding: 0 0.7rem 0 0.2rem;
+  color: var(--fn-ink);
+}
+.fn-brand:hover { color: var(--fn-ink); }
+.fn-brand__mark {
+  flex: none;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 0.35rem;
+  background: var(--fn-accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font: 600 0.8rem/1 var(--fn-font-display);
+  box-shadow: 0 2px 5px -1px rgba(11, 11, 11, 0.35);
+}
+.fn-brand__word {
+  font: 600 0.96rem/1 var(--fn-font-display);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.fn-brand__ver {
+  font: 400 0.6rem/1 var(--fn-font-mono);
+  color: var(--fn-ink-faint);
+  border: 1px solid var(--fn-line);
+  border-radius: 20px;
+  padding: 0.12rem 0.35rem;
+  white-space: nowrap;
+}
+
+/* Material's header observer writes the page title into this element as the
+   reader scrolls. On the wide layout the brand lockup and the section tabs
+   already say where the reader is, so it is kept in the DOM for the observer
+   and hidden from view; below the breakpoint the tabs are gone and it is the
+   only thing naming the current page, so it stays — and it is what pushes the
+   search button to the right edge. */
+@media screen and (min-width: 76.25em) {
+  .fn-header__title { display: none; }
+}
+@media screen and (max-width: 76.2344em) {
+  .fn-header__title {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.8rem;
+    line-height: var(--fn-masthead);
+    margin-left: 0.35rem;
+  }
+}
+
+/* ---- section tabs ---- */
+.md-tabs {
+  background: transparent;
+  color: var(--fn-ink-soft);
+  overflow: visible;
+  height: 100%;
+  border: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.md-tabs__list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 100%;
+}
+.md-tabs__item { height: 100%; padding: 0; }
+.md-tabs__link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+  padding: 0 0.65rem;
+  font-size: 0.83rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--fn-ink-soft);
+  opacity: 1;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 0.16s ease, border-color 0.16s ease;
+}
+.md-tabs__link:hover { color: var(--fn-ink); }
+.md-tabs__link--active,
+.md-tabs__item--active .md-tabs__link {
+  color: var(--fn-ink);
+  font-weight: 600;
+  border-bottom-color: var(--fn-accent);
+}
+
+/* ---- search pill and repo button ---- */
+.md-header__inner > .md-search { flex: 0 0 auto; margin-left: auto; }
+.fn-masthead__source {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
+  margin: 0 0 0 0.4rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 76.25em) {
+  .fn-brand {
+    width: var(--fn-brand-w);
+    /* Aligned with the sidebar's own left inset, not with the viewport: the
+       brand column and the chapter column are the same 12.1rem column, and a
+       mark that starts further left than the section label under it reads as
+       a misalignment rather than as a wider gutter. */
+    padding-left: 1.5rem;
+    border-right: 1px solid var(--fn-line-soft);
+  }
+  .md-tabs { padding-left: 0.7rem; }
+  /* The mirror of that inset on the right, so the search pill stops where the
+     table-of-contents text stops instead of running into the window edge. */
+  .md-header__inner { padding-right: 1.1rem; }
+  .fn-masthead__drawer,
+  .fn-masthead__searchicon { display: none; }
+
+  /* A bordered pill on paper rather than Material's tinted field: the header
+     is a light band, so the stock translucent-white input reads as a gap in
+     it. Fixed width because the tabs, not the search, own the middle.
+
+     The width belongs on `.md-search__inner`, NOT on the form. Material sizes
+     the whole search unit by animating the inner from 11.7rem to 34.4rem when
+     the toggle is checked, and positions the results panel at `width: 100%` of
+     that same inner. Pinning the form instead left the two out of step the
+     moment search opened: a 10.5rem input with a 34.4rem panel hanging off its
+     right edge. Sizing the inner keeps form, panel and scroll wrapper on one
+     box, and Material's `:checked` rule still wins the expansion. */
+  .md-search__inner { width: 10.5rem; }
+  .md-search__form {
+    height: 1.7rem;
+    border-radius: 0.4rem;
+    background: var(--fn-panel);
+    border: 1px solid var(--fn-line);
+    box-shadow: none;
+    transition: border-color 0.16s ease;
+  }
+  .md-search__form:hover { background: var(--fn-panel); border-color: var(--fn-accent-soft-line); }
+  [dir="ltr"] .md-search__input {
+    font-size: 0.75rem;
+    color: var(--fn-ink);
+    background: transparent;
+    padding-left: 1.9rem;
+  }
+  .md-search__input::placeholder { color: var(--fn-ink-faint); }
+  .md-search__icon[for="__search"] {
+    top: 0.32rem;
+    left: 0.4rem;
+    width: 0.9rem;
+    height: 0.9rem;
+    color: var(--fn-ink-faint);
+  }
+  .md-search__options { top: 0.2rem; right: 1.9rem; }
+
+  /* The shortcut hint Material does not ship. It is decoration on the form
+     rather than an element in the partial, so it cannot intercept the click
+     that opens search; it is dropped while search is open, where the same
+     corner belongs to the clear button. */
+  .md-search__form::after {
+    content: "⌘K";
+    position: absolute;
+    top: 50%;
+    right: 0.28rem;
+    transform: translateY(-50%);
+    font: 500 0.56rem/1 var(--fn-font-mono);
+    color: var(--fn-ink-faint);
+    background: var(--fn-paper-dim);
+    border: 1px solid var(--fn-line);
+    border-radius: 4px;
+    padding: 0.15rem 0.28rem;
+    pointer-events: none;
+  }
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form::after { display: none; }
+
+  /* Open state. The pill becomes the head of the results panel, so its bottom
+     corners square off and the panel picks the radius up again underneath —
+     one shape, not a pill with a card behind it. Material's own `top: 1.9rem`
+     assumes its 1.8rem form; ours is 1.7rem inside 0.1rem of inner padding,
+     so the panel is pulled up to sit flush on the pill's border. */
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+    background: var(--fn-panel);
+    border-color: var(--fn-line);
+    border-bottom-color: transparent;
+    border-radius: 0.4rem 0.4rem 0 0;
+    box-shadow: none;
+  }
+  .md-search__output { top: 1.8rem; }
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__output {
+    border-radius: 0 0 0.4rem 0.4rem;
+    border: 1px solid var(--fn-line);
+    box-shadow: var(--fn-shadow-pop, 0 18px 44px -18px rgba(11, 11, 11, 0.34));
+  }
+  .md-search__scrollwrap { background: var(--fn-panel); }
+
+  /* The section name above the chapter list: a label for the column, not a
+     link competing with the chapters under it. */
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav__link {
+    font-family: var(--fn-font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fn-ink-faint);
+    background: transparent;
+    border-left-color: transparent;
+    padding-left: 0.7rem;
+    margin-bottom: 0.3rem;
+    pointer-events: none;
+  }
+
+  /* The repo link becomes a square icon button — the stock lockup spends a
+     third of the row on a repository name and two stat lines that no reader
+     of a docs page is looking for. */
+  .fn-masthead__source .md-source { font-size: 0; }
+  .fn-masthead__source .md-source__repository { display: none; }
+  .fn-masthead__source .md-source__icon {
+    width: 1.7rem;
+    height: 1.7rem;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--fn-line);
+    border-radius: 0.4rem;
+    background: var(--fn-panel);
+    color: var(--fn-ink-soft);
+    transition: border-color 0.16s ease, color 0.16s ease;
+  }
+  .fn-masthead__source .md-source__icon svg { width: 0.9rem; height: 0.9rem; margin: 0; }
+  .fn-masthead__source:hover .md-source__icon {
+    border-color: var(--fn-accent-soft-line);
+    color: var(--fn-accent-ink);
+  }
+}
+
+/* Material treats the tab row as transient: once the page heading scrolls
+   under the header it sets `hidden` on the tabs and animates the page title
+   into the header in their place. That trade makes sense for a second row that
+   can be reclaimed; here the tabs ARE the primary navigation and live in the
+   header itself, so the hide is pinned open.
+
+   Only on the wide layout, though. Below the breakpoint Material hides the
+   tabs for a different and still-correct reason — the six sections belong to
+   the drawer, where they have room — and an unscoped pin re-opened them there
+   too, running them off the right edge of a phone. */
+@media screen and (min-width: 76.25em) {
+  .md-tabs[hidden] {
+    display: flex;
+    pointer-events: auto;
+  }
+  .md-tabs[hidden] .md-tabs__link {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition: color 0.16s ease, border-color 0.16s ease;
+  }
+}
+
+/* ==========================================================================
+   Sidebar — the current section as a numbered chapter list
+   --------------------------------------------------------------------------
+   With the sections lifted into the masthead, the sidebar shows one section at
+   a time and can afford to say something the flat list could not: how many
+   chapters there are and which one you are on. The numbers come from a CSS
+   counter over the rendered list rather than from the page titles, so nav
+   order in mkdocs.yml stays the single source of truth — reordering a section
+   renumbers it with no edit here and no edit to any page.
+   ========================================================================== */
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list {
+  counter-reset: fn-ch;
+  border-left: 1px solid var(--fn-line-soft);
+  margin-left: 0.75rem;
+  padding-left: 0;
+}
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item {
+  counter-increment: fn-ch;
+  position: relative;
+}
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.32rem 0.5rem 0.32rem 0.7rem;
+  border-left: 0;
+  border-radius: 0 6px 6px 0;
+  line-height: 1.42;
+}
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link::before {
+  content: counter(fn-ch, decimal-leading-zero);
+  flex: none;
+  font-family: var(--fn-font-mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  color: var(--fn-ink-faint);
+  padding: 0.12em 0.26em;
+  border-radius: 3px;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+/* The active chapter is the one thing in the sidebar that is a decision rather
+   than an inventory, so it is the one thing that gets the accent. */
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link--active {
+  background: transparent;
+}
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link--active::before {
+  color: var(--fn-panel);
+  background: var(--fn-accent);
+  font-weight: 500;
+}
+.md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link--active::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 0.28rem;
+  bottom: 0.28rem;
+  width: 2px;
+  background: var(--fn-accent);
+}
+
+/* Material nests a copy of the page's own table of contents under the active
+   chapter, fronted by a `<label>` that opens it — and that label carries the
+   chapter's own title, so the active `<li>` holds a label and an anchor
+   reading the same words. On the wide layout the right-hand rail already
+   holds the table of contents, so the label and the nested nav are both
+   redundant and both go. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > label.md-nav__link,
+  .md-sidebar--primary .md-nav--secondary { display: none; }
+}
+
+/* In the drawer there is no rail, so the nested table of contents is the only
+   in-page navigation a phone gets and the label has to stay as its opener.
+   What it must not stay as is a second numbered chapter: styled like its
+   sibling anchor it published as "02 After you install" twice in a row. The
+   number and the active chip come off, and the repeated title is replaced by
+   what the control actually does. */
+@media screen and (max-width: 76.234375em) {
+  /* The label precedes the anchor in Material's markup, so the list item is
+     made a column to let `order` put the opener under the chapter it opens
+     rather than above it. The nested nav is absolutely positioned in the
+     drawer and the toggle input is hidden, so neither is affected. */
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item--active {
+    display: flex;
+    flex-direction: column;
+  }
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > label.md-nav__link {
+    font-family: var(--fn-font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fn-ink-faint);
+    order: 1;
+  }
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > label.md-nav__link::before,
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > label.md-nav__link::after {
+    content: none;
+  }
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > label.md-nav__link .md-ellipsis {
+    font-size: 0;
+  }
+  .md-sidebar--primary .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav > .md-nav__list > .md-nav__item > label.md-nav__link .md-ellipsis::before {
+    content: "On this page";
+    font-size: 0.62rem;
+  }
+}
+
+/* ==========================================================================
+   CloudAlgo attribution band (overrides/main.html)
+   --------------------------------------------------------------------------
+   Sits below Material's footer meta bar and continues it rather than starting
+   a new colour: the logo is CloudAlgo's own white-on-dark lockup, served from
+   this site, so the band needs the dark ground to read at all.
+   ========================================================================== */
+.fn-madeby {
+  background: var(--fn-ink);
+  color: #cfd3da;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+.fn-madeby__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem 1.6rem;
+  padding: 1.15rem 0.8rem 1.35rem;
+}
+.fn-madeby__lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  opacity: 0.9;
+  transition: opacity 0.16s ease;
+}
+.fn-madeby__lockup:hover { opacity: 1; }
+.fn-madeby__lead {
+  font-family: var(--fn-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #9aa0aa;
+}
+.fn-madeby__logo { height: 1.35rem; width: auto; display: block; }
+.fn-madeby__note {
+  margin: 0;
+  font-size: 0.7rem;
+  color: #9aa0aa;
+}
+.fn-madeby__note a { color: #e6e8ec; border-bottom: 1px solid rgba(255, 255, 255, 0.28); }
+.fn-madeby__note a:hover { color: #fff; border-bottom-color: currentColor; }
+
+@media screen and (max-width: 44.9375em) {
+  .fn-madeby__inner { flex-direction: column; align-items: flex-start; }
+}
+

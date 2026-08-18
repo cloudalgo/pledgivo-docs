@@ -106,7 +106,7 @@
         >
         <span class="fn-brand__word">Pledgivo</span>
         
-          <span class="fn-brand__ver">1.0.0-18</span>
+          <span class="fn-brand__ver">1.0.0-19</span>
         
       </a>
 
@@ -2143,33 +2143,22 @@
 <p class="fn-dek">A campaign can be embedded directly on your organization's own website — a button, a card, or an inline form. Clicking it always sends the visitor to your Experience Cloud donation page to enter payment details; no card data ever touches the external site.</p>
 
 <h2 id="watch-it-first">Watch it first<a class="headerlink" href="#watch-it-first" title="Permanent link">#</a></h2>
-<div class="fn-video">
-  <video id="fn-cd-video-embed" controls preload="none" poster="../../assets/video/campaign-and-embed-poster.png">
-    <source src="../../assets/video/campaign-and-embed.mp4" type="video/mp4">
-    <track kind="captions" srclang="en" label="English" src="../../assets/video/campaign-and-embed.vtt">
-    Your browser does not support embedded video. The same screens appear in order on this page.
-  </video>
+<div class="fn-film">
+  <div class="fn-vp" data-chapters='[[0,"Introduction"],[21,"1. The campaign"],[40,"2. The donor&#39;s path"],[102,"3. On your own website"],[170,"Wrap up"]]'>
+    <video id="fn-cd-video-embed" controls playsinline preload="metadata" width="1600" height="1228" poster="../../assets/video/campaign-and-embed-poster.png">
+      <source src="../../assets/video/campaign-and-embed.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="../../assets/video/campaign-and-embed.vtt">
+      Your browser does not support embedded video. The same screens appear in order on this page.
+    </video>
+  </div>
+  <ul class="fn-chapters" id="fn-cd-chapters-embed">
+    <li><button type="button" data-t="0"><b>0:00</b> Introduction</button></li>
+    <li><button type="button" data-t="21"><b>0:21</b> 1. The campaign</button></li>
+    <li><button type="button" data-t="40"><b>0:40</b> 2. The donor's path</button></li>
+    <li><button type="button" data-t="102"><b>1:42</b> 3. On your own website</button></li>
+    <li><button type="button" data-t="170"><b>2:50</b> Wrap up</button></li>
+  </ul>
 </div>
-<ul class="fn-chapters" id="fn-cd-chapters-embed">
-  <li><button type="button" data-t="0"><b>0:00</b> Introduction</button></li>
-  <li><button type="button" data-t="21"><b>0:21</b> 1. The campaign</button></li>
-  <li><button type="button" data-t="40"><b>0:40</b> 2. The donor's path</button></li>
-  <li><button type="button" data-t="102"><b>1:42</b> 3. On your own website</button></li>
-  <li><button type="button" data-t="170"><b>2:50</b> Wrap up</button></li>
-</ul>
-<script>
-  (function () {
-    var video = document.getElementById('fn-cd-video-embed');
-    var list = document.getElementById('fn-cd-chapters-embed');
-    if (!video || !list) return;
-    list.addEventListener('click', function (event) {
-      var button = event.target.closest('button[data-t]');
-      if (!button) return;
-      video.currentTime = Number(button.dataset.t);
-      video.play();
-    });
-  })();
-</script>
 <p class="fn-figure-caption"><b>What it is.</b> The same walkthrough that opens the <a href="first-campaign.md">first-campaign guide</a>. Its third chapter — <b>On your own website</b>, from 1:42 — is this page: copying the snippet, all three modes running on an external site, and the prefilled handoff back to the donation page. The two chapters before it show where that campaign came from.</p>
 
 <h2 id="before-you-start">Before you start<a class="headerlink" href="#before-you-start" title="Permanent link">#</a></h2>
@@ -2204,7 +2193,7 @@ Skipping any one of them is the most common cause of "the widget doesn't show up
 <tbody>
 <tr>
 <td>Card</td>
-<td>Logo, the campaign's form heading, donation-amount picker — plus a progress bar on campaigns that show one (see below)</td>
+<td>Logo, the campaign's form heading, donation-amount picker — plus a raised-of-goal progress bar on campaigns that show one (see below)</td>
 <td>Sidebar, footer, dedicated "Give" section</td>
 </tr>
 <tr>
@@ -2220,18 +2209,14 @@ Skipping any one of them is the most common cause of "the widget doesn't show up
 </tbody>
 </table>
 <div class="admonition note">
-<p class="admonition-title">Which campaigns show a progress bar in the embed</p>
-<p>In the embedded widget the raised-of-goal bar is a goal-driven crowdfunding affordance, so
-it appears only on a <strong>General</strong> campaign that has a <strong>Goal Amount</strong> set and whose Page
-Design leaves <strong>Show Progress Bar</strong> on. <strong>Open Donation</strong> campaigns are open-ended by
-definition and show no bar in the embed even with a Goal Amount filled in; <strong>Ticketed
-Event</strong> campaigns show a tier picker instead.</p>
-<p>The hosted donation page applies this rule to its hero banner but <strong>not</strong> to the donation
-form's own progress readout, which appears whenever the campaign has a goal, a raised
-figure, or a donor count. So an Open Donation campaign with a goal can show progress on
-the donation page while its embedded card does not. If you need the two to match, either
-give the campaign the <strong>General</strong> subtype (bar everywhere) or clear its <strong>Goal Amount</strong>
-and donor-visible figures (bar nowhere).</p>
+<p class="admonition-title">Which campaigns show a progress bar</p>
+<p>The raised-of-goal bar is a goal-driven affordance, so it needs a <strong>Goal Amount</strong> on the
+campaign — without one, nothing draws a bar anywhere. Given a goal, a <strong>General</strong> or
+<strong>Open Donation</strong> campaign shows the bar; a <strong>Ticketed Event</strong> campaign shows a tier picker
+instead. Switching <strong>Show Progress Bar</strong> off on the campaign's Page Design removes it.</p>
+<p>One rule, three surfaces: whatever that rule decides applies identically to the hero banner
+on the hosted page, the donation form's own progress readout, and the embedded card. If you
+see a bar in one place you will see it in all of them.</p>
 <p>The heading on the card is the campaign's <strong>form title</strong> (default: "Make your gift"), not
 the campaign's name — the same heading that sits above the amount picker on the hosted
 page. Set a campaign-specific one in <strong>Form Title Override</strong> on the campaign if the embed
@@ -2257,8 +2242,10 @@ origin boundary intact, so the ochre, the cream and the square corners are the c
 tokens, applied on someone else's website with no CSS to copy. The Button's label is
 <i>Give today</i>, set from <code>data-label</code> in the snippet. Note what the Card and Form
 headings actually say — <i>Make your gift</i>, the org default, not the campaign name (see the
-note above about <b>Form Title Override</b>) — and that no progress bar renders, because this is
-an Open Donation campaign. <b>2</b> — what happens after a visitor types into the Form-mode
+note above about <b>Form Title Override</b>). No progress bar renders in this capture: it
+predates the 2026-08-18 change that brought Open Donation campaigns into the progress-bar rule,
+and this campaign is an Open Donation appeal with a $100,000 goal — the same widget today draws
+the raised-of-goal bar the hosted page draws. <b>2</b> — what happens after a visitor types into the Form-mode
 widget and presses Give: the hosted donation page opens with <b>$250</b> already selected and
 <b>Ada</b> / <b>Okafor</b> / the email address already filled in. The single name field is split
 into first and last correctly, and any <code>utm_</code> parameters that were on the host page's
@@ -2472,6 +2459,8 @@ switch hasn't been turned off.</p>
         <script src="../../assets/js/data-model-diagram.js"></script>
       
         <script src="../../assets/js/step-viewer.js"></script>
+      
+        <script src="../../assets/js/field-notes-video.js"></script>
       
     
   </body>

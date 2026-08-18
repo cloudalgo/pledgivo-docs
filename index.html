@@ -104,7 +104,7 @@
         >
         <span class="fn-brand__word">Pledgivo</span>
         
-          <span class="fn-brand__ver">1.0.0-18</span>
+          <span class="fn-brand__ver">1.0.0-19</span>
         
       </a>
 
@@ -2009,6 +2009,16 @@ run inside your org — no external platform, no sync job, no second permission 
     Set up your first campaign
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
   </a>
+  <!-- doc: The third call to action is an anchor at the film further down the
+       page, so with no JavaScript it still does the honest thing and jumps
+       there. assets/js/field-notes-video.js upgrades it to centre the film,
+       flash its frame, and start playback — see wireWatchButton(). The
+       thumbnail is the film's own poster, cropped by CSS into the donation
+       card; alt is empty because the label beside it already says what it is. -->
+  <a class="fn-btn fn-btn--watch" href="#fn-overview-film" data-fn-watch>
+    <span class="fn-btn__thumb"><img src="assets/video/pledgivo-overview-poster.png" alt=""></span>
+    <span>Watch the overview<small>1 min 29 sec</small></span>
+  </a>
 </div>
 
 <div class="fn-status-strip">
@@ -2032,6 +2042,44 @@ run inside your org — no external platform, no sync job, no second permission 
   <div><b>0</b><span>sync jobs — a gift is queryable the instant it is taken</span></div>
   <div><b>24</b><span>scheduled Apex jobs, installed and started for you</span></div>
   <div><b>90%</b><span>Apex test coverage, gated on every change</span></div>
+</div>
+
+<!-- doc: The 88-second overview film. Motion graphics only - no product
+     screenshots, so it never goes stale against a UI change, and nothing on
+     screen is a donor name, an org URL or a key. Built deterministically from
+     scripts/video/marketing/scenes.html (see docs/demo-video-pipeline.md,
+     "Marketing film"); preload="none" so the homepage costs nothing to open. -->
+<!-- doc: The film keeps the place it already had — between the proof strip
+     and the first numbered section — rather than being lifted into the hero.
+     A reader who has just been told four numbers is the one most likely to
+     want the moving version of the same claim, and a film in the hero pushes
+     the headline and the install link below the fold to serve the minority who
+     watch it.
+
+     Unlike the walkthrough videos elsewhere in the site, this one is upgraded
+     by assets/js/field-notes-video.js into a player built from this theme's
+     tokens: `data-chapters` is that script's input, and the .fn-chapters list
+     below is both the no-JS chapter control and the highlight the script
+     drives. The `controls` attribute is removed by the script only once its own
+     controls exist, so a JS failure leaves a working native player rather than
+     a frame with no way to start it. preload="metadata" costs a few KB and
+     buys the duration and the chapter ticks before first play. -->
+<div class="fn-film fn-film--home" id="fn-overview-film">
+  <p class="fn-film__cap"><span>The overview film</span><span>1:29 &middot; captions included</span></p>
+  <div class="fn-vp" data-chapters='[[0,"The usual arrangement"],[17,"One system"],[23,"What you get"],[73,"How it is built"],[82,"Where to start"]]'>
+    <video id="fn-overview-video" controls playsinline preload="metadata" width="1920" height="1080" poster="assets/video/pledgivo-overview-poster.png">
+      <source src="assets/video/pledgivo-overview.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="assets/video/pledgivo-overview.vtt" default>
+      Your browser does not support embedded video. Everything it covers is written out on this page.
+    </video>
+  </div>
+  <ul class="fn-chapters" id="fn-overview-chapters">
+    <li><button type="button" data-t="0"><b>0:00</b> The usual arrangement</button></li>
+    <li><button type="button" data-t="17"><b>0:17</b> One system</button></li>
+    <li><button type="button" data-t="23"><b>0:23</b> What you get</button></li>
+    <li><button type="button" data-t="73"><b>1:13</b> How it is built</button></li>
+    <li><button type="button" data-t="82"><b>1:22</b> Where to start</button></li>
+  </ul>
 </div>
 
 <section class="fn-home-sec">
@@ -2362,6 +2410,8 @@ record type — see the <a href="data-model/">data model reference</a> for the a
         <script src="assets/js/data-model-diagram.js"></script>
       
         <script src="assets/js/step-viewer.js"></script>
+      
+        <script src="assets/js/field-notes-video.js"></script>
       
     
   </body>

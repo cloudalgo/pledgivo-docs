@@ -1,0 +1,98 @@
+WEBVTT
+
+1
+00:00:03.050 --> 00:00:07.140
+Fundraising software that doesn't live in your Salesforce org.
+
+2
+00:00:07.140 --> 00:00:08.525
+Lives somewhere else.
+
+3
+00:00:09.550 --> 00:00:12.433
+Your donation platform holds the donors.
+
+4
+00:00:12.433 --> 00:00:14.812
+Salesforce gets a copy overnight.
+
+5
+00:00:14.812 --> 00:00:16.975
+And the two never quite agree.
+
+6
+00:00:18.050 --> 00:00:20.877
+Pledgivo removes the second system.
+
+7
+00:00:20.877 --> 00:00:21.523
+One org.
+
+8
+00:00:21.523 --> 00:00:23.300
+One copy of the truth.
+
+9
+00:00:24.317 --> 00:00:27.241
+A public donation form, backed by Stripe.
+
+10
+00:00:27.241 --> 00:00:32.592
+The card is tokenized in the browser, and the gift lands as an Opportunity.
+
+11
+00:00:33.583 --> 00:00:38.147
+Salesforce owns the schedule and charges the saved card itself.
+
+12
+00:00:38.147 --> 00:00:42.058
+No subscription living in another system to reconcile.
+
+13
+00:00:43.050 --> 00:00:50.200
+Every appeal is a standard Salesforce Campaign, with a page design that themes the whole donor experience.
+
+14
+00:00:51.183 --> 00:00:58.083
+Ticketed events with tiered pricing and real seat capacity, on the same pipeline as every other gift.
+
+15
+00:00:59.083 --> 00:01:01.426
+Donors update their own giving.
+
+16
+00:01:01.426 --> 00:01:03.089
+A link in their inbox.
+
+17
+00:01:03.089 --> 00:01:05.583
+No account, no password to reset.
+
+18
+00:01:06.783 --> 00:01:08.006
+And it travels.
+
+19
+00:01:08.006 --> 00:01:12.733
+Two lines of HTML put a live campaign on any site you own.
+
+20
+00:01:14.083 --> 00:01:16.901
+A managed package on the current API.
+
+21
+00:01:16.901 --> 00:01:19.566
+Payment keys in a Named Credential.
+
+22
+00:01:19.566 --> 00:01:22.383
+No public webhook endpoint to secure.
+
+23
+00:01:23.383 --> 00:01:24.006
+Pledgivo.
+
+24
+00:01:24.006 --> 00:01:27.258
+Keep your donors where your data already lives.
+

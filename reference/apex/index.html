@@ -106,7 +106,7 @@
         >
         <span class="fn-brand__word">Pledgivo</span>
         
-          <span class="fn-brand__ver">1.0.0-18</span>
+          <span class="fn-brand__ver">1.0.0-19</span>
         
       </a>
 
@@ -9273,6 +9273,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Central hub for the guest campaign/event experience — slug/Id resolution, theme-token normalization, FAQ/custom-question assembly, ticket-tier availability, and rollup math all converge here. Real consumers: <a href="#apex-campaigncontroller"><code>CampaignController</code></a>, <a href="#apex-embedconfigresource"><code>EmbedConfigResource</code></a>, and <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.GetEventCampaign on the read side; <a href="#apex-donationformcontroller"><code>DonationFormController</code></a>, <a href="#apex-opportunities"><code>Opportunities</code></a> (domain), and <a href="#apex-donorsummaryrollupbatch"><code>DonorSummaryRollupBatch</code></a> on the write/rollup side. normalizeThemeTokensJson is the SOLE validation authority for page-design theme JSON — it loads the allowed key set from <a href="#apex-themetokensselector-selectall"><code>ThemeTokensSelector.selectAll</code></a>() (CMDT-driven catalog) and strips anything not in it before a guest page ever sees it, plus isUnsafeThemeValue guards against CSS injection (<code>;</code>, <code>{</code>, <code>}</code>, <code>url(</code>, comment delimiters). resolveThankYouCta pairs with isSafeExternalUrl (http/https-only) for the same reason — never trust an admin-entered redirect URL as-is on a guest-facing page. rollupCampaignTotals enqueues <a href="#apex-cancelgoalreachedrecurringqueueable"><code>CancelGoalReachedRecurringQueueable</code></a> when a rollup crosses the campaign's goal — see that class for why an active recurring series is auto-cancelled and how it recovers from a mid-batch governor LimitException.</p>
+<p>Subtypes whose public surfaces may carry the goal progress bar. Open_Donation was added 2026-08-18 (F-42): an open-ended appeal that bothers to set a goal wants the same crowdfunding affordance, and the donation form was already drawing one, so the narrower set left the hero and the embed disagreeing with the form on the same page. Event_Fundraiser stays out — a ticketed event's progress is seats, not dollars.</p>
 <p>The event ticket page. It loads the form payload — an event registration IS a donation form whose narrow column sells seats — and then the section keys on top, because the page it renders is a whole page rather than an embedded form: a gala has a story, a sponsorship deck to download and an FAQ about parking, exactly as a campaign does.</p>
 <p>This is the "form-only entry point that grew those sections" buildCampaignResult's closing comment anticipated, and it resolves them the way that comment asked — through sectionData(), shared verbatim with the donation shell — rather than by widening buildCampaignResult, which would put a file query and a ContentDistribution insert on every embedded-form load for data no embed renders.</p>
 <p>The two keys that turn a payload into a page with sections: what content exists (<code>posts</code>) and which sections may show it (<code>sections</code>). One helper, two callers — the donation shell and the event ticket page — so a campaign's Show_Documents__c means the same thing on both, and a change to the "empty tab is worse than no tab" rule in resolveSections cannot land on one page and miss the other.</p>
@@ -16641,6 +16642,8 @@
         <script src="../../assets/js/data-model-diagram.js"></script>
       
         <script src="../../assets/js/step-viewer.js"></script>
+      
+        <script src="../../assets/js/field-notes-video.js"></script>
       
     
   </body>

@@ -106,7 +106,7 @@
         >
         <span class="fn-brand__word">Pledgivo</span>
         
-          <span class="fn-brand__ver">1.0.0-18</span>
+          <span class="fn-brand__ver">1.0.0-19</span>
         
       </a>
 
@@ -2302,33 +2302,22 @@
 <code>Fundraising_Admin</code> permission set. See <a href="../../getting-started/installation/">Installation</a> and
 <a href="../../getting-started/connecting-stripe/">Connecting Stripe</a> if you haven't done those yet.</p>
 <h2 id="watch-it-first">Watch it first<a class="headerlink" href="#watch-it-first" title="Permanent link">#</a></h2>
-<div class="fn-video">
-  <video id="fn-cd-video" controls preload="none" poster="../../assets/video/campaign-and-embed-poster.png">
-    <source src="../../assets/video/campaign-and-embed.mp4" type="video/mp4">
-    <track kind="captions" srclang="en" label="English" src="../../assets/video/campaign-and-embed.vtt">
-    Your browser does not support embedded video. The same screens appear in order on this page.
-  </video>
+<div class="fn-film">
+  <div class="fn-vp" data-chapters='[[0,"Introduction"],[21,"1. The campaign"],[40,"2. The donor&#39;s path"],[102,"3. On your own website"],[170,"Wrap up"]]'>
+    <video id="fn-cd-video" controls playsinline preload="metadata" width="1600" height="1228" poster="../../assets/video/campaign-and-embed-poster.png">
+      <source src="../../assets/video/campaign-and-embed.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="../../assets/video/campaign-and-embed.vtt">
+      Your browser does not support embedded video. The same screens appear in order on this page.
+    </video>
+  </div>
+  <ul class="fn-chapters" id="fn-cd-chapters">
+    <li><button type="button" data-t="0"><b>0:00</b> Introduction</button></li>
+    <li><button type="button" data-t="21"><b>0:21</b> 1. The campaign</button></li>
+    <li><button type="button" data-t="40"><b>0:40</b> 2. The donor's path</button></li>
+    <li><button type="button" data-t="102"><b>1:42</b> 3. On your own website</button></li>
+    <li><button type="button" data-t="170"><b>2:50</b> Wrap up</button></li>
+  </ul>
 </div>
-<ul class="fn-chapters" id="fn-cd-chapters">
-  <li><button type="button" data-t="0"><b>0:00</b> Introduction</button></li>
-  <li><button type="button" data-t="21"><b>0:21</b> 1. The campaign</button></li>
-  <li><button type="button" data-t="40"><b>0:40</b> 2. The donor's path</button></li>
-  <li><button type="button" data-t="102"><b>1:42</b> 3. On your own website</button></li>
-  <li><button type="button" data-t="170"><b>2:50</b> Wrap up</button></li>
-</ul>
-<script>
-  (function () {
-    var video = document.getElementById('fn-cd-video');
-    var list = document.getElementById('fn-cd-chapters');
-    if (!video || !list) return;
-    list.addEventListener('click', function (event) {
-      var button = event.target.closest('button[data-t]');
-      if (!button) return;
-      video.currentTime = Number(button.dataset.t);
-      video.play();
-    });
-  })();
-</script>
 <p class="fn-figure-caption"><b>What it is.</b> A three-and-a-half-minute narrated run through everything below and the <a href="embed-donate-widget.md">embed guide</a> that follows it — the campaign record, the donation page a donor actually sees, a real Stripe test payment, and the same campaign running on an external website. It is built from the screenshots on these two pages rather than screen-recorded, so every screen holds for as long as its narration takes and nothing moves faster than you can read. Captions are in the player's subtitles menu; the chapter list jumps straight to a section.</p>
 
 <h2 id="1-create-the-campaign">1. Create the Campaign<a class="headerlink" href="#1-create-the-campaign" title="Permanent link">#</a></h2>
@@ -2723,6 +2712,8 @@ cause is a <code>?slug=</code> that got cut at a line break in an email.</p>
         <script src="../../assets/js/data-model-diagram.js"></script>
       
         <script src="../../assets/js/step-viewer.js"></script>
+      
+        <script src="../../assets/js/field-notes-video.js"></script>
       
     
   </body>

@@ -106,7 +106,7 @@
         >
         <span class="fn-brand__word">Pledgivo</span>
         
-          <span class="fn-brand__ver">1.0.0-18</span>
+          <span class="fn-brand__ver">1.0.0-19</span>
         
       </a>
 
@@ -2392,39 +2392,28 @@
 upgrading. Nothing is broken — this is the handover.</p>
 </div>
 <h2 id="watch-it-first">Watch it first<a class="headerlink" href="#watch-it-first" title="Permanent link">#</a></h2>
-<div class="fn-video">
-  <video id="fn-setup-video" controls preload="none" poster="../../assets/images/gs-video-poster.png">
-    <source src="../../assets/video/setup-walkthrough.mp4" type="video/mp4">
-    <track kind="captions" srclang="en" label="English" src="../../assets/video/setup-walkthrough.vtt">
-    Your browser does not support embedded video. The same screens appear in order on this page.
-  </video>
+<div class="fn-film">
+  <div class="fn-vp" data-chapters='[[0,"Introduction"],[20,"Start here"],[62,"1. Permission sets"],[87,"2. The donation site"],[199,"3. The guest user"],[313,"4. The Stripe credentials"],[562,"5. Grant the credential"],[628,"6. The payment account"],[767,"7. Publish and activate"],[823,"8. Finishing touches"],[867,"Wrap up"]]'>
+    <video id="fn-setup-video" controls playsinline preload="metadata" width="1600" height="1228" poster="../../assets/images/gs-video-poster.png">
+      <source src="../../assets/video/setup-walkthrough.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="../../assets/video/setup-walkthrough.vtt">
+      Your browser does not support embedded video. The same screens appear in order on this page.
+    </video>
+  </div>
+  <ul class="fn-chapters" id="fn-setup-chapters">
+    <li><button type="button" data-t="0"><b>0:00</b> Introduction</button></li>
+    <li><button type="button" data-t="20"><b>0:20</b> Start here</button></li>
+    <li><button type="button" data-t="62"><b>1:02</b> 1. Permission sets</button></li>
+    <li><button type="button" data-t="87"><b>1:27</b> 2. The donation site</button></li>
+    <li><button type="button" data-t="199"><b>3:19</b> 3. The guest user</button></li>
+    <li><button type="button" data-t="313"><b>5:13</b> 4. The Stripe credentials</button></li>
+    <li><button type="button" data-t="562"><b>9:22</b> 5. Grant the credential</button></li>
+    <li><button type="button" data-t="628"><b>10:28</b> 6. The payment account</button></li>
+    <li><button type="button" data-t="767"><b>12:47</b> 7. Publish and activate</button></li>
+    <li><button type="button" data-t="823"><b>13:43</b> 8. Finishing touches</button></li>
+    <li><button type="button" data-t="867"><b>14:27</b> Wrap up</button></li>
+  </ul>
 </div>
-<ul class="fn-chapters" id="fn-setup-chapters">
-  <li><button type="button" data-t="0"><b>0:00</b> Introduction</button></li>
-  <li><button type="button" data-t="20"><b>0:20</b> Start here</button></li>
-  <li><button type="button" data-t="62"><b>1:02</b> 1. Permission sets</button></li>
-  <li><button type="button" data-t="87"><b>1:27</b> 2. The donation site</button></li>
-  <li><button type="button" data-t="199"><b>3:19</b> 3. The guest user</button></li>
-  <li><button type="button" data-t="313"><b>5:13</b> 4. The Stripe credentials</button></li>
-  <li><button type="button" data-t="562"><b>9:22</b> 5. Grant the credential</button></li>
-  <li><button type="button" data-t="628"><b>10:28</b> 6. The payment account</button></li>
-  <li><button type="button" data-t="767"><b>12:47</b> 7. Publish and activate</button></li>
-  <li><button type="button" data-t="823"><b>13:43</b> 8. Finishing touches</button></li>
-  <li><button type="button" data-t="867"><b>14:27</b> Wrap up</button></li>
-</ul>
-<script>
-  (function () {
-    var video = document.getElementById('fn-setup-video');
-    var list = document.getElementById('fn-setup-chapters');
-    if (!video || !list) return;
-    list.addEventListener('click', function (event) {
-      var button = event.target.closest('button[data-t]');
-      if (!button) return;
-      video.currentTime = Number(button.dataset.t);
-      video.play();
-    });
-  })();
-</script>
 <p class="fn-figure-caption"><b>What it is.</b> A fifteen-minute narrated walkthrough of the whole setup, from the Get Started panel to a published donation site. It is assembled from the fifty-two screenshots on this page rather than screen-recorded, so nothing moves faster than you can read: every screen holds for exactly as long as its narration takes, and the banner underneath names the action and where in Salesforce you are standing. Captions are in the player’s subtitles menu, and the chapter list above jumps straight to a step. Pause anywhere — the same screenshot appears further down this page with the full written explanation beside it.</p>
 
 <h2 id="the-seven-steps">The seven steps<a class="headerlink" href="#the-seven-steps" title="Permanent link">#</a></h2>
@@ -3164,6 +3153,8 @@ allows and refund it. It is the only way to prove the whole path — form, payme
         <script src="../../assets/js/data-model-diagram.js"></script>
       
         <script src="../../assets/js/step-viewer.js"></script>
+      
+        <script src="../../assets/js/field-notes-video.js"></script>
       
     
   </body>

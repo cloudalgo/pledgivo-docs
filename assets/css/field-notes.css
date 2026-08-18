@@ -476,25 +476,15 @@ body,
   height: auto;
 }
 
-/* Screen-capture walkthrough video — same frame treatment as .fn-shot. */
-.md-typeset .fn-video {
-  border: 1px solid var(--fn-line);
-  border-radius: var(--fn-radius);
-  overflow: hidden;
-  margin: 0.8rem 0 0.3rem;
-  box-shadow: 0 2px 14px rgba(28, 43, 70, 0.08);
-  background: var(--fn-paper-dim);
-}
-.md-typeset .fn-video video {
-  display: block;
-  width: 100%;
-  height: auto;
-  background: var(--fn-paper-dim);
-}
-
-/* Clickable chapter markers under the walkthrough video. Each button seeks the
-   <video> above it; without JS they are inert labels, so nothing is lost. */
-.md-typeset .fn-chapters {
+/* Chapter markers under a film. Each button seeks the <video> above it, and
+   without JS they are inert labels, so nothing is lost. */
+/* `ul.` and the `:not([hidden])` are load-bearing, not noise. Material sets
+   `.md-typeset ul:not([hidden]) { display: flow-root }`, and that `:not()`
+   carries an attribute selector's weight — so a plain `.md-typeset
+   .fn-chapters` loses the display and the pills stack one per line instead of
+   wrapping into a row. Matching the specificity and landing later in the
+   cascade is what wins it back. */
+.md-typeset ul.fn-chapters:not([hidden]) {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
@@ -524,6 +514,317 @@ body,
 .md-typeset .fn-chapters button b {
   font-weight: 500;
   color: var(--fn-ink-faint);
+}
+
+/* ==========================================================================
+   The overview film — landing page only
+
+   The walkthrough videos above keep the browser's own controls: they are
+   support material inside a page of prose, and a native bar is the right
+   amount of chrome for that. The landing film is the opposite — it is the
+   page's one piece of motion, seen by a reader who has not decided anything
+   yet, and the native bar arrives as a slab of Chrome-grey with a blue accent
+   in a page that is paper, ink and one printer's red. It also cannot show
+   chapters, which is the one thing an 89-second overview needs.
+
+   Everything below .fn-vp is inert until assets/js/field-notes-video.js has
+   built the controls it styles; the film plays with its native bar until then.
+   ========================================================================== */
+
+.md-typeset .fn-film { margin: 1.1rem 0 1.9rem; }
+/* The landing film sits between the proof strip and the first numbered
+   section, so it needs the section rhythm's air rather than the tighter
+   in-body spacing a walkthrough inside a guide wants. */
+.md-typeset .fn-film--home {
+  margin: 2.6rem 0 3.6rem;
+  /* Clears the sticky masthead when the hero's Watch button centres the film. */
+  scroll-margin-top: 5.5rem;
+}
+
+/* A caption line, not a heading — it names the film and states its cost in
+   time before anyone commits to it, in the same mono the rest of the site uses
+   for metadata. */
+.md-typeset .fn-film__cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 0 0 0.6rem;
+  font-family: var(--fn-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fn-accent);
+}
+.md-typeset .fn-film__cap span:last-child {
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--fn-ink-faint);
+}
+
+.md-typeset .fn-film .fn-chapters { margin: 0.7rem 0 0; }
+/* The chapter the film is currently in, set by field-notes-video.js. */
+.md-typeset .fn-chapters button[aria-current="true"] {
+  border-color: var(--fn-accent);
+  background: var(--fn-accent-soft);
+  color: var(--fn-accent-ink);
+}
+.md-typeset .fn-chapters button[aria-current="true"] b { color: var(--fn-accent); }
+
+/* ---------- The frame ---------- */
+
+/* No fixed aspect ratio: the landing film is 16:9 but both screen-capture
+   walkthroughs are 1600x1228, and a 16:9 frame would crop a third off the
+   Salesforce UI they exist to show. The <video> carries width/height
+   attributes instead, so the browser reserves the right box before the file
+   loads and nothing reflows underneath the reader. */
+.md-typeset .fn-vp {
+  position: relative;
+  background: var(--fn-ink);
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  overflow: hidden;
+  /* The accent ring every player wears, landing film and walkthroughs alike.
+     An outline rather than a border or a box-shadow: outline-offset leaves a
+     genuinely transparent gap, so the ring reads the same over paper, over a
+     white panel, and over the sketch background on the landing page — a
+     box-shadow ring would have to paint that gap an opaque colour and pick the
+     wrong one somewhere. It also sits outside the layout box, so adding it
+     moves nothing on the page. */
+  outline: 2px solid var(--fn-accent);
+  outline-offset: 3px;
+  box-shadow: 0 2px 14px rgba(28, 43, 70, 0.08);
+  isolation: isolate;
+}
+.md-typeset .fn-vp video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--fn-ink);
+}
+/* Fullscreen hands the frame the whole screen, which is the wrong shape for
+   every film here — letterbox rather than stretch or crop. */
+.md-typeset .fn-vp:fullscreen { display: grid; place-items: center; background: #000; outline: none; }
+.md-typeset .fn-vp:fullscreen video { width: auto; max-width: 100vw; max-height: 100vh; }
+/* The frame takes focus so the keyboard shortcuts have somewhere to land,
+   which means it draws the browser's default ring — a blue this palette does
+   not contain. The accent ring above is always on, so keyboard focus has to be
+   a visible step beyond it rather than the same line: thicker, and standing
+   further off the frame. */
+.md-typeset .fn-vp:focus { outline: 2px solid var(--fn-accent); outline-offset: 3px; }
+.md-typeset .fn-vp:focus-visible { outline-width: 3px; outline-offset: 6px; }
+
+/* A tight halo behind the play disc, not a full scrim. The film's frames run
+   from near-white to near-black; a scrim strong enough to lift the disc off
+   the dark ones turns the light ones to mud, so the disc keeps its own
+   contrast and this only stops it dissolving into a pale frame. */
+.md-typeset .fn-vp::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(88px 88px at 50% 50%,
+    rgba(6, 10, 20, 0.34), rgba(6, 10, 20, 0.12) 62%, transparent 80%);
+  transition: opacity 0.35s ease;
+}
+.md-typeset .fn-vp.is-playing::before { opacity: 0; }
+
+/* The flash the hero's Watch button fires, so the eye lands on the thing that
+   just scrolled into place rather than hunting for it. */
+@keyframes fn-vp-arrive {
+  from { box-shadow: 0 0 0 0 rgba(208, 2, 27, 0.55), 0 2px 14px rgba(28, 43, 70, 0.08); }
+  to   { box-shadow: 0 0 0 14px rgba(208, 2, 27, 0), 0 2px 14px rgba(28, 43, 70, 0.08); }
+}
+.md-typeset .fn-vp.is-arriving { animation: fn-vp-arrive 1.1s ease-out; }
+
+/* ---------- Play affordance ---------- */
+
+/* Paper disc on ink, so it reads as belonging to this site rather than to the
+   browser. */
+.md-typeset .fn-vp__big {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  z-index: 2;
+  width: 88px;
+  height: 88px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: rgba(239, 239, 236, 0.94);
+  color: var(--fn-ink);
+  box-shadow: 0 10px 40px -8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), background 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+.md-typeset .fn-vp__big svg { width: 26px; height: 26px; fill: currentColor; margin-left: 4px; }
+.md-typeset .fn-vp__big:hover { transform: scale(1.07); background: var(--fn-accent); color: #fff; }
+.md-typeset .fn-vp__big:focus-visible { outline: 3px solid var(--fn-accent); outline-offset: 4px; }
+.md-typeset .fn-vp.is-playing .fn-vp__big { opacity: 0; pointer-events: none; transform: scale(0.8); }
+
+/* A ring that ticks round while the film buffers, so a cold start on a 3.7 MB
+   file never looks like a dead button. */
+.md-typeset .fn-vp__big::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--fn-accent);
+  opacity: 0;
+}
+.md-typeset .fn-vp.is-loading .fn-vp__big::after { opacity: 1; animation: fn-vp-spin 0.8s linear infinite; }
+@keyframes fn-vp-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Control bar ---------- */
+
+.md-typeset .fn-vp__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 2.6rem 0.8rem 0.55rem;
+  background: linear-gradient(to top,
+    rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.5) 45%, transparent 100%);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+}
+.md-typeset .fn-vp:hover .fn-vp__bar,
+.md-typeset .fn-vp.is-paused .fn-vp__bar,
+.md-typeset .fn-vp:focus-within .fn-vp__bar { opacity: 1; transform: none; pointer-events: auto; }
+/* Quiet playback with no pointer: the bar retreats, unless focus is inside it. */
+.md-typeset .fn-vp.is-idle:not(:focus-within) .fn-vp__bar { opacity: 0; pointer-events: none; }
+
+.md-typeset .fn-vp__track {
+  position: relative;
+  height: 3px;
+  margin: 0 0 0.5rem;
+  border-radius: 2px;
+  background: rgba(239, 239, 236, 0.28);
+  cursor: pointer;
+}
+/* A 3px line is honest about how much room the film has, but it is a hopeless
+   click target — the padding gives it a 16px one without moving the line. */
+.md-typeset .fn-vp__track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -7px;
+  bottom: -7px;
+}
+.md-typeset .fn-vp__track:focus-visible { outline: 2px solid var(--fn-accent); outline-offset: 6px; }
+.md-typeset .fn-vp__buffered,
+.md-typeset .fn-vp__played {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 3px;
+  border-radius: 2px;
+  width: 0;
+}
+.md-typeset .fn-vp__buffered { background: rgba(239, 239, 236, 0.3); }
+.md-typeset .fn-vp__played { background: var(--fn-accent); }
+.md-typeset .fn-vp__knob {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: var(--fn-paper);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+.md-typeset .fn-vp__track:hover .fn-vp__knob,
+.md-typeset .fn-vp__track:focus-visible .fn-vp__knob { opacity: 1; }
+.md-typeset .fn-vp__tip {
+  position: absolute;
+  bottom: 14px;
+  transform: translateX(-50%);
+  padding: 0.14rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(11, 11, 11, 0.9);
+  color: var(--fn-paper);
+  font-family: var(--fn-font-mono);
+  font-size: 0.58rem;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.md-typeset .fn-vp__track:hover .fn-vp__tip { opacity: 1; }
+/* Chapter boundaries, drawn onto the track once the duration is known. */
+.md-typeset .fn-vp__tick {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 9px;
+  border-radius: 1px;
+  background: rgba(239, 239, 236, 0.55);
+  pointer-events: none;
+}
+
+.md-typeset .fn-vp__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--fn-paper);
+}
+.md-typeset .fn-vp__sp { flex: 1; }
+.md-typeset .fn-vp__btn {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.md-typeset .fn-vp__btn svg { width: 1rem; height: 1rem; fill: currentColor; }
+.md-typeset .fn-vp__btn:hover { background: rgba(239, 239, 236, 0.16); }
+.md-typeset .fn-vp__btn:focus-visible { outline: 2px solid var(--fn-accent); outline-offset: 2px; }
+.md-typeset .fn-vp__btn--cc {
+  width: auto;
+  padding: 0 0.34rem;
+  font-family: var(--fn-font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+}
+.md-typeset .fn-vp__btn--cc[aria-pressed="true"] { background: var(--fn-accent); color: #fff; }
+.md-typeset .fn-vp__time {
+  font-family: var(--fn-font-mono);
+  font-size: 0.62rem;
+  color: rgba(239, 239, 236, 0.72);
+  white-space: nowrap;
+}
+.md-typeset .fn-vp__time b { font-weight: 500; color: var(--fn-paper); }
+/* The chapter the film is currently in, spelled out beside the clock. */
+.md-typeset .fn-vp__now {
+  font-family: var(--fn-font-mono);
+  font-size: 0.62rem;
+  color: rgba(239, 239, 236, 0.68);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 45em) {
+  /* At phone width the clock and the chapter name cannot both fit beside three
+     buttons; the pills below the film carry the chapter anyway. */
+  .md-typeset .fn-vp__now { display: none; }
 }
 
 /* ==========================================================================
@@ -1928,6 +2229,80 @@ body::after {
 .md-typeset .fn-btn--primary:hover { transform: translateY(-2px); box-shadow: var(--fn-shadow-pop); }
 .md-typeset .fn-btn--ghost { background: transparent; color: var(--fn-ink); border-color: var(--fn-line); }
 .md-typeset .fn-btn--ghost:hover { border-color: var(--fn-ink); background: var(--fn-panel); }
+/* The third call to action: watch the film. It carries a still from the film
+   rather than an icon, because the still is the only one of the three buttons
+   that can show what is behind it — and it is what makes the row read as
+   "read, do, or watch" rather than as two buttons and a link.
+
+   Taller than the other two by design; the runtime under the label is there so
+   nobody has to click to find out what they are committing to. */
+.md-typeset .fn-btn--watch {
+  height: auto;
+  padding: 0.42rem 0.9rem 0.42rem 0.42rem;
+  gap: 0.6rem;
+  background: var(--fn-panel);
+  color: var(--fn-ink);
+  border-color: var(--fn-line);
+  text-align: left;
+}
+.md-typeset .fn-btn--watch:hover {
+  border-color: var(--fn-ink);
+  transform: translateY(-2px);
+  box-shadow: var(--fn-shadow-pop);
+}
+.md-typeset .fn-btn--watch .fn-btn__thumb {
+  position: relative;
+  flex: none;
+  width: 64px;
+  height: 36px;
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--fn-ink);
+}
+/* At 64x36 no frame of this film is legible, so the thumbnail is zoomed into
+   the donation card rather than shrunk whole — it reads as a warm crop with
+   the Give button's red in it, which is the point, instead of unreadable type. */
+.md-typeset .fn-btn--watch .fn-btn__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(2.4);
+  transform-origin: 64% 60%;
+}
+/* A white triangle on a pale frame is invisible, so the thumbnail carries its
+   own scrim — which doubles as the thing that makes it read as a film still
+   rather than as a stray image inside a button. */
+.md-typeset .fn-btn--watch .fn-btn__thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(rgba(11, 11, 11, 0.18), rgba(11, 11, 11, 0.42));
+}
+.md-typeset .fn-btn--watch .fn-btn__thumb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  border-left: 10px solid #fff;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+}
+.md-typeset .fn-btn--watch small {
+  display: block;
+  margin-top: 0.12rem;
+  font-family: var(--fn-font-mono);
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--fn-ink-faint);
+}
+
 .fn-btn svg {
   width: 0.72rem;
   height: 0.72rem;
@@ -2209,4 +2584,10 @@ body::after {
   .fn-home-card,
   .fn-home-path,
   .md-typeset .fn-btn { transition: none; }
+  /* The film's own motion is the reader's choice; the chrome around it is not. */
+  .md-typeset .fn-vp.is-arriving { animation: none; }
+  .md-typeset .fn-vp.is-loading .fn-vp__big::after { animation: none; }
+  .md-typeset .fn-vp__bar,
+  .md-typeset .fn-vp__big,
+  .md-typeset .fn-vp::before { transition: none; }
 }

@@ -106,7 +106,7 @@
         >
         <span class="fn-brand__word">Pledgivo</span>
         
-          <span class="fn-brand__ver">1.0.0-18</span>
+          <span class="fn-brand__ver">1.0.0-19</span>
         
       </a>
 
@@ -2367,7 +2367,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Goal_Amount__c</code></td>
 <td>Goal Amount</td>
 <td>Currency</td>
-<td>How much this campaign is aiming to raise. On a General campaign this also drives the raised-of-goal progress bar donors see on the donation page and in embedded widgets. On an Open Donation or Ticketed Event campaign there is no public progress bar, so the goal is used for your own reporting only.<br><em>Docs: The bar's visibility rule lives in CampaignService.computeShowProgressBar (PROGRESS_BAR_SUBTYPES = {'General'}) and is mirrored client-side in pfHero.showProgressSection; the embed widget reads the same server-computed showProgressBar flag. The help text spells the subtype rule out because the field is on the layout for every subtype: before 2026-08-18 it promised "the public progress bar" unconditionally, which is false for two of the three subtypes and reads as a bug to an admin who fills in a goal and never sees it. Known inconsistency (audit F-42, 2026-08-18, open): dfForm's own progress readout is gated on data presence alone (showProgressReadout =&gt; hasProgressData || hasDonorCount) and consults neither the subtype nor the design's Show_Progress_Bar__c, because publicFundraisingExperience passes show-progress-bar to c-pf-hero and not to c-df-form. So an Open Donation campaign with a goal shows a bar on the donation form while its hero and its embed show none, and unchecking Show Progress Bar does not remove it from the form.</em></td>
+<td>How much this campaign is aiming to raise. On a General or Open Donation campaign this also drives the raised-of-goal progress bar donors see on the donation page and in embedded widgets — unless the page design has Show Progress Bar switched off. A Ticketed Event campaign shows a tier picker rather than a bar, so there the goal is used for your own reporting only.<br><em>Docs: The bar's visibility rule lives in CampaignService.computeShowProgressBar (PROGRESS_BAR_SUBTYPES = {'General', 'Open_Donation'}) and is the single authority: pfHero, dfForm and the embed widget all render from the server-computed showProgressBar flag rather than re-deciding the subtype themselves. The help text spells the rule out because the field is on the layout for every subtype: before 2026-08-18 it promised "the public progress bar" unconditionally, which was false for an event. Open Donation was added to the set on 2026-08-18 (audit F-42), closing a three-way disagreement in which an open-ended appeal with a goal drew a bar on the donation form while its hero and its embed drew none, and unchecking Show Progress Bar removed it from two of the three.</em></td>
 </tr>
 <tr>
 <td><code>Header_Image_URL__c</code></td>
@@ -2658,6 +2658,8 @@ tickets, and FAQs are all separate records that reference this one, not fields o
         <script src="../../assets/js/data-model-diagram.js"></script>
       
         <script src="../../assets/js/step-viewer.js"></script>
+      
+        <script src="../../assets/js/field-notes-video.js"></script>
       
     
   </body>

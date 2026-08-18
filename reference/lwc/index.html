@@ -106,7 +106,7 @@
         >
         <span class="fn-brand__word">Pledgivo</span>
         
-          <span class="fn-brand__ver">1.0.0-18</span>
+          <span class="fn-brand__ver">1.0.0-19</span>
         
       </a>
 
@@ -4886,6 +4886,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>Composed by <a href="#publicfundraisingexperience"><code>publicFundraisingExperience</code></a> as the shell's hero block and imported directly by <a href="#dfform"><code>dfForm</code></a> (the 3-step donation canvas can render its own hero header without going through the shell). Self-fetches via CampaignController.getCampaignBySlug rather than receiving campaign data as a prop, so either parent only needs to pass campaignSlug. Emits a bubbling, composed <code>donate</code> CustomEvent on CTA click — the host page/shell decides what "donate" means (scroll to an embedded dfForm, or navigate to one) rather than this component owning navigation.</p>
 <p>the gradient runs light-to-dark, matching the direction of the with-image scrim above, because .hero-body is bottom-aligned — its copy always lands on the dark end and takes its ink from --pf-ui-on-dark. Ending on the undarkened brand colour (as this did before) put light text on a light primary such as Ember coral.</p>
+<p>Subtype is NOT re-decided here. CampaignService.PROGRESS_BAR_SUBTYPES is the one place that rule lives, and its answer arrives as the showProgressBar prop; this getter only adds the local guard that the campaign actually has a goal to draw against. Until 2026-08-18 (F-42) it excluded Open_Donation on its own, which is how the hero ended up hiding a bar the donation form on the same page was drawing.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>campaignSlug</code>, <code>ctaLabel</code>, <code>eyebrow</code>, <code>hideCta</code>, <code>showProgressBar</code></p>
 <h4 id="pfpageblocks">Page Blocks<a class="headerlink" href="#pfpageblocks" title="Permanent link">#</a></h4>
@@ -4976,6 +4977,7 @@
 <p>The c/<a href="#pftrustbar"><code>pfTrustbar</code></a> strip this block used to feed moved out to the page host on 2026-08-12 (publicFundraisingExperience): the bar is the whole page's site header, and a strip nested in this component's shadow DOM could only ever escape its container by having the host publish negative-margin values for it. The host renders it directly now, so only the EIN survives here — the thank-you step still badges it beside the receipt line.</p>
 <p>The sticky action bar restates the running total and the primary CTA at the bottom of the viewport so a donor who has scrolled past the button never has to scroll back to give. It is suppressed on the thank-you step (nothing left to submit) and while the processing overlay is up (the CTA would be a dead control under a scrim).</p>
 <p>Deliberately NOT gated on "an amount is chosen", the way the redesign plan first drafted it: the Continue button is the only way forward, and hiding it whenever the amount is empty or out of bounds would leave the donor with a validation message and no control. It stays visible and disabled instead (composePrepareDisabled), which is what the pre-redesign markup did.</p>
+<p>The admin's Show_Progress_Bar__c veto is honoured first (2026-08-18, F-42): before that this form drew its own readout regardless, so switching the bar off left the hero and the embed hiding a progress figure the form on the same page was still showing.</p>
 <p>The caption row under the filament carries "N% funded" and the donor count. It is gated separately from the readout as a whole because a campaign can publish a donor count with no goal and no raised figure — that campaign gets the caption row on its own, with the label, figure and filament all suppressed, rather than an empty ruled box.</p>
 <p>Singular at exactly one donor. The count is public-facing copy, and "1 donors" is the kind of detail that reads as an unattended page on the one campaign it happens to.</p>
 <p>The filament's bead sits ON the progress point, so it shares goalPercent with the lit segment's width. Its own translate(-50%) is in CSS, not here — an inline style is the only way to pass a runtime percentage through, and keeping it to the single positional value means the theme still owns the bead's size, colour and glow.</p>
@@ -4999,7 +5001,7 @@
 <p>The Payment Element lives in a Visualforce iframe, so it inherits none of the page's theme tokens — without this it renders in Stripe's own blue-on-white default in the middle of a themed card. The Appearance API is the only channel across that boundary, and it takes literals: it rejects rgba() and var() in colour keys and silently ignores a fontSizeBase under 16px. So the tokens are resolved against the host element here and sent as computed values rather than handed through as custom properties.</p>
 <p>Every fallback is the token's own designed default, not a neutral, so a design record that overrides nothing still gets the Ember palette rather than Stripe's.</p>
 </div>
-<p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>builderConfig</code>, <code>campaignSlug</code>, <code>initialAmount</code>, <code>initialEmail</code>, <code>initialName</code>, <code>props</code>, <code>thankYouCta</code>, <code>went</code></p>
+<p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>builderConfig</code>, <code>campaignSlug</code>, <code>initialAmount</code>, <code>initialEmail</code>, <code>initialName</code>, <code>props</code>, <code>showProgressBar</code>, <code>thankYouCta</code>, <code>went</code></p>
 <h2 id="group-ui">Ui (shared primitives)<a class="headerlink" href="#group-ui" title="Permanent link">#</a></h2>
 <h4 id="uiapexerror">Apex Error Formatting Utility<a class="headerlink" href="#uiapexerror" title="Permanent link">#</a></h4>
 <p><code>uiApexError</code></p>
@@ -5289,6 +5291,8 @@
         <script src="../../assets/js/data-model-diagram.js"></script>
       
         <script src="../../assets/js/step-viewer.js"></script>
+      
+        <script src="../../assets/js/field-notes-video.js"></script>
       
     
   </body>

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A tour of the Settings console — the Get Started checklist plus the four navigation groups and sixteen panels that configure the package.">
+        <meta name="description" content="A tour of the Settings console — the Get Started checklist plus the four navigation groups and fourteen panels that configure the package.">
       
       
       
@@ -261,8 +261,6 @@
       
         
       
-        
-      
     
     
     
@@ -351,34 +349,6 @@
     
   
     After you install
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../quick-start/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Quick start
   
 
     
@@ -2103,15 +2073,15 @@ ignore it and go straight to whatever you came to change.</p>
 </thead>
 <tbody>
 <tr>
-<td>Organization</td>
+<td>Organization &amp; Donations</td>
 <td>Org display name, thank-you page CTA, suggested donation amounts shown on the donation form</td>
 </tr>
 <tr>
-<td>Email</td>
+<td>Email &amp; Receipts</td>
 <td>Sender info, brand colors, and copy overrides for the 5 receipt/notification emails. See <a href="../../guides/email-branding/">Brand your receipt and notification emails</a>.</td>
 </tr>
 <tr>
-<td>Events</td>
+<td>Events &amp; Ticketing</td>
 <td>Event ticketing defaults — deductible-amount mode, whether attendees sync to Campaign Members. See <a href="../../guides/setup-ticketed-event/">Set up a ticketed event</a>.</td>
 </tr>
 <tr>
@@ -2130,15 +2100,15 @@ ignore it and go straight to whatever you came to change.</p>
 </thead>
 <tbody>
 <tr>
-<td>Payments</td>
-<td>Payment Accounts — an eleven-step guided checklist for building the two Stripe credentials yourself in Setup (the package builds none), each step graded against your org where the platform lets a package read it and marked <em>confirm this yourself</em> where it doesn't, plus the accounts themselves and their connection test. See <a href="../connecting-stripe/">Connecting Stripe</a>.</td>
+<td>Payment Accounts</td>
+<td>An eleven-step guided checklist for building the two Stripe credentials yourself in Setup (the package builds none), each step graded against your org where the platform lets a package read it and marked <em>confirm this yourself</em> where it doesn't, plus the accounts themselves and their connection test. See <a href="../connecting-stripe/">Connecting Stripe</a>.</td>
 </tr>
 <tr>
 <td>Refunds</td>
 <td>The refund master switch, refund window (days), and refund permission gating</td>
 </tr>
 <tr>
-<td>Recurring</td>
+<td>Recurring &amp; Dunning</td>
 <td>Failed-payment retry count, retry interval, grace period before auto-cancel, and dunning email frequency. See <a href="../../guides/recurring-dunning/">Configure recurring dunning</a>.</td>
 </tr>
 </tbody>
@@ -2153,7 +2123,7 @@ ignore it and go straight to whatever you came to change.</p>
 </thead>
 <tbody>
 <tr>
-<td>Site</td>
+<td>Site &amp; Domain</td>
 <td>The Experience Cloud site connection, embed widget master switch, and CORS allowlist for embedded donate buttons. See <a href="../../guides/embed-donate-widget/">Embed a donate button on your website</a>.</td>
 </tr>
 <tr>
@@ -2161,7 +2131,7 @@ ignore it and go straight to whatever you came to change.</p>
 <td>Guest-facing URLs — donation pages, event pages, fundraiser pages</td>
 </tr>
 <tr>
-<td>Designs</td>
+<td>Page Designs</td>
 <td>The Page Canvas composer — page designs, theme tokens, and the Compose → Payment → Thank You block layout. See <a href="../../guides/first-campaign/">Set up your first campaign</a>.</td>
 </tr>
 <tr>
@@ -2184,7 +2154,7 @@ ignore it and go straight to whatever you came to change.</p>
 <td>Detects your org's account model (standard vs. Person Accounts) and lets you override which Record Type the package uses per object — overrides apply to new records only, existing records are never modified</td>
 </tr>
 <tr>
-<td>Health</td>
+<td>Health Check</td>
 <td>A checklist of package health signals — scheduled job status, record type mappings, active payment accounts, SOQL limit usage, and Experience Cloud site status</td>
 </tr>
 <tr>
@@ -2211,16 +2181,16 @@ it is this order, checked against your org as you go, and it covers the two step
 be done in Salesforce Setup. Use the sequence below only if you'd rather drive the panels yourself:</p>
 <ol>
 <li><strong>System → Record Types</strong> — confirm org detection; override a Record Type only if you need something other than the packaged default.</li>
-<li><strong>Payments → Payments</strong> — connect a Stripe account. See <a href="../connecting-stripe/">Connecting Stripe</a>.</li>
-<li><strong>General → Organization</strong> — set your org name and suggested donation amounts.</li>
-<li><strong>Payments → Recurring</strong> — accept the defaults or adjust retry/grace-period behavior.</li>
-<li><strong>Experience Cloud → Site</strong> — confirm your Experience Cloud site connection. If you haven't
+<li><strong>Payments → Payment Accounts</strong> — connect a Stripe account. See <a href="../connecting-stripe/">Connecting Stripe</a>.</li>
+<li><strong>General → Organization &amp; Donations</strong> — set your org name and suggested donation amounts.</li>
+<li><strong>Payments → Recurring &amp; Dunning</strong> — accept the defaults or adjust retry/grace-period behavior.</li>
+<li><strong>Experience Cloud → Site &amp; Domain</strong> — confirm your Experience Cloud site connection. If you haven't
    created the site yet, do that first — see
    <a href="../experience-cloud-setup/">Set up your Experience Cloud site</a>.</li>
-<li><strong>Experience Cloud → Designs</strong> — pick a starting page design theme for your first campaign.</li>
-<li><strong>System → Health</strong> — confirm everything shows green before you publish anything public.</li>
+<li><strong>Experience Cloud → Page Designs</strong> — pick a starting page design theme for your first campaign.</li>
+<li><strong>System → Health Check</strong> — confirm everything shows green before you publish anything public.</li>
 </ol>
-<p>Everything else — Email, Events, Refunds, Public Links, Donor Portal, Logging — has sensible
+<p>Everything else — Email &amp; Receipts, Events &amp; Ticketing, Refunds, Public Links, Donor Portal, Logging — has sensible
 defaults and can be revisited later.</p>
 <p>Then leave Settings behind: campaigns and ticketed events are created in the <strong>Fundraisers</strong>
 tab, not here. See <a href="../../guides/first-campaign/">Set up your first campaign</a>.</p>

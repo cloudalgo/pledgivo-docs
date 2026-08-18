@@ -4149,9 +4149,13 @@
 </ul>
 </div>
 <h2 id="group-public">Public (Experience Cloud guest pages)<a class="headerlink" href="#group-public" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publiccampaigngallery">Campaign Gallery<a class="headerlink" href="#publiccampaigngallery" title="Permanent link">#</a></h4>
 <p><code>publicCampaignGallery</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
 <p>The public campaign directory: masthead, a hero ledger totalling every listed appeal, donation-type filters, and a card grid where finished campaigns stay listed but greyed out. Renders its own chrome and contact band, so it needs no shell around it.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4163,9 +4167,15 @@
 <p>Only the raw design values are applied. Every tint, line and hover shade the CSS needs is derived from them with color-mix in the stylesheet rather than computed here, so a palette change is one variable and the derivation stays visible next to the rule that uses it. The colour and font-token gates live in c/<a href="#uipagetheme"><code>uiPageTheme</code></a>, which this page shares with the other five public pages rather than keeping the private copy it used to have.</p>
 <p>Settings__c.Org_Logo_URL__c, arriving on the payload's identity map — the same value the campaign page and the contact band render, so all three mastheads carry one mark. Blank until the payload lands, which is why the monogram is an lwc:else rather than a second element: showing both for one frame is a visible flicker on every cold load.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publicdonationreceipt">Donation Receipt<a class="headerlink" href="#publicdonationreceipt" title="Permanent link">#</a></h4>
 <p><code>publicDonationReceipt</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Guest tax receipt, opened from an unguessable receipt link. Renders the letter, the refund record, and the clearing/failed/not-found states as one printable sheet.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4182,9 +4192,15 @@
 <p>The serial number assigned by ReceiptNumberService, read from the server. This used to be the last 8 characters of receiptToken — i.e. part of the bearer credential that authorizes this page — printed onto a document donors email, print and file with an accountant. Never derive a visible reference from the token again.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publicdonordashboard">Donor Dashboard<a class="headerlink" href="#publicdonordashboard" title="Permanent link">#</a></h4>
 <p><code>publicDonorDashboard</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Magic-link donor self-service portal — giving summary, history, saved cards, and full management of a recurring gift (pause, resume, cancel, retry, change the amount or fund, skip one payment, replace or remove a card).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4199,9 +4215,15 @@
 <p>The link's lifetime is admin-configurable (Settings__c.Portal_Token_TTL_Hours__c), so the three places this page states it read it back from getPortalConfig rather than repeating a literal. The fallback matches SettingsService.portalTokenTtlHours()'s own default.</p>
 <p>The refusal case is the interesting one. Whether a card can be removed depends on server-side state the dashboard payload deliberately does not carry (WalletCard exposes no Stripe payment method id, and a gift's brand + last four are display text, not an identity), so the button is offered on every card and DonorPortalService.removeWalletCard is the only authority on whether it proceeds. Its "this card is paying for a recurring gift" message is surfaced verbatim inside the dialog — inventing a client-side in-use guess here would either hide a legitimate removal or promise one the server refuses.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publiceventregistration">Event Registration<a class="headerlink" href="#publiceventregistration" title="Permanent link">#</a></h4>
 <p><code>publicEventRegistration</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Public event ticket page (Experience Cloud): trust bar, event banner, ticket selection, attendee capture and Stripe checkout. Wears the campaign design's Form Layout Mode, so one component renders every look the donation page has.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4227,9 +4249,15 @@
 <p>The order is paid; leave the form. /thank-you is a real Experience Cloud route, so a completed purchase produces its own URL and therefore its own pageview — that distinct URL is the entire analytics mechanism. The ACCESS token travels in the query string because no receipt token exists yet; <a href="#publicthankyou"><code>publicThankYou</code></a> polls for it, renders the ticket deck, and swaps the address bar to ?token= once the reconciler has written the order.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code>, <code>columnRatio</code>, <code>prop</code>, <code>showHeader</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publiceventtickets">Event Tickets<a class="headerlink" href="#publiceventtickets" title="Permanent link">#</a></h4>
 <p><code>publicEventTickets</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Printable tickets for one event order — every seat on the order, addressed by its receipt token. Each seat carries a scannable code the check-in desk reads, and a date stub coloured by ticket tier so a door team can separate tiers at a glance.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4241,9 +4269,15 @@
 <p>The order's receipt serial number, from the server. This used to be the last 8 characters of receiptToken — the bearer credential that authorizes this page — printed at the top of a sheet donors hand to a door attendant. Blank for an order placed before receipt numbering shipped; the page shows no reference rather than reviving the token one.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publicfundraisingexperience">Public Fundraising Experience<a class="headerlink" href="#publicfundraisingexperience" title="Permanent link">#</a></h4>
 <p><code>publicFundraisingExperience</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Single Experience Cloud shell: layout from Campaign Design, blocks from record type and subtype.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4278,9 +4312,15 @@
 <p>The event branch needs the same full-bleed frame the form-owns-page branch has, so its trust bar can span the viewport and touch the top edge; the ordinary stacked branch (hero + Stepped form) keeps the centred inner column it has always had.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>campaignSlug</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publicthankyou">Thank You<a class="headerlink" href="#publicthankyou" title="Permanent link">#</a></h4>
 <p><code>publicThankYou</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
 <p>The post-gift confirmation page: gift summary, tax-deductible figure, what-happens-next and, for event orders, the stacked ticket deck with scannable codes. Addressed by the receipt token or the short-lived access token issued at payment.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4294,10 +4334,16 @@
 <p>This page is the whole route, not a block on one, so the Experience Builder section wrapping it must give up its padding — otherwise the paper ground and the footer band both stop 16px short of the glass and the page reads as a card floating on white. The trust bar's 100vw bleed needs the same treatment (the section clips it).</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>accessToken</code>, <code>receiptToken</code></p>
+</div>
+</div>
 <h2 id="group-lex">Lex (internal Lightning Experience)<a class="headerlink" href="#group-lex" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexcampaigndocuments">Campaign Documents<a class="headerlink" href="#lexcampaigndocuments" title="Permanent link">#</a></h4>
 <p><code>lexCampaignDocuments</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record page component for publishing the files donors download from this campaign's public page — annual reports, budgets, impact statements — and for switching that section on or off.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4305,9 +4351,15 @@
 <p>Campaign record-page shim for the admCampaignDocumentsTab editor, which the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> drawer also mounts. There is no subtype gate — any fundraiser may publish downloadable files — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure. Its twin is <a href="#lexcampaignupdates"><code>lexCampaignUpdates</code></a>. The two are deliberately separate: a document is a file and an update is text, neither depends on the other, and an admin who only publishes files should not have to scroll past a writing panel to reach the upload button.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexcampaignfaqs">Campaign FAQs<a class="headerlink" href="#lexcampaignfaqs" title="Permanent link">#</a></h4>
 <p><code>lexCampaignFaqs</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record page component for choosing which frequently asked questions appear on this campaign's public page, and whether the FAQ section is shown at all. Answering common questions on the page itself reduces the queries that reach your team.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4315,18 +4367,30 @@
 <p>Campaign record-page shim for the admCampaignFaqTab picker, previously reachable only through the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> drawer on the Fundraisers console tab. Unlike the two event shims there is no subtype gate — FAQs apply to every fundraiser type — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexcampaignprogresscard">Campaign Progress Card<a class="headerlink" href="#lexcampaignprogresscard" title="Permanent link">#</a></h4>
 <p><code>lexCampaignProgressCard</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card on Campaign showing a goal-progress ring, amount raised vs. goal, donor count, and days remaining.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Every field comes from the UI API record wire — the card makes no Apex round trip at all, so it renders from the same cached record the rest of the page already loaded.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexcampaignquestions">Campaign Custom Questions<a class="headerlink" href="#lexcampaignquestions" title="Permanent link">#</a></h4>
 <p><code>lexCampaignQuestions</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record page component for choosing which extra questions the donation form asks on this campaign, and whether they are switched on. Answers are stored against each donation so staff can report on them afterwards.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4334,9 +4398,15 @@
 <p>Campaign record-page shim for the admCustomQuestionsTab picker, previously reachable only through the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> drawer on the Fundraisers console tab. Unlike the two event shims there is no subtype gate — custom questions apply to every fundraiser type — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexcampaignstory">Campaign Story<a class="headerlink" href="#lexcampaignstory" title="Permanent link">#</a></h4>
 <p><code>lexCampaignStory</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record page component for reading and editing the fundraiser's story, and for choosing whether it is shown publicly. It renders the story exactly as a donor sees it, so what you approve here is what they read.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4344,9 +4414,15 @@
 <p>The Campaign record page's Story tab. It reads as a published page and edits as one — the same c/uiMarkdown renderer the donor sees and the same c/uiMarkdownEditor the fundraiser wizard uses, so an admin who edits here and an admin who edits in the wizard are looking at identical output. This bundle owns only the read/edit switch and the save round trip. Deliberately NOT a lightning-record-edit-form on Story__c. A raw field edit would bypass CampaignService.normalizeStoryMarkdown, and that sanitizer is what the public renderer's safety rests on — every write to this field has to go through CampaignStoryController.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexcampaignupdates">Campaign Updates<a class="headerlink" href="#lexcampaignupdates" title="Permanent link">#</a></h4>
 <p><code>lexCampaignUpdates</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record page component for writing the plain-text progress updates donors read on this campaign's public page, and for switching that section on or off. Regular updates are what keep past donors giving again.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4354,9 +4430,15 @@
 <p>Campaign record-page shim for the admCampaignUpdatesTab editor, which the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> drawer also mounts. Like <a href="#lexcampaignfaqs"><code>lexCampaignFaqs</code></a> there is no subtype gate — every fundraiser type can post updates — so this bundle does nothing but forward recordId and carry the Lightning App Builder exposure. Its twin is lexCampaignDocuments; the two are separate components because updates and documents are independent (text posts and downloadable files never depend on each other), and an admin who only wants one should not be handed the other.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexcontenttemplateusage">Where This Is Used<a class="headerlink" href="#lexcontenttemplateusage" title="Permanent link">#</a></h4>
 <p><code>lexContentTemplateUsage</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card for a shared question or FAQ template: the campaigns referencing it and which are live to donors, plus the two facts the record itself cannot show — editing rewrites all of them, and deactivating does not take a selected one down.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4365,18 +4447,30 @@
 <p>Two facts drive the design. Editing the prompt rewrites it on every campaign in the list at once (the save services deliberately push in-place edits back to the shared row). And Is_Active__c is not a kill switch — an already-selected template keeps rendering to donors after it is deactivated, because the resolver reads the campaign's id array without checking the flag. Both are stated on the card rather than left to be discovered.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexdesignationperformance">Fund Performance<a class="headerlink" href="#lexdesignationperformance" title="Permanent link">#</a></h4>
 <p><code>lexDesignationPerformance</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card on Designation showing the fund's refund-netted realized giving, its live recurring commitment annualized, and which campaigns raised it.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Mounted on the Designation (fund) record page. The headline figure is NET raised — gross split amount minus each split's prorated share of its parent gift's refund — which is deliberately NOT the Total_Raised__c rollup shown in the record's own fields: that rollup is gross and refund-blind, so the two disagree on any fund that has ever been refunded. The refund line is always rendered when non-zero precisely so that gap is visible rather than looking like a bug.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexdiagnosticlogs">Diagnostic Logs<a class="headerlink" href="#lexdiagnosticlogs" title="Permanent link">#</a></h4>
 <p><code>lexDiagnosticLogs</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Internal app tab for the log entries the package writes about its own behaviour. Filters by level, context and date, searches messages and stack traces, and warns when logging is off so an empty list is not read as a healthy org.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4387,9 +4481,15 @@
 <p>All filtering is client-side over the already-loaded rows — one Apex call, instant response. showTruncationNotice fires when the row count lands exactly on rowLimit, so a filtered view of a truncated list never reads as complete.</p>
 <p>Stack traces are collapsed per row rather than shown inline: they are the single most useful field when you need one and pure noise on the other 199 rows.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexdonationmonitor">Donation Monitor<a class="headerlink" href="#lexdonationmonitor" title="Permanent link">#</a></h4>
 <p><code>lexDonationMonitor</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Internal Lightning app tab for donations not yet finalized into an Opportunity, split into rows needing attention and abandoned checkouts nobody was charged for, with a per-row Retry now action and a warning when the finalizer job isn't scheduled.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4401,9 +4501,15 @@
 <p>schedulerScheduled false means the Finalizer family is not scheduled, so NOTHING on this page can advance regardless of what the rows say; the banner sends the admin to the Scheduled Jobs panel rather than letting them debug a queue that simply is not being drained.</p>
 <p>"Retry now" re-runs the exact same callout + outcome logic as the scheduled reconciliation batch for that one record (StagingReconciliationBatch.reconcileOne), so an admin doesn't have to wait for the next scheduled pass.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexdonationreceiptprint">Donation Receipt Print View<a class="headerlink" href="#lexdonationreceiptprint" title="Permanent link">#</a></h4>
 <p><code>lexDonationReceiptPrint</code></p>
 <p><code>exposed</code> · <code>RecordPage, AppPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record page / app page for Opportunity that renders a printable donation receipt (org branding, donor, amount, designations, EIN) and triggers the browser print dialog.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4412,18 +4518,30 @@
 <p>Until 2026-08-06 the printed letter hardcoded its own wording — different from the on-screen letter above it and from the guest receipt — and ignored Settings__c.Tax_Receipt_Legal_Text__c entirely. It now prints the same server-resolved statement (ReceiptStatusHelper.legalStatement) as every other surface.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexdonorsummarycard">Donor Giving Summary<a class="headerlink" href="#lexdonorsummarycard" title="Permanent link">#</a></h4>
 <p><code>lexDonorSummaryCard</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card on Account/Contact summarizing a donor's total and average giving, one-time vs. recurring split, and a monthly-giving sparkline.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Mounted on Contact, Account, and Person Account record pages (objectApiName tells RecordPageController.getDonorSummary which lookup to resolve donations by) so the same bundle works across both the standard and Person Account donor models without branching on IsPersonAccount in this component.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>objectApiName</code>, <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexembedbuilder">Embed &amp; Share<a class="headerlink" href="#lexembedbuilder" title="Permanent link">#</a></h4>
 <p><code>lexEmbedBuilder</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record-page panel to generate and copy a donation embed snippet (card / form / button) with a live preview.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4431,9 +4549,15 @@
 <p>Was <code>return '/lightning/n/Settings'</code> — a hardcoded tab URL, which is a 404 in every subscriber org because a packaged custom tab is namespace-prefixed (<code>pledgivo__Settings</code>). GenerateUrl on the server-resolved API name is the only prefix-safe way to build it. hasSettingsUrl gates the anchor rather than letting it render href-less: the surrounding sentence ("add that site's domain to …") still reads correctly as plain text, and a link that goes nowhere is worse than no link at all.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexeventattendeedetail">Seat &amp; Order<a class="headerlink" href="#lexeventattendeedetail" title="Permanent link">#</a></h4>
 <p><code>lexEventAttendeeDetail</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card giving one event seat the context the bulk check-in board cannot: the tier bought, what the order paid, and the other seats on that order — plus a door control writing check-in status through the same service the board uses.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4443,9 +4567,15 @@
 <p>A refunded seat is Cancelled, not deleted, so the control is locked rather than hidden: the seat must still be visible (and visibly void) to whoever is holding the ticket at the door.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexeventcheckin">Event Check-In Board<a class="headerlink" href="#lexeventcheckin" title="Permanent link">#</a></h4>
 <p><code>lexEventCheckIn</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record page component for event fundraisers: a live door board that moves each registered attendee between Awaiting, Checked in, and No-show as they arrive. Renders an explanatory note instead on campaigns that are not event fundraisers.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4453,9 +4583,15 @@
 <p>Campaign record-page shim for the admEventCheckIn door board, which until now was only reachable through the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> drawer on the Fundraisers console tab. The board itself is unchanged — this bundle exists purely to expose it to the Lightning App Builder without exposing the console's internals as packaged API. The drawer decides which of its tabs to render, so admEventCheckIn does NOT gate itself on campaign subtype. On a record page there is no parent to do that, so the subtype check lives here — without it a door board would render on every General/Open_Donation campaign.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexeventtickets">Event Ticket Tiers<a class="headerlink" href="#lexeventtickets" title="Permanent link">#</a></h4>
 <p><code>lexEventTickets</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign record page component for event fundraisers: create and price the ticket tiers a donor can buy on the public registration page, and see how many of each remain. Renders an explanatory note instead on campaigns that are not event fundraisers.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4463,9 +4599,15 @@
 <p>Campaign record-page shim for the admEventTicketsTab tier editor, previously reachable only through the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> drawer on the Fundraisers console tab. The editor itself is unchanged — this bundle only adds the Lightning App Builder exposure and the campaign-subtype gate the drawer would otherwise apply (admEventTicketsTab does not gate itself).</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexfundraisersconsole">Fundraisers<a class="headerlink" href="#lexfundraisersconsole" title="Permanent link">#</a></h4>
 <p><code>lexFundraisersConsole</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Internal Lightning app tab listing all fundraisers/campaigns with a create/edit wizard covering campaign details, story, tickets, questions, FAQs, and fund designations.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4483,9 +4625,15 @@
 <p>The allowed-funds picker is hand-built rather than a lightning-dual-listbox so it can carry the console's own field styling; it keeps the dueling list's one substantive capability — explicit ordering — because CampaignDesignationService.resolveSelectable walks Allowed_Designation_Ids__c in stored order, so this array's order is literally the order donors see in the donation form's fund picker.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>reportValidity</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexfundraisingsettings">Fundraising Settings<a class="headerlink" href="#lexfundraisingsettings" title="Permanent link">#</a></h4>
 <p><code>lexFundraisingSettings</code></p>
 <p><code>exposed</code> · <code>Tab</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Internal Lightning app tab hosting the settings console shell, with left navigation across organization, email, payments, refunds, site, public links, page designs, record types, and health-check panels.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4493,9 +4641,15 @@
 <p>Each nav item lazy-renders exactly one set<em> panel component (<a href="#setorganization"><code>setOrganization</code></a>, <a href="#setemail"><code>setEmail</code></a>, <a href="#setevents"><code>setEvents</code></a>, <a href="#setlogging"><code>setLogging</code></a>, <a href="#setpayments"><code>setPayments</code></a>, <a href="#setrefunds"><code>setRefunds</code></a>, <a href="#setrecurring"><code>setRecurring</code></a>, <a href="#setsite"><code>setSite</code></a>, <a href="#setpubliclinks"><code>setPublicLinks</code></a>, <a href="#setdesigns"><code>setDesigns</code></a>, <a href="#setdonorportal"><code>setDonorPortal</code></a>, <a href="#setrecordtypes"><code>setRecordTypes</code></a>, <a href="#sethealth"><code>setHealth</code></a>) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save, plus <a href="#setgetstarted"><code>setGetStarted</code></a> for the post-install checklist.</p>
 <p>The stuck-donation panel used to live here too; on 2026-08-14 it moved out to its own Lightning tab (<a href="#lexdonationmonitor"><code>lexDonationMonitor</code></a> / the Donation Monitor tab) because watching the finalize pipeline is recurring operational work rather than setup, and it does not belong behind a console an admin visits once.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexgivingstatement">Annual Giving Statement<a class="headerlink" href="#lexgivingstatement" title="Permanent link">#</a></h4>
 <p><code>lexGivingStatement</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Contact/Account record page component that builds a donor's year-end giving statement on demand: a tax year picker, that year's receiptable gifts with receipt numbers, the received and deductible totals, and a print action. Reads run as the running user.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4503,9 +4657,15 @@
 <p>Every read here runs USER_MODE inside GivingStatementService — a fundraiser who cannot see a donor's gifts gets an empty statement, not a privileged one. Only the token-authorized portal path is allowed the system-mode read.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexguestrequestdetail">Guest Request Detail<a class="headerlink" href="#lexguestrequestdetail" title="Permanent link">#</a></h4>
 <p><code>lexGuestRequestDetail</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Explains one guest request in plain language: what the visitor asked for and what each verdict does. A reviewer can issue the refund, decline with a reason the donor reads, or close it as handled. Lists the submitted names on a naming request.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4513,9 +4673,15 @@
 <p>Same three verdicts as <a href="#lexrefundrequests"><code>lexRefundRequests</code></a>, deliberately: a reviewer who lands on the request itself must not have to go find the donation to pay it back.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexmanagerecurringgift">Manage Recurring Gift<a class="headerlink" href="#lexmanagerecurringgift" title="Permanent link">#</a></h4>
 <p><code>lexManageRecurringGift</code></p>
 <p><code>exposed</code> · <code>RecordAction</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record action on Recurring_Donation__c for the reversible mid-life changes to a donor's schedule — pause, resume, skip the next payment, retry a failed charge, change the amount or the fund. Opens read-only without the Manage Recurring Gifts permission.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4528,18 +4694,30 @@
 <p>Reinstating restarts billing from today and clears the dunning counters, so it is worded as "billing restarts" rather than "resumed" — staff need to know a charge is now imminent.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexopportunitybreakdown">Donation Payment Breakdown<a class="headerlink" href="#lexopportunitybreakdown" title="Permanent link">#</a></h4>
 <p><code>lexOpportunityBreakdown</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card on Opportunity detailing payment status, source, fees, net amount, Stripe payment intent, refund date, and tribute (in honor/memory of) information for a donation.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>every name here has to exist in the org's utility sprite — lightning-icon renders an empty box for one that doesn't, with no console error to point at it. <code>utility:credit_card</code> and <code>utility:app</code> were both fictional and shipped as blank squares next to "Card".</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexpaymentmethoddependents">What Depends On This Card<a class="headerlink" href="#lexpaymentmethoddependents" title="Permanent link">#</a></h4>
 <p><code>lexPaymentMethodDependents</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card on Payment Method listing the recurring schedules charged to this saved card and the annual giving at risk, so an expiring or invalid card can be acted on before a renewal fails.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4548,32 +4726,56 @@
 <p>A schedule flagged "lookup not set" was matched on the raw Stripe token rather than the Payment_Method__c lookup. It IS charged on this card (the renewal batch charges the token), but nothing on the schedule record says so — surfacing it is the whole point of the dual match.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexrecurringdonationhistory">Recurring Donation Payment History<a class="headerlink" href="#lexrecurringdonationhistory" title="Permanent link">#</a></h4>
 <p><code>lexRecurringDonationHistory</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card on a recurring donation schedule showing its full installment history — every charge, its status, and the schedule's current dunning/cancellation state — so an admin can see how a schedule is performing without leaving the record.</p>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexrecurringwidget">Recurring Donations Widget<a class="headerlink" href="#lexrecurringwidget" title="Permanent link">#</a></h4>
 <p><code>lexRecurringWidget</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record-page card on Account/Contact listing that donor's recurring donations with status, monthly value, next-payment date, and overdue/failed-payment indicators.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Mounted on Contact/Account/Opportunity record pages; objectApiName tells RecordPageController.getRecurringDonations which lookup field to resolve Recurring_Donation__c rows by, so the same bundle covers both the standard and Person Account donor models without branching here.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>objectApiName</code>, <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexrefunddonation">Refund Donation<a class="headerlink" href="#lexrefunddonation" title="Permanent link">#</a></h4>
 <p><code>lexRefundDonation</code></p>
 <p><code>exposed</code> · <code>RecordAction</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record action (screen action) on Opportunity that lets a user issue a full or partial Stripe refund for a donation, respecting the org's refunds-enabled setting and remaining-refundable amount.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Opportunity RecordAction quick action (headless-launched, closes itself via CloseActionScreenEvent). Calls RefundController.refundDonation to issue the Stripe refund and RefundController.getRefundConfig to read the enabled/disabled toggle; the client-side refundsEnabled check is a UX nicety only — RefundController.refundDonation re-checks server-side and is the actual gate. <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a>'s drawer calls the same two controller methods for its inline row-action refund, so behavior matches whichever entry point a user starts from.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexrefundrequests">Refund Requests<a class="headerlink" href="#lexrefundrequests" title="Permanent link">#</a></h4>
 <p><code>lexRefundRequests</code></p>
 <p><code>exposed</code> · <code>RecordPage</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Refund requests donors raised from the public site: on a donation, that gift's requests; on a campaign, every request across it. A reviewer can issue the refund, decline it with a reason the donor reads, or close one that was refunded some other way.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4581,9 +4783,15 @@
 <p>The panel filters to Refund_Request. Attendee-naming requests share the object but not the work: they resolve themselves and nobody reviews them, so mixing them in would bury the two rows a person actually has to decide about.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexresendreceipt">Resend Receipt<a class="headerlink" href="#lexresendreceipt" title="Permanent link">#</a></h4>
 <p><code>lexResendReceipt</code></p>
 <p><code>exposed</code> · <code>RecordAction</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record action on Opportunity that re-sends the donation or event-ticket receipt to the donor on the record. Confirms the resolved recipient address and template first, and is unavailable for gifts that have not settled or were fully refunded.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4594,9 +4802,15 @@
 <p>recordId via setter, not a plain @api field read in connectedCallback: the platform assigns it AFTER connectedCallback for actions launched from the action overflow, so a connectedCallback load calls Apex with a null id. Same fix as lexManageRecurringGift.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexsendportallink">Send Portal Sign-In Link<a class="headerlink" href="#lexsendportallink" title="Permanent link">#</a></h4>
 <p><code>lexSendPortalLink</code></p>
 <p><code>exposed</code> · <code>RecordAction</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record action on Contact and Account that emails a donor a fresh sign-in link to the donor portal. Confirms the resolved address first, then shows the link that was sent so staff can read it out to a donor on the phone.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4608,19 +4822,31 @@
 <p>recordId via setter, not a plain @api field read in connectedCallback: the platform assigns it AFTER connectedCallback for actions launched from the action overflow, so a connectedCallback load calls Apex with a null id. Same fix as <a href="#lexresendreceipt"><code>lexResendReceipt</code></a>.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>field</code>, <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="lexstoprecurringdonation">Stop Recurring Donation<a class="headerlink" href="#lexstoprecurringdonation" title="Permanent link">#</a></h4>
 <p><code>lexStopRecurringDonation</code></p>
 <p><code>exposed</code> · <code>RecordAction</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Record action (screen action) on Recurring_Donation__c that cancels an active recurring donation after the user enters a required cancellation reason.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Recurring_Donation__c RecordAction quick action (headless-launched, closes itself via CloseActionScreenEvent). Calls StopRecurringDonationController.stopRecurringDonation, the same controller <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a>'s drawer calls for its inline row-action stop, so cancelling from either entry point behaves identically. FIELD_CONTACT/FIELD_ACCOUNT are read (never both populated) to resolve the donor name across the standard-Contact vs. Person-Account dual-lookup model.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
 <h2 id="group-adm">Adm (internal fundraisers-console)<a class="headerlink" href="#group-adm" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admcampaigndocumentstab">Campaign Documents Tab<a class="headerlink" href="#admcampaigndocumentstab" title="Permanent link">#</a></h4>
 <p><code>admCampaignDocumentsTab</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign "Documents" editor — create a document, attach the file donors download, publish or unpublish it, and switch the whole Documents section on or off.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4634,18 +4860,30 @@
 <p>The upload itself is what stamps File_URL__c / File_Type__c / File_Size__c onto the row — the ContentVersion trigger does it via CampaignPostService.stampFromVersions, because a site guest cannot read a Salesforce file and the public card needs a plain URL. So the only thing to do here is re-read the list and let the row report what landed.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admcampaignfaqtab">Campaign FAQ Tab<a class="headerlink" href="#admcampaignfaqtab" title="Permanent link">#</a></h4>
 <p><code>admCampaignFaqTab</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Drawer "FAQs" tab — pick reusable FAQ templates or create new ones, reorder, and save the campaign's selection.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Mounted as one tab of the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> slide-in drawer (&lt;c-adm-campaign-faq-tab record-id={recordId}&gt;), not a standalone route. Calls three CampaignFaqController methods: getFaqLibrary (all reusable templates), getCampaignFaqs (this campaign's current selection), saveCampaignFaqs (persists the whole ordered list in one call, no per-row DML). Sibling tabs in the same drawer: <a href="#admcustomquestionstab"><code>admCustomQuestionsTab</code></a> (identical pattern over Custom_Question templates), <a href="#admeventcheckin"><code>admEventCheckIn</code></a>, <a href="#admeventticketstab"><code>admEventTicketsTab</code></a>.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admcampaignupdatestab">Campaign Updates Tab<a class="headerlink" href="#admcampaignupdatestab" title="Permanent link">#</a></h4>
 <p><code>admCampaignUpdatesTab</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign "Updates" editor — write, publish and delete the plain-text progress posts that appear in the Updates timeline on the public page, and switch that whole section on or off.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4654,18 +4892,30 @@
 <p>Publishing sends the whole row back, not a one-field patch: CampaignPostController.savePost is an upsert of the form, so a partial payload would blank every field it omitted.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admcustomquestionstab">Custom Questions Tab<a class="headerlink" href="#admcustomquestionstab" title="Permanent link">#</a></h4>
 <p><code>admCustomQuestionsTab</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Drawer "Questions" tab — pick reusable question templates or create new ones, reorder, and save the campaign's selection.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Mounted as one tab of the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> slide-in drawer (&lt;c-adm-custom-questions-tab record-id={recordId}&gt;), not a standalone route. Mirrors <a href="#admcampaignfaqtab"><code>admCampaignFaqTab</code></a>'s library-reuse pattern one field over: CampaignQuestionController's getQuestionLibrary/getCampaignQuestions/saveCampaignQuestions instead of the FAQ controller's equivalents. The questions saved here are the same Content_Template__c records (RecordType Custom_Question) that <a href="#dfform"><code>dfForm</code></a>'s Step 4 renders on the guest side.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admeventcheckin">Event Check-In Tab<a class="headerlink" href="#admeventcheckin" title="Permanent link">#</a></h4>
 <p><code>admEventCheckIn</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Drawer "Check-In" tab (Event fundraisers) — lane board that flips each seat's check-in status at the door.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4673,9 +4923,15 @@
 <p>a.id is searchable because the QR code on a donor's ticket encodes the attendee Id — a door attendant scanning into this box gets nothing back unless the Id matches.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admeventticketstab">Event Tickets Tab<a class="headerlink" href="#admeventticketstab" title="Permanent link">#</a></h4>
 <p><code>admEventTicketsTab</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Drawer "Tickets" tab (Event fundraisers) — list + add/edit/delete ticket tiers.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4683,18 +4939,30 @@
 <p>Highlight_Label__c is the badge copy AND the on-switch (blank = not highlighted), so the toggle seeds a default label on and clears it off. Demoting the event's OTHER tiers is the server's job (EventTicketAdminController.demoteOtherHighlights) — this modal only ever holds one tier, and load() below re-reads the list afterwards.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admfundraiseravatar">Fundraiser Type Avatar<a class="headerlink" href="#admfundraiseravatar" title="Permanent link">#</a></h4>
 <p><code>admFundraiserAvatar</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed helper that renders a small colored icon tile for a fundraiser's subtype (campaign, event, open donation) inside the internal fundraisers console.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Composed (not inherited) into two parents: <a href="#lexfundraisersconsole"><code>lexFundraisersConsole</code></a>'s list/grid rows and the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> drawer header. Both pass only subtype and size; the icon/color mapping lives entirely in this component, so the two parents can never drift out of sync on what a subtype looks like.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>size</code>, <code>subtype</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admfundraiserdetail">Fundraiser Detail Drawer<a class="headerlink" href="#admfundraiserdetail" title="Permanent link">#</a></h4>
 <p><code>admFundraiserDetail</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed slide-in detail panel used by the Fundraisers console tab, showing a campaign's overview, donations, pages, teams, tickets, questions, FAQ, recurring gifts, and fund across tabs.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4703,9 +4971,15 @@
 <p>mirrors the note the mock shows under the mode name — one line summarizing what a donor sees, so an admin can tell the resolved picker behavior without opening Fund below.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="admguestrequests">Guest Requests (Console)<a class="headerlink" href="#admguestrequests" title="Permanent link">#</a></h4>
 <p><code>admGuestRequests</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Fundraisers-console related list of every request raised by visitors on one campaign — refunds and attendee-name changes together — with the complete/decline verdict and its two notes. Unfiltered, unlike the refund-only panel on the Campaign record page.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4716,10 +4990,16 @@
 <p>Rows are read-only about the DONOR and actionable only about the VERDICT. Nothing here re-applies a payload — AttendeeNamingHandler and RefundRequestHandler own their writes.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code>, <code>refresh</code></p>
+</div>
+</div>
 <h2 id="group-set">Set (settings console panels)<a class="headerlink" href="#group-set" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setdesigns">Settings: Page Designs<a class="headerlink" href="#setdesigns" title="Permanent link">#</a></h4>
 <p><code>setDesigns</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel for creating and editing Campaign_Design__c page-design records — the block canvas and theme-token editor that drive the public donation page's layout and branding.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4736,25 +5016,49 @@
 <p>There is no hero-only preview any more — every design previews as the two-column page.</p>
 <p>Off for a brand-new design. Interrupting a donor is a choice an admin should make on purpose, not inherit from a default.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setdonorportal">Settings: Donor Portal<a class="headerlink" href="#setdonorportal" title="Permanent link">#</a></h4>
 <p><code>setDonorPortal</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel controlling which panels appear on the magic-link donor portal and the headline/message copy shown there, all stored on Settings__c.</p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setemail">Settings: Email &amp; Receipts<a class="headerlink" href="#setemail" title="Permanent link">#</a></h4>
 <p><code>setEmail</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel for configuring sender/reply addresses, email branding colors, and automatic receipt/recurring-thank-you message text on Settings__c.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Blank means "use the packaged RCPT default" — saving '' instead of null would make an admin who cleared the box look configured while behaving as unconfigured.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setevents">Settings: Events &amp; Ticketing<a class="headerlink" href="#setevents" title="Permanent link">#</a></h4>
 <p><code>setEvents</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel controlling the event ticket tax-deductible calculation mode and the optional Campaign Member sync for ticket attendees on Settings__c.</p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setgetstarted">Settings: Get Started<a class="headerlink" href="#setgetstarted" title="Permanent link">#</a></h4>
 <p><code>setGetStarted</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel presenting the ordered post-install setup checklist. Each step reports its status live from the org and offers a one-click fix, a jump to the panel that owns it, or a link to the matching section of the after-you-install guide.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4768,25 +5072,43 @@
 <p>The hero's fraction and the list beneath it count differently, in two ways that both flatter the org: an Optional row is displayed but never counted, and a "Partly done" row is counted as not done although it looks half-finished. So "6/7 Complete" can sit above eight rows, five of which read as finished. A first-run walkthrough took the number as its progress signal and believed the org was one step from ready while three steps were open (2026-08-17). Rather than change either rule — both are right on their own terms — the panel now states them, and only when there is actually a discrepancy to explain.</p>
 <p>_resolveSettingsTabUrl() calls _applyPanelUrls() itself once _settingsTabUrl resolves (both its success and catch paths, below) — an extra call here ran before _settingsTabUrl could possibly be set, so it only ever applied panel URLs built from the stale/null value and was pure redundant work.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="sethealth">Settings: Health Check<a class="headerlink" href="#sethealth" title="Permanent link">#</a></h4>
 <p><code>setHealth</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel that runs and displays org configuration health checks, with a one-click fix action for failing items.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>runHealthCheck/fixHealthCheckItem drive the pass/warn/fail checklist (Named Credential reachability, required permission-set assignments, scheduled-job presence, etc.). The scheduled-job breakdown and on-demand "Run a job now" controls both live on the "Scheduled Jobs" console tab (c-set-scheduled-jobs).</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setlogging">Settings: Logging<a class="headerlink" href="#setlogging" title="Permanent link">#</a></h4>
 <p><code>setLogging</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel for choosing the persisted log level, toggling the debug echo, and setting the retention window on Settings__c, plus the recent Stripe transaction errors. Reading the log entries themselves lives on the separate Diagnostic Logs tab.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Sets the logging THRESHOLD (Log_Level__c), the System.debug echo, and the retention window. It no longer READS Log__c: the "Recent diagnostic logs" list moved to its own Diagnostic Logs tab (<a href="#lexdiagnosticlogs"><code>lexDiagnosticLogs</code></a> / DiagnosticLogController) on 2026-08-15, because troubleshooting is recurring work while the level is a setting you choose once — and because ten rows squeezed under four settings controls was never enough to diagnose anything. The Recent errors list below it deliberately stayed: it reads Transaction_Log__c, the Stripe callout audit trail, which is a different object with no overlap with AppLogger's Log__c.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setorganization">Settings: Organization &amp; Donations<a class="headerlink" href="#setorganization" title="Permanent link">#</a></h4>
 <p><code>setOrganization</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel for general organization and donation defaults, including the configured charge currency, stored on Settings__c.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4796,9 +5118,15 @@
 <p>Off by default; on only unlocks inline playback once the admin has hand-created the CSP Trusted Site this package deliberately does not ship (see the Story media section copy). Must be listed here explicitly — handleSave sends an allowlist, not everything in this.settings, so an omitted key here never reaches the server.</p>
 <p>The public-page footer band. These moved here from the page-design record on 2026-08-12 — a privacy policy is a fact about the organization, so changing a campaign's theme must not change which policy its donors are pointed at. Blanks travel as nulls on purpose: an empty link is omitted from the footer, never rendered dead. Each campaign can still override its own on the campaign record.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setpayments">Settings: Payment Accounts<a class="headerlink" href="#setpayments" title="Permanent link">#</a></h4>
 <p><code>setPayments</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel listing gateway payment accounts with add, edit, test-connection, and delete actions, above a ten-step guide that grades each account's public and admin Named Credentials and runs the on-demand restricted-key and connection checks.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4853,37 +5181,67 @@
 <p>Re-validating the one field that changed is what clears the error the save attempt put under it. A blocked save calls reportValidity() on every control, and Salesforce leaves "Complete this field." rendered until something asks that control again — filling it in is not, by itself, that ask.</p>
 <p>So a walkthrough (2026-08-17, P-06) filled in the credential it had just been told was missing and watched the red text stay put under a visibly complete field, with no way to find out whether the form would now be accepted short of pressing Save and seeing. Cheap to fix, and it costs one call on a field the admin has just touched.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setpubliclinks">Settings: Public Links<a class="headerlink" href="#setpubliclinks" title="Permanent link">#</a></h4>
 <p><code>setPublicLinks</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel listing the public donation/campaign URLs (type, slug, status) with a copy-URL row action for each.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Read-only inventory of every guest-reachable donation URL (campaigns, event registration) built from Settings__c.Experience_Site_URL__c + each record's slug — a cross-check surface, not the place slugs are edited. Complements <a href="#lexembedbuilder"><code>lexEmbedBuilder</code></a> (which generates the embeddable snippet for one campaign at a time) by showing every direct link across the org at once.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setrecordtypes">Settings: Record Type Mapping<a class="headerlink" href="#setrecordtypes" title="Permanent link">#</a></h4>
 <p><code>setRecordTypes</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel mapping the package's logical record-type slots to the org's actual record types per object, with per-row override and reset-to-default actions.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Maps each packaged "record type slot" (packageRTDeveloperName) to the actual Record Type an org uses for it — the admin-facing override surface for whatever RecordTypeService resolves at runtime, letting an org substitute its own existing Record Type instead of the packaged default without any Apex/trigger change.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setrecurring">Settings: Recurring &amp; Dunning<a class="headerlink" href="#setrecurring" title="Permanent link">#</a></h4>
 <p><code>setRecurring</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel controlling the retry cadence, grace period, and dunning-email frequency for failed recurring donation payments on Settings__c.</p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setrefunds">Settings: Refunds<a class="headerlink" href="#setrefunds" title="Permanent link">#</a></h4>
 <p><code>setRefunds</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel toggling whether refunds are enabled and setting the refund-eligibility window in days on Settings__c.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Stored in the friendly sense (Donor_Refund_Requests_Enabled__c, default false) rather than inverted like the master switch, so this one reads and saves straight through.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setscheduledjobs">Settings: Scheduled Jobs<a class="headerlink" href="#setscheduledjobs" title="Permanent link">#</a></h4>
 <p><code>setScheduledJobs</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel that shows every pipeline CronTrigger as a card — a family with its cadence editor, a single job read-only — explains why a family runs as several offset jobs, and lets an admin schedule missing jobs or run one on demand.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4897,9 +5255,15 @@
 <p>A single job gets the same card as a family — friendly label, what it does, when it runs — because "why is RefundReconcile in a plain list while Donation Finalizer gets a card?" has no answer an admin can act on: the difference is only that a sub-hourly family needs many CronTriggers.</p>
 <p>What it deliberately does NOT get is the cadence dropdown, because SetupController.ScheduleJobFamily only accepts the two family keys in CADENCE_FAMILIES and rejects anything else — offering a control the backend would refuse is worse than none. These jobs are rescheduled from Setup &gt; Scheduled Jobs, which is why the raw CronTrigger name stays on the card: it is the string the admin has to match over there.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setsite">Settings: Site &amp; Domain<a class="headerlink" href="#setsite" title="Permanent link">#</a></h4>
 <p><code>setSite</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Settings-console panel that walks an admin through getting a public donation site live: an eight-step checklist, machine-checked where possible, with Setup deep links, the site picker, a per-page build table, and the embedding switch.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4925,19 +5289,31 @@
 <p>Clears _guestCheck and sets _guestCheckPending BEFORE the call fires, regardless of whether networkId is truthy — previously the clear only happened on the falsy branch, so a re-check dispatched for a newly selected site left the PREVIOUS site's payload (and its green Done chips) on screen for the whole in-flight window, and permanently if the call then failed (I5). onError now resolves to the same honest {verified:false} shape a successful-but-unverified response would produce, so a failed re-check degrades to "Can't verify" rather than staying silently stale.</p>
 <p>requestedNetworkId is captured at dispatch time and compared against the live selectedNetworkId when the response lands, so a stale response from a superseded selection (rapid re-selection, out-of-order network replies) is discarded instead of overwriting a newer in-flight or completed check.</p>
 </div>
+</div>
+</div>
 <h2 id="group-pf">Pf (public guest helper blocks)<a class="headerlink" href="#group-pf" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfattribution">Attribution Capture Utility<a class="headerlink" href="#pfattribution" title="Permanent link">#</a></h4>
 <p><code>pfAttribution</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed JS-only utility module (no markup) that reads the checkout URL's query string and returns the marketing-attribution parameters every guest checkout surface sends with its order, so UTM and other tracking tags reach the donation record.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>These mirror AttributionCapture's server-side caps. Both layers enforce them — the client so an absurd URL doesn't bloat the Apex request, the server because a client cap is a courtesy, not a control (anything can POST to the guest endpoint).</p>
 <p>Functional and personal keys the public pages use to carry their own state, plus the redirect/receipt tokens. Kept in sync with AttributionCapture.EXCLUDED_KEYS in Apex — stripping them here as well keeps them out of the network payload entirely, which matters for the credential-ish ones (token, client secrets) more than for the merely noisy ones.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfcontactband">Public Contact Band<a class="headerlink" href="#pfcontactband" title="Permanent link">#</a></h4>
 <p><code>pfContactBand</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>The full-width band beneath both columns of the public page: the organisation's mark and footer text, tap-to-act email, phone and (for events) venue rows, and a legal line with hours, tax id, policy links, socials and copyright.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4951,9 +5327,15 @@
 <p>An unset network is omitted rather than rendered as a dead link — an org with only a Facebook page should show one icon, not three, two of which go nowhere.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>contact</code>, <code>ein</code>, <code>identity</code>, <code>isEvent</code>, <code>isPostGift</code>, <code>orgName</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfgivingstatement">Donor Portal Giving Statement<a class="headerlink" href="#pfgivingstatement" title="Permanent link">#</a></h4>
 <p><code>pfGivingStatement</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed donor-portal block listing each tax year the donor gave in (count and total) with a per-year statement download. Authorized by the portal's magic-link token, never a record id, so a donor can only ever produce their own statement.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4962,9 +5344,15 @@
 <p><code>years</code> is an optional passthrough: getDashboard already returns the year list, so the parent hands it over and this component skips its own round trip. Left unset (embedded anywhere else) it still loads the list itself from the token alone.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>currencyCode</code>, <code>token</code>, <code>years</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfhero">Campaign Hero<a class="headerlink" href="#pfhero" title="Permanent link">#</a></h4>
 <p><code>pfHero</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Campaign header with goal progress bar for Experience Cloud</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4973,18 +5361,30 @@
 <p>Subtype is NOT re-decided here. CampaignService.PROGRESS_BAR_SUBTYPES is the one place that rule lives, and its answer arrives as the showProgressBar prop; this getter only adds the local guard that the campaign actually has a goal to draw against. Until 2026-08-18 (F-42) it excluded Open_Donation on its own, which is how the hero ended up hiding a bar the donation form on the same page was drawing.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>campaignSlug</code>, <code>ctaLabel</code>, <code>eyebrow</code>, <code>hideCta</code>, <code>showProgressBar</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfpageblocks">Page Blocks<a class="headerlink" href="#pfpageblocks" title="Permanent link">#</a></h4>
 <p><code>pfPageBlocks</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Runtime renderer for ordered page content blocks (rich text, image, testimonial, video, gallery, FAQ)</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Composed by both <a href="#setdesigns"><code>setDesigns</code></a> (the internal page-design editor's live preview) and <a href="#dfform"><code>dfForm</code></a> (the actual guest-facing content-block rendering inside the 3-step canvas) as &lt;c-pf-page-blocks blocks-json= campaign-faqs=&gt;, so a design change previews and renders through the identical sanitization/allow-listing logic in this one component — no drift between editor preview and what a donor actually sees.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>blocks</code>, <code>blocksJson</code>, <code>campaignFaqs</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfsectiontabs">Public Campaign Reference Tabs<a class="headerlink" href="#pfsectiontabs" title="Permanent link">#</a></h4>
 <p><code>pfSectionTabs</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Renders a campaign's documents, updates and FAQ on the public page as one tabbed well with a per-tab count, a sticky tab bar and a travelling selection pill.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4995,9 +5395,15 @@
 <p>Every panel that has content stays in the DOM and is hidden with the <code>hidden</code> attribute rather than removed, so the documents and answers a search engine, a printer or a screen reader should see are all present regardless of which tab the donor left open.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>defaultTab</code>, <code>documents</code>, <code>faqs</code>, <code>meta</code>, <code>sections</code>, <code>updates</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfstory">Public Campaign Story<a class="headerlink" href="#pfstory" title="Permanent link">#</a></h4>
 <p><code>pfStory</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Renders a campaign's narrative on the public page as a stacked, full-width editorial section with a numbered heading, an optional drop cap and pull quotes, and a fade clamp with a read-more toggle for long stories.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5010,17 +5416,29 @@
 <p>Whether the story overflows the clamp is a question about rendered text, not about character count — a 900-character story in a large-type design can be taller than a 1,500-character one. So it is measured once per story, after the first paint, and the _measured latch keeps that measurement from re-entering the render loop it triggers.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>heading</code>, <code>inlineVideoEnabled</code>, <code>story</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pfstyles">Public Shared Style Primitives<a class="headerlink" href="#pfstyles" title="Permanent link">#</a></h4>
 <p><code>pfStyles</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>CSS-only shared style module (no JS/markup) defining the token-consuming card, field, and label primitives reused across all guest-facing public LWCs.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Pulled in via @import by <a href="#pfhero"><code>pfHero</code></a>, <a href="#pfpageblocks"><code>pfPageBlocks</code></a>, <a href="#publiceventregistration"><code>publicEventRegistration</code></a>, <a href="#dfdesignationpicker"><code>dfDesignationPicker</code></a>, and <a href="#dfform"><code>dfForm</code></a> — the single point where the shared pf-ui-* primitive tokens turn into actual card/field/label rules, so a guest-page bundle never redefines these locally (avoids the per-component duplicate token systems the theme-token rules prohibit).</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="pftrustbar">Trust Bar<a class="headerlink" href="#pftrustbar" title="Permanent link">#</a></h4>
 <p><code>pfTrustbar</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Trust strip (organisation mark and name, campaign name, tax ID and payment-security badges) heading the guest donation and event ticket pages. Rendered by its parent form, not dropped on a page, so it is deliberately not exposed to Experience Builder.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5028,10 +5446,16 @@
 <p>Every rule it renders against lives in c/<a href="#pfstyles"><code>pfStyles</code></a> (.pf-trustbar<em>, .pf-badge</em>) rather than in this bundle: the strip is one of the primitives shared across both guest pages, and the 2026-08-05 redesign keeps all such shared rules in the one file so a theme token added there reaches every consumer at once. The @import below is what pulls them into this bundle's scoped stylesheet.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>campaignName</code>, <code>ein</code>, <code>orgMarkUrl</code>, <code>orgName</code></p>
+</div>
+</div>
 <h2 id="group-df">Df (donation form family)<a class="headerlink" href="#group-df" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="dfdesignationpicker">Designation Picker<a class="headerlink" href="#dfdesignationpicker" title="Permanent link">#</a></h4>
 <p><code>dfDesignationPicker</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed donation-form field letting a donor direct their gift to a single fund or split it across several. Selecting funds divides the gift evenly; editing one fund rebalances the rest, so the allocation always sums to the gift total.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5043,9 +5467,15 @@
 <p>Amounts are held in integer cents so repeated rebalancing can't accumulate float drift, and split in whole units whenever the gift is a whole-unit amount ($100 across three funds is 34/33/33, not 33.34/33.33/33.33).</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>defaultDesignationId</code>, <code>designations</code>, <code>total</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="dfform">Donation Form<a class="headerlink" href="#dfform" title="Permanent link">#</a></h4>
 <p><code>dfForm</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Three-step donation canvas (Compose, Payment, Thank You) for Experience Cloud campaigns</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5095,27 +5525,45 @@
 <p>Every fallback is the token's own designed default, not a neutral, so a design record that overrides nothing still gets the Ember palette rather than Stripe's.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>before</code>, <code>builderConfig</code>, <code>campaignSlug</code>, <code>initialAmount</code>, <code>initialEmail</code>, <code>initialName</code>, <code>props</code>, <code>showProgressBar</code>, <code>thankYouCta</code>, <code>went</code></p>
+</div>
+</div>
 <h2 id="group-ui">Ui (shared primitives)<a class="headerlink" href="#group-ui" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uiapexerror">Apex Error Formatting Utility<a class="headerlink" href="#uiapexerror" title="Permanent link">#</a></h4>
 <p><code>uiApexError</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed JS-only utility module (no markup) that turns a raw Apex or DML failure from a controller response envelope into one readable reason per failure plus the field API names it cited, so a console can say what to fix.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Consumed by <a href="#lexfundraisersconsole"><code>lexFundraisersConsole</code></a>'s wizard save-failure panel. Lives here rather than in <a href="#uibase"><code>uiBase</code></a> because uiBase is a base <em>class</em> (callApex/toast plumbing) — this is a pure function any console can import without inheriting from it, following the <a href="#uimoney"><code>uiMoney</code></a> precedent for JS-only shared utilities.</p>
 <p>Salesforce status codes are SCREAMING_SNAKE and always followed by ", " before the human message. Six-char minimum keeps the pattern off ordinary uppercase words in prose.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uibase">Internal Base Component<a class="headerlink" href="#uibase" title="Permanent link">#</a></h4>
 <p><code>uiBase</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed base class for internal Lightning Experience LWCs, providing a shared Apex-call wrapper for the success/data/error envelope, loading spinner, and error toasts.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Extended throughout the internal adm<em>/set</em>/lex* bundles (and by the public 3-step canvas <a href="#dfform"><code>dfForm</code></a>) as the standard callApex wrapper.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uifontstacks">Font Stack Allowlist<a class="headerlink" href="#uifontstacks" title="Permanent link">#</a></h4>
 <p><code>uiFontStacks</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Shared service module: the closed allowlist that turns a design record's restricted font picklist token into a CSS font-family stack. Guest pages resolve fonts through it so a design record's field value is never interpolated raw into an inline style.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5125,9 +5573,15 @@
 <p><a href="#publicfundraisingexperience"><code>publicFundraisingExperience</code></a> and <a href="#publiceventregistration"><code>publicEventRegistration</code></a> still carry private copies of this map that have already drifted apart from each other on Serif/Modern/System. They should be migrated onto this module — that migration changes how those two pages render three picklist values, so it is a deliberate change, not a refactor to slip into an unrelated PR.</p>
 <p>Token in, CSS font-family stack out. Anything unrecognised — blank, 'Inherit', a value an older package version wrote, or an outright injection attempt — returns <code>fallback</code>, so the caller always has a safe string and never has to test the result.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uimarkdown">Markdown Renderer<a class="headerlink" href="#uimarkdown" title="Permanent link">#</a></h4>
 <p><code>uiMarkdown</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Renders a Markdown story as headings, emphasis, links, lists, pull quotes, rules, images and video, using only escaped text bindings. Shared by the public campaign page and the authoring console's live preview so the two can never diverge.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5136,9 +5590,15 @@
 <p>Facade unless the org opted in AND created its own CSP Trusted Site. Resolved server-side and handed down, so this component never reads Settings. The setter is a strict allowlist rather than a truthiness check, so any unexpected value lands on the facade — the side that loads nothing from YouTube until a donor clicks.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>inlineVideoEnabled</code>, <code>value</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uimarkdowneditor">Markdown Editor<a class="headerlink" href="#uimarkdowneditor" title="Permanent link">#</a></h4>
 <p><code>uiMarkdownEditor</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Story authoring surface for the internal console: a textarea with a caret-aware formatting toolbar, inline prompts for links, images and video, a byte counter against the field limit, and a live preview using the same renderer as the public page.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5157,9 +5617,15 @@
 <p>Blank lines inside a multi-line selection are skipped: a lone <code>-</code> renders as an empty bullet and a lone <code>&gt;</code> as an empty quote line, neither of which the author asked for. A single line is always prefixed even when empty — that is the "start a list here" case.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>inlineVideoEnabled</code>, <code>label</code>, <code>maxBytes</code>, <code>reportValidity</code>, <code>value</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uimarkdownparser">Markdown Parser<a class="headerlink" href="#uimarkdownparser" title="Permanent link">#</a></h4>
 <p><code>uiMarkdownParser</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Shared service module: turns a campaign story's Markdown into a plain token array, validating every link, image and video destination it emits. The public renderer and the authoring console's preview both parse through it, so the two cannot diverge.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5168,26 +5634,44 @@
 <p>Reference-link syntax (<code>[label]: dest</code>, <code>[text][label]</code>, <code>[text][]</code>, bare <code>[label]</code>, and their <code>![...]</code> image forms) is DELIBERATELY never resolved anywhere in this file. The Apex sanitizer's own neutralization step can emit a bare <code>[x]</code> when it defuses a hostile nested construct (see CampaignService.cls's normalizeStoryMarkup header) — if this parser resolved shortcut references, that defused text would turn back into a live link on every neutralized input, not just crafted ones. INLINE_LINK only matches when <code>[...]</code> is immediately followed by <code>(...)</code>, so every reference-link shape simply falls through to literal text. Do not add reference-link resolution here.</p>
 <p>Also assume attribute-bearing HTML tag text reaches this file unstripped. CampaignService's sanitizer has parked, known gaps (<code>&lt;img src="x"onerror=alert(1)&gt;</code>, <code>&lt;svg onload = alert(1)&gt;</code> — see task-5-review.md P-1/P-2) that survive every round of the Apex scanner rewrite. This file has no <code>&lt;...&gt;</code> handling at all — every <code>&lt;</code> is a literal character, always — so that is what actually stops those two shapes from becoming a live tag, not the Apex strip.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uimodal">Ember Modal<a class="headerlink" href="#uimodal" title="Permanent link">#</a></h4>
 <p><code>uiModal</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Reusable Ember-branded modal shell (header, body, footer, progress) used by the Settings dialogs.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Composed (as &lt;c-ui-modal&gt;) by the Settings console panels for their add/edit dialogs (e.g. <a href="#setpayments"><code>setPayments</code></a>' account editor, <a href="#setrecordtypes"><code>setRecordTypes</code></a>' override editor) and by <a href="#admeventticketstab"><code>admEventTicketsTab</code></a>'s ticket-type add/edit modal — the one modal chrome shared across the internal console, kept deliberately separate from the guest-facing Stripe payment iframe (which is never a modal — it is a stable sibling element, see <a href="#dfform"><code>dfForm</code></a>'s doc note on why it must not remount).</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>flush</code>, <code>progress</code>, <code>size</code>, <code>subtitle</code>, <code>title</code>, <code>variant</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uimoney">Money Formatting Utility<a class="headerlink" href="#uimoney" title="Permanent link">#</a></h4>
 <p><code>uiMoney</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed JS-only utility module (no markup) providing shared currency-aware money formatting and the org's configured charge currency for every donation surface.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The currency half of this module (formatMoney/currencyOf) is imported by most money-displaying bundles — <a href="#dfdesignationpicker"><code>dfDesignationPicker</code></a>, <a href="#pfhero"><code>pfHero</code></a>, <a href="#publicthankyou"><code>publicThankYou</code></a>, <a href="#publicdonordashboard"><code>publicDonorDashboard</code></a>, the lex* record-page cards, <a href="#admeventticketstab"><code>admEventTicketsTab</code></a>, <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> — each pairing it with its own @wire(getUiConfig) per the LWC1503 static-analysis constraint documented above (the wire adapter itself can't be re-exported through a shared module). Notably NOT imported by <a href="#dfform"><code>dfForm</code></a>, <a href="#publiceventregistration"><code>publicEventRegistration</code></a>, <a href="#publiccampaigngallery"><code>publicCampaignGallery</code></a>, <a href="#lexgivingstatement"><code>lexGivingStatement</code></a>, <a href="#uistatementprint"><code>uiStatementPrint</code></a> or <a href="#lexdonationmonitor"><code>lexDonationMonitor</code></a>: those six build their own Intl.NumberFormat inline and so do not get the RangeError guard below, which exists because Intl throws on an unrecognised Default_Currency__c. Folding them in is worth doing; until then, do not describe this module as universal.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uipagetheme">Page Theme (shared)<a class="headerlink" href="#uipagetheme" title="Permanent link">#</a></h4>
 <p><code>uiPageTheme</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Shared service module: maps an org-default design record onto the --pf-* custom properties the public pages read, and writes them onto the caller's host element. Holds the hex and font-token gates that stop design data reaching CSS raw.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5203,9 +5687,15 @@
 <p>Two values are DERIVED rather than read, because the slice has no field for them: the button hover shade and the soft surface tint. Both are built with color-mix from values that have already passed safeColor, so nothing unvalidated enters the string.</p>
 <p>Call once the theme payload has landed. Safe to call again — every property is overwritten, none accumulate — and safe to call with null, which leaves the page on its own fallbacks.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uiqrcode">QR Code<a class="headerlink" href="#uiqrcode" title="Permanent link">#</a></h4>
 <p><code>uiQrCode</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Shared primitive that renders a QR symbol as inline SVG with no external library or network request. Used by the public tickets sheet so each seat carries a code the check-in desk can scan, on screen or on paper. Byte mode, ECC level M, versions 1-3.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5214,9 +5704,15 @@
 <p>Correctness was established by decode round-trip, not by eyeballing: every payload was encoded under all eight masks, rasterised, and read back with an independent decoder.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>alternativeText</code>, <code>value</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uisectionbleed">Section Bleed Utility<a class="headerlink" href="#uisectionbleed" title="Permanent link">#</a></h4>
 <p><code>uiSectionBleed</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed JS-only utility module (no markup) that clears the Experience Builder section padding wrapping a full-page guest component, so pages built to reach the browser edge are not framed by a gutter and their full-bleed regions are not clipped.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5228,29 +5724,49 @@
 <p>One pass. Exported for a caller that wants to re-apply on a specific event of its own (a route change, a payload swap) rather than only on the timer below.</p>
 <p>Call from connectedCallback and keep the returned function; call it from disconnectedCallback. Not optional — an interval that outlives its component keeps a reference to it alive and goes on writing styles onto a section the component has left.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uisegmented">Ember Segmented Control<a class="headerlink" href="#uisegmented" title="Permanent link">#</a></h4>
 <p><code>uiSegmented</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Reusable Ember-branded segmented control replacing lightning-radio-group type="button", whose selected-option color is a hardcoded SLDS blue.</p>
 <p><strong><code>@api</code> properties:</strong> <code>label</code>, <code>options</code>, <code>value</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uistatementprint">Giving Statement Print Utility<a class="headerlink" href="#uistatementprint" title="Permanent link">#</a></h4>
 <p><code>uiStatementPrint</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Non-exposed JS-only utility module (no markup) that builds and prints the annual giving statement document. Shared by the staff record action and the donor-portal download so both produce a byte-identical tax document.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Shared print builder for the annual giving statement. Both the staff record action (<a href="#lexgivingstatement"><code>lexGivingStatement</code></a>) and the donor-portal block (<a href="#pfgivingstatement"><code>pfGivingStatement</code></a>) print the SAME document from this one module — a donor comparing the copy they downloaded against the one a fundraiser printed for them must not find two differently-worded tax documents.</p>
 <p>Every node is built with createElement/textContent, never innerHTML or document.write: donor names, campaign names, and admin-configured legal text all land in this document, and none of them may be interpreted as markup.</p>
 </div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="uitoggle">Ember Toggle<a class="headerlink" href="#uitoggle" title="Permanent link">#</a></h4>
 <p><code>uiToggle</code></p>
 <p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
 <p>Reusable Ember-branded switch replacing lightning-input type="toggle".</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Composed (as &lt;c-ui-toggle&gt;) across the Settings console panels (e.g. <a href="#setorganization"><code>setOrganization</code></a>'s NPSP sync switches, <a href="#setsite"><code>setSite</code></a>'s embed-enabled toggle) and <a href="#admeventticketstab"><code>admEventTicketsTab</code></a>'s active-ticket switch — anywhere a boolean setting needs on-brand styling that lightning-input's toggle variant can't provide (see the class-doc note on the hardcoded SLDS blue it replaces).</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>activeText</code>, <code>checked</code>, <code>disabled</code>, <code>inactiveText</code>, <code>label</code></p>
+</div>
+</div>
 
 
 

@@ -1353,7 +1353,153 @@ body,
   padding-top: 0.9rem;
   border-top: 1px solid var(--fn-line-soft);
 }
-.md-typeset h3 + h4 { border-top: none; padding-top: 0; margin-top: 0.9rem; }
+
+/* ==========================================================================
+   Reference entry — the identity gutter
+   --------------------------------------------------------------------------
+   A generated entry says two different kinds of thing. One is what the symbol
+   IS: its name, class or interface, what it extends, which file holds it. The
+   other is what it DOES: the prose, the doc note, the method table. Stacked in
+   one column those read as a single undifferentiated run, and a reader
+   scanning for a name has to read paragraphs to find the next one.
+
+   Splitting them puts every identity at the same left edge, one under another,
+   so the page can be scanned down that edge alone — and the body keeps its
+   reading measure instead of stretching to whatever width the viewport is.
+   The identity column is sticky, so a long entry's prose scrolls past while
+   the name it belongs to stays on screen; that is the whole reason the split
+   is worth its width.
+
+   Identifiers are set in mono here on purpose. Black-and-mono is what a
+   generator produced from source; the body's serif-and-prose is what a person
+   wrote. The page is easier to trust when the two are told apart on sight.
+   ========================================================================== */
+.md-typeset .fn-entry {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  gap: 0 2rem;
+  margin-top: 1.9rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--fn-line-soft);
+}
+/* The first entry under a layer/group heading opens the section — a rule
+   directly under the heading would read as an underline for it. */
+.md-typeset h3 + .fn-entry,
+.md-typeset h2 + .fn-entry {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0.9rem;
+}
+
+.md-typeset .fn-entry__id {
+  position: sticky;
+  top: calc(var(--fn-masthead) + 1.1rem);
+  align-self: start;
+  min-width: 0;
+}
+/* The h4 is inside the grid now, so the standalone-heading treatment above
+   (its own rule, its own top margin) would draw a second line beside the
+   entry's. The heading here is a label on a column, not a divider. */
+.md-typeset .fn-entry__id h4 {
+  /* A deep link lands on this h4, but what has to clear the masthead is the
+     ENTRY — its rule, its top padding, and the first line of prose beside the
+     heading. The page-wide `h4 { scroll-margin-top }` measures only to the
+     heading, and a sticky target lands lower still than it computes, so both
+     together left the entry's first body line hidden under the header. This
+     value is measured from the entry's top edge, not the heading's. */
+  scroll-margin-top: calc(var(--fn-masthead) + 3rem);
+  border-top: none;
+  padding-top: 0;
+  margin: 0 0 0.5rem;
+  font-family: var(--fn-font-mono);
+  font-weight: 500;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+.md-typeset .fn-entry__id > p {
+  margin: 0 0 0.35rem;
+  max-width: none;
+  font-family: var(--fn-font-mono);
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: var(--fn-ink-faint);
+  overflow-wrap: anywhere;
+}
+/* Every value in this column is already monospaced by the column itself, so
+   Material's inline-code chrome only chops a short line into tinted boxes. */
+.md-typeset .fn-entry__id code {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  font-size: 1em;
+  color: var(--fn-ink-soft);
+}
+.md-typeset .fn-entry__id a {
+  color: var(--fn-ink-soft);
+  border-bottom: 1px solid var(--fn-line);
+}
+.md-typeset .fn-entry__id a:hover { color: var(--fn-accent-ink); }
+/* Source path last, and dimmer: it answers "where do I edit this", which is
+   the question a reader asks after the ones above it. */
+.md-typeset .fn-entry__src {
+  margin-top: 0.75rem !important;
+  margin-bottom: 0 !important;
+}
+
+/* The measure and leading are set globally on `.md-typeset > p` — direct
+   children only, so prose inside a table cell or a card is left alone. That
+   exclusion now catches this body too, and without re-asserting them here an
+   entry's prose would run the full column at Material's default leading:
+   exactly the wall this split exists to prevent. */
+.md-typeset .fn-entry__body > p,
+.md-typeset .fn-entry__body > ul,
+.md-typeset .fn-entry__body > ol,
+.md-typeset .fn-entry__body > blockquote,
+.md-typeset .fn-entry__body > dl {
+  max-width: var(--fn-measure);
+}
+.md-typeset .fn-entry__body > p,
+.md-typeset .fn-entry__body > ul,
+.md-typeset .fn-entry__body > ol {
+  line-height: var(--fn-prose-leading);
+  margin-top: 0;
+  margin-bottom: 1.05em;
+}
+.md-typeset .fn-entry__body > p code,
+.md-typeset .fn-entry__body > ul code,
+.md-typeset .fn-entry__body > ol code {
+  font-size: 0.84em;
+  background: var(--fn-paper-dim);
+  border: 1px solid var(--fn-line-soft);
+  padding: 0.1em 0.34em;
+  color: var(--fn-ink);
+}
+/* Apparatus keeps the body column's full width and scrolls inside it rather
+   than pushing the grid wider — the identity column's width is fixed, so an
+   overflowing table would otherwise crush it. */
+.md-typeset .fn-entry__body > table:not([class]),
+.md-typeset .fn-entry__body > .highlight {
+  max-width: 100%;
+}
+.md-typeset .fn-entry__body > :last-child { margin-bottom: 0; }
+
+/* Below the theme's tablet breakpoint the content column is too narrow to give
+   a fixed column away, so the identity stacks above the body and stops
+   sticking — a sticky element in a single-column flow just covers the text
+   under it. */
+@media screen and (max-width: 59.9375em) {
+  .md-typeset .fn-entry {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .md-typeset .fn-entry__id {
+    position: static;
+    margin-bottom: 0.9rem;
+  }
+}
 
 /* Wide apparatus. Tables and code blocks are plates, not prose — they keep the
    full column so a method signature or a long SOQL line does not wrap. */
@@ -1511,6 +1657,7 @@ body::after {
   .md-typeset h2,
   .md-typeset h4,
   .md-typeset > table:not([class]),
+  .md-typeset .fn-entry__body > table:not([class]),
   .md-typeset .grid.cards > ul > li {
     animation: fn-rise linear both;
     animation-timeline: view();
@@ -1580,6 +1727,7 @@ body::after {
 
 /* An identifier in prose is a destination — say so before it is clicked. */
 .md-typeset > p a code,
+.md-typeset .fn-entry__body > p a code,
 .md-typeset .fn-docnote a code {
   transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
@@ -1612,6 +1760,7 @@ body::after {
     .md-typeset h4,
     .md-typeset .fn-docnote,
     .md-typeset > table:not([class]),
+    .md-typeset .fn-entry__body > table:not([class]),
     .md-typeset .grid.cards > ul > li { animation: none; }
     .md-typeset .fn-docnote {
       border-left-color: var(--fn-accent-soft-line);

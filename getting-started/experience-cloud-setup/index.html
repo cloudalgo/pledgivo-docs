@@ -105,7 +105,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-20</span>
+          <span class="fn-brand__ver">1.0.0-22</span>
         
       </a>
 
@@ -2169,6 +2169,24 @@ same step, machine-checks it against your org, and links you straight to the Set
    <strong>Experience Builder → Settings → URL &amp; Access</strong>.</li>
 <li>Click <strong>Create</strong>. Site creation runs as a background job and can take several minutes.</li>
 </ol>
+<div class="admonition warning">
+<p class="admonition-title">All Sites renders an empty pane</p>
+<p>On some orgs the <strong>All Sites</strong> screen loads its shell — breadcrumb, heading — and then
+shows nothing at all: no site table, no <strong>New</strong> button. A hard reload does not fix it. It
+is the same blank-shell behaviour the Lightning <strong>Permission Sets</strong> page sometimes shows,
+and it has nothing to do with this package; it simply blocks the documented path.</p>
+<p>Create the site from the CLI instead — it produces exactly the same site:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sf<span class="w"> </span>community<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;Giving&quot;</span><span class="w"> </span>--template-name<span class="w"> </span><span class="s2">&quot;Build Your Own (LWR)&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>--url-path-prefix<span class="w"> </span>giving<span class="w"> </span>--target-org<span class="w"> </span>&lt;your-org-alias&gt;
+</code></pre></div>
+<p>Creation is asynchronous either way. Confirm it landed with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sf<span class="w"> </span>data<span class="w"> </span>query<span class="w"> </span>--query<span class="w"> </span><span class="s2">&quot;SELECT Name, Status, UrlPathPrefix FROM Network&quot;</span><span class="w"> </span>--target-org<span class="w"> </span>&lt;your-org-alias&gt;
+</code></pre></div>
+<p><strong>Read the prefix back rather than assuming it.</strong> Salesforce may return something other
+than what you asked for — <code>giving</code> came back as <code>givingvforcesite</code> on a first-ever site in
+a completely clean org, not only when the prefix was already taken. Never hardcode the
+prefix anywhere; take it from that query.</p>
+</div>
 <h2 id="3-build-the-donate-page">3. Build the Donate page<a class="headerlink" href="#3-build-the-donate-page" title="Permanent link">#</a></h2>
 <p>Campaigns, fundraiser pages, team pages, and event registration all share <strong>one</strong> page and
 <strong>one</strong> component — <code>Public Fundraising Experience</code>. It reads the campaign's record type,

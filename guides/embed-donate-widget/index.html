@@ -2216,10 +2216,12 @@ instead. Switching <strong>Show Progress Bar</strong> off on the campaign's Page
 <p>One rule, three surfaces: whatever that rule decides applies identically to the hero banner
 on the hosted page, the donation form's own progress readout, and the embedded card. If you
 see a bar in one place you will see it in all of them.</p>
-<p>The heading on the card is the campaign's <strong>form title</strong> (default: "Make your gift"), not
-the campaign's name — the same heading that sits above the amount picker on the hosted
-page. Set a campaign-specific one in <strong>Form Title Override</strong> on the campaign if the embed
-needs to identify the appeal on its own.</p>
+<p>The heading on the Card and Form embeds is the <strong>campaign's name</strong>. An embed sits on someone
+else's page, where nothing else says which appeal the visitor is giving to — so the widget
+names it. Set <strong>Form Title Override</strong> on the campaign to say something else instead; an
+override always wins over the name.</p>
+<p>The hosted donation page is deliberately different: it keeps the <strong>form title</strong> (default
+"Make your gift"), because the campaign's name is already on the page around the form.</p>
 </div>
 <p>Click <strong>Copy code</strong> — it copies a small HTML snippet (a <code>&lt;script&gt;</code> tag plus a widget element).</p>
 <h2 id="2-place-it-on-the-external-site">2. Place it on the external site<a class="headerlink" href="#2-place-it-on-the-external-site" title="Permanent link">#</a></h2>
@@ -2239,9 +2241,11 @@ the fixture used to prove the binding end to end during the fresh-install audit.
 page. They are not styled by that site: the campaign's <b>Marigold</b> page design crossed the
 origin boundary intact, so the ochre, the cream and the square corners are the campaign's own
 tokens, applied on someone else's website with no CSS to copy. The Button's label is
-<i>Give today</i>, set from <code>data-label</code> in the snippet. Note what the Card and Form
-headings actually say — <i>Make your gift</i>, the org default, not the campaign name (see the
-note above about <b>Form Title Override</b>). No progress bar renders in this capture: it
+<i>Give today</i>, set from <code>data-label</code> in the snippet. Two things in this capture
+are older than the current widget. The Card and Form headings read <i>Make your gift</i> — the
+org default; since 2026-08-18 an embed leads with the campaign's name unless a <b>Form Title
+Override</b> is set, so the same page today reads <i>Give Now 2026</i>. And no
+progress bar renders: it
 predates the 2026-08-18 change that brought Open Donation campaigns into the progress-bar rule,
 and this campaign is an Open Donation appeal with a $100,000 goal — the same widget today draws
 the raised-of-goal bar the hosted page draws. <b>2</b> — what happens after a visitor types into the Form-mode

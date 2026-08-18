@@ -238,6 +238,71 @@ body,
   max-width: 58ch;
 }
 
+/* ---- The plate: the eyebrow / title / dek / meta run that opens a page ----
+
+   These four elements are one masthead, not four stray paragraphs, and they
+   read as one only if something closes them off from the body that follows.
+   A hairline at the reading measure does that: it gives the title block a
+   bottom edge, so the first h2 starts a section rather than continuing the
+   introduction.
+
+   The rule belongs to whichever of them comes last, which varies by page: a
+   narrative page ends at the dek, a generated reference page adds a meta
+   strip. Rather than tag the last one in every source file (and re-tag it
+   whenever a page gains a strip), each claims the rule and gives it up when
+   the other follows it. Browsers without :has() draw one extra hairline
+   inside the plate — visible, harmless, and not worth a class per page.
+
+   `.fn-status-strip` is deliberately absent: it reads like a plate element
+   but every page that has one puts it mid-document, so giving it the plate's
+   closing rule would draw a hairline across the middle of three pages. */
+.md-content__inner > .fn-dek,
+.md-content__inner > .fn-platemeta {
+  padding-bottom: 1.6rem;
+  margin-bottom: 2.4rem;
+  border-bottom: 1px solid var(--fn-line);
+}
+.md-content__inner > .fn-dek:has(+ .fn-platemeta) {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+/* Provenance line for a generated page — what produced it and how much of it
+   there is. Deliberately no "last built" date: it would rewrite itself on
+   every regeneration and put a diff in the repo for a page whose content did
+   not change. Everything here is a fact the generator already knows. */
+.md-content__inner > .fn-platemeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 2.2rem;
+  margin-top: 1.7rem;
+  font-family: var(--fn-font-mono);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  color: var(--fn-ink-faint);
+}
+.fn-platemeta > span { white-space: nowrap; }
+.fn-platemeta b {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fn-ink-faint);
+  margin-right: 0.55rem;
+}
+/* The values are paths, filenames and counts — monospaced already by the strip
+   itself, so Material's inline-code chrome (tinted box, border, padding) only
+   fragments a line that reads better as one run of type. */
+.md-typeset .fn-platemeta code {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  font-size: 1em;
+  color: var(--fn-ink);
+}
+
 /* status chip strip */
 .fn-status-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.6rem; }
 .fn-chip {
@@ -1482,13 +1547,15 @@ body::after {
 .md-content__inner > .fn-eyebrow,
 .md-content__inner > h1,
 .md-content__inner > .fn-dek,
-.md-content__inner > .fn-status-strip {
+.md-content__inner > .fn-status-strip,
+.md-content__inner > .fn-platemeta {
   animation: fn-enter 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
-.md-content__inner > .fn-eyebrow     { animation-delay: 0.02s; }
-.md-content__inner > h1              { animation-delay: 0.09s; }
-.md-content__inner > .fn-dek         { animation-delay: 0.17s; }
+.md-content__inner > .fn-eyebrow      { animation-delay: 0.02s; }
+.md-content__inner > h1               { animation-delay: 0.09s; }
+.md-content__inner > .fn-dek          { animation-delay: 0.17s; }
 .md-content__inner > .fn-status-strip { animation-delay: 0.25s; }
+.md-content__inner > .fn-platemeta    { animation-delay: 0.25s; }
 
 @keyframes fn-enter {
   from { opacity: 0; transform: translateY(10px); filter: blur(3px); }

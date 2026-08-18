@@ -119,6 +119,13 @@
     big.addEventListener('click', toggle);
     playBtn.addEventListener('click', toggle);
     video.addEventListener('click', toggle);
+    // doc: `is-fresh` marks a player that has never been played. Until then the
+    // control bar stays out of the poster frame (see field-notes.css) — the
+    // poster is a designed still, and a paused player is otherwise
+    // indistinguishable from a never-started one, so without this flag the bar
+    // sits at full opacity over every frame the reader has not asked to see.
+    root.classList.add('is-fresh');
+    video.addEventListener('play', function () { root.classList.remove('is-fresh'); });
     video.addEventListener('play', setPlayIcon);
     video.addEventListener('pause', setPlayIcon);
     video.addEventListener('ended', setPlayIcon);

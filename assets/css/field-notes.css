@@ -453,8 +453,9 @@ body,
 .md-typeset table:not([class]) code { color: var(--fn-accent-ink); }
 
 /* ---------- Footer ---------- */
-.md-footer-meta { background: var(--fn-ink); }
-.md-footer { background: var(--fn-ink); }
+/* The footer is rebuilt in overrides/partials/footer.html and styled in the
+   band below; Material's own dark ground is not used. */
+.md-footer { background: transparent; }
 
 /* ---------- Prototype/version note ---------- */
 .md-typeset .fn-figure {
@@ -638,8 +639,8 @@ body,
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(88px 88px at 50% 50%,
-    rgba(6, 10, 20, 0.34), rgba(6, 10, 20, 0.12) 62%, transparent 80%);
+  background: radial-gradient(74px 74px at 50% 50%,
+    rgba(6, 10, 20, 0.2), rgba(6, 10, 20, 0.06) 62%, transparent 78%);
   transition: opacity 0.35s ease;
 }
 .md-typeset .fn-vp.is-playing::before { opacity: 0; }
@@ -701,9 +702,14 @@ body,
   right: 0;
   bottom: 0;
   z-index: 3;
-  padding: 2.6rem 0.8rem 0.55rem;
+  padding: 1.5rem 0.8rem 0.55rem;
+  /* Short and soft on purpose. A tall, near-opaque scrim is the safe choice for
+     dark footage and the wrong one here: the overview film is cream throughout,
+     so the original 2.6rem ramp to rgba(0,0,0,.86) read as a grey smudge across
+     the bottom fifth of the frame rather than as a control bar. This is the
+     least ink that still keeps white glyphs legible over a pale frame. */
   background: linear-gradient(to top,
-    rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.5) 45%, transparent 100%);
+    rgba(0, 0, 0, 0.74) 0%, rgba(0, 0, 0, 0.36) 55%, transparent 100%);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 0.22s ease, transform 0.22s ease;
@@ -714,6 +720,16 @@ body,
 .md-typeset .fn-vp:focus-within .fn-vp__bar { opacity: 1; transform: none; pointer-events: auto; }
 /* Quiet playback with no pointer: the bar retreats, unless focus is inside it. */
 .md-typeset .fn-vp.is-idle:not(:focus-within) .fn-vp__bar { opacity: 0; pointer-events: none; }
+/* A player that has never been played shows its poster and nothing else. The
+   `is-paused` rule above cannot tell "stopped mid-film" from "not yet started",
+   and the second is the state every reader meets first — the poster is a
+   designed still, and the big play disc is already the affordance. Hovering or
+   tabbing in still brings the bar up, so nothing is hidden from someone
+   reaching for it. */
+.md-typeset .fn-vp.is-fresh:not(:hover):not(:focus-within) .fn-vp__bar {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .md-typeset .fn-vp__track {
   position: relative;
@@ -2035,52 +2051,160 @@ body::after {
 }
 
 /* ==========================================================================
-   CloudAlgo attribution band (overrides/main.html)
+   Footer band (overrides/partials/footer.html)
    --------------------------------------------------------------------------
-   Sits below Material's footer meta bar and continues it rather than starting
-   a new colour: the logo is CloudAlgo's own white-on-dark lockup, served from
-   this site, so the band needs the dark ground to read at all.
+   One ending per page, on paper. Material's stock footer is a black slab
+   carrying page nav, a copyright and a "Made with Material for MkDocs" line,
+   and the CloudAlgo attribution used to sit below it as a second dark strip —
+   so every page finished twice, in a colour the rest of the site never uses.
+   This is the replacement: page nav, the help offer, attribution, all in the
+   page's own paper and ink, separated by rules rather than by colour.
    ========================================================================== */
-.fn-madeby {
-  background: var(--fn-ink);
-  color: #cfd3da;
-  border-top: 1px solid rgba(255, 255, 255, 0.09);
+.fn-foot {
+  background: var(--fn-paper-dim);
+  border-top: 1px solid var(--fn-line);
 }
-.fn-madeby__inner {
+.fn-foot__inner { padding: 2.1rem 0.8rem 2.4rem; }
+
+/* ---- previous / next ---- */
+/* Two cards on one row, each naming its direction in mono and its destination
+   in the display face — the same pairing the section headings use, so the
+   footer reads as part of the document rather than as theme furniture. */
+.fn-foot__nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1.8rem;
+}
+.fn-foot__page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.85rem 1rem;
+  background: var(--fn-panel);
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  color: var(--fn-ink);
+  text-decoration: none;
+  transition: border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+}
+.fn-foot__page:hover {
+  border-color: var(--fn-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -12px rgba(11, 11, 11, 0.5);
+}
+/* The next page is the one a reader following the docs in order wants, so it
+   is the one that reads as the action: right-aligned, so the pair points
+   forward across the row. */
+.fn-foot__page--next { text-align: right; }
+.fn-foot__page--empty { border: none; background: none; }
+.fn-foot__dir {
+  font-family: var(--fn-font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fn-accent);
+}
+.fn-foot__pagetitle {
+  font-family: var(--fn-font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ---- the help offer ---- */
+/* Not navigation, and deliberately not styled as another card: a reader who
+   has reached the bottom of an install or customisation page and still has a
+   question needs a person, and this is where that becomes obvious. */
+.fn-foot__help {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.9rem 1.6rem;
-  padding: 1.15rem 0.8rem 1.35rem;
+  gap: 1rem 1.6rem;
+  padding: 1.15rem 1.25rem;
+  background: var(--fn-panel);
+  border: 1px solid var(--fn-line);
+  border-left: 3px solid var(--fn-accent);
+  border-radius: var(--fn-radius);
 }
-.fn-madeby__lockup {
+.fn-foot__helptitle {
+  margin: 0 0 0.2rem;
+  font-family: var(--fn-font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fn-ink);
+}
+.fn-foot__helpnote {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--fn-ink-soft);
+  max-width: 58ch;
+}
+.fn-foot__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: none;
+  padding: 0.55rem 1.05rem;
+  background: var(--fn-accent);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: background 0.16s ease, transform 0.16s ease;
+}
+.fn-foot__cta:hover { background: var(--fn-accent-ink); transform: translateY(-1px); color: #fff; }
+.fn-foot__cta svg { display: block; }
+
+/* ---- attribution ---- */
+.fn-foot__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem 1.6rem;
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--fn-line);
+}
+.fn-foot__lockup {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.8rem;
   text-decoration: none;
-  opacity: 0.9;
+  opacity: 0.85;
   transition: opacity 0.16s ease;
 }
-.fn-madeby__lockup:hover { opacity: 1; }
-.fn-madeby__lead {
+.fn-foot__lockup:hover { opacity: 1; }
+.fn-foot__lead {
   font-family: var(--fn-font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.13em;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #9aa0aa;
+  color: var(--fn-ink-faint);
 }
-.fn-madeby__logo { height: 1.35rem; width: auto; display: block; }
-.fn-madeby__note {
+/* CloudAlgo's dark lockup, because the band is paper now — the white cut of
+   the same logo was only ever needed by the dark strip this replaces. */
+.fn-foot__logo { height: 1.3rem; width: auto; display: block; }
+.fn-foot__copy {
   margin: 0;
   font-size: 0.7rem;
-  color: #9aa0aa;
+  color: var(--fn-ink-faint);
 }
-.fn-madeby__note a { color: #e6e8ec; border-bottom: 1px solid rgba(255, 255, 255, 0.28); }
-.fn-madeby__note a:hover { color: #fff; border-bottom-color: currentColor; }
+.fn-foot__copy a { color: var(--fn-ink-soft); border-bottom: 1px solid var(--fn-line); }
+.fn-foot__copy a:hover { color: var(--fn-accent); border-bottom-color: currentColor; }
 
 @media screen and (max-width: 44.9375em) {
-  .fn-madeby__inner { flex-direction: column; align-items: flex-start; }
+  .fn-foot__nav { grid-template-columns: 1fr; }
+  .fn-foot__page--next { text-align: left; }
+  .fn-foot__page--empty { display: none; }
+  .fn-foot__help { flex-direction: column; align-items: flex-start; }
+  .fn-foot__meta { flex-direction: column; align-items: flex-start; }
 }
 
 

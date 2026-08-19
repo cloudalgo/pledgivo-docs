@@ -2090,6 +2090,182 @@
 
 </div>
 
+<!-- doc: The hero flame. Every silhouette in it — including the wisps that
+     shed off the tip — is the product mark's own flame glyph (`#fnfl-glyph`),
+     scaled x6.25 from the 32-unit brand viewBox to 200 units and stretched
+     vertically out of logo proportions into flame proportions. Nothing here is
+     a redrawn or hand-traced flame shape, which is what keeps it legible as
+     the logo rather than as generic fire clip-art.
+
+     It is an inline SVG rather than a GIF/video because it has to sit on paper
+     at #efefec with no box around it and follow the reader's reduced-motion
+     setting; the whole thing is about 6KB and costs no request. The rules are
+     in the "Home / hero flame" block of assets/css/field-notes.css.
+
+     Two things are load-bearing and easy to break. Every filter declares
+     color-interpolation-filters="sRGB" — the SVG default is linearRGB, which
+     desaturates warm colour hard and turns the whole flame into orange fog on
+     a light background. And each filter runs turbulence, then displacement,
+     then blur, in that order, so the blur softens the jagged edge the
+     displacement produces rather than being erased by it.
+
+     aria-hidden because it carries no meaning a screen reader would want; the
+     headline beside it is the content. -->
+<div class="fn-hero-flame" aria-hidden="true">
+  <span class="fn-hero-flame__spill"></span>
+  <svg class="fn-hero-flame__fire" viewBox="0 0 200 300" role="presentation" focusable="false">
+    <defs>
+      <path id="fnfl-glyph" d="M100 168.75c34.375 0 56.25-22.5 56.25-52.5 0-21.25-12.5-35.625-22.5-48.125C121.25 51.875 106.25 37.5 100 18.75c-6.25 18.75-21.25 33.125-33.75 49.375C56.25 80.625 43.75 95 43.75 116.25c0 30 21.875 52.5 56.25 52.5Z"/>
+
+      <!-- Gradients are left in the default objectBoundingBox units so each
+           nested layer is hot at ITS OWN top rather than sampling one shared
+           vertical ramp — in userSpaceOnUse the small inner layers sit
+           entirely inside the dark base stop and the core goes out. -->
+      <linearGradient id="fnfl-body" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#8f1f10" stop-opacity=".88"/>
+        <stop offset=".10" stop-color="#c1301c"/>
+        <stop offset=".34" stop-color="#e0533d"/>
+        <stop offset=".62" stop-color="#f58a2e" stop-opacity=".82"/>
+        <stop offset=".86" stop-color="#f2b705" stop-opacity=".3"/>
+        <stop offset="1" stop-color="#f2b705" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="fnfl-mid" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#b62a15"/>
+        <stop offset=".22" stop-color="#e0533d"/>
+        <stop offset=".52" stop-color="#f58a2e"/>
+        <stop offset=".8" stop-color="#f2b705" stop-opacity=".72"/>
+        <stop offset="1" stop-color="#f2b705" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="fnfl-hot" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#e0533d"/>
+        <stop offset=".3" stop-color="#f58a2e"/>
+        <stop offset=".66" stop-color="#f2b705"/>
+        <stop offset=".92" stop-color="#ffe9a8" stop-opacity=".7"/>
+        <stop offset="1" stop-color="#fff6db" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="fnfl-core" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#f58a2e"/>
+        <stop offset=".35" stop-color="#f9c53a"/>
+        <stop offset=".72" stop-color="#fff0b8"/>
+        <stop offset="1" stop-color="#fffdf6" stop-opacity=".85"/>
+      </linearGradient>
+      <linearGradient id="fnfl-kernel" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#ffe9a8"/>
+        <stop offset=".6" stop-color="#fffdf6"/>
+        <stop offset="1" stop-color="#ffffff"/>
+      </linearGradient>
+      <!-- The rising tongues. Their gradient is transparent at both ends so a
+           tongue fades in as it leaves the base and out before the tip, which
+           is what makes it read as material moving through the flame rather
+           than as a fifth concentric layer. -->
+      <linearGradient id="fnfl-flow" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#f58a2e" stop-opacity="0"/>
+        <stop offset=".3" stop-color="#f9a83a"/>
+        <stop offset=".72" stop-color="#f2b705" stop-opacity=".8"/>
+        <stop offset="1" stop-color="#ffe9a8" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="fnfl-pool">
+        <stop offset="0" stop-color="#f2b705" stop-opacity=".55"/>
+        <stop offset=".45" stop-color="#e0533d" stop-opacity=".3"/>
+        <stop offset="1" stop-color="#e0533d" stop-opacity="0"/>
+      </radialGradient>
+
+      <!-- Five noise fields, deliberately NOT stepping at the same rate. In a
+           real flame big structures evolve slowly and small ones fast, so the
+           outer field re-seeds every 5.4s and the innermost every 1.5s. When
+           they all ran at one rate the whole surface boiled at a single pitch
+           and read as static, not as fire. Steps are discrete because easing
+           between seeds reads as drifting smoke. -->
+      <filter id="fnfl-fx1" x="-70%" y="-45%" width="240%" height="190%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.011 0.028" numOctaves="3" seed="4" result="n">
+          <animate attributeName="seed" dur="5.4s" calcMode="discrete" repeatCount="indefinite" values="4;13;7;21;2;16;9;25;5;18"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation="4"/>
+      </filter>
+      <filter id="fnfl-fx2" x="-60%" y="-40%" width="220%" height="180%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.014 0.036" numOctaves="3" seed="11" result="n">
+          <animate attributeName="seed" dur="4.1s" calcMode="discrete" repeatCount="indefinite" values="11;3;19;8;23;6;15;1;12;20"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation="2.4"/>
+      </filter>
+      <filter id="fnfl-fx3" x="-55%" y="-38%" width="210%" height="176%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.019 0.045" numOctaves="2" seed="6" result="n">
+          <animate attributeName="seed" dur="3.0s" calcMode="discrete" repeatCount="indefinite" values="6;17;2;14;9;22;4;10;26;7"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation="1.2"/>
+      </filter>
+      <filter id="fnfl-fx4" x="-50%" y="-35%" width="200%" height="170%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.026 0.058" numOctaves="2" seed="9" result="n">
+          <animate attributeName="seed" dur="2.1s" calcMode="discrete" repeatCount="indefinite" values="9;24;5;16;1;20;12;3;18;8"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="4.5" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation=".8"/>
+      </filter>
+      <filter id="fnfl-fx5" x="-45%" y="-32%" width="190%" height="164%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04 0.08" numOctaves="2" seed="2" result="n">
+          <animate attributeName="seed" dur="1.5s" calcMode="discrete" repeatCount="indefinite" values="2;15;7;21;10;4;19;13;6;23"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation=".6"/>
+      </filter>
+      <filter id="fnfl-fxwisp" x="-80%" y="-60%" width="260%" height="220%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.05 0.09" numOctaves="2" seed="13" result="n">
+          <animate attributeName="seed" dur="1.9s" calcMode="discrete" repeatCount="indefinite" values="13;5;22;9;17;3;11;25;7;19"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="6" xChannelSelector="R" yChannelSelector="G"/>
+        <feGaussianBlur stdDeviation="1.6"/>
+      </filter>
+      <filter id="fnfl-poolblur" x="-50%" y="-90%" width="200%" height="280%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="7"/></filter>
+    </defs>
+
+    <!-- The pool the flame stands in. Without it the base ends on a hard edge
+         and the whole thing reads as a sticker laid on the paper. -->
+    <ellipse cx="100" cy="281" rx="52" ry="11" fill="url(#fnfl-pool)" filter="url(#fnfl-poolblur)"/>
+
+    <!-- Each layer is nested three deep on purpose: the outer <g> carries the
+         static scale/offset as an SVG transform ATTRIBUTE, the inner one
+         carries the animation as a CSS transform PROPERTY. They cannot share
+         an element — the CSS property overrides the presentation attribute,
+         so a single <g> would silently drop the nesting the moment the
+         animation started. -->
+    <g class="fn-hero-flame__stack">
+      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx1)">
+        <g transform="translate(100 168.75) scale(1.1) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m1"><use href="#fnfl-glyph" fill="url(#fnfl-body)" opacity=".55"/></g></g>
+      </g>
+      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx2)">
+        <g transform="translate(100 168.75) scale(1) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m2"><use href="#fnfl-glyph" fill="url(#fnfl-body)"/></g></g>
+      </g>
+      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx3)">
+        <g transform="translate(103 168.75) scale(.85) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m3"><use href="#fnfl-glyph" fill="url(#fnfl-mid)"/></g></g>
+      </g>
+      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx3)">
+        <g transform="translate(97 168.75) scale(.42) translate(-100 -168.75)"><g class="fn-hero-flame__flow fnfl-n1"><use href="#fnfl-glyph" fill="url(#fnfl-flow)"/></g></g>
+        <g transform="translate(105 168.75) scale(.34) translate(-100 -168.75)"><g class="fn-hero-flame__flow fnfl-n2"><use href="#fnfl-glyph" fill="url(#fnfl-flow)"/></g></g>
+        <g transform="translate(99 168.75) scale(.28) translate(-100 -168.75)"><g class="fn-hero-flame__flow fnfl-n3"><use href="#fnfl-glyph" fill="url(#fnfl-flow)"/></g></g>
+        <g transform="translate(103 168.75) scale(.22) translate(-100 -168.75)"><g class="fn-hero-flame__flow fnfl-n4"><use href="#fnfl-glyph" fill="url(#fnfl-flow)"/></g></g>
+      </g>
+      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx4)">
+        <g transform="translate(96 168.75) scale(.68) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m4"><use href="#fnfl-glyph" fill="url(#fnfl-hot)"/></g></g>
+      </g>
+      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx5)">
+        <g transform="translate(102 168.75) scale(.5) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m5 fnfl-core"><use href="#fnfl-glyph" fill="url(#fnfl-core)"/></g></g>
+      </g>
+      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx5)">
+        <g transform="translate(98 168.75) scale(.3) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m6 fnfl-kernel"><use href="#fnfl-glyph" fill="url(#fnfl-kernel)"/></g></g>
+      </g>
+    </g>
+
+    <g class="fn-hero-flame__fx" filter="url(#fnfl-fxwisp)">
+      <g transform="translate(100 60) scale(.2) translate(-100 -168.75)"><g class="fn-hero-flame__wisp fnfl-w1"><use href="#fnfl-glyph" fill="#f2b705" opacity=".75"/></g></g>
+      <g transform="translate(112 74) scale(.15) translate(-100 -168.75)"><g class="fn-hero-flame__wisp fnfl-w2"><use href="#fnfl-glyph" fill="#f58a2e" opacity=".7"/></g></g>
+    </g>
+  </svg>
+  <span class="fn-hero-flame__embers"><i></i><i></i><i></i><i></i></span>
+</div>
+
 <p class="fn-eyebrow">Pledgivo</p>
 
 <h1 class="fn-home-h1" id="fundraising-that-never-leaves-salesforce">Fundraising that <em>never leaves</em> Salesforce.<a class="headerlink" href="#fundraising-that-never-leaves-salesforce" title="Permanent link">#</a></h1>

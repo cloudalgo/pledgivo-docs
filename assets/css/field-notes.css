@@ -2659,7 +2659,7 @@ body::after {
 .fn-sk--goal    { top: 64%; left: 4%;   width: 250px; animation: fn-drift-c 83s ease-in-out infinite; }
 .fn-sk--org     { top: 80%; right: 8%;  width: 270px; animation: fn-drift-a 102s ease-in-out infinite reverse; }
 .fn-sk--graph   { top: 44%; left: 46%;  width: 210px; animation: fn-drift-b 118s ease-in-out infinite; }
-.fn-sk--receipt { top: 12%; right: 22%; width: 180px; animation: fn-drift-c 67s ease-in-out infinite reverse; }
+.fn-sk--receipt { top: 30%; right: 30%; width: 180px; animation: fn-drift-c 67s ease-in-out infinite reverse; }
 
 @keyframes fn-drift-a {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(-3deg); }
@@ -3073,6 +3073,243 @@ body::after {
 }
 .md-typeset .fn-closer .fn-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 44px -18px rgba(0, 0, 0, 0.6); }
 
+/* ---------- Hero flame ---------- */
+
+/* The mark, alight, standing beside the headline. It is decoration, but it is
+   the page's only piece of colour beyond the one printer's red, so it is held
+   to the same rule as everything else here: it has to survive being on paper.
+   That constraint drove most of what follows — fire is emissive and this page
+   is #efefec, so every stock "realistic flame" recipe (additive blending,
+   screen/plus-lighter) bleaches straight to white. The flame is therefore
+   opaque, saturated, and built up from a char-red base rather than blended.
+
+   Absolutely positioned out of the flow so it cannot push the headline down
+   or change the hero's height; :has() scopes the containing block to this
+   page rather than making every .md-content__inner on the site positioned. */
+.md-content__inner:has(> .fn-hero-flame) { position: relative; }
+
+.fn-hero-flame {
+  position: absolute;
+  /* The negative top is safe — the top third of the viewBox is empty space the
+     wisps travel through, so nothing visible tucks under the masthead. */
+  top: -0.6rem;
+  right: 0;
+  width: clamp(165px, 17vw, 230px);
+  z-index: 0;
+  pointer-events: none;
+  /* Deformation amplitude and how far the glyph is pulled out of logo
+     proportions into flame proportions. This is the "Ember" setting from the
+     specimen sheet (docs/designs/2026-08-19-home-hero-flame.html) — the lowest
+     of the three, chosen so the flame reads as a lit mark beside the headline
+     rather than competing with it. Raising --amp is the one dial that makes it
+     more of a fire; nothing else needs to change with it. */
+  --fnfl-amp: 0.55;
+  --fnfl-stretch: 1.3;
+}
+.fn-hero-flame__fire {
+  display: block;
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 2;
+  /* The filter regions extend well past the viewBox; without this the blur and
+     displacement are clipped to a visible rectangle. */
+  overflow: visible;
+}
+
+/* Warm light thrown onto the paper. Narrow, low opacity, and normal blending:
+   a wide multiply halo turns grey on #efefec and reads as smoke or a smudge
+   rather than as light. */
+.fn-hero-flame__spill {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 135%;
+  aspect-ratio: 1;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(245, 138, 46, 0.28) 0%,
+    rgba(224, 83, 61, 0.12) 34%,
+    rgba(224, 83, 61, 0) 66%);
+  animation: fn-fl-breathe 9.7s ease-in-out infinite;
+}
+@keyframes fn-fl-breathe {
+  0%, 100% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.07); }
+}
+
+/* The glyph pulled from logo proportions into flame proportions. The origin
+   sits on the glyph's own base point so the base never moves under the
+   stretch, then one translate drops it onto the ember pool. */
+.fn-hero-flame__stack {
+  transform-box: view-box;
+  transform-origin: 100px 168.75px;
+  transform: translateY(111.25px) scaleY(var(--fnfl-stretch));
+}
+.fn-hero-flame__mv {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+/* Sway. Three things here are deliberate and each one was a fix for motion
+   that read as jelly rather than as fire:
+
+   1. The cycles are 20-34s and mutually prime, so the loop never becomes
+      visible. At the 1-3s durations this started life with, the eye locks
+      onto the repeat within seconds and the flame reads as a looping GIF.
+   2. linear, not ease-in-out. Eased motion is sinusoidal and the eye reads
+      sinusoidal as a pendulum; the irregular keyframe spacing below is what
+      supplies the variation instead.
+   3. skewX about a bottom origin, so the tip displaces far more than the
+      base — a flame is anchored to its fuel and only the top wanders. */
+.fnfl-m1 { animation: fn-fl-swayA 24.7s linear infinite; }
+.fnfl-m2 { animation: fn-fl-swayB 20.3s linear infinite; }
+.fnfl-m3 { animation: fn-fl-swayC 31.9s linear infinite; }
+.fnfl-m4 { animation: fn-fl-swayB 22.7s linear infinite reverse; }
+.fnfl-m5 { animation: fn-fl-swayA 27.1s linear infinite reverse; }
+.fnfl-m6 { animation: fn-fl-swayC 34.3s linear infinite; }
+
+@keyframes fn-fl-swayA {
+  0%   { transform: skewX(0deg) translateX(0) scaleY(1); }
+  9%   { transform: skewX(calc(-3.2deg * var(--fnfl-amp))) translateX(calc(-2px * var(--fnfl-amp))) scaleY(1.03); }
+  21%  { transform: skewX(calc(2.6deg * var(--fnfl-amp)))  translateX(calc(3px * var(--fnfl-amp)))  scaleY(0.98); }
+  33%  { transform: skewX(calc(-1.1deg * var(--fnfl-amp))) translateX(0) scaleY(1.06); }
+  44%  { transform: skewX(calc(4.4deg * var(--fnfl-amp)))  translateX(calc(4px * var(--fnfl-amp)))  scaleY(0.96); }
+  57%  { transform: skewX(calc(-2.1deg * var(--fnfl-amp))) translateX(calc(-3px * var(--fnfl-amp))) scaleY(1.04); }
+  68%  { transform: skewX(calc(1.4deg * var(--fnfl-amp)))  translateX(calc(1px * var(--fnfl-amp)))  scaleY(1); }
+  79%  { transform: skewX(calc(-3.9deg * var(--fnfl-amp))) translateX(calc(-4px * var(--fnfl-amp))) scaleY(1.07); }
+  91%  { transform: skewX(calc(1.9deg * var(--fnfl-amp)))  translateX(calc(2px * var(--fnfl-amp)))  scaleY(0.97); }
+  100% { transform: skewX(0deg) translateX(0) scaleY(1); }
+}
+@keyframes fn-fl-swayB {
+  0%   { transform: skewX(0deg) translateX(0) scaleY(1); }
+  12%  { transform: skewX(calc(3.7deg * var(--fnfl-amp)))  translateX(calc(3px * var(--fnfl-amp)))  scaleY(0.97); }
+  23%  { transform: skewX(calc(-1.6deg * var(--fnfl-amp))) translateX(calc(-1px * var(--fnfl-amp))) scaleY(1.05); }
+  36%  { transform: skewX(calc(5.1deg * var(--fnfl-amp)))  translateX(calc(5px * var(--fnfl-amp)))  scaleY(1.01); }
+  47%  { transform: skewX(calc(-4.3deg * var(--fnfl-amp))) translateX(calc(-4px * var(--fnfl-amp))) scaleY(1.08); }
+  61%  { transform: skewX(calc(1.2deg * var(--fnfl-amp)))  translateX(calc(1px * var(--fnfl-amp)))  scaleY(0.95); }
+  73%  { transform: skewX(calc(-2.8deg * var(--fnfl-amp))) translateX(calc(-2px * var(--fnfl-amp))) scaleY(1.03); }
+  86%  { transform: skewX(calc(3.1deg * var(--fnfl-amp)))  translateX(calc(3px * var(--fnfl-amp)))  scaleY(0.99); }
+  100% { transform: skewX(0deg) translateX(0) scaleY(1); }
+}
+@keyframes fn-fl-swayC {
+  0%   { transform: skewX(0deg) translateX(0) scaleY(1); }
+  14%  { transform: skewX(calc(-2.4deg * var(--fnfl-amp))) translateX(calc(-3px * var(--fnfl-amp))) scaleY(1.09); }
+  27%  { transform: skewX(calc(4.9deg * var(--fnfl-amp)))  translateX(calc(4px * var(--fnfl-amp)))  scaleY(0.94); }
+  39%  { transform: skewX(calc(-0.8deg * var(--fnfl-amp))) translateX(0) scaleY(1.02); }
+  53%  { transform: skewX(calc(2.2deg * var(--fnfl-amp)))  translateX(calc(2px * var(--fnfl-amp)))  scaleY(1.06); }
+  64%  { transform: skewX(calc(-4.6deg * var(--fnfl-amp))) translateX(calc(-5px * var(--fnfl-amp))) scaleY(0.97); }
+  81%  { transform: skewX(calc(1.7deg * var(--fnfl-amp)))  translateX(calc(1px * var(--fnfl-amp)))  scaleY(1.04); }
+  93%  { transform: skewX(calc(-1.3deg * var(--fnfl-amp))) translateX(calc(-1px * var(--fnfl-amp))) scaleY(0.99); }
+  100% { transform: skewX(0deg) translateX(0) scaleY(1); }
+}
+
+/* Advection — the one motion that separates fire from a swaying blob. Tongues
+   are born at the base, rise, neck in, and die out near the tip, so the eye
+   reads a continuous upward flow through a silhouette that is itself barely
+   moving. Real flame carries material upward; it does not sway in place. */
+.fn-hero-flame__flow {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.fnfl-n1 { animation: fn-fl-flowA 6.7s  linear infinite; }
+.fnfl-n2 { animation: fn-fl-flowB 9.1s  linear infinite 1.5s; }
+.fnfl-n3 { animation: fn-fl-flowA 7.9s  linear infinite 3.4s; }
+.fnfl-n4 { animation: fn-fl-flowB 10.9s linear infinite 5.2s; }
+@keyframes fn-fl-flowA {
+  0%   { opacity: 0;    transform: translateY(0) scale(1.06, 0.5); }
+  14%  { opacity: 0.6; }
+  52%  { opacity: 0.42; transform: translateY(calc(-46px * var(--fnfl-amp))) scale(0.82, 1.05); }
+  100% { opacity: 0;    transform: translateY(calc(-104px * var(--fnfl-amp))) scale(0.48, 1.4); }
+}
+@keyframes fn-fl-flowB {
+  0%   { opacity: 0;    transform: translateY(0) scale(1.02, 0.55) skewX(0deg); }
+  17%  { opacity: 0.5; }
+  56%  { opacity: 0.34; transform: translateY(calc(-52px * var(--fnfl-amp))) scale(0.76, 1.1) skewX(calc(4deg * var(--fnfl-amp))); }
+  100% { opacity: 0;    transform: translateY(calc(-116px * var(--fnfl-amp))) scale(0.4, 1.5) skewX(calc(-3deg * var(--fnfl-amp))); }
+}
+
+/* Luminance. Sixteen irregular values held by steps(1, end) rather than a
+   short even cycle — an evenly-timed flicker is audible as a rhythm, which is
+   exactly what a real flame does not have. */
+.fnfl-core   { animation: fn-fl-flick 3.1s steps(1, end) infinite; }
+.fnfl-kernel { animation: fn-fl-flick 2.6s steps(1, end) infinite reverse; }
+@keyframes fn-fl-flick {
+  0%   { opacity: 1; }    7%  { opacity: 0.87; } 13% { opacity: 0.98; }
+  19%  { opacity: 0.81; } 26% { opacity: 1; }    31% { opacity: 0.9; }
+  38%  { opacity: 0.99; } 44% { opacity: 0.84; } 52% { opacity: 0.95; }
+  58%  { opacity: 1; }    63% { opacity: 0.86; } 71% { opacity: 0.97; }
+  77%  { opacity: 0.82; } 84% { opacity: 0.99; } 91% { opacity: 0.91; }
+  100% { opacity: 1; }
+}
+
+/* Detached wisps shedding off the tip — the strongest single cue that this is
+   fire and not an icon. Each one is still the logo glyph, shrunk. */
+.fn-hero-flame__wisp {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.fnfl-w1 { animation: fn-fl-wispA 6.1s ease-out infinite; }
+.fnfl-w2 { animation: fn-fl-wispB 7.7s ease-out infinite 1.7s; }
+@keyframes fn-fl-wispA {
+  0%   { opacity: 0;    transform: translate(0, 0) scale(1); }
+  12%  { opacity: 0.9; }
+  60%  { opacity: 0.45; transform: translate(calc(-7px * var(--fnfl-amp)), -46px) scale(0.7); }
+  100% { opacity: 0;    transform: translate(calc(5px * var(--fnfl-amp)), -96px) scale(0.3); }
+}
+@keyframes fn-fl-wispB {
+  0%   { opacity: 0;   transform: translate(0, 0) scale(1); }
+  14%  { opacity: 0.75; }
+  58%  { opacity: 0.4; transform: translate(calc(8px * var(--fnfl-amp)), -52px) scale(0.62); }
+  100% { opacity: 0;   transform: translate(calc(-6px * var(--fnfl-amp)), -108px) scale(0.26); }
+}
+
+/* Rising sparks, each with its own duration and delay so they never march in
+   step, and each wandering laterally on the way up rather than tracking a
+   straight line. */
+.fn-hero-flame__embers { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.fn-hero-flame__embers i {
+  position: absolute;
+  bottom: 16%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ffd766;
+  box-shadow: 0 0 6px 1.5px rgba(245, 138, 46, 0.75);
+  opacity: 0;
+  animation: fn-fl-rise 8.9s linear infinite;
+  will-change: transform, opacity;
+}
+.fn-hero-flame__embers i:nth-child(1) { left: 46%; animation-duration: 7.4s; }
+.fn-hero-flame__embers i:nth-child(2) { left: 55%; animation-duration: 9.8s; animation-delay: 1.8s; width: 2px; height: 2px; }
+.fn-hero-flame__embers i:nth-child(3) { left: 49%; animation-duration: 8.6s; animation-delay: 3.4s; }
+.fn-hero-flame__embers i:nth-child(4) { left: 59%; animation-duration: 11.4s; animation-delay: 4.8s; width: 2px; height: 2px; }
+@keyframes fn-fl-rise {
+  0%   { opacity: 0;    transform: translate3d(0, 0, 0) scale(0.55); }
+  7%   { opacity: 0.95; transform: translate3d(calc(2px * var(--fnfl-amp)), -16px, 0) scale(1); }
+  23%  {                transform: translate3d(calc(-6px * var(--fnfl-amp)), -52px, 0) scale(0.95); }
+  41%  { opacity: 0.72; transform: translate3d(calc(5px * var(--fnfl-amp)), -88px, 0) scale(1); }
+  58%  {                transform: translate3d(calc(-9px * var(--fnfl-amp)), -124px, 0) scale(0.85); }
+  76%  { opacity: 0.4;  transform: translate3d(calc(4px * var(--fnfl-amp)), -162px, 0) scale(0.6); }
+  100% { opacity: 0;    transform: translate3d(calc(11px * var(--fnfl-amp)), -212px, 0) scale(0.28); }
+}
+
+/* Material only opens gutters beside the content column at its own desktop
+   breakpoint. Above it, the flame steps out into the left-hand gutter's mirror
+   so the headline gets its full measure back; below it the column runs edge to
+   edge and the same offset would push the flame off the viewport, taking the
+   light spill with it. */
+@media screen and (min-width: 76.25em) {
+  .fn-hero-flame { right: -3%; }
+}
+
 /* ---------- Narrow layout ---------- */
 
 @media screen and (max-width: 60em) {
@@ -3097,6 +3334,10 @@ body::after {
   .fn-sk--goal,
   .fn-sk--graph,
   .fn-sk--receipt { display: none; }
+  /* Below this width the headline reflows across the full column and the
+     flame's slot is gone. It is decoration, so it goes rather than being
+     shrunk into an ornament nobody can read as the mark. */
+  .fn-hero-flame { display: none; }
 }
 
 /* ---------- Honour the system setting ---------- */
@@ -3114,6 +3355,16 @@ body::after {
   .md-typeset .fn-btn { transition: none; }
   /* The film's own motion is the reader's choice; the chrome around it is not. */
   .md-typeset .fn-vp.is-arriving { animation: none; }
+  /* The flame's noise is SMIL, which ignores this media query entirely. Setting
+     `filter: none` in CSS overrides the SVG filter presentation attribute, which
+     takes the animated displacement out of the pipeline and leaves a clean
+     static silhouette — a still flame, not a frozen smear. */
+  .fn-hero-flame *,
+  .fn-hero-flame__spill { animation: none !important; }
+  .fn-hero-flame__fx { filter: none !important; }
+  .fn-hero-flame__embers,
+  .fn-hero-flame__wisp,
+  .fn-hero-flame__flow { display: none; }
   .md-typeset .fn-vp.is-loading .fn-vp__big::after { animation: none; }
   .md-typeset .fn-vp__bar,
   .md-typeset .fn-vp__big,

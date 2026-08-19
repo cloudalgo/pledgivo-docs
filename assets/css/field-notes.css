@@ -3172,9 +3172,22 @@ body::after {
    the band above it, and that figure has to stay the loudest thing on the
    page. */
 
+/* A quiet caveat line under a table — smaller than body copy and set in the
+   secondary ink, so it reads as a footnote to the thing above it rather than
+   as the next paragraph. Used where a table needs one sentence of context that
+   would be noise inside a cell. */
+
+.fn-pr-note {
+  margin: 0.9rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--fn-ink-2);
+  max-width: 60ch;
+}
+
 .fn-pr-rate {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   border: 1px solid var(--fn-line);
   border-top: 2px solid var(--fn-ink);
   border-radius: var(--fn-radius);

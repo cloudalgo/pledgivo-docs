@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Priced per Salesforce org and tiered by donation volume — never a percentage of what you raise. Every plan has all features and a 30-day free trial.">
+        <meta name="description" content="Free for up to 200 donations a year, then a flat $299 a month for unlimited. Priced per Salesforce org — never as a percentage of what you raise.">
       
       
       
@@ -26,7 +26,7 @@
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
-  <title>Pledgivo Pricing: Per Salesforce Org, Not Per Donation</title>
+  <title>Pledgivo Pricing: A Free Plan, or $299 a Month Unlimited</title>
 
     
       <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
@@ -89,26 +89,18 @@
         "offers": [
           {
             "@type": "Offer",
-            "name": "Starter",
-            "price": "149",
+            "name": "Free",
+            "price": "0",
             "priceCurrency": "USD",
-            "description": "Up to 500 donations per year, per Salesforce org.",
+            "description": "Up to 200 donations per year, per Salesforce org. Every feature, and it does not expire.",
             "url": "https://pledgivo.cloudalgo.com/pricing/"
           },
           {
             "@type": "Offer",
-            "name": "Growth",
-            "price": "349",
+            "name": "Pledgivo",
+            "price": "299",
             "priceCurrency": "USD",
-            "description": "Up to 5,000 donations per year, per Salesforce org.",
-            "url": "https://pledgivo.cloudalgo.com/pricing/"
-          },
-          {
-            "@type": "Offer",
-            "name": "Enterprise",
-            "price": "799",
-            "priceCurrency": "USD",
-            "description": "Unlimited donations per year, per Salesforce org.",
+            "description": "Unlimited donations, per Salesforce org. $2,990 a year if paid annually.",
             "url": "https://pledgivo.cloudalgo.com/pricing/"
           }
         ]
@@ -120,7 +112,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Pricing - Pledgivo" />
-<meta property="og:description" content="Priced per Salesforce org and tiered by donation volume — never a percentage of what you raise. Every plan has all features and a 30-day free trial." />
+<meta property="og:description" content="Free for up to 200 donations a year, then a flat $299 a month for unlimited. Priced per Salesforce org — never as a percentage of what you raise." />
 <meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/pricing.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -128,7 +120,7 @@
 <meta property="og:url" content="https://pledgivo.cloudalgo.com/pricing/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Pricing - Pledgivo" />
-<meta property="twitter:description" content="Priced per Salesforce org and tiered by donation volume — never a percentage of what you raise. Every plan has all features and a 30-day free trial." />
+<meta property="twitter:description" content="Free for up to 200 donations a year, then a flat $299 a month for unlimited. Priced per Salesforce org — never as a percentage of what you raise." />
 <meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/pricing.png" />
 </head>
   
@@ -2033,20 +2025,36 @@
      doc: The largest number on the page is deliberately not a price — it is the
      0% we take of each donation. Competing platforms in this category price as
      a percentage of money raised, so the fact that a $500 campaign and a
-     $500,000 campaign cost the same here is the argument; leading with $149
-     buries it under a figure that looks larger than a rival's "free". The tiers
-     are then set as one ruled rate card rather than three floating shadowed
-     boxes: this theme is hairlines and Fraunces numerals, and the usual SaaS
-     pricing card belongs to a different design system. The recommended column
-     is marked with a red rule rather than a fill, because a filled column would
-     out-shout the 0% and that figure has to stay the loudest thing here.
+     $500,000 campaign cost the same here is the argument; leading with $299
+     buries it under a figure that looks larger than a rival's "free". The plans
+     are set as one ruled rate card rather than floating shadowed boxes: this
+     theme is hairlines and Fraunces numerals, and the usual SaaS pricing card
+     belongs to a different design system. The paid column is marked with a red
+     rule rather than a fill, because a filled column would out-shout the 0% and
+     that figure has to stay the loudest thing here.
 
-     doc: PRICES ARE PROVISIONAL. The three tiers come from the "Pricing Model
+     doc: TWO PLANS, replacing the three volume tiers, on the owner's decision
+     of 2026-08-19. The 30-day trial and the 25% nonprofit discount went with
+     them: a free plan that does not expire makes a countdown trial redundant,
+     and the discount was dropped outright rather than reworded. Anything that
+     still describes a trial or a discount is stale and belongs to the old model.
+
+     doc: THE 200-DONATION CEILING IS NOT ENFORCED IN THE PACKAGE. Nothing in
+     base/ counts donations against a plan, blocks campaign creation, or warns
+     in the settings console — the behaviour described in section 05 is a
+     commercial term this page states and a human follows up on, not something
+     the code does. It is deliberately written as what happens ("we get in touch
+     before it bites"), never as an automatic block, so the page stays true
+     until the enforcement work ships. When it does ship, revisit that answer.
+
+     doc: PRICES ARE PROVISIONAL. They must stay in step with the "Pricing Model
      Suggestion" table in specs/02-product-overview.md, which labels itself a
      suggestion for go-to-market planning with final pricing set by the product
-     team before the AppExchange listing. Every figure appears in the rate card,
-     and the Growth figure again in the worked example in section 04. Confirm
-     both against the spec before republishing.
+     team before the AppExchange listing. $299 appears in the rate card, in the
+     money-flow aside in section 03, and again in the worked example in section
+     04; $2,990 appears in the rate card and section 04. The same figures are in
+     the SoftwareApplication "offers" block in overrides/main.html, which only
+     renders on this page. Confirm all of them together before republishing.
 
      doc: Markup is hand-written HTML rather than markdown, matching index.md.
      Every block has a rule in the "Pricing" section at the foot of
@@ -2091,14 +2099,14 @@
 <div class="fn-pr-hero">
   <p class="fn-eyebrow">Pricing</p>
   <h1 class="fn-home-h1">Priced per org. <em>Never</em> per donation.</h1>
-  <p class="fn-dek">One flat subscription for your Salesforce org, tiered by how many
-  donations you take in a year. We never take a percentage of what you raise — so a campaign
-  that goes unexpectedly well costs exactly what a quiet one does.</p>
+  <p class="fn-dek">Free for your first 200 donations a year, then one flat subscription for
+  your whole Salesforce org. We never take a percentage of what you raise — so a campaign that
+  goes unexpectedly well costs exactly what a quiet one does.</p>
   <div class="fn-pr-chips">
-    <span class="fn-chip">30-day free trial</span>
+    <span class="fn-chip">Free up to 200 donations</span>
     <span class="fn-chip">Unlimited staff users</span>
-    <span class="fn-chip">25% nonprofit discount</span>
-    <span class="fn-chip">Every feature, every tier</span>
+    <span class="fn-chip">Every feature, both plans</span>
+    <span class="fn-chip">Never a cut of a gift</span>
   </div>
 </div>
 
@@ -2116,65 +2124,48 @@
     <span>Per user. Your whole fundraising team, plus finance, plus the executive director.</span>
   </div>
   <div>
-    <b>30 days</b>
-    <span>Free trial through the AppExchange, running on your own Salesforce org.</span>
+    <b>$0</b>
+    <span>To start. The free plan runs real campaigns on your own org, and does not expire.</span>
   </div>
   <div>
-    <b>25%</b>
-    <span>Off every tier for organisations with a verified 501(c)(3).</span>
+    <b>$299</b>
+    <span>A month past 200 donations a year — whatever those donations turn out to be worth.</span>
   </div>
 </div>
 
 <section class="fn-pr-sec">
   <div class="fn-sec-head">
     <span class="fn-sec-head__n">01</span>
-    <h2>Three plans</h2>
-    <p>Tiered by annual donation volume — not by which features you are allowed.</p>
+    <h2>Two plans</h2>
+    <p>One is free and stays free. The other lifts the ceiling — not the feature list.</p>
   </div>
 
   <div class="fn-pr-rate">
     <div class="fn-pr-tier">
       <div class="fn-pr-tier__tag"></div>
-      <h3>Starter</h3>
-      <p class="fn-pr-tier__for">One team running a handful of appeals across the year.</p>
-      <div class="fn-pr-tier__price"><b>$149</b><i>/mo</i></div>
-      <span class="fn-pr-tier__unit">Per Salesforce org, billed monthly</span>
+      <h3>Free</h3>
+      <p class="fn-pr-tier__for">Smaller programmes — and anyone who would rather run a real campaign than evaluate one.</p>
+      <div class="fn-pr-tier__price"><b>$0</b><i>/mo</i></div>
+      <span class="fn-pr-tier__unit">Per Salesforce org, no card required</span>
       <div class="fn-pr-tier__cap">
-        <b>Up to 500</b>
+        <b>Up to 200</b>
         <span>donations per year</span>
       </div>
       <ul>
         <li>Every feature in the package</li>
         <li>Unlimited campaigns and staff users</li>
+        <li>Donor pages carry a <b>Powered by Pledgivo</b> line</li>
         <li>Community support</li>
       </ul>
-      <a class="fn-btn fn-btn--ghost" href="../getting-started/installation/">Start free trial</a>
+      <a class="fn-btn fn-btn--ghost" href="../getting-started/installation/">Install free</a>
     </div>
 
     <div class="fn-pr-tier fn-pr-tier--pick">
       <div class="fn-pr-tier__tag">Most organisations</div>
-      <h3>Growth</h3>
+      <h3>Pledgivo</h3>
       <p class="fn-pr-tier__for">Year-round giving, recurring donors and ticketed events.</p>
-      <div class="fn-pr-tier__price"><b>$349</b><i>/mo</i></div>
-      <span class="fn-pr-tier__unit">Per Salesforce org, billed monthly</span>
-      <div class="fn-pr-tier__cap">
-        <b>Up to 5,000</b>
-        <span>donations per year</span>
-      </div>
-      <ul>
-        <li>Every feature in the package</li>
-        <li>Unlimited campaigns and staff users</li>
-        <li>Email support, next business day</li>
-      </ul>
-      <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Start free trial</a>
-    </div>
-
-    <div class="fn-pr-tier">
-      <div class="fn-pr-tier__tag"></div>
-      <h3>Enterprise</h3>
-      <p class="fn-pr-tier__for">National campaigns, federated chapters and giving days.</p>
-      <div class="fn-pr-tier__price"><b>$799</b><i>/mo</i></div>
-      <span class="fn-pr-tier__unit">Per Salesforce org, billed monthly</span>
+      <div class="fn-pr-tier__price"><b>$299</b><i>/mo</i></div>
+      <span class="fn-pr-tier__unit">Per Salesforce org — or $2,990 a year</span>
       <div class="fn-pr-tier__cap">
         <b>Unlimited</b>
         <span>donations per year</span>
@@ -2182,35 +2173,36 @@
       <ul>
         <li>Every feature in the package</li>
         <li>Unlimited campaigns and staff users</li>
-        <li>Priority support and onboarding</li>
+        <li>Your own branding, with no <b>Powered by</b> line</li>
+        <li>Email support, next business day</li>
       </ul>
-      <a class="fn-btn fn-btn--ghost" href="../getting-started/installation/">Talk to us</a>
+      <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Get started</a>
     </div>
 
     <div class="fn-pr-rate__foot">
-      <span><b>Annual billing</b> — two months free on any tier.</span>
-      <span><b>Nonprofits</b> — 25% off with a verified 501(c)(3).</span>
-      <span><b>Outgrow your tier?</b> We move you up at renewal. Nothing stops working.</span>
+      <span><b>Annual billing</b> — $2,990 a year, which is two months free.</span>
+      <span><b>Approaching 200?</b> Campaigns already running are never interrupted. We get in touch first.</span>
+      <span><b>Moving up</b> is a billing change, not a migration. Nothing is reinstalled and no data moves.</span>
     </div>
   </div>
 </section>
 
-<!-- doc: The tiers differ by annual volume and support level, never by
-     feature, so this table has a single "All tiers" column rather than one
-     column per plan — a three-column grid of identical ticks would be a wall of
-     the same mark repeated thirty times. If a feature is ever restricted to a
-     higher tier, this table stops being true and the "every feature, every
-     tier" chip in the hero has to go with it. -->
+<!-- doc: The plans differ by annual volume, the Powered by line and support
+     level, never by feature, so this table has a single "Both plans" column
+     rather than one column per plan — a two-column grid of identical ticks
+     would be a wall of the same mark repeated twenty-two times. If a feature is
+     ever restricted to the paid plan, this table stops being true and the
+     "every feature, both plans" chip in the hero has to go with it. -->
 <section class="fn-pr-sec">
   <div class="fn-sec-head">
     <span class="fn-sec-head__n">02</span>
-    <h2>What's in every plan</h2>
-    <p>All of it. The tiers move on volume and support, never on features.</p>
+    <h2>What's in both plans</h2>
+    <p>All of it. The plans move on volume, branding and support — never on features.</p>
   </div>
   <div class="fn-pr-tablewrap">
     <table class="fn-pr-table">
       <thead>
-        <tr><th>Capability</th><th>What you get</th><th>All tiers</th></tr>
+        <tr><th>Capability</th><th>What you get</th><th>Both plans</th></tr>
       </thead>
       <tbody>
         <tr><td>Donation forms</td><td>Branded, embeddable one-off and recurring giving forms on your Experience Cloud site</td><td class="tick">Included</td></tr>
@@ -2227,6 +2219,10 @@
       </tbody>
     </table>
   </div>
+  <p class="fn-pr-note">The two plans differ on exactly three things: how many donations a year
+  you can take, whether your donor pages carry a <b>Powered by Pledgivo</b> line, and whether
+  support is the community forum or email with a next-business-day reply. Every capability above
+  is in both.</p>
 </section>
 
 <!-- doc: The money-flow diagram. The subscription box hangs off the rail on a
@@ -2270,12 +2266,12 @@
       </div>
     </div>
     <div class="fn-pr-flow__aside">
-      <b>Pledgivo — $149 to $799 a month</b>
+      <b>Pledgivo — $0 or $299 a month</b>
       <span>A flat subscription billed to you like any other software. It is never deducted from a gift.</span>
     </div>
     <p class="fn-pr-flow__note">Which is why the price is identical whether you raise <b>$5,000</b> or
-    <b>$5,000,000</b>. The only thing that moves you up a tier is the <b>number</b> of donations you
-    take, never their size.</p>
+    <b>$5,000,000</b>. The only thing that moves you off the free plan is the <b>number</b> of
+    donations you take, never their size.</p>
   </div>
 </section>
 
@@ -2298,20 +2294,20 @@
   </div>
 
   <div class="fn-pr-worked">
-    <b>A year on the Growth tier, at three different results</b>
+    <b>A year on the paid plan, at three different results</b>
     <table class="fn-pr-worked__t">
       <thead>
         <tr><th>If you raise</th><th>Pledgivo costs</th><th>A 2% platform fee would cost</th></tr>
       </thead>
       <tbody>
-        <tr><td>$250,000</td><td>$4,188</td><td>$5,000</td></tr>
-        <tr><td>$500,000</td><td>$4,188</td><td>$10,000</td></tr>
-        <tr><td>$1,000,000</td><td>$4,188</td><td>$20,000</td></tr>
+        <tr><td>$250,000</td><td>$3,588</td><td>$5,000</td></tr>
+        <tr><td>$500,000</td><td>$3,588</td><td>$10,000</td></tr>
+        <tr><td>$1,000,000</td><td>$3,588</td><td>$20,000</td></tr>
       </tbody>
     </table>
-    <p class="fn-pr-worked__note">The middle column is Growth at $349 a month and does not move,
-    because our price is a function of how many donations you record, not how much they were
-    worth. The right-hand column is a <b>hypothetical</b> 2% platform fee, shown to make the shape
+    <p class="fn-pr-worked__note">The middle column is $299 a month and does not move, because
+    our price is a function of how many donations you record, not how much they were worth — and
+    on annual billing it falls to $2,990. The right-hand column is a <b>hypothetical</b> 2% platform fee, shown to make the shape
     of percentage-based pricing visible — it is not any particular platform's published rate. Card
     processing sits outside all of this and is paid to Stripe on your own account, whichever way
     you fundraise.</p>
@@ -2322,18 +2318,31 @@
   <div class="fn-sec-head">
     <span class="fn-sec-head__n">05</span>
     <h2>Questions worth asking first</h2>
-    <p>Particularly the one about going over your tier mid-campaign.</p>
+    <p>Particularly the one about reaching 200 donations mid-campaign.</p>
   </div>
   <div class="fn-pr-faq">
     <div>
       <h3>What counts as a donation?</h3>
       <p>One completed gift — a single donation, one charge of a <a href="../concepts/recurring-giving/">recurring schedule</a>, or one
-      <a href="../concepts/events-ticketing/">ticket order</a>. Refunded and failed payments do not count towards your tier.</p>
+      <a href="../concepts/events-ticketing/">ticket order</a>. Refunded and failed payments do not count towards the free plan's 200.</p>
     </div>
     <div>
-      <h3>What happens if we go over?</h3>
-      <p>Nothing breaks and nothing is throttled. We get in touch and move you to the right tier at
-      your next renewal, rather than interrupting a campaign that is going well.</p>
+      <h3>Is the free plan a trial?</h3>
+      <p>No. It does not expire, it does not ask for a card, and it is not a cut-down edition — it is the
+      complete package running on your own org, with a 200-donation-a-year ceiling and a <b>Powered by
+      Pledgivo</b> line on your donor pages.</p>
+    </div>
+    <div>
+      <h3>What happens when we reach 200?</h3>
+      <p>Campaigns already running keep taking donations. Nothing is switched off mid-appeal and no gift is
+      ever refused — the thing we would be interrupting is the thing you built the campaign for. What
+      the ceiling governs is starting a <em>new</em> campaign. We get in touch as you approach it and
+      move you across before it bites.</p>
+    </div>
+    <div>
+      <h3>What is the "Powered by Pledgivo" line?</h3>
+      <p>One line of text at the foot of your public donation pages on the free plan, linking back to us. On
+      the paid plan it is not there and your <a href="../concepts/page-sections/">donor pages</a> carry your branding only.</p>
     </div>
     <div>
       <h3>Is it priced per user?</h3>
@@ -2346,16 +2355,6 @@
       <a href="../integrations/stripe/">your own Stripe account</a> — there is no point at which the money passes through us.</p>
     </div>
     <div>
-      <h3>What does the trial include?</h3>
-      <p>Thirty days of the complete package on your own org, installed <a href="../getting-started/installation/">from the AppExchange</a>. Every
-      feature, and no card required to begin.</p>
-    </div>
-    <div>
-      <h3>How does the nonprofit discount work?</h3>
-      <p>25% off any tier once we have verified your 501(c)(3) status. It holds for as long as the
-      status does, on monthly or annual billing.</p>
-    </div>
-    <div>
       <h3>Which Salesforce editions work?</h3>
       <p>Enterprise, Unlimited and Performance. Professional edition can run the internal features
       but not the public donor site, which needs <a href="../getting-started/experience-cloud-setup/">Experience Cloud</a>.</p>
@@ -2366,8 +2365,7 @@
       own org — uninstalling the package does not take them with it.</p>
     </div>
   </div>
-
-<!-- doc: FAQPage structured data for the eight questions immediately above. It is
+<!-- doc: FAQPage structured data for the 8 questions immediately above. It is
      authored here rather than in overrides/main.html so the markup sits beside the
      prose it describes — the two must say the same thing, and separating them is
      how they drift. Edit a question or answer above and this block needs the same
@@ -2387,15 +2385,31 @@
       "name": "What counts as a donation?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "One completed gift — a single donation, one charge of a recurring schedule, or one ticket order. Refunded and failed payments do not count towards your tier."
+        "text": "One completed gift — a single donation, one charge of a recurring schedule, or one ticket order. Refunded and failed payments do not count towards the free plan's 200."
       }
     },
     {
       "@type": "Question",
-      "name": "What happens if we go over?",
+      "name": "Is the free plan a trial?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Nothing breaks and nothing is throttled. We get in touch and move you to the right tier at your next renewal, rather than interrupting a campaign that is going well."
+        "text": "No. It does not expire, it does not ask for a card, and it is not a cut-down edition — it is the complete package running on your own org, with a 200-donation-a-year ceiling and a Powered by Pledgivo line on your donor pages."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens when we reach 200?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Campaigns already running keep taking donations. Nothing is switched off mid-appeal and no gift is ever refused — the thing we would be interrupting is the thing you built the campaign for. What the ceiling governs is starting a new campaign. We get in touch as you approach it and move you across before it bites."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the \"Powered by Pledgivo\" line?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One line of text at the foot of your public donation pages on the free plan, linking back to us. On the paid plan it is not there and your donor pages carry your branding only."
       }
     },
     {
@@ -2412,22 +2426,6 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No, and structurally we cannot. The package runs inside your own org and Stripe settles to your own Stripe account — there is no point at which the money passes through us."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What does the trial include?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Thirty days of the complete package on your own org, installed from the AppExchange. Every feature, and no card required to begin."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does the nonprofit discount work?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "25% off any tier once we have verified your 501(c)(3) status. It holds for as long as the status does, on monthly or annual billing."
       }
     },
     {
@@ -2460,11 +2458,11 @@
     </svg>
   </div>
   <div>
-    <h2>Try it on your own org for 30 days.</h2>
+    <h2>Start on the free plan. It doesn't expire.</h2>
     <p>Install from the AppExchange, run a real campaign end to end, and decide with your own
     numbers in front of you.</p>
   </div>
-  <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Start the free trial
+  <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Install free
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
   </a>
 </div>

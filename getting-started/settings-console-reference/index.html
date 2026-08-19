@@ -3009,16 +3009,21 @@ than being asked to confirm your own work. Step 5 counts the grant wherever it l
 guest user's profile (the usual place) or on a permission set of your own assigned to it.</p>
 </div>
 <div class="admonition info">
-<p class="admonition-title">Step 6 (Stripe credential grant) is machine-checked, not self-confirmed</p>
-<p>This step shipped permanently <strong>Can't verify</strong> on the assumption that an external-credential
-principal grant is unreadable from Apex — that assumption was wrong. <code>ConnectApi.NamedCredentials
-.getExternalCredential()</code> exposes the credential's principals, <code>SetupEntityAccess</code> names the
-permission sets that grant one, and the site's guest user's own permission-set assignments are
-a plain query — so the panel now reports <strong>Done</strong> (a permission set granting the credential is
-assigned to this site's guest user) or <strong>Pending</strong> (it isn't), the same as every other checked
-step. The package still can never <em>ship</em> this grant — a managed permission set may not grant an
-external-credential principal — so the admin still builds it by hand once; the panel just no
-longer has to ask you to confirm your own work.</p>
+<p class="admonition-title">The guest credential grant is machine-checked, not self-confirmed</p>
+<p>The credential row reports <strong>Done</strong> (a permission set granting an external credential is
+assigned to this site's guest user, and that user can create the credential record a callout
+needs) or <strong>Pending</strong> (one of those is missing) — it is not a step you confirm yourself. The
+package can never <em>ship</em> this grant, because a managed permission set may not carry an
+external-credential principal, so you build it by hand once; the panel reads it back.</p>
+<p><strong>It answers in one of two ways, and the wording tells you which.</strong> Naming the credential
+behind a grant needs <code>ConnectApi.NamedCredentials.getExternalCredential()</code>, and an installed
+org generally refuses that call to a packaged app. When it does, the panel falls back to a
+plain <code>SetupEntityAccess</code> query and asks the plainer question: does this site's guest user hold
+a permission set granting <em>an</em> external credential principal? A <strong>no</strong> rules out the payment
+credential along with everything else. A <strong>yes</strong> is the answer you want, and the row goes green
+— its sentence just asks you to confirm the grant is on the credential your payment account
+names, because no app can read that back. A successful test donation settles it. <strong>Get
+Started</strong> step 5 grades the same two grants the same way, so the two panels agree.</p>
 </div>
 <table>
 <thead>

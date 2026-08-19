@@ -2509,9 +2509,25 @@ your text survives intact.</p>
 the Image and Video buttons take a URL pointing at a file you host somewhere else — exactly the way
 the Hero image URL on the same step has always worked.</p>
 <p>That means the host is your responsibility, and a dead host is a broken image on your donation page
-with nothing in Salesforce to tell you. Use something you control and that stays up: your own
-website, a CDN, a Salesforce Files public link, or the same place your hero images already live.
+with nothing in Salesforce to tell you. Use something you control and that stays up: a Salesforce
+Files public link, your own website, a CDN, or the same place your hero images already live.
 Check the images on a campaign before you re-share its link to a new audience.</p>
+<div class="admonition danger">
+<p class="admonition-title">An outside host needs a CSP trusted site, or the image renders as nothing</p>
+<p>A donation page is an Experience Cloud site, and Salesforce blocks it from loading an image
+from any host that is not on your org's <strong>CSP Trusted Sites</strong> list. Files stored in your own
+org — a Salesforce Files public link, or a hero uploaded in <strong>Designs</strong> — are served from your
+own file domain and always work. <strong>Everything else does not, until you add it.</strong></p>
+<p>The failure is silent by design. There is no error in the wizard, no warning on save, and in
+most browsers not even a broken-image icon — just an empty space where the picture should be.
+An admin who pastes a URL from their own website, checks nothing, and shares the campaign
+finds out from a donor.</p>
+<p>To use an outside host, add it once in <strong>Setup → Security → CSP Trusted Sites → New Trusted
+Site</strong>: the host's URL, any name you like, the <strong>Image</strong> directive ticked, and <strong>Context</strong> left
+as <em>All</em>. The full recipe and the hosts the package already trusts are in
+<a href="../../getting-started/after-you-install/#third-party-content">After you install → Third-party content</a>.
+Add the host <em>before</em> you paste the URL, and the image works the first time you preview it.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Image URLs must be <code>https://</code></p>
 <p>An <code>http://</code> image address is refused, and the image block is dropped rather than rendered

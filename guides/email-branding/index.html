@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/guides/email-branding/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/guides/email-branding/">
       
       
         <link rel="prev" href="../embed-donate-widget/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Brand your receipt and notification emails - Pledgivo" />
 <meta property="og:description" content="Customize the colors, copy, and compliance details on every donation receipt, recurring confirmation, and payment-failure email — no template editing required." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/guides/email-branding.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/email-branding.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/guides/email-branding/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/guides/email-branding/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Brand your receipt and notification emails - Pledgivo" />
 <meta property="twitter:description" content="Customize the colors, copy, and compliance details on every donation receipt, recurring confirmation, and payment-failure email — no template editing required." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/guides/email-branding.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/email-branding.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -2297,22 +2297,34 @@ those fields.</p>
 <tbody>
 <tr>
 <td>From Name</td>
-<td>Envelope sender name on every send</td>
+<td>Sender display name — applied only while <strong>From Email</strong> is blank. Once a From address is in effect, Salesforce takes the display name from the Org-Wide Email Address record instead</td>
 </tr>
 <tr>
 <td>From Email</td>
-<td>Sender address (needs to be a verified org-wide email address or Deliverability-approved sender)</td>
+<td>The address donor email is sent from, <em>and</em> the contact address printed on the failed-payment, re-authorization, dunning, refund-confirmation, employer-match and two tribute emails. Sending only switches over if the address matches an Org-Wide Email Address that is verified <strong>and</strong> has <em>Allow All Profiles to Use this From Address</em> ticked — see the callout below</td>
 </tr>
 <tr>
 <td>Reply-To Email</td>
-<td>Optional — set this if replies shouldn't go to the From address</td>
+<td>Optional — set this if replies shouldn't go to the From address. It's also the fallback staff recipient for a refund request or dispute alert with no gift owner</td>
 </tr>
 <tr>
 <td>Support Phone</td>
-<td>Shown on the "need a hand?" line of the failed-payment and dunning emails</td>
+<td>Printed on the failed-payment, re-authorization, dunning, refund-confirmation and employer-match emails, and in the public page's contact band</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">From Email needs an Org-Wide Email Address, and fails silently without one</p>
+<p>Apex cannot invent a sender. This field is a <em>lookup key</em>: at send time the package looks for
+an Org-Wide Email Address (Setup → <strong>Organization-Wide Addresses</strong>) whose address matches, and
+uses it only if that record is verified <strong>and</strong> has <em>Allow All Profiles to Use this From
+Address</em> ticked. Both are required — receipts are sent by the Experience Cloud guest user and
+by scheduled jobs, neither of which is an ordinary profile.</p>
+<p>If no such record exists, nothing errors and nothing is flagged: the email still reaches the
+donor, just from whichever user or background job triggered it. <strong>Settings → System → Health
+Check → Donor Email Sender</strong> is the only place that difference is visible, and it names which
+of the two boxes is missing.</p>
+</div>
 <h3 id="brand-colors">Brand colors<a class="headerlink" href="#brand-colors" title="Permanent link">#</a></h3>
 <table>
 <thead>

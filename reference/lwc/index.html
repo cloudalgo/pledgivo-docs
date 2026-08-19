@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/reference/lwc/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/reference/lwc/">
       
       
         <link rel="prev" href="../apex/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="LWC Reference - Pledgivo" />
 <meta property="og:description" content="Every packaged Lightning web component, grouped by the folder-prefix scheme, generated from deployed source." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/reference/lwc.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/reference/lwc.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/reference/lwc/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/reference/lwc/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="LWC Reference - Pledgivo" />
 <meta property="twitter:description" content="Every packaged Lightning web component, grouped by the folder-prefix scheme, generated from deployed source." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/reference/lwc.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/reference/lwc.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -5034,6 +5034,8 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Mounted as one tab of the <a href="#admfundraiserdetail"><code>admFundraiserDetail</code></a> slide-in drawer (&lt;c-adm-event-tickets-tab record-id={recordId}&gt;), Event_Fundraiser campaigns only. Calls EventTicketAdminController (getEventTickets, saveTicketType, deleteTicketType). deleteDisabled once any ticket has sold (sold &gt; 0) — the delete is blocked client-side as a UX nicety, but the server enforces the same guard, so a stale client can't bypass it.</p>
+<p>Which of the two deductible-split fields this org actually reads. Server-supplied (Settings__c.Event_Deductible_Mode__c) rather than assumed, because the editor's hints, its live deductible preview and its required-field gate all have to agree with EventPurchaseService — they did not, and the disagreement reached donor receipts (F-81).</p>
+<p>Mirrors EventPurchaseService exactly — the active mode picks the field, the other one is ignored, and the result is clamped to [0, price] the same way. It used to apply "an explicit percentage overrides FMV" in both modes, which is not what the engine does, so the figure an admin previewed here could differ from the one printed on the receipt.</p>
 <p>Highlight_Label__c is the badge copy AND the on-switch (blank = not highlighted), so the toggle seeds a default label on and clears it off. Demoting the event's OTHER tiers is the server's job (EventTicketAdminController.demoteOtherHighlights) — this modal only ever holds one tier, and load() below re-reads the list afterwards.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>recordId</code></p>
@@ -5373,7 +5375,9 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The Campaign-access step (5) deliberately links to Permission Sets rather than to Profiles: the Lightning Setup node for the profile list is EnhancedProfiles only when the Enhanced Profile User Interface is switched on, so a profile deep link is a dead end in some orgs. A permission set granting Campaign read and assigned to the guest user satisfies the check exactly the same way, and the step's body still spells out the profile route as an option.</p>
+<p>The step asks for the Campaign OBJECT grant only, and says so precisely, because the two halves of Campaign access reach a subscriber org by different routes. <code>sf package version create</code> strips STANDARD object and field permissions out of a managed permission set and still reports Success, but it keeps grants on CUSTOM fields — so the 58 Campaign.*__c grants on Fundraising_GuestDonor do arrive, while the object grant and the two stock fields the public pages read (Status, End Date) do not. A guest profile normally reads those two stock fields already, which is why this is one manual step and not three; the step names them as a fallback to check rather than as work to do. Wording corrected 2026-08-19 (audit F-76), when it still lumped all three together and implied the packaged set covered the fields.</p>
 <p>BLOCKED is not a weaker UNVERIFIABLE — it is the opposite claim. UNVERIFIABLE means Salesforce exposes no way to read this, ever, so the admin must confirm it themselves. BLOCKED means this app CAN read it and will, as soon as a prerequisite is met. Three of these steps (guest permission set, Campaign access, Stripe credential) are per-guest-user and so cannot be read until a site is chosen; they used to borrow UNVERIFIABLE's "Can't verify" chip, which told the admin to go and hand-verify something the panel was about to check for them (2026-08-17 walkthrough, F-07).</p>
+<p>One row can be honestly wrong, and the panel says so rather than hiding it. The Stripe guest-credential line reads its principal grant through ConnectApi, which some orgs refuse to a packaged caller (audit F-58) — indistinguishable from a credential that is genuinely not granted, so a correctly configured org can see "Can't verify" here forever. The step's body states that limit and points at Get Started step 5, which proves the same two grants by SOQL and is not affected. Raised 2026-08-19 as audit F-77; the code-side fix (rebuild this read on the SetupEntityAccess query F-76 added) is an open decision, not shipped.</p>
 <p>Three states, not two. A site can be DISCOVERED (its name or URL prefix matches the convention this package seeds) without ever having been CHOSEN, and discovery saves nothing — no Network Id, no site URL, so every public donation link below is still dead. Reporting that as Done is what let the panel show a green step 2 beside "No site URL yet" and "Not set yet — choose your site in step 2 above" at the same moment (2026-08-17 naive-admin walkthrough, finding 12).</p>
 <p>The address shown is the real public base URL rather than Network.UrlPathPrefix, which is a path fragment Setup renders with a suffix donors never type (finding 10).</p>
 <p>Graded on the site's STATUS, which is activation — publishing in Experience Builder pushes content live and leaves the status exactly where it was. The old copy said "Status is Live — the site is published", which welded the two together and sent an admin who had published correctly looking for a fault (2026-08-17 walkthrough). Both actions are required; only activation is what this line can see.</p>

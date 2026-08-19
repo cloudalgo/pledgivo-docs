@@ -6,11 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A screenshot-by-screenshot walkthrough of the one-time setup after installing the package — permission sets, record types, the Experience site and its guest user, the Stripe credential pair, the two grants, the payment account, and activation.">
+        <meta name="description" content="A screenshot-by-screenshot walkthrough of one-time setup: permission sets, record types, the Experience site and guest user, Stripe credentials, activation.">
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/getting-started/after-you-install/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/getting-started/after-you-install/">
       
       
         <link rel="prev" href="../installation/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -97,16 +97,16 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="After you install - Pledgivo" />
-<meta property="og:description" content="A screenshot-by-screenshot walkthrough of the one-time setup after installing the package — permission sets, record types, the Experience site and its guest user, the Stripe credential pair, the two grants, the payment account, and activation." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/getting-started/after-you-install.png" />
+<meta property="og:description" content="A screenshot-by-screenshot walkthrough of one-time setup: permission sets, record types, the Experience site and guest user, Stripe credentials, activation." />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/getting-started/after-you-install.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/getting-started/after-you-install/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/getting-started/after-you-install/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="After you install - Pledgivo" />
-<meta property="twitter:description" content="A screenshot-by-screenshot walkthrough of the one-time setup after installing the package — permission sets, record types, the Experience site and its guest user, the Stripe credential pair, the two grants, the payment account, and activation." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/getting-started/after-you-install.png" />
+<meta property="twitter:description" content="A screenshot-by-screenshot walkthrough of one-time setup: permission sets, record types, the Experience site and guest user, Stripe credentials, activation." />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/getting-started/after-you-install.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -772,6 +772,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="9. Organization name and logo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sending-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set the address donor email comes from
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2387,6 +2404,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="9. Organization name and logo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sending-address" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set the address donor email comes from
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2561,7 +2595,7 @@ scheduled jobs, the step reopens on its own.</p>
 <tr>
 <td>6</td>
 <td>Start the background jobs</td>
-<td>Already done by the install</td>
+<td>The console, once — the install alone is not enough</td>
 <td><a href="#background-jobs">8. Background jobs</a></td>
 </tr>
 <tr>
@@ -2589,7 +2623,7 @@ is on screen; hovering pauses it, and touching any control hands it back to you 
 <div class="fn-steps">
 <figure class="fn-step" data-title="Get Started, near the end"><img src="../../assets/images/gs-01-get-started-console.png" alt="Get Started panel reading 6 of 7 complete with one step left" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The console at the end of a real setup: <b>6 / 7 Complete</b> — <i>"One step left before this org is ready to take donations. It is walked through on another panel."</i> Steps 1 and 2 are <span class="fn-chip">DONE</span> with their evidence quoted from the org — "2 user(s) hold Fundraising Admin or Fundraising User", "7/7 mapping records present" — and step 3, <b>Activate your donation site</b>, is the one still open. Nothing here was ticked by hand.</figcaption></figure>
 <figure class="fn-step" data-title="Steps 3 to 5"><img src="../../assets/images/gs-02-get-started-site-payment.png" alt="Get Started steps 3, 4 and 5 with their live evidence lines" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The middle of the checklist. Step 3 is <b>Partly done</b> and says exactly why — <i>Site "Fundraising" exists but is not activated yet (status: UnderConstruction)</i>. Step 4 is done, "1 active payment account(s) configured". Step 5 is done and carries a <span class="fn-chip">SETUP ONLY</span> flag with a <b>Do this in Setup</b> block: the app can verify the grant but can never make it for you.</figcaption></figure>
-<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled", done by the install. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter.</figcaption></figure>
+<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled". Shown here after the restart; on a fresh install this row is amber until you press its button. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter.</figcaption></figure>
 </div>
 
 <div class="fn-status-strip">
@@ -2840,8 +2874,11 @@ error only appears in <strong>Diagnostic Logs</strong>:</p>
 </blockquote>
 <p>The package ships this grant in its own permission set, and Salesforce strips it during
 packaging: a managed permission set cannot carry standard-object permissions, and the build
-reports success anyway. That is why it has to be yours. The Settings console's <strong>Site &amp;
-domain</strong> panel checks for it and will tell you if it is missing.</p>
+reports success anyway. That is why it has to be yours. All three places in the Settings
+console that grade this step check for it — <strong>Get Started</strong> step 5, the <strong>Payments</strong> panel's
+<em>Let your public site use the credential</em>, and the <strong>Site &amp; domain</strong> panel — and each names the
+object by name when it is missing, so none of them can show green on an org where donations
+still fail.</p>
 </div>
 <div class="fn-steps">
 <figure class="fn-step" data-title="External Credential Principal Access"><img src="../../assets/images/gs-36-extcred-principal-access.png" alt="External Credential Principal Access page listing both principals" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The page that is easy to miss — it is under <b>Apps</b> on the permission set, not under Object Settings or System Permissions. Both principals are listed, and they look almost identical: read the credential name in the row before you enable one.</figcaption></figure>
@@ -2877,8 +2914,22 @@ one exists, the donation form cannot take money and the guide cannot grade itsel
 <p>Full walkthrough: <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
 <h2 id="background-jobs">8. Background jobs<a class="headerlink" href="#background-jobs" title="Permanent link">#</a></h2>
 <p>Donations are finalized, payments swept, refunds reconciled, and campaign totals repaired by
-scheduled Apex — <strong>24 cron entries</strong> in total. <strong>The install schedules all of them</strong>, so this step
-normally arrives green, as it does on the panel at the top of this page.</p>
+scheduled Apex — <strong>24 cron entries</strong> in total. The install creates all 24, and the step still
+reports "24 of 24 background jobs are scheduled". <strong>Press the button anyway.</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">This is the one step a fresh install does not finish for you</p>
+<p>A post-install script runs as a Salesforce system user your org cannot reach, and a scheduled
+job belongs to whoever scheduled it. So the 24 jobs the install creates are real cron entries
+owned by a user that no longer resolves — they are scheduled, and they do not run. The count
+is honest and reassuring and tells you nothing about the thing that matters.</p>
+<p>On a fresh install the step therefore reads <strong>amber</strong>, not green: <em>"The background jobs have
+not completed a pass yet, and no gift is waiting on them."</em> Amber rather than red because
+nothing is at risk yet — you have taken no gift — but the work is real. Press <strong>Restart the
+background jobs</strong>. It aborts each orphaned job and reschedules it under your own login, and
+the step turns green within a few minutes, once the finalizer has completed its first pass
+and stamped the marker the console reads.</p>
+<p>Do it before you share a donation link, not after.</p>
+</div>
 <div class="admonition danger">
 <p class="admonition-title">Confirm this step is green before you share a donation link</p>
 <p>The <code>Finalizer-&lt;m&gt;</code> family is what turns a confirmed card payment into an Opportunity, a
@@ -2891,7 +2942,9 @@ the gap in between, when your reports show fewer gifts than your Stripe dashboar
 blocking a donation to protect against a delay would be the larger outage. It does raise the
 alarm: every gift taken while the pipeline is stopped writes a <code>PIPELINE_STALE</code> error to the
 <strong>Transaction Log</strong>, and both this step and the <strong>Gifts Being Recorded</strong> health check turn
-red and name the number — <em>"3 gifts are charged but NOT recorded."</em></p>
+red and name the number — <em>"3 gifts are charged but NOT recorded."</em> That count is what
+separates red from the amber above: amber means the jobs are not running and nothing is
+waiting on them; red means gifts are.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">A green job count is not proof the jobs are running</p>
@@ -2901,10 +2954,13 @@ the finalizer stamps the time each time it <em>completes</em> a pass, and if tha
 30 minutes old (six missed passes) this step goes red regardless of the job count. That is
 the number to trust.</p>
 </div>
-<p>You need this step if some jobs were aborted (a deployment that touched a scheduled class will do
-it), or if the post-install script did not complete. Settings console → <strong>Get Started → Schedule
-the missing jobs</strong>, or <strong>Scheduled Jobs</strong> for the per-job breakdown and on-demand runs. It is
-idempotent — pressing it on a healthy org changes nothing.</p>
+<p>You need this step after a fresh install, if some jobs were aborted (a deployment that touched a
+scheduled class will do it), or if the post-install script did not complete. Settings console →
+<strong>Get Started</strong>, where the button reads <strong>Restart the background jobs</strong> when the jobs exist but
+are not running and <strong>Schedule the missing jobs</strong> when some are genuinely absent — the same
+button either way. <strong>Scheduled Jobs</strong> has the per-job breakdown and on-demand runs. Pressing it on
+a healthy org changes nothing: a job that exists <em>and is running</em> keeps its schedule, including a
+cadence you customized. A job whose owner no longer resolves is aborted and recreated under you.</p>
 <p>To confirm a gift really landed, open <strong>Donation Monitor</strong>: it lists every staging record still
 waiting, and warns at the top when the <code>Finalizer</code> family is not scheduled.</p>
 <table>
@@ -2952,6 +3008,12 @@ waiting, and warns at the top when the <code>Finalizer</code> family is not sche
 <p>Your organization name and logo appear on the donation form, the receipt email, and the donor
 portal. The install seeds a <strong>placeholder logo</strong> so nothing renders broken on day one — it is not
 your logo.</p>
+<p>The <strong>display name has no placeholder.</strong> Leave it blank and the public pages do not quietly borrow
+your Salesforce org name — the donation form's trust bar, the thank-you page, the event-ticket page
+and the donor portal simply head with no name at all, and the campaign gallery falls back to the
+literal word "Fundraising". The one page that does substitute your Salesforce org name is the
+internal receipt print view, because a tax receipt with an empty letterhead is not a receipt. So
+set this before you share a link, not after.</p>
 <p>Settings → <strong>General → Organization &amp; Donations</strong> holds the rest of your public-facing identity
 too: the footer line, terms and privacy links, and the social handles that render in the footer
 band of every public donation page. They live here rather than on a page design because they
@@ -2963,6 +3025,29 @@ the default thank-you button. There is no mailing address field — receipts tak
 your Salesforce company information.</p>
 <p>The Get Started step reads back what a donor will see: <em>'Public pages show "Acme Nonprofit"'</em>. Set
 the display name before you send anyone a link.</p>
+<h3 id="sending-address">Set the address donor email comes from<a class="headerlink" href="#sending-address" title="Permanent link">#</a></h3>
+<p><span class="fn-chip">Not a Get Started step — but do it before you take a real donation</span></p>
+<p>Out of the box, every receipt, ticket confirmation and payment-failure notice is sent <strong>from
+whichever user or background job triggered it</strong>. On a live org that means a donor's tax receipt
+arrives from a scheduled-job address nobody monitors. Apex cannot invent a sender, so fixing this
+is a two-part job and the Salesforce half comes first.</p>
+<ol>
+<li><strong>Setup → Organization-Wide Addresses → Add.</strong> Enter the address donors should see (e.g.
+   <code>donations@your-org.org</code>) and a display name.</li>
+<li>Tick <strong>Allow All Profiles to Use this From Address</strong>. This is not optional: receipts are sent
+   by the Experience Cloud guest user and by scheduled jobs, and an address restricted to selected
+   profiles simply won't be used by either.</li>
+<li>Open the confirmation email Salesforce sends to that address and click through, so the record
+   shows <strong>Verified</strong>.</li>
+<li>Back in <strong>Settings → General → Email &amp; Receipts</strong>, put the same address in <strong>From email</strong> and
+   save.</li>
+<li><strong>Settings → System → Health Check</strong> → the <strong>Donor Email Sender</strong> row confirms it. That row is
+   the only place the difference shows: a From email that matches no verified, all-profiles
+   Org-Wide Email Address costs no donor a receipt — it just silently keeps sending from the
+   triggering user, with no error anywhere.</li>
+</ol>
+<p>Once a From email is in effect, the <strong>From name</strong> field stops being applied — Salesforce takes the
+display name from the Org-Wide Email Address record instead. Set the name you want on that record.</p>
 <p>Full walkthrough: <a href="../../guides/email-branding/">Brand your receipt and notification emails</a>.</p>
 <h2 id="activate-the-site">10. Publish and activate the site<a class="headerlink" href="#activate-the-site" title="Permanent link">#</a></h2>
 <p><span class="fn-chip">This is what finally closes Get Started step 3</span></p>
@@ -3082,8 +3167,11 @@ a different feature and accepts both hosts.</p>
 <p class="admonition-title">Your campaigns start with a packaged hero image, not a stock photo</p>
 <p>The package ships its own artwork — a hero backdrop and a social share card, both drawn from
 the brand palette rather than licensed from a stock library — and publishes them into your org
-at install time. Your page designs are stamped with the hero automatically and the share card
-resolves org-wide, so a campaign looks finished on day one.</p>
+at install time. The ten packaged page designs are stamped with the hero automatically and the
+share card resolves org-wide, so a campaign looks finished on day one. A design <strong>you</strong> create
+starts with an empty hero field and stays that way — a blank there is treated as your choice,
+not as something to fill in for you, and a campaign built on it shows a plain coloured hero
+unless the campaign supplies its own header image.</p>
 <p>They are served from your own org's file domain, which browsers allow without a trusted site,
 so nothing on the list above is needed to see them. Replace the hero at any time by uploading
 your own image in <strong>Designs</strong>, or the share card in <strong>Organization &amp; Donations</strong>; an image you

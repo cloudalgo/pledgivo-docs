@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/getting-started/settings-console-reference/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/getting-started/settings-console-reference/">
       
       
         <link rel="prev" href="../setup-assistant/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Settings console reference - Pledgivo" />
 <meta property="og:description" content="Every setting in every panel of the Settings console — what it does and exactly what happens when you change it." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/getting-started/settings-console-reference.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/getting-started/settings-console-reference.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/getting-started/settings-console-reference/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/getting-started/settings-console-reference/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Settings console reference - Pledgivo" />
 <meta property="twitter:description" content="Every setting in every panel of the Settings console — what it does and exactly what happens when you change it." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/getting-started/settings-console-reference.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/getting-started/settings-console-reference.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -2727,18 +2727,18 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 <tbody>
 <tr>
 <td>From name</td>
-<td><em>(No effect — known gap.)</em> Not used by any email template and doesn't set the Salesforce Org-Wide Email Address — the actual send identity is controlled entirely by your org's Org-Wide Email Address / running-user configuration, outside this console.</td>
-<td></td>
+<td>The sender display name on donor email — but only while <strong>From email</strong> below is empty. Once a From address resolves to an Org-Wide Email Address, Salesforce takes the display name from that record and this field stops being applied (the two are mutually exclusive in the platform API)</td>
+<td>Immediate, for the next email sent</td>
 </tr>
 <tr>
 <td>From email</td>
-<td>Displayed as contact text on the Dunning, Failed-Payment, and Re-Auth-Required emails only</td>
-<td>Immediate where shown. Does not set the actual envelope sender — see "Reply-to" below for the field that does something functionally similar.</td>
+<td>Two independent jobs. (1) It is the lookup key for the address donor email is <strong>sent from</strong>: the package matches it against your org's Org-Wide Email Addresses and, if it finds one that is both verified and has <em>Allow All Profiles to Use this From Address</em> ticked, stamps every donor message with it. (2) It is printed as your contact address on seven emails — failed payment, re-authorization, dunning, refund confirmation, employer-match instructions, and the two tribute notices</td>
+<td>Immediate. A value that matches no such Org-Wide Email Address fails <strong>silently</strong> at send time: the email still goes out, just from whichever user or background job triggered it. Both boxes matter — receipts are sent by the site's guest user and by scheduled jobs, which is why <em>Allow All Profiles</em> is not optional. Run <strong>Health Check</strong> → the <em>Donor Email Sender</em> line to see which half is missing</td>
 </tr>
 <tr>
 <td>Reply-to email</td>
-<td>Sets the Reply-To header on every transactional email the package sends</td>
-<td>Immediate — the one "sender" field that's genuinely wired everywhere</td>
+<td>Sets the Reply-To header on every transactional email the package sends. It doubles as the fallback staff recipient — a refund request or card-dispute alert with no gift owner to notify is sent here</td>
+<td>Immediate. Blank means replies go to the sending address itself</td>
 </tr>
 <tr>
 <td>Support phone</td>
@@ -2814,8 +2814,8 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 <tbody>
 <tr>
 <td>Deductible calculation mode</td>
-<td>Whether the non-deductible portion of a ticket price is computed from each ticket type's Fair Market Value, or as a flat percentage</td>
-<td>New tickets only — only affects orders finalized <em>after</em> the change; already-issued receipts keep the split that was computed at the time</td>
+<td>Whether the non-deductible portion of a ticket price is computed from each ticket type's Fair Market Value, or as a flat percentage. The two fields are not interchangeable — each mode reads only its own, and ignores the other</td>
+<td>New tickets only — only affects orders finalized <em>after</em> the change; already-issued receipts keep the split that was computed at the time. Switching <strong>to</strong> Percentage makes the ticket type's Deductible % required from then on; ticket types created earlier keep what they had, and any still missing a percentage records its sales as 0% deductible (whole price non-deductible) and logs a warning, rather than reading a fair-market value a percentage org never fills. Set the percentage on each existing tier — 0 is a valid answer — before selling under the new mode.</td>
 </tr>
 <tr>
 <td>Sync attendees as Campaign Members</td>
@@ -3255,13 +3255,18 @@ Record Type than the packaged default.</p>
 <tbody>
 <tr>
 <td>Scheduled Jobs</td>
-<td>Confirms the expected background jobs are running — the donation finalizer, the reconciliation heartbeat, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep, and the nightly campaign-total rebuild</td>
-<td><strong>Fix</strong> re-schedules any missing jobs immediately (safe to click even if some are already running — it only adds what's missing)</td>
+<td>Counts the cron entries the package expects — the donation finalizer, the reconciliation heartbeat, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep, and the nightly campaign-total rebuild. It confirms they are <strong>scheduled</strong>, which is not the same as running; <strong>Gifts Being Recorded</strong> below is the row that knows the difference</td>
+<td><strong>Fix</strong> schedules whatever is missing and re-owns any job whose owner no longer resolves. Safe to click at any time — a job that exists and is running is left alone, cadence included</td>
 </tr>
 <tr>
 <td>Gifts Being Recorded</td>
-<td>Confirms the finalizer is actually <strong>running</strong>, not merely scheduled. The Scheduled Jobs row above counts jobs; this row reads a marker the finalizer stamps from inside itself, so it catches the case where all jobs are present but every run is failing. When it fails it tells you how many confirmed gifts have been charged with no donation record created</td>
-<td>No Fix button of its own — use <strong>Fix</strong> on the Scheduled Jobs row, then re-run the check a few minutes later</td>
+<td>Confirms the finalizer is actually <strong>running</strong>, not merely scheduled. The Scheduled Jobs row above counts jobs; this row reads a marker the finalizer stamps from inside itself, so it catches the case where all jobs are present but every run is failing. Three states, not two: <strong>green</strong> when a pass completed recently, <strong>amber</strong> when no pass has ever completed and no gift is waiting on one — every fresh install, where the work is real but nothing is at risk — and <strong>red</strong> when gifts are genuinely charged with no donation record, naming the count</td>
+<td><strong>Fix</strong> re-schedules the whole pipeline under your own login, including re-owning any job the install left with an unreachable owner — the same repair as the Scheduled Jobs row. Available on amber as well as red, because the fresh install is the state that most needs it. Re-run the check a few minutes later</td>
+</tr>
+<tr>
+<td>Donor Email Sender</td>
+<td>Confirms the <strong>From email</strong> on Email &amp; Receipts actually resolves to an Org-Wide Email Address the package can send as — one that is verified <em>and</em> has <em>Allow All Profiles to Use this From Address</em> ticked. This is the only place the difference surfaces: a From address that resolves to nothing costs no donor a receipt, it just sends every one of them from whichever user or background job happened to trigger it</td>
+<td>No Fix button — the record has to be created and verified in Setup → <strong>Organization-Wide Addresses</strong>. The row names which of the two boxes is missing</td>
 </tr>
 <tr>
 <td>Record Type Mappings</td>
@@ -3274,7 +3279,7 @@ Record Type than the packaged default.</p>
 <td>No Fix button — go configure one on the Payments panel</td>
 </tr>
 <tr>
-<td>Org Limits</td>
+<td>SOQL Limit (this request)</td>
 <td>Reports this request's own SOQL query usage</td>
 <td>Informational only — a per-transaction number, not an ongoing org-wide usage metric</td>
 </tr>
@@ -3312,7 +3317,7 @@ printed at the bottom of its card.</p>
 <tr>
 <td><strong>Schedule missing jobs</strong> (panel header, and the button on the empty state)</td>
 <td>Schedules every background job the package expects — the finalizer and heartbeat families, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep and the nightly campaign-total rebuild</td>
-<td>Immediate, and safe to click at any time: a job that already exists is left exactly as it is, including a cadence you customized below. This is the same action as <strong>Fix</strong> on the Health Check row and "Schedule the missing jobs" on Get Started. If the panel is empty, this is the only control that can start the schedule — the cadence editor only appears once a family has jobs to edit.</td>
+<td>Immediate, and safe to click at any time. A job that exists <strong>and is running</strong> is left exactly as it is, cadence included. A job whose owner no longer resolves — which is every job a fresh install created, since the post-install script runs as a system user the org cannot reach — is aborted and rescheduled under your login. That second behaviour is the whole reason to press this after a fresh install. Same action as <strong>Fix</strong> on the Health Check row and the Get Started button, which reads "Restart the background jobs" when the jobs exist but are dead. If the panel is empty, this is the only control that can start the schedule — the cadence editor only appears once a family has jobs to edit.</td>
 </tr>
 <tr>
 <td>"Run every" cadence + <strong>Save</strong> (per job family)</td>

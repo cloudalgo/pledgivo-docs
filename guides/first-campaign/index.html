@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/guides/first-campaign/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/guides/first-campaign/">
       
       
         <link rel="prev" href="../../data-model/settings/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Set up your first campaign - Pledgivo" />
 <meta property="og:description" content="From a blank Campaign record to a published, donor-ready donation page — including the Page Canvas composer." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/guides/first-campaign.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/first-campaign.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/guides/first-campaign/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/guides/first-campaign/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Set up your first campaign - Pledgivo" />
 <meta property="twitter:description" content="From a blank Campaign record to a published, donor-ready donation page — including the Page Canvas composer." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/guides/first-campaign.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/first-campaign.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -2415,7 +2415,7 @@
     <li><button type="button" data-t="170"><b>2:50</b> Wrap up</button></li>
   </ul>
 </div>
-<p class="fn-figure-caption"><b>What it is.</b> A three-and-a-half-minute narrated run through everything below and the <a href="embed-donate-widget.md">embed guide</a> that follows it — the campaign record, the donation page a donor actually sees, a real Stripe test payment, and the same campaign running on an external website. It is built from the screenshots on these two pages rather than screen-recorded, so every screen holds for as long as its narration takes and nothing moves faster than you can read. Captions are in the player's subtitles menu; the chapter list jumps straight to a section.</p>
+<p class="fn-figure-caption"><b>What it is.</b> A three-and-a-half-minute narrated run through everything below and the <a href="../embed-donate-widget/">embed guide</a> that follows it — the campaign record, the donation page a donor actually sees, a real Stripe test payment, and the same campaign running on an external website. It is built from the screenshots on these two pages rather than screen-recorded, so every screen holds for as long as its narration takes and nothing moves faster than you can read. Captions are in the player's subtitles menu; the chapter list jumps straight to a section.</p>
 
 <h2 id="1-create-the-campaign">1. Create the Campaign<a class="headerlink" href="#1-create-the-campaign" title="Permanent link">#</a></h2>
 <p>Create a standard Salesforce Campaign — any Type. Give it a name donors will recognize; it
@@ -2551,16 +2551,22 @@ the address they entered.</p>
 <p>The donor sees that third screen the moment Stripe confirms the card. Salesforce creates the
 Opportunity, the Contact and the receipt <strong>later</strong>, from a scheduled Apex job. If those jobs
 are not running, the card is still charged, the donor still gets the thank-you page, and
-nothing at all is written down — the gift sits as a <code>Donation_Staging__c</code> row and no alarm
-fires, because the job that would raise the alarm is scheduled by the same one-shot that
-schedules the finalizer.</p>
+nothing at all is written down — the gift sits as a <code>Donation_Staging__c</code> row until the jobs
+are running again.</p>
 <p>This is exactly what happened on the fresh-install run these screenshots come from: a real
-$100 payment succeeded into an org with zero scheduled jobs. Nothing was lost — the next
+$100 payment succeeded into an org whose jobs were not running. Nothing was lost — the next
 finalizer pass picked the row up and created the donation correctly — but for as long as the
-jobs were absent, every donation was invisible.</p>
+pipeline was down, every donation was invisible.</p>
+<p>It is not silent. Each such gift writes a <code>PIPELINE_STALE</code> row to the <strong>Transaction Log</strong> as
+it is taken, from the donation request itself rather than from a job, so the alarm does not
+depend on the thing that is broken. The <strong>Gifts Being Recorded</strong> health check then turns red
+and names the count.</p>
 <p><strong>So check both ends.</strong> Before you share a link, confirm <strong>Settings → Get Started → Start the
-background jobs</strong> reads DONE. After a test gift, confirm the record actually exists: the
-<strong>Donation Monitor</strong> tab, or the campaign's Opportunities related list. See
+background jobs</strong> is green. On a fresh install it will not be — it reads amber, because the
+install schedules the jobs under a system user the org cannot reach and they never run. Press
+<strong>Restart the background jobs</strong> and wait a few minutes for it to go green. After a test gift,
+confirm the record actually exists: the <strong>Donation Monitor</strong> tab, or the campaign's
+Opportunities related list. See
 <a href="../../getting-started/after-you-install/#background-jobs">After you install</a>.</p>
 </div>
 <p>If the finalizer is running, a gift takes a few minutes to appear. What you should end up with,

@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/guides/setup-ticketed-event/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/guides/setup-ticketed-event/">
       
       
         <link rel="prev" href="../writing-a-campaign-story/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Set up a ticketed event - Pledgivo" />
 <meta property="og:description" content="Build a ticketed event campaign — venue details, ticket tiers, and the public registration flow — from the Fundraisers console." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/guides/setup-ticketed-event.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/setup-ticketed-event.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/guides/setup-ticketed-event/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/guides/setup-ticketed-event/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Set up a ticketed event - Pledgivo" />
 <meta property="twitter:description" content="Build a ticketed event campaign — venue details, ticket tiers, and the public registration flow — from the Fundraisers console." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/guides/setup-ticketed-event.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/setup-ticketed-event.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -2331,7 +2331,7 @@ one tier has both a name and a price.</p>
 </tr>
 <tr>
 <td>Deductible amount</td>
-<td>Either a flat Fair Market Value (the non-deductible portion, e.g. the cost of a included meal) or a percentage — which one applies is set org-wide in Settings, see below</td>
+<td>Either a flat Fair Market Value (the non-deductible portion, e.g. the cost of a included meal) or a percentage — which one applies is set org-wide in Settings, see below. The tier editor labels whichever one your org uses and greys the hint on the other; in Percentage mode the Deductible % is <strong>required</strong> and the tier will not save without it (enter 0 if none of the price is deductible)</td>
 </tr>
 <tr>
 <td>What's included</td>
@@ -2374,12 +2374,18 @@ theme.</p>
 <td>Deductible Amount Mode</td>
 <td>Fair Market Value (default) or Percentage — which of the two per-tier deductible fields (above) is used to calculate the tax-deductible portion of every ticket sold, org-wide</td>
 </tr>
-<tr>
-<td>Sync Campaign Members</td>
-<td>When on, each attendee who resolves to a Contact also gets a CampaignMember record on the event Campaign</td>
-</tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Switching to Percentage after tiers already exist</p>
+<p>Ticket types created before the switch keep whatever they had, and the deductible percentage
+was optional then. Any tier still missing a percentage records its sales as <strong>0% tax-deductible</strong>
+— the whole ticket price non-deductible — and writes a warning to the log each time. That is the
+deliberate safe direction: a receipt that understates a deduction can be corrected, one that
+overstates it is a problem for the donor. Open each existing tier and set its Deductible % (0 is
+a valid answer) before selling under the new mode.</p>
+</div>
+<p>| Sync Campaign Members | When on, each attendee who resolves to a Contact also gets a CampaignMember record on the event Campaign |</p>
 <div class="admonition note">
 <p class="admonition-title">No seat-hold setting to configure</p>
 <p>Seat reservation (holding a seat for the ~30 minutes a checkout is in progress, then

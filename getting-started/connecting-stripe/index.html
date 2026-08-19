@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/getting-started/connecting-stripe/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/getting-started/connecting-stripe/">
       
       
         <link rel="prev" href="../experience-cloud-setup/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Connecting Stripe - Pledgivo" />
 <meta property="og:description" content="Build the Stripe credential in Setup with the Payments panel's guided checklist, then route campaigns to it." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/getting-started/connecting-stripe.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/getting-started/connecting-stripe.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/getting-started/connecting-stripe/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/getting-started/connecting-stripe/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Connecting Stripe - Pledgivo" />
 <meta property="twitter:description" content="Build the Stripe credential in Setup with the Payments panel's guided checklist, then route campaigns to it." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/getting-started/connecting-stripe.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/getting-started/connecting-stripe.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -2386,7 +2386,14 @@ catches it.
    <a href="../after-you-install/#build-the-credential-pair">After you install</a>.
 4. Step 7 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
    Access grant, and assigns it to the staff who take payments or issue refunds. In split mode
-   there are two grants to make — one per credential — and the step grades both.
+   there are two grants to make — one per credential — and the step grades both.</p>
+<p><strong>The same set also needs Read and Create on the standard User External Credential object</strong>
+(<em>Object Settings → User External Credentials</em>). A callout needs both grants: the principal,
+and that object, which is where Salesforce writes the row that mints the credential. Miss the
+second and every charge fails with <em>"You don't have read permissions on the User External
+Credential object."</em> — a message the donor never sees and that surfaces only in <strong>Diagnostic
+Logs</strong>. This grant cannot ship inside the package: Salesforce strips standard-object
+permissions out of an installed permission set.
 5. Step 8 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
    guest user</strong> — do this only if you take donations from public pages. It also names every
    permission set your guest user holds and asks you to confirm none of them grants the <em>admin</em>

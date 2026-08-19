@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/reference/apex/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/reference/apex/">
       
       
         <link rel="prev" href="../../guides/monitor-and-diagnose/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Apex Reference - Pledgivo" />
 <meta property="og:description" content="Every packaged Apex class, grouped by domain and FFLib layer, generated from deployed source." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/reference/apex.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/reference/apex.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/reference/apex/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/reference/apex/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Apex Reference - Pledgivo" />
 <meta property="twitter:description" content="Every packaged Apex class, grouped by domain and FFLib layer, generated from deployed source." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/reference/apex.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/reference/apex.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -4607,6 +4607,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-emailsenderservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EmailSenderService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-icommunityservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7956,6 +7967,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-emailsenderservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EmailSenderService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-icommunityservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -8318,7 +8340,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>204</code></span><span><b>Test classes</b><code>141</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>205</code></span><span><b>Test classes</b><code>142</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -8379,7 +8401,7 @@
 <li>
 <p><strong><a href="#domain-setup">Setup</a></strong></p>
 <hr />
-<p>22 classes</p>
+<p>23 classes</p>
 <p><a href="#domain-setup-controller">Controllers</a> · <a href="#domain-setup-domain">Domains</a> · <a href="#domain-setup-selector">Selectors</a> · <a href="#domain-setup-service">Services</a></p>
 </li>
 <li>
@@ -11777,7 +11799,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-autoreceiptenabled">SettingsService.autoReceiptEnabled()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-autoreceiptenabled">SettingsService.autoReceiptEnabled()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11787,7 +11809,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11812,7 +11834,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11827,7 +11849,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12675,7 +12697,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a>, <a href="#apex-settingsservice-donorportalshowsummary">SettingsService.donorPortalShowSummary()</a>, <a href="#apex-settingsservice-donorportalshowrecurring">SettingsService.donorPortalShowRecurring()</a>, <a href="#apex-settingsservice-donorportalshowhistory">SettingsService.donorPortalShowHistory()</a>, <a href="#apex-settingsservice-donorportalshowwallet">SettingsService.donorPortalShowWallet()</a>, <a href="#apex-settingsservice-donorportalrequesttitle">SettingsService.donorPortalRequestTitle()</a>, <a href="#apex-settingsservice-donorportalrequestsubtitle">SettingsService.donorPortalRequestSubtitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationtitle">SettingsService.donorPortalConfirmationTitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationmessage">SettingsService.donorPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-donorportalemptyrecurringmessage">SettingsService.donorPortalEmptyRecurringMessage()</a>, <a href="#apex-settingsservice-donorportalemptyhistorymessage">SettingsService.donorPortalEmptyHistoryMessage()</a>, <a href="#apex-settingsservice-donorportalemptywalletmessage">SettingsService.donorPortalEmptyWalletMessage()</a>, <a href="#apex-campaignservice-resolvecontact">CampaignService.resolveContact()</a>, <a href="#apex-campaignservice-resolveidentity">CampaignService.resolveIdentity()</a>, <a href="#apex-opportunitiesselector-newinstance">OpportunitiesSelector.newInstance()</a>, <a href="#apex-recurringdonationsselector-newinstance">RecurringDonationsSelector.newInstance()</a>, <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a>, <a href="#apex-refundrequesthandler-evaluate">RefundRequestHandler.evaluate()</a>, <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-donationdesignationsselector-newinstance">DonationDesignationsSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a>, <a href="#apex-settingsservice-donorportalshowsummary">SettingsService.donorPortalShowSummary()</a>, <a href="#apex-settingsservice-donorportalshowrecurring">SettingsService.donorPortalShowRecurring()</a>, <a href="#apex-settingsservice-donorportalshowhistory">SettingsService.donorPortalShowHistory()</a>, <a href="#apex-settingsservice-donorportalshowwallet">SettingsService.donorPortalShowWallet()</a>, <a href="#apex-settingsservice-donorportalrequesttitle">SettingsService.donorPortalRequestTitle()</a>, <a href="#apex-settingsservice-donorportalrequestsubtitle">SettingsService.donorPortalRequestSubtitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationtitle">SettingsService.donorPortalConfirmationTitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationmessage">SettingsService.donorPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-donorportalemptyrecurringmessage">SettingsService.donorPortalEmptyRecurringMessage()</a>, <a href="#apex-settingsservice-donorportalemptyhistorymessage">SettingsService.donorPortalEmptyHistoryMessage()</a>, <a href="#apex-settingsservice-donorportalemptywalletmessage">SettingsService.donorPortalEmptyWalletMessage()</a>, <a href="#apex-campaignservice-resolvecontact">CampaignService.resolveContact()</a>, <a href="#apex-campaignservice-resolveidentity">CampaignService.resolveIdentity()</a>, <a href="#apex-opportunitiesselector-newinstance">OpportunitiesSelector.newInstance()</a>, <a href="#apex-recurringdonationsselector-newinstance">RecurringDonationsSelector.newInstance()</a>, <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a>, <a href="#apex-refundrequesthandler-evaluate">RefundRequestHandler.evaluate()</a>, <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-donationdesignationsselector-newinstance">DonationDesignationsSelector.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12967,6 +12989,7 @@
 <p>Scope note (Slice C, Task 1): after the tier's Product2/Event_Ticket_Type__c commit via UoW, saveTicketType/saveTicketTypes call <a href="#apex-pricebookservice-ensureentriesfor"><code>PricebookService.ensureEntriesFor</code></a>() (direct SOQL/DML, not UoW — PricebookEntry can't be registered against an unsaved Product2) so purchase-time OpportunityLineItems have a PricebookEntry to reference. Price__c on the junction remains the price source of truth — the PricebookEntry.UnitPrice is only a required placeholder.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
+<p>deductibleMode travels with the tiers so the editor can say which of the two split fields is load-bearing in THIS org. Without it the editor showed Fair Market Value and Deductible % side by side with no indication that only one of them is read, and the Deductible % placeholder claimed a derivation from FMV that has never existed (audit F-81).</p>
 <p>The authorization check for every read in this controller. Event_Ticket_Type__c queries run SYSTEM_MODE because 2GP cannot grant object permissions on a master-detail detail of a standard master (full reasoning in <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a>'s class header), so the selector layer can no longer refuse anyone — this method is where that refusal moved.</p>
 <p>Master-detail access is defined by the master record, so asking whether the running user can see the parent Campaign under USER_MODE is the same question the platform would have asked about the child, and the one the child's ungrantable describe cannot answer.</p>
 <p>Writes need this gate just as much as reads, and for a while they did not have it. The rationale that used to sit here — that the Unit of Work commits in user mode, so the platform would enforce master-inherited access on the write itself — is simply false: <a href="#apex-application"><code>Application</code></a>.cls builds its UnitOfWorkFactory from a bare List&lt;SObjectType&gt;, which makes fflib use SimpleDML, and SimpleDML is declared <code>without sharing</code> and commits at AccessLevel.SYSTEM_MODE. Nothing downstream re-checks the caller.</p>
@@ -12974,6 +12997,8 @@
 <p>requireCampaignVisible on its own is not enough for an update. buildTierFromMap takes the tier id straight off the client payload and constructs new Event_Ticket_Type__c(Id = ...) without re-reading it, so a caller who legitimately administers campaign A can post A's id alongside a tier id belonging to campaign B and write to B's tier — the campaign gate passes because A really is visible, and the blind registerDirty never consults B.</p>
 <p>This method closes that by re-reading every supplied tier and refusing any whose Campaign__c is not the campaign already gated above. Ids that resolve to nothing are refused too, so a deleted or fabricated id cannot be distinguished from one on another event.</p>
 <p>Highlight_Label__c is both the badge copy and the on-switch, so "two highlighted tiers" is not something the platform can reject — it just makes the badge meaningless, since three tiers all reading "Most popular" recommend nothing. Both editors (the fundraiser wizard's Tickets step and the drawer's Tickets tab) let an admin highlight a tier without thinking about the others, so the demotion happens here, once, rather than in each editor's client code where a stale list would miss a tier. It is an editing convention, not a data constraint: an API or Data Loader write bypasses this method entirely, and publicEventRegistration renders whatever it is given.</p>
+<p>A ticket tier must be able to state its tax-deductible split under the mode the org is actually running. In Percentage mode a tier with no Deductible % used to fall through to the Fair Market Value branch of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, and a Percentage-mode org has no reason to have filled FMV — both blank printed the WHOLE ticket price on the receipt as tax-deductible. The runtime now records 0% instead of overstating, but that is the backstop; this is the fix. Returns null when the tier is configured, otherwise the admin-facing reason.</p>
+<p>Only the ACTIVE mode is gated. Requiring both fields would force every org to maintain a split model it does not use, and an org that later switches modes is caught by the validation rule on the object plus the runtime warning, not by a save it cannot complete. 0 is a legitimate percentage (a wholly non-deductible ticket) and passes; only a missing value fails.</p>
 </div>
 <table>
 <thead>
@@ -13463,7 +13488,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-pricebookservice-eventpricebookid">PricebookService.eventPricebookId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-settingsservice-eventsynccampaignmembers">SettingsService.eventSyncCampaignMembers()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-settingsservice-eventdonationproductid">SettingsService.eventDonationProductId()</a>, <a href="#apex-settingsservice-eventdeductiblemode">SettingsService.eventDeductibleMode()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-pricebookservice-eventpricebookid">PricebookService.eventPricebookId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -13966,7 +13991,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-donorrefundrequestsenabled">SettingsService.donorRefundRequestsEnabled()</a>, <a href="#apex-refundservice-isrefundablestatus">RefundService.isRefundableStatus()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a>, <a href="#apex-guestrequestoutcome-declined">GuestRequestOutcome.declined()</a>, <a href="#apex-guestrequestoutcome-awaitingreview">GuestRequestOutcome.awaitingReview()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a>, <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-donorrefundrequestsenabled">SettingsService.donorRefundRequestsEnabled()</a>, <a href="#apex-refundservice-isrefundablestatus">RefundService.isRefundableStatus()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a>, <a href="#apex-guestrequestoutcome-declined">GuestRequestOutcome.declined()</a>, <a href="#apex-guestrequestoutcome-awaitingreview">GuestRequestOutcome.awaitingReview()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-settingsservice-orgdisplayname">SettingsService.orgDisplayName()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -14672,6 +14697,7 @@
 <p>The second half used to be a FAILED detector: a site guest user holding the ADMIN principal is a live refund exposure, and an admin who granted the wrong permission set by hand has no other way to find out. It ran on principal ids that ConnectApi returned, and with those gone there is no way to tell the two grants apart — so the check is now stated as the thing the admin must confirm, naming the exact permission sets a guest holds.</p>
 <p>Losing the detector does not lose the defence. Layers 1 and 2 — the guest-path guard and the credential split itself — still stop the package reaching a back-office operation from a guest path, so this step is the third layer and is now advisory. The restricted-key probe catches the same exposure from the other side: it proves the key a guest can reach cannot issue a refund.</p>
 <p>The prerequisite this step never stated, and the dead end a first-run admin walks into: there IS no site guest user until an Experience Cloud site exists, and every instruction here (Digital Experiences → All Sites → Builder → gear → General → Guest User Profile) presupposes one. Found 2026-08-18 on the 1.0.0.20 fresh-install audit — Site and Network both returned zero rows and the step still reported the guest user as holding the wrong grants, which is a statement about a user that does not exist. Only a POSITIVE "no site" reading changes the message; an unreadable answer falls through to the wording below rather than inventing a cause.</p>
+<p>Reported before the "which credential?" question, because it is the harder failure to diagnose: the principal grant is visibly present, the panel used to say the card could be charged, and every public donation died at the callout with an error only Diagnostic Logs ever showed. Site &amp; Domain and Get Started both grade this leg too — all three must agree, so none of them may assert "can charge a card" without it.</p>
 <p>This copy is deliberately duplicated in three places that must agree — this step, the two fields' inlineHelpText, and docs-site/docs/getting-started/connecting-stripe.md. An admin reaches whichever one they reach first, and a contradiction between them is worse than the repetition.</p>
 <p>No position argument. Every step used to carry its own hardcoded number, repeated once per branch — 25 literals for 11 steps — and the numbering contradicted the dependency graph: 'restrictedKey' sat at position 7 but its probe needs the Payment_Account__c that stepPaymentAccount creates and the principal grant stepPermissionSet asks for, both of which came later in the list — so following the numbers in order could not work. Numbers are assigned by assignPositions() from the order of the list in buildGuide(), so reordering a step is now a one-line move and the two cannot disagree.</p>
 <p>Called once, immediately after buildGuide() composes the list. The list order IS the numbering — there is no second place to keep in step with it.</p>
@@ -14692,6 +14718,7 @@
 <p>A first-run walkthrough built both external credentials, both principals, both headers and both named credentials, pressed Re-check, was told "Nothing built yet" six times over, and concluded it had done the whole stage wrong (2026-08-17 — the most damaging finding on this panel).</p>
 <p>The order the guide asks for is right, and it is the only order that works: the account form cannot save without a named credential to pick. So the fix is to say what is true — this stage starts grading once the account below names your credentials — never to imply the work was not done.</p>
 <p>Org-wide, not per credential, and deliberately so: SetupEntityAccess is the only readable evidence that any external credential is granted to anybody, and its SetupEntityId points at an ExternalCredentialParameter row that standard SOQL cannot query. So this counts what it can prove — which permission sets carry a grant, how many distinct principals are granted across all of them, and who holds those sets — and the two grant steps ask the admin to confirm the pairing rather than inventing one.</p>
+<p>The package DOES carry this grant, on Fundraising_GuestDonor, and it never arrives in a subscriber org: <code>sf package version create</code> strips standard-object permissions out of a managed permission set and still reports Success (AGENTS.md, confirmed 2026-08-16). So it is a manual step by construction, which is why it is checked here rather than assumed — the same reasoning as guest Campaign read and the principal grant itself.</p>
 <p>Dynamic SOQL, not a static query: Network does not exist as a queryable type until Digital Experiences is enabled, so a static reference would refuse to compile in an org that has never turned it on — which is precisely the org this check exists for. An exception here therefore means "not enabled, or not readable by this user"; both are reported as NULL rather than as "no site", because the two cases lead an admin to different screens.</p>
 <p>DeveloperName only. There is no field on this object for the callout URL of a modern credential, the credential type, "Enabled for Callouts" or "Allowed Namespaces for Callouts" — Endpoint is the legacy URL field and is null on the credentials this guide has admins build. Everything selected here is everything the platform offers.</p>
 <p>CustomHttpHeader.ParentId references ExternalDataSource and NamedCredential only, so this can never return a header that sits on an EXTERNAL credential — which is where this guide tells admins to put it. An empty result is therefore the expected case, not a finding. HeaderFieldValue is selected because the merge formula has to be parsed out of it, and it is discarded immediately: see the Reading class, which stores the parsed credential and parameter names and never the value, because the value is the live secret key whenever the admin pasted a literal instead of a formula.</p>
@@ -16169,10 +16196,13 @@
 <p>The route to the guest user is spelled out in full because the two routes an admin reaches for first are both dead ends: "Administration → Members" manages which profiles and permission sets may be MEMBERS of the site, and the guest user is not listed under Setup → Users at all. This checklist named both of them until 2026-08-17, when a first-run walkthrough followed them and got nowhere. Route verified against Salesforce Help, "Assign the Permission Sets to Experience Cloud Site Guest Users" (Summer '26); the Site &amp; Domain and Payments panels carry the same wording.</p>
 <p>This description states the consequence rather than the mechanism because the previous wording ("the install schedules all of them; re-run this if any were aborted") read as reassurance, and a 2026-08-17 fresh-install run skipped the step on the strength of it, then took a real card payment that no record was ever created for.</p>
 <p>The donation form still does not REFUSE a gift while the finalizer is down — blocking a donation to guard against a delay would be the larger outage — so this description carries the consequence. Since 2026-08-18 (F-36) it does raise the alarm: each such gift writes a PIPELINE_STALE Transaction_Log__c row, and the heartbeat read below turns this step red even when all 24 jobs are present but none of them is running.</p>
+<p>The label follows the failure, because the two failures need different words. A stale pipeline has every job PRESENT and none of them running (F-67: install-time jobs owned by an unreachable system user), so offering to "schedule the missing jobs" describes work there is none of — a 2026-08-17 walkthrough read exactly that and concluded the button was broken. Same button either way; it schedules what is absent and re-owns what is orphaned (SetupController.FixHealthCheckItem → scheduleJobs(true)).</p>
+<p>The unset detail used to read "public pages fall back to the org name". They do not. <a href="#apex-uiconfigcontroller"><code>UiConfigController</code></a> hands orgName straight from <a href="#apex-settingsservice-orgdisplayname"><code>SettingsService.orgDisplayName</code></a>(), which is null when the field is blank, and every guest consumer degrades to empty text — pfTrustbar, publicThankYou, publicEventTickets and publicDonorDashboard to '', publicCampaignGallery to the literal word "Fundraising". (Their monogram tiles degrade to '?' too, but only in an org with no logo, and the install seeds one.) The only place that really falls back to UserInfo.getOrganizationName() is the INTERNAL receipt print page (<a href="#apex-recordpageservice-getreceiptdata"><code>RecordPageService.getReceiptData</code></a>), because a tax document with an empty letterhead is not a receipt. Saying the guest pages do the same told an admin the blank field was harmless when it is what a donor sees.</p>
 <p>Every step's "read more" is this URL plus the docsAnchor its buildGuideStep call passes. Those anchors are NOT derived from the headings on that page — MkDocs would slug "## 4. Connect Stripe" as <code>4-connect-stripe</code>, and for the whole release before 2026-08-17 seven of the eight links pointed at ids that did not exist, landing the admin at the top of a 450-line page with no indication anything had gone wrong.</p>
 <p>The page now pins each heading's id with an attr_list <code>{ #slug }</code> so the anchor survives renumbering and rewording. Adding a step here means adding a section AND its <code>{ #slug }</code> there. Four of them had drifted apart again by 2026-08-18, so the pairing is no longer trusted to reviewers: docs-site/scripts/mkdocs_hooks.py reads the anchors back out of this class and fails the docs build when one is missing from that page. A renamed section now breaks a build instead of quietly breaking a link.</p>
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration.</p>
 <p>The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
+<p>The object-access leg was added 2026-08-19 (audit F-76). Until then this row graded the principal grant alone and went green on an org where every public donation still died at the callout with "You don't have read permissions on the User External Credential object" — the Site &amp; Domain panel's step 5 already reported that org as broken, so the console contradicted itself on the same fact, and this row was the one an admin sees first. It is a distinct 'warn' rather than 'fail' because the two grants are separate pieces of work and an admin who has done one has genuinely done half of the step.</p>
 <p>Returns the raw Settings__c on purpose — <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
 <p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that <a href="#apex-settingsservice"><code>SettingsService</code></a> defaults to — the nulls below are deliberate, not a failed parse.</p>
 <p>SavePaymentAccount answers with { id, warning } rather than a bare Id so the console can say something at the moment a shared credential is chosen. A WARNING, never a block. Running one credential in both roles is a configuration an admin may choose deliberately, and blocking it would fight a decision they have just made. The value here is timing: it catches the exposure at the moment it is created rather than on the next guide load, which the admin may never open again.</p>
@@ -16188,7 +16218,9 @@
 <p>Counts jobs that are still LIVE, not just jobs sitting in WAITING. CronTrigger.State cycles WAITING → ACQUIRED → EXECUTING and back on every single fire, per the CronTrigger Object Reference (Summer '26 / API 67.0). With twelve finalizer jobs on a five-minute cadence, one of them is very often mid-fire — so the old <code>State = 'WAITING'</code> filter under-counted at random.</p>
 <p>A first-run walkthrough pressed Re-check seven times with no action in between and read 24, 24, 23, 24, 24, 24, 24; on the 23 the console dropped the org's score and offered a "Schedule the missing jobs" button for a job that was never missing (2026-08-17, finding 4). A health check that flickers is worse than no health check: it teaches the admin to fix things that are not broken.</p>
 <p>The live test is instead — the row exists, it has a next fire time, and it is not in one of the three terminal states. COMPLETE is documented as "fired and is not scheduled to fire again"; DELETED and ERROR speak for themselves. A job removed with System.abortJob() leaves no CronTrigger row at all, which this counts as missing — correctly. Source: https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_crontrigger.htm</p>
-<p>One sentence shared by the health-check panel and the Get Started step so the two can never disagree about how bad things are. Quantifies the damage from the staging rows themselves (confirmed gifts with a PaymentIntent that no Opportunity was ever created for) rather than from the heartbeat alone — "gifts are being charged but not recorded" is only actionable with a number attached.</p>
+<p>One verdict shared by the health-check panel and the Get Started step so the two can never disagree about how bad things are. Returns a status AND its sentence together, because the two are one judgement: a caller that picked its own colour and borrowed this text is how the two rows drifted apart in the first place.</p>
+<p>THREE states, not two (audit F-53). <a href="#apex-settingsservice-isfinalizerpipelinestale"><code>SettingsService.isFinalizerPipelineStale</code></a>() folds "never reported in" into "stale" on purpose — for the guest donation path, a pipeline that has never run is exactly as dead as one that stopped, and that caller only needs the boolean. The console needs the distinction, because the two states differ in what is at RISK, not in what is broken. Every fresh install sits on never-ran with zero gifts taken, so rendering it as "gifts are charged but NOT recorded" made the loudest alarm in the console wrong on literally every install — and an alarm that cries wolf on day one is how the next real one gets ignored. It is still a warning, still carries the Fix button, and still says plainly that the jobs will not run until the admin restarts them: F-67 established that a fresh install schedules them under a system user the org cannot reach, so this is real work, just not yet a loss.</p>
+<p>The damage number comes from the staging rows themselves — confirmed gifts with a PaymentIntent that no Opportunity was ever created for — because "gifts are being charged but not recorded" is only actionable with a count attached, and because a count of zero is what separates a fresh install from an org that is losing money.</p>
 </div>
 <table>
 <thead>
@@ -16709,7 +16741,7 @@
 <p>More than one active Guest user matching the name convention is treated the same as zero — UNRESOLVABLE, not "pick the first one". A Salesforce Site (Visualforce) and an Experience site can share a display name, so an arbitrary row would let steps 4-6 report a false Done off the wrong guest user while real donations keep failing. LIMIT 2 (not 1) is what makes that ambiguity detectable at all — see I1 in the 2026-08-10 site-setup-guide-redesign final review.</p>
 <p>Resolved from the org's own payment accounts, never from a credential name this class knows. The package stopped shipping Stripe_API / Stripe_External in 2026-08: the admin builds the External Credential + Named Credential pair by hand in Setup, once per gateway account, and names them whatever they like. A hardcoded lookup would therefore report "no credential" in almost every subscriber org and turn step 6 permanently red.</p>
 <p>So walk the same chain the payments panel walks — active Payment_Account__c rows name a Named Credential, and each Named Credential names the External Credential whose principals carry the key. An org with several Stripe accounts has several pairs, and a grant on ANY of them lets that account's donations through, so every principal counts.</p>
-<p>This supersedes the reconcile-after-merge note that stood here while <a href="#apex-setupcontroller"><code>SetupController</code></a>.paymentCredentialGrantedToGuest() was being written on a sibling branch; the two now differ by intent — that one grades one chosen account, this one asks whether the site's guest user can reach any configured account at all.</p>
+<p>This supersedes the reconcile-after-merge note that stood here while <a href="#apex-setupcontroller"><code>SetupController</code></a>.guestPaymentCredentialStatus() was being written on a sibling branch; the two now differ by intent — that one grades one chosen account, this one asks whether the site's guest user can reach any configured account at all.</p>
 <p>The name-resolution walk also removes the reason the old bare-name-then-prefixed-name fallback existed: a name read off a Payment_Account__c row is already whatever the admin typed, in whatever form this org stores it, so there is no namespace form to guess at.</p>
 <p>The two ConnectApi reads are split out as overridable seams so the join above is testable at all: its body only runs when getNamedCredential() SUCCEEDS, and no test can make that happen — a test cannot create a Named Credential, and depending on whichever credential this org happens to have is org state a packaged test must never assert on. Without the seams the whole walk (credential → its external credentials → their principals) is permanently unreachable code. They deliberately return plain Apex types rather than the ConnectApi wrappers, so a stub can supply them without constructing a ConnectApi.NamedCredential; see CommunityService_Test.StubCredentialChain.</p>
 <p>Returns the developer names of the external credentials a Named Credential points at, or an empty list if the credential was renamed or never built. That is a finding for the payments panel, not a reason to abandon the org's other payment accounts, so it is logged and swallowed rather than thrown.</p>
@@ -16802,6 +16834,68 @@
 <tr>
 <td><a id="apex-communityservice-checkstripecredentialaccess"></a><code>checkStripeCredentialAccess(1 arg)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-emailsenderservice">EmailSenderService<a class="headerlink" href="#apex-emailsenderservice" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p class="fn-entry__src"><code>setup/<wbr>service/<wbr>EmailSenderService.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Stamps the shared sender identity onto every outbound donor email — the From address, the sender display name, and the reply-to — so <a href="#apex-receiptservice"><code>ReceiptService</code></a>, <a href="#apex-refundrequesthandler"><code>RefundRequestHandler</code></a> and <a href="#apex-donorportalservice"><code>DonorPortalService</code></a> cannot drift apart on who a donor thinks the message came from.</p>
+<p>FFLib role: stateless helper service. It is deliberately static rather than a registered <a href="#apex-application"><code>Application</code></a>.Service binding — it resolves org email configuration, has no domain graph behind it, and is called from inside message-building loops where a factory lookup buys nothing.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Apex cannot invent a From address. Messaging.SingleEmailMessage sends from the RUNNING USER unless it is handed the Id of an OrgWideEmailAddress, so Settings__c.From_Email__c is only ever a LOOKUP KEY for one of those records — never the sender itself. Before 2026-08-19 nothing read the field at all and every donor email went out from whichever user or scheduled job happened to trigger it.</p>
+<p>Two conditions gate the substitution, and both are the platform's, not ours:
+- IsVerified: an unverified address cannot be used as a sender.
+- IsAllowAllProfiles: donor mail is sent from contexts with no ordinary profile — the site guest user, a scheduled batch, an @future. Using an address restricted to selected profiles from one of those fails the send outright, so an address that is not shared with all profiles is treated as unusable and ignored rather than risked. When either fails we fall back to today's behaviour (running user + display name) — a misconfigured From address must never cost a donor their receipt. The Settings console's Health Check reports which of the two is missing.</p>
+<p>setOrgWideEmailAddressId and setSenderDisplayName are mutually exclusive — the platform rejects a message that sets a display name on top of an org-wide address ("The object's DisplayName field cannot be set if the setSenderDisplayName field is already set"). When a From address is in effect the name donors see is the one on the OrgWideEmailAddress record, and Settings__c.From_Name__c is intentionally not applied.</p>
+<p>Inline SOQL by the same accepted exception as <a href="#apex-reconciliationheartbeat"><code>ReconciliationHeartbeat</code></a>'s User lookup — OrgWideEmailAddress is org email configuration, not a donation-domain SObject, and has no selector or <a href="#apex-application"><code>Application</code></a>.Selector binding. SYSTEM_MODE is required, not convenient: the guest user and the Automated Process user have no read on this setup object, and a USER_MODE read would throw exactly where receipts are sent from.</p>
+<p>OrgWideEmailAddress cannot be created by a test (setup object, requires a real address verification round-trip), so the query is stubbed rather than seeded.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-emailsenderservice-applysender"></a><code>applySender(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-fromname">SettingsService.fromName()</a>, <a href="#apex-settingsservice-replytoemail">SettingsService.replyToEmail()</a>, <a href="#apex-settingsservice-fromemail">SettingsService.fromEmail()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-emailsenderservice-resolvesenderid"></a><code>resolveSenderId(0 args)</code></td>
+<td><code>Id</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-fromemail">SettingsService.fromEmail()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-emailsenderservice-describesender"></a><code>describeSender(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-fromemail">SettingsService.fromEmail()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -16973,6 +17067,7 @@
 <p>The default was 24h through 1.0.0-16 and was cut to 3h. A magic link is a bearer credential sitting in an inbox: it is not one-time-use and it is not device-bound, so its whole security story is how long the window stays open. Three hours is long enough for a donor who steps away from the machine and comes back, and short enough that a forwarded or shoulder-surfed mail is usually already dead. Admins who need longer raise Portal_Token_TTL_Hours__c; nothing hard-codes the number except this line, because every surface that states it to a donor reads it back through this accessor.</p>
 <p>Three defaults, not one, because the three cases make mutually exclusive factual claims — see the doc comment on the Receipt_Legal_Text_With_Goods__c field for why the single override this replaced was a correctness bug. These stay textually in step with the LEGAL_* constants in <a href="#apex-receiptstatushelper"><code>ReceiptStatusHelper</code></a>, which are the last-resort fallback for an org that clears a seeded field; PostInstallHandler seeds all three from here.</p>
 <p>This is the ONLY way to build a donor-facing link from internal (Lightning) context. Site.getBaseUrl() returns blank off-site and URL.getOrgDomainUrl() returns the internal My Domain host, which a guest cannot open — so an internal sender that falls back to the org domain silently emails a dead link. Prefer Site.getBaseUrl() when running inside the site (it is the host the visitor actually arrived on) and this accessor everywhere else.</p>
+<p>The address donor email is sent FROM. Consumed only by <a href="#apex-emailsenderservice"><code>EmailSenderService</code></a>, which turns it into an OrgWideEmailAddress id — Apex cannot invent a From address, so a value here that does not match a verified, all-profiles org-wide address has no effect at all.</p>
 <p>The three org-wide fallbacks behind the public page's contact band. Each returns null when unset so the band can omit the line entirely rather than print an empty label — a contact block showing "Phone:" with nothing after it reads as broken, which is the opposite of the trust the band exists to build. A campaign's own Contact_*_Override__c wins over these; CampaignService resolves that precedence, not this class.</p>
 <p>Reads Support_Phone__c rather than a contact-specific field — an org has one support number, and the payment-failure emails and the public contact band should never be able to disagree about what it is.</p>
 <p>These seven describe the ORGANISATION, not a theme. They lived on Campaign_Design__c until 2026-08-12, where a campaign switching from one packaged theme to another would have silently changed which privacy policy its donors were pointed at. Each returns null when unset so the footer can omit the line or the icon entirely — a dead "Terms" link or a social icon that opens nothing is worse for trust than no link at all, which is the whole point of the band they render in. A campaign's own *_Override__c wins over these; <a href="#apex-campaignservice-resolveidentity"><code>CampaignService.resolveIdentity</code></a> owns that precedence, not this class.</p>
@@ -17240,6 +17335,11 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-fromname"></a><code>fromName(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-fromemail"></a><code>fromEmail(0 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>

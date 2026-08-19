@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/data-model/settings/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/data-model/settings/">
       
       
         <link rel="prev" href="../payment-method/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -98,15 +98,15 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Fundraising Settings - Pledgivo" />
 <meta property="og:description" content="The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/data-model/settings.png" />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/data-model/settings.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/data-model/settings/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/data-model/settings/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Fundraising Settings - Pledgivo" />
 <meta property="twitter:description" content="The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/data-model/settings.png" />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/data-model/settings.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 
@@ -2497,13 +2497,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>From_Email__c</code></td>
 <td>From Email</td>
 <td>Email</td>
-<td>Email address donations and receipts are sent from. Should be a verified organizational address.</td>
+<td>The address donor emails come from. It only takes effect if you have created a matching Org-Wide Email Address in Setup that is verified AND has "Allow All Profiles to Use this From Address" ticked. Check Settings - System - Health Check - Donor Email Sender to confirm it is really in use.<br><em>Docs: Apex cannot invent a From address. Messaging.SingleEmailMessage sends from the running user unless handed an OrgWideEmailAddress id, which is why this field is a lookup key rather than a value the package can use directly. EmailSenderService.applySender() is the single consumer; note that setOrgWideEmailAddressId() and setSenderDisplayName() are mutually exclusive in the platform API, so From_Name__c is skipped whenever this resolves.</em></td>
 </tr>
 <tr>
 <td><code>From_Name__c</code></td>
 <td>From_Name</td>
 <td>Text</td>
-<td>Display name shown as the sender, e.g. "Riverbend Food Bank".</td>
+<td>Display name shown as the sender, e.g. "Riverbend Food Bank". If you set a From Email that matches a verified Org-Wide Email Address, that record's own display name is used instead and this field has no effect.<br><em>Docs: Skipped by EmailSenderService.applySender() whenever From_Email__c resolves, because setSenderDisplayName() and setOrgWideEmailAddressId() are mutually exclusive on Messaging.SingleEmailMessage.</em></td>
 </tr>
 <tr>
 <td><code>Grace_Period_Days__c</code></td>
@@ -2557,7 +2557,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Org_Display_Name__c</code></td>
 <td>Org_Display_Name</td>
 <td>Text</td>
-<td>Your organization's public-facing name, e.g. "Riverbend Food Bank".</td>
+<td>Your organization's public-facing name, e.g. "Riverbend Food Bank". Shown on campaign pages, the checkout header, the donor portal and every receipt. If you leave it blank, receipts print your Salesforce org's own name instead of an empty letterhead.</td>
 </tr>
 <tr>
 <td><code>Org_Logo_Content_Document_Id__c</code></td>

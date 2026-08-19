@@ -6,11 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number.">
+        <meta name="description" content="Stores a donor's saved card as a tokenized gateway reference — brand, last 4 and expiry only. Full card numbers, CVV and bank details are never stored.">
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/data-model/payment-method/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/data-model/payment-method/">
       
       
         <link rel="prev" href="../recurring-donation/">
@@ -65,30 +65,30 @@
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
         "name": "CloudAlgo",
         "url": "https://cloudalgo.com/",
-        "logo": "https://cloudalgo.com/pledgivo-docs/assets/favicon.svg"
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
       },
       {
         "@type": "WebSite",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#website",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" },
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
         "inLanguage": "en"
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://cloudalgo.com/pledgivo-docs/#software",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
         "name": "Pledgivo",
         "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "Fundraising and donation management",
         "operatingSystem": "Salesforce",
-        "url": "https://cloudalgo.com/pledgivo-docs/",
-        "publisher": { "@id": "https://cloudalgo.com/pledgivo-docs/#organization" }
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
       }
     ]
   }
@@ -97,16 +97,16 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Payment Method - Pledgivo" />
-<meta property="og:description" content="Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number." />
-<meta property="og:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/data-model/payment-method.png" />
+<meta property="og:description" content="Stores a donor's saved card as a tokenized gateway reference — brand, last 4 and expiry only. Full card numbers, CVV and bank details are never stored." />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/data-model/payment-method.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://cloudalgo.com/pledgivo-docs/data-model/payment-method/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/data-model/payment-method/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Payment Method - Pledgivo" />
-<meta property="twitter:description" content="Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number." />
-<meta property="twitter:image" content="https://cloudalgo.com/pledgivo-docs/assets/images/social/data-model/payment-method.png" />
+<meta property="twitter:description" content="Stores a donor's saved card as a tokenized gateway reference — brand, last 4 and expiry only. Full card numbers, CVV and bank details are never stored." />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/data-model/payment-method.png" />
 </head>
   
   
@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-22</span>
+          <span class="fn-brand__ver">1.0.0-23</span>
         
       </a>
 

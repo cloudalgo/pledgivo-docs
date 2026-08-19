@@ -1,0 +1,7 @@
+# The docs site is public and wholly indexable. This file exists mainly to
+# advertise the sitemap: on a subdomain there is no parent site whose
+# sitemap-index could carry ours, so this is how crawlers discover all of it.
+User-agent: *
+Allow: /
+
+Sitemap: https://pledgivo.cloudalgo.com/sitemap.xml

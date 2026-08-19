@@ -2022,16 +2022,30 @@
      the question a first-time visitor asks before any of the six reference
      sections, so it sits directly after Home in the masthead.
 
-     doc: The largest number on the page is deliberately not a price — it is the
-     0% we take of each donation. Competing platforms in this category price as
-     a percentage of money raised, so the fact that a $500 campaign and a
-     $500,000 campaign cost the same here is the argument; leading with $299
-     buries it under a figure that looks larger than a rival's "free". The plans
-     are set as one ruled rate card rather than floating shadowed boxes: this
-     theme is hairlines and Fraunces numerals, and the usual SaaS pricing card
-     belongs to a different design system. The paid column is marked with a red
-     rule rather than a fill, because a filled column would out-shout the 0% and
-     that figure has to stay the loudest thing here.
+     doc: The largest number on the page is deliberately not a price. It used to
+     be the 0% we take of each donation; since the free plan landed it is the $0
+     itself, with 0% moved to third in the band. Both make the same argument
+     from different ends — a rival's headline is a percentage of money raised,
+     and ours is nothing at all — but a visitor deciding whether to try this is
+     answered by "free" faster than by "no commission", and leading with $299
+     buries both under a figure that looks larger than a competitor's "free".
+     The plans are set as one ruled rate card rather than floating shadowed
+     boxes: this theme is hairlines and Fraunces numerals, and the usual SaaS
+     pricing card belongs to a different design system. The paid column is
+     marked with a red rule rather than a fill, because a filled column would
+     out-shout the $0 and that figure has to stay the loudest thing here.
+
+     doc: The FREE column carries the primary button and the paid column the
+     ghost one, which inverts the usual pricing page on purpose. There is one
+     door into this product and it is the free install — nobody buys a seat
+     before running a campaign, and moving up is a billing change we start by
+     talking to the customer. A primary button on the paid column would point
+     at a checkout that does not exist.
+
+     doc: Neither column ticks its donor-page credit line. A "Powered by
+     Pledgivo" line is a limitation on the free plan and an absence on the paid
+     one; a checkmark beside either is a lie about what it is. Both sit in
+     .fn-pr-tier__note under the list instead.
 
      doc: TWO PLANS, replacing the three volume tiers, on the owner's decision
      of 2026-08-19. The 30-day trial and the 25% nonprofit discount went with
@@ -2098,15 +2112,16 @@
 
 <div class="fn-pr-hero">
   <p class="fn-eyebrow">Pricing</p>
-  <h1 class="fn-home-h1">Priced per org. <em>Never</em> per donation.</h1>
-  <p class="fn-dek">Free for your first 200 donations a year, then one flat subscription for
-  your whole Salesforce org. We never take a percentage of what you raise — so a campaign that
-  goes unexpectedly well costs exactly what a quiet one does.</p>
+  <h1 class="fn-home-h1">Free. The whole product, <em>not a sample</em> of it.</h1>
+  <p class="fn-dek">Install from the AppExchange and run real campaigns on your own Salesforce
+  org — every feature, no credit card, no expiry date. The free plan covers your first 200
+  donations a year. Past that it is a flat $299 a month, and still never a percentage of what
+  you raise.</p>
   <div class="fn-pr-chips">
-    <span class="fn-chip">Free up to 200 donations</span>
-    <span class="fn-chip">Unlimited staff users</span>
+    <span class="fn-chip">Free, not a free trial</span>
+    <span class="fn-chip">No credit card</span>
     <span class="fn-chip">Every feature, both plans</span>
-    <span class="fn-chip">Never a cut of a gift</span>
+    <span class="fn-chip">0% of every donation</span>
   </div>
 </div>
 
@@ -2116,20 +2131,20 @@
      not billed for, which is the argument the rest of the page elaborates. -->
 <div class="fn-pr-zero">
   <div>
-    <b class="fn-pr-zero__big">0%</b>
+    <b class="fn-pr-zero__big">$0</b>
+    <span>To install and run. Every feature, on your own org, with no card and no expiry date.</span>
+  </div>
+  <div>
+    <b>200</b>
+    <span>Donations a year on the free plan. Real campaigns, real donors, real money banked.</span>
+  </div>
+  <div>
+    <b>0%</b>
     <span>Of every donation. We take no cut — not at $500 raised, and not at $500,000.</span>
   </div>
   <div>
-    <b>$0</b>
-    <span>Per user. Your whole fundraising team, plus finance, plus the executive director.</span>
-  </div>
-  <div>
-    <b>$0</b>
-    <span>To start. The free plan runs real campaigns on your own org, and does not expire.</span>
-  </div>
-  <div>
     <b>$299</b>
-    <span>A month past 200 donations a year — whatever those donations turn out to be worth.</span>
+    <span>A month once you outgrow it — whatever those donations turn out to be worth.</span>
   </div>
 </div>
 
@@ -2142,7 +2157,7 @@
 
   <div class="fn-pr-rate">
     <div class="fn-pr-tier">
-      <div class="fn-pr-tier__tag"></div>
+      <div class="fn-pr-tier__tag">Start here</div>
       <h3>Free</h3>
       <p class="fn-pr-tier__for">Smaller programmes — and anyone who would rather run a real campaign than evaluate one.</p>
       <div class="fn-pr-tier__price"><b>$0</b><i>/mo</i></div>
@@ -2154,10 +2169,10 @@
       <ul>
         <li>Every feature in the package</li>
         <li>Unlimited campaigns and staff users</li>
-        <li>Donor pages carry a <b>Powered by Pledgivo</b> line</li>
         <li>Community support</li>
       </ul>
-      <a class="fn-btn fn-btn--ghost" href="../getting-started/installation/">Install free</a>
+      <p class="fn-pr-tier__note">Donor pages carry a small <b>Powered by Pledgivo</b> line.</p>
+      <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Install free</a>
     </div>
 
     <div class="fn-pr-tier fn-pr-tier--pick">
@@ -2173,10 +2188,10 @@
       <ul>
         <li>Every feature in the package</li>
         <li>Unlimited campaigns and staff users</li>
-        <li>Your own branding, with no <b>Powered by</b> line</li>
         <li>Email support, next business day</li>
       </ul>
-      <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Get started</a>
+      <p class="fn-pr-tier__note">Donor pages carry <b>your own branding</b> and nothing else.</p>
+      <a class="fn-btn fn-btn--ghost" href="../getting-started/installation/">Start free, move up later</a>
     </div>
 
     <div class="fn-pr-rate__foot">

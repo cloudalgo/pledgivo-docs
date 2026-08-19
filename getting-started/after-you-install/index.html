@@ -2930,6 +2930,25 @@ the step turns green within a few minutes, once the finalizer has completed its 
 and stamped the marker the console reads.</p>
 <p>Do it before you share a donation link, not after.</p>
 </div>
+<div class="admonition warning">
+<p class="admonition-title">Restart them as a user who can reach Stripe — order matters</p>
+<p>Re-owning the jobs fixes <em>who</em> runs them. It does not, on its own, make them able to
+authenticate. A named-principal callout runs as the <strong>owner of the job</strong>, so a job owned by
+someone holding no permission set that grants the external credential's principal fails every
+single time it fires — refunds and chargebacks never come back, recurring gifts never charge,
+and a payment taken but not recorded is never swept up. Every cron row still reads <code>WAITING</code>,
+on time, and the job count still reads 24 of 24.</p>
+<p>So do <a href="#grant-the-credential">step 6</a> before this one, and press <strong>Restart the background jobs</strong>
+while logged in as a user who holds that grant — the jobs are rescheduled under whoever
+presses it. The <strong>Scheduled Jobs</strong> health row checks this from that point on: it names the
+owner when the owner holds no such grant, and offers its own Fix button only when <em>you</em> hold
+one, because the repair is to take the jobs over.</p>
+<p>One limit, stated plainly: a package cannot see which credential a given grant belongs to
+(<code>SetupEntityAccess</code> names the permission set but its target is not queryable). So the row can
+prove an owner holds <strong>no</strong> grant, and it can never prove the grant they hold is the <strong>right</strong>
+one. When every owner is granted, the row keeps its colour and adds a sentence asking you to
+confirm the grant is on the credential your payment account names.</p>
+</div>
 <div class="admonition danger">
 <p class="admonition-title">Confirm this step is green before you share a donation link</p>
 <p>The <code>Finalizer-&lt;m&gt;</code> family is what turns a confirmed card payment into an Opportunity, a

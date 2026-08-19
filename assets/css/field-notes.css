@@ -304,6 +304,20 @@ body,
 }
 
 /* status chip strip */
+/* The home page's one line about price. It sits between the calls to action and
+   the spec chips because that is where the question lands - a reader who has
+   just been told to install something wants to know what installing it costs
+   before they read another word. Body-copy size, not dek size: it is an answer,
+   not a second headline. */
+.md-typeset .fn-free-line {
+  max-width: 62ch;
+  margin: -.35rem 0 1.5rem;
+  font-size: .9rem;
+  line-height: 1.6;
+  color: var(--fn-ink-soft);
+}
+.md-typeset .fn-free-line b { color: var(--fn-ink); }
+
 .fn-status-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.6rem; }
 .fn-chip {
   font-family: var(--fn-font-mono);
@@ -1815,6 +1829,7 @@ body::after {
 .md-content__inner > .fn-eyebrow,
 .md-content__inner > h1,
 .md-content__inner > .fn-dek,
+.md-content__inner > .fn-free-line,
 .md-content__inner > .fn-status-strip,
 .md-content__inner > .fn-platemeta {
   animation: fn-enter 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) both;
@@ -1822,7 +1837,8 @@ body::after {
 .md-content__inner > .fn-eyebrow      { animation-delay: 0.02s; }
 .md-content__inner > h1               { animation-delay: 0.09s; }
 .md-content__inner > .fn-dek          { animation-delay: 0.17s; }
-.md-content__inner > .fn-status-strip { animation-delay: 0.25s; }
+.md-content__inner > .fn-free-line    { animation-delay: 0.23s; }
+.md-content__inner > .fn-status-strip { animation-delay: 0.30s; }
 .md-content__inner > .fn-platemeta    { animation-delay: 0.25s; }
 
 @keyframes fn-enter {
@@ -3123,7 +3139,13 @@ body::after {
 .fn-sk--coin { top: 66%; right: 8%; width: 130px; animation: fn-drift-c 74s ease-in-out infinite; }
 .fn-sk--coin * { animation-delay: 2.1s; }
 
-.fn-pr { max-width: 1000px; margin: 0 auto; }
+/* No width cap of its own. This page used to sit in a 1000px measure, which is
+   invisible while the section rail is showing (the content column is narrower
+   than the cap anyway) and obvious the moment it isn't: below the rail's
+   breakpoint every other page widens to the full column and this one stayed at
+   1000px, so the pricing page rendered visibly narrower than the home page at
+   the same window size. Same column as everything else. */
+.fn-pr { margin: 0 auto; }
 
 /* ---------- Hero ---------- */
 
@@ -3277,6 +3299,20 @@ body::after {
   border-bottom: 1.6px solid var(--fn-accent);
   transform: rotate(-45deg);
 }
+/* The one line per card that is NOT a tick. What separates the plans on donor
+   pages is a credit line, and a credit line is a limitation on the free plan
+   and an absence on the paid one - neither is a feature, and both read as a
+   lie with a checkmark beside them. Set below the list, in the faint ink, so
+   it reads as a footnote to the card rather than as its fifth benefit. */
+.md-typeset .fn-pr-tier__note {
+  font-size: .78rem;
+  line-height: 1.5;
+  color: var(--fn-ink-faint);
+  margin: -.9rem 0 1.4rem;
+  padding-top: .8rem;
+  border-top: 1px dashed var(--fn-line-soft);
+}
+
 .md-typeset .fn-pr-tier .fn-btn { margin-top: auto; justify-content: center; }
 .fn-pr-rate__foot {
   grid-column: 1 / -1;
@@ -3528,9 +3564,6 @@ body::after {
 
 @media screen and (max-width: 76.1875em) {
   .fn-pr-zero { grid-template-columns: repeat(2, 1fr); }
-  .fn-pr-rate { grid-template-columns: 1fr; }
-  .fn-pr-tier + .fn-pr-tier { border-left: 0; border-top: 1px solid var(--fn-line-soft); }
-  .md-typeset .fn-pr-tier__for { min-height: 0; }
   .fn-pr-flow__rail { grid-template-columns: 1fr; }
   .fn-pr-flow__arrow { display: none; }
   .fn-pr-flow__step { padding: 1.2rem 0; border-bottom: 1px dashed var(--fn-line); }
@@ -3541,6 +3574,14 @@ body::after {
 @media screen and (max-width: 44.9375em) {
   .fn-pr-zero { grid-template-columns: 1fr; }
   .fn-pr-zero > div { border-right: 0; }
+  /* Two plans stack here rather than at the section-rail breakpoint. That
+     earlier breakpoint was set when this was a three-column grid, where three
+     cards genuinely run out of room on a laptop; two cards do not, and stacking
+     them at 1219px turned the comparison into two full-width slabs a reader
+     had to scroll between to compare. */
+  .fn-pr-rate { grid-template-columns: 1fr; }
+  .fn-pr-tier + .fn-pr-tier { border-left: 0; border-top: 1px solid var(--fn-line-soft); }
+  .md-typeset .fn-pr-tier__for { min-height: 0; }
   .fn-pr-rate__foot { padding: .95rem 1.2rem; }
 }
 

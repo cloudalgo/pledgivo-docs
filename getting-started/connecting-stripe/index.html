@@ -2435,6 +2435,12 @@ top of the panel moves the eleven steps to another.</p>
 </tr>
 </tbody>
 </table>
+<p>"Whoever owns the scheduled jobs" is literal, and it is the half most installs miss: a
+named-principal callout authenticates as the <strong>owner of the running job</strong>, not as the admin who
+set it up. A fresh install owns all 24 jobs with a system user that cannot be granted anything,
+so restart them under your own login <em>after</em> granting yourself the admin credential — see
+<a href="../after-you-install/#background-jobs">Background jobs</a>. The <strong>Scheduled Jobs</strong> health row goes
+red and names the owner when this is wrong.</p>
 <p>Splitting them is what keeps an anonymous visitor's principal from reaching a key that can
 issue refunds. If you'd rather run a single key for now, point both fields at the same
 credential — the app accepts it; it just gives you no separation, and the guide grades the

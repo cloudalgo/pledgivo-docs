@@ -3105,7 +3105,72 @@ body::after {
      more of a fire; nothing else needs to change with it. */
   --fnfl-amp: 0.55;
   --fnfl-stretch: 1.3;
+  /* Ignition is NOT on this element. Scaling the whole mark up from nothing is
+     a zoom however carefully the curve is shaped — the silhouette is identical
+     at every frame, and the eye reads "same picture, bigger" rather than
+     "fire". So the container stays still and the ignition is delegated to the
+     layers instead: see fn-fl-layerin below. */
 }
+/* Ignition, done as a build rather than as a growth.
+
+   The mark is six nested copies of one glyph at descending scales — a wide
+   dark envelope on the outside, down to a small white-hot kernel in the
+   middle. Because the scales are baked into the markup, revealing them
+   smallest-first makes the flame genuinely grow: a bright point catches at the
+   base, then each larger, cooler layer arrives around it. Nothing is ever
+   scaled, so there is no zoom to read; the silhouette changes shape at every
+   step, which is the thing a zoom can never do.
+
+   It also gets the colour progression for free. The hot core is what lights
+   first and the dull body builds around it, which is the order a real flame
+   catches in — no separate brightness ramp needed.
+
+   Each layer rises the last few units into place and guts once on the way
+   (the dip at 62%) rather than fading straight up, because a layer that only
+   cross-fades reads as an image loading. The `translate` property is used
+   rather than `transform` because `transform` already carries the sway and
+   `rotate`/`scale` carry the buzz — see the sway comment below. */
+@keyframes fn-fl-layerin {
+  0%   { opacity: 0;    translate: 0 7px;   animation-timing-function: ease-out; }
+  35%  { opacity: 1;    translate: 0 1.6px; animation-timing-function: ease-in;  }
+  62%  { opacity: 0.68; translate: 0 0.7px; animation-timing-function: ease-out; }
+  100% { opacity: 1;    translate: 0 0; }
+}
+/* Plain fade, for the parts that have no silhouette to build — the ember bed
+   under the flame, the light thrown on the paper, and the spark wrapper. */
+@keyframes fn-fl-fadein {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+/* The build runs smallest and hottest first, outward and cooler from there,
+   on a ~0.12s stagger — about 1.2s from the first spark to the envelope
+   settling. The ember bed goes ahead of all of it, because a fire is a lit
+   surface before it is a flame. The order deliberately does not match document
+   order: the two innermost layers are painted last (on top) but revealed
+   first, and the orange core leads the white-hot kernel by one step — white is
+   very nearly invisible on #efefec, so leading with the kernel spends the
+   opening frames on a pale blob. The core lights, the kernel brightens inside
+   it, which is the order a wick takes anyway.
+   The six glyph layers do not get their gate here — they already carry a
+   two-animation shorthand for sway and buzz, and a second `animation:`
+   declaration would replace that list rather than add to it, so their gate is
+   appended to the existing one further down. The two groups that carry no
+   motion of their own (the tongues and the wisps) can be gated directly. */
+/* Held. field-notes-flame.js parks the whole build on load and lets it go on
+   the reader's first gesture, so the match-strike sound it plays alongside has
+   the user activation the autoplay policy demands. Pausing rather than delaying
+   is what makes that possible: the animations keep their `both` fill, so every
+   layer stays at its 0% keyframe (opacity 0) while held, and the script seeks
+   past the 2.05s lead-in on release so the flame answers the gesture instead of
+   arriving two seconds after it. With the script absent or blocked the class is
+   never added and the delays below run on their own. */
+.fn-hero-flame--hold,
+.fn-hero-flame--hold * { animation-play-state: paused !important; }
+
+.fnfl-pool    { animation: fn-fl-fadein 0.34s linear 2.05s both; }
+.fnfl-tongues { animation: fn-fl-layerin 0.30s linear 2.39s both; }
+.fnfl-wisps   { animation: fn-fl-layerin 0.30s linear 2.99s both; }
+
 .fn-hero-flame__fire {
   display: block;
   width: 100%;
@@ -3133,11 +3198,17 @@ body::after {
     rgba(245, 138, 46, 0.28) 0%,
     rgba(224, 83, 61, 0.12) 34%,
     rgba(224, 83, 61, 0) 66%);
-  animation: fn-fl-breathe 9.7s ease-in-out infinite;
+  /* Two animations, two channels. The glow has to fade in with the build, and
+     the breath runs forever — one keyframe set cannot do both, so `breathe`
+     was stripped down to the transform it actually needs and `fadein` owns
+     opacity outright. Its delay sits with the ember bed: the paper is lit
+     before there is a flame to light it. */
+  animation: fn-fl-breathe 9.7s ease-in-out infinite,
+             fn-fl-fadein 0.5s linear 2.05s both;
 }
 @keyframes fn-fl-breathe {
-  0%, 100% { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
-  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.07); }
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.07); }
 }
 
 /* The glyph pulled from logo proportions into flame proportions. The origin
@@ -3151,7 +3222,7 @@ body::after {
 .fn-hero-flame__mv {
   transform-box: fill-box;
   transform-origin: 50% 100%;
-  will-change: transform;
+  will-change: transform, rotate, scale, opacity;
 }
 
 /* Sway. Three things here are deliberate and each one was a fix for motion
@@ -3165,12 +3236,40 @@ body::after {
       supplies the variation instead.
    3. skewX about a bottom origin, so the tip displaces far more than the
       base — a flame is anchored to its fuel and only the top wanders. */
-.fnfl-m1 { animation: fn-fl-swayA 24.7s linear infinite; }
-.fnfl-m2 { animation: fn-fl-swayB 20.3s linear infinite; }
-.fnfl-m3 { animation: fn-fl-swayC 31.9s linear infinite; }
-.fnfl-m4 { animation: fn-fl-swayB 22.7s linear infinite reverse; }
-.fnfl-m5 { animation: fn-fl-swayA 27.1s linear infinite reverse; }
-.fnfl-m6 { animation: fn-fl-swayC 34.3s linear infinite; }
+/* Flame motion is bimodal and both halves have to be present or it does not
+   read as burning. The long cycles below are the bulk sway — a metre of air
+   moving, slow. On top of that sits a fast, tiny buzz (fn-fl-buzz*, ~0.3-0.5s,
+   under a degree) which is combustion itself: the flame front is unstable at a
+   much shorter timescale than the column it sits in. With only the slow half
+   the whole thing reads as jelly; with only the fast half it reads as a
+   vibrating logo.
+
+   The buzz is a SEPARATE animation on the `rotate` and `scale` properties, not
+   on `transform`. Two animations cannot both drive `transform` — the later one
+   in the list simply wins — but the individual transform properties compose
+   with it (translate -> rotate -> scale -> transform), so the sway keeps the
+   `transform` channel and the buzz gets its own. No extra wrapper elements. */
+.fnfl-m1 { animation: fn-fl-swayA 24.7s linear infinite, fn-fl-buzzA 0.37s linear infinite, fn-fl-layerin 0.30s linear 2.87s both; }
+.fnfl-m2 { animation: fn-fl-swayB 20.3s linear infinite, fn-fl-buzzB 0.31s linear infinite, fn-fl-layerin 0.30s linear 2.75s both; }
+.fnfl-m3 { animation: fn-fl-swayC 31.9s linear infinite, fn-fl-buzzA 0.43s linear infinite reverse, fn-fl-layerin 0.30s linear 2.63s both; }
+.fnfl-m4 { animation: fn-fl-swayB 22.7s linear infinite reverse, fn-fl-buzzB 0.29s linear infinite, fn-fl-layerin 0.30s linear 2.51s both; }
+.fnfl-m5 { animation: fn-fl-swayA 27.1s linear infinite reverse, fn-fl-buzzA 0.26s linear infinite, fn-fl-layerin 0.30s linear 2.15s both; }
+.fnfl-m6 { animation: fn-fl-swayC 34.3s linear infinite, fn-fl-buzzB 0.34s linear infinite reverse, fn-fl-layerin 0.30s linear 2.27s both; }
+
+/* Two states rather than a smooth cycle, held at each end — the flame front
+   snaps between configurations, it does not oscillate sinusoidally. Periods
+   are mutually non-harmonic so the six layers never buzz in step, which would
+   turn the whole mark into one vibrating object. Amplitude is deliberately
+   under a degree: at this size anything larger stops being a flicker and
+   starts being a shake. */
+@keyframes fn-fl-buzzA {
+  0%, 100% { rotate: -0.55deg; scale: 1 1; }
+  30%, 62% { rotate: 0.6deg;   scale: 1.006 1.014; }
+}
+@keyframes fn-fl-buzzB {
+  0%, 100% { rotate: 0.5deg;   scale: 1.004 1.01; }
+  34%, 66% { rotate: -0.65deg; scale: 1 1; }
+}
 
 @keyframes fn-fl-swayA {
   0%   { transform: skewX(0deg) translateX(0) scaleY(1); }
@@ -3236,7 +3335,16 @@ body::after {
 
 /* Luminance. Sixteen irregular values held by steps(1, end) rather than a
    short even cycle — an evenly-timed flicker is audible as a rhythm, which is
-   exactly what a real flame does not have. */
+   exactly what a real flame does not have.
+
+   These two sit on the inner <use>, not on the .fnfl-m5/.fnfl-m6 group that
+   wraps it, and they have to. They animate opacity, and so does the ignition
+   gate on that group — one element cannot run both, the later declaration
+   simply replaces the earlier list. Putting the flicker one level in gives it
+   its own element: the group's opacity gates the layer in, the use's opacity
+   flickers, and the two multiply. (Before the split this rule was silently
+   overriding the whole shorthand on those two layers, which cost them their
+   sway and buzz as well.) */
 .fnfl-core   { animation: fn-fl-flick 3.1s steps(1, end) infinite; }
 .fnfl-kernel { animation: fn-fl-flick 2.6s steps(1, end) infinite reverse; }
 @keyframes fn-fl-flick {
@@ -3274,7 +3382,15 @@ body::after {
 /* Rising sparks, each with its own duration and delay so they never march in
    step, and each wandering laterally on the way up rather than tracking a
    straight line. */
-.fn-hero-flame__embers { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.fn-hero-flame__embers {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  /* Held back until the build has finished — see fn-fl-layerin. Embers are
+     thrown by a fire that is already going, not by an ember bed. */
+  animation: fn-fl-fadein 0.5s linear 3.09s both;
+}
 .fn-hero-flame__embers i {
   position: absolute;
   bottom: 16%;
@@ -3359,6 +3475,11 @@ body::after {
      `filter: none` in CSS overrides the SVG filter presentation attribute, which
      takes the animated displacement out of the pipeline and leaves a clean
      static silhouette — a still flame, not a frozen smear. */
+  /* The container itself is listed, not just its descendants — the ignition
+     animation lives on it, and leaving that running would mean the flame
+     still appeared out of nothing and grew. Killing it drops back to the
+     base state, which is a flame already at full size. */
+  .fn-hero-flame,
   .fn-hero-flame *,
   .fn-hero-flame__spill { animation: none !important; }
   .fn-hero-flame__fx { filter: none !important; }

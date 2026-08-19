@@ -2223,7 +2223,7 @@
 
     <!-- The pool the flame stands in. Without it the base ends on a hard edge
          and the whole thing reads as a sticker laid on the paper. -->
-    <ellipse cx="100" cy="281" rx="52" ry="11" fill="url(#fnfl-pool)" filter="url(#fnfl-poolblur)"/>
+    <ellipse class="fnfl-pool" cx="100" cy="281" rx="52" ry="11" fill="url(#fnfl-pool)" filter="url(#fnfl-poolblur)"/>
 
     <!-- Each layer is nested three deep on purpose: the outer <g> carries the
          static scale/offset as an SVG transform ATTRIBUTE, the inner one
@@ -2241,7 +2241,7 @@
       <g class="fn-hero-flame__fx" filter="url(#fnfl-fx3)">
         <g transform="translate(103 168.75) scale(.85) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m3"><use href="#fnfl-glyph" fill="url(#fnfl-mid)"/></g></g>
       </g>
-      <g class="fn-hero-flame__fx" filter="url(#fnfl-fx3)">
+      <g class="fn-hero-flame__fx fnfl-tongues" filter="url(#fnfl-fx3)">
         <g transform="translate(97 168.75) scale(.42) translate(-100 -168.75)"><g class="fn-hero-flame__flow fnfl-n1"><use href="#fnfl-glyph" fill="url(#fnfl-flow)"/></g></g>
         <g transform="translate(105 168.75) scale(.34) translate(-100 -168.75)"><g class="fn-hero-flame__flow fnfl-n2"><use href="#fnfl-glyph" fill="url(#fnfl-flow)"/></g></g>
         <g transform="translate(99 168.75) scale(.28) translate(-100 -168.75)"><g class="fn-hero-flame__flow fnfl-n3"><use href="#fnfl-glyph" fill="url(#fnfl-flow)"/></g></g>
@@ -2251,14 +2251,14 @@
         <g transform="translate(96 168.75) scale(.68) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m4"><use href="#fnfl-glyph" fill="url(#fnfl-hot)"/></g></g>
       </g>
       <g class="fn-hero-flame__fx" filter="url(#fnfl-fx5)">
-        <g transform="translate(102 168.75) scale(.5) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m5 fnfl-core"><use href="#fnfl-glyph" fill="url(#fnfl-core)"/></g></g>
+        <g transform="translate(102 168.75) scale(.5) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m5"><use class="fnfl-core" href="#fnfl-glyph" fill="url(#fnfl-core)"/></g></g>
       </g>
       <g class="fn-hero-flame__fx" filter="url(#fnfl-fx5)">
-        <g transform="translate(98 168.75) scale(.3) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m6 fnfl-kernel"><use href="#fnfl-glyph" fill="url(#fnfl-kernel)"/></g></g>
+        <g transform="translate(98 168.75) scale(.3) translate(-100 -168.75)"><g class="fn-hero-flame__mv fnfl-m6"><use class="fnfl-kernel" href="#fnfl-glyph" fill="url(#fnfl-kernel)"/></g></g>
       </g>
     </g>
 
-    <g class="fn-hero-flame__fx" filter="url(#fnfl-fxwisp)">
+    <g class="fn-hero-flame__fx fnfl-wisps" filter="url(#fnfl-fxwisp)">
       <g transform="translate(100 60) scale(.2) translate(-100 -168.75)"><g class="fn-hero-flame__wisp fnfl-w1"><use href="#fnfl-glyph" fill="#f2b705" opacity=".75"/></g></g>
       <g transform="translate(112 74) scale(.15) translate(-100 -168.75)"><g class="fn-hero-flame__wisp fnfl-w2"><use href="#fnfl-glyph" fill="#f58a2e" opacity=".7"/></g></g>
     </g>
@@ -2684,6 +2684,8 @@ record type — see the <a href="data-model/">data model reference</a> for the a
         <script src="assets/js/step-viewer.js"></script>
       
         <script src="assets/js/field-notes-video.js"></script>
+      
+        <script src="assets/js/field-notes-flame.js"></script>
       
     
   </body>

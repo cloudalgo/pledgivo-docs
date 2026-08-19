@@ -218,6 +218,20 @@ body,
   }
 }
 
+/* The same problem, one rail at a time. A page that belongs to no section has
+   no chapter list to put in the left rail, so FAQ and Support hide it and keep
+   the table of contents — which leaves the article flush against the window
+   edge with the contents column still pinned right, and a hole down the middle
+   where the rail used to be. Restoring only the missing rail's width closes it
+   and lands the measure in the same column as every other page. `:not([hidden])`
+   on the secondary is what separates this case from the both-hidden one above;
+   without it the two rules would fight over the landing page. */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary[hidden] ~ .md-sidebar--secondary:not([hidden]) ~ .md-content {
+    margin-inline-start: 12.1rem;
+  }
+}
+
 /* ---------- Content shell ---------- */
 .md-content__inner { padding-top: 1.6rem; }
 .md-content__inner h1:first-child { margin-top: 0.2rem; }
@@ -2084,8 +2098,26 @@ body::after {
   }
 }
 
-/* ---- section tabs ---- */
+/* ---- section tabs ----
+   The masthead menu is the one navigation surface every page shares, so it is
+   treated as typography rather than as chrome: the labels are set in Fraunces,
+   the same face as the page headings, which ties the header to the article
+   under it instead of leaving it as a sans-serif utility strip.
+
+   The row is CENTRED in the space between the brand lockup and the search
+   pill, not flush against the brand. Those two flanks are within half a rem of
+   each other in width (brand column 12.1rem; search 10.5rem + repo button
+   1.7rem + gaps), so centring inside the middle slot lands within a few pixels
+   of centring on the viewport — and unlike an absolutely-positioned row it can
+   never slide under the search pill when a section is added.
+
+   `--fn-tab-gap` is the one number to change if a section is ever added: the
+   two squeeze breakpoints further down step it, and the link padding, together
+   rather than each rule guessing at the other. */
 .md-tabs {
+  --fn-tab-gap: 0.16rem;
+  --fn-tab-pad: 0.62rem;
+  --fn-tab-size: 0.86rem;
   background: transparent;
   color: var(--fn-ink-soft);
   overflow: visible;
@@ -2094,36 +2126,159 @@ body::after {
   flex: 1 1 auto;
   min-width: 0;
 }
+/* Material renders `.md-tabs` as a flex container and the `<ul>` inside it as a
+   `flex: 0 1 auto` item, so the list is shrink-to-fit: `justify-content` on the
+   list alone centres nothing, because the list is exactly as wide as its tabs.
+   The centring therefore has to happen on BOTH boxes — the nav centres the
+   list, and the list (grown to fill it) centres the tabs. Material's own
+   `[dir=ltr] .md-tabs__list { margin-left: .2rem }` is restated at equal
+   specificity for the same reason: a 4px inset on one side only is 4px of
+   off-centre. */
+.md-tabs { justify-content: center; }
 .md-tabs__list {
-  margin: 0;
   padding: 0;
   display: flex;
+  flex: 1 1 auto;
   align-items: stretch;
-  gap: 2px;
+  justify-content: center;
+  gap: var(--fn-tab-gap);
   height: 100%;
 }
+[dir="ltr"] .md-tabs__list,
+[dir="rtl"] .md-tabs__list { margin: 0; }
 .md-tabs__item { height: 100%; padding: 0; }
 .md-tabs__link {
+  position: relative;
   display: flex;
   align-items: center;
   height: 100%;
   margin: 0;
-  padding: 0 0.65rem;
-  font-size: 0.83rem;
+  padding: 0 var(--fn-tab-pad);
+  font-family: var(--fn-font-display);
+  font-size: var(--fn-tab-size);
   font-weight: 500;
+  font-optical-sizing: auto;
+  letter-spacing: 0.004em;
   line-height: 1;
   color: var(--fn-ink-soft);
   opacity: 1;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color 0.16s ease, border-color 0.16s ease;
+  border-bottom: 0;
+  border-radius: 7px 7px 0 0;
+  transition: color 0.2s ease;
+}
+
+/* The underline is a pseudo-element rather than `border-bottom` so it can be
+   wiped in and out directionally — in from the left on enter, out to the right
+   on leave — which reads as one indicator travelling along the row instead of
+   eight independent borders blinking. A border cannot do this: there is
+   nothing to scale. */
+.md-tabs__link::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--fn-tab-pad) - 0.18rem);
+  right: calc(var(--fn-tab-pad) - 0.18rem);
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--fn-accent-soft-line);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.34s cubic-bezier(0.22, 0.8, 0.24, 1),
+              background-color 0.2s ease;
+}
+/* The hover wash is a gradient rising from the underline rather than a flat
+   fill, so the tab looks lit from its own baseline instead of stamped with a
+   grey rectangle — a flat block draws a hard top edge across a header that has
+   no other horizontal rules in it. It lives on a pseudo-element because a
+   `background-image` cannot be transitioned; opacity can. */
+.md-tabs__link::before {
+  content: "";
+  position: absolute;
+  inset: 0.3rem 0.08rem 0;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--fn-paper-dim) 92%, transparent),
+    transparent 88%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
 }
 .md-tabs__link:hover { color: var(--fn-ink); }
+.md-tabs__link:hover::before { opacity: 1; }
+.md-tabs__link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+.md-tabs__link:focus-visible {
+  outline: 2px solid var(--fn-accent-soft-line);
+  outline-offset: -3px;
+}
+
+/* The current section keeps the full accent red — the palette reserves that
+   red for what a person chose, and the soft pink above keeps hover clearly
+   subordinate to it. */
 .md-tabs__link--active,
 .md-tabs__item--active .md-tabs__link {
   color: var(--fn-ink);
-  font-weight: 600;
-  border-bottom-color: var(--fn-accent);
+  font-weight: 650;
+}
+.md-tabs__link--active::after,
+.md-tabs__item--active .md-tabs__link::after {
+  background: var(--fn-accent);
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* One orchestrated entrance on load: the row assembles left to right, each
+   label rising and sharpening into place. Staggered with :nth-child rather
+   than a per-item custom property because the tab list is rendered by
+   Material's own partial, which has nowhere to hang an index. Ten steps
+   covers the current seven tabs with headroom. */
+@keyframes fn-tab-rise {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+.md-tabs__item {
+  animation: fn-tab-rise 0.52s cubic-bezier(0.2, 0.75, 0.25, 1) backwards;
+}
+.md-tabs__item:nth-child(1) { animation-delay: 0.04s; }
+.md-tabs__item:nth-child(2) { animation-delay: 0.09s; }
+.md-tabs__item:nth-child(3) { animation-delay: 0.14s; }
+.md-tabs__item:nth-child(4) { animation-delay: 0.19s; }
+.md-tabs__item:nth-child(5) { animation-delay: 0.24s; }
+.md-tabs__item:nth-child(6) { animation-delay: 0.29s; }
+.md-tabs__item:nth-child(7) { animation-delay: 0.34s; }
+.md-tabs__item:nth-child(8) { animation-delay: 0.39s; }
+.md-tabs__item:nth-child(9) { animation-delay: 0.44s; }
+.md-tabs__item:nth-child(10) { animation-delay: 0.49s; }
+
+/* The active underline draws itself once the row has landed, so the eye is led
+   to where it already is rather than finding the mark pre-drawn. */
+@keyframes fn-tab-underline {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.md-tabs__item--active .md-tabs__link::after {
+  animation: fn-tab-underline 0.42s cubic-bezier(0.22, 0.8, 0.24, 1) 0.34s backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-tabs__item,
+  .md-tabs__item--active .md-tabs__link::after { animation: none; }
+  .md-tabs__link,
+  .md-tabs__link::before,
+  .md-tabs__link::after { transition: none; }
 }
 
 /* ---- search pill and repo button ---- */
@@ -2148,7 +2303,9 @@ body::after {
     padding-left: 1.5rem;
     border-right: 1px solid var(--fn-line-soft);
   }
-  .md-tabs { padding-left: 0.7rem; }
+  /* No brand-side padding: the row is centred in the slot between the brand
+     column and the search pill, and an inset on one side only would push it
+     off that centre by exactly its own width. */
   /* The mirror of that inset on the right, so the search pill stops where the
      table-of-contents text stops instead of running into the window edge. */
   .md-header__inner { padding-right: 1.1rem; }
@@ -2273,25 +2430,28 @@ body::after {
 }
 
 /* The tab row is the only thing in the masthead that grows with the site, and
-   adding Pricing took it past what fits beside a fixed-width search pill: at
-   the low end of the wide layout "Code Reference" ran under the pill and was
-   clipped. `.md-tabs` is `overflow: visible`, so the overflow is silent — the
-   label simply disappears behind the search with no scrollbar and no ellipsis
-   to say so. Between the layout switch (76.25em) and the width where the row
-   fits comfortably (measured: the default sizing needs ~1500px for eight
-   tabs), tighten the tabs and the pill rather than dropping a section from
-   the masthead. Two steps, because one setting cannot span the whole range:
-   the row is a fixed width while the pill slides left with the viewport, so
-   the squeeze at 1220px is ~60px worse than at 1280px. Re-measure both steps
-   if a tab is ever added or renamed. */
+   it has to share one row with a fixed-width search pill: past a certain
+   number of sections the last label runs under the pill and is clipped.
+   `.md-tabs` is `overflow: visible`, so the overflow is silent — the label
+   simply disappears behind the search with no scrollbar and no ellipsis to say
+   so, which is why the row is stepped down here rather than left to fend for
+   itself. Because the row is centred, the clipping is symmetrical now: it
+   reaches the pill and the brand column at the same moment, so one measurement
+   covers both ends.
+
+   Two steps, because one setting cannot span the whole range between the
+   layout switch (76.25em) and the width where the full row fits. Adjust
+   `--fn-tab-gap`/`--fn-tab-pad`/`--fn-tab-size` together — they are declared on
+   `.md-tabs` for exactly this — and re-measure if a section is added or a tab
+   is renamed to something longer. */
 @media screen and (min-width: 76.25em) and (max-width: 94em) {
-  .md-tabs__link { padding: 0 0.3rem; font-size: 0.79rem; }
-  .md-search__inner { width: 7.6rem; }
+  .md-tabs { --fn-tab-pad: 0.42rem; --fn-tab-size: 0.82rem; --fn-tab-gap: 0.1rem; }
+  .md-search__inner { width: 8.6rem; }
 }
 
-@media screen and (min-width: 76.25em) and (max-width: 80em) {
-  .md-tabs__link { padding: 0 0.24rem; font-size: 0.75rem; }
-  .md-search__inner { width: 6.8rem; }
+@media screen and (min-width: 76.25em) and (max-width: 82em) {
+  .md-tabs { --fn-tab-pad: 0.3rem; --fn-tab-size: 0.78rem; --fn-tab-gap: 0.06rem; }
+  .md-search__inner { width: 7.2rem; }
 }
 
 
@@ -2314,7 +2474,7 @@ body::after {
     opacity: 1;
     transform: none;
     pointer-events: auto;
-    transition: color 0.16s ease, border-color 0.16s ease;
+    transition: color 0.2s ease, background-color 0.2s ease;
   }
 }
 
@@ -3755,4 +3915,160 @@ body::after {
     .fn-pr-flow__aside,
     .fn-pr-sec .fn-sec-head::after { animation: none; }
   }
+}
+
+/* ---------- Social cuts: two trigger cards + the modal player ---------- */
+/* The two marketing films sit behind links rather than in the column: one is
+   9:16, which a one-column paper layout cannot hold at any honest size, and
+   neither is part of the page's argument the way the overview film is. The
+   cards are plain anchors to the .mp4 — assets/js/field-notes-film-modal.js
+   upgrades them to a <dialog>, and without JS they still play. */
+
+.fn-social-films { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 0 0 3rem; }
+.md-typeset .fn-social-film {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+}
+.md-typeset .fn-social-film:hover {
+  background: var(--fn-panel);
+  border-color: var(--fn-ink);
+  transform: translateY(-2px);
+}
+.fn-social-film__thumb {
+  position: relative;
+  flex: none;
+  width: 92px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--fn-ink);
+}
+.fn-social-film__thumb--wide { aspect-ratio: 16 / 9; }
+/* The vertical poster is shown at the film's own ratio but capped to the wide
+   card's height, so the two cards stay the same size in the grid. */
+.fn-social-film__thumb--tall { width: 52px; aspect-ratio: 9 / 16; }
+/* At this size no whole frame is legible, so each thumbnail is zoomed into the
+   beat's subject rather than shrunk whole — the same trick the hero Watch
+   button uses. The origins follow where the donation card sits in each
+   poster, which is why they differ between the two crops. */
+.md-typeset .fn-social-film__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fn-social-film__thumb--wide img { transform: scale(1.9); transform-origin: 30% 46%; }
+.fn-social-film__thumb--tall img { transform: scale(1.55); transform-origin: 50% 33%; }
+/* Same reasoning as the hero Watch button: a white play mark needs its own
+   scrim, and the scrim is also what makes the crop read as a film still. */
+.fn-social-film__thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(rgba(11, 11, 11, 0.08), rgba(11, 11, 11, 0.28));
+}
+.fn-social-film__thumb::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translate(-38%, -50%);
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent #fff;
+}
+.fn-social-film b {
+  display: block;
+  margin-bottom: 0.3rem;
+  font: 500 0.58rem/1 var(--fn-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fn-accent);
+}
+.md-typeset .fn-social-film strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: var(--fn-font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.fn-social-film__txt { min-width: 0; }
+.md-typeset .fn-social-film__meta {
+  display: block;
+  font-size: 0.71rem;
+  line-height: 1.5;
+  color: var(--fn-ink-soft);
+}
+
+.fn-film-modal {
+  /* Sized by the film, not by the page: the dialog is max-content so its frame
+     ends where the stage ends, which is what keeps the 9:16 cut out of a wide
+     white surround. */
+  width: max-content;
+  max-width: 94vw;
+  padding: 0;
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  background: var(--fn-panel);
+  box-shadow: var(--fn-shadow-pop);
+  color: var(--fn-ink);
+}
+/* The vertical cut is the reason the size is driven by the ratio: at a fixed
+   width a 9:16 film runs off the bottom of the viewport. --fn-film-modal-ar is
+   the film's ratio as a bare number (16/9 = 1.7778, 9/16 = 0.5625), set per
+   open by the script — one number serves both the aspect-ratio and the height
+   cap, which a `16 / 9` string could not do inside calc(). */
+.fn-film-modal__frame { display: flex; flex-direction: column; }
+.fn-film-modal__stage {
+  aspect-ratio: var(--fn-film-modal-ar, 1.7778);
+  width: min(1180px, 92vw, calc(76vh * var(--fn-film-modal-ar, 1.7778)));
+  background: #000;
+}
+.fn-film-modal__stage video { display: block; width: 100%; height: 100%; }
+/* The dialog is appended to document.body, outside Material's .md-typeset
+   scope, so this rule carries no .md-typeset prefix — with one it would never
+   apply. */
+.fn-film-modal__cap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  font: 500 0.62rem/1.4 var(--fn-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fn-accent);
+}
+.fn-film-modal__x {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--fn-line);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--fn-ink-soft);
+  cursor: pointer;
+}
+.fn-film-modal__x:hover { border-color: var(--fn-ink); color: var(--fn-ink); }
+.fn-film-modal__x svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.fn-film-modal::backdrop { background: rgba(11, 11, 11, 0.66); }
+
+@media screen and (max-width: 76.1875em) {
+  .fn-social-films { grid-template-columns: 1fr; }
 }

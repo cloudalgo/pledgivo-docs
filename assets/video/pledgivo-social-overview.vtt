@@ -1,0 +1,146 @@
+WEBVTT
+
+1
+00:00:03.050 --> 00:00:07.140
+Fundraising software that doesn't live in your Salesforce org.
+
+2
+00:00:07.140 --> 00:00:08.525
+Lives somewhere else.
+
+3
+00:00:09.550 --> 00:00:12.433
+Your donation platform holds the donors.
+
+4
+00:00:12.433 --> 00:00:14.812
+Salesforce gets a copy overnight.
+
+5
+00:00:14.812 --> 00:00:16.975
+And the two never quite agree.
+
+6
+00:00:18.050 --> 00:00:20.877
+Pledgivo removes the second system.
+
+7
+00:00:20.877 --> 00:00:21.523
+One org.
+
+8
+00:00:21.523 --> 00:00:23.300
+One copy of the truth.
+
+9
+00:00:26.150 --> 00:00:29.043
+A public donation form, backed by Stripe.
+
+10
+00:00:29.043 --> 00:00:34.900
+The card is tokenised in the browser, and the gift lands as a standard Opportunity.
+
+11
+00:00:35.883 --> 00:00:43.683
+Salesforce owns the schedule and charges the saved card itself — not a Stripe subscription living in another system.
+
+12
+00:00:45.383 --> 00:00:48.655
+Every appeal is a standard Salesforce Campaign.
+
+13
+00:00:48.655 --> 00:00:52.483
+There's no parallel fundraising object to keep in step.
+
+14
+00:00:53.483 --> 00:01:00.558
+A page design themes the whole donor experience, composed from movable blocks rather than hard-coded.
+
+15
+00:01:01.783 --> 00:01:05.926
+Write the story in Markdown, post updates, publish documents.
+
+16
+00:01:05.926 --> 00:01:09.458
+A tab appears only when there's something behind it.
+
+17
+00:01:10.450 --> 00:01:17.350
+Ticketed events with tiered pricing and real seat capacity, on the same pipeline as every other gift.
+
+18
+00:01:20.150 --> 00:01:22.475
+Donors manage their own giving.
+
+19
+00:01:22.475 --> 00:01:26.750
+A link in their inbox — no account, no password to reset.
+
+20
+00:01:27.850 --> 00:01:32.116
+Receipts and every transactional email, branded from Settings.
+
+21
+00:01:32.116 --> 00:01:35.625
+Your colours, your legal text, your postal address.
+
+22
+00:01:36.617 --> 00:01:40.206
+Refund from the Opportunity, or straight from Stripe.
+
+23
+00:01:40.206 --> 00:01:44.067
+An hourly reconciler makes sure both tell the same story.
+
+24
+00:01:45.317 --> 00:01:53.142
+A failed recurring charge retries on your cadence, emails the donor, then cancels after the grace period you set.
+
+25
+00:01:55.950 --> 00:02:00.878
+Contacts or Person Accounts, detected at install and never hard-coded.
+
+26
+00:02:00.878 --> 00:02:06.650
+Every first-time donor gets a household Account, so no gift falls out of a report.
+
+27
+00:02:07.650 --> 00:02:12.559
+A Settings console for everything an admin should tune without a deploy.
+
+28
+00:02:12.559 --> 00:02:16.650
+Payment keys live in a Named Credential your own org builds.
+
+29
+00:02:17.650 --> 00:02:26.825
+A monitor for gifts stuck between Stripe and Salesforce, diagnostic logs, and a queue for anything a donor asks a public page to do.
+
+30
+00:02:27.817 --> 00:02:29.039
+And it travels.
+
+31
+00:02:29.039 --> 00:02:33.767
+Two lines of HTML put a live campaign on any site you own.
+
+32
+00:02:35.117 --> 00:02:38.055
+A managed package on the current API.
+
+33
+00:02:38.055 --> 00:02:40.834
+Payment keys in a Named Credential.
+
+34
+00:02:40.834 --> 00:02:47.267
+No public webhook endpoint to secure, and NPSP optional — detected, not required.
+
+35
+00:02:48.250 --> 00:02:48.873
+Pledgivo.
+
+36
+00:02:48.873 --> 00:02:52.125
+Keep your donors where your data already lives.
+

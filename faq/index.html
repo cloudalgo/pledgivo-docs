@@ -1,0 +1,2309 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The questions people ask before installing a fundraising package into their Salesforce org — editions, NPSP, Person Accounts, card data, webhooks, refunds, and where the data lives.">
+      
+      
+      
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/faq/">
+      
+      
+        <link rel="prev" href="../concepts/settings-integrations/">
+      
+      
+        <link rel="next" href="../support/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+  <title>Pledgivo FAQ: Editions, Person Accounts, Stripe, and Your Data</title>
+
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/css/field-notes.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  <meta property="og:site_name" content="Pledgivo">
+  <meta property="og:locale" content="en">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
+        "name": "CloudAlgo",
+        "url": "https://cloudalgo.com/",
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
+        "name": "Pledgivo",
+        "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
+        "name": "Pledgivo",
+        "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Fundraising and donation management",
+        "operatingSystem": "Salesforce",
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
+      }
+    ]
+  }
+  </script>
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="FAQ - Pledgivo" />
+<meta property="og:description" content="The questions people ask before installing a fundraising package into their Salesforce org — editions, NPSP, Person Accounts, card data, webhooks, refunds, and where the data lives." />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/faq.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/faq/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="FAQ - Pledgivo" />
+<meta property="twitter:description" content="The questions people ask before installing a fundraising package into their Salesforce org — editions, NPSP, Person Accounts, card data, webhooks, refunds, and where the data lives." />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/faq.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#questions-people-ask-first" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+  <header class="md-header md-header--shadow fn-masthead" data-md-component="header">
+    <nav class="md-header__inner md-grid" aria-label="Header">
+      <label class="md-header__button md-icon fn-masthead__drawer" for="__drawer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      </label>
+
+      <a
+        href=".."
+        title="Pledgivo"
+        class="fn-brand"
+        aria-label="Pledgivo"
+        data-md-component="logo"
+      ><img
+          class="fn-brand__mark"
+          src="../assets/favicon.svg"
+          alt=""
+          aria-hidden="true"
+          width="32"
+          height="32"
+        ><span class="fn-brand__word">Pledg<b>ivo</b></span>
+        
+          <span class="fn-brand__ver">1.0.0-24</span>
+        
+      </a>
+
+      
+        <nav class="md-tabs fn-tabs" aria-label="Tabs" data-md-component="tabs">
+          <ul class="md-tabs__list">
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../getting-started/installation/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+            
+              
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../guides/first-campaign/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+            
+              
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../concepts/donors-accounts/" class="md-tabs__link">
+          
+  
+  
+  Core Concepts
+
+        </a>
+      </li>
+    
+  
+
+            
+              
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../support/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Support
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../pricing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Pricing
+
+      </a>
+    </li>
+  
+
+            
+          </ul>
+        </nav>
+      <div class="md-header__title fn-header__title" data-md-component="header-title">
+        <div class="md-header__ellipsis">
+          <div class="md-header__topic">
+            <span class="md-ellipsis">Pledgivo</span>
+          </div>
+          <div class="md-header__topic" data-md-component="header-topic">
+            <span class="md-ellipsis">
+              FAQ
+            </span>
+          </div>
+        </div>
+      </div>
+
+      
+        
+        
+          <label class="md-header__button md-icon fn-masthead__searchicon" for="__search">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+          </label>
+          <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      
+
+      
+    </nav>
+  </header>
+
+    <div class="md-container" data-md-component="container">
+      
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Pledgivo" class="md-nav__button md-logo" aria-label="Pledgivo" data-md-component="logo">
+      
+  <img src="../assets/favicon.svg" alt="logo">
+
+    </a>
+    Pledgivo
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/after-you-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    After you install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/experience-cloud-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your Experience Cloud site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/connecting-stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/setup-assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/settings-console-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings console reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/first-campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/setup-ticketed-event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/embed-donate-widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embed a donate button on your website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/email-branding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand your receipt and notification emails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/process-refund/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process a refund
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/recurring-dunning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configure recurring dunning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/publish-donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/donors-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donors & accounts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/campaigns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/donations-payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donations & payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/recurring-giving/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring giving
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/events-ticketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/settings-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings & integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you install
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Before you install">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-salesforce-editions-does-this-work-with" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which Salesforce editions does this work with?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-there-anything-we-have-to-install-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is there anything we have to install first?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-we-need-the-nonprofit-success-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do we need the Nonprofit Success Pack?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-we-need-experience-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do we need Experience Cloud?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-do-we-configure-all-of-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where do we configure all of this?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#donors-and-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donors and data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Donors and data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#does-this-work-with-person-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does this work with Person Accounts?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-does-our-data-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does our data live?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-donors-need-a-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do donors need a login?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#payments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Payments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do-card-numbers-ever-reach-salesforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do card numbers ever reach Salesforce?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-we-have-to-expose-a-webhook-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do we have to expose a webhook endpoint?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-is-the-stripe-secret-key-kept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where is the Stripe secret key kept?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-we-refund-from-inside-salesforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can we refund from inside Salesforce?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-a-recurring-charge-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens when a recurring charge fails?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#campaigns-and-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaigns and events
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Campaigns and events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#are-ticketed-events-a-separate-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Are ticketed events a separate product?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-we-put-a-donate-button-on-our-own-website" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can we put a donate button on our own website?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plans
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Plans">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-is-this-priced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How is this priced?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pricing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you install
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Before you install">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-salesforce-editions-does-this-work-with" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which Salesforce editions does this work with?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#is-there-anything-we-have-to-install-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Is there anything we have to install first?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-we-need-the-nonprofit-success-pack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do we need the Nonprofit Success Pack?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-we-need-experience-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do we need Experience Cloud?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-do-we-configure-all-of-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where do we configure all of this?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#donors-and-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donors and data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Donors and data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#does-this-work-with-person-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Does this work with Person Accounts?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-does-our-data-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does our data live?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-donors-need-a-login" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do donors need a login?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#payments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Payments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#do-card-numbers-ever-reach-salesforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do card numbers ever reach Salesforce?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#do-we-have-to-expose-a-webhook-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do we have to expose a webhook endpoint?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-is-the-stripe-secret-key-kept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where is the Stripe secret key kept?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-we-refund-from-inside-salesforce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can we refund from inside Salesforce?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-happens-when-a-recurring-charge-fails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens when a recurring charge fails?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#campaigns-and-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Campaigns and events
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Campaigns and events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#are-ticketed-events-a-separate-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Are ticketed events a separate product?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-we-put-a-donate-button-on-our-own-website" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can we put a donate button on our own website?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plans
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Plans">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-is-this-priced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How is this priced?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+
+<!-- doc: This page answers the questions that arrive BEFORE the documentation
+     does — the ones a Salesforce admin asks while deciding whether to install
+     anything at all. Everything here is a short answer plus a link to the page
+     that treats the subject properly; nothing is explained twice. If an answer
+     starts growing sections, it belongs in Core Concepts and this entry should
+     shrink back to a sentence and a link.
+
+     doc: Deliberately links only to LISTED pages. The Data Model Reference,
+     Code Reference and Integrations sections are unlisted on purpose (see the
+     doc: block above `not_in_nav` in mkdocs.yml) — pointing a public FAQ at one
+     would undo that in the one place a search engine is most likely to follow.
+
+     doc: Pricing questions are NOT repeated here. The pricing page carries its
+     own FAQ, and two copies of "is the free plan a trial?" are two places for
+     the answer to go stale. This page asks the question once and links across.
+-->
+
+<p class="fn-eyebrow">FAQ</p>
+
+<h1 id="questions-people-ask-first">Questions people ask first<a class="headerlink" href="#questions-people-ask-first" title="Permanent link">#</a></h1>
+<p class="fn-dek">Short answers to what an admin wants to know before installing a fundraising package into a live Salesforce org — and a link to the page that treats each subject properly.</p>
+
+<h2 id="before-you-install">Before you install<a class="headerlink" href="#before-you-install" title="Permanent link">#</a></h2>
+<h3 id="which-salesforce-editions-does-this-work-with">Which Salesforce editions does this work with?<a class="headerlink" href="#which-salesforce-editions-does-this-work-with" title="Permanent link">#</a></h3>
+<p>Enterprise, Unlimited, Performance, and Developer. Professional edition works for internal use —
+recording gifts your staff take over the phone — but not for public donation pages, because
+Experience Cloud is not available on Professional. Full requirements are in
+<a href="../getting-started/installation/">Installation</a>.</p>
+<h3 id="is-there-anything-we-have-to-install-first">Is there anything we have to install first?<a class="headerlink" href="#is-there-anything-we-have-to-install-first" title="Permanent link">#</a></h3>
+<p>No. It is a single managed package with no separate dependency. The Apex layer is built on the
+FFLib Apex Enterprise Patterns library, but that library is vendored inside the package — there is
+nothing to install alongside it and nothing to keep in step.</p>
+<h3 id="do-we-need-the-nonprofit-success-pack">Do we need the Nonprofit Success Pack?<a class="headerlink" href="#do-we-need-the-nonprofit-success-pack" title="Permanent link">#</a></h3>
+<p>No. NPSP is detected at runtime, never required, and the package behaves identically without it. If
+you do run NPSP, an optional sync mirrors recurring donations and fund designations into NPSP's own
+objects; if you do not, nothing about the package changes.</p>
+<h3 id="do-we-need-experience-cloud">Do we need Experience Cloud?<a class="headerlink" href="#do-we-need-experience-cloud" title="Permanent link">#</a></h3>
+<p>Only to take donations from the public. An Experience Cloud site is what hosts the donation form,
+the donor portal, and the event registration pages. Internal-only use needs no site at all. Creating
+the site is a manual step the package does not automate — see
+<a href="../getting-started/experience-cloud-setup/">Set up your Experience Cloud site</a>.</p>
+<h3 id="where-do-we-configure-all-of-this">Where do we configure all of this?<a class="headerlink" href="#where-do-we-configure-all-of-this" title="Permanent link">#</a></h3>
+<p>One tab. The Settings console opens on a <strong>Get Started</strong> checklist of the one-time post-install
+steps, with every other panel available and editable at any time — see the
+<a href="../getting-started/setup-assistant/">Setup assistant</a> tour.</p>
+<h2 id="donors-and-data">Donors and data<a class="headerlink" href="#donors-and-data" title="Permanent link">#</a></h2>
+<h3 id="does-this-work-with-person-accounts">Does this work with Person Accounts?<a class="headerlink" href="#does-this-work-with-person-accounts" title="Permanent link">#</a></h3>
+<p>Yes, and you do not choose. Every donor-facing object carries two lookup fields — one for Contact,
+one for Person Account — and donor identity resolves to whichever your org uses. Nothing in the
+package hard-codes one model. See <a href="../concepts/donors-accounts/">Donors &amp; accounts</a>.</p>
+<h3 id="where-does-our-data-live">Where does our data live?<a class="headerlink" href="#where-does-our-data-live" title="Permanent link">#</a></h3>
+<p>In your org. This is a native Salesforce package, not a hosted platform with a Salesforce connector:
+there is no external database holding your donors, no nightly sync to reconcile, and no second
+system that can disagree with your reports. A donation is a standard Opportunity from the moment it
+is confirmed.</p>
+<h3 id="do-donors-need-a-login">Do donors need a login?<a class="headerlink" href="#do-donors-need-a-login" title="Permanent link">#</a></h3>
+<p>No. The donor portal is reached through a private link rather than a password — donors see their
+giving history, manage recurring gifts and saved cards, and download tax statements without an
+account being created for them. See <a href="../concepts/donor-portal/">The donor portal</a>.</p>
+<h2 id="payments">Payments<a class="headerlink" href="#payments" title="Permanent link">#</a></h2>
+<h3 id="do-card-numbers-ever-reach-salesforce">Do card numbers ever reach Salesforce?<a class="headerlink" href="#do-card-numbers-ever-reach-salesforce" title="Permanent link">#</a></h3>
+<p>No. Stripe.js collects the card in an iframe served by Stripe and tokenizes it in the browser; the
+only thing that reaches Apex is the resulting payment-method id. Card data never enters your org,
+which is what keeps your PCI scope where it is.</p>
+<h3 id="do-we-have-to-expose-a-webhook-endpoint">Do we have to expose a webhook endpoint?<a class="headerlink" href="#do-we-have-to-expose-a-webhook-endpoint" title="Permanent link">#</a></h3>
+<p>No — and there is no inbound webhook anywhere in the package. Salesforce asks Stripe about a payment
+rather than waiting to be told, so there is no public endpoint to secure, no signing secret to
+rotate, and no missed-callback failure mode. See
+<a href="../concepts/donations-payments/">Donations &amp; payments</a>.</p>
+<h3 id="where-is-the-stripe-secret-key-kept">Where is the Stripe secret key kept?<a class="headerlink" href="#where-is-the-stripe-secret-key-kept" title="Permanent link">#</a></h3>
+<p>In a Named Credential your admin creates, never in a custom field and never in code. The package
+ships no credential of its own — see <a href="../getting-started/connecting-stripe/">Connecting Stripe</a>.</p>
+<h3 id="can-we-refund-from-inside-salesforce">Can we refund from inside Salesforce?<a class="headerlink" href="#can-we-refund-from-inside-salesforce" title="Permanent link">#</a></h3>
+<p>Yes, from the Opportunity. Refunds issued in the Stripe dashboard instead are reconciled back onto
+the same Opportunity by the same hourly job, so the two never drift apart — see
+<a href="../guides/process-refund/">Process a refund</a>.</p>
+<h3 id="what-happens-when-a-recurring-charge-fails">What happens when a recurring charge fails?<a class="headerlink" href="#what-happens-when-a-recurring-charge-fails" title="Permanent link">#</a></h3>
+<p>It is retried on a schedule you set, and the donor is emailed on the terms you choose, before the
+gift is ever marked lapsed. Recurring gifts are billed by Salesforce against a saved card rather
+than by a Stripe subscription, so the schedule is yours to change — see
+<a href="../concepts/recurring-giving/">Recurring giving</a> and
+<a href="../guides/recurring-dunning/">Configure recurring dunning</a>.</p>
+<h2 id="campaigns-and-events">Campaigns and events<a class="headerlink" href="#campaigns-and-events" title="Permanent link">#</a></h2>
+<h3 id="are-ticketed-events-a-separate-product">Are ticketed events a separate product?<a class="headerlink" href="#are-ticketed-events-a-separate-product" title="Permanent link">#</a></h3>
+<p>No. A ticketed event is a Campaign with ticket types on it, paid for through the same pipeline as a
+donation — seats are reserved before the charge completes, so a sold-out event cannot oversell while
+a payment is in flight. See <a href="../concepts/events-ticketing/">Events &amp; ticketing</a>.</p>
+<h3 id="can-we-put-a-donate-button-on-our-own-website">Can we put a donate button on our own website?<a class="headerlink" href="#can-we-put-a-donate-button-on-our-own-website" title="Permanent link">#</a></h3>
+<p>Yes — an embeddable button that opens your donation page, with no Salesforce login involved for the
+donor. See <a href="../guides/embed-donate-widget/">Embed a donate button on your website</a>.</p>
+<h2 id="plans">Plans<a class="headerlink" href="#plans" title="Permanent link">#</a></h2>
+<h3 id="how-is-this-priced">How is this priced?<a class="headerlink" href="#how-is-this-priced" title="Permanent link">#</a></h3>
+<p>Per Salesforce org, never as a percentage of what you raise. The free plan runs the complete package
+for up to 200 donations a year and does not expire. Everything else — what counts as a donation,
+what happens when you reach the ceiling — is answered on <a href="../pricing/">Pricing</a>.</p>
+<hr />
+<p>Still stuck? <a href="../support/">Support</a> lists what to gather before you get in touch, so the first reply
+can be an answer rather than a question.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer fn-foot">
+  <div class="fn-foot__inner md-grid">
+    
+      <nav class="fn-foot__nav" aria-label="Footer">
+        
+          <a
+            href="../concepts/settings-integrations/"
+            class="fn-foot__page fn-foot__page--prev"
+            rel="prev"
+          >
+            <span class="fn-foot__dir">Previous</span>
+            <span class="fn-foot__pagetitle">Settings & integrations</span>
+          </a>
+        
+        
+          <a
+            href="../support/"
+            class="fn-foot__page fn-foot__page--next"
+            rel="next"
+          >
+            <span class="fn-foot__dir">Next</span>
+            <span class="fn-foot__pagetitle">Support</span>
+          </a>
+        
+      </nav>
+    
+
+    <section class="fn-foot__help" aria-labelledby="fn-foot-help">
+      <div>
+        <p class="fn-foot__helptitle" id="fn-foot-help">Need a hand with any of this?</p>
+        <p class="fn-foot__helpnote">
+          CloudAlgo can install and configure the package for you, or build the
+          customisations your fundraising program needs on top of it.
+        </p>
+      </div>
+      <a class="fn-foot__cta" href="https://cloudalgo.com/contact/" target="_blank" rel="noopener">
+        Contact us
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
+          <path fill="currentColor" d="M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z"/>
+        </svg>
+      </a>
+    </section>
+
+    <div class="fn-foot__meta">
+      <a class="fn-foot__lockup" href="https://cloudalgo.com/" target="_blank" rel="noopener">
+        <span class="fn-foot__lead">A product by</span>
+        <img
+          class="fn-foot__logo"
+          src="../assets/images/cloudalgo-logo-dark.svg"
+          alt="CloudAlgo"
+          width="291"
+          height="53"
+          loading="lazy"
+        >
+      </a>
+      
+        <p class="fn-foot__copy">&copy; 2026 <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
+</p>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../assets/js/cytoscape.min.js"></script>
+      
+        <script src="../assets/js/data-model-diagram.js"></script>
+      
+        <script src="../assets/js/step-viewer.js"></script>
+      
+        <script src="../assets/js/field-notes-video.js"></script>
+      
+        <script src="../assets/js/field-notes-film-modal.js"></script>
+      
+    
+  </body>
+</html>

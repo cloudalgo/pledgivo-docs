@@ -6,35 +6,35 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number.">
+        <meta name="description" content="Pledgivo is priced per Salesforce org and tiered by donation volume — never as a percentage of what you raise. Every plan carries the full feature set, with a 30-day free trial and a 25% nonprofit discount.">
       
       
       
-        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/data-model/payment-method/">
+        <link rel="canonical" href="https://cloudalgo.com/pledgivo-docs/pricing/">
       
       
-        <link rel="prev" href="../recurring-donation/">
+        <link rel="prev" href="..">
       
       
-        <link rel="next" href="../settings/">
+        <link rel="next" href="../getting-started/installation/">
       
       
         
       
       
-      <link rel="icon" href="../../assets/favicon.svg">
+      <link rel="icon" href="../assets/favicon.svg">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
-        <title>Payment Method - Pledgivo</title>
+        <title>Pricing - Pledgivo</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -47,9 +47,9 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/css/field-notes.css">
+      <link rel="stylesheet" href="../assets/css/field-notes.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -73,11 +73,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#payment-method" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -91,14 +86,14 @@
       </label>
 
       <a
-        href="../.."
+        href=".."
         title="Pledgivo"
         class="fn-brand"
         aria-label="Pledgivo"
         data-md-component="logo"
       ><img
           class="fn-brand__mark"
-          src="../../assets/favicon.svg"
+          src="../assets/favicon.svg"
           alt=""
           aria-hidden="true"
           width="32"
@@ -119,7 +114,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href=".." class="md-tabs__link">
         
   
   
@@ -136,9 +131,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../../pricing/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -159,7 +156,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../getting-started/installation/" class="md-tabs__link">
+        <a href="../getting-started/installation/" class="md-tabs__link">
           
   
   
@@ -179,7 +176,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../concepts/donors-accounts/" class="md-tabs__link">
+        <a href="../concepts/donors-accounts/" class="md-tabs__link">
           
   
   
@@ -195,13 +192,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../data-model/" class="md-tabs__link">
           
   
   
@@ -221,7 +216,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../guides/first-campaign/" class="md-tabs__link">
+        <a href="../guides/first-campaign/" class="md-tabs__link">
           
   
   
@@ -241,7 +236,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../reference/apex/" class="md-tabs__link">
+        <a href="../reference/apex/" class="md-tabs__link">
           
   
   
@@ -261,7 +256,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../integrations/stripe/" class="md-tabs__link">
+        <a href="../integrations/stripe/" class="md-tabs__link">
           
   
   
@@ -282,7 +277,7 @@
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
             <span class="md-ellipsis">
-              Payment Method
+              Pricing
             </span>
           </div>
         </div>
@@ -343,7 +338,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -354,9 +351,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Pledgivo" class="md-nav__button md-logo" aria-label="Pledgivo" data-md-component="logo">
+    <a href=".." title="Pledgivo" class="md-nav__button md-logo" aria-label="Pledgivo" data-md-component="logo">
       
-  <img src="../../assets/favicon.svg" alt="logo">
+  <img src="../assets/favicon.svg" alt="logo">
 
     </a>
     Pledgivo
@@ -371,7 +368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -395,10 +392,17 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../pricing/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -414,6 +418,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -491,7 +496,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/installation/" class="md-nav__link">
+      <a href="../getting-started/installation/" class="md-nav__link">
         
   
   
@@ -519,7 +524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/after-you-install/" class="md-nav__link">
+      <a href="../getting-started/after-you-install/" class="md-nav__link">
         
   
   
@@ -547,7 +552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/experience-cloud-setup/" class="md-nav__link">
+      <a href="../getting-started/experience-cloud-setup/" class="md-nav__link">
         
   
   
@@ -575,7 +580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/connecting-stripe/" class="md-nav__link">
+      <a href="../getting-started/connecting-stripe/" class="md-nav__link">
         
   
   
@@ -603,7 +608,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/setup-assistant/" class="md-nav__link">
+      <a href="../getting-started/setup-assistant/" class="md-nav__link">
         
   
   
@@ -631,7 +636,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting-started/settings-console-reference/" class="md-nav__link">
+      <a href="../getting-started/settings-console-reference/" class="md-nav__link">
         
   
   
@@ -740,7 +745,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/donors-accounts/" class="md-nav__link">
+      <a href="../concepts/donors-accounts/" class="md-nav__link">
         
   
   
@@ -768,7 +773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/campaigns/" class="md-nav__link">
+      <a href="../concepts/campaigns/" class="md-nav__link">
         
   
   
@@ -796,7 +801,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/column-ratio/" class="md-nav__link">
+      <a href="../concepts/column-ratio/" class="md-nav__link">
         
   
   
@@ -824,7 +829,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/page-sections/" class="md-nav__link">
+      <a href="../concepts/page-sections/" class="md-nav__link">
         
   
   
@@ -852,7 +857,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/donations-payments/" class="md-nav__link">
+      <a href="../concepts/donations-payments/" class="md-nav__link">
         
   
   
@@ -880,7 +885,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/recurring-giving/" class="md-nav__link">
+      <a href="../concepts/recurring-giving/" class="md-nav__link">
         
   
   
@@ -908,7 +913,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/events-ticketing/" class="md-nav__link">
+      <a href="../concepts/events-ticketing/" class="md-nav__link">
         
   
   
@@ -936,7 +941,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/donor-portal/" class="md-nav__link">
+      <a href="../concepts/donor-portal/" class="md-nav__link">
         
   
   
@@ -964,7 +969,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/guest-requests/" class="md-nav__link">
+      <a href="../concepts/guest-requests/" class="md-nav__link">
         
   
   
@@ -992,7 +997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../concepts/settings-integrations/" class="md-nav__link">
+      <a href="../concepts/settings-integrations/" class="md-nav__link">
         
   
   
@@ -1024,8 +1029,6 @@
       
   
   
-    
-  
   
   
     
@@ -1051,23 +1054,20 @@
     
     
       
-        
-        
-      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../data-model/" class="md-nav__link ">
               
   
   
@@ -1085,13 +1085,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1111,7 +1111,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../all-objects/" class="md-nav__link">
+      <a href="../data-model/all-objects/" class="md-nav__link">
         
   
   
@@ -1139,7 +1139,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../donation/" class="md-nav__link">
+      <a href="../data-model/donation/" class="md-nav__link">
         
   
   
@@ -1167,7 +1167,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../campaign/" class="md-nav__link">
+      <a href="../data-model/campaign/" class="md-nav__link">
         
   
   
@@ -1195,7 +1195,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../recurring-donation/" class="md-nav__link">
+      <a href="../data-model/recurring-donation/" class="md-nav__link">
         
   
   
@@ -1220,37 +1220,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Payment Method
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../data-model/payment-method/" class="md-nav__link">
         
   
   
@@ -1266,61 +1239,6 @@
   
 
       </a>
-      
-        
-
-  
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-it-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why it exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationships" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationships
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fields" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fields
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1333,7 +1251,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../settings/" class="md-nav__link">
+      <a href="../data-model/settings/" class="md-nav__link">
         
   
   
@@ -1442,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/first-campaign/" class="md-nav__link">
+      <a href="../guides/first-campaign/" class="md-nav__link">
         
   
   
@@ -1470,7 +1388,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+      <a href="../guides/writing-a-campaign-story/" class="md-nav__link">
         
   
   
@@ -1498,7 +1416,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/setup-ticketed-event/" class="md-nav__link">
+      <a href="../guides/setup-ticketed-event/" class="md-nav__link">
         
   
   
@@ -1526,7 +1444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/campaign-posts/" class="md-nav__link">
+      <a href="../guides/campaign-posts/" class="md-nav__link">
         
   
   
@@ -1554,7 +1472,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/embed-donate-widget/" class="md-nav__link">
+      <a href="../guides/embed-donate-widget/" class="md-nav__link">
         
   
   
@@ -1582,7 +1500,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/email-branding/" class="md-nav__link">
+      <a href="../guides/email-branding/" class="md-nav__link">
         
   
   
@@ -1610,7 +1528,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/process-refund/" class="md-nav__link">
+      <a href="../guides/process-refund/" class="md-nav__link">
         
   
   
@@ -1638,7 +1556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/recurring-dunning/" class="md-nav__link">
+      <a href="../guides/recurring-dunning/" class="md-nav__link">
         
   
   
@@ -1666,7 +1584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/publish-donor-portal/" class="md-nav__link">
+      <a href="../guides/publish-donor-portal/" class="md-nav__link">
         
   
   
@@ -1694,7 +1612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+      <a href="../guides/monitor-and-diagnose/" class="md-nav__link">
         
   
   
@@ -1789,7 +1707,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/apex/" class="md-nav__link">
+      <a href="../reference/apex/" class="md-nav__link">
         
   
   
@@ -1817,7 +1735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/lwc/" class="md-nav__link">
+      <a href="../reference/lwc/" class="md-nav__link">
         
   
   
@@ -1845,7 +1763,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/visualforce/" class="md-nav__link">
+      <a href="../reference/visualforce/" class="md-nav__link">
         
   
   
@@ -1938,7 +1856,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../integrations/stripe/" class="md-nav__link">
+      <a href="../integrations/stripe/" class="md-nav__link">
         
   
   
@@ -1966,7 +1884,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../integrations/npsp/" class="md-nav__link">
+      <a href="../integrations/npsp/" class="md-nav__link">
         
   
   
@@ -2002,7 +1920,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -2013,49 +1933,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#why-it-exists" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Why it exists
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#relationships" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Relationships
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fields" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Fields
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -2069,182 +1946,372 @@
               <article class="md-content__inner md-typeset">
                 
                   
+  
 
 
 
-<p class="fn-eyebrow">Data Model Reference</p>
 
-<h1 id="payment-method">Payment Method<a class="headerlink" href="#payment-method" title="Permanent link">#</a></h1>
-<p class="fn-dek">Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number.</p>
+<!-- doc: The second page on this site that is not documentation. It answers
+     the question a first-time visitor asks before any of the six reference
+     sections, so it sits directly after Home in the masthead.
 
-<!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>16 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
-<!-- AUTOGEN:META:END -->
+     doc: The largest number on the page is deliberately not a price — it is the
+     0% we take of each donation. Competing platforms in this category price as
+     a percentage of money raised, so the fact that a $500 campaign and a
+     $500,000 campaign cost the same here is the argument; leading with $149
+     buries it under a figure that looks larger than a rival's "free". The tiers
+     are then set as one ruled rate card rather than three floating shadowed
+     boxes: this theme is hairlines and Fraunces numerals, and the usual SaaS
+     pricing card belongs to a different design system. The recommended column
+     is marked with a red rule rather than a fill, because a filled column would
+     out-shout the 0% and that figure has to stay the loudest thing here.
 
-<h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
-<p>This is a pure token vault, never a payment record. Stripe.js tokenizes card details in the
-donor's browser and only <code>paymentMethod.id</code> ever reaches Apex — the full card number, CVV, and
-bank account number never touch this org, so <code>Payment_Method__c</code> only ever stores what's safe
-to display back to the donor (<code>Brand__c</code>, <code>Last4__c</code>, expiry) plus the gateway's own reference
-IDs. <code>Fingerprint__c</code> lets the app detect when a donor re-saves a card it already has on file.</p>
-<p><strong>This object does not relate to <code>Opportunity</code>.</strong> A one-time gift stores its own Stripe payment
-reference directly on the Opportunity (<code>Stripe_Payment_Intent_Id__c</code>, <code>Payment_Source__c</code>,
-<code>Payment_Status__c</code>) and never touches a saved payment method. <code>Payment_Method__c</code> exists
-specifically so a <em>recurring</em> schedule (<code>Recurring_Donation__c</code>) can be charged off-session
-without the donor re-entering card details each cycle — see <a href="../recurring-donation/">Recurring Donation</a>.</p>
-<h2 id="relationships">Relationships<a class="headerlink" href="#relationships" title="Permanent link">#</a></h2>
-<!-- AUTOGEN:RELATIONSHIPS:START -->
-<table>
-<thead>
-<tr>
-<th>Direction</th>
-<th>Field</th>
-<th>Related object</th>
-<th>Relationship type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>→ out</td>
-<td><code>Contact__c</code></td>
-<td><a href="../all-objects/#contact">Contact</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>→ out</td>
-<td><code>Donor_Account__c</code></td>
-<td><a href="../all-objects/#account">Account</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>→ out</td>
-<td><code>Payment_Account__c</code></td>
-<td><a href="../all-objects/#payment-account">Payment Account</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>← in</td>
-<td><code>Payment_Method__c</code> on Recurring Donation</td>
-<td><a href="../all-objects/#recurring-donation">Recurring Donation</a></td>
-<td>Lookup</td>
-</tr>
-</tbody>
-</table>
-<!-- AUTOGEN:RELATIONSHIPS:END -->
+     doc: PRICES ARE PROVISIONAL. The three tiers come from the "Pricing Model
+     Suggestion" table in specs/02-product-overview.md, which labels itself a
+     suggestion for go-to-market planning with final pricing set by the product
+     team before the AppExchange listing. Every figure appears in the rate card,
+     and the Growth figure again in the worked example in section 04. Confirm
+     both against the spec before republishing.
 
-<h2 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">#</a></h2>
-<!-- AUTOGEN:FIELDS:START -->
-<table>
-<thead>
-<tr>
-<th>Field</th>
-<th>Label</th>
-<th>Type</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Bank_Name__c</code></td>
-<td>Bank_Name</td>
-<td>Text</td>
-<td>Bank name shown for ACH payment methods. Not populated for cards.</td>
-</tr>
-<tr>
-<td><code>Brand__c</code></td>
-<td>Brand</td>
-<td>Text</td>
-<td>Card network (Visa, Mastercard, Amex, Discover). Blank for ACH.</td>
-</tr>
-<tr>
-<td><code>Contact__c</code></td>
-<td>Contact</td>
-<td>Lookup → <code>Contact</code></td>
-<td>Owning contact in standard (non-Person Account) orgs.</td>
-</tr>
-<tr>
-<td><code>Donor_Account__c</code></td>
-<td>Donor Account</td>
-<td>Lookup → <code>Account</code></td>
-<td>Owning Person Account in Person Account orgs.</td>
-</tr>
-<tr>
-<td><code>Exp_Month__c</code></td>
-<td>Exp_Month</td>
-<td>Number</td>
-<td>Card expiry month, for display only. Blank for ACH.</td>
-</tr>
-<tr>
-<td><code>Exp_Year__c</code></td>
-<td>Exp_Year</td>
-<td>Number</td>
-<td>Card expiry year, for display only. Blank for ACH.</td>
-</tr>
-<tr>
-<td><code>Fingerprint__c</code></td>
-<td>Fingerprint</td>
-<td>Text</td>
-<td>Gateway fingerprint used to detect duplicate payment methods.<br><em>Docs: PaymentMethodService.saveWalletCard matches on this before inserting; a hit returns the existing row untouched with no DML at all rather than a duplicate, since the guest context all 3 callers run in can never get object-level Edit on this object to update it.</em></td>
-</tr>
-<tr>
-<td><code>Is_Default__c</code></td>
-<td>Is_Default</td>
-<td>Checkbox</td>
-<td>Checked if this is the donor's default payment method.</td>
-</tr>
-<tr>
-<td><code>Is_Valid__c</code></td>
-<td>Is_Valid</td>
-<td>Checkbox</td>
-<td>Unchecked when the gateway reports this method as no longer usable.<br><em>Docs: PaymentMethodsSelector.selectByDonor filters WHERE Is_Valid__c = true so an invalid method never surfaces as a choice in the donor-facing picker, while selectByDonorSystem (used by the guest/portal write paths) reads all rows so Fingerprint__c dedup still finds them.</em></td>
-</tr>
-<tr>
-<td><code>Last4__c</code></td>
-<td>Last4</td>
-<td>Text</td>
-<td>Last 4 digits shown to identify the method. Never the full card/account number.</td>
-</tr>
-<tr>
-<td><code>Payment_Account__c</code></td>
-<td>Payment Account</td>
-<td>Lookup → <code>Payment_Account__c</code></td>
-<td>Which of your configured Stripe accounts holds this saved card. Set automatically when the donor saves the card and must not be changed by hand — the card only works with the account listed here.<br><em>Docs: Added 2026-08-07 to close a live renewal bug. Before this field the renewal batch re-derived the Stripe account from Campaign.Payment_Account__c on every run, so re-pointing a campaign at a second Stripe account made every in-flight schedule charge account-A tokens against account B; Stripe answers resource_missing and the batch fed that into the dunning cadence as though the donor's card had declined.  deleteConstraint is deliberately omitted (SetNull), matching Opportunity.Payment_Account__c and Donation_Staging__c.Payment_Account__c: this is a historical transactional reference, not a config link.  The hard block on deleting an in-use account lives on Campaign.Payment_Account__c (Restrict) plus SetupController.DeletePaymentAccount's friendly guard, and every wallet row is reachable through a campaign, so nothing is lost by not repeating it here.</em></td>
-</tr>
-<tr>
-<td><code>Removed_Date__c</code></td>
-<td>Removed Date</td>
-<td>DateTime</td>
-<td>The date and time the donor removed this card themselves from their online account. Blank means the card is still available to them. Useful when a donor asks why a card stopped being offered, or when reconciling a gift that was charged shortly before the card was removed.<br><em>Docs: Companion to Removed__c — set in the same SYSTEM_MODE update so the two never disagree. Nothing queries on it; it exists so support can answer "when did this card disappear from my account?" without reading field history, which is not enabled on this object.</em></td>
-</tr>
-<tr>
-<td><code>Removed__c</code></td>
-<td>Removed</td>
-<td>Checkbox</td>
-<td>Ticked when the donor removed this card themselves from their online account. The card stays on file so past gifts and any refunds still trace back to it, but it is no longer offered when someone gives again or when a recurring gift is set up. Do not tick or untick this yourself — ask the donor to remove or re-add the card from their donor portal instead.<br><em>Docs: A soft remove, for three reasons: the Guest License can never hold object Delete; historic Donation__c rows need Stripe_Payment_Method_Id__c to stay resolvable for refund traceability; and DonorPortalService.removeWalletCard refuses removal outright while an Active, Paused or Failed Recurring_Donation__c still points at the card, so a removed row can never be one a live schedule depends on (Failed blocks too — a dunning donor who removed the card would have nothing left to fix).  Removal makes NO Stripe detach callout — the site-context guard added to the gateway refuses back-office Stripe calls from a site context by design, and the donor's click path must not carry a callout.  PaymentMethodsSelector filters Removed__c = true out of the two wallet-listing methods (selectValidByDonor, selectValidByDonorSystem).  selectByDonorSystem is deliberately NOT filtered — it is the dedup query, and Stripe_Payment_Method_Id__c is unique, so hiding a removed row there would make re-adding the same card die on the uniqueness constraint instead of reinstating it. selectById / selectDetailById stay unfiltered so back-office lookups still resolve historic rows.</em></td>
-</tr>
-<tr>
-<td><code>Stripe_Customer_Id__c</code></td>
-<td>Stripe Customer ID</td>
-<td>Text</td>
-<td>Stripe Customer reference ID (cus_...). Not a secret.</td>
-</tr>
-<tr>
-<td><code>Stripe_Payment_Method_Id__c</code></td>
-<td>Stripe Payment Method ID</td>
-<td>Text</td>
-<td>Stripe PaymentMethod reference ID (pm_...). Not a secret.<br><em>Docs: The billing-critical copy of this id actually lives on Recurring_Donation__c, stamped directly by the caller of PaymentMethodService.saveWalletCard — this wallet-row copy is display/dedup metadata only, which is what makes the insert-only (never-updated) row safe under the guest-context restriction.</em></td>
-</tr>
-<tr>
-<td><code>Type__c</code></td>
-<td>Type</td>
-<td>Picklist</td>
-<td>Card or US Bank Account (ACH).</td>
-</tr>
-</tbody>
-</table>
-<!-- AUTOGEN:FIELDS:END -->
+     doc: Markup is hand-written HTML rather than markdown, matching index.md.
+     Every block has a rule in the "Pricing" section at the foot of
+     assets/css/field-notes.css; the two are a pair and are used by no other
+     page. Links are plain relative URLs because MkDocs only rewrites links it
+     parsed from markdown — mkdocs_hooks.on_post_build resolves each one against
+     the built site and fails the build on a miss. -->
 
-<p><a href="../">← Back to the diagram</a></p>
+<div class="fn-field" aria-hidden="true">
+  <div class="fn-sk fn-sk--receipt">
+    <svg viewBox="0 0 140 200">
+      <path d="M18 12h104v162l-13-9-13 9-13-9-13 9-13-9-13 9-13-9-13 9Z"/>
+      <path d="M38 46h64"/><path d="M38 66h64"/><path d="M38 86h40"/>
+      <path d="M38 118h64"/><path d="M38 138h30"/>
+    </svg>
+  </div>
+  <div class="fn-sk fn-sk--goal">
+    <svg viewBox="0 0 200 90">
+      <rect x="6" y="30" width="188" height="30" rx="15"/>
+      <path d="M6 45h120"/><circle cx="126" cy="45" r="11"/>
+      <path d="M14 18h50"/><path d="M150 74h40"/>
+    </svg>
+  </div>
+  <div class="fn-sk fn-sk--loop">
+    <svg viewBox="0 0 160 160">
+      <circle cx="80" cy="80" r="58"/>
+      <path d="M80 22v22"/><path d="m64 34 16-12 16 12"/>
+      <path d="M80 138v-22"/><path d="m96 126-16 12-16-12"/>
+      <path d="M62 96V64h36"/><path d="M98 80H62"/>
+    </svg>
+  </div>
+  <div class="fn-sk fn-sk--coin">
+    <svg viewBox="0 0 120 120">
+      <circle cx="60" cy="60" r="44"/><path d="M60 30v60"/>
+      <path d="M74 44H52a10 10 0 0 0 0 20h16a10 10 0 0 1 0 20H46"/>
+    </svg>
+  </div>
+</div>
+
+<div class="fn-pr">
+
+<div class="fn-pr-hero">
+  <p class="fn-eyebrow">Pricing</p>
+  <h1 class="fn-home-h1">Priced per org. <em>Never</em> per donation.</h1>
+  <p class="fn-dek">One flat subscription for your Salesforce org, tiered by how many
+  donations you take in a year. We never take a percentage of what you raise — so a campaign
+  that goes unexpectedly well costs exactly what a quiet one does.</p>
+  <div class="fn-pr-chips">
+    <span class="fn-chip">30-day free trial</span>
+    <span class="fn-chip">Unlimited staff users</span>
+    <span class="fn-chip">25% nonprofit discount</span>
+    <span class="fn-chip">Every feature, every tier</span>
+  </div>
+</div>
+
+<!-- doc: The zero band. Deliberately the same four-column ruled strip as the
+     home page's proof block, so the two pages read as one publication. Three of
+     the four figures are a zero or a one: the strip is a list of things you are
+     not billed for, which is the argument the rest of the page elaborates. -->
+<div class="fn-pr-zero">
+  <div>
+    <b class="fn-pr-zero__big">0%</b>
+    <span>Of every donation. We take no cut — not at $500 raised, and not at $500,000.</span>
+  </div>
+  <div>
+    <b>$0</b>
+    <span>Per user. Your whole fundraising team, plus finance, plus the executive director.</span>
+  </div>
+  <div>
+    <b>30 days</b>
+    <span>Free trial through the AppExchange, running on your own Salesforce org.</span>
+  </div>
+  <div>
+    <b>25%</b>
+    <span>Off every tier for organisations with a verified 501(c)(3).</span>
+  </div>
+</div>
+
+<section class="fn-pr-sec">
+  <div class="fn-sec-head">
+    <span class="fn-sec-head__n">01</span>
+    <h2>Three plans</h2>
+    <p>Tiered by annual donation volume — not by which features you are allowed.</p>
+  </div>
+
+  <div class="fn-pr-rate">
+    <div class="fn-pr-tier">
+      <div class="fn-pr-tier__tag"></div>
+      <h3>Starter</h3>
+      <p class="fn-pr-tier__for">One team running a handful of appeals across the year.</p>
+      <div class="fn-pr-tier__price"><b>$149</b><i>/mo</i></div>
+      <span class="fn-pr-tier__unit">Per Salesforce org, billed monthly</span>
+      <div class="fn-pr-tier__cap">
+        <b>Up to 500</b>
+        <span>donations per year</span>
+      </div>
+      <ul>
+        <li>Every feature in the package</li>
+        <li>Unlimited campaigns and staff users</li>
+        <li>Community support</li>
+      </ul>
+      <a class="fn-btn fn-btn--ghost" href="getting-started/installation/">Start free trial</a>
+    </div>
+
+    <div class="fn-pr-tier fn-pr-tier--pick">
+      <div class="fn-pr-tier__tag">Most organisations</div>
+      <h3>Growth</h3>
+      <p class="fn-pr-tier__for">Year-round giving, recurring donors and ticketed events.</p>
+      <div class="fn-pr-tier__price"><b>$349</b><i>/mo</i></div>
+      <span class="fn-pr-tier__unit">Per Salesforce org, billed monthly</span>
+      <div class="fn-pr-tier__cap">
+        <b>Up to 5,000</b>
+        <span>donations per year</span>
+      </div>
+      <ul>
+        <li>Every feature in the package</li>
+        <li>Unlimited campaigns and staff users</li>
+        <li>Email support, next business day</li>
+      </ul>
+      <a class="fn-btn fn-btn--primary" href="getting-started/installation/">Start free trial</a>
+    </div>
+
+    <div class="fn-pr-tier">
+      <div class="fn-pr-tier__tag"></div>
+      <h3>Enterprise</h3>
+      <p class="fn-pr-tier__for">National campaigns, federated chapters and giving days.</p>
+      <div class="fn-pr-tier__price"><b>$799</b><i>/mo</i></div>
+      <span class="fn-pr-tier__unit">Per Salesforce org, billed monthly</span>
+      <div class="fn-pr-tier__cap">
+        <b>Unlimited</b>
+        <span>donations per year</span>
+      </div>
+      <ul>
+        <li>Every feature in the package</li>
+        <li>Unlimited campaigns and staff users</li>
+        <li>Priority support and onboarding</li>
+      </ul>
+      <a class="fn-btn fn-btn--ghost" href="getting-started/installation/">Talk to us</a>
+    </div>
+
+    <div class="fn-pr-rate__foot">
+      <span><b>Annual billing</b> — two months free on any tier.</span>
+      <span><b>Nonprofits</b> — 25% off with a verified 501(c)(3).</span>
+      <span><b>Outgrow your tier?</b> We move you up at renewal. Nothing stops working.</span>
+    </div>
+  </div>
+</section>
+
+<!-- doc: The tiers differ by annual volume and support level, never by
+     feature, so this table has a single "All tiers" column rather than one
+     column per plan — a three-column grid of identical ticks would be a wall of
+     the same mark repeated thirty times. If a feature is ever restricted to a
+     higher tier, this table stops being true and the "every feature, every
+     tier" chip in the hero has to go with it. -->
+<section class="fn-pr-sec">
+  <div class="fn-sec-head">
+    <span class="fn-sec-head__n">02</span>
+    <h2>What's in every plan</h2>
+    <p>All of it. The tiers move on volume and support, never on features.</p>
+  </div>
+  <div class="fn-pr-tablewrap">
+    <table class="fn-pr-table">
+      <thead>
+        <tr><th>Capability</th><th>What you get</th><th>All tiers</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Donation forms</td><td>Branded, embeddable one-off and recurring giving forms on your Experience Cloud site</td><td class="tick">Included</td></tr>
+        <tr><td>Recurring giving</td><td>Self-managed monthly and annual schedules, charged off-session, with dunning and retries</td><td class="tick">Included</td></tr>
+        <tr><td>Campaigns</td><td>Donation, crowdfunding and event campaign types, with goal tracking and a public gallery</td><td class="tick">Included</td></tr>
+        <tr><td>Events &amp; ticketing</td><td>Tiered ticket types, seat holds, guest naming and door check-in</td><td class="tick">Included</td></tr>
+        <tr><td>Donor portal</td><td>Donors update their own card, change or stop a schedule, and download receipts</td><td class="tick">Included</td></tr>
+        <tr><td>Receipts &amp; email</td><td>Branded receipt and notification templates, sent from your own org</td><td class="tick">Included</td></tr>
+        <tr><td>Refunds</td><td>Full and partial refunds from the donation record, netted through every rollup</td><td class="tick">Included</td></tr>
+        <tr><td>NPSP</td><td>Detected automatically; recurring donations and designations sync to NPSP's own objects</td><td class="tick">Included</td></tr>
+        <tr><td>Person Accounts</td><td>Detected automatically — no separate edition and no configuration</td><td class="tick">Included</td></tr>
+        <tr><td>Staff users</td><td>Every user in the org can be granted access; the bill does not move</td><td class="tick">Unlimited</td></tr>
+        <tr><td>Your data</td><td>Standard Campaign, Opportunity and Contact records in your org — no external platform, no sync job</td><td class="tick">Included</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- doc: The money-flow diagram. The subscription box hangs off the rail on a
+     dashed lead rather than sitting inside it, because the drawing has to say
+     "beside the money path, not a toll gate on it". Moving that box into the
+     rail would make the diagram assert the opposite of the page. -->
+<section class="fn-pr-sec">
+  <div class="fn-sec-head">
+    <span class="fn-sec-head__n">03</span>
+    <h2>Where a donation actually goes</h2>
+    <p>Card to your bank account. We are not a stop along the way.</p>
+  </div>
+  <div class="fn-pr-flow">
+    <div class="fn-pr-flow__rail">
+      <div class="fn-pr-flow__step">
+        <div class="fn-pr-flow__art">
+          <svg viewBox="0 0 92 70"><rect x="4" y="10" width="84" height="52" rx="7"/><path d="M4 26h84"/><path d="M16 44h22"/><path d="M62 46h14"/></svg>
+        </div>
+        <b>Donor gives</b>
+        <span>Card details go from the donor's browser straight to Stripe. They never reach your org.</span>
+      </div>
+      <div class="fn-pr-flow__arrow">
+        <svg viewBox="0 0 60 40"><path class="dash" d="M2 20h44"/><path d="m40 13 8 7-8 7"/></svg>
+      </div>
+      <div class="fn-pr-flow__step">
+        <div class="fn-pr-flow__art">
+          <svg viewBox="0 0 80 70"><rect x="6" y="14" width="68" height="44" rx="8"/><path d="M40 24v24"/><path d="M50 32H34a7 7 0 0 0 0 14h12a7 7 0 0 1 0 14H28"/></svg>
+        </div>
+        <b>Stripe processes</b>
+        <span>Stripe takes its processing fee and settles the rest, on your own Stripe account.</span>
+      </div>
+      <div class="fn-pr-flow__arrow">
+        <svg viewBox="0 0 60 40"><path class="dash" d="M2 20h44"/><path d="m40 13 8 7-8 7"/></svg>
+      </div>
+      <div class="fn-pr-flow__step">
+        <div class="fn-pr-flow__art">
+          <svg viewBox="0 0 88 70"><path d="M6 28 44 8l38 20"/><path d="M14 28v30"/><path d="M32 28v30"/><path d="M56 28v30"/><path d="M74 28v30"/><path d="M4 60h80"/></svg>
+        </div>
+        <b>Your bank</b>
+        <span>The balance lands in your account, and the donation is already a record in your org.</span>
+      </div>
+    </div>
+    <div class="fn-pr-flow__aside">
+      <b>Pledgivo — $149 to $799 a month</b>
+      <span>A flat subscription billed to you like any other software. It is never deducted from a gift.</span>
+    </div>
+    <p class="fn-pr-flow__note">Which is why the price is identical whether you raise <b>$5,000</b> or
+    <b>$5,000,000</b>. The only thing that moves you up a tier is the <b>number</b> of donations you
+    take, never their size.</p>
+  </div>
+</section>
+
+<!-- doc: This section deliberately names no competitor and quotes no
+     competitor's rate. An earlier draft did both and the figures did not
+     survive checking: GoFundMe Pro is custom-priced rather than carrying a
+     published platform fee, Classy is now part of GoFundMe Pro so listing them
+     separately was wrong, and Givebutter's headline platform fee is 0% when
+     donor tips are on, which made a "1-5%" summary misleading. Third-party
+     prices change without notice and a wrong one about a named company is the
+     kind of error that gets quoted back at you, so the argument is made with
+     our own numbers only. The 2% below is explicitly hypothetical and labelled
+     as such in the caption; do not relabel it as any particular platform's
+     rate without a citation. -->
+<section class="fn-pr-sec">
+  <div class="fn-sec-head">
+    <span class="fn-sec-head__n">04</span>
+    <h2>What a good year costs you</h2>
+    <p>Exactly what a quiet one does. That is the whole of this section.</p>
+  </div>
+
+  <div class="fn-pr-worked">
+    <b>A year on the Growth tier, at three different results</b>
+    <table class="fn-pr-worked__t">
+      <thead>
+        <tr><th>If you raise</th><th>Pledgivo costs</th><th>A 2% platform fee would cost</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>$250,000</td><td>$4,188</td><td>$5,000</td></tr>
+        <tr><td>$500,000</td><td>$4,188</td><td>$10,000</td></tr>
+        <tr><td>$1,000,000</td><td>$4,188</td><td>$20,000</td></tr>
+      </tbody>
+    </table>
+    <p class="fn-pr-worked__note">The middle column is Growth at $349 a month and does not move,
+    because our price is a function of how many donations you record, not how much they were
+    worth. The right-hand column is a <b>hypothetical</b> 2% platform fee, shown to make the shape
+    of percentage-based pricing visible — it is not any particular platform's published rate. Card
+    processing sits outside all of this and is paid to Stripe on your own account, whichever way
+    you fundraise.</p>
+  </div>
+</section>
+
+<section class="fn-pr-sec">
+  <div class="fn-sec-head">
+    <span class="fn-sec-head__n">05</span>
+    <h2>Questions worth asking first</h2>
+    <p>Particularly the one about going over your tier mid-campaign.</p>
+  </div>
+  <div class="fn-pr-faq">
+    <div>
+      <h4>What counts as a donation?</h4>
+      <p>One completed gift — a single donation, one charge of a recurring schedule, or one ticket
+      order. Refunded and failed payments do not count towards your tier.</p>
+    </div>
+    <div>
+      <h4>What happens if we go over?</h4>
+      <p>Nothing breaks and nothing is throttled. We get in touch and move you to the right tier at
+      your next renewal, rather than interrupting a campaign that is going well.</p>
+    </div>
+    <div>
+      <h4>Is it priced per user?</h4>
+      <p>No. The subscription covers a Salesforce org and every user in it can be given access.
+      Adding staff never changes the bill.</p>
+    </div>
+    <div>
+      <h4>Do you take a cut of donations?</h4>
+      <p>No, and structurally we cannot. The package runs inside your own org and Stripe settles to
+      your own Stripe account — there is no point at which the money passes through us.</p>
+    </div>
+    <div>
+      <h4>What does the trial include?</h4>
+      <p>Thirty days of the complete package on your own org, installed from the AppExchange. Every
+      feature, and no card required to begin.</p>
+    </div>
+    <div>
+      <h4>How does the nonprofit discount work?</h4>
+      <p>25% off any tier once we have verified your 501(c)(3) status. It holds for as long as the
+      status does, on monthly or annual billing.</p>
+    </div>
+    <div>
+      <h4>Which Salesforce editions work?</h4>
+      <p>Enterprise, Unlimited and Performance. Professional edition can run the internal features
+      but not the public donor site, which needs Experience Cloud.</p>
+    </div>
+    <div>
+      <h4>What happens if we cancel?</h4>
+      <p>Your data stays. Campaigns, donations and contacts are ordinary Salesforce records in your
+      own org — uninstalling the package does not take them with it.</p>
+    </div>
+  </div>
+</section>
+
+<div class="fn-closer fn-pr-closer">
+  <div class="fn-pr-closer__art" aria-hidden="true">
+    <svg viewBox="0 0 200 140">
+      <path d="M12 118V44l52-28 52 28v74"/><path d="M12 118h176"/>
+      <path d="M116 118V72h60v46"/><path d="M44 118V84h32v34"/>
+      <path d="M132 92h12"/><path d="M156 92h8"/>
+    </svg>
+  </div>
+  <div>
+    <h2>Try it on your own org for 30 days.</h2>
+    <p>Install from the AppExchange, run a real campaign end to end, and decide with your own
+    numbers in front of you.</p>
+  </div>
+  <a class="fn-btn fn-btn--primary" href="getting-started/installation/">Start the free trial
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+  </a>
+</div>
+
+</div>
 
 
 
@@ -2257,6 +2324,8 @@ without the donor re-entering card details each cycle — see <a href="../recurr
 
 
 
+
+  
 
 
 
@@ -2284,22 +2353,22 @@ without the donor re-entering card details each cycle — see <a href="../recurr
       <nav class="fn-foot__nav" aria-label="Footer">
         
           <a
-            href="../recurring-donation/"
+            href=".."
             class="fn-foot__page fn-foot__page--prev"
             rel="prev"
           >
             <span class="fn-foot__dir">Previous</span>
-            <span class="fn-foot__pagetitle">Recurring Donation</span>
+            <span class="fn-foot__pagetitle">Home</span>
           </a>
         
         
           <a
-            href="../settings/"
+            href="../getting-started/installation/"
             class="fn-foot__page fn-foot__page--next"
             rel="next"
           >
             <span class="fn-foot__dir">Next</span>
-            <span class="fn-foot__pagetitle">Settings</span>
+            <span class="fn-foot__pagetitle">Installation</span>
           </a>
         
       </nav>
@@ -2326,7 +2395,7 @@ without the donor re-entering card details each cycle — see <a href="../recurr
         <span class="fn-foot__lead">A product by</span>
         <img
           class="fn-foot__logo"
-          src="../../assets/images/cloudalgo-logo-dark.svg"
+          src="../assets/images/cloudalgo-logo-dark.svg"
           alt="CloudAlgo"
           width="291"
           height="53"
@@ -2350,18 +2419,18 @@ without the donor re-entering card details each cycle — see <a href="../recurr
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
-        <script src="../../assets/js/cytoscape.min.js"></script>
+        <script src="../assets/js/cytoscape.min.js"></script>
       
-        <script src="../../assets/js/data-model-diagram.js"></script>
+        <script src="../assets/js/data-model-diagram.js"></script>
       
-        <script src="../../assets/js/step-viewer.js"></script>
+        <script src="../assets/js/step-viewer.js"></script>
       
-        <script src="../../assets/js/field-notes-video.js"></script>
+        <script src="../assets/js/field-notes-video.js"></script>
       
     
   </body>

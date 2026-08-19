@@ -2256,6 +2256,29 @@ body::after {
   }
 }
 
+/* The tab row is the only thing in the masthead that grows with the site, and
+   adding Pricing took it past what fits beside a fixed-width search pill: at
+   the low end of the wide layout "Code Reference" ran under the pill and was
+   clipped. `.md-tabs` is `overflow: visible`, so the overflow is silent — the
+   label simply disappears behind the search with no scrollbar and no ellipsis
+   to say so. Between the layout switch (76.25em) and the width where the row
+   fits comfortably (measured: the default sizing needs ~1500px for eight
+   tabs), tighten the tabs and the pill rather than dropping a section from
+   the masthead. Two steps, because one setting cannot span the whole range:
+   the row is a fixed width while the pill slides left with the viewport, so
+   the squeeze at 1220px is ~60px worse than at 1280px. Re-measure both steps
+   if a tab is ever added or renamed. */
+@media screen and (min-width: 76.25em) and (max-width: 94em) {
+  .md-tabs__link { padding: 0 0.3rem; font-size: 0.79rem; }
+  .md-search__inner { width: 7.6rem; }
+}
+
+@media screen and (min-width: 76.25em) and (max-width: 80em) {
+  .md-tabs__link { padding: 0 0.24rem; font-size: 0.75rem; }
+  .md-search__inner { width: 6.8rem; }
+}
+
+
 /* Material treats the tab row as transient: once the page heading scrolls
    under the header it sets `hidden` on the tabs and animates the page title
    into the header in their place. That trade makes sense for a second row that
@@ -3079,4 +3102,584 @@ body::after {
   .md-typeset .fn-vp__bar,
   .md-typeset .fn-vp__big,
   .md-typeset .fn-vp::before { transition: none; }
+}
+
+/* ===========================================================================
+   Pricing — the second non-documentation page
+
+   Pairs with docs/pricing.md and is used by nothing else, the same way the
+   Home block above pairs with index.md. Rules that have to beat a Material
+   default (tables, lists, headings, paragraphs) carry the .md-typeset prefix;
+   the purely structural containers do not, matching the Home block.
+
+   The one colour decision worth stating: red appears exactly three times on
+   this page — the 0% in the zero band, the recommended tier's top rule, and
+   the single differing row of the comparison table. That is the doctrine of
+   this theme applied to a pricing page. Black carries what the product does,
+   red carries what a person decided, and adding a fourth red would cost the
+   other three their meaning.
+   =========================================================================== */
+
+.fn-sk--coin { top: 66%; right: 8%; width: 130px; animation: fn-drift-c 74s ease-in-out infinite; }
+.fn-sk--coin * { animation-delay: 2.1s; }
+
+.fn-pr { max-width: 1000px; margin: 0 auto; }
+
+/* ---------- Hero ---------- */
+
+.fn-pr-hero { padding: 1.4rem 0 2.6rem; }
+.md-typeset .fn-pr-hero .fn-dek { max-width: 58ch; margin-bottom: 1.8rem; }
+.fn-pr-chips { display: flex; flex-wrap: wrap; gap: .45rem; }
+
+/* ---------- The zero band ---------- */
+
+.fn-pr-zero {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--fn-ink);
+  border-bottom: 1px solid var(--fn-line);
+  margin: 0 0 4.6rem;
+}
+.fn-pr-zero > div { padding: 1.4rem 1.2rem 1.5rem; border-right: 1px solid var(--fn-line-soft); }
+.fn-pr-zero > div:last-child { border-right: 0; }
+.md-typeset .fn-pr-zero b {
+  display: block;
+  font: 600 1.72rem/1.08 var(--fn-font-display);
+  letter-spacing: -.02em;
+  margin-bottom: .3rem;
+}
+.md-typeset .fn-pr-zero .fn-pr-zero__big {
+  font-size: 3.1rem;
+  color: var(--fn-accent-ink);
+  letter-spacing: -.03em;
+}
+.md-typeset .fn-pr-zero span {
+  display: block;
+  font-size: .82rem;
+  line-height: 1.45;
+  color: var(--fn-ink-soft);
+}
+
+/* ---------- Sections ---------- */
+
+.fn-pr-sec { margin-bottom: 4.8rem; }
+
+/* ---------- The rate card ----------
+   One ruled grid rather than two floating cards: this theme is hairlines and
+   Fraunces numerals, and a pair of shadowed rounded boxes belongs to a
+   different design system. The recommended column is marked with an inset top
+   rule instead of a fill, because a filled column would out-shout the 0% in
+   the band above it, and that figure has to stay the loudest thing on the
+   page. */
+
+.fn-pr-rate {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--fn-line);
+  border-top: 2px solid var(--fn-ink);
+  border-radius: var(--fn-radius);
+  overflow: hidden;
+  background: var(--fn-panel);
+  box-shadow: var(--fn-shadow);
+}
+.fn-pr-tier {
+  padding: 1.7rem 1.6rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+}
+.fn-pr-tier + .fn-pr-tier { border-left: 1px solid var(--fn-line-soft); }
+.fn-pr-tier--pick { background: #fdfcfc; box-shadow: inset 0 3px 0 var(--fn-accent); }
+.fn-pr-tier__tag {
+  min-height: .6rem;
+  font: 500 .6rem/1 var(--fn-font-mono);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--fn-accent);
+  margin-bottom: .7rem;
+}
+.md-typeset .fn-pr-tier h3 {
+  font: 600 1.3rem/1 var(--fn-font-display);
+  margin: 0 0 .2rem;
+  letter-spacing: -.012em;
+}
+.md-typeset .fn-pr-tier__for {
+  font-size: .8rem;
+  line-height: 1.45;
+  color: var(--fn-ink-faint);
+  margin: 0 0 1.2rem;
+  min-height: 2.9em;
+}
+.fn-pr-tier__price { display: flex; align-items: baseline; gap: .25rem; margin-bottom: .15rem; }
+.md-typeset .fn-pr-tier__price b {
+  font: 600 2.6rem/1 var(--fn-font-display);
+  letter-spacing: -.03em;
+}
+.md-typeset .fn-pr-tier__price i {
+  font-style: normal;
+  font: 400 .8rem/1 var(--fn-font-mono);
+  color: var(--fn-ink-faint);
+}
+.md-typeset .fn-pr-tier__unit {
+  display: block;
+  font: 400 .72rem/1.4 var(--fn-font-mono);
+  color: var(--fn-ink-faint);
+  margin: 0 0 1.1rem;
+}
+.fn-pr-tier__cap {
+  border-top: 1px solid var(--fn-line-soft);
+  border-bottom: 1px solid var(--fn-line-soft);
+  padding: .85rem 0;
+  margin-bottom: 1.1rem;
+}
+.md-typeset .fn-pr-tier__cap b {
+  display: block;
+  font: 600 1.08rem/1.2 var(--fn-font-display);
+  margin-bottom: .15rem;
+}
+.md-typeset .fn-pr-tier__cap span {
+  font: 400 .72rem/1.4 var(--fn-font-mono);
+  color: var(--fn-ink-faint);
+}
+.md-typeset .fn-pr-tier ul {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  font-size: .86rem;
+  color: var(--fn-ink-soft);
+}
+.md-typeset .fn-pr-tier li {
+  position: relative;
+  padding-left: 1.2rem;
+  margin-bottom: .5rem;
+  line-height: 1.45;
+}
+.md-typeset .fn-pr-tier li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .45em;
+  width: .52rem;
+  height: .28rem;
+  border-left: 1.6px solid var(--fn-accent);
+  border-bottom: 1.6px solid var(--fn-accent);
+  transform: rotate(-45deg);
+}
+.md-typeset .fn-pr-tier .fn-btn { margin-top: auto; justify-content: center; }
+.fn-pr-rate__foot {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--fn-line);
+  padding: .95rem 1.6rem;
+  background: var(--fn-paper-dim);
+  font-size: .83rem;
+  color: var(--fn-ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.8rem;
+}
+.md-typeset .fn-pr-rate__foot b { color: var(--fn-ink); }
+
+/* ---------- The comparison table ----------
+   One "All tiers" column rather than one column per plan: the tiers differ by
+   annual volume and support level, never by feature, so a three-column grid of
+   identical ticks would be the same mark repeated thirty times. If a feature is
+   ever restricted to a higher tier this table stops being true, and the "every
+   feature, every tier" claim in the hero has to go with it. */
+
+.fn-pr-tablewrap { overflow-x: auto; }
+.md-typeset .fn-pr-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid var(--fn-ink);
+  font-size: .9rem;
+  display: table;
+  box-shadow: none;
+  border-radius: 0;
+}
+.md-typeset .fn-pr-table th {
+  text-align: left;
+  padding: .7rem .9rem;
+  font: 500 .68rem/1 var(--fn-font-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fn-ink-faint);
+  border-bottom: 1px solid var(--fn-line);
+  background: transparent;
+}
+.md-typeset .fn-pr-table th:first-child,
+.md-typeset .fn-pr-table td:first-child { width: 24%; }
+.md-typeset .fn-pr-table th:last-child,
+.md-typeset .fn-pr-table td:last-child { width: 13%; white-space: nowrap; }
+.md-typeset .fn-pr-table td {
+  padding: .78rem .9rem;
+  border-bottom: 1px solid var(--fn-line-soft);
+  color: var(--fn-ink-soft);
+  vertical-align: top;
+  background: transparent;
+}
+.md-typeset .fn-pr-table td:first-child { color: var(--fn-ink); font-weight: 600; }
+.md-typeset .fn-pr-table .tick { color: var(--fn-ink-faint); font-size: .82rem; }
+.md-typeset .fn-pr-table tr:hover td { background: var(--fn-panel); }
+
+/* ---------- Money flow ---------- */
+
+.fn-pr-flow {
+  background: var(--fn-panel);
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  padding: 2.2rem 2rem 1.6rem;
+  box-shadow: var(--fn-shadow);
+}
+.fn-pr-flow__rail { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: start; }
+.fn-pr-flow__step { text-align: center; padding: 0 .8rem; }
+.fn-pr-flow__art { height: 74px; margin: 0 auto .9rem; color: var(--fn-ink); }
+.fn-pr-flow__art svg {
+  height: 100%;
+  width: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.md-typeset .fn-pr-flow__step b {
+  display: block;
+  font: 600 1rem/1.3 var(--fn-font-display);
+  margin-bottom: .3rem;
+}
+.md-typeset .fn-pr-flow__step span {
+  display: block;
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--fn-ink-soft);
+}
+.fn-pr-flow__arrow { width: 64px; color: var(--fn-accent); padding-top: 24px; }
+.fn-pr-flow__arrow svg {
+  width: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fn-pr-flow__arrow path.dash { stroke-dasharray: 5 6; animation: fn-pr-march 2.4s linear infinite; }
+@keyframes fn-pr-march { to { stroke-dashoffset: -22; } }
+
+/* The subscription hangs off the rail on a dashed lead rather than sitting in
+   it. Moving this box into .fn-pr-flow__rail would make the drawing say the
+   subscription is a toll gate on the money path, which is the opposite of what
+   the page claims. */
+.fn-pr-flow__aside {
+  margin: 1.5rem auto 0;
+  max-width: 30rem;
+  text-align: center;
+  padding-top: 1.2rem;
+  border-top: 1px dashed var(--fn-accent-soft-line);
+  position: relative;
+}
+.fn-pr-flow__aside::before {
+  content: "paid separately";
+  position: absolute;
+  top: -.52rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--fn-panel);
+  padding: 0 .5rem;
+  font: 500 .6rem/1 var(--fn-font-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fn-ink-faint);
+}
+.md-typeset .fn-pr-flow__aside b {
+  display: block;
+  font: 600 1rem/1.3 var(--fn-font-display);
+  margin-bottom: .2rem;
+}
+.md-typeset .fn-pr-flow__aside span { font-size: .84rem; color: var(--fn-ink-soft); }
+.md-typeset .fn-pr-flow__note {
+  margin: 1.4rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px dashed var(--fn-line);
+  font-size: .84rem;
+  color: var(--fn-ink-soft);
+  text-align: center;
+}
+.md-typeset .fn-pr-flow__note b { color: var(--fn-ink); }
+
+/* ---------- Worked example ---------- */
+
+.fn-pr-worked {
+  margin-top: 1.4rem;
+  background: var(--fn-panel);
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  padding: 1.3rem 1.5rem;
+}
+.md-typeset .fn-pr-worked > b {
+  display: block;
+  font: 600 1rem/1.3 var(--fn-font-display);
+  margin-bottom: .7rem;
+}
+.md-typeset .fn-pr-worked__t {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+  display: table;
+  box-shadow: none;
+  border-radius: 0;
+}
+.md-typeset .fn-pr-worked__t th {
+  text-align: left;
+  padding: .45rem 0 .6rem;
+  border-bottom: 1px solid var(--fn-line);
+  font: 500 .66rem/1 var(--fn-font-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fn-ink-faint);
+  background: transparent;
+}
+.md-typeset .fn-pr-worked__t th:not(:first-child),
+.md-typeset .fn-pr-worked__t td:not(:first-child) { text-align: right; }
+.md-typeset .fn-pr-worked__t td {
+  padding: .45rem 0;
+  border-bottom: 1px solid var(--fn-line-soft);
+  color: var(--fn-ink-soft);
+  background: transparent;
+  font: 400 .82rem/1.5 var(--fn-font-mono);
+}
+/* Our own figure is the one the section is about, and it is the one that does
+   not move down the column. Weight rather than colour: the page's three reds
+   are spent. */
+.md-typeset .fn-pr-worked__t td:nth-child(2) { color: var(--fn-ink); font-weight: 500; }
+.md-typeset .fn-pr-worked__t tbody tr:last-child td { border-bottom: 0; }
+.md-typeset .fn-pr-worked__note {
+  margin: 1rem 0 0;
+  padding-top: .9rem;
+  border-top: 1px dashed var(--fn-line);
+  font-size: .82rem;
+  line-height: 1.55;
+  color: var(--fn-ink-soft);
+}
+.md-typeset .fn-pr-worked__note b { color: var(--fn-ink); }
+
+/* ---------- FAQ ---------- */
+
+.fn-pr-faq { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem 2.2rem; }
+.fn-pr-faq > div { border-top: 1px solid var(--fn-line); padding-top: .95rem; }
+.md-typeset .fn-pr-faq h4 {
+  font: 600 1rem/1.35 var(--fn-font-display);
+  margin: 0 0 .4rem;
+  letter-spacing: -.008em;
+}
+.md-typeset .fn-pr-faq p {
+  margin: 0;
+  font-size: .86rem;
+  line-height: 1.58;
+  color: var(--fn-ink-soft);
+}
+
+/* ---------- Closer ---------- */
+
+.fn-pr-closer { position: relative; overflow: hidden; }
+.fn-pr-closer > .fn-pr-closer__art { position: absolute; right: -30px; top: -24px; width: 300px; color: #fff; opacity: .13; }
+.fn-pr-closer__art svg {
+  width: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fn-pr-closer > div,
+.fn-pr-closer > .fn-btn { position: relative; }
+
+/* ---------- Narrow ---------- */
+
+@media screen and (max-width: 76.1875em) {
+  .fn-pr-zero { grid-template-columns: repeat(2, 1fr); }
+  .fn-pr-rate { grid-template-columns: 1fr; }
+  .fn-pr-tier + .fn-pr-tier { border-left: 0; border-top: 1px solid var(--fn-line-soft); }
+  .md-typeset .fn-pr-tier__for { min-height: 0; }
+  .fn-pr-flow__rail { grid-template-columns: 1fr; }
+  .fn-pr-flow__arrow { display: none; }
+  .fn-pr-flow__step { padding: 1.2rem 0; border-bottom: 1px dashed var(--fn-line); }
+  .fn-pr-faq { grid-template-columns: 1fr; }
+  .fn-sk--coin { display: none; }
+}
+
+@media screen and (max-width: 44.9375em) {
+  .fn-pr-zero { grid-template-columns: 1fr; }
+  .fn-pr-zero > div { border-right: 0; }
+  .fn-pr-rate__foot { padding: .95rem 1.2rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fn-pr-flow__arrow path.dash { animation: none; }
+}
+
+/* ---------- Pricing: motion ----------
+   The page had exactly one moving part (the marching dashes on the flow
+   arrows), which left the longest page on the site feeling static under the
+   scroll. Everything below is either the site's existing load reveal reused,
+   or a scroll-linked reveal on the same `view()` timeline the reference pages
+   use — no new vocabulary, no new colour, and nothing that animates a value a
+   reader might be trying to read.
+
+   Two rules the additions keep to. Only `transform`, `opacity` and colour are
+   animated, so every one of these composites and none of them lays out. And
+   the red budget is untouched: motion here is carried by position and weight,
+   never by turning something accent-coloured on scroll. ---------- */
+
+/* The hero is this page's masthead, so it takes the masthead's staggered load
+   reveal — the same `fn-enter` and the same cadence as `.md-content__inner`'s
+   on every generated page. It is wrapped in `.fn-pr-hero` rather than sitting
+   as a direct child of `.md-content__inner`, which is the only reason the
+   existing selector did not already reach it. */
+.fn-pr-hero > .fn-eyebrow,
+.fn-pr-hero > h1,
+.fn-pr-hero > .fn-dek,
+.fn-pr-hero > .fn-pr-chips {
+  animation: fn-enter 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.fn-pr-hero > .fn-eyebrow   { animation-delay: 0.02s; }
+.fn-pr-hero > h1            { animation-delay: 0.09s; }
+.fn-pr-hero > .fn-dek       { animation-delay: 0.17s; }
+.fn-pr-hero > .fn-pr-chips  { animation-delay: 0.25s; }
+
+/* The chips land one after another rather than as a block: they are four
+   separate claims, and arriving separately is what says so. No blur on these
+   — at chip size it reads as a rendering fault rather than as depth. */
+.fn-pr-chips .fn-chip {
+  animation: fn-chip-in 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.fn-pr-chips .fn-chip:nth-child(1) { animation-delay: 0.30s; }
+.fn-pr-chips .fn-chip:nth-child(2) { animation-delay: 0.37s; }
+.fn-pr-chips .fn-chip:nth-child(3) { animation-delay: 0.44s; }
+.fn-pr-chips .fn-chip:nth-child(4) { animation-delay: 0.51s; }
+@keyframes fn-chip-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* The zero band sits above the fold, so it continues the load cadence instead
+   of waiting for a scroll that may never come. Left to right, because the
+   figures are an argument in order: no cut, no per-user, then the two ways in
+   which the first year costs less than the sticker price. */
+.fn-pr-zero > div {
+  animation: fn-enter 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.fn-pr-zero > div:nth-child(1) { animation-delay: 0.46s; }
+.fn-pr-zero > div:nth-child(2) { animation-delay: 0.53s; }
+.fn-pr-zero > div:nth-child(3) { animation-delay: 0.60s; }
+.fn-pr-zero > div:nth-child(4) { animation-delay: 0.67s; }
+
+/* Everything past the fold is scroll-linked. `view()` gives each element its
+   own timeline, so a stagger across a row is expressed as a *range*, not a
+   delay: the three cards enter the viewport together and settle at 300px,
+   340px and 380px of scroll, which reads as left-to-right without any element
+   being held invisible longer than the one beside it.
+
+   Ranges are lengths rather than percentages for the reason recorded on the
+   reference-page reveal above: a percentage range is relative to the element's
+   own height, so a block taller than the viewport can never finish.
+
+   The rate block reveals as ONE unit, not as three staggered cards, and that is
+   forced rather than chosen. `view()` resolves against the subject's nearest
+   scroll container, and `.fn-pr-rate` is `overflow: hidden` (it clips the grid
+   to its rounded corners). That makes it a scrollport which never scrolls, so a
+   timeline on anything inside it is frozen at whatever progress the subject's
+   static position happens to yield — the tiers froze at 1 and looked fine, but
+   `.fn-pr-rate__foot` froze at 0.41 and sat permanently half-faded, at no scroll
+   position recoverable by the reader. Animate the container, whose own nearest
+   scrollport is the root. Before adding a scroll-linked reveal anywhere else on
+   this page, check for a clipped ancestor first. */
+@supports (animation-timeline: view()) {
+  .fn-pr-rate,
+  .fn-pr-flow__step,
+  .fn-pr-faq > div,
+  .fn-pr-worked__t tbody tr,
+  .fn-pr-flow__aside {
+    animation: fn-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 340px;
+  }
+  .fn-pr-flow__step:nth-child(1),
+  .fn-pr-worked__t tbody tr:nth-child(1) { animation-range: entry 0% entry 300px; }
+  .fn-pr-worked__t tbody tr:nth-child(3) { animation-range: entry 0% entry 380px; }
+  .fn-pr-faq > div:nth-child(even) { animation-range: entry 0% entry 390px; }
+
+  /* The section numbers are the page's spine. They draw their own rule as the
+     section arrives — the same `fn-rule` trick as the docs-note bar, scaled to
+     a short horizontal hairline. */
+  .fn-pr-sec .fn-sec-head::after {
+    animation: fn-sec-rule linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 260px;
+  }
+  @keyframes fn-sec-rule {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}
+
+/* A hairline under each section head, drawn by the rule above. It is a border
+   in every other respect — declared outside the @supports so the line is there
+   whether or not the browser can animate it. */
+.fn-pr-sec .fn-sec-head { position: relative; }
+.fn-pr-sec .fn-sec-head::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.55rem;
+  width: 100%;
+  height: 1px;
+  background: var(--fn-line-soft);
+  transform-origin: 0 50%;
+}
+
+/* Hover. The rate card is the only thing on the page a reader is choosing
+   between, so it is the only thing that answers the pointer. The recommended
+   column already carries a red rule across its top; the other two borrow the
+   same gesture in the neutral line colour on hover, which marks the card
+   without spending a fourth red. */
+.fn-pr-tier {
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+}
+.fn-pr-tier:hover { background: var(--fn-panel); box-shadow: inset 0 3px 0 var(--fn-line); }
+.fn-pr-tier--pick:hover { background: #fbf9f9; box-shadow: inset 0 3px 0 var(--fn-accent); }
+
+/* The worked example's whole point is that the middle column does not move, so
+   the rows answer the pointer as rows — the comparison is read across, not
+   down. */
+.md-typeset .fn-pr-worked__t tbody tr { transition: background-color 0.16s ease; }
+.md-typeset .fn-pr-worked__t tbody tr:hover td { background: var(--fn-panel); }
+
+/* The closer's watermark drifts, very slowly and very slightly. At 13% opacity
+   behind the heading it is texture rather than an object, and texture that is
+   perfectly still on an otherwise-scrolling page reads as a printed artefact —
+   which, on a page arguing that nothing here is a moving target, is the wrong
+   note to end on. 68s, no easing worth naming, never in the reader's way. */
+.fn-pr-closer > .fn-pr-closer__art {
+  animation: fn-pr-drift 68s ease-in-out infinite alternate;
+}
+@keyframes fn-pr-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(-14px, 8px, 0) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fn-pr-hero > .fn-eyebrow,
+  .fn-pr-hero > h1,
+  .fn-pr-hero > .fn-dek,
+  .fn-pr-hero > .fn-pr-chips,
+  .fn-pr-chips .fn-chip,
+  .fn-pr-zero > div,
+  .fn-pr-closer > .fn-pr-closer__art { animation: none; }
+  @supports (animation-timeline: view()) {
+    .fn-pr-rate,
+    .fn-pr-flow__step,
+    .fn-pr-faq > div,
+    .fn-pr-worked__t tbody tr,
+    .fn-pr-flow__aside,
+    .fn-pr-sec .fn-sec-head::after { animation: none; }
+  }
 }

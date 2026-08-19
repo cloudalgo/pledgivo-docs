@@ -3465,11 +3465,30 @@ body::after {
 
 .fn-pr-faq { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem 2.2rem; }
 .fn-pr-faq > div { border-top: 1px solid var(--fn-line); padding-top: .95rem; }
-.md-typeset .fn-pr-faq h4 {
+.md-typeset .fn-pr-faq h3 {
   font: 600 1rem/1.35 var(--fn-font-display);
   margin: 0 0 .4rem;
   letter-spacing: -.008em;
 }
+/* Inline links inside the FAQ answers, styled against Material's default. Material
+   paints links in the accent, which here is the single printer's red — and this page
+   budgets red to three appearances (the section numbers, the picked tier, the closer).
+   Five red passages in one section spends that budget in a place that is not the
+   argument. Ink plus a faint rule reads as a reference mark rather than a call to
+   action, which is what a link in a supporting answer actually is; red returns on
+   hover, where it costs nothing at rest. */
+.md-typeset .fn-pr-faq a {
+  color: var(--fn-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--fn-line);
+  transition: color .18s ease, border-color .18s ease;
+}
+.md-typeset .fn-pr-faq a:hover,
+.md-typeset .fn-pr-faq a:focus-visible {
+  color: var(--fn-accent-ink);
+  border-bottom-color: var(--fn-accent-ink);
+}
+
 .md-typeset .fn-pr-faq p {
   margin: 0;
   font-size: .86rem;

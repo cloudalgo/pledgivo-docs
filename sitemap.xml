@@ -9,10 +9,6 @@
          <lastmod>2026-08-19</lastmod>
     </url>
     <url>
-         <loc>https://pledgivo.cloudalgo.com/assets/fonts/LICENSES/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
          <loc>https://pledgivo.cloudalgo.com/concepts/campaigns/</loc>
          <lastmod>2026-08-19</lastmod>
     </url>
@@ -50,34 +46,6 @@
     </url>
     <url>
          <loc>https://pledgivo.cloudalgo.com/concepts/settings-integrations/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/data-model/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/data-model/all-objects/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/data-model/campaign/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/data-model/donation/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/data-model/payment-method/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/data-model/recurring-donation/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/data-model/settings/</loc>
          <lastmod>2026-08-19</lastmod>
     </url>
     <url>
@@ -142,26 +110,6 @@
     </url>
     <url>
          <loc>https://pledgivo.cloudalgo.com/guides/writing-a-campaign-story/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/integrations/npsp/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/integrations/stripe/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/reference/apex/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/reference/lwc/</loc>
-         <lastmod>2026-08-19</lastmod>
-    </url>
-    <url>
-         <loc>https://pledgivo.cloudalgo.com/reference/visualforce/</loc>
          <lastmod>2026-08-19</lastmod>
     </url>
 </urlset>

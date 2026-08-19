@@ -1,7 +1,26 @@
-# The docs site is public and wholly indexable. This file exists mainly to
-# advertise the sitemap: on a subdomain there is no parent site whose
-# sitemap-index could carry ours, so this is how crawlers discover all of it.
+# Most of this site is public and meant to be indexed; this file exists partly
+# to advertise the sitemap, since on a subdomain there is no parent site whose
+# sitemap-index could carry ours.
+#
+# The three Disallow paths below are the deliberately unlisted sections — the
+# data model, code and integration references. They still build and still
+# answer on their own URLs so we can hand a link to anyone who asks, but they
+# are not part of the public site: no nav entry, no inbound link, no search
+# index entry, and no sitemap entry (see overrides/sitemap.xml).
+#
+# Note for whoever edits this next: the Disallow lines are NOT what removes
+# these pages from search results. `noindex: true` in each page's front matter
+# is — it renders <meta name="robots" content="noindex"> and that is the only
+# instruction that de-indexes. The two mechanisms are in mild tension, because
+# a crawler that obeys Disallow never fetches the page and so never reads the
+# noindex. Both are here by explicit choice: noindex + sitemap removal do the
+# de-indexing, and Disallow stops well-behaved crawlers fetching at all. If a
+# URL ever needs to be actively removed from an index, drop its Disallow first
+# so the noindex can be seen.
 User-agent: *
 Allow: /
+Disallow: /data-model/
+Disallow: /reference/
+Disallow: /integrations/
 
 Sitemap: https://pledgivo.cloudalgo.com/sitemap.xml

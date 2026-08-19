@@ -45,8 +45,14 @@
       chapters = [];
     }
 
+    // doc: The disc's label names the film it starts, because a page can hold
+    // more than one player and "Play" alone tells a screen-reader listener
+    // nothing about which. `data-play-label` on the frame supplies it; the
+    // landing film's markup omits the attribute and keeps the original wording.
+    var playLabel = root.getAttribute('data-play-label') || 'Play the overview film';
+
     root.insertAdjacentHTML('beforeend',
-      '<button class="fn-vp__big" type="button" aria-label="Play the overview film">' + ICON.play + '</button>' +
+      '<button class="fn-vp__big" type="button" aria-label="' + playLabel + '">' + ICON.play + '</button>' +
       '<div class="fn-vp__bar">' +
         '<div class="fn-vp__track" tabindex="0" role="slider" aria-label="Seek" ' +
              'aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">' +
@@ -280,4 +286,17 @@
   } else {
     init();
   }
+
+  /* doc: `init()` only sweeps the players present when the page loads, which is
+   * every player written in markup. A player built later — the social films'
+   * modal creates its frame on click — has no way in, so the builder is the one
+   * thing this file publishes. It is deliberately the builder alone: chapter
+   * lists and the hero's Watch button are page furniture that a modal has no
+   * equivalent of, and exporting them would invite a caller to reach for them.
+   *
+   * doc: The caller passes an `.fn-vp` element containing a <video>; it gets
+   * back the same `api` the page players use, or null if there is no video. A
+   * caller must treat a missing `window.fieldNotesVideo` as "leave the native
+   * controls on" — this file is an enhancement, and so is every consumer. */
+  window.fieldNotesVideo = { buildPlayer: buildPlayer };
 })();

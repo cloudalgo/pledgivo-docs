@@ -4012,62 +4012,84 @@ body::after {
   color: var(--fn-ink-soft);
 }
 
-.fn-film-modal {
-  /* Sized by the film, not by the page: the dialog is max-content so its frame
-     ends where the stage ends, which is what keeps the 9:16 cut out of a wide
-     white surround. */
+/* The dialog lives inside .md-typeset rather than on <body>, so every rule
+   below carries the prefix. That placement is what lets the film inside it use
+   the theme's own player: all ~60 .fn-vp rules are scoped .md-typeset, and a
+   dialog parked on <body> would render them all inert. showModal() puts the
+   element in the top layer wherever it sits in the DOM, so nesting it in the
+   content column costs nothing in stacking or backdrop terms.
+
+   Shape is the design mock's: the player alone on a dark scrim, wearing the
+   same accent ring it wears on the page, with one small CLOSE label above it.
+   No panel, no caption strip — the dialog itself is only a positioner, so it
+   paints nothing and the ring is the film's whole frame. */
+.md-typeset .fn-film-modal {
+  /* Sized by the film, not by the page: max-content so the box ends where the
+     stage ends, which is what keeps the 9:16 cut out of a wide surround. The
+     padding is the ring's clearance (it sits 3px outside the layout box) and
+     the room the CLOSE label stands in. */
   width: max-content;
   max-width: 94vw;
-  padding: 0;
-  border: 1px solid var(--fn-line);
-  border-radius: var(--fn-radius);
-  background: var(--fn-panel);
-  box-shadow: var(--fn-shadow-pop);
-  color: var(--fn-ink);
+  /* An open modal <dialog> centres itself on `margin: auto`, and the UA sets
+     that on all four sides. Nesting inside .md-typeset puts it in reach of
+     Material's block-flow spacing, whose `:last-child { margin-bottom: 0 }`
+     kills the bottom auto and drops the whole dialog to the foot of the
+     viewport. Restating margin here is the rent for that placement. */
+  margin: auto;
+  padding: 2.2rem 0.5rem 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--fn-paper);
+  overflow: visible;
 }
 /* The vertical cut is the reason the size is driven by the ratio: at a fixed
    width a 9:16 film runs off the bottom of the viewport. --fn-film-modal-ar is
    the film's ratio as a bare number (16/9 = 1.7778, 9/16 = 0.5625), set per
    open by the script — one number serves both the aspect-ratio and the height
    cap, which a `16 / 9` string could not do inside calc(). */
-.fn-film-modal__frame { display: flex; flex-direction: column; }
-.fn-film-modal__stage {
+.md-typeset .fn-film-modal__frame { position: relative; }
+.md-typeset .fn-film-modal__stage {
   aspect-ratio: var(--fn-film-modal-ar, 1.7778);
-  width: min(1180px, 92vw, calc(76vh * var(--fn-film-modal-ar, 1.7778)));
+  width: min(1180px, 92vw, calc(72vh * var(--fn-film-modal-ar, 1.7778)));
   background: #000;
 }
-.fn-film-modal__stage video { display: block; width: 100%; height: 100%; }
-/* The dialog is appended to document.body, outside Material's .md-typeset
-   scope, so this rule carries no .md-typeset prefix — with one it would never
-   apply. */
-.fn-film-modal__cap {
+/* The player frame fills the stage rather than sizing itself: the stage holds
+   the ratio, and .fn-vp deliberately declares none (the walkthrough films are
+   not 16:9). Everything else it wears on the page — the border, the radius and
+   above all the accent ring — it keeps here, because that ring IS the modal's
+   frame now that the dialog paints nothing. */
+.md-typeset .fn-film-modal__stage .fn-vp { width: 100%; height: 100%; }
+/* Letterboxed, not stretched: <video> defaults to object-fit: contain, so a
+   frame whose ratio does not match the stage gets bars rather than a squeeze. */
+.md-typeset .fn-film-modal__stage video { display: block; width: 100%; height: 100%; }
+/* Above the frame and outside it, the way the mock draws it: over the scrim
+   there is nothing to sit on, and inside the picture it would cover the film. */
+.md-typeset .fn-film-modal__x {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 0;
-  padding: 0.6rem 0.9rem;
-  font: 500 0.62rem/1.4 var(--fn-font-mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--fn-accent);
-}
-.fn-film-modal__x {
-  flex: none;
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
   padding: 0;
-  border: 1px solid var(--fn-line);
-  border-radius: 5px;
+  border: 0;
   background: transparent;
-  color: var(--fn-ink-soft);
+  color: var(--fn-paper);
+  font: 500 0.62rem/1 var(--fn-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   cursor: pointer;
 }
-.fn-film-modal__x:hover { border-color: var(--fn-ink); color: var(--fn-ink); }
-.fn-film-modal__x svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
-.fn-film-modal::backdrop { background: rgba(11, 11, 11, 0.66); }
+.md-typeset .fn-film-modal__x:hover { color: var(--fn-accent); }
+.md-typeset .fn-film-modal__x:focus-visible { outline: 2px solid var(--fn-accent); outline-offset: 3px; }
+.md-typeset .fn-film-modal__x span { font-size: 0.8rem; }
+/* Darker than a plain dim and blurred: the film has to be the only thing in
+   focus, and the page behind it is a busy one. */
+.md-typeset .fn-film-modal::backdrop {
+  background: rgba(11, 11, 11, 0.86);
+  backdrop-filter: blur(3px);
+}
 
 @media screen and (max-width: 76.1875em) {
   .fn-social-films { grid-template-columns: 1fr; }

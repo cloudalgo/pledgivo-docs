@@ -16,6 +16,14 @@
  * <dialog>, which brings the focus trap, the Escape handler and the inert
  * background with it — the three things that made a hand-rolled lightbox not
  * worth it in the other file are all native here.
+ *
+ * doc: The film inside the dialog plays in this theme's own player, not the
+ * browser's. field-notes-video.js builds it: this file writes the `.fn-vp`
+ * frame the builder expects and hands it over, so the modal gets the same
+ * paper-and-ink scrub bar, CC toggle and keyboard shortcuts as the landing
+ * film rather than a slab of Chrome grey dropped into the middle of the
+ * design. If that file is absent the <video> keeps its native controls —
+ * the player is an enhancement here exactly as it is on the page.
  */
 (function () {
   'use strict';
@@ -26,21 +34,21 @@
    * rebuilt per open and torn down on close: leaving a paused element in the
    * DOM keeps the buffered film in memory, and a fresh element is also how the
    * next open starts at zero rather than where the last one was abandoned. */
-  function ensureDialog() {
+  function ensureDialog(host) {
     if (dialog) return dialog;
     dialog = document.createElement('dialog');
     dialog.className = 'fn-film-modal';
-    /* doc: The dialog's accessible name is the film's own title, which open()
-     * writes into the caption span. Without the aria-labelledby a screen
-     * reader announces the two cards as the same unnamed "dialog", and the
-     * one thing a listener needs to know is which of the two films opened. */
-    dialog.setAttribute('aria-labelledby', 'fn-film-modal-title');
+    /* doc: No title bar over the film — the design mock puts the player alone
+     * on the scrim wearing its own accent ring, with one small mono CLOSE
+     * label above it, and a caption strip would only re-print what the card
+     * the reader just clicked already said. The film's title still names the
+     * dialog for a screen reader, written per open into aria-label: without a
+     * name both cards announce as the same unnamed "dialog", and which of the
+     * two films opened is the one thing a listener needs. */
     dialog.innerHTML =
       '<div class="fn-film-modal__frame">' +
-      '<p class="fn-film-modal__cap"><span id="fn-film-modal-title" data-fn-modal-title></span>' +
-      '<button type="button" class="fn-film-modal__x" aria-label="Close">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12"/><path d="m18 6-12 12"/></svg>' +
-      '</button></p>' +
+      '<button type="button" class="fn-film-modal__x">' +
+      'Close <span aria-hidden="true">&#10005;</span></button>' +
       '<div class="fn-film-modal__stage" data-fn-modal-stage></div>' +
       '</div>';
     dialog.querySelector('.fn-film-modal__x').addEventListener('click', function () {
@@ -54,18 +62,27 @@
     dialog.addEventListener('close', function () {
       dialog.querySelector('[data-fn-modal-stage]').textContent = '';
     });
-    document.body.appendChild(dialog);
+    /* doc: Inside the page's own .md-typeset container, not on <body>. Every
+     * one of this theme's ~60 player rules is scoped `.md-typeset .fn-vp*`,
+     * which is Material's convention and not worth unpicking for one dialog —
+     * a dialog outside that scope would render the player unstyled. showModal()
+     * promotes to the top layer whatever the element's position in the DOM, so
+     * nesting costs nothing in stacking terms. */
+    host.appendChild(dialog);
     return dialog;
   }
 
   function open(link) {
-    var d = ensureDialog();
+    var d = ensureDialog(link.closest('.md-typeset'));
     var stage = d.querySelector('[data-fn-modal-stage]');
     var video = document.createElement('video');
+    /* doc: `controls` is the floor, not the plan — the builder below strips it
+     * the moment it has replaced them. Setting it here means a dialog that
+     * opens without field-notes-video.js still has a way to start the film. */
     video.controls = true;
-    video.autoplay = true;
     video.playsInline = true;
     video.setAttribute('playsinline', '');
+    video.preload = 'metadata';
     video.poster = link.dataset.fnPoster || '';
 
     var source = document.createElement('source');
@@ -75,7 +92,10 @@
 
     /* doc: The captions track is the reason these films are worth opening
      * muted, which is how most people will meet them. Missing on a film with
-     * no .vtt rather than pointing at a 404. */
+     * no .vtt rather than pointing at a 404. `default` is what a reader gets
+     * if the player never builds; when it does build it starts the track
+     * hidden — both cuts print their own captions into the picture, so showing
+     * this one on top would double-print — and puts it one CC click away. */
     if (link.dataset.fnVtt) {
       var track = document.createElement('track');
       track.kind = 'captions';
@@ -92,9 +112,43 @@
      * bare number (16/9 = 1.7778) because the CSS also feeds it to calc(),
      * which a `16 / 9` string cannot survive. */
     d.style.setProperty('--fn-film-modal-ar', link.dataset.fnRatio || '1.7778');
-    d.querySelector('[data-fn-modal-title]').textContent = link.dataset.fnTitle || '';
-    stage.appendChild(video);
+    d.setAttribute('aria-label', link.dataset.fnTitle || 'Film');
+
+    /* doc: The frame the player builder expects, built fresh per open so the
+     * close handler can empty the stage and leave nothing behind — the classes
+     * and listeners buildPlayer attaches all live on this element, so reusing
+     * one across opens would stack them.
+     *
+     * doc: `data-chapters` is empty and present, both deliberately. The
+     * attribute is the builder's marker, and neither social cut is chaptered:
+     * the landing film is one 89-second argument with five named movements,
+     * while these are marketing reels a viewer either watches or closes. An
+     * empty list still buys the branded scrub bar, CC, mute, fullscreen and the
+     * time readout; it just draws no ticks. */
+    var frame = document.createElement('div');
+    frame.className = 'fn-vp';
+    frame.setAttribute('data-chapters', '[]');
+    frame.setAttribute('data-play-label', 'Play the film');
+    frame.appendChild(video);
+    /* doc: showModal() otherwise lands focus on the Close button, which is the
+     * right default for a dialog of prose and the wrong one for a dialog that
+     * is a film: the player's shortcuts (space, k, f, m, c) are bound to this
+     * frame, so with focus on Close, Space closes the modal instead of pausing.
+     * Close is one Tab away and Escape still closes from anywhere. */
+    frame.autofocus = true;
+    stage.appendChild(frame);
+    if (window.fieldNotesVideo) window.fieldNotesVideo.buildPlayer(frame);
+
     d.showModal();
+    /* doc: Playback starts from the click that opened the dialog rather than
+     * from an `autoplay` attribute. The attribute races the dialog's own
+     * opening and is the weaker claim on the browser's autoplay policy; a
+     * play() call inside the click handler still carries its user activation,
+     * which is what lets these films start with their sound on. A blocked or
+     * interrupted play is not an error worth surfacing — the player is sitting
+     * there showing its play disc, which is the correct next thing to click. */
+    var started = video.play();
+    if (started && started.catch) started.catch(function () {});
   }
 
   function init() {
@@ -104,6 +158,11 @@
      * film in the browser's own viewer — the same fallback as no JS at all. */
     if (typeof HTMLDialogElement === 'undefined') return;
     links.forEach(function (link) {
+      /* doc: The dialog has to land inside the container the player's CSS is
+       * scoped to. A trigger sitting outside one has nowhere to put it, so it
+       * stays the plain link it shipped as rather than opening a dialog with
+       * no styling — the same choice as an engine with no <dialog> above. */
+      if (!link.closest('.md-typeset')) return;
       link.addEventListener('click', function (event) {
         /* doc: A modified click is the browser's own affordance on an <a> —
          * Cmd/Ctrl for a new tab, Shift for a new window, middle-click for

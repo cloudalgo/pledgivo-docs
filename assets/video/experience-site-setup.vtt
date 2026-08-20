@@ -1,0 +1,50 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:22.280
+<v Pledgivo>Put your donation site online
+
+2
+00:00:22.280 --> 00:00:43.880
+<v Site & Domain>Step 1 — Digital Experiences — Auto-checked: the panel can see whether it is switched on
+
+3
+00:00:43.880 --> 00:01:52.400
+<v Site & Domain>Step 2 — create or choose your site — Build Your Own (LWR) — this package does not target Aura
+
+4
+00:01:52.400 --> 00:02:51.880
+<v Site & Domain>Step 3 — turn on guest access — One checkbox in Experience Builder, then reload to confirm it stuck
+
+5
+00:02:51.880 --> 00:03:04.680
+<v Site & Domain>Step 4 — assign the guest permission set — Fundraising Guest Donor goes onto the site's guest user
+
+6
+00:03:04.680 --> 00:03:36.280
+<v Site & Domain>Step 5 — read access to Campaign — Build this one by hand: a packaged set cannot grant it
+
+7
+00:03:36.280 --> 00:05:57.120
+<v Site & Domain>Step 7 — publish, then activate — Two separate actions; publishing alone leaves it Under Construction
+
+8
+00:05:57.120 --> 00:06:09.320
+<v The public site>What an anonymous visitor gets — The home route, loaded in a browser with no session
+
+9
+00:06:09.320 --> 00:06:24.095
+<v The public site>The donation route, before any campaign — It renders and it asks for a campaign — that is correct at this point
+
+10
+00:06:24.095 --> 00:06:48.520
+<v Site & Domain>The row the panel cannot fully verify — It can see a credential grant; it cannot see which credential
+
+11
+00:06:48.520 --> 00:07:02.690
+<v Next>Six routes, live, to anyone.
+
+12
+00:07:02.690 --> 00:07:28.790
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
+

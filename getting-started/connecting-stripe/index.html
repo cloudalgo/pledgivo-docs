@@ -645,6 +645,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#watch-it-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watch it first
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-the-pieces-fit-together" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1664,6 +1675,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#watch-it-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Watch it first
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-the-pieces-fit-together" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1800,6 +1822,32 @@
 
 <h1 id="connecting-stripe">Connecting Stripe<a class="headerlink" href="#connecting-stripe" title="Permanent link">#</a></h1>
 <p class="fn-dek">Stripe is the only payment gateway shipped today, reached through a gateway abstraction so a second processor could be added later without touching the donation pipeline.</p>
+
+<h2 id="watch-it-first">Watch it first<a class="headerlink" href="#watch-it-first" title="Permanent link">#</a></h2>
+<div class="fn-film">
+  <div class="fn-vp" data-chapters='[[0, &quot;Connect your payment account&quot;], [24, &quot;Step 0 \u2014 collect three keys&quot;], [52, &quot;Step 1 \u2014 the external credential, twice&quot;], [80, &quot;Step 2 \u2014 the principal, and the secret&quot;], [182, &quot;Step 3 \u2014 the Authorization header&quot;], [203, &quot;Steps 4 to 6 \u2014 the named credential&quot;], [237, &quot;Step 7 \u2014 let your staff use it&quot;], [308, &quot;Step 8 \u2014 let your public site use it&quot;], [327, &quot;Step 9 \u2014 the payment account record&quot;], [354, &quot;Steps 10 and 11 \u2014 the two live checks&quot;], [384, &quot;Wrap up&quot;], [402, &quot;About Pledgivo&quot;]]'>
+    <video controls playsinline preload="metadata" width="1600" height="1228" poster="../../assets/video/connect-payment-account-poster.png">
+      <source src="../../assets/video/connect-payment-account.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="../../assets/video/connect-payment-account.vtt">
+      Your browser does not support embedded video. The same steps are written out in order on this page.
+    </video>
+  </div>
+  <ul class="fn-chapters">
+    <li><button type="button" data-t="0"><b>0:00</b> Connect your payment account</button></li>
+    <li><button type="button" data-t="24"><b>0:24</b> Step 0 — collect three keys</button></li>
+    <li><button type="button" data-t="52"><b>0:52</b> Step 1 — the external credential, twice</button></li>
+    <li><button type="button" data-t="80"><b>1:20</b> Step 2 — the principal, and the secret</button></li>
+    <li><button type="button" data-t="182"><b>3:02</b> Step 3 — the Authorization header</button></li>
+    <li><button type="button" data-t="203"><b>3:23</b> Steps 4 to 6 — the named credential</button></li>
+    <li><button type="button" data-t="237"><b>3:57</b> Step 7 — let your staff use it</button></li>
+    <li><button type="button" data-t="308"><b>5:08</b> Step 8 — let your public site use it</button></li>
+    <li><button type="button" data-t="327"><b>5:27</b> Step 9 — the payment account record</button></li>
+    <li><button type="button" data-t="354"><b>5:54</b> Steps 10 and 11 — the two live checks</button></li>
+    <li><button type="button" data-t="384"><b>6:24</b> Wrap up</button></li>
+    <li><button type="button" data-t="402"><b>6:42</b> About Pledgivo</button></li>
+  </ul>
+</div>
+<p class="fn-figure-caption"><b>What it is.</b> Seven minutes connecting a real Stripe account, in the order Setup forces on you: two external credentials, the principal that holds the secret key, the Authorization header, the named credentials, the two permission grants, and the Payment Account record that ties them together. It ends on the two live checks — <b>one of which fails.</b> That failure is left in deliberately; the chapter explains what it caught and why no setting in Salesforce can fix it. No key is readable in any frame.</p>
 
 <h2 id="how-the-pieces-fit-together">How the pieces fit together<a class="headerlink" href="#how-the-pieces-fit-together" title="Permanent link">#</a></h2>
 <p>Pledgivo separates <em>where credentials live</em> from <em>which campaign uses them</em>:</p>

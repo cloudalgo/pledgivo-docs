@@ -1,0 +1,30 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:20.250
+<v Pledgivo>The rest of the console
+
+2
+00:00:20.250 --> 00:00:40.330
+<v Settings>Events & Ticketing — Two fields, and they only matter if you sell tickets
+
+3
+00:00:40.330 --> 00:01:14.810
+<v Settings>Page Designs — Six designs ship; pick one as the fallback for campaigns with none
+
+4
+00:01:14.810 --> 00:01:32.930
+<v Settings>Public Links — Every public address the org is handing out, in one list
+
+5
+00:01:32.930 --> 00:02:09.970
+<v Settings>Logging — Set the level, then read the recent gateway errors below it
+
+6
+00:02:09.970 --> 00:02:26.850
+<v Wrap up>Configured once, checked often.
+
+7
+00:02:26.850 --> 00:02:52.950
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
+

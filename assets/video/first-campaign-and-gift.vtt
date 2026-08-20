@@ -1,0 +1,50 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:21.050
+<v Pledgivo>Your first fundraiser, and your first gift
+
+2
+00:00:21.050 --> 00:01:32.530
+<v The fundraiser>Seven steps, then publish — Basics, story, goal, then the review that publishes it
+
+3
+00:01:32.530 --> 00:01:47.355
+<v The fundraiser>The donor's address for it — The slug URL, opened anonymously — no login, no preview mode
+
+4
+00:01:47.355 --> 00:02:09.230
+<v The gift>An anonymous donor pays by card — Amount, details, then the gateway's own card element
+
+5
+00:02:09.230 --> 00:02:31.930
+<v The gift>Confirmed on the page, recorded a moment later — The charge is immediate; the Salesforce record is written by a job
+
+6
+00:02:31.930 --> 00:03:00.210
+<v The gift>The same gift, from the staff side — Marisol Fentress Gift — 37, Closed Won, receipt RBT-2026-000001
+
+7
+00:03:00.210 --> 00:03:41.290
+<v On your own site>The embed snippet, and the step people forget — Add the external origin to Allowed Embed Origins first
+
+8
+00:03:41.290 --> 00:03:56.915
+<v On your own site>Running on a plain external page — The widget hands the amount, name and email across to the donation page
+
+9
+00:03:56.915 --> 00:04:24.465
+<v The verdict>Health Check — the package grading itself — Five green, one red — and the red one is honest
+
+10
+00:04:24.465 --> 00:04:42.905
+<v The verdict>The checklist reads complete — Seven of seven required rows Done; six changed during this run
+
+11
+00:04:42.905 --> 00:05:00.025
+<v Wrap up>One gift, end to end.
+
+12
+00:05:00.025 --> 00:05:26.125
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
+

@@ -1,0 +1,50 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:21.300
+<v Pledgivo>The Get Started checklist
+
+2
+00:00:21.300 --> 00:00:33.780
+<v Get Started>Eight rows, graded against your org — Read the evidence line under each row before you touch anything
+
+3
+00:00:33.780 --> 00:00:55.260
+<v Get Started>Row 1 — give your team access — Use the row's own button; it assigns the permission set for you
+
+4
+00:00:55.260 --> 00:01:13.300
+<v Get Started>Row 2 — confirm the record type mapping — Check all eight rows rendered; this one is seeded by the install
+
+5
+00:01:13.300 --> 00:01:42.660
+<v Get Started>Row 7 — your organization name and logo — Fill in the name donors will see; blank means blank on the public pages
+
+6
+00:01:42.660 --> 00:02:03.935
+<v Get Started>The optional row — content hosts — Report only: trust a host in Setup, and only the ones you use
+
+7
+00:02:03.935 --> 00:03:16.215
+<v Settings>Email & Receipts — Sender, reply-to, receipt numbering and the donor-facing wording
+
+8
+00:03:16.215 --> 00:03:52.215
+<v Settings>Refunds — Decide who may refund, and what happens to the gift record
+
+9
+00:03:52.215 --> 00:04:32.175
+<v Settings>Recurring & Dunning — How many times a failed recurring charge is retried, and when it stops
+
+10
+00:04:32.175 --> 00:05:37.455
+<v Settings>Donor Portal — What a donor can see and change about their own giving
+
+11
+00:05:37.455 --> 00:05:54.185
+<v Next>The checklist is the map.
+
+12
+00:05:54.185 --> 00:06:20.285
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
+

@@ -1,0 +1,174 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:23.730
+<v Pledgivo>The whole install, end to end
+
+2
+00:00:23.730 --> 00:00:36.210
+<v Get Started>Eight rows, graded against your org — Read the evidence line under each row before you touch anything
+
+3
+00:00:36.210 --> 00:00:57.690
+<v Get Started>Row 1 — give your team access — Use the row's own button; it assigns the permission set for you
+
+4
+00:00:57.690 --> 00:01:15.730
+<v Get Started>Row 2 — confirm the record type mapping — Check all eight rows rendered; this one is seeded by the install
+
+5
+00:01:15.730 --> 00:01:45.090
+<v Get Started>Row 7 — your organization name and logo — Fill in the name donors will see; blank means blank on the public pages
+
+6
+00:01:45.090 --> 00:02:06.365
+<v Get Started>The optional row — content hosts — Report only: trust a host in Setup, and only the ones you use
+
+7
+00:02:06.365 --> 00:03:18.645
+<v Settings>Email & Receipts — Sender, reply-to, receipt numbering and the donor-facing wording
+
+8
+00:03:18.645 --> 00:03:54.645
+<v Settings>Refunds — Decide who may refund, and what happens to the gift record
+
+9
+00:03:54.645 --> 00:04:34.605
+<v Settings>Recurring & Dunning — How many times a failed recurring charge is retried, and when it stops
+
+10
+00:04:34.605 --> 00:05:39.885
+<v Settings>Donor Portal — What a donor can see and change about their own giving
+
+11
+00:05:39.885 --> 00:06:01.485
+<v Site & Domain>Step 1 — Digital Experiences — Auto-checked: the panel can see whether it is switched on
+
+12
+00:06:01.485 --> 00:07:10.005
+<v Site & Domain>Step 2 — create or choose your site — Build Your Own (LWR) — this package does not target Aura
+
+13
+00:07:10.005 --> 00:08:09.485
+<v Site & Domain>Step 3 — turn on guest access — One checkbox in Experience Builder, then reload to confirm it stuck
+
+14
+00:08:09.485 --> 00:08:22.285
+<v Site & Domain>Step 4 — assign the guest permission set — Fundraising Guest Donor goes onto the site's guest user
+
+15
+00:08:22.285 --> 00:08:53.885
+<v Site & Domain>Step 5 — read access to Campaign — Build this one by hand: a packaged set cannot grant it
+
+16
+00:08:53.885 --> 00:11:14.725
+<v Site & Domain>Step 7 — publish, then activate — Two separate actions; publishing alone leaves it Under Construction
+
+17
+00:11:14.725 --> 00:11:26.925
+<v The public site>What an anonymous visitor gets — The home route, loaded in a browser with no session
+
+18
+00:11:26.925 --> 00:11:41.700
+<v The public site>The donation route, before any campaign — It renders and it asks for a campaign — that is correct at this point
+
+19
+00:11:41.700 --> 00:12:09.300
+<v Payments>Step 0 — collect three keys — Two secret keys and a publishable key, all from one gateway screen
+
+20
+00:12:09.300 --> 00:12:38.050
+<v Payments>Step 1 — the external credential, twice — Custom protocol; one credential for the public site, one for the back office
+
+21
+00:12:38.050 --> 00:14:20.090
+<v Payments>Step 2 — the principal, and the secret — Named Principal, one authentication parameter, holding the key
+
+22
+00:14:20.090 --> 00:14:40.615
+<v Payments>Step 3 — the Authorization header — A merge formula, not a value — the key never appears here
+
+23
+00:14:40.615 --> 00:15:14.175
+<v Payments>Steps 4 to 6 — the named credential — Point it at the gateway, allow the package namespace, formulas on
+
+24
+00:15:14.175 --> 00:16:26.095
+<v Payments>Step 7 — let your staff use it — Principal access plus User External Credential, read and create
+
+25
+00:16:26.095 --> 00:16:44.270
+<v Payments>Step 8 — let your public site use it — The public credential's permission set goes onto the guest user
+
+26
+00:16:44.270 --> 00:17:11.550
+<v Payments>Step 9 — the payment account record — Name the two named credentials, paste the publishable key, choose the mode
+
+27
+00:17:11.550 --> 00:17:41.250
+<v Payments>Steps 10 and 11 — the two live checks — One passed, one failed — and the failure is the point
+
+28
+00:17:41.250 --> 00:18:05.675
+<v Site & Domain>The row the panel cannot fully verify — It can see a credential grant; it cannot see which credential
+
+29
+00:18:05.675 --> 00:19:17.155
+<v The fundraiser>Seven steps, then publish — Basics, story, goal, then the review that publishes it
+
+30
+00:19:17.155 --> 00:19:31.980
+<v The fundraiser>The donor's address for it — The slug URL, opened anonymously — no login, no preview mode
+
+31
+00:19:31.980 --> 00:19:53.855
+<v The gift>An anonymous donor pays by card — Amount, details, then the gateway's own card element
+
+32
+00:19:53.855 --> 00:20:16.555
+<v The gift>Confirmed on the page, recorded a moment later — The charge is immediate; the Salesforce record is written by a job
+
+33
+00:20:16.555 --> 00:20:44.835
+<v The gift>The same gift, from the staff side — Marisol Fentress Gift — 37, Closed Won, receipt RBT-2026-000001
+
+34
+00:20:44.835 --> 00:21:25.915
+<v On your own site>The embed snippet, and the step people forget — Add the external origin to Allowed Embed Origins first
+
+35
+00:21:25.915 --> 00:21:41.540
+<v On your own site>Running on a plain external page — The widget hands the amount, name and email across to the donation page
+
+36
+00:21:41.540 --> 00:22:09.090
+<v The verdict>Health Check — the package grading itself — Five green, one red — and the red one is honest
+
+37
+00:22:09.090 --> 00:22:27.530
+<v The verdict>The checklist reads complete — Seven of seven required rows Done; six changed during this run
+
+38
+00:22:27.530 --> 00:22:47.610
+<v Settings>Events & Ticketing — Two fields, and they only matter if you sell tickets
+
+39
+00:22:47.610 --> 00:23:22.090
+<v Settings>Page Designs — Six designs ship; pick one as the fallback for campaigns with none
+
+40
+00:23:22.090 --> 00:23:40.210
+<v Settings>Public Links — Every public address the org is handing out, in one list
+
+41
+00:23:40.210 --> 00:24:17.250
+<v Settings>Logging — Set the level, then read the recent gateway errors below it
+
+42
+00:24:17.250 --> 00:24:35.980
+<v Wrap up>A fresh org, ready to take gifts.
+
+43
+00:24:35.980 --> 00:25:02.080
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
+

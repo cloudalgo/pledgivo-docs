@@ -1,0 +1,26 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:12.720
+<v Pledgivo>Guest access
+
+2
+00:00:12.720 --> 00:01:12.200
+<v Site & Domain>Let the public in — Tick public access in Builder, then reload to confirm it
+
+3
+00:01:12.200 --> 00:01:31.700
+<v Site & Domain>Assign the guest permission set — Give the site's guest user Fundraising Guest Donor
+
+4
+00:01:31.700 --> 00:02:03.300
+<v Site & Domain>Grant Campaign read by hand — The one grant the package cannot ship for you
+
+5
+00:02:03.300 --> 00:02:16.400
+<v Wrap up>Least privilege, plus one manual grant.
+
+6
+00:02:16.400 --> 00:02:42.500
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
+

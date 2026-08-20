@@ -1,0 +1,22 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:11.100
+<v Pledgivo>Health Check
+
+2
+00:00:11.100 --> 00:00:53.425
+<v Diagnose>Health Check — Read the rows, and fix the red ones
+
+3
+00:00:53.425 --> 00:01:30.465
+<v Diagnose>Logging — Set the level, then read the recent gateway errors below
+
+4
+00:01:30.465 --> 00:01:43.115
+<v Wrap up>A red row is a job, not a bug.
+
+5
+00:01:43.115 --> 00:02:09.215
+<v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
+

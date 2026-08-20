@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-24</span>
+          <span class="fn-brand__ver">1.0.0-26</span>
         
       </a>
 
@@ -2497,22 +2497,26 @@ rollups → renewal charges → auto-cancel) — none of them take effect immedi
 <hr />
 <h2 id="experience-cloud">Experience Cloud<a class="headerlink" href="#experience-cloud" title="Permanent link">#</a></h2>
 <h3 id="site-domain-experience-cloud-site-domain">Site &amp; Domain (<code>Experience Cloud → Site &amp; Domain</code>)<a class="headerlink" href="#site-domain-experience-cloud-site-domain" title="Permanent link">#</a></h3>
-<p>Not a settings form — an eight-step guided checklist (<code>enable → site → guestAccess → permSet →
-campaignAccess → stripeCred → pages → publish</code>) with a running progress tally at the top. Every step carries
+<p>Not a settings form — a seven-step guided checklist (<strong>Enable Digital Experiences → Create or
+choose your site → Turn on guest access → Assign the guest permission set → Give the guest user
+read access to Campaign → Build each public page → Publish the site, then activate it</strong>) with a
+running progress tally at the top, followed by one un-numbered row for the guest Stripe credential
+that sits outside the tally. Every step carries
 exactly one status chip: <strong>Done</strong> (confirmed against your org this load), <strong>Pending</strong> (confirmed
 not done — the action is yours), or <strong>Can't verify</strong> (Salesforce exposes no API to check that
 step, so the panel says so rather than guessing at guest access or your page list — two things
 that remain permanently unreadable from Apex, not broken).</p>
 <div class="admonition info">
-<p class="admonition-title">Steps 5 and 6 grant what the package cannot ship — and both are machine-checked</p>
-<p>A managed package may grant neither a <strong>standard object permission</strong> (step 5, the guest user's
-Read on Campaign) nor an <strong>external-credential principal</strong> (step 6, the public Stripe
-credential). Salesforce strips the first out of a packaged permission set when the version is
-built and rejects the second outright, so <code>Fundraising_GuestDonor</code> carries every custom-object
-and custom-field grant your public pages need and neither of these two. Both are therefore
-one-time admin grants — and both are read back here, so you see <strong>Done</strong> or <strong>Pending</strong> rather
-than being asked to confirm your own work. Step 5 counts the grant wherever it lives: on the
-guest user's profile (the usual place) or on a permission set of your own assigned to it.</p>
+<p class="admonition-title">Two grants the package cannot ship — and both are machine-checked</p>
+<p>A managed package may grant neither a <strong>standard object permission</strong> (<strong>Give the guest user
+read access to Campaign</strong>) nor an <strong>external-credential principal</strong> (the guest Stripe
+credential row at the foot of the panel). Salesforce strips the first out of a packaged
+permission set when the version is built and rejects the second outright, so
+<code>Fundraising_GuestDonor</code> carries every custom-object and custom-field grant your public pages
+need and neither of these two. Both are therefore one-time admin grants — and both are read
+back here, so you see <strong>Done</strong> or <strong>Pending</strong> rather than being asked to confirm your own work.
+The Campaign step counts the grant wherever it lives: on the guest user's profile (the usual
+place) or on a permission set of your own assigned to it.</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">The guest credential grant is machine-checked, not self-confirmed</p>
@@ -2546,14 +2550,14 @@ Started</strong> step 5 grades the same two grants the same way, so the two pane
 <td>Immediate — every other panel/endpoint that resolves "the" site reads the same stored value, so they can never disagree</td>
 </tr>
 <tr>
-<td>Step 7 page table</td>
+<td><strong>Build each public page</strong> table</td>
 <td>Lists all six public pages (Home, Donate, Thank you, Receipt, Donor portal, Tickets) against the path your org is actually configured with, plus a live link to open each one</td>
 <td>Read-only — pages are still built by hand in Experience Builder; this table never writes anything</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Embedding</strong> (Allow embedding master switch + Allowed embed origins) sits as its own always-open
-block at the foot of the panel, deliberately outside the eight-step checklist and its tally — it's
+block at the foot of the panel, deliberately outside the seven-step checklist and its tally — it's
 optional and unrelated to whether the site itself is ready to take donations. Allowed embed
 origins is not validated — an entry missing <code>https://</code> or containing a path will simply never
 match a real request origin, with no error surfaced anywhere; double-check each entry is a bare

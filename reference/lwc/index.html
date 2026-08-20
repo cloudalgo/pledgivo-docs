@@ -154,7 +154,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-24</span>
+          <span class="fn-brand__ver">1.0.0-26</span>
         
       </a>
 
@@ -3557,6 +3557,7 @@
 <p><code>left</code> excludes Optional rows. It did not until 2026-08-17, and an Optional row is not 'pass' whenever it is partly satisfied — so on an org with one required step open and the optional content-hosts row at 2-of-4, this line described TWO steps under a banner that said one, and counted the optional one as required. That is the same defect as F-10 and F-23, in a third place: this sentence must count exactly what <code>outstanding</code> counts.</p>
 <p>The clauses are also phrased position-independently ("more"/"the last one" only appear once something precedes them), because whichever clause lands first is the sentence's opening and used to render lowercase mid-thought when there was no button to lead with.</p>
 <p>When exactly one step is left the clause says "It", not "One" — the banner above has already said "One step left", and repeating the count reads as a second, different step.</p>
+<p>Each clause inflects for its own count, including the button clause, which read "1 of them have a button right here" until 2026-08-20 (F-96). "Solo" is about the whole sentence, not the clause: one fixable step alongside four guided ones is not solo, so the singular still has to be spelled out here.</p>
 <p>The hero's fraction and the list beneath it count differently, in two ways that both flatter the org: an Optional row is displayed but never counted, and a "Partly done" row is counted as not done although it looks half-finished. So "6/7 Complete" can sit above eight rows, five of which read as finished. A first-run walkthrough took the number as its progress signal and believed the org was one step from ready while three steps were open (2026-08-17). Rather than change either rule — both are right on their own terms — the panel now states them, and only when there is actually a discrepancy to explain.</p>
 <p>_resolveSettingsTabUrl() calls _applyPanelUrls() itself once _settingsTabUrl resolves (both its success and catch paths, below) — an extra call here ran before _settingsTabUrl could possibly be set, so it only ever applied panel URLs built from the stale/null value and was pure redundant work.</p>
 </div>
@@ -3761,7 +3762,7 @@
 <p><code>not exposed</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Settings-console panel that walks an admin through getting a public donation site live: an eight-step checklist, machine-checked where possible, with Setup deep links, the site picker, a per-page build table, and the embedding switch.</p>
+<p>Settings-console panel for getting a public donation site live: a seven-step checklist plus an un-numbered guest-credential row, machine-checked where possible, with Setup deep links, the site picker, a page-build table and the embed switch.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The Campaign-access step (5) deliberately links to Permission Sets rather than to Profiles: the Lightning Setup node for the profile list is EnhancedProfiles only when the Enhanced Profile User Interface is switched on, so a profile deep link is a dead end in some orgs. A permission set granting Campaign read and assigned to the guest user satisfies the check exactly the same way, and the step's body still spells out the profile route as an option.</p>

@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-24</span>
+          <span class="fn-brand__ver">1.0.0-26</span>
         
       </a>
 
@@ -2127,9 +2127,9 @@ or use the numbered row to jump anywhere. Leave it alone and it advances by itse
 is on screen; hovering pauses it, and touching any control hands it back to you for good.</p>
 </div>
 <div class="fn-steps">
-<figure class="fn-step" data-title="Get Started, near the end"><img src="../../assets/images/gs-01-get-started-console.png" alt="Get Started panel reading 6 of 7 complete with one step left" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The console at the end of a real setup: <b>6 / 7 Complete</b> — <i>"One step left before this org is ready to take donations. It is walked through on another panel."</i> Steps 1 and 2 are <span class="fn-chip">DONE</span> with their evidence quoted from the org — "2 user(s) hold Fundraising Admin or Fundraising User", "7/7 mapping records present" — and step 3, <b>Activate your donation site</b>, is the one still open. Nothing here was ticked by hand.</figcaption></figure>
+<figure class="fn-step" data-title="Get Started, near the end"><img src="../../assets/images/gs-01-get-started-console.png" alt="Get Started panel reading 6 of 7 complete with one step left" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The console at the end of a real setup: <b>6 / 7 Complete</b> — <i>"One step left before this org is ready to take donations. It is walked through on another panel."</i> Steps 1 and 2 are <span class="fn-chip">DONE</span> with their evidence quoted from the org — "2 user(s) hold Fundraising Admin or Fundraising User", and a mapping line reading N of N — and step 3, <b>Activate your donation site</b>, is the one still open. Nothing here was ticked by hand.</figcaption></figure>
 <figure class="fn-step" data-title="Steps 3 to 5"><img src="../../assets/images/gs-02-get-started-site-payment.png" alt="Get Started steps 3, 4 and 5 with their live evidence lines" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The middle of the checklist. Step 3 is <b>Partly done</b> and says exactly why — <i>Site "Fundraising" exists but is not activated yet (status: UnderConstruction)</i>. Step 4 is done, "1 active payment account(s) configured". Step 5 is done and carries a <span class="fn-chip">SETUP ONLY</span> flag with a <b>Do this in Setup</b> block: the app can verify the grant but can never make it for you.</figcaption></figure>
-<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled". Shown here after the restart; on a fresh install this row is amber until you press its button. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter.</figcaption></figure>
+<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled". Shown here after the restart; on a fresh install this row is amber until the jobs are re-owned. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter.</figcaption></figure>
 </div>
 
 <div class="fn-status-strip">
@@ -2189,8 +2189,8 @@ the API, or Data Loader. If someone on your team needs to configure payments, de
 settings, give them <code>Fundraising_Admin</code>; there is no middle tier.</p>
 <h2 id="record-types">2. Confirm record type mapping<a class="headerlink" href="#record-types" title="Permanent link">#</a></h2>
 <p>The app writes donations, events, and tributes onto Opportunity and Campaign record types.
-The install seeds a <strong>default mapping of seven records</strong> pointing at the record types it ships,
-so this step arrives green — the evidence line on Get Started reads <em>"7/7 mapping records
+The install seeds a <strong>default mapping of eight records</strong> pointing at the record types it ships,
+so this step arrives green — the evidence line on Get Started reads <em>"8 of 8 mapping records
 present"</em>.</p>
 <p>Open <strong>Settings → System → Record Types</strong> only if your org already uses its own record types for
 gifts and you want the app to write to those instead.</p>
@@ -2424,16 +2424,28 @@ scheduled Apex — <strong>24 cron entries</strong> in total. The install create
 reports "24 of 24 background jobs are scheduled". <strong>Press the button anyway.</strong></p>
 <div class="admonition warning">
 <p class="admonition-title">This is the one step a fresh install does not finish for you</p>
-<p>A post-install script runs as a Salesforce system user your org cannot reach, and a scheduled
-job belongs to whoever scheduled it. So the 24 jobs the install creates are real cron entries
-owned by a user that no longer resolves — they are scheduled, and they do not run. The count
-is honest and reassuring and tells you nothing about the thing that matters.</p>
+<p>A scheduled job belongs to whoever scheduled it, and <code>CronTrigger.OwnerId</code> is stamped when the
+job is created and never changes afterwards. The post-install script runs as a Salesforce
+system user your org cannot reach — so the 24 jobs it creates are real cron entries owned by a
+user that no longer resolves. They are scheduled, they sit at <code>WAITING</code> on the right cadence,
+and every pass dies the moment it starts: an owner holding no permission set cannot see the
+objects the jobs read, so the query the batch opens with throws before it reads a row. The
+count is honest and reassuring and tells you nothing about the thing that matters.</p>
+<p>Measured on a virgin org: all 24 jobs owned by an unreachable user, ten consecutive batch
+runs, zero successes, and the finalizer marker still empty half an hour later. Re-owned, the
+very next pass completed and stamped the marker. The failure is
+silent — the unhandled-exception notice goes to a mailbox that does not exist.</p>
 <p>On a fresh install the step therefore reads <strong>amber</strong>, not green: <em>"The background jobs have
 not completed a pass yet, and no gift is waiting on them."</em> Amber rather than red because
-nothing is at risk yet — you have taken no gift — but the work is real. Press <strong>Restart the
-background jobs</strong>. It aborts each orphaned job and reschedules it under your own login, and
-the step turns green within a few minutes, once the finalizer has completed its first pass
-and stamped the marker the console reads.</p>
+nothing is at risk yet — you have taken no gift — but the work is real, and it will not clear
+on its own. Press <strong>Restart the background jobs</strong>. It aborts each orphaned job and reschedules
+it under your own login, and the step turns green within a few minutes, once the finalizer has
+completed its first pass and stamped the marker the console reads.</p>
+<p><strong>The Scheduled Jobs health row is the thing to read, not the count.</strong> It resolves each job's
+owner and names the problem when an owner does not resolve. Saving any Settings panel performs
+the same repair in passing, so if you configured the console before you reached this step you
+may find the row already green — that is the reclaim having happened early, not the install
+having done it for you.</p>
 <p>Do it before you share a donation link, not after.</p>
 </div>
 <div class="admonition warning">
@@ -2464,8 +2476,8 @@ created in Salesforce. The gift waits as a <code>Donation Staging</code> record 
 next pass once the jobs are running again, so <strong>nothing is lost permanently</strong>. The danger is
 the gap in between, when your reports show fewer gifts than your Stripe dashboard does.</p>
 <p><strong>Two different situations, and the form treats them differently on purpose.</strong></p>
-<p><em>No pass has ever completed in this org</em> — the state a fresh install sits in until you press
-the button on this step. Nothing has ever demonstrated that a charged card becomes an
+<p><em>No pass has ever completed in this org</em> — the state a fresh install sits in until the jobs
+are re-owned, on this step or by the first Settings save. Nothing has ever demonstrated that a charged card becomes an
 Opportunity here, so <strong>the donation form and the ticket page refuse the payment outright</strong>.
 Instead of a card field the visitor sees: <em>"Online giving is temporarily unavailable on this
 site. Its background jobs have not completed a pass yet…"</em> — with the remedy named, because

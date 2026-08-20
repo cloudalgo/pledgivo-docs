@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-24</span>
+          <span class="fn-brand__ver">1.0.0-26</span>
         
       </a>
 
@@ -1761,7 +1761,7 @@ Developer. Professional edition can't publish public pages; see
 All Sites list and nothing to create. Salesforce asks you to choose an Enhanced Domain
 subdomain as part of switching it on; that name becomes part of every public donation URL,
 is org-wide, and cannot be undone, so pick one you are happy to publish.</p>
-<p>The Settings console's <strong>Site &amp; Domain</strong> panel is an eight-step checklist that starts with this
+<p>The Settings console's <strong>Site &amp; Domain</strong> panel is a seven-step checklist that starts with this
 same step, machine-checks it against your org, and links you straight to the Setup page.</p>
 <h2 id="2-create-the-site">2. Create the site<a class="headerlink" href="#2-create-the-site" title="Permanent link">#</a></h2>
 <p><strong>Setup → Digital Experiences → All Sites → New.</strong></p>
@@ -1807,6 +1807,15 @@ many campaign types you run.</p>
 <p class="admonition-title">Component missing from the palette?</p>
 <p>Publish the site and hard-refresh Experience Builder — a newly-installed component
 sometimes doesn't show up until the org's cache picks up the change.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">The red warning on the component is Salesforce boilerplate</p>
+<p>Experience Builder shows a red notice on <em>every</em> custom component from <em>any</em> managed package,
+warning that a third-party component may not be safe under Strict CSP or Lightning Web
+Security. It is generic text, shown before Salesforce has looked at the component at all — it
+is not a finding about this package. Every component this app ships is built and tested with
+<strong>Strict CSP</strong> and <strong>Lightning Web Security</strong> on, which is how the public pages are expected to
+run. Drag it in and carry on.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Built the Donate page at a URL other than <code>donate</code>?</p>
@@ -1865,8 +1874,9 @@ rollout actually uses:</p>
 </table>
 <p><code>thank-you</code>, <code>receipt</code> and <code>tickets</code> are fixed paths — build them exactly as written. <code>donate</code>
 and <code>donor</code> are configurable in the Settings console under <strong>General → Organization &amp; Donations</strong>
-and <strong>General → Email &amp; Receipts</strong>. The <strong>Site &amp; Domain</strong> panel's step 7 shows the paths your org
-is actually configured with, plus a live link to each page so you can confirm it loads.</p>
+and <strong>General → Email &amp; Receipts</strong>. The <strong>Site &amp; Domain</strong> panel's <strong>Build each public page</strong> step
+shows the paths your org is actually configured with, plus a live link to each page so you can
+confirm it loads.</p>
 <p>Build each the same way as the Donate page: <strong>New Page → Standard → Flexible Layout</strong>, set the
 URL in Page Properties, drag in the named component, <strong>Save</strong>.</p>
 <div class="admonition danger">
@@ -1907,8 +1917,10 @@ the awkward part, so follow this route exactly — you will come back to it twic
 <li>On the profile, click <strong>View Users</strong>. Exactly one user is listed — <em>"&lt;your site&gt; Site Guest
    User"</em>.</li>
 <li>Open that user → <strong>Permission Set Assignments</strong> → <strong>Edit Assignments</strong> → move
-   <code>Fundraising_GuestDonor</code> across → <strong>Save</strong>. Leave the <em>License</em> filter on <code>--None--</code>; the guest
-   user holds no license, so filtering by one hides the set you are looking for.</li>
+   <code>Fundraising Guest Donor</code> from <em>Available</em> to <em>Enabled</em> → <strong>Save</strong>. This screen is a plain
+   two-list picker with no filters on it; if you are instead <em>creating</em> a permission set for the
+   guest user, the licence rule that applies there is in
+   <a href="../after-you-install/#the-guest-user">After you install</a>.</li>
 </ol>
 <p>Two routes that look right and are not: <strong>Administration → Members</strong> assigns profiles and
 permission sets that may be <em>members</em> of the site, not permission sets to the guest user; and the
@@ -1919,12 +1931,21 @@ donation form cannot submit — see <a href="../installation/">Installation</a>.
 Campaign records, and Salesforce does not let a managed package ship permissions on standard
 objects — they are removed when the package version is built — so <code>Fundraising_GuestDonor</code>
 carries every custom object and field grant your public pages need and can never carry this one.
-Without it a visitor gets an error on every campaign, donation and ticket page. Do it in
-<strong>Setup → Profiles → your site's guest user profile → Object Settings → Campaigns → Edit</strong>:
-tick <strong>Read</strong> and nothing else. A guest user must never hold Create, Edit or Delete on Campaign.
-Granting it through a permission set of your own and assigning that to the guest user works
-equally well. This one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 5 reads the grant
-back and reports <strong>Done</strong> or <strong>Pending</strong>.</p>
+Without it a visitor gets an error on every campaign, donation and ticket page. Do it in <strong>Setup → Profiles → your
+site's guest user profile → Edit</strong>, then scroll to <strong>Standard Object Permissions</strong> and tick
+<strong>Read</strong> on the <em>Campaigns</em> row → <strong>Save</strong>. A guest user must never hold Create, Edit or Delete on
+Campaign.</p>
+<div class="admonition note">
+<p class="admonition-title">If your profile page looks different</p>
+<p>Orgs that have switched on the <strong>Enhanced Profile User Interface</strong> (<em>Setup → User Management
+Settings</em>, off by default) get a different profile page: no Standard Object Permissions grid,
+and instead an <strong>Object Settings</strong> section — go to <strong>Object Settings → Campaigns → Edit</strong> and
+tick <strong>Read</strong> there. Same grant, different screen. If neither description matches what you are
+looking at, use the permission-set route below instead; it looks the same in every org.</p>
+</div>
+<p>Granting it through a permission set of your own and assigning that to the guest user works
+equally well. This one <strong>is</strong> machine-checked: the Site &amp; Domain panel's <strong>Give the guest user
+read access to Campaign</strong> step reads the grant back and reports <strong>Done</strong> or <strong>Pending</strong>.</p>
 <p>Finally, grant the <strong>public</strong> Stripe credential to that same Guest User — the same <strong>Builder →
 Settings → General → Guest User Profile → View Users</strong> route as above. Salesforce does not let a
 managed permission set grant access to an external credential principal, so this package can never
@@ -1932,10 +1953,11 @@ ship that grant — you create your own permission set holding that credential's
 assign it to the guest user as well as to your fundraising staff. Keep the <strong>admin</strong> credential's
 grant on a <em>separate</em> permission set that the guest user is never assigned: it carries the full
 secret key, so a guest user holding it can issue refunds. Unlike the Public Access toggle above,
-this one <strong>is</strong> machine-checked: the Site &amp; Domain panel's step 6 reads the grant back via
-<code>SetupEntityAccess</code> and reports <strong>Done</strong> once a permission set granting the public credential's
-principal is assigned to the site's guest user, or <strong>Pending</strong> with the specific reason (no grant
-found at all vs. granted but not assigned to this guest user) otherwise. That step grades the
+this one <strong>is</strong> machine-checked: the un-numbered guest-credential row at the foot of the Site &amp;
+Domain panel reads the grant back via <code>SetupEntityAccess</code> and reports <strong>Done</strong> once a permission
+set granting the public credential's principal is assigned to the site's guest user, or <strong>Pending</strong>
+with the specific reason (no grant found at all vs. granted but not assigned to this guest user)
+otherwise. That row grades the
 public credential only — on the Payments panel, <strong>Let your public site use the credential</strong> names
 the exact permission sets your guest user holds so you can confirm none of them is the admin one,
 and <strong>Prove the public key is restricted</strong> catches the same exposure from the other side by proving

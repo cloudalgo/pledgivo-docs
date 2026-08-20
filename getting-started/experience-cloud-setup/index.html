@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-26</span>
+          <span class="fn-brand__ver">1.0.0-27</span>
         
       </a>
 
@@ -1902,6 +1902,26 @@ page gets its own copy.</p>
 <p>Event checkout navigates to <code>thank-you</code> right after the charge succeeds. An org that skipped
 this page takes the buyer's money and lands them on a 404 — the failure happens after payment,
 so nothing earlier in your testing catches it.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Remove the template's empty header and footer sections</p>
+<p>"Build Your Own (LWR)" ships its theme layout with an empty <strong>Theme Header</strong> and an empty
+<strong>Theme Footer</strong> region, and each one still renders a layout section — which brings 16px of
+padding above and below itself. The result is a 32px grey band across the top and bottom of
+<strong>every</strong> public page: the donation page's sticky trust bar starts a band's width down the
+window instead of meeting its top edge, and the contact footer floats off the bottom.</p>
+<p>Nothing on the page itself causes it, so it survives every page-level change you make. Remove
+the two sections once and it is fixed for the whole site:</p>
+<ol>
+<li>In Experience Builder, open the <strong>Theme</strong> panel (the paintbrush icon) and confirm your
+   pages use the <strong>Scoped Header and Footer</strong> layout.</li>
+<li>Open <strong>Page Structure</strong> (the layers icon) and expand the <strong>Theme Header</strong> region.</li>
+<li>Select its <strong>Section</strong> entry and delete it. Do the same in <strong>Theme Footer</strong>.</li>
+<li><strong>Save</strong>, then publish.</li>
+</ol>
+<p>Only do this while the regions are genuinely empty. If you later drop a real site header or
+footer into either region, the section comes back with it — and that spacing is then yours,
+not the template's.</p>
 </div>
 <h2 id="5-activate-guest-access">5. Activate guest access<a class="headerlink" href="#5-activate-guest-access" title="Permanent link">#</a></h2>
 <p><strong>Setup → Digital Experiences → All Sites</strong>, then click <strong>Workspaces</strong> next to your site →

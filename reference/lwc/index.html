@@ -3501,6 +3501,7 @@
 <p>The public page is always two columns, so the only layout choice left is the proportion and which side the payment box sits on — one Column_Ratio__c picklist in place of the six layout modes and the separate side field, which could disagree with each other. Labels mirror the field's own picklist labels so the console and a record page read alike.</p>
 <p>The thumbnail's mini CTA is always solid, because the rendered page's CTA is always solid — Button_Style__c stopped reaching the guest render path on 2026-08-13 (see publicFundraisingExperience.resolveButtonTokens). A card that still drew a hollow button would be advertising a treatment no donor sees.</p>
 <p>Membership is explicit, not substring-matched: the substring test this replaced read 'Serif'/'Fraunces'/'Instrument' and so classified Newsreader, Lora, Bitter and EB Garamond as sans, previewing four serifs in the wrong category. Add new faces here.</p>
+<p>No name list and no description heuristic: both were the client keeping its own copy of a rule the server already owns, and both could disagree with what savePageDesign and deletePageDesign will actually allow. Ask the payload instead.</p>
 <p>There is no hero-only preview any more — every design previews as the two-column page.</p>
 <p>Off for a brand-new design. Interrupting a donor is a choice an admin should make on purpose, not inherit from a default.</p>
 </div>
@@ -4237,6 +4238,10 @@
 </div>
 <div class="fn-entry__body">
 <p>Reusable Ember-branded segmented control replacing lightning-radio-group type="button", whose selected-option color is a hardcoded SLDS blue.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>This is a RADIO GROUP, and says so. It used to be a row of buttons binding aria-pressed to a <code>selected</code> property this getter never computed, so LWC omitted the attribute from every one of them: the control that exists because lightning-radio-group could not be themed announced no selection at all, and conveyed it by background colour alone (audit F-45). Declaring the role is only half a fix — the role promises arrow-key navigation and a single tab stop, so handleKey and the roving tabindex below are part of the contract, not extras.</p>
+</div>
 <p><strong><code>@api</code> properties:</strong> <code>label</code>, <code>options</code>, <code>value</code></p>
 </div>
 </div>

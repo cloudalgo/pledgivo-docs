@@ -7743,7 +7743,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-campaignservice-assertacceptingdonations">CampaignService.assertAcceptingDonations()</a>, <a href="#apex-settingsservice-assertcheckoutnotblocked">SettingsService.assertCheckoutNotBlocked()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-securetokens-uuid">SecureTokens.uuid()</a>, <a href="#apex-securetokens-opaque">SecureTokens.opaque()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-donorresolutionservice-findlinkedstripecustomerid">DonorResolutionService.findLinkedStripeCustomerId()</a></td>
+<td><em>calls:</em> <a href="#apex-campaignservice-assertacceptingdonations">CampaignService.assertAcceptingDonations()</a>, <a href="#apex-settingsservice-assertcheckoutnotblocked">SettingsService.assertCheckoutNotBlocked()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-securetokens-uuid">SecureTokens.uuid()</a>, <a href="#apex-securetokens-opaque">SecureTokens.opaque()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8839,6 +8839,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>The CONTACT arm of the donor dual-field strategy — used in standard (non-Person-Account) orgs. Portal_Token_Hash__c / Portal_Token_Expires_At__c back the magic-link donor portal (<a href="#apex-donorportalservice"><code>DonorPortalService</code></a>) and are deliberately excluded from getSObjectFieldList so a normal USER_MODE query can never leak them to a user without explicit FLS.</p>
 <p>Deduping donors must not depend on the running user's visibility — a caller who can't see an existing Contact would silently create a duplicate donor and a second Stripe Customer, so SYSTEM_MODE is the correct mode for internal callers (finalization batch) too, not a guest workaround. Do NOT "harden" this back to USER_MODE.</p>
+<p>selectStripeCustomerIdByEmailSystem was removed alongside <a href="#apex-donorresolutionservice"><code>DonorResolutionService</code></a>.findLinkedStripeCustomerId, its only caller, when one-time donations stopped creating a Stripe Customer. The donor-dedup read that remains is selectDonorMatchByEmailSystem above, which returns the same field for a different purpose (deciding link-vs-create on an existing donor).</p>
 <p>Portal_Token_Issued_At__c rides along because the public "email me a link" form has to decide whether this donor is inside the issue cooldown, and it must decide that in the SAME query that resolved them — a second lookup would show up as a timing difference between a matched and an unmatched address, which is exactly the enumeration signal the issue path is built to hide.</p>
 <p>Deliberately NOT selectDonorMatchByEmailSystem — that one is capped at a single row because it answers "who is this one donor?", whereas an event batch can carry many gifts with many honorees and must resolve them in one query rather than one per gift. Email is the only key used: matching an honoree on Tribute_Name__c would credit the wrong person whenever two supporters share a name, and a soft credit is a permanent claim about who gave, not a display string.</p>
 <p>Person Account honorees are resolved through Contact rather than through Account and PersonEmail, even though the credit lands on the Account. A person account's email lives on its person Contact and is only mirrored onto Account.PersonEmail, so the Contact route reaches the same rows — and it hands <a href="#apex-softcreditservice"><code>SoftCreditService</code></a> two ordinary fields (Id, AccountId) instead of one that cannot be referenced outside a PA org.</p>
@@ -8897,11 +8898,6 @@
 </tr>
 <tr>
 <td><a id="apex-contactsselector-selectbystripecustomerid"></a><code>selectByStripeCustomerId(1 arg)</code></td>
-<td><code>List&lt;Contact&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-contactsselector-selectstripecustomeridbyemailsystem"></a><code>selectStripeCustomerIdByEmailSystem(1 arg)</code></td>
 <td><code>List&lt;Contact&gt;</code></td>
 <td></td>
 </tr>
@@ -9222,6 +9218,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>The single entry point for the Person Account dual-field donor strategy — <a href="#apex-donationservice"><code>DonationService</code></a>, <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>, <a href="#apex-paymentmethodservice"><code>PaymentMethodService</code></a>, <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, and the donor portal (<a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a>/<a href="#apex-donorportalservice"><code>DonorPortalService</code></a>) all resolve or create a donor through resolveOrCreateDonor rather than branching on IsPersonAccount directly. DonorContext exposes contactId/accountId as computed getters (falling back to the pre-existing Id when the donor already existed) so a caller can read the resolved Id immediately after uow.commitWork() without a second query.</p>
 <p>Standard orgs get a HOUSEHOLD Account too, not a bare private Contact: Contact.AccountId and Opportunity.AccountId are both populated, so a gift shows on an Account's related list, in every standard Opportunity report grouped by Account, and in orgs whose validation rules require Contact.AccountId — where an Account-less donor insert would otherwise fail the finalize with an error the donor never sees. It is also what makes <a href="#apex-softcreditservice"><code>SoftCreditService</code></a>.applyHouseholds() do anything in a standard org. See newHousehold() for why households are never matched by name.</p>
+<p>findLinkedStripeCustomerId was removed when one-time donations stopped using a Stripe Customer at all. It existed to let a repeat one-time donor reuse a linked customer id instead of minting a fresh one per gift; with one-time now charged customerless, and recurring deliberately requiring a FRESH customer per signup, it had no caller left. Do not reintroduce it without a reader for the value — see DonationService.</p>
 </div>
 <table>
 <thead>
@@ -9245,11 +9242,6 @@
 <tr>
 <td><a id="apex-donorresolutionservice-resolveorcreatedonor"></a><code>resolveOrCreateDonor(4 args)</code></td>
 <td><code>DonorContext</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-donorresolutionservice-findlinkedstripecustomerid"></a><code>findLinkedStripeCustomerId(1 arg)</code></td>
-<td><code>String</code></td>
 <td></td>
 </tr>
 <tr>
@@ -11213,6 +11205,7 @@
 <p>The pinned Stripe-Version comes from <a href="#apex-paymentgatewayregistry"><code>PaymentGatewayRegistry</code></a>, which ships and upgrades with the response-parsing code in this class — the only thing that can safely change it. It was previously read from Payment_Gateway__mdt.Stripe.API_Version__c on every gateway instantiation, which cost a SOQL query per donation and left the version editable in a subscriber org independently of the code that parses what Stripe sends back.</p>
 <p>The raw HTTP status Stripe answered with. Added for probePublicKeyScope, which needs the numeric status even on the permissions-failure path, where Stripe returns a parseable JSON error body built from its own <code>error.code</code> rather than the 'http_&lt;status&gt;' synthetic code rawRequest uses for a non-JSON body — so the status is not always recoverable from the message text. Set unconditionally in rawRequest next to isTransient so every caller gets it, not just the probe.</p>
 <p>Exposes the account init() was called with so a caller can record WHICH Stripe account minted a token without threading the id alongside the gateway instance. <a href="#apex-paymentmethodservice"><code>PaymentMethodService</code></a> stamps it onto Payment_Method__c.Payment_Account__c — a cus_/pm_ pair is only chargeable on the account that created it, so the wallet row has to remember which one that was.</p>
+<p>If the Stripe account has automatic email receipts switched on for successful payments, this makes Stripe send its own receipt IN ADDITION to the one <a href="#apex-receiptservice"><code>ReceiptService</code></a> sends. That is a dashboard setting on the subscriber's own Stripe account, not something the package can read or set — see the guest-donation guide.</p>
 <p>retrievePaymentIntent reads through the RESTRICTED public credential even though back-office jobs call it too. It is guest-reachable (the donation and event-registration status polls both land here), so it has to work with the key a public page can reach; the reconcilers simply reuse that read rather than needing a second, more powerful one.</p>
 <p>Note what that asks of the restricted key: read access to PaymentIntents is not enough on its own, because the request expands latest_charge.balance_transaction and so also reads a Charge and a balance transaction. A key scoped narrower than that breaks the guest status poll and both reconcilers — see the Named_Credential__c field comment for what that silently costs.</p>
 <p>Null is the correct outcome far more often than it looks, and it is NOT an error: Stripe posts the balance transaction when the charge settles, so a PaymentIntent read before that — typically a card charge fetched the same instant it succeeded, which on this card-only flow is the common case — legitimately has none. Callers must read null as "not known yet" and leave the field alone rather than writing a zero fee, which would look like a free charge.</p>
@@ -11839,6 +11832,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>selectDueForRenewalLocator's WHERE clause has two branches: normal due-today schedules (Next_Retry_Date__c = null) and schedules already mid dunning-retry cycle (Next_Retry_Date__c &lt;= today). Next_Retry_Date__c being non-null is what routes a schedule into the retry branch instead of the normal one — <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>. processRenewal is what sets and clears it. selectByDonorSystem and selectByStripeCustomerId are the two SYSTEM_MODE reads (see the class comment above) used by the donor portal and the self-managed-signup idempotency check, respectively.</p>
 <p>No field from this read is ever returned to the guest — it feeds internal decisions only (status gates, campaign scope, the running installment count). Donor scoping is enforced one layer up by <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>.requireOwnership, which resolves the id from the token-authorized donor's own rows before the service is called at all. Same posture as selectByStripeCustomerId and selectByDonorSystem.</p>
+<p>This 1:1 mapping is precisely why the recurring branch still creates a Customer even though one-time donations no longer do. Reusing the customer id of a repeat donor here would make their second signup look like a duplicate of their first and be dropped.</p>
 <p>newQueryFactory(false, false, true) — the CRUD/FLS asserts must be waived, not just the query's AccessLevel. The bare newQueryFactory() asserts object read at BUILD time and threw "Permission to access an Recurring_Donation__c denied." for the guest user, aborting every recurring signup before the SYSTEM_MODE query ever ran. The Guest License holds no read on this object by design and must not be granted one: the result is used solely as an internal boolean (does this Stripe customer already have a schedule?) and no field ever reaches the guest. Same posture as the sibling SYSTEM_MODE read selectByDonorSystem below.</p>
 <p>stripePaymentMethodId is skipped entirely when blank rather than bound as null — a null bind in <code>Stripe_Payment_Method_Id__c = :token</code> matches every schedule that has no token at all, which would report unrelated gifts as depending on this card.</p>
 <p>The guard has to match on BOTH the Payment_Method__c lookup and the Stripe id because a schedule written before the lookup existed carries only the latter, and the Stripe id is what the renewal batch actually charges. Matching on one alone would let a donor remove a card that is still funding a live gift.</p>

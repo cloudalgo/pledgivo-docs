@@ -2047,7 +2047,7 @@
 <td><code>Stripe_Customer_Id__c</code></td>
 <td>Stripe Customer ID</td>
 <td>Text</td>
-<td>Stripe's identifier for this donor's customer record. Populated automatically by the payment integration.<br><em>Docs: Resolved by DonorResolutionService, which is the only sanctioned place to decide whether a given donor's Stripe customer profile lives on Contact or Account; callers should never branch on IsPersonAccount to pick between this field and its counterpart on the other object.</em></td>
+<td>Stripe's identifier for this donor's customer record. Filled in automatically when the donor starts a recurring gift. Blank is normal and not a problem: one-time gifts and ticket purchases are charged without a Stripe customer, so a donor who has never set up a recurring gift will not have one.<br><em>Docs: Resolved by DonorResolutionService, which is the only sanctioned place to decide whether a given donor's Stripe customer profile lives on Contact or Account; callers should never branch on IsPersonAccount to pick between this field and its counterpart on the other object.  Written only by DonorResolutionService.stampStripeCustomer, and only on the recurring path: since one-time donations and event ticket purchases became customerless, nothing else produces a customer id to stamp. Treat blank as the common case, never as missing data, and do not write code that requires this to be populated before a donation can be processed.</em></td>
 </tr>
 <tr>
 <td><code>Total_Donated__c</code></td>
@@ -2141,7 +2141,7 @@
 <td><code>Stripe_Customer_Id__c</code></td>
 <td>Stripe Customer ID</td>
 <td>Text</td>
-<td>Stripe's identifier for this donor's customer record. Populated automatically by the payment integration.<br><em>Docs: Resolved by DonorResolutionService, which is the only sanctioned place to decide whether a given donor's Stripe customer profile lives on Contact or Account; callers should never branch on IsPersonAccount to pick between this field and its counterpart on the other object.</em></td>
+<td>Stripe's identifier for this donor's customer record. Filled in automatically when the donor starts a recurring gift. Blank is normal and not a problem: one-time gifts and ticket purchases are charged without a Stripe customer, so a donor who has never set up a recurring gift will not have one.<br><em>Docs: Resolved by DonorResolutionService, which is the only sanctioned place to decide whether a given donor's Stripe customer profile lives on Contact or Account; callers should never branch on IsPersonAccount to pick between this field and its counterpart on the other object.  Written only by DonorResolutionService.stampStripeCustomer, and only on the recurring path: since one-time donations and event ticket purchases became customerless, nothing else produces a customer id to stamp. Treat blank as the common case, never as missing data, and do not write code that requires this to be populated before a donation can be processed.</em></td>
 </tr>
 <tr>
 <td><code>Total_Donated__c</code></td>

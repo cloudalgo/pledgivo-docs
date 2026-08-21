@@ -1302,6 +1302,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-time-gifts-create-no-stripe-customer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-time gifts create no Stripe Customer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1894,6 +1911,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-time-gifts-create-no-stripe-customer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-time gifts create no Stripe Customer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2255,6 +2289,29 @@ there is deliberately no Opportunity yet at that point, so an abandoned or faile
 never creates a donation record. Finalization is idempotent: it's keyed on
 <code>Opportunity.Stripe_Payment_Intent_Id__c</code>, so a guest poll and the backup batch racing each
 other can never create two Opportunities for the same payment.</p>
+<h3 id="one-time-gifts-create-no-stripe-customer">One-time gifts create no Stripe Customer<a class="headerlink" href="#one-time-gifts-create-no-stripe-customer" title="Permanent link">#</a></h3>
+<p>A one-time donation — and an event ticket purchase — is charged <strong>customerless</strong>: the PaymentIntent
+carries no Stripe Customer, and no Customer is created. Nothing is lost by this. A Customer exists
+in Stripe to hold a saved card, and a one-time gift never saves one, so the only thing it used to
+buy was an extra Stripe call on every donor's way to the payment screen — plus an abandoned,
+never-reachable Customer record left behind for every checkout a donor started and did not finish.</p>
+<p>The charge is still identifiable in your Stripe Dashboard. The donor's email address is sent as the
+PaymentIntent's receipt email, and their email, the campaign and the correlation id are all written
+to the payment's metadata, so a Stripe-side search by address or by campaign finds the gift exactly
+as before. What is no longer there is a <strong>Customers</strong> entry per donor — look at Payments, not
+Customers, when reconciling one-time giving.</p>
+<div class="admonition warning">
+<p class="admonition-title">Turn off Stripe's own email receipts</p>
+<p>Because the donor's address now reaches Stripe as the receipt email, a Stripe account that has
+<strong>automatic email receipts</strong> enabled will send its own receipt on top of the branded one this
+package sends — the donor gets two. That switch lives in your Stripe Dashboard under
+<em>Settings → Business → Customer emails</em> ("Successful payments"); this package cannot read or
+change it. If you want donors to receive only the package receipt, leave that setting off.</p>
+</div>
+<p>A <strong>recurring</strong> signup is the one path that still creates a Customer, and it creates a fresh one per
+signup. Saving a card for later off-session renewals is not possible without one, and the schedule
+is matched back to its first gift through that customer id — see
+<a href="../recurring-giving/">Recurring giving</a>.</p>
 <h2 id="watching-the-pipeline-the-donation-monitor-tab">Watching the pipeline — the Donation Monitor tab<a class="headerlink" href="#watching-the-pipeline-the-donation-monitor-tab" title="Permanent link">#</a></h2>
 <p><strong>Donation Monitor</strong> in the app navigation lists every staging row that has not yet become an
 Opportunity. It answers one question: is anything stuck between "donor started paying" and

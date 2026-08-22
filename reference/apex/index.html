@@ -4480,6 +4480,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-currencyresolver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CurrencyResolver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-currencystamphelper" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4687,7 +4698,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>207</code></span><span><b>Test classes</b><code>144</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>208</code></span><span><b>Test classes</b><code>145</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4754,7 +4765,7 @@
 <li>
 <p><strong><a href="#domain-shared">Shared</a></strong></p>
 <hr />
-<p>18 classes</p>
+<p>19 classes</p>
 <p><a href="#domain-shared-root">Core</a> · <a href="#domain-shared-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-shared-selector">Selectors</a></p>
 </li>
 </ul>
@@ -5121,6 +5132,7 @@
 <p>source of truth is the Campaign_Closed__c formula field (EndDate-based), not inline date math — see the field's doc comment for why.</p>
 <p>The assembled, pasteable link — not the bare slug this used to hand the "Copy link" button, which was inert wherever it was pasted (audit finding F-61). Null when the org has no Experience Site URL yet; 'slug' is sent alongside so the LWC can tell "not published" from "no site configured" instead of reporting one as the other.</p>
 <p>The logo is the same for every design because it is org identity, not a theme: it comes off Settings__c.Org_Logo_URL__c, which the logo-upload flow maintains as a ContentDistribution link. The wizard's design cards still show it so an admin previews the real masthead, but picking a different design can never change it.</p>
+<p>Org-scoped, from <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a> rather than a setting — the wizard shows the admin the currency their gifts will actually be charged in, which is the org's own currency and not something this screen can change.</p>
 <p>org-wide starting values for a new fundraiser's donor-option toggles (see <a href="#apex-settingsservice-defaultallowtribute"><code>SettingsService.defaultAllowTribute</code></a>/defaultAllowCompanyMatch); the wizard applies these only when creating a NEW Campaign, never on edit.</p>
 <p>Not a fundraiser setting — it is what the Story step's preview needs to render video the way the donor will see it. Without it the preview always shows the facade card, so an org that opted into inline playback would show its authors the one thing they cannot check by looking. The record page's Story tab gets the same value from <a href="#apex-campaignstorycontroller-getstory"><code>CampaignStoryController.getStory</code></a>.</p>
 <p>Not a plain sVal assignment, and deliberately so — this is the choke point every story passes through, so a client that skips the editor cannot land markup or a hostile URL. See <a href="#apex-campaignservice-normalizestorymarkdown"><code>CampaignService.normalizeStoryMarkdown</code></a>.</p>
@@ -11181,6 +11193,10 @@
 </div>
 <div class="fn-entry__body">
 <p>Converts between Stripe's smallest-currency-unit amounts and major-unit decimals, honouring Stripe's zero-decimal currencies (e.g. JPY is billed in whole yen, no x100). https://docs.stripe.com/currencies#zero-decimal</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>ISK and UGX are DELIBERATELY ABSENT and must stay absent. Stripe documents both as special cases: they became zero-decimal currencies, but backwards compatibility requires them to be sent as two-decimal values whose minor part is always 00 — to charge 5 UGX you send 500. Treating UGX as plain zero-decimal sent 5000 for a 5,000 UGX gift, which Stripe read as 50 UGX: a 100x undercharge. Fixed 2026-08-22.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -12552,7 +12568,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-receiptstatushelper-resolve">ReceiptStatusHelper.resolve()</a>, <a href="#apex-settingsservice-defaultcurrency">SettingsService.defaultCurrency()</a>, <a href="#apex-receiptstatushelper-legalstatement">ReceiptStatusHelper.legalStatement()</a></td>
+<td><em>calls:</em> <a href="#apex-receiptstatushelper-resolve">ReceiptStatusHelper.resolve()</a>, <a href="#apex-currencyresolver-fororg">CurrencyResolver.forOrg()</a>, <a href="#apex-receiptstatushelper-legalstatement">ReceiptStatusHelper.legalStatement()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12604,10 +12620,6 @@
 <p>The donation-pipeline monitor's two methods (getStuckDonations, retryDonationStagingNow) used to live here and moved to <a href="#apex-donationmonitorcontroller"><code>DonationMonitorController</code></a> on 2026-08-14, with the LWC, when the monitor became its own Lightning tab. They had to leave: this class is granted to Fundraising_Admin only, because it is the sole entry point behind every settings panel, and the monitor is meant for program staff who must never reach the console. Do not add monitor methods back here.</p>
 <p>There is no deletePaymentAccount counterpart. A payment account cannot be deleted at all — the <a href="#apex-paymentaccounts"><code>PaymentAccounts</code></a> domain class refuses every delete — so the console offers deactivation (Is_Active__c) instead. See audit finding F-124.</p>
 <p>The diagnostic-log read (getRecentLogs) used to live here and moved to <a href="#apex-diagnosticlogcontroller"><code>DiagnosticLogController</code></a> on 2026-08-15, with the list itself, when reading Log__c became its own Diagnostic Logs tab. It had to leave for the same reason the donation monitor did: this class is granted to Fundraising_Admin only, because it is the sole entry point behind every settings panel, and troubleshooting staff must be able to read logs without being handed the console. getRecentErrorLogs above stays — it reads Transaction_Log__c (the Stripe callout audit trail) for the Logging panel's own error list, not Log__c.</p>
-<p>Grades whether the app's configured currency can actually be written to a record in THIS org. It exists because <a href="#apex-currencystamphelper"><code>CurrencyStampHelper</code></a> deliberately does not fail soft: since 2026-08-22 every gift, schedule and staging row is stamped with Settings__c.Default_Currency__c, and if that code is not an active currency here the insert dies with INVALID_CURRENCY_ISO_CODE — at donation time, in front of a donor who has already been charged. That trade was taken knowingly (silently recording the gift in the wrong currency is worse), on the condition that the misconfiguration is catchable BEFORE a donor ever sees the form. This check is that condition. Audit finding F-105.</p>
-<p>Distinct from the F-91 mismatch surfaced by getCurrencyContext, which is a cosmetic reporting-label disagreement in a SINGLE-currency org. This one is a hard save failure in a MULTI-currency org, which is why it grades <code>fail</code> rather than <code>warn</code>.</p>
-<p>Split from currencyCheck() purely so the three verdicts are testable. Neither UserInfo.isMultiCurrencyOrganization() nor the CurrencyType table can be stubbed, and no scratch org is both single- and multi-currency, so the decision has to be reachable with its inputs supplied.</p>
-<p>CurrencyType exists only in orgs with Multiple Currencies enabled, so it is read through a dynamic query inside a try/catch — a typed reference would not compile in a single-currency org and would therefore break the managed-package install everywhere. Same idiom, and the same reason, as <a href="#apex-communityservice"><code>CommunityService</code></a>'s Network queries. An accepted FFLib exception: a selector cannot be built for an SObject whose type may not exist.</p>
 <p>No 'experience_site' branch. It used to return CreateExperienceSite().doExecute(), whose payload is a CLI command rather than a created site — the callers treat any non-error return as "fixed", so the panel claimed success and nothing happened. Site creation is not automatable; setSite still calls createExperienceSite() to FETCH that command, which is honest, and is the only remaining caller.</p>
 <p>The silent fall-through this replaces is what let the site button lie. Both callers (setGetStarted.handleFix, setHealth.handleFix) toast "Applied the recommended fix" on ANY non-error return, so an itemId with no branch — a removed fixer, a typo, a step whose fix was never written — reported success and did nothing. An unknown id is now an error the admin can see, which is the only honest answer when nothing was repaired.</p>
 <p>The ordered, live-checked post-install checklist behind the Get Started panel. Each step reports its own status from the org rather than from a stored "done" flag, so an admin who undoes a step (deactivates the last payment account, aborts the cron jobs) sees it reopen. That is deliberate: there is no Setup_Step_Complete__c field anywhere, and there should not be one — a checklist that remembers being ticked lies the moment the org drifts.</p>
@@ -12628,8 +12640,6 @@
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration.</p>
 <p>The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
 <p>The object-access leg was added 2026-08-19 (audit F-76). Until then this row graded the principal grant alone and went green on an org where every public donation still died at the callout with "You don't have read permissions on the User External Credential object" — the Site &amp; Domain panel's step 5 already reported that org as broken, so the console contradicted itself on the same fact, and this row was the one an admin sees first. It is a distinct 'warn' rather than 'fail' because the two grants are separate pieces of work and an admin who has done one has genuinely done half of the step.</p>
-<p>Detect-and-warn only — nothing here changes an amount or a charge. The package charges and renders in Settings__c.Default_Currency__c, while a STANDARD Salesforce field (Opportunity.Amount, Campaign.AmountWonOpportunities) renders in the org's own currency. The two are never reconciled, so an org whose corporate currency is INR that accepts the blank USD default gets one gift shown as ₹51.80 on the Opportunity page and $51.80 on the receipt, the donor dashboard, the console and the donor's card statement — the same correct number labeled with two different currencies. Finance staff live in standard reports, so this is a reporting-integrity problem rather than a payments one, and the honest fix is to say so rather than to silently convert anything. Audit finding F-91.</p>
-<p>UserInfo.getDefaultCurrency() rather than a query on Organization: it needs no SOQL, and in a multi-currency org it returns the RUNNING USER's currency — which is exactly what the standard pages this admin is about to look at will label the number with.</p>
 <p>Returns the raw Settings__c on purpose — <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
 <p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that <a href="#apex-settingsservice"><code>SettingsService</code></a> defaults to — the nulls below are deliberate, not a failed parse.</p>
 <p>SavePaymentAccount answers with { id, warning } rather than a bare Id so the console can say something at the moment a shared credential is chosen. A WARNING, never a block. Running one credential in both roles is a configuration an admin may choose deliberately, and blocking it would fight a decision they have just made. The value here is timing: it catches the exposure at the moment it is created rather than on the next guide load, which the admin may never open again.</p>
@@ -12638,7 +12648,7 @@
 <p>Coalesced, never assigned straight through. Column_Ratio__c is required with a picklist default, but a default only fires when the field is absent from the DML payload — writing an explicit null instead fails the insert with REQUIRED_FIELD_MISSING. Any caller that does not send the key (an older console build, a scripted save) would otherwise be unable to create a design at all.</p>
 <p>persisted=true is set here rather than left to resolveExperienceSite() because this payload is what the panel renders immediately after the save, and the hierarchy custom setting is still cached at this point in the transaction — a re-resolve would report the site as unsaved and re-arm "Use this site".</p>
 <p>Nests the Stripe-credential check under 'stripeCredential', and the guest Campaign-access check under 'objectAccess', on the same round trip rather than adding further @AuraEnabled methods — additive so every existing key keeps its meaning, and no permission-set classAccesses change is needed. See <a href="#apex-communityservice-checkstripecredentialaccess"><code>CommunityService.checkStripeCredentialAccess</code></a>() and checkGuestObjectAccess().</p>
-<p><code>persisted</code> is the distinction the console could not previously draw: whether this site came from the admin's SAVED choice (Settings__c.Experience_Network_Id__c) or was merely DISCOVERED by CommunityService's name/prefix convention. Discovery is a convenience, not a decision — nothing is stored, Experience_Site_URL__c is still blank, and every public link the console composes is still dead.</p>
+<p><code>persisted</code> is the distinction the console could not previously draw: whether this site came from the admin's SAVED choice (Settings__c.Experience_Network_Id__c) or was merely DISCOVERED by <a href="#apex-communityservice"><code>CommunityService</code></a>'s name/prefix convention. Discovery is a convenience, not a decision — nothing is stored, Experience_Site_URL__c is still blank, and every public link the console composes is still dead.</p>
 <p>Without the flag the picker pre-selected the discovered site, compared it against the site it was already showing, and disabled "Use this site" permanently: the single click that would persist it could never be made, while the rest of the panel kept reporting "No site URL yet" and step 2 showed a green Done (2026-08-17 naive-admin walkthrough, findings 11 and 12).</p>
 <p>The URL fallback is the other half. ConnectApi is the only source that reports a real public base URL — Network has no such field, and its UrlPathPrefix is a path fragment that Setup renders with a suffix donors never type. So a discovered-but-unsaved site borrows its URL from listSites() rather than showing none.</p>
 <p>One normalization for every donor-facing URL this controller composes. Both the public links panel and the setup checklist's page table append a path to this value, so a trailing slash left on it produces "…/fundraising//donate" — a 404 on Enhanced LWR.</p>
@@ -12703,11 +12713,6 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-getsettings"></a><code>getSettings(0 args)</code></td>
-<td><code>Map&lt;String, Object&gt;</code></td>
-<td><code>@AuraEnabled</code></td>
-</tr>
-<tr>
-<td><a id="apex-setupcontroller-getcurrencycontext"></a><code>getCurrencyContext(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
@@ -12878,7 +12883,8 @@
 </div>
 <div class="fn-entry__body">
 <p>App-level UI config for LWCs that need it but have no payload of their own to carry it.</p>
-<p>WHY THIS EXISTS: currency must come from Settings__c.Default_Currency__c — the value the gateway is actually charged in. Components were instead using @salesforce/i18n/currency (the ORG's currency, which can differ) or a hardcoded '$'. Threading currencyCode through ~18 unrelated Apex payloads would couple every one of them to a formatting concern; one cacheable read is shared by all of them (LDS caches it, so this costs a single round-trip per session).</p>
+<p>WHY THIS EXISTS: every public component must label money with the currency the gateway is actually charged in. Components were instead using @salesforce/i18n/currency (the running USER's currency, which in a multi-currency org is not the org's) or a hardcoded '$'. Threading currencyCode through ~18 unrelated Apex payloads would couple every one of them to a formatting concern; one cacheable read is shared by all of them (LDS caches it, so this costs a single round-trip per session).</p>
+<p>The value comes from <a href="#apex-currencyresolver-fororg"><code>CurrencyResolver.forOrg</code></a>(), which reads the ORG's own currency. It used to come from Settings__c.Default_Currency__c — an admin-typed setting seeded to 'USD' at install, which meant an INR org charged and labelled every gift in USD until someone noticed. That field is deleted; do not reintroduce a settings-sourced currency here.</p>
 <p>WITHOUT SHARING is deliberately NOT used: this touches no records. Settings__c.getInstance() is a custom-setting read, which is exempt from CRUD/FLS, so guests resolve it without a grant.</p>
 <table>
 <thead>
@@ -13493,7 +13499,7 @@
 <div class="fn-entry__body">
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Two distinct API surfaces live in this one class. <a href="#apex-isettingsservice"><code>ISettingsService</code></a> (getSettings/ saveSettings/detectAndUpdateOrgFeatures) is the instance-based CRUD path used only by <a href="#apex-setupcontroller"><code>SetupController</code></a> for the admin settings screen. Everything else — the large block of static typed accessors below (logLevel, defaultCurrency, refundsEnabled, retryIntervalDays, donorPortalShowSummary, and so on) — is the canonical, sanctioned way every OTHER class in the package reads a single Settings__c value; callers must never call Settings__c.getInstance() directly or branch on a raw flag. Each accessor has a matching <code>@TestVisible</code> *Override static field so tests can stub one setting without inserting or upserting a Settings__c row.</p>
+<p>Two distinct API surfaces live in this one class. <a href="#apex-isettingsservice"><code>ISettingsService</code></a> (getSettings/ saveSettings/detectAndUpdateOrgFeatures) is the instance-based CRUD path used only by <a href="#apex-setupcontroller"><code>SetupController</code></a> for the admin settings screen. Everything else — the large block of static typed accessors below (logLevel, refundsEnabled, retryIntervalDays, donorPortalShowSummary, and so on) — is the canonical, sanctioned way every OTHER class in the package reads a single Settings__c value; callers must never call Settings__c.getInstance() directly or branch on a raw flag. Each accessor has a matching <code>@TestVisible</code> *Override static field so tests can stub one setting without inserting or upserting a Settings__c row.</p>
 <p>Two recurring patterns worth knowing before adding a new accessor: (1) capability gates (personAccountEnabled, npspEnabled, npspGauSyncEnabled, npspRecurringSyncEnabled) are always "detected AND admin-enabled" — detection is authoritative and an admin flag can only opt OUT of a capability the org actually supports, never opt into one it doesn't; (2) several Boolean fields are stored inverted as Hide_<em>/Disabled__c (donorPortalShow</em>, refundsEnabled, isEmbedEnabled) specifically so that a Checkbox field added in a later release, which backfills existing Settings__c rows to false, defaults to the "on"/visible behavior with no data migration required.</p>
 <p>Reads via getOrgDefaults(), never getInstance(). Settings__c has no profile/user tier — every accessor in this file treats it as an org-wide singleton — but getInstance() still resolves the hierarchy for the RUNNING USER.</p>
 <p>When the org-default row exists but the running context doesn't cleanly resolve to it, upserting getInstance()'s result can create a stray row scoped to that user, which then permanently shadows the real org-default for every later getInstance() call by that user — the exact bug already fixed for recordTypeMappingsRaw()/saveRecordTypeMappingsRaw() below, extended here to the shared getSettings()/saveSettings() CRUD path (SetupController's save handlers, and the org-logo methods: ensureDefaultLogoSeeded()/uploadOrgLogo()/removeOrgLogo()).</p>
@@ -13502,6 +13508,7 @@
 <p>They ship as packaged static resources and are served from the org's own &lt;org&gt;.file.force.com domain, which a guest LWR site allows in img-src with no CSP Trusted Site. That is the whole reason for the ContentDistribution round trip: a remotely-hosted stock photo would need a packaged CspTrustedSite, and every packaged trusted site shows up in the install-time "Approve Third-Party Access" dialog — which this package deliberately keeps to Stripe only.</p>
 <p>WITHOUT SHARING, deliberately and narrowly. Seeding runs from <a href="#apex-postinstallhandler"><code>PostInstallHandler</code></a>, which executes as a per-package system user, and in that context a <code>with sharing</code> class cannot resolve StaticResource at all — the query dies with "sObject type 'StaticResource' is not supported" and the whole install used to abort there. Found 2026-08-09 by install-testing into a real subscriber org; it is invisible in a dev org, where an admin can read the resource in any sharing mode.</p>
 <p>This class is the ONLY part of logo handling that runs without sharing, and it only ever touches the package's own packaged resources plus the documents it creates from them. Admin- and donor-supplied images stay on the USER_MODE path in uploadOrgLogo() — do not route them through here.</p>
+<p>CURRENCY IS NOT A SETTING AND NO LONGER LIVES HERE. defaultCurrency() and currencyCodeForGateway() used to read Settings__c.Default_Currency__c; that field is deleted and the answer now comes from the org itself, via <a href="#apex-currencyresolver-fororg"><code>CurrencyResolver.forOrg</code></a>() / forCampaign() / forGateway(). Do not reintroduce an accessor here — a second name for the same answer is exactly the ambiguity that let an INR org charge in USD.</p>
 <p>Describe result is cached by the platform per transaction, so the wizard pays this once.</p>
 <p>Enforced in two places, and it needs both. <a href="#apex-campaignservice"><code>CampaignService</code></a> masks Allow_Tribute__c to false on every campaign payload it serves, which is what actually hides the section; and <a href="#apex-donationservice"><code>DonationService</code></a>.applyTributeAndMatch refuses to capture tribute fields off the staging options blob, which is what stops a hand-crafted guest submission writing them anyway. The first is the product behavior, the second is the enforcement — a client-side gate alone would be advisory on a public endpoint.</p>
 <p>No separate send-time gate in <a href="#apex-receiptservice"><code>ReceiptService</code></a>: with capture blocked the Opportunity has no Tribute_Type__c, so buildTributeNotification's existing gates already return null. An in-flight staging row created while the switch was on is finalized through the same capture path, so flipping the switch off stops its e-card too.</p>
@@ -13582,16 +13589,6 @@
 <tr>
 <td><a id="apex-settingsservice-debugloggingenabled"></a><code>debugLoggingEnabled(0 args)</code></td>
 <td><code>Boolean</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-settingsservice-defaultcurrency"></a><code>defaultCurrency(0 args)</code></td>
-<td><code>String</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-settingsservice-currencycodeforgateway"></a><code>currencyCodeForGateway(0 args)</code></td>
-<td><code>String</code></td>
 <td></td>
 </tr>
 <tr>
@@ -14271,6 +14268,64 @@
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
+<h4 id="apex-currencyresolver">CurrencyResolver<a class="headerlink" href="#apex-currencyresolver" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>CurrencyResolver.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Decides the single currency a gift is charged, recorded and displayed in.</p>
+<p>Stateless helper beside <code>CurrencyStampHelper</code>, and the only place in the package that answers "what currency is this?". <code>CurrencyStampHelper</code> writes the answer onto a record; this class produces it.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>WHY THIS EXISTS. The currency used to come from Settings__c.Default_Currency__c, an admin-configurable text field that <a href="#apex-setupcontroller"><code>SetupController</code></a> seeded with 'USD' at install. An admin who never opened Settings → General → Organization got USD forever — so an org running on INR displayed a rupee total on the Opportunity, a dollar sign on the receipt, and charged the donor in dollars. The setting had no legitimate use: a nonprofit's Salesforce org runs on one currency and its gateway settles in one currency, and an org-wide "charge in something else" toggle serves nobody. The field, the F-91 mismatch banner and the F-105 currency health check were all deleted with it — they existed only to detect a misconfiguration the package created for itself.</p>
+<p>The org's own currency cannot be wrong, so the failure mode is now structurally impossible rather than merely detected.</p>
+<p>PHASE 1 vs PHASE 2. forCampaign() returns the org answer today. It exists so that per-campaign currency in a multi-currency org (an org running a EUR appeal alongside an INR one) becomes a change to THIS class and nothing else — every caller is already routed through it. It takes the Campaign RECORD, not an Id, because fflib_SObjectSelector auto-selects CurrencyIsoCode in a multi-currency org, so the value Phase 2 needs is already on any row a selector returned. Taking an Id would force a query Phase 2 does not need.</p>
+<p>Test seam, matching <a href="#apex-settingsservice"><code>SettingsService</code></a>'s *Override convention. UserInfo.getDefaultCurrency() and the CurrencyType table are org facts that cannot be stubbed, and no scratch org is both single- and multi-currency, so the resolved answer is overridable.</p>
+<p>Per-transaction cache. Resolution costs at most one SOQL (multi-currency orgs only); without the cache a donation request would spend one per call site. @TestVisible so a test can clear it between scenarios.</p>
+<p>No Phase 1 caller — deliberate, not dead code. The two charge paths (<a href="#apex-donationformcontroller"><code>DonationFormController</code></a>.PreparePayment, <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>) use the org-scoped forGateway() only because no Campaign record is in scope on either; both switch to this overload the moment Phase 2 threads one through. Kept so that switch is a one-word edit rather than a new method, and covered by CurrencyResolver_Test either way.</p>
+<p>In a MULTI-currency org the answer is the CORPORATE currency, not UserInfo.getDefaultCurrency(). getDefaultCurrency() returns the RUNNING USER's personal currency there, which on a public donation page is the site's Guest User — a value an admin can change without ever thinking about donations. In a SINGLE-currency org getDefaultCurrency() is documented to return the organization's currency code, and it is the only currency the org can store, so it cannot be wrong.</p>
+<p>Organization.DefaultCurrencyIsoCode was considered and rejected: the column does not exist in a single-currency org (verified — the query fails with INVALID_FIELD), so it carries the same install-breaking compile hazard as CurrencyIsoCode.</p>
+<p>Split out from resolveOrgCurrency so the precedence rule is a pure function of two strings. Neither input can be stubbed — one is the CurrencyType table, the other is a UserInfo call, and no scratch org is both single- and multi-currency — so keeping the decision separate from the two org facts is what makes it directly testable in either.</p>
+<p>CurrencyType exists only in an org with Multiple Currencies enabled, so it is read through a dynamic query inside a try/catch — a typed reference would not COMPILE in a single-currency org and would therefore break the managed-package install everywhere. Same idiom, and the same reason, as <a href="#apex-communityservice"><code>CommunityService</code></a>'s Network queries. An accepted FFLib exception: a selector cannot be built for an SObject whose type may be absent.</p>
+<p>SYSTEM_MODE is deliberate. CurrencyType is org configuration, not customer data, and the guest user who most needs this answer has no access to it.</p>
+<p>The SOQL lives in a @TestVisible field rather than a literal for one reason: in a single-currency org the query throws on its first line, so the rows-to-code step below could never be exercised in the org this package is developed and coverage-gated in. A test repoints it at a table every org has and asserts the contract that matters — whatever goes wrong in here, the caller gets null and falls through to UserInfo rather than seeing an exception. Production code never reassigns it.</p>
+<p>Deliberately silent. <a href="#apex-applogger"><code>AppLogger</code></a> reads <a href="#apex-settingsservice-loglevel"><code>SettingsService.logLevel</code></a>(), and this method sits on the resolution path every money-handling class calls — logging here risks recursion for no benefit, because the UserInfo fallback is always a valid answer.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-currencyresolver-fororg"></a><code>forOrg(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-currencyresolver-forcampaign"></a><code>forCampaign(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-currencyresolver-forgateway"></a><code>forGateway(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-currencyresolver-forgateway"></a><code>forGateway(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="apex-currencystamphelper">CurrencyStampHelper<a class="headerlink" href="#apex-currencystamphelper" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p class="fn-entry__src"><code>shared/<wbr>CurrencyStampHelper.cls</code></p>
@@ -14284,8 +14339,9 @@
 <p>The two fields are kept, and they are not redundant. Currency_ISO_Code__c is the audit record of what the processor actually took; CurrencyIsoCode is what the platform reports in. They hold the same value today, and the custom field is the one that survives a future per-campaign-currency feature unchanged.</p>
 <p>NEVER reference CurrencyIsoCode with a typed expression. The field does not exist in a single-currency org, so <code>opp.CurrencyIsoCode</code> fails to COMPILE there — which for a managed package means the version will not install. Every access goes through SObject.put() with the name as a string, gated on the describe check below. This mirrors fflib_SObjectSelector's own CURRENCY_ISO_CODE_ENABLED guard.</p>
 <p>Test seams. UserInfo.isMultiCurrencyOrganization() cannot be stubbed and no scratch org is both single- and multi-currency, so the two environment facts this class depends on are each overridable. Tests set them to exercise the decision in codeToStamp() without needing a multi-currency org; applyTo() itself still refuses to write a field that is not really there, so an override can never make a test corrupt a record.</p>
-<p>The code is UPPER-CASED here and that is load-bearing, not cosmetic. Every stored code in this package is lower-case, because <a href="#apex-settingsservice-currencycodeforgateway"><code>SettingsService.currencyCodeForGateway</code></a>() lower-cases it to satisfy Stripe, and that lower-case value is what lands in Donation_Staging__c.Currency_Code__c and Opportunity.Currency_ISO_Code__c. CurrencyIsoCode is a picklist of upper-case ISO-4217 codes, so passing 'usd' straight through would be rejected as an invalid value.</p>
-<p>DELIBERATELY UNGUARDED against a currency the org has not activated (owner decision, 2026-08-22). If Settings__c.Default_Currency__c names a code that is not active here, the insert fails loudly with INVALID_CURRENCY_ISO_CODE rather than silently recording the gift in the wrong currency. That is a real trade — a settings misconfiguration takes the donation path down — and the guard rail against it is a pre-flight, not a fallback: the settings console's Health panel grades this a hard <code>fail</code> before any donor sees the form (<a href="#apex-setupcontroller"><code>SetupController</code></a>.currencyCheck). A silent skip was considered and rejected: it would preserve exactly the mis-recording this class exists to end.</p>
+<p>The code is UPPER-CASED here and that is load-bearing, not cosmetic. Every stored code in this package is lower-case, because <a href="#apex-currencyresolver-forgateway"><code>CurrencyResolver.forGateway</code></a>() lower-cases it to satisfy Stripe, and that lower-case value is what lands in Donation_Staging__c.Currency_Code__c and Opportunity.Currency_ISO_Code__c. CurrencyIsoCode is a picklist of upper-case ISO-4217 codes, so passing 'usd' straight through would be rejected as an invalid value.</p>
+<p>NO GUARD against a currency the org has not activated, and since 2026-08-22 none is needed. The code stamped here originates from <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a>, which reads the org's own currency — the corporate currency in a multi-currency org, UserInfo.getDefaultCurrency() otherwise. A currency the org runs on is by definition one it can save, so INVALID_CURRENCY_ISO_CODE is now structurally unreachable on this path.</p>
+<p>It was reachable before. The code used to come from Settings__c.Default_Currency__c, an admin-typed value seeded to 'USD' at install and unrelated to the org's real currency, so an unactivated code took the donation path down at charge time. That hazard is what <a href="#apex-setupcontroller"><code>SetupController</code></a>.currencyCheck() pre-flighted; both the field and the health check were deleted with the resolver change, because detecting a misconfiguration the package created for itself was never the fix. Do not reintroduce a settings-sourced currency here.</p>
 </div>
 <table>
 <thead>

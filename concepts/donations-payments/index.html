@@ -2531,9 +2531,11 @@ off the Opportunity fields, not through <code>Payment_Method__c</code>.</p>
 </tbody>
 </table>
 <h2 id="what-currency-a-gift-is-recorded-in">What currency a gift is recorded in<a class="headerlink" href="#what-currency-a-gift-is-recorded-in" title="Permanent link">#</a></h2>
-<p>Every gift is recorded in the currency set on <strong>Settings → General → Organization</strong>. That one
-value does two jobs: it is the currency the processor is asked to charge, and — in an org with
-Salesforce <strong>Multiple Currencies</strong> enabled — it is stamped onto the record so the platform
+<p>Every gift is recorded in <strong>your org's own currency</strong>. There is nothing to configure, which is
+the point — in a single-currency org it is simply the currency the org runs on, and in an org
+with Salesforce <strong>Multiple Currencies</strong> enabled it is the <strong>corporate currency</strong> (Setup →
+Manage Currencies). That one value does two jobs: it is the currency the processor is asked to
+charge, and, where Multiple Currencies is on, it is stamped onto the record so the platform
 converts and rolls it up correctly.</p>
 <p>That second half is what most orgs never think about. Salesforce reads every currency amount in
 whatever currency the <em>record</em> carries, and a record saved without one silently inherits the
@@ -2541,15 +2543,15 @@ currency of whoever saved it. Donations are saved by a background job, so before
 stamped explicitly, a multi-currency org recorded gifts in the batch owner's personal currency —
 a figure with no relationship to what the donor was actually charged. Nothing errored; the
 campaign totals were simply wrong by an exchange rate.</p>
-<div class="admonition warning">
-<p class="admonition-title">Multi-currency orgs: activate the currency before you take donations</p>
-<p>In a multi-currency org, a gift can only be saved in a currency the org has <strong>activated</strong>
-(Setup → Manage Currencies). If the currency on General → Organization is not one of them,
-donations fail to save — and they fail <em>after</em> the card has been charged.</p>
-<p>This is deliberate: recording the gift in the wrong currency would be worse and invisible,
-where a failure is loud and fixable. To make sure you never meet it in front of a donor, the
-settings console's <strong>Health Check</strong> carries a <em>Currency</em> row that goes red on exactly this
-misconfiguration. Check it once after install; a single-currency org never sees the issue.</p>
+<div class="admonition note">
+<p class="admonition-title">There used to be a currency setting here — and it was the bug</p>
+<p>Earlier releases carried a <strong>Default currency</strong> field on Settings → General → Organization,
+seeded to <code>USD</code> at install. An org running on anything else charged every donor in dollars
+until somebody noticed, and in a multi-currency org a code the org had not <strong>activated</strong>
+made the save fail outright — <em>after</em> the card had been charged. The field is gone, along
+with the Health Check row that existed to catch the mismatch. Reading the org's own currency
+makes both failures impossible rather than merely detectable: a currency the org runs on is
+by definition one it can store. Nothing to set, nothing to check.</p>
 </div>
 <p>A gift also keeps a second, independent record of what the processor took, on the Opportunity's
 own <code>Currency_ISO_Code__c</code>. The two agree, and they are not duplicates — the custom field is the

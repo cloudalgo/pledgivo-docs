@@ -1544,7 +1544,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>97 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>96 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1648,12 +1648,6 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Default_Campaign_Type</td>
 <td>Text</td>
 <td>Pick the Campaign Type new fundraisers should be created with — this is the field standard Salesforce campaign reports group by. Many organizations add their own "Fundraising" or "Appeal" value first. Leave blank to keep whatever default your org already set.<br><em>Docs: Deliberately Text, not a picklist: Campaign.Type is a STANDARD picklist whose values are org-specific, and a packaged picklist could not offer the value a subscriber actually uses. The Settings console renders the org's live Campaign.Type entries with the getPicklistValues wire adapter instead, and SettingsService.defaultCampaignType() re-checks the stored value against the live describe before it is applied, so a value later removed from the picklist degrades to "leave the org default alone" rather than failing the create. Seeded to 'Other' on fresh install by PostInstallHandler (never on upgrade). Applied by FundraiserAdminController.CreateFundraiser only — an existing campaign's Type is never rewritten by an edit.</em></td>
-</tr>
-<tr>
-<td><code>Default_Currency__c</code></td>
-<td>Default_Currency</td>
-<td>Text</td>
-<td>Three-letter ISO currency code, e.g. USD, EUR, GBP.<br><em>Docs: Single source of truth for BOTH the currency symbol shown to donors and the ISO code Stripe is charged in (SettingsService.currencyCodeForGateway() lower-cases it for the Stripe API). Before this field existed, the two could disagree; an org set to INR could be shown a rupee symbol in one place and charged in USD by the PaymentIntent. Blank reads as USD.</em></td>
 </tr>
 <tr>
 <td><code>Default_Designation__c</code></td>
@@ -1887,7 +1881,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Fee_Coverage_Fixed__c</code></td>
 <td>Fee Coverage Fixed Amount</td>
 <td>Number</td>
-<td>The flat per-transaction part of your payment processor's fee, e.g. 0.30 for Stripe's standard US card rate. Used only to work out the extra amount a donor pays when they tick "cover the processing fee". Leave blank to use 0.30.<br><em>Docs: Expressed in Default_Currency__c, not converted per gift — the package is single-currency by design (see Settings__c.Default_Currency__c), so there is no rate to apply. A blank falls back to 0.30 for the same reason Fee_Coverage_Percent__c falls back to 2.9: an unconfigured org should produce a plausible Stripe-shaped estimate, not a silently wrong one. Zero IS a legitimate value here (some processors charge no flat component) and is honoured — only blank triggers the default.</em></td>
+<td>The flat per-transaction part of your payment processor's fee, e.g. 0.30 for Stripe's standard US card rate. Used only to work out the extra amount a donor pays when they tick "cover the processing fee". Leave blank to use 0.30.<br><em>Docs: Expressed in the org's own currency (CurrencyResolver.forOrg() — the corporate currency in a multi-currency org, UserInfo.getDefaultCurrency() otherwise), not converted per gift: every gift this package takes is charged in that one currency, so there is no rate to apply. A blank falls back to 0.30 for the same reason Fee_Coverage_Percent__c falls back to 2.9: an unconfigured org should produce a plausible Stripe-shaped estimate, not a silently wrong one. Zero IS a legitimate value here (some processors charge no flat component) and is honoured — only blank triggers the default.</em></td>
 </tr>
 <tr>
 <td><code>Fee_Coverage_Percent__c</code></td>

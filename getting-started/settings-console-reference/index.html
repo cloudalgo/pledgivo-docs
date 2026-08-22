@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-27</span>
+          <span class="fn-brand__ver">1.0.0-28</span>
         
       </a>
 
@@ -2420,8 +2420,9 @@ would.</p>
 <hr />
 <h2 id="payments">Payments<a class="headerlink" href="#payments" title="Permanent link">#</a></h2>
 <h3 id="payment-accounts-payments-payment-accounts">Payment Accounts (<code>Payments → Payment Accounts</code>)<a class="headerlink" href="#payment-accounts-payments-payment-accounts" title="Permanent link">#</a></h3>
-<p>Backed by <code>Payment_Account__c</code> records, not <code>Settings__c</code> — this panel is full CRUD on the
-payment-gateway connections your campaigns charge through.</p>
+<p>Backed by <code>Payment_Account__c</code> records, not <code>Settings__c</code> — this panel creates and edits the
+payment-gateway connections your campaigns charge through. It has no delete: a payment account
+can be <strong>deactivated but never deleted</strong> (see the callout below).</p>
 <table>
 <thead>
 <tr>
@@ -2453,13 +2454,8 @@ payment-gateway connections your campaigns charge through.</p>
 </tr>
 <tr>
 <td>Active</td>
-<td>Whether the account can be charged through</td>
-<td>Immediate and load-bearing: deactivating an account instantly blocks any campaign linked to it from taking a charge — the next donation attempt is rejected until an active account is linked.</td>
-</tr>
-<tr>
-<td><strong>Delete</strong> button</td>
-<td>Removes a payment account</td>
-<td>Blocked with an error if any campaign — live or draft — still links to the account. Unlink it from every campaign first.</td>
+<td>Whether the account can be charged through — and the <strong>only</strong> way to retire one</td>
+<td>Immediate and load-bearing: deactivating an account instantly blocks any campaign linked to it from taking a charge — the next donation attempt is rejected until an active account is linked. An inactive account keeps its full donation history, and the cards and schedules it created stay intact.</td>
 </tr>
 <tr>
 <td><strong>Test connection</strong> button</td>
@@ -2468,6 +2464,29 @@ payment-gateway connections your campaigns charge through.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Payment accounts cannot be deleted — deactivate instead</p>
+<p>There is no Delete button on this panel, and attempting to delete a <code>Payment_Account__c</code>
+record any other way (record page, Data Loader, API) is refused outright. This is deliberate,
+not a permissions gap.</p>
+<p>A saved card (<code>pm_…</code>) and customer (<code>cus_…</code>) are minted by one Stripe account and are
+chargeable <strong>only</strong> by that account. The payment-account record is the only thing naming which
+Named Credential identifies it. Delete the record and every saved card and recurring schedule
+created through it becomes permanently unchargeable — the tokens cannot be re-pointed at a
+different Stripe account, re-minted, or recovered. Renewals would silently fall through to the
+campaign's current account, Stripe would answer <code>resource_missing</code>, and the dunning cadence
+would read that as a declined card and start chasing donors whose cards are perfectly fine.</p>
+<p><strong>Uncheck Active</strong> to retire an account. It stops taking new gifts immediately and keeps
+every record it ever created.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Don't edit a payment account that's already working — create a new one</p>
+<p>Re-pointing a live account's Named Credential or publishable key at a different Stripe account
+has the same effect as deleting it, without the guard: existing tokens keep referencing the
+old Stripe account while new charges go to the new one. If you're switching Stripe accounts,
+<strong>create a second payment account record</strong>, link the campaigns you want moved to it, and
+deactivate the old one once its recurring schedules have run out or been re-collected.</p>
+</div>
 <h3 id="refunds-payments-refunds">Refunds (<code>Payments → Refunds</code>)<a class="headerlink" href="#refunds-payments-refunds" title="Permanent link">#</a></h3>
 <table>
 <thead>

@@ -154,7 +154,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-27</span>
+          <span class="fn-brand__ver">1.0.0-28</span>
         
       </a>
 
@@ -1799,7 +1799,7 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td><code>Payment_Account__c</code></td>
 <td>Payment Account</td>
 <td>Lookup → <code>Payment_Account__c</code></td>
-<td>Which of your configured Stripe accounts renewals for this schedule are charged to. Set automatically when the schedule starts — changing the fundraiser's payment account later does not, and must not, move an existing schedule.<br><em>Docs: Second rung of the renewal resolution chain: Payment_Method__r.Payment_Account__c, then this field, then Campaign.Payment_Account__c for rows predating both (see RecurringRenewalBatch). Stamped from Donation_Staging__c.Payment_Account__c, which is already in hand at RecurringDonationService.createScheduleFromStaging — the account was decided at intent time, so this is a snapshot of a known fact rather than a fresh resolution. deleteConstraint omitted (SetNull) for the same reason as Payment_Method__c.Payment_Account__c.</em></td>
+<td>Which of your configured Stripe accounts renewals for this schedule are charged to. Set automatically when the schedule starts — changing the fundraiser's payment account later does not, and must not, move an existing schedule.<br><em>Docs: Second rung of the renewal resolution chain: Payment_Method__r.Payment_Account__c, then this field, then Campaign.Payment_Account__c for rows predating both (see RecurringRenewalBatch). Stamped from Donation_Staging__c.Payment_Account__c, which is already in hand at RecurringDonationService.createScheduleFromStaging — the account was decided at intent time, so this is a snapshot of a known fact rather than a fresh resolution. deleteConstraint is Restrict (added 2026-08-21, audit finding F-124) — nulling this field is exactly the silent breakage it protects against.</em></td>
 </tr>
 <tr>
 <td><code>Payment_Method__c</code></td>

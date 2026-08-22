@@ -154,7 +154,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-27</span>
+          <span class="fn-brand__ver">1.0.0-28</span>
         
       </a>
 
@@ -1896,7 +1896,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Payment_Account__c</code></td>
 <td>Payment Account</td>
 <td>Lookup → <code>Payment_Account__c</code></td>
-<td>Which of your configured Stripe accounts receives donations made to this fundraiser. Add more accounts from the Payments settings panel first. Every fundraiser needs one before it can go live.<br><em>Docs: Replaced the Campaign_Payment_Account__c junction object (removed 2026-08-04). The junction modelled a many-to-many that was never implemented: every consumer took cpas[0] and discarded the rest, and its Is_Default__c was written but never read. Campaigns are many-to-one on payment account by product decision — an org may hold several Stripe accounts, a campaign collects to one. deleteConstraint is Restrict, so a Payment_Account__c still in use by a campaign cannot be deleted; SetupController.DeletePaymentAccount raises the same condition as a friendly admin-facing error before the platform ever gets to enforce it.</em></td>
+<td>Which of your configured Stripe accounts receives donations made to this fundraiser. Add more accounts from the Payments settings panel first. Every fundraiser needs one before it can go live.<br><em>Docs: Replaced the Campaign_Payment_Account__c junction object (removed 2026-08-04). The junction modelled a many-to-many that was never implemented: every consumer took cpas[0] and discarded the rest, and its Is_Default__c was written but never read. Campaigns are many-to-one on payment account by product decision — an org may hold several Stripe accounts, a campaign collects to one. deleteConstraint is Restrict, as it now is on all five Payment_Account__c lookups. A payment account cannot be deleted at all — the PaymentAccounts domain class refuses every delete outright and directs the admin to Is_Active__c instead — so these constraints are defence in depth rather than the guard itself. The console's Delete button and SetupController.deletePaymentAccount were removed with that change (audit finding F-124).</em></td>
 </tr>
 <tr>
 <td><code>Percent_Goal_Reached__c</code></td>

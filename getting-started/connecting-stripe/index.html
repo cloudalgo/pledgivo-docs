@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-27</span>
+          <span class="fn-brand__ver">1.0.0-28</span>
         
       </a>
 
@@ -1962,8 +1962,9 @@ has no site.
    a <strong>display label</strong> (internal reference — donors never see it), pick the <strong>payment processor</strong>,
    choose your credentials, and paste your Stripe <strong>publishable key</strong>.</p>
 <p>Once an account exists the step stops offering to create one and shows that single account
-instead, with <strong>Edit</strong>, <strong>Test</strong> and <strong>Delete</strong> on the row. That is deliberate: step 9 is about
-the one account these eleven steps are grading, and a second account is a separate decision
+instead, with <strong>Edit</strong> and <strong>Test</strong> on the row — there is no Delete anywhere, on this step or
+the accounts tab (see below). Showing one account is deliberate: step 9 is about the one
+account these eleven steps are grading, and a second account is a separate decision
 that belongs on the <strong>Payment accounts</strong> tab, where the whole list is visible. If you run more
 than one account, the step names which one it is grading and the <strong>Showing</strong> switcher at the
 top of the panel moves the eleven steps to another.</p>
@@ -2304,8 +2305,19 @@ when you go live.</p>
 <em>Goal &amp; fund</em> step (the wizard won't let you publish without one) or directly on the Campaign
 record. See <a href="../../guides/first-campaign/">Set up your first campaign</a>.</p>
 <p>An org may connect several Stripe accounts, but a campaign settles to exactly one — so this is
-a single picker, not a list. A Payment Account that a campaign still points at can't be
-deleted; the Payments panel says so rather than letting the reference break.</p>
+a single picker, not a list.</p>
+<div class="admonition warning">
+<p class="admonition-title">A payment account can be deactivated, never deleted</p>
+<p>Deleting a <code>Payment_Account__c</code> is refused outright — from the Payments panel (which has no
+Delete button), from the record page, and from the API. A saved card (<code>pm_…</code>) is chargeable
+only by the Stripe account that issued it, and this record is the only thing naming which
+Named Credential identifies that account, so destroying it would permanently strand every
+recurring schedule and saved card set up through it.</p>
+<p>Retire an account by <strong>unchecking Active</strong> instead. And if you're moving to a different Stripe
+account, <strong>create a new payment account record</strong> rather than re-pointing a working one at new
+credentials — editing in place leaves existing tokens referencing the old Stripe account while
+new charges go to the new one, which produces exactly the breakage the delete guard prevents.</p>
+</div>
 <h2 id="why-theres-no-webhook-step">Why there's no webhook step<a class="headerlink" href="#why-theres-no-webhook-step" title="Permanent link">#</a></h2>
 <p>Most Stripe integrations ask you to register a webhook endpoint URL in the Stripe Dashboard
 and copy a signing secret back into the app. Pledgivo doesn't have an inbound webhook at all —

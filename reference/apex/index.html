@@ -154,7 +154,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-27</span>
+          <span class="fn-brand__ver">1.0.0-28</span>
         
       </a>
 
@@ -3580,6 +3580,34 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#domain-payment-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domains
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domains">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apex-paymentaccounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PaymentAccounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#domain-payment-selector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4648,7 +4676,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>205</code></span><span><b>Test classes</b><code>142</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>206</code></span><span><b>Test classes</b><code>143</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4697,8 +4725,8 @@
 <li>
 <p><strong><a href="#domain-payment">Payment</a></strong></p>
 <hr />
-<p>20 classes</p>
-<p><a href="#domain-payment-root">Core</a> · <a href="#domain-payment-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-payment-selector">Selectors</a> · <a href="#domain-payment-service">Services</a> · <a href="#domain-payment-stripe">Stripe</a></p>
+<p>21 classes</p>
+<p><a href="#domain-payment-root">Core</a> · <a href="#domain-payment-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-payment-domain">Domains</a> · <a href="#domain-payment-selector">Selectors</a> · <a href="#domain-payment-service">Services</a> · <a href="#domain-payment-stripe">Stripe</a></p>
 </li>
 <li>
 <p><strong><a href="#domain-recurring">Recurring</a></strong></p>
@@ -5508,11 +5536,6 @@
 </tr>
 <tr>
 <td><a id="apex-campaignsselector-countbydesignid"></a><code>countByDesignId(1 arg)</code></td>
-<td><code>Integer</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-campaignsselector-countbypaymentaccountid"></a><code>countByPaymentAccountId(1 arg)</code></td>
 <td><code>Integer</code></td>
 <td></td>
 </tr>
@@ -6947,10 +6970,14 @@
 <p>Undelete restores the splits by the same silent cascade, so their funds are recomputed here too — this time by reading the rows back, which are queryable again.</p>
 <p>KNOWN LIMITATION — a restored CONTACT donor's lifetime total is not repaired, here or later. Opportunity.ContactId is derived from the primary OpportunityContactRole, and undeleting the gift does not bring that role back: ContactId reads as null in Trigger.new, on a re-query from inside this handler, and in the DB afterwards, so even the nightly <a href="#apex-donorsummaryrollupbatch"><code>DonorSummaryRollupBatch</code></a> has nothing to find (all three measured, not assumed — see Opportunities_Test).</p>
 <p>The campaign total and an ACCOUNT donor's total do restore immediately. Recovering a contact donor's total means re-adding the contact role, then waiting for (or running) the nightly rollup.</p>
+<p>Scoped to the Donation record type alone, which is why Offline Donation exists. A cheque or a cash gift never touched a processor, so demanding a gateway account for it would force staff to name an account that did not take the money — worse than leaving it blank, because the wrong account is indistinguishable from the right one later. Grant is out of scope for the same reason.</p>
+<p>A domain rule rather than a validation rule on purpose: which record type IS the gateway one is not fixed. An admin can point the Donation slot at their own record type through the record-type mapping table, and a validation rule's hardcoded developer name would then guard a record type nobody uses while the real one went unchecked. Resolving the slot through <a href="#apex-recordtypeservice"><code>RecordTypeService</code></a> is the only way to follow that override.</p>
+<p>Fails OPEN when the slot resolves to nothing — a deactivated or unmapped slot means the package cannot identify which record type it is protecting, and blocking every save on that basis would break an org for a configuration choice we deliberately allow.</p>
+<p>Runs on update as well as insert. Trigger.new carries every field at its post-update value, not just the ones the caller assigned, so a partial registerDirty from <a href="#apex-refundservice"><code>RefundService</code></a>/<a href="#apex-softcreditservice"><code>SoftCreditService</code></a>/<a href="#apex-companymatchservice"><code>CompanyMatchService</code></a> reads the stored account back and passes untouched; only a save that genuinely leaves the field empty is rejected.</p>
 <p>Deliberately NOT limited to the transition into Closed Won. Any save of an unnumbered Closed Won gift stamps it, so gifts that predate this change get their number the next time anyone touches them, rather than needing a migration script that would consume a block of numbers for records nobody was looking at.</p>
-<p>Pledge is excluded because a Pledge is by definition unpaid ("a committed future gift not yet paid" — see the record type's own description). Issuing a tax receipt number for money that has not arrived is the one error in this area a tax authority would actually care about. Grant is included: an awarded grant is money received. Non-package record types are excluded by filterToPackageRecordTypes like every other handler here — the package must not write to an org's pre-existing sales pipeline.</p>
+<p>Every package record type is numbered — Donation, Offline Donation and Grant alike. A Closed Won gift is money received whatever route it arrived by, and an offline gift that printed "—" where the gateway ones printed a serial was the original reason this method exists. (Until 2026-08-21 a Pledge record type was excluded here as unpaid by definition; the record type has since been withdrawn in favour of Offline Donation, which is paid, so the exclusion went with it rather than being retargeted.) Non-package record types are still excluded by filterToPackageRecordTypes like every other handler here — the package must not write to an org's pre-existing sales pipeline.</p>
 <p>Runs in the BEFORE context on purpose. Stamping a field on a record the platform is already saving costs no DML and cannot recurse; doing it after insert would mean an extra update per gift and a re-entrant trigger for a value that was knowable all along.</p>
-<p>Records where an individual soft credit came from, which is what lets <a href="#apex-softcreditservice"><code>SoftCreditService</code></a> promise never to overwrite a staff member's entry. The service writes the lookup and Soft_Credit_Source__c = 'Tribute Honoree' in one save, so its own writes arrive with the source already changed; a person editing the record in the UI changes the lookup and nothing else, and that difference is the whole signal this method reads.</p>
+<p>Records where an individual soft credit came from, which is what lets SoftCreditService promise never to overwrite a staff member's entry. The service writes the lookup and Soft_Credit_Source__c = 'Tribute Honoree' in one save, so its own writes arrive with the source already changed; a person editing the record in the UI changes the lookup and nothing else, and that difference is the whole signal this method reads.</p>
 <p>Clearing the lookup clears the source with it — provenance for a credit that no longer exists would be stale the moment it was left behind, and would make the next automated pass treat an empty slot as spoken for.</p>
 </div>
 <table>
@@ -6979,6 +7006,16 @@
 </tr>
 <tr>
 <td><a id="apex-opportunities-onbeforeupdate"></a><code>onBeforeUpdate(2 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-opportunities-onvalidate"></a><code>onValidate(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-opportunities-onvalidate"></a><code>onValidate(2 args)</code></td>
 <td><code>void</code></td>
 <td></td>
 </tr>
@@ -10738,6 +10775,47 @@
 </table>
 </div>
 </div>
+<h3 id="domain-payment-domain">Domains<a class="headerlink" href="#domain-payment-domain" title="Permanent link">#</a></h3>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-paymentaccounts">PaymentAccounts<a class="headerlink" href="#apex-paymentaccounts" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p>extends fflib_SObjectDomain</p>
+<p class="fn-entry__src"><code>payment/<wbr>domain/<wbr>PaymentAccounts.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Domain behavior for Payment_Account__c — makes the record permanently undeletable.</p>
+<p>FFLib role: Domain.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>A payment account can be deactivated but never deleted. This is a BLANKET refusal — it does not ask whether the account still has dependents, because "has no dependents right now" is not the same as "is safe to destroy".</p>
+<p>Why the record is load-bearing after it stops taking new gifts: a Stripe customer id and payment method id are minted by, and chargeable only by, the one Stripe account that created them. This record is the only thing naming which Named Credential identifies that account. Delete it and the identity is gone — the tokens cannot be re-pointed, re-minted, or recovered.</p>
+<p>Why a Restrict constraint alone was not enough (audit finding F-124, 2026-08-21): <a href="#apex-recurringrenewalbatch"><code>RecurringRenewalBatch</code></a> resolves the account to charge as Payment_Method__r.Payment_Account__c -&gt; Recurring_Donation__c.Payment_Account__c -&gt; Campaign.Payment_Account__c. Only the Campaign lookup carried Restrict, and it guards solely while a campaign still points at the account. Retire that campaign, or route it to a replacement account, and the guard lifts while schedules and saved cards created under the old account are still live. Deleting then nulls the first two links of the chain, so every renewal falls through to the campaign's CURRENT account and charges an account-A token against account B. Stripe answers resource_missing and the dunning cadence reads it as a declined card. All four lookups now declare Restrict as well; this guard is what covers an account whose dependents do not exist yet.</p>
+<p>The escape hatch is Is_Active__c = false, which the Payments settings panel offers on every account. An inactive account takes no new gifts and keeps its donation history.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-paymentaccounts-construct"></a><code>construct(1 arg)</code></td>
+<td><code>fflib_SObjectDomain</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-paymentaccounts-onbeforedelete"></a><code>onBeforeDelete(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <h3 id="domain-payment-selector">Selectors<a class="headerlink" href="#domain-payment-selector" title="Permanent link">#</a></h3>
 <div class="fn-entry">
 <div class="fn-entry__id">
@@ -12513,6 +12591,7 @@
 <p>SYSTEM_TEMPLATE_NAMES (below) protects the six packaged page-design themes seeded by <a href="#apex-postinstallhandler"><code>PostInstallHandler</code></a>, plus ten legacy names from the 2026-08-13 catalog cull and the 2026-07-24 theme rebuild before it, from admin edit/delete — see isSystemTemplateName() at the page-design CRUD actions. It is the ONLY definition of that rule: GetPageDesigns ships the resulting verdict to setDesigns rather than letting the client re-derive it. runHealthCheck()'s scheduled-job check and getSetupGuide()'s "background jobs" step share countPipelineJobs(), which counts every cron entry <a href="#apex-postinstallhandler-schedulejobs"><code>PostInstallHandler.scheduleJobs</code></a>() creates and grades it against that class's own <a href="#apex-postinstallhandler-expectedjobcount"><code>PostInstallHandler.expectedJobCount</code></a>() — see expectedPipelineJobs().</p>
 <p>getSetupGuide() is the backing read for the Get Started panel (setGetStarted): the ordered, live-checked version of the post-install checklist published at docs-site/docs/getting-started/after-you-install.md and pointed at by the package's postInstallUrl. Keep the two in step — a step added here needs a section there, and vice versa, or the page a subscriber is redirected to stops matching what their org shows them.</p>
 <p>The donation-pipeline monitor's two methods (getStuckDonations, retryDonationStagingNow) used to live here and moved to <a href="#apex-donationmonitorcontroller"><code>DonationMonitorController</code></a> on 2026-08-14, with the LWC, when the monitor became its own Lightning tab. They had to leave: this class is granted to Fundraising_Admin only, because it is the sole entry point behind every settings panel, and the monitor is meant for program staff who must never reach the console. Do not add monitor methods back here.</p>
+<p>There is no deletePaymentAccount counterpart. A payment account cannot be deleted at all — the <a href="#apex-paymentaccounts"><code>PaymentAccounts</code></a> domain class refuses every delete — so the console offers deactivation (Is_Active__c) instead. See audit finding F-124.</p>
 <p>The diagnostic-log read (getRecentLogs) used to live here and moved to <a href="#apex-diagnosticlogcontroller"><code>DiagnosticLogController</code></a> on 2026-08-15, with the list itself, when reading Log__c became its own Diagnostic Logs tab. It had to leave for the same reason the donation monitor did: this class is granted to Fundraising_Admin only, because it is the sole entry point behind every settings panel, and troubleshooting staff must be able to read logs without being handed the console. getRecentErrorLogs above stays — it reads Transaction_Log__c (the Stripe callout audit trail) for the Logging panel's own error list, not Log__c.</p>
 <p>No 'experience_site' branch. It used to return CreateExperienceSite().doExecute(), whose payload is a CLI command rather than a created site — the callers treat any non-error return as "fixed", so the panel claimed success and nothing happened. Site creation is not automatable; setSite still calls createExperienceSite() to FETCH that command, which is honest, and is the only remaining caller.</p>
 <p>The silent fall-through this replaces is what let the site button lie. Both callers (setGetStarted.handleFix, setHealth.handleFix) toast "Applied the recommended fix" on ANY non-error return, so an itemId with no branch — a removed fixer, a typo, a step whose fix was never written — reported success and did nothing. An unknown id is now an error the admin can see, which is the only honest answer when nothing was repaired.</p>
@@ -12679,11 +12758,6 @@
 </tr>
 <tr>
 <td><a id="apex-setupcontroller-savepaymentaccount"></a><code>savePaymentAccount(2 args)</code></td>
-<td><code>Map&lt;String, Object&gt;</code></td>
-<td><code>@AuraEnabled</code></td>
-</tr>
-<tr>
-<td><a id="apex-setupcontroller-deletepaymentaccount"></a><code>deletePaymentAccount(1 arg)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>

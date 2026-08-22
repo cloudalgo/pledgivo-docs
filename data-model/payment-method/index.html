@@ -154,7 +154,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-27</span>
+          <span class="fn-brand__ver">1.0.0-28</span>
         
       </a>
 
@@ -1674,7 +1674,7 @@ without the donor re-entering card details each cycle — see <a href="../recurr
 <td><code>Payment_Account__c</code></td>
 <td>Payment Account</td>
 <td>Lookup → <code>Payment_Account__c</code></td>
-<td>Which of your configured Stripe accounts holds this saved card. Set automatically when the donor saves the card and must not be changed by hand — the card only works with the account listed here.<br><em>Docs: Added 2026-08-07 to close a live renewal bug. Before this field the renewal batch re-derived the Stripe account from Campaign.Payment_Account__c on every run, so re-pointing a campaign at a second Stripe account made every in-flight schedule charge account-A tokens against account B; Stripe answers resource_missing and the batch fed that into the dunning cadence as though the donor's card had declined.  deleteConstraint is deliberately omitted (SetNull), matching Opportunity.Payment_Account__c and Donation_Staging__c.Payment_Account__c: this is a historical transactional reference, not a config link.  The hard block on deleting an in-use account lives on Campaign.Payment_Account__c (Restrict) plus SetupController.DeletePaymentAccount's friendly guard, and every wallet row is reachable through a campaign, so nothing is lost by not repeating it here.</em></td>
+<td>Which of your configured Stripe accounts holds this saved card. Set automatically when the donor saves the card and must not be changed by hand — the card only works with the account listed here.<br><em>Docs: Added 2026-08-07 to close a live renewal bug. Before this field the renewal batch re-derived the Stripe account from Campaign.Payment_Account__c on every run, so re-pointing a campaign at a second Stripe account made every in-flight schedule charge account-A tokens against account B; Stripe answers resource_missing and the batch fed that into the dunning cadence as though the donor's card had declined.  deleteConstraint is Restrict, as on all five Payment_Account__c lookups. It was omitted (SetNull) until 2026-08-21 on the reasoning that Campaign.Payment_Account__c's Restrict already covered it, since every wallet row is reachable through a campaign. That was wrong: the Campaign guard only holds while a campaign still points at the account, so retiring or re-pointing that campaign lifted it while these tokens were still live, and the delete then nulled this field silently. Audit finding F-124. The blanket refusal in the PaymentAccounts domain class is the primary guard; this constraint is defence in depth.</em></td>
 </tr>
 <tr>
 <td><code>Removed_Date__c</code></td>

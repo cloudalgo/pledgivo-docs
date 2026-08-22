@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-27</span>
+          <span class="fn-brand__ver">1.0.0-28</span>
         
       </a>
 
@@ -1394,6 +1394,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#gifts-that-never-touched-the-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gifts that never touched the gateway
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#marketing-attribution-where-a-gift-came-from" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2003,6 +2014,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#gifts-that-never-touched-the-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gifts that never touched the gateway
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#marketing-attribution-where-a-gift-came-from" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2486,6 +2508,55 @@ off the Opportunity fields, not through <code>Payment_Method__c</code>.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="gifts-that-never-touched-the-gateway">Gifts that never touched the gateway<a class="headerlink" href="#gifts-that-never-touched-the-gateway" title="Permanent link">#</a></h2>
+<p>The package ships three Opportunity record types, and which one a gift carries decides both what
+you see on the page and what the app will let you save.</p>
+<table>
+<thead>
+<tr>
+<th>Record type</th>
+<th>For</th>
+<th>Payment account</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Donation</strong></td>
+<td>A gift the payment gateway charged and captured — everything the public form, the embed widget and the recurring renewals create</td>
+<td><strong>Required</strong></td>
+</tr>
+<tr>
+<td><strong>Offline Donation</strong></td>
+<td>A cheque in the post, cash at an event, a wire your finance team reconciled by hand</td>
+<td>Not required</td>
+</tr>
+<tr>
+<td><strong>Grant</strong></td>
+<td>Institutional funding — a foundation award, a government programme</td>
+<td>Not required</td>
+</tr>
+</tbody>
+</table>
+<p><strong>A Donation will not save without a payment account.</strong> Try it and you get an error rather than a
+saved record. That is deliberate: a gift the gateway charged but which names no account cannot be
+refunded, cannot be re-receipted from the processor, and cannot be reconciled against a payout — and
+once it is saved there is no way to work out afterwards which of your connected accounts took the
+money. Nothing in the app can create such a record; the rule exists for gifts keyed in by hand.</p>
+<p>So when you are recording money that arrived by cheque, cash or bank transfer, <strong>change the record
+type to Offline Donation</strong> — don't reach for whichever payment account happens to be nearest. Its
+layout is built for exactly that: no Stripe fields, no payment status, no disputes or refunds, and
+a <strong>Check number</strong> field the gateway layout doesn't carry. <strong>Refund Donation</strong> is absent too,
+because refunding a cheque is something your finance team does with its own chequebook, not
+something the app can perform.</p>
+<p>Both types are receipt-numbered on the same series (see <a href="#the-number-on-the-receipt">The number on the
+receipt</a>) — an offline gift is money received, and a year-end statement
+that skipped it would read as though the donor never gave.</p>
+<div class="admonition note">
+<p class="admonition-title">Using your own record types instead</p>
+<p>If your org already runs its own Opportunity record types, map them under <strong>Settings → System →
+Record Types</strong> rather than editing the packaged ones. The payment-account rule follows whichever
+record type is mapped to the <em>Donation</em> slot, so it keeps working after a remap.</p>
+</div>
 <h2 id="marketing-attribution-where-a-gift-came-from">Marketing attribution — where a gift came from<a class="headerlink" href="#marketing-attribution-where-a-gift-came-from" title="Permanent link">#</a></h2>
 <p>Every checkout surface captures the query string of the URL the donor arrived on and stamps it
 onto the gift. There is nothing to set up: put whatever tracking parameters you like on a link
@@ -2753,8 +2824,6 @@ yourself — a cheque in the post, cash at an event, a row from a spreadsheet im
 as you mark it <strong>Closed Won</strong>, so the two kinds share a single unbroken series. The prefix is yours
 to set (<strong>General → Email &amp; Receipts → Receipt number prefix</strong>); the year comes from the gift's close
 date, and the counter restarts at 1 each tax year.</p>
-<p>A <strong>Pledge</strong> is the one exception: it is a promise of a future gift, not money you have received, so
-it is left unnumbered until the payment that fulfils it arrives.</p>
 <p>That last part is the point. Tax authorities in several jurisdictions expect receipts to carry a
 serial number that identifies the receipt uniquely within a year, and a donor comparing two receipts
 should be able to tell which year each belongs to without reading the dates.</p>
@@ -2772,7 +2841,8 @@ something the package will quietly reassign.</p>
 <p>"I never got my receipt" is the most common thing a donor calls about, and the usual causes are
 mundane — a typo'd address, an over-eager spam filter, a mailbox that was full on Tuesday.</p>
 <p><strong>Resend Receipt</strong> on the donation record sends another copy. It's on all three Opportunity
-layouts, next to <strong>Refund Donation</strong>.</p>
+layouts — next to <strong>Refund Donation</strong> on Donation and Grant, and on its own on Offline Donation,
+which carries no refund action.</p>
 <p>The action confirms before it sends, rather than firing on the click. It shows you the amount, the
 date, the receipt number, the exact address the mail will go to, and which of the two templates it
 will use — the donation receipt, or the event-ticket confirmation for a ticket or registration

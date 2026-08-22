@@ -6003,6 +6003,7 @@
 <p>A frame that never closes is unwound at end of input (and at a blank line, since a CommonMark link cannot span one) with its '[' dropped and any destination text stripped of brackets, so no unmatched '[' and no raw <code>](</code> can survive into the output to be re-parsed by a client renderer.</p>
 <p>Nesting is capped at STORY_MAX_LABEL_DEPTH frames; brackets past the cap are treated as ordinary text, which bounds heap on a pathological <code>[[[[...</code> input. Output accumulates into <code>List&lt;String&gt;</code> and is joined once — Apex has no StringBuilder, and += over a 131,072-byte input copies the whole accumulator per append.</p>
 <p>Donor_Count__c is written here and nowhere else. Until 2026-08-06 nothing in the package wrote it at all, so the "donors" figure on the public fundraiser page and the internal campaign console sat at whatever it was created with — zero — for the life of the appeal.</p>
+<p>The aggregate above returned CORPORATE-currency sums — a SOQL aggregate always does, and convertCurrency() cannot be applied to one (see <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a>'s F-125 note). Amount_Raised__c and Goal_Amount__c are both denominated in the CAMPAIGN's own currency, so the total is converted here, once, before it is either compared against the goal or written. No extra query: fflib_SObjectSelector auto-selects CurrencyIsoCode in a multi-currency org, so it is already on the rows just fetched. Identity in a single-currency org. Audit finding F-125.</p>
 </div>
 <table>
 <thead>
@@ -6070,7 +6071,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-defaultthankyouctaurl">SettingsService.defaultThankYouCtaUrl()</a>, <a href="#apex-settingsservice-defaultthankyouctalabel">SettingsService.defaultThankYouCtaLabel()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-defaultthankyouctaurl">SettingsService.defaultThankYouCtaUrl()</a>, <a href="#apex-settingsservice-defaultthankyouctalabel">SettingsService.defaultThankYouCtaLabel()</a>, <a href="#apex-currencyresolver-isoof">CurrencyResolver.isoOf()</a>, <a href="#apex-currencyresolver-torecordcurrency">CurrencyResolver.toRecordCurrency()</a>, <a href="#apex-currencyresolver-isocodesbyrecordid">CurrencyResolver.isoCodesByRecordId()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -6085,7 +6086,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-defaultthankyouctaurl">SettingsService.defaultThankYouCtaUrl()</a>, <a href="#apex-settingsservice-defaultthankyouctalabel">SettingsService.defaultThankYouCtaLabel()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-defaultthankyouctaurl">SettingsService.defaultThankYouCtaUrl()</a>, <a href="#apex-settingsservice-defaultthankyouctalabel">SettingsService.defaultThankYouCtaLabel()</a>, <a href="#apex-currencyresolver-isoof">CurrencyResolver.isoOf()</a>, <a href="#apex-currencyresolver-torecordcurrency">CurrencyResolver.toRecordCurrency()</a>, <a href="#apex-currencyresolver-isocodesbyrecordid">CurrencyResolver.isoCodesByRecordId()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -6099,13 +6100,28 @@
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-currencyresolver-isoof">CurrencyResolver.isoOf()</a>, <a href="#apex-currencyresolver-torecordcurrency">CurrencyResolver.toRecordCurrency()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-campaignservice-rollupdonorsummary"></a><code>rollupDonorSummary(1 arg)</code></td>
 <td><code>void</code></td>
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-currencyresolver-isocodesbyrecordid">CurrencyResolver.isoCodesByRecordId()</a>, <a href="#apex-currencyresolver-torecordcurrency">CurrencyResolver.toRecordCurrency()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-campaignservice-rollupdonoraccountsummary"></a><code>rollupDonorAccountSummary(1 arg)</code></td>
 <td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-currencyresolver-isocodesbyrecordid">CurrencyResolver.isoCodesByRecordId()</a>, <a href="#apex-currencyresolver-torecordcurrency">CurrencyResolver.toRecordCurrency()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -14286,6 +14302,15 @@
 <p>In a MULTI-currency org the answer is the CORPORATE currency, not UserInfo.getDefaultCurrency(). getDefaultCurrency() returns the RUNNING USER's personal currency there, which on a public donation page is the site's Guest User — a value an admin can change without ever thinking about donations. In a SINGLE-currency org getDefaultCurrency() is documented to return the organization's currency code, and it is the only currency the org can store, so it cannot be wrong.</p>
 <p>Organization.DefaultCurrencyIsoCode was considered and rejected: the column does not exist in a single-currency org (verified — the query fails with INVALID_FIELD), so it carries the same install-breaking compile hazard as CurrencyIsoCode.</p>
 <p>Split out from resolveOrgCurrency so the precedence rule is a pure function of two strings. Neither input can be stubbed — one is the CurrencyType table, the other is a UserInfo call, and no scratch org is both single- and multi-currency — so keeping the decision separate from the two org facts is what makes it directly testable in either.</p>
+<p>WHY THIS EXISTS. A SOQL aggregate over a Currency field ALWAYS returns the org's CORPORATE currency, and convertCurrency() cannot be applied to an aggregate result — both are stated outright in the SOQL and SOSL Reference (convertCurrency()): "If a query includes a GROUP BY or HAVING clause, currency data returned by using an aggregate function ... is in the org's default currency" and "You can't convert the result of an aggregate function into the user's currency".</p>
+<p>So every rollup that writes SUM(Amount) onto a parent record is writing a corporate figure into a field the platform will render in the PARENT's CurrencyIsoCode. On a campaign whose currency differs from corporate, Amount_Raised__c was labelled with the wrong denomination — and Campaign.Goal_Amount__c (already in the record's own currency) was being compared against it. The aggregate cannot be made to return anything else, so the conversion belongs here: after the aggregate, before the write.</p>
+<p>Nothing changes in a single-currency org. ratesByIso() returns an empty map there, so toRecordCurrency() hands back the amount it was given.</p>
+<p>Test seam, matching <a href="#apex-currencystamphelper"><code>CurrencyStampHelper</code></a>'s field of the same name. UserInfo.isMultiCurrencyOrganization() cannot be stubbed and no scratch org is both single- and multi-currency, so the environment fact is overridable. The overrides only ever open a code path — every field read below is still guarded by its own try/catch, so an override cannot make a test read a column that is not there.</p>
+<p>Same @TestVisible-SOQL-string reason as corporateCurrencySoql below. Production never reassigns it. Deliberately unfiltered: a deactivated currency still has rows denominated in it, and dropping its rate would silently leave those totals in corporate currency.</p>
+<p>Per-transaction cache — one SOQL per transaction at most, and none at all in a single-currency org. @TestVisible so a test can seed a rate table or clear it between scenarios.</p>
+<p>Silent for the same reason corporateCurrency() is — see its note below. An empty map means "convert nothing", which leaves behaviour exactly as it was.</p>
+<p>The field names are parameters rather than literals so the rows-to-map step is reachable in the single-currency org this package is coverage-gated in: a test feeds it rows from a table every org has and names two fields that stand in for IsoCode/ConversionRate.</p>
+<p>Field name parameterised for the same coverage reason as toRateMap above.</p>
 <p>CurrencyType exists only in an org with Multiple Currencies enabled, so it is read through a dynamic query inside a try/catch — a typed reference would not COMPILE in a single-currency org and would therefore break the managed-package install everywhere. Same idiom, and the same reason, as <a href="#apex-communityservice"><code>CommunityService</code></a>'s Network queries. An accepted FFLib exception: a selector cannot be built for an SObject whose type may be absent.</p>
 <p>SYSTEM_MODE is deliberate. CurrencyType is org configuration, not customer data, and the guest user who most needs this answer has no access to it.</p>
 <p>The SOQL lives in a @TestVisible field rather than a literal for one reason: in a single-currency org the query throws on its first line, so the rows-to-code step below could never be exercised in the org this package is developed and coverage-gated in. A test repoints it at a table every org has and asserts the contract that matters — whatever goes wrong in here, the caller gets null and falls through to UserInfo rather than seeing an exception. Production code never reassigns it.</p>
@@ -14320,6 +14345,26 @@
 <td><code>String</code></td>
 <td></td>
 </tr>
+<tr>
+<td><a id="apex-currencyresolver-ratesbyiso"></a><code>ratesByIso(0 args)</code></td>
+<td><code>Map&lt;String, Decimal&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-currencyresolver-torecordcurrency"></a><code>toRecordCurrency(2 args)</code></td>
+<td><code>Decimal</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-currencyresolver-isoof"></a><code>isoOf(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-currencyresolver-isocodesbyrecordid"></a><code>isoCodesByRecordId(1 arg)</code></td>
+<td><code>Map&lt;Id, String&gt;</code></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -14342,6 +14387,7 @@
 <p>The code is UPPER-CASED here and that is load-bearing, not cosmetic. Every stored code in this package is lower-case, because <a href="#apex-currencyresolver-forgateway"><code>CurrencyResolver.forGateway</code></a>() lower-cases it to satisfy Stripe, and that lower-case value is what lands in Donation_Staging__c.Currency_Code__c and Opportunity.Currency_ISO_Code__c. CurrencyIsoCode is a picklist of upper-case ISO-4217 codes, so passing 'usd' straight through would be rejected as an invalid value.</p>
 <p>NO GUARD against a currency the org has not activated, and since 2026-08-22 none is needed. The code stamped here originates from <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a>, which reads the org's own currency — the corporate currency in a multi-currency org, UserInfo.getDefaultCurrency() otherwise. A currency the org runs on is by definition one it can save, so INVALID_CURRENCY_ISO_CODE is now structurally unreachable on this path.</p>
 <p>It was reachable before. The code used to come from Settings__c.Default_Currency__c, an admin-typed value seeded to 'USD' at install and unrelated to the org's real currency, so an unactivated code took the donation path down at charge time. That hazard is what <a href="#apex-setupcontroller"><code>SetupController</code></a>.currencyCheck() pre-flighted; both the field and the health check were deleted with the resolver change, because detecting a misconfiguration the package created for itself was never the fix. Do not reintroduce a settings-sourced currency here.</p>
+<p>PRESENT IS NOT THE SAME AS WRITABLE. On an SObject whose currency is DERIVED from a parent — OpportunityLineItem takes the parent Opportunity's, and the same holds for other line-item-shaped types — CurrencyIsoCode is present in the describe but rejects a write with "Field CurrencyIsoCode is not editable". Presence alone was the original guard and it was sufficient while the only callers stamped Opportunity, Donation_Staging__c and Recurring_Donation__c, all of which own their currency. It stops being sufficient the moment anything stamps a derived type, so the check is createability, not existence. Skipping is deliberately preferred to throwing: a derived record already reports in its parent's currency, which is the value this class would have written anyway, so there is nothing to correct and no reason to fail an insert over it.</p>
 </div>
 <table>
 <thead>
@@ -14622,6 +14668,8 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Settings__c is a Hierarchy Custom Setting — createSettings() below calls Settings__c.getOrgDefaults() + upsert, never <code>new Settings__c()</code> + insert, or the org-default row silently fails to apply to every context that reads settings without an explicit Id. The Event_* factory helpers were merged in from the former P2PTestDataFactory on 2026-07-13 — there is no separate test factory for them anymore.</p>
+<p>Every fixture is stamped with the org's own currency before it is returned, exactly as the product does at every insert site (<a href="#apex-currencystamphelper"><code>CurrencyStampHelper</code></a>). Without this, a fixture inserted in a MULTI-currency org silently takes the RUNNING USER's personal currency, so a gift created with Amount = 100 is stored as 100 of whatever the test user prefers and reads back through the corporate-currency aggregates as 100 / rate. Thirty-five tests failed that way on a multi-currency org while passing on a single-currency one — a fixture defect wearing the costume of a product bug, and it masked the real one (audit finding F-125). No-op in a single-currency org, where the field does not exist.</p>
+<p>The two entry points below exist for test classes that build their fixtures inline rather than through this factory. An unstamped fixture silently takes the RUNNING USER'S currency, not the org's, so in a multi-currency org whose corporate currency differs from the test user's every SUM(Amount) aggregate comes back converted — a gift inserted as 500 USD aggregates as 41666.67 INR and an assertion written in face value fails for a reason that has nothing to do with the code under test. Routing an inline insert through stampAndInsert() pins the fixture to the corporate currency, which is what production gifts already carry (CurrencyStampHelper stamps every donation path). No-op in a single-currency org, where there is no CurrencyIsoCode field to write. Audit finding F-125.</p>
 </div>
 <table>
 <thead>
@@ -14632,6 +14680,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><a id="apex-testdatafactory-stampandinsert"></a><code>stampAndInsert(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
 <tr>
 <td><a id="apex-testdatafactory-createcontact"></a><code>createContact(1 arg)</code></td>
 <td><code>Contact</code></td>

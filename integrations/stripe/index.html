@@ -1544,6 +1544,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#abuse-two-controls-both-worth-running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Abuse: two controls, both worth running
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Abuse: two controls, both worth running">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#turn-on-stripe-radar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Turn on Stripe Radar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#event-ticket-purchases" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1692,6 +1720,35 @@ lifecycle, onto the Opportunity's <code>Dispute_*</code> fields. Because a Strip
 itself expose a cumulative refunded total, the reconciler retrieves the PaymentIntent with
 <code>expand[]=latest_charge</code> to read the true running refund amount. See
 <a href="../../guides/process-refund/">Process a refund</a>.</p>
+<h2 id="abuse-two-controls-both-worth-running">Abuse: two controls, both worth running<a class="headerlink" href="#abuse-two-controls-both-worth-running" title="Permanent link">#</a></h2>
+<p>A public donation page can be scripted against. The two attacks that matter are <strong>card
+testing</strong> — running stolen card numbers through your form to find the live ones, using your
+Stripe account as the oracle — and <strong>volumetric flooding</strong>, where a script starts thousands of
+checkouts to bury the org in staging rows and gateway calls. The package and Stripe each stop a
+different half of this, and neither substitutes for the other.</p>
+<p><strong>In the package: checkout limits.</strong> Before any payment intent is created, every guest-initiated
+checkout is counted against two limits — attempts from one email address on one campaign, and
+total attempts against one campaign from all visitors. Over either, the attempt is refused with
+a short donor-facing message, having cost you no gateway call, no staging row, and no Stripe
+API quota. The four thresholds are admin-editable in <strong>Settings → Payments → Checkout
+Protection</strong> and take effect on the next attempt; the defaults are 5 attempts per address per 10
+minutes and 500 per campaign per hour. Full field-by-field notes in the
+<a href="../../getting-started/settings-console-reference/#checkout-protection-payments-checkout-protection">Settings console reference</a>.</p>
+<h3 id="turn-on-stripe-radar">Turn on Stripe Radar<a class="headerlink" href="#turn-on-stripe-radar" title="Permanent link">#</a></h3>
+<p>Radar is Stripe's own fraud layer and it sees what no Salesforce-side count can: whether a card
+has been tried across other merchants on Stripe, device and browser fingerprints, network
+reputation, and its trained risk score for the individual charge. Enable it in the Stripe
+Dashboard under <strong>Settings → Radar</strong>, and at minimum:</p>
+<ol>
+<li>Keep the default rule blocking payments at the <strong>highest risk level</strong>.</li>
+<li>Add a <strong>card-testing</strong> rate rule — Stripe ships blocklist and velocity rules for exactly this
+   pattern; review them under <strong>Radar → Rules</strong>.</li>
+<li>Watch <strong>Radar → Reviews</strong> for the first few weeks of a new campaign, so you can tell a real
+   attack from a rule that is too tight.</li>
+</ol>
+<p>Radar decides on the individual charge, after it reaches Stripe. The package's limits decide
+whether the attempt reaches Stripe at all. Together they cover the flood and the fraud; on their
+own, each leaves the other half open.</p>
 <h2 id="event-ticket-purchases">Event ticket purchases<a class="headerlink" href="#event-ticket-purchases" title="Permanent link">#</a></h2>
 <p>Ticket purchases use the same staging pipeline with <code>Purchase_Type__c = 'Event_Ticket'</code>
 routing finalization to <code>EventPurchaseService</code> instead of the plain donation finalizer — see

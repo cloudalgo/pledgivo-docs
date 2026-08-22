@@ -2058,6 +2058,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#setcheckoutprotection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Checkout Protection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setdesigns" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2574,7 +2585,7 @@
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Lightning web component, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>86</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>87</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -2605,8 +2616,8 @@
 <li>
 <p><strong><a href="#group-set">Set (settings console panels)</a></strong></p>
 <hr />
-<p>15 bundles</p>
-<p><a href="#setdesigns">Settings: Page Designs</a> · <a href="#setdonorportal">Settings: Donor Portal</a> · <a href="#setemail">Settings: Email &amp; Receipts</a> · <a href="#setevents">Settings: Events &amp; Ticketing</a> · <a href="#setgetstarted">Settings: Get Started</a> · <a href="#sethealth">Settings: Health Check</a> · <a href="#setlogging">Settings: Logging</a> · <a href="#setorganization">Settings: Organization &amp; Donations</a> · <a href="#setpayments">Settings: Payment Accounts</a> · <a href="#setpubliclinks">Settings: Public Links</a> · <a href="#setrecordtypes">Settings: Record Type Mapping</a> · <a href="#setrecurring">Settings: Recurring &amp; Dunning</a> · <a href="#setrefunds">Settings: Refunds</a> · <a href="#setscheduledjobs">Settings: Scheduled Jobs</a> · <a href="#setsite">Settings: Site &amp; Domain</a></p>
+<p>16 bundles</p>
+<p><a href="#setcheckoutprotection">Settings: Checkout Protection</a> · <a href="#setdesigns">Settings: Page Designs</a> · <a href="#setdonorportal">Settings: Donor Portal</a> · <a href="#setemail">Settings: Email &amp; Receipts</a> · <a href="#setevents">Settings: Events &amp; Ticketing</a> · <a href="#setgetstarted">Settings: Get Started</a> · <a href="#sethealth">Settings: Health Check</a> · <a href="#setlogging">Settings: Logging</a> · <a href="#setorganization">Settings: Organization &amp; Donations</a> · <a href="#setpayments">Settings: Payment Accounts</a> · <a href="#setpubliclinks">Settings: Public Links</a> · <a href="#setrecordtypes">Settings: Record Type Mapping</a> · <a href="#setrecurring">Settings: Recurring &amp; Dunning</a> · <a href="#setrefunds">Settings: Refunds</a> · <a href="#setscheduledjobs">Settings: Scheduled Jobs</a> · <a href="#setsite">Settings: Site &amp; Domain</a></p>
 </li>
 <li>
 <p><strong><a href="#group-pf">Pf (public guest helper blocks)</a></strong></p>
@@ -3124,7 +3135,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Pure navigation shell for the Settings console — holds no Apex calls itself.</p>
-<p>Each nav item lazy-renders exactly one set<em> panel component (<a href="#setorganization"><code>setOrganization</code></a>, <a href="#setemail"><code>setEmail</code></a>, <a href="#setevents"><code>setEvents</code></a>, <a href="#setlogging"><code>setLogging</code></a>, <a href="#setpayments"><code>setPayments</code></a>, <a href="#setrefunds"><code>setRefunds</code></a>, <a href="#setrecurring"><code>setRecurring</code></a>, <a href="#setsite"><code>setSite</code></a>, <a href="#setpubliclinks"><code>setPublicLinks</code></a>, <a href="#setdesigns"><code>setDesigns</code></a>, <a href="#setdonorportal"><code>setDonorPortal</code></a>, <a href="#setrecordtypes"><code>setRecordTypes</code></a>, <a href="#sethealth"><code>setHealth</code></a>) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save, plus <a href="#setgetstarted"><code>setGetStarted</code></a> for the post-install checklist.</p>
+<p>Each nav item lazy-renders exactly one set<em> panel component (<a href="#setorganization"><code>setOrganization</code></a>, <a href="#setemail"><code>setEmail</code></a>, <a href="#setevents"><code>setEvents</code></a>, <a href="#setlogging"><code>setLogging</code></a>, <a href="#setpayments"><code>setPayments</code></a>, <a href="#setrefunds"><code>setRefunds</code></a>, <a href="#setrecurring"><code>setRecurring</code></a>, <a href="#setcheckoutprotection"><code>setCheckoutProtection</code></a>, <a href="#setsite"><code>setSite</code></a>, <a href="#setpubliclinks"><code>setPublicLinks</code></a>, <a href="#setdesigns"><code>setDesigns</code></a>, <a href="#setdonorportal"><code>setDonorPortal</code></a>, <a href="#setrecordtypes"><code>setRecordTypes</code></a>, <a href="#sethealth"><code>setHealth</code></a>) behind an lwc:if, so only the selected panel's constructor/connectedCallback runs; each panel independently calls its own SetupController/</em>Service methods to load and save, plus <a href="#setgetstarted"><code>setGetStarted</code></a> for the post-install checklist.</p>
 <p>The stuck-donation panel used to live here too; on 2026-08-14 it moved out to its own Lightning tab (<a href="#lexdonationmonitor"><code>lexDonationMonitor</code></a> / the Donation Monitor tab) because watching the finalize pipeline is recurring operational work rather than setup, and it does not belong behind a console an admin visits once.</p>
 </div>
 </div>
@@ -3481,6 +3492,20 @@
 </div>
 </div>
 <h2 id="group-set">Set (settings console panels)<a class="headerlink" href="#group-set" title="Permanent link">#</a></h2>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="setcheckoutprotection">Settings: Checkout Protection<a class="headerlink" href="#setcheckoutprotection" title="Permanent link">#</a></h4>
+<p><code>setCheckoutProtection</code></p>
+<p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Settings-console panel setting the rate limits that guard the public checkout — how many donation or ticket attempts one email address may start against a campaign, and how many a campaign may receive overall, before further attempts are refused.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Every default quoted in the help text (5 / 10 / 500 / 60) is the fallback SettingsService applies when the field is blank, per the house style the other numeric panels follow. Change one there and change it here.</p>
+</div>
+</div>
+</div>
 <div class="fn-entry">
 <div class="fn-entry__id">
 <h4 id="setdesigns">Settings: Page Designs<a class="headerlink" href="#setdesigns" title="Permanent link">#</a></h4>

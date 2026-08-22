@@ -817,6 +817,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#checkout-protection-payments-checkout-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checkout Protection (Payments → Checkout Protection)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1919,6 +1930,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#checkout-protection-payments-checkout-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Checkout Protection (Payments → Checkout Protection)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2551,6 +2573,72 @@ rollups → renewal charges → auto-cancel) — none of them take effect immedi
 </tr>
 </tbody>
 </table>
+<h3 id="checkout-protection-payments-checkout-protection">Checkout Protection (<code>Payments → Checkout Protection</code>)<a class="headerlink" href="#checkout-protection-payments-checkout-protection" title="Permanent link">#</a></h3>
+<p>Public donation and ticket pages are, by design, reachable by anyone with the link — which means
+they are also reachable by an automated script. Two kinds of abuse land on a fundraising page:
+<strong>card testing</strong> (someone runs stolen card numbers through your form to find which ones still
+work, using your Stripe account to do it) and <strong>volumetric flooding</strong> (a script starting
+thousands of checkouts to bury the org in staging rows). This panel sets the limits that stop
+both before a payment intent is ever created.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>What it does</th>
+<th>Behavior on update</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Attempts per email address</td>
+<td>How many checkout attempts one email address may start on one campaign inside its window</td>
+<td>Immediate — the next attempt is measured against the new number</td>
+</tr>
+<tr>
+<td>Email window (minutes)</td>
+<td>The period that per-address count is measured over</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Attempts per campaign</td>
+<td>Total attempts allowed against one campaign inside its window, from all visitors combined</td>
+<td>Immediate</td>
+</tr>
+<tr>
+<td>Campaign window (minutes)</td>
+<td>The period that campaign-wide count is measured over</td>
+<td>Immediate</td>
+</tr>
+</tbody>
+</table>
+<p>The packaged defaults are <strong>5 attempts per address per 10 minutes</strong> and <strong>500 attempts per
+campaign per hour</strong>. Leave a box empty to go back to its default. A donor who trips either limit
+sees a short "please wait a moment and try again" message on the form, not an error.</p>
+<div class="admonition tip">
+<p class="admonition-title">The per-address limit counts per campaign, not per donor</p>
+<p>Someone giving to two of your appeals in the same sitting is normal behaviour, and the limit
+is deliberately keyed on the address <em>and</em> the campaign so that never trips it. The
+campaign-wide ceiling is the one that catches an attacker rotating through addresses to stay
+under the per-address number.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Zero switches a limit off — it does not mean 'allow nothing'</p>
+<p>Setting either <strong>Attempts per email address</strong> or <strong>Attempts per campaign</strong> to <code>0</code> turns that
+limit off entirely. That is the intended escape hatch if a limit is misfiring during a live
+campaign, but it does mean a <code>0</code> typed in the hope of locking the page down has exactly the
+opposite effect. To pause a campaign, close it or unpublish the page instead.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Raise the campaign ceiling before a giving day</p>
+<p>The campaign-wide number is a safety ceiling, not a day-to-day rate limit, and tripping it
+rejects genuine donors along with the flood. Before a matching-gift hour or a giving-day
+push, check the ceiling is comfortably above the peak you actually expect.</p>
+</div>
+<p>This is the fundraising app's own control and sits <strong>in front of</strong> the gateway's. Stripe Radar
+sees signals no Salesforce-side count can — card fingerprints across every merchant on Stripe,
+device, network reputation — and blocks individual charges. These limits stop the flood reaching
+your org at all. Run both: see
+<a href="../../integrations/stripe/#turn-on-stripe-radar">Turn on Stripe Radar</a> for the gateway side.</p>
 <hr />
 <h2 id="experience-cloud">Experience Cloud<a class="headerlink" href="#experience-cloud" title="Permanent link">#</a></h2>
 <h3 id="site-domain-experience-cloud-site-domain">Site &amp; Domain (<code>Experience Cloud → Site &amp; Domain</code>)<a class="headerlink" href="#site-domain-experience-cloud-site-domain" title="Permanent link">#</a></h3>

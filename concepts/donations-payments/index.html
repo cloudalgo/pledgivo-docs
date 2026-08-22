@@ -2320,6 +2320,7 @@ later than an instant webhook would. In practice this is not noticeable to a don
 
     Donor-&gt;&gt;Form: Fills amount, info, submits
     Form-&gt;&gt;Apex: createDonorAndIntent()
+    Apex-&gt;&gt;Apex: Checkout limits — refuse a flood before anything costs money
     Apex-&gt;&gt;Stripe: Create PaymentIntent
     Apex-&gt;&gt;Staging: Insert staging row (no Opportunity yet)
     Form-&gt;&gt;Stripe: Confirm payment (Stripe.js, in iframe)
@@ -2333,6 +2334,15 @@ there is deliberately no Opportunity yet at that point, so an abandoned or faile
 never creates a donation record. Finalization is idempotent: it's keyed on
 <code>Opportunity.Stripe_Payment_Intent_Id__c</code>, so a guest poll and the backup batch racing each
 other can never create two Opportunities for the same payment.</p>
+<p>Before any of that, the attempt has to get past the checkout limits. A public form is reachable
+by a script as well as a donor, so every guest-initiated checkout is counted first — attempts
+from one email address on one campaign, and attempts against one campaign from everyone — and
+refused with a short "please try again shortly" message if either limit is exceeded. A refused
+attempt creates no staging row and makes no gateway call, which is the point: card testing and
+checkout flooding both stop before they cost you anything. The thresholds live in <strong>Settings →
+Payments → Checkout Protection</strong> (defaults: 5 per address per 10 minutes, 500 per campaign per
+hour) and are documented in the
+<a href="../../getting-started/settings-console-reference/#checkout-protection-payments-checkout-protection">Settings console reference</a>.</p>
 <h3 id="one-time-gifts-create-no-stripe-customer">One-time gifts create no Stripe Customer<a class="headerlink" href="#one-time-gifts-create-no-stripe-customer" title="Permanent link">#</a></h3>
 <p>A one-time donation — and an event ticket purchase — is charged <strong>customerless</strong>: the PaymentIntent
 carries no Stripe Customer, and no Customer is created. Nothing is lost by this. A Customer exists

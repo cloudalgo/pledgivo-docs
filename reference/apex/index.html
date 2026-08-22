@@ -4524,6 +4524,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-guestthrottleservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GuestThrottleService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-iguestthrottleservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IGuestThrottleService
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-preconditions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4698,7 +4720,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>208</code></span><span><b>Test classes</b><code>145</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>210</code></span><span><b>Test classes</b><code>146</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4765,7 +4787,7 @@
 <li>
 <p><strong><a href="#domain-shared">Shared</a></strong></p>
 <hr />
-<p>19 classes</p>
+<p>21 classes</p>
 <p><a href="#domain-shared-root">Core</a> · <a href="#domain-shared-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-shared-selector">Selectors</a></p>
 </li>
 </ul>
@@ -7819,7 +7841,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-campaignservice-assertacceptingdonations">CampaignService.assertAcceptingDonations()</a>, <a href="#apex-settingsservice-assertcheckoutnotblocked">SettingsService.assertCheckoutNotBlocked()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-securetokens-uuid">SecureTokens.uuid()</a>, <a href="#apex-securetokens-opaque">SecureTokens.opaque()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
+<td><em>calls:</em> <a href="#apex-campaignservice-assertacceptingdonations">CampaignService.assertAcceptingDonations()</a>, <a href="#apex-settingsservice-assertcheckoutnotblocked">SettingsService.assertCheckoutNotBlocked()</a>, <a href="#apex-guestthrottleservice-newinstance">GuestThrottleService.newInstance()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-securetokens-uuid">SecureTokens.uuid()</a>, <a href="#apex-securetokens-opaque">SecureTokens.opaque()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8503,6 +8525,7 @@
 <p>Donation_Staging__c is the pending-donation session record created by <a href="#apex-donationformcontroller-createdonorandintent"><code>DonationFormController.createDonorAndIntent</code></a> and addressed only by its unguessable Access_Token__c — never by Id — until <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a> links it to a real Opportunity. No CRUD/FLS enforcement (constructor below): every caller is either the unauthenticated guest or an Automated Process batch/scheduler.</p>
 <p>Intent-less rows are deliberately INCLUDED (they were excluded until 2026-08-14). A row with no Stripe_Intent_Id__c has nothing to re-fetch, but excluding it left it non-terminal forever: no pass ever selected it, so it could never expire and sat in the admin monitor permanently. The batch now selects it and retires it on the TTL fallback instead (<a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a>.effectiveExpiry). No production path creates such a row — <a href="#apex-donationservice"><code>DonationService</code></a> and <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a> both mint an intent before insert — but seed scripts and hand-built rows do, and an unreachable terminal state is a defect regardless of who writes the row.</p>
 <p>SYSTEM_MODE for the same reason every other read on this object is: Donation_Staging__c carries the guest's own submission and is never granted to a reading user directly.</p>
+<p>SYSTEM_MODE is load-bearing here, not inherited habit. The caller is the guest user, and an Experience Cloud guest sees no staging row it did not create under secure guest-user record access — a USER_MODE count would return 0 for every attacker and the throttle would never fire. The count leaves the method as a bare Integer, so nothing about another visitor's row is exposed by reading it in system mode.</p>
 </div>
 <table>
 <thead>
@@ -8545,6 +8568,16 @@
 </tr>
 <tr>
 <td><a id="apex-donationstagingselector-countstucksubmitted"></a><code>countStuckSubmitted(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationstagingselector-countrecentbyemailandcampaign"></a><code>countRecentByEmailAndCampaign(3 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationstagingselector-countrecentbycampaign"></a><code>countRecentByCampaign(2 args)</code></td>
 <td><code>Integer</code></td>
 <td></td>
 </tr>
@@ -13529,6 +13562,7 @@
 <p>Enforced in two places, and it needs both. <a href="#apex-campaignservice"><code>CampaignService</code></a> masks Allow_Tribute__c to false on every campaign payload it serves, which is what actually hides the section; and <a href="#apex-donationservice"><code>DonationService</code></a>.applyTributeAndMatch refuses to capture tribute fields off the staging options blob, which is what stops a hand-crafted guest submission writing them anyway. The first is the product behavior, the second is the enforcement — a client-side gate alone would be advisory on a public endpoint.</p>
 <p>No separate send-time gate in <a href="#apex-receiptservice"><code>ReceiptService</code></a>: with capture blocked the Opportunity has no Tribute_Type__c, so buildTributeNotification's existing gates already return null. An in-flight staging row created while the switch was on is finalized through the same capture path, so flipping the switch off stops its e-card too.</p>
 <p>Same field, read for a different purpose: the starting value of a brand-new Campaign's Allow_Tribute__c, applied by <a href="#apex-fundraiseradmincontroller-getfundraiseroptions"><code>FundraiserAdminController.getFundraiserOptions</code></a>() for the "New fundraiser" wizard (lexFundraisersConsole). Deliberately the same answer as tributeEnabled() — offering the wizard a toggle that defaults to on while the org switch suppresses it everywhere would let an admin create a fundraiser whose tribute section silently never renders.</p>
+<p>Four knobs rather than two because a limit without its window is meaningless, and an admin tuning this is reacting to something concrete ("we are seeing 40 attempts an hour from one address") that needs both halves to express. Every fallback below is repeated verbatim in setCheckoutProtection.html's help text, per the house style every other numeric settings panel follows — change a number here and change it there.</p>
 <p>This is only the donor-facing ask. It grants nothing on its own — a request parks at Awaiting Review for a person, and refundsEnabled()/refundWindowDays() still bound whether the refund itself can be issued afterwards.</p>
 <p>Turning this on is only half the job — inline playback also needs a CSP Trusted Site for https://www.youtube-nocookie.com that the admin creates themselves. This package ships no trusted site of its own (see the posture note above createLogoDistribution), so the flag is an intent switch, not a capability check. With it on and no trusted site, the browser blocks the frame; the setup panel therefore states the requirement next to the toggle.</p>
 <p>The four fallbacks below (3 retries, 3-day interval, 7-day grace, 3-day dunning throttle) are also quoted verbatim in setRecurring.html's help text, per the house style every other settings panel follows — an optional numeric field states its fallback in the same sentence. Until 2026-08-20 (F-98) this was the one panel that did not, so four empty boxes governing how a failed recurring gift is chased read as unconfigured and invited an admin to replace working defaults with a guess. Change a number here and change it there.</p>
@@ -13654,6 +13688,26 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-refundwindowdays"></a><code>refundWindowDays(0 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-guestintentmaxperemail"></a><code>guestIntentMaxPerEmail(0 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-guestintentemailwindowminutes"></a><code>guestIntentEmailWindowMinutes(0 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-guestintentmaxpercampaign"></a><code>guestIntentMaxPerCampaign(0 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-guestintentcampaignwindowminutes"></a><code>guestIntentCampaignWindowMinutes(0 args)</code></td>
 <td><code>Integer</code></td>
 <td></td>
 </tr>
@@ -14460,6 +14514,63 @@
 <p>The guest counterpart to <a href="#apex-controlleraction"><code>ControllerAction</code></a>. Which controllers must use it is decided by the Fundraising_GuestDonor permission set: every class listed in its &lt;classAccesses&gt; is, by definition, callable by an unauthenticated visitor. <a href="#apex-uiconfigcontroller"><code>UiConfigController</code></a> is the one member of that list which does NOT extend this — see the rationale comment on the class itself. The passthrough is only as safe as the <a href="#apex-appexception"><code>AppException</code></a> messages behind it: an AppException raised on a guest-reachable path must be written for a donor and must not embed a record id or an internal API name, because it is printed verbatim.</p>
 </div>
 </div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-guestthrottleservice">GuestThrottleService<a class="headerlink" href="#apex-guestthrottleservice" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public without sharing</code></p>
+<p>implements <a href="#apex-iguestthrottleservice">IGuestThrottleService</a></p>
+<p class="fn-entry__src"><code>shared/<wbr>GuestThrottleService.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>GuestThrottleService — the rate limit in front of every guest-initiated checkout intent.</p>
+<p>FFLib role: Service. Read-only by construction — it counts through a Selector and writes nothing, so a throttled attempt leaves no trace of its own to be flooded in turn.</p>
+<p>The endpoints it guards are unauthenticated by design: anyone who can load a campaign page can ask the package to open a PaymentIntent. Two distinct abuses follow from that, and they need different keys, which is why there are two limits rather than one:</p>
+<ul>
+<li>Card testing. A carder pushes a stolen list through one address, learns which numbers are live from the decline codes, and leaves the subscriber holding the authorization fees. The per-email limit is what makes that expensive, so it is keyed per campaign as well — a real donor who gives to two appeals in the same minute is not the target.</li>
+<li>Staging-row flooding. The same attacker rotating addresses stays under every per-email ceiling forever. The per-campaign count is the circuit breaker for that: deliberately loose enough that a genuine surge (a matching hour, a broadcast mention) passes, tight enough that a script does not.</li>
+</ul>
+<p><code>without sharing</code>, and this is load-bearing rather than copied habit. The counts must see every visitor's rows, not the caller's; the selector runs SYSTEM_MODE, but SYSTEM_MODE leaves record sharing to the class sharing keyword, so <code>with sharing</code> here would silently narrow both counts to whatever the guest user happens to own and the throttle would never fire. Nothing about another visitor's row leaves this class — both selector methods return a bare Integer.</p>
+<p>The failure is explicit, unlike <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>'s magic-link cooldown, which is a silent no-op. That one stays silent because speaking would confirm an address is on file; this path has no such oracle — the attempts being counted are the caller's own — so a donor who trips the limit is told, instead of watching a button do nothing.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Thresholds are Tier 1 settings (Settings__c, via <a href="#apex-settingsservice"><code>SettingsService</code></a>), editable by an admin in the Settings console without a package upgrade — a limit that can only be changed by shipping a new version is not a limit anyone can respond to an incident with. This is the package's own control, not a replacement for the gateway's. Stripe Radar sees signals no Salesforce-side count can (card fingerprints across merchants, device, network), and the two are complementary: Radar blocks the individual charge, this stops the flood from reaching the org at all. The admin-facing write-up is in the Stripe integration guide.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-guestthrottleservice-newinstance"></a><code>newInstance(0 args)</code></td>
+<td><code>[IGuestThrottleService](#apex-iguestthrottleservice)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-guestthrottleservice-assertintentallowed"></a><code>assertIntentAllowed(2 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-guestintentmaxperemail">SettingsService.guestIntentMaxPerEmail()</a>, <a href="#apex-settingsservice-guestintentemailwindowminutes">SettingsService.guestIntentEmailWindowMinutes()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-guestintentmaxpercampaign">SettingsService.guestIntentMaxPerCampaign()</a>, <a href="#apex-settingsservice-guestintentcampaignwindowminutes">SettingsService.guestIntentCampaignWindowMinutes()</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-iguestthrottleservice">IGuestThrottleService<a class="headerlink" href="#apex-iguestthrottleservice" title="Permanent link">#</a></h4>
+<p><code>interface</code> · <code>public</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>IGuestThrottleService.cls</code></p>
+</div>
+<div class="fn-entry__body"></div>
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">

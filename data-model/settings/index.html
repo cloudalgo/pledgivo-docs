@@ -1544,7 +1544,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>96 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>100 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1918,6 +1918,30 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Grace_Period_Days</td>
 <td>Number</td>
 <td>Days to wait after the last failed attempt before canceling a recurring gift, e.g. 7.<br><em>Docs: Read by SettingsService.gracePeriodDays() (default 7 when unset). Counts days a recurring schedule may sit Failed (Failed_At__c) before RecurringAutoCancelBatch cancels it outright.</em></td>
+</tr>
+<tr>
+<td><code>Guest_Intent_Campaign_Window_Minutes__c</code></td>
+<td>Guest Checkout Campaign Window (Minutes)</td>
+<td>Number</td>
+<td>The period the per-campaign attempt ceiling is measured over, in minutes. Blank means 60.</td>
+</tr>
+<tr>
+<td><code>Guest_Intent_Email_Window_Minutes__c</code></td>
+<td>Guest Checkout Email Window (Minutes)</td>
+<td>Number</td>
+<td>The period the per-email attempt limit is measured over, in minutes. Blank means 10.</td>
+</tr>
+<tr>
+<td><code>Guest_Intent_Max_Per_Campaign__c</code></td>
+<td>Guest Checkout Attempts Per Campaign</td>
+<td>Number</td>
+<td>Total checkout attempts allowed against one campaign inside the window below, from all visitors combined. Blank means 500; zero switches this limit off entirely. This is a safety ceiling for volumetric abuse — set it well above your busiest expected hour so a successful appeal never trips it.<br><em>Docs: Tripping this rejects genuine donors too, which is why the default is set far above a realistic giving-day peak. It exists so an automated flood cannot run unbounded against the org's gateway account overnight, not as a day-to-day rate limit.</em></td>
+</tr>
+<tr>
+<td><code>Guest_Intent_Max_Per_Email__c</code></td>
+<td>Guest Checkout Attempts Per Email</td>
+<td>Number</td>
+<td>How many checkout attempts one email address may start on one campaign inside the window below. Blank means 5; zero switches this limit off entirely. Raise it if supporters legitimately retry several times; lower it if you are seeing card-testing activity.<br><em>Docs: Per email AND campaign, not per email alone — a supporter giving to two appeals in one sitting is normal behaviour and must not be throttled for it. This key catches the repeated retry; the per-campaign ceiling below catches the attacker who rotates addresses past it.</em></td>
 </tr>
 <tr>
 <td><code>Inline_Video_Embeds_Enabled__c</code></td>

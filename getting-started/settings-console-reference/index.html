@@ -2147,7 +2147,7 @@ run, or not at all).</p>
 </tr>
 <tr>
 <td>Default currency</td>
-<td>Default currency code applied to new gifts/campaigns</td>
+<td>The currency every gift is charged and recorded in. In an org with <strong>Multiple Currencies</strong> enabled it is also stamped onto each donation so Salesforce converts and rolls it up correctly — and there it must name a currency the org has <strong>activated</strong>, or donations fail to save. Health Check's <em>Currency</em> row catches that before a donor does</td>
 <td>New records only — existing campaigns keep their own currency</td>
 </tr>
 <tr>
@@ -2854,6 +2854,11 @@ Record Type than the packaged default.</p>
 <td>Payment Accounts</td>
 <td>Confirms at least one active payment account exists</td>
 <td>No Fix button — go configure one on the Payments panel</td>
+</tr>
+<tr>
+<td>Currency</td>
+<td>Confirms the currency on <strong>General → Organization</strong> is one this org can actually store. It only ever has something to say in an org with <strong>Multiple Currencies</strong> enabled: there, every gift, recurring schedule and pending-payment row is stamped with that currency code as it is saved, and a code your org has not activated makes the save fail outright — at donation time, after the donor's card has already been charged. That is why this row is <strong>red</strong> and not amber. In a single-currency org it is always green and simply names the currency every gift is recorded in. If the row is amber, the package could not read your org's currency list and is reporting an unknown rather than guessing</td>
+<td>No Fix button — either activate the currency in Setup → <strong>Manage Currencies</strong>, or change the currency on General → Organization to one that is already active</td>
 </tr>
 <tr>
 <td>SOQL Limit (this request)</td>

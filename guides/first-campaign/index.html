@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-28</span>
+          <span class="fn-brand__ver">1.0.0-29</span>
         
       </a>
 
@@ -1931,8 +1931,25 @@
 <p class="fn-figure-caption"><b>What it is.</b> Five and a half minutes from an empty org to a real gift: the fundraiser wizard, the public page a donor actually lands on, a card payment taken by an anonymous visitor, and the same gift appearing in the console as Closed Won with a receipt number. Filmed live — the finalize in this run took two and a half minutes of polling, which is why the wait is narrated rather than cut out.</p>
 
 <h2 id="1-create-the-campaign">1. Create the Campaign<a class="headerlink" href="#1-create-the-campaign" title="Permanent link">#</a></h2>
-<p>Create a standard Salesforce Campaign — any Type. Give it a name donors will recognize; it
-appears on the public page and in receipt emails.</p>
+<p>Start the <strong>New fundraiser</strong> wizard from the Fundraisers console. Its first step asks two
+questions, in order:</p>
+<ol>
+<li><strong>Donation or Event fundraiser?</strong> Pick Event only if you are selling tickets to a dated
+   event; everything else is a donation.</li>
+<li><strong>Crowdfunding or Ongoing?</strong> (donations only) — <strong>Crowdfunding</strong> raises toward a target and
+   shows donors a progress bar; <strong>Ongoing</strong> is an evergreen fund with no target and no end date,
+   and shows the amount raised and the donor count instead.</li>
+</ol>
+<p>Each choice carries a line of help text under it, and what you pick here is what the campaign is
+called everywhere afterwards — on its directory card, on its record page, and in the picklist.
+See <a href="../../concepts/campaigns/#three-kinds-of-fundraiser">Three kinds of fundraiser</a> for what each
+one changes.</p>
+<p>Choosing <strong>Ongoing</strong> removes the goal and end-date fields from the rest of the wizard, because an
+ongoing fund uses neither. Everything else — story, designations, questions, page design — is the
+same on all three.</p>
+<p>Give the campaign a name donors will recognize; it appears on the public page and in receipt
+emails. The record is a standard Salesforce Campaign, so it also shows up in campaign reports and
+hierarchies exactly as any other Campaign does.</p>
 <h2 id="2-route-it-to-a-payment-account">2. Route it to a Payment Account<a class="headerlink" href="#2-route-it-to-a-payment-account" title="Permanent link">#</a></h2>
 <p>Point the campaign at the Stripe account its donations should settle to, using the <strong>Payment
 account</strong> picker on the Fundraisers console wizard's <em>Goal &amp; fund</em> step (it writes the

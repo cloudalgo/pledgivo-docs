@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-28</span>
+          <span class="fn-brand__ver">1.0.0-29</span>
         
       </a>
 
@@ -1815,9 +1815,10 @@ Skipping any one of them is the most common cause of "the widget doesn't show up
 <div class="admonition note">
 <p class="admonition-title">Which campaigns show a progress bar</p>
 <p>The raised-of-goal bar is a goal-driven affordance, so it needs a <strong>Goal Amount</strong> on the
-campaign — without one, nothing draws a bar anywhere. Given a goal, a <strong>General</strong> or
-<strong>Open Donation</strong> campaign shows the bar; a <strong>Ticketed Event</strong> campaign shows a tier picker
-instead. Switching <strong>Show Progress Bar</strong> off on the campaign's Page Design removes it.</p>
+campaign — without one, nothing draws a bar anywhere, which is why an <strong>Ongoing</strong> fundraiser
+never has one. A <strong>Crowdfunding</strong> campaign carries a goal and shows the bar; an <strong>Event</strong>
+campaign shows a tier picker instead. Switching <strong>Show Progress Bar</strong> off on the campaign's
+Page Design removes it.</p>
 <p>One rule, three surfaces: whatever that rule decides applies identically to the hero banner
 on the hosted page, the donation form's own progress readout, and the embedded card. If you
 see a bar in one place you will see it in all of them.</p>
@@ -1851,8 +1852,8 @@ are older than the current widget. The Card and Form headings read <i>Make your 
 org default; since 2026-08-18 an embed leads with the campaign's name unless a <b>Form Title
 Override</b> is set, so the same page today reads <i>Give Now 2026</i>. And no
 progress bar renders: it
-predates the 2026-08-18 change that brought Open Donation campaigns into the progress-bar rule,
-and this campaign is an Open Donation appeal with a $100,000 goal — the same widget today draws
+predates the 2026-08-18 change that brought open-ended appeals into the progress-bar rule, and
+this campaign carries a $100,000 goal — the same widget today draws
 the raised-of-goal bar the hosted page draws. <b>2</b> — what happens after a visitor types into the Form-mode
 widget and presses Give: the hosted donation page opens with <b>$250</b> already selected and
 <b>Ada</b> / <b>Okafor</b> / the email address already filled in. The single name field is split
@@ -1874,7 +1875,7 @@ cannot leak styles into your site.</p>
 <li>Clicking it navigates the visitor to the hosted donation page to complete the gift — a
   full page navigation, not a pop-up or an embedded payment form. In Form mode, whatever
   the visitor already typed (name, email) carries over and pre-fills the donation page.</li>
-<li>Ticketed Event campaigns show a tier picker with a quantity stepper instead of an
+<li>Event campaigns show a tier picker with a quantity stepper instead of an
   amount picker; sold-out or not-yet-on-sale tiers appear disabled with a state label.
   Button mode shows a single "Get Tickets" link-out with no inline tier selection.</li>
 <li>A design/branding change in Salesforce updates the embedded widget automatically — no

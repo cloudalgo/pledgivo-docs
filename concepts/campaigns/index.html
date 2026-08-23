@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-28</span>
+          <span class="fn-brand__ver">1.0.0-29</span>
         
       </a>
 
@@ -1210,6 +1210,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#three-kinds-of-fundraiser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three kinds of fundraiser
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-a-campaign-stops-taking-money" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1691,6 +1702,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#three-kinds-of-fundraiser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three kinds of fundraiser
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-a-campaign-stops-taking-money" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1871,6 +1893,55 @@ related objects on top rather than introducing a parallel structure.</p>
 </tr>
 </tbody>
 </table>
+<h2 id="three-kinds-of-fundraiser">Three kinds of fundraiser<a class="headerlink" href="#three-kinds-of-fundraiser" title="Permanent link">#</a></h2>
+<p>Every campaign the package touches is one of exactly three kinds, held in <code>Campaign_Subtype__c</code>.
+The kind is what decides which public page a donor lands on, which badge the campaign directory
+gives it, and whether the page shows a progress bar or a ticket picker.</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>What it is</th>
+<th>What a donor sees</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Crowdfunding</strong></td>
+<td>An appeal raising toward a target, usually with a deadline</td>
+<td>A raised-of-goal progress bar and a percentage</td>
+</tr>
+<tr>
+<td><strong>Ongoing</strong></td>
+<td>An evergreen fund with no target and no end date</td>
+<td>The amount raised and the number of donors — no bar, no percentage</td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td>A dated event selling tickets rather than collecting gifts</td>
+<td>A ticket tier picker with a quantity stepper</td>
+</tr>
+</tbody>
+</table>
+<p>These three words are the only names these kinds have. They are the labels on the picklist, the
+buttons in the create wizard, the badge on a directory card and the pill on the fundraiser record —
+so what you pick when you create a fundraiser is what you read back everywhere afterwards.</p>
+<p><strong>Crowdfunding and Ongoing are the same page; the goal is the difference.</strong> They share one layout,
+one form and one donation pipeline. What separates them is whether the campaign carries a
+<strong>Goal Amount</strong>: with a goal there is a bar to draw, and without one there is not. That is why the
+create wizard hides the goal and the end date entirely once you choose Ongoing — an ongoing fund
+that quietly kept a goal would render as a crowdfunding page under an Ongoing badge, which is
+exactly the confusion the two questions exist to prevent.</p>
+<p>If you change your mind later and switch an existing fundraiser to Ongoing, the wizard does not
+throw away a goal or end date you already set. It shows a notice saying the values are still there
+and offers to clear them in one click, so nothing is lost without your say-so — but until you clear
+them the page keeps drawing a bar.</p>
+<div class="admonition info">
+<p class="admonition-title">The record type is not the type</p>
+<p>All three share the single packaged <strong>Fundraising</strong> record type. It exists as a packaging
+boundary, not as a distinction a donor can see — <code>Campaign_Subtype__c</code> is the field that
+actually changes anything.</p>
+</div>
 <h2 id="when-a-campaign-stops-taking-money">When a campaign stops taking money<a class="headerlink" href="#when-a-campaign-stops-taking-money" title="Permanent link">#</a></h2>
 <p>Two separate switches decide this, and they do different jobs.</p>
 <p><strong>Status</strong> decides whether the page exists at all. A Campaign that isn't <code>Active</code> is invisible to
@@ -2049,13 +2120,19 @@ copy of a tier or a question to keep in sync.</p>
 <div class="grid cards">
 <ul>
 <li>
-<p><strong>A donation page</strong></p>
+<p><strong>A crowdfunding appeal</strong></p>
 <hr />
-<p>The default — a public page accepting one-time or recurring gifts.</p>
+<p>The default — a public page accepting one-time or recurring gifts, raising toward a goal.</p>
 <p><a href="../donations-payments/">Donations &amp; payments →</a></p>
 </li>
 <li>
-<p><strong>A ticketed event</strong></p>
+<p><strong>An ongoing fund</strong></p>
+<hr />
+<p>The same page with no goal and no end date, showing donor count in place of a progress bar.</p>
+<p><a href="#three-kinds-of-fundraiser">Three kinds of fundraiser →</a></p>
+</li>
+<li>
+<p><strong>An event</strong></p>
 <hr />
 <p>Add ticket tiers and seat capacity; the same donation pipeline handles checkout.</p>
 <p><a href="../events-ticketing/">Events &amp; ticketing →</a></p>

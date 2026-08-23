@@ -154,7 +154,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-28</span>
+          <span class="fn-brand__ver">1.0.0-29</span>
         
       </a>
 
@@ -2309,7 +2309,7 @@
 <td><code>Campaign_Subtype__c</code></td>
 <td>Campaign Subtype</td>
 <td>Picklist</td>
-<td>What kind of fundraiser this is. Controls which public page layout and features are shown.<br><em>Docs: Read by CampaignService.getPublicExperienceConfig() to choose the guest shell composition, and by the campaign gallery for its badge/filter. Every value shares the single packaged Fundraising record type, so this picklist, not RecordTypeId, is the real behavioral switch — a maintainer adding a new fundraiser shape should add a value here, not a new record type.</em></td>
+<td>What kind of fundraiser this is. Crowdfunding runs toward a goal and shows donors a progress bar. Ongoing has no goal or end date and never closes on its own. Event sells tickets to a dated event instead of collecting gifts.<br><em>Docs: Read by CampaignService.getPublicExperienceConfig() to choose the guest shell composition, and by the campaign gallery for its badge/filter. Every value shares the single packaged Fundraising record type, so this picklist, not RecordTypeId, is the real behavioral switch — a maintainer adding a new fundraiser shape should add a value here, not a new record type.  The three labels below are the product's ONE vocabulary for these values and are mirrored verbatim in publicCampaignGallery's SUBTYPES, admFundraiserDetail's SUBTYPE pill, and the create wizard's two-question type step. Before 2026-08-23 each surface named General differently ("General Crowdfunding" here, "Campaign - general appeal" in the wizard, "Crowdfunding" in the gallery, "Campaign" in the console), so an admin could not match what they created to what the directory listed. Renaming one alone re-opens that gap.  General and Open_Donation render identically apart from the progress bar (which needs a goal) - see CampaignService.PROGRESS_BAR_SUBTYPES. The distinction is the goal/deadline, not the layout, which is exactly what the labels now say.</em></td>
 </tr>
 <tr>
 <td><code>Capacity_Mode__c</code></td>
@@ -2471,7 +2471,7 @@
 <td><code>Goal_Amount__c</code></td>
 <td>Goal Amount</td>
 <td>Currency</td>
-<td>How much this campaign is aiming to raise. On a General or Open Donation campaign this also drives the raised-of-goal progress bar donors see on the donation page and in embedded widgets — unless the page design has Show Progress Bar switched off. A Ticketed Event campaign shows a tier picker rather than a bar, so there the goal is used for your own reporting only.<br><em>Docs: The bar's visibility rule lives in CampaignService.computeShowProgressBar (PROGRESS_BAR_SUBTYPES = {'General', 'Open_Donation'}) and is the single authority: pfHero, dfForm and the embed widget all render from the server-computed showProgressBar flag rather than re-deciding the subtype themselves.  The help text spells the rule out because the field is on the layout for every subtype: before 2026-08-18 it promised "the public progress bar" unconditionally, which was false for an event.  Open Donation was added to the set on 2026-08-18 (audit F-42), closing a three-way disagreement in which an open-ended appeal with a goal drew a bar on the donation form while its hero and its embed drew none, and unchecking Show Progress Bar removed it from two of the three.</em></td>
+<td>How much this campaign is aiming to raise. This drives the raised-of-goal progress bar donors see on the donation page and in embedded widgets — unless the page design has Show Progress Bar switched off. Leave it blank for an ongoing fund with no target: donors then see the amount raised and the number of donors instead of a bar. An Event campaign shows a ticket tier picker rather than a bar, so there the goal is used for your own reporting only.<br><em>Docs: The bar's visibility rule lives in CampaignService.computeShowProgressBar (PROGRESS_BAR_SUBTYPES = {'General', 'Open_Donation'}) and is the single authority: pfHero, dfForm and the embed widget all render from the server-computed showProgressBar flag rather than re-deciding the subtype themselves.  The help text spells the rule out because the field is on the layout for every subtype: before 2026-08-18 it promised "the public progress bar" unconditionally, which was false for an event.  Open Donation was added to the set on 2026-08-18 (audit F-42), closing a three-way disagreement in which an open-ended appeal with a goal drew a bar on the donation form while its hero and its embed drew none, and unchecking Show Progress Bar removed it from two of the three.  Since F-42 the goal - not the subtype - is what separates a Crowdfunding page from an Ongoing one, because General and Open_Donation are both in the set and render identically when both carry a goal. The create wizard enforces the pairing by hiding this field entirely for an Ongoing fundraiser (2026-08-23).</em></td>
 </tr>
 <tr>
 <td><code>Header_Image_URL__c</code></td>
@@ -2864,7 +2864,7 @@
 <td><code>Show_Progress_Bar__c</code></td>
 <td>Show_Progress_Bar</td>
 <td>Checkbox</td>
-<td>When on, shows the goal progress bar. Not shown for Open Donation campaigns regardless of this setting.<br><em>Docs: The Open-Donation-campaigns exception is enforced by the campaign-type check in publicFundraisingExperience.js/CampaignService, not by this field itself; the checkbox stays true/editable even on designs assigned to Open Donation campaigns, it is simply not honored for that campaign type.</em></td>
+<td>When on, campaigns using this design show the raised-of-goal progress bar. Campaigns with no goal set (Ongoing funds) and Event campaigns have no bar to show either way, so this only affects Crowdfunding campaigns.<br><em>Docs: CampaignService.computeShowProgressBar is the single authority: the bar renders when the subtype is in PROGRESS_BAR_SUBTYPES ({General, Open_Donation}), the goal is greater than zero, AND this checkbox is not false. This field is therefore a veto only.  This description said the opposite until 2026-08-23 - "Open Donation campaigns never show the progress thermometer regardless of this setting" - which stopped being true when F-42 added Open_Donation to PROGRESS_BAR_SUBTYPES on 2026-08-18. It was one of the reasons an admin could not work out why an Ongoing page was showing a bar: the field help told them it was impossible. What actually decides it is the goal, not the subtype.</em></td>
 </tr>
 <tr>
 <td><code>Spacing_Density__c</code></td>

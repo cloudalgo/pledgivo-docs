@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-28</span>
+          <span class="fn-brand__ver">1.0.0-29</span>
         
       </a>
 
@@ -1765,7 +1765,7 @@
 <p class="fn-eyebrow">Guides</p>
 
 <h1 id="set-up-a-ticketed-event">Set up a ticketed event<a class="headerlink" href="#set-up-a-ticketed-event" title="Permanent link">#</a></h1>
-<p class="fn-dek">A ticketed event is a Campaign with its subtype set to Event Fundraiser — built through the Fundraisers console wizard, not the standard "New Campaign" button. This walks through creating one, adding ticket tiers, and publishing.</p>
+<p class="fn-dek">A ticketed event is a Campaign with its subtype set to Event — built through the Fundraisers console wizard, not the standard "New Campaign" button. This walks through creating one, adding ticket tiers, and publishing.</p>
 
 <p>This assumes the package is installed, a Payment Account is connected, and you have the
 <code>Fundraising_Admin</code> permission set. See <a href="../../getting-started/installation/">Installation</a> and
@@ -1792,9 +1792,11 @@ sale itself. See <a href="../../getting-started/experience-cloud-setup/">Set up 
 
 <h2 id="1-start-the-wizard">1. Start the wizard<a class="headerlink" href="#1-start-the-wizard" title="Permanent link">#</a></h2>
 <p>Open the <strong>Pledgivo</strong> app → <strong>Fundraisers</strong> tab. Click <strong>New</strong> to launch the creation wizard,
-and on the <strong>Type &amp; basics</strong> step choose <strong>Event Fundraiser</strong> as the campaign subtype.
-Choosing this adds an extra <strong>Tickets</strong> step to the wizard, between Options and Publish — every
-other subtype skips it.</p>
+The <strong>Type &amp; basics</strong> step opens with the question <strong>Fundraiser type</strong> — answer
+<strong>Event fundraiser</strong> rather than <strong>Donation</strong>. (Answering <em>Donation</em> asks a second question,
+Crowdfunding or Ongoing; an event skips it, because an event sells tickets rather than collecting
+gifts.) Choosing Event fundraiser adds an extra <strong>Tickets</strong> step to the wizard, between Options and
+Publish — the two donation types skip it.</p>
 <div class="admonition note">
 <p class="admonition-title">There's no separate Campaign Record Type for events</p>
 <p>Every campaign — donation appeal or ticketed event — shares the one packaged <code>Fundraising</code>

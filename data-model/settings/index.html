@@ -1863,7 +1863,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Event_Sync_Campaign_Members__c</code></td>
 <td>Event_Sync_Campaign_Members</td>
 <td>Checkbox</td>
-<td>When on, each ticket buyer/attendee is added as a Campaign Member for reporting. Off by default.<br><em>Docs: Opt-IN, not opt-out: off by default because writing a CampaignMember for every ticket attendee touches Campaign membership automation the subscriber org may already own. When on, finalizing an event order creates a CampaignMember for each attendee that resolved to a Contact.</em></td>
+<td>When on, each ticket buyer/attendee is added as a Campaign Member for reporting. Off by default.<br><em>Docs: Opt-IN, not opt-out: off by default because writing a CampaignMember for every ticket attendee touches Campaign membership automation the subscriber org may already own. When on, finalizing an event order creates a CampaignMember for each attendee that resolved to a known donor — the seat's Contact__c, or the person contact behind its Donor_Account__c in a Person Account org. Reading only Contact__c meant no ticket buyer was ever added in a Person Account org, silently; see EventPurchaseService.campaignMemberContactIds.</em></td>
 </tr>
 <tr>
 <td><code>Experience_Network_Id__c</code></td>

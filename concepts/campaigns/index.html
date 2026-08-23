@@ -1997,6 +1997,9 @@ integration — two systems writing the same rows is worse than one.</p>
 <li><strong>Gifts from an organization are skipped.</strong> A Campaign Member has to be a Contact (or a Lead), so a
   gift booked directly to a company account with no contact on it produces no member. The gift itself
   is unaffected.</li>
+<li><strong>Person Account orgs work the same way.</strong> Where donors are Person Accounts rather than Contacts,
+  the app uses the person contact behind the account, so donors and attendees land on the campaign
+  exactly as they do in a standard org. Nothing to configure.</li>
 <li><strong>It runs just after the gift is recorded</strong>, not during checkout, so nothing about it can slow down
   or fail a donation. If a membership can't be created, the donation still stands and the problem is
   logged for an admin.</li>

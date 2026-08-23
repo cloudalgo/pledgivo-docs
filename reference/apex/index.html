@@ -3541,45 +3541,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#domain-payment-async" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Async (Batch/Queueable/Schedulable)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Async (Batch/Queueable/Schedulable)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#apex-admincredentialbackfillbatch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        AdminCredentialBackfillBatch
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-paymentaccountbackfillbatch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        PaymentAccountBackfillBatch
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#domain-payment-domain" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4720,7 +4681,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>210</code></span><span><b>Test classes</b><code>146</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>208</code></span><span><b>Test classes</b><code>144</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4769,8 +4730,8 @@
 <li>
 <p><strong><a href="#domain-payment">Payment</a></strong></p>
 <hr />
-<p>21 classes</p>
-<p><a href="#domain-payment-root">Core</a> · <a href="#domain-payment-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-payment-domain">Domains</a> · <a href="#domain-payment-selector">Selectors</a> · <a href="#domain-payment-service">Services</a> · <a href="#domain-payment-stripe">Stripe</a></p>
+<p>19 classes</p>
+<p><a href="#domain-payment-root">Core</a> · <a href="#domain-payment-domain">Domains</a> · <a href="#domain-payment-selector">Selectors</a> · <a href="#domain-payment-service">Services</a> · <a href="#domain-payment-stripe">Stripe</a></p>
 </li>
 <li>
 <p><strong><a href="#domain-recurring">Recurring</a></strong></p>
@@ -10762,101 +10723,6 @@
 </table>
 </div>
 </div>
-<h3 id="domain-payment-async">Async (Batch/Queueable/Schedulable)<a class="headerlink" href="#domain-payment-async" title="Permanent link">#</a></h3>
-<div class="fn-entry">
-<div class="fn-entry__id">
-<h4 id="apex-admincredentialbackfillbatch">AdminCredentialBackfillBatch<a class="headerlink" href="#apex-admincredentialbackfillbatch" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public without sharing</code></p>
-<p>implements Database.Batchable&lt;SObject&gt;</p>
-<p class="fn-entry__src"><code>payment/<wbr>async/<wbr>AdminCredentialBackfillBatch.cls</code></p>
-</div>
-<div class="fn-entry__body">
-<p>One-time upgrade backfill for Payment_Account__c.Admin_Named_Credential__c.</p>
-<p>The field was added 2026-08-11 to split one Stripe credential into a restricted, charge-only key the site guest user holds and a full key only back-office operations name. It is required, for the same reason Named_Credential__c is — a blank resolves the callout endpoint to 'callout:null', which fails when a refund is attempted rather than when the account is saved.</p>
-<p>Making a field required does not fill existing rows; it makes them unsavable. An account created before this release would carry a null the admin could not clear, because opening and re-saving the record is exactly what the requirement blocks. This batch fills each one ONCE from the credential it was already using, which lands it in shared mode — supported, reported as amber by the setup guide rather than green, and split by the admin whenever they choose.</p>
-<p>Idempotent — the scope is <code>Admin_Named_Credential__c = null</code>, so a re-run after a later upgrade fills only what is still blank and never rewrites a credential an admin deliberately split.</p>
-<div class="fn-docnote">
-<p class="fn-docnote__label">Docs note</p>
-<p>No chained pass. Unlike <a href="#apex-paymentaccountbackfillbatch"><code>PaymentAccountBackfillBatch</code></a> there is only one thing to resolve here and only one place to resolve it from — the account's own row.</p>
-</div>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-admincredentialbackfillbatch-start"></a><code>start(1 arg)</code></td>
-<td><code>Database.QueryLocator</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-admincredentialbackfillbatch-execute"></a><code>execute(2 args)</code></td>
-<td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-admincredentialbackfillbatch-finish"></a><code>finish(1 arg)</code></td>
-<td><code>void</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="fn-entry">
-<div class="fn-entry__id">
-<h4 id="apex-paymentaccountbackfillbatch">PaymentAccountBackfillBatch<a class="headerlink" href="#apex-paymentaccountbackfillbatch" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public without sharing</code></p>
-<p>implements Database.Batchable&lt;SObject&gt;, Database.Stateful</p>
-<p class="fn-entry__src"><code>payment/<wbr>async/<wbr>PaymentAccountBackfillBatch.cls</code></p>
-</div>
-<div class="fn-entry__body">
-<p>One-time upgrade backfill for Payment_Account__c on Recurring_Donation__c and Payment_Method__c.</p>
-<p>Both fields were added 2026-08-07 to stop the recurring renewal batch re-deriving the Stripe account from Campaign.Payment_Account__c on every run — an admin re-pointing a campaign at a second Stripe account was silently redirecting every in-flight schedule's account-A tokens to account B. Rows that existed before the fields did carry no account at all, so the renewal chain falls through to that same campaign rung for them. This batch resolves each one ONCE and freezes it, which is the whole point of the change.</p>
-<p>Two passes, chained: SCHEDULES      — every schedule with a blank account, resolved from Campaign__r.Payment_Account__c; the wallet row each one points at is stamped with the same account in the same chunk (the card and the schedule charged on it are necessarily the same account). ORPHAN_WALLET  — wallet rows no schedule points at, so the first pass could not reach them. Runs ONLY when the org has exactly one Payment_Account__c, where the answer is not a guess. Multi-account orgs leave these blank on purpose: an unstamped card only costs a missed fingerprint de-dup, whereas a wrong stamp would make a real card un-chargeable.</p>
-<p>Idempotent — both passes scope on <code>Payment_Account__c = null</code>, so re-running after a later upgrade only fills what is still blank and never rewrites an account a live token was minted under.</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-paymentaccountbackfillbatch-start"></a><code>start(1 arg)</code></td>
-<td><code>Database.QueryLocator</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentaccountbackfillbatch-execute"></a><code>execute(2 args)</code></td>
-<td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentaccountbackfillbatch-finish"></a><code>finish(1 arg)</code></td>
-<td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
 <h3 id="domain-payment-domain">Domains<a class="headerlink" href="#domain-payment-domain" title="Permanent link">#</a></h3>
 <div class="fn-entry">
 <div class="fn-entry__id">
@@ -10987,16 +10853,6 @@
 </tr>
 <tr>
 <td><a id="apex-paymentmethodsselector-selectvalidbydonorsystem"></a><code>selectValidByDonorSystem(2 args)</code></td>
-<td><code>List&lt;Payment_Method__c&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentmethodsselector-selectmissingpaymentaccountlocator"></a><code>selectMissingPaymentAccountLocator(0 args)</code></td>
-<td><code>Database.QueryLocator</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentmethodsselector-selectmissingpaymentaccountbyids"></a><code>selectMissingPaymentAccountByIds(1 arg)</code></td>
 <td><code>List&lt;Payment_Method__c&gt;</code></td>
 <td></td>
 </tr>
@@ -12031,11 +11887,6 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-recurringdonationsselector-selectmissingpaymentaccountlocator"></a><code>selectMissingPaymentAccountLocator(0 args)</code></td>
-<td><code>Database.QueryLocator</code></td>
-<td></td>
-</tr>
-<tr>
 <td><a id="apex-recurringdonationsselector-selectbyidsystem"></a><code>selectByIdSystem(1 arg)</code></td>
 <td><code>List&lt;Recurring_Donation__c&gt;</code></td>
 <td></td>
@@ -12351,7 +12202,6 @@
 <p>Every seed* step here is idempotent (upsert or "insert only if absent"), so onInstall is safe to re-run on every package upgrade, not just the first install — it only fills blanks and never overwrites an admin's existing configuration. scheduleJobs() schedules the complete pipeline — the Finalizer and <a href="#apex-reconciliationheartbeat"><code>ReconciliationHeartbeat</code></a> families plus every single job, including the two Stripe ones, which are fresh-org safe and no-op until a gateway is connected (see the comment on scheduleJobs itself). expectedJobCount() derives how many cron entries that leaves behind, and <a href="#apex-setupcontroller"><code>SetupController</code></a>'s health check and Get Started step both grade against it rather than against a literal of their own.</p>
 <p>Every step is individually guarded and only ever logged, never rethrown. A post-install script that throws makes the whole package version UNINSTALLABLE — the subscriber sees nothing but "The post install script failed." with no stack trace, and the script runs as a per-package system user that does not exist before runtime, so it cannot be traced in advance either.</p>
 <p>Seeding is convenience: every step only fills a blank an admin can set by hand afterwards, so degrading one default is always preferable to bricking the install. A failure lands in Log__c under the step's own name — that is the only diagnostic channel available for this context, so keep it, and never "simplify" a guard away.</p>
-<p>Upgrade-only step for the 2026-08-07 Payment_Account__c change. Recurring_Donation__c and Payment_Method__c now remember which Stripe account minted the cus_/pm_ pair they carry, because re-deriving it from Campaign.Payment_Account__c at renewal time redirected every in-flight schedule the moment an admin re-pointed the campaign. Rows created before the fields existed are blank, so <a href="#apex-paymentaccountbackfillbatch"><code>PaymentAccountBackfillBatch</code></a> resolves each ONE time from its campaign and freezes it. See the batch's own header for the two passes and what it deliberately leaves blank. <a href="#apex-admincredentialbackfillbatch"><code>AdminCredentialBackfillBatch</code></a> does the same for Payment_Account__c.Admin_Named_Credential__c, which is required and therefore makes every pre-existing account unsavable until it is filled.</p>
 <p>Paired with <a href="#apex-settingsservice"><code>SettingsService</code></a>.SUPERSEDED_PORTAL_CONFIRMATION_MESSAGE — delete both together once no installed org can still be carrying the pre-1.0.0-17 seed.</p>
 <p>Runs AFTER seedDefaultPageDesign, not before, and the ordering is load-bearing twice over. (1) seedDefaultSettings only switches Auto_Receipt_Enabled__c and Soft_Credit_Automation_Enabled__c on when NO Settings__c row exists yet; this step's ensureDefaultImagesSeeded() creates that row, so running it earlier would silently disable both on every fresh install. (2) buildTheme rewrites both image fields to null on each re-seed like every other packaged-theme field, so the stamp has to come after the designs are written or an upgrade would leave them blank.</p>
 <p>The two Stripe jobs used to be deliberately EXCLUDED, on the grounds that both reach <a href="#apex-paymentgatewayfactory"><code>PaymentGatewayFactory</code></a>.getDefault() unconditionally and would throw on an org with no active Payment_Account__c. That left them schedulable only by scripts/apex/schedule-reconciliation-jobs.apex — which lives outside base/ and is therefore never packaged, so in a subscriber org refund and dispute reconciliation simply never ran. Both are now fresh-org safe (<a href="#apex-refundreconciliationbatch-start"><code>RefundReconciliationBatch.start</code></a>() returns an empty scope when selectAllActive() is empty; <a href="#apex-stripepaymentsweep-execute"><code>StripePaymentSweep.execute</code></a>() checks <a href="#apex-paymentgatewayfactory-hasactiveaccount"><code>PaymentGatewayFactory.hasActiveAccount</code></a>()), so they are scheduled at install and no-op quietly until an admin connects Stripe. Names and offsets match the dev script's, so scheduleIfAbsent leaves an already-scripted org alone.</p>
@@ -12407,16 +12257,6 @@
 <tr>
 <td><a id="apex-postinstallhandler-oninstall"></a><code>onInstall(1 arg)</code></td>
 <td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-postinstallhandler-backfillpaymentaccounts"></a><code>backfillPaymentAccounts(0 args)</code></td>
-<td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -13157,11 +12997,6 @@
 </tr>
 <tr>
 <td><a id="apex-paymentaccountsselector-querylocatoractive"></a><code>queryLocatorActive(0 args)</code></td>
-<td><code>Database.QueryLocator</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-paymentaccountsselector-selectmissingadmincredentiallocator"></a><code>selectMissingAdminCredentialLocator(0 args)</code></td>
 <td><code>Database.QueryLocator</code></td>
 <td></td>
 </tr>

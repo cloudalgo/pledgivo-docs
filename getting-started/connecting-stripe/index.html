@@ -2014,6 +2014,24 @@ affected steps amber rather than green to say so.
 </ol>
 <p>Press <strong>Re-check</strong> at the top of the panel after any change in Setup; the panel re-reads your org
 rather than remembering what it told you last time.</p>
+<div class="admonition danger">
+<p class="admonition-title">Coming back to change an account's credentials? Don't — add a new account</p>
+<p>Editing a saved payment account is fine for its label or its publishable key. Changing
+<strong>Public named credential</strong> or <strong>Admin named credential</strong> so they point at a <em>different</em>
+Stripe account is not: every saved card (<code>pm_…</code>) and every recurring schedule set up through
+this account can only be charged by the Stripe account that created it. Re-point the
+credentials and those charges start failing — silently, at the next renewal, not at the
+moment you press Save. Refunds and the reconcilers go wrong the same way, against an account
+that never held the original charges.</p>
+<p>The supported move is the same one that applies to retiring an account: <strong>add a new payment
+account</strong>, re-point your campaigns at it, then uncheck <strong>Active</strong> on the old one. The old
+account keeps identifying the Stripe account its existing tokens belong to, which is exactly
+what lets those renewals and refunds keep working.</p>
+<p>The Payments panel shows this as a warning every time you open a saved account for editing.
+It is not conditional on whether anything depends on the account yet — a card saved a minute
+from now depends on it just as much. See also
+<a href="#route-a-campaign-to-an-account">A payment account can be deactivated, never deleted</a>.</p>
+</div>
 <h2 id="the-two-stripe-keys-and-what-each-one-may-do">The two Stripe keys, and what each one may do<a class="headerlink" href="#the-two-stripe-keys-and-what-each-one-may-do" title="Permanent link">#</a></h2>
 <p>If you've never worked with Stripe's API before, start here — the rest of this page assumes it.</p>
 <p>Stripe has no username and password for software. An <strong>API key</strong> is the entire credential: a long

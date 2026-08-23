@@ -1692,7 +1692,7 @@ without the donor re-entering card details each cycle — see <a href="../recurr
 <td><code>Stripe_Customer_Id__c</code></td>
 <td>Stripe Customer ID</td>
 <td>Text</td>
-<td>Stripe Customer reference ID (cus_...). Not a secret.</td>
+<td>Stripe Customer reference ID (cus_...) recorded when this card was saved. Not a secret, and not edited by hand. Visible to administrators only.<br><em>Docs: Administrator-only by decision, and the two things that make that possible are easy to undo by accident. (1) No code reads this field off a Payment_Method__c row - PaymentMethodService.saveWalletCard only writes it - and (2) it is deliberately absent from PaymentMethodsSelector.getSObjectFieldList(). A USER_MODE query throws on an ungranted field rather than omitting it, so putting it back in that field list would break every non-admin read of the wallet (the staff card panel, the Saved Card record page) rather than merely hiding a value. Fundraising_User and Fundraising_ReadOnly therefore carry no grant on it; Fundraising_Admin does. Audit finding F-116.</em></td>
 </tr>
 <tr>
 <td><code>Stripe_Payment_Method_Id__c</code></td>

@@ -1291,6 +1291,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Why no webhooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-that-costs-the-gift-is-an-opportunity-minutes-later-not-seconds-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What that costs: the gift is an Opportunity minutes later, not seconds later
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1390,6 +1407,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Where the payment reference lives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-can-see-the-gateway-identifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can see the gateway identifiers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1922,6 +1956,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Why no webhooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-that-costs-the-gift-is-an-opportunity-minutes-later-not-seconds-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What that costs: the gift is an Opportunity minutes later, not seconds later
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2021,6 +2072,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Where the payment reference lives">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#who-can-see-the-gateway-identifiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can see the gateway identifiers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2304,11 +2372,32 @@
 <h2 id="why-no-webhooks">Why no webhooks<a class="headerlink" href="#why-no-webhooks" title="Permanent link">#</a></h2>
 <p>Most payment integrations register a public endpoint with the processor and wait for it to
 call back. Pledgivo does the opposite: after a donor pays, Salesforce <strong>asks Stripe</strong> whether
-the payment succeeded — immediately, via a guest-side poll right after the browser redirect,
-and again shortly after on a scheduled reconciliation pass as a backup. This removes an
-entire class of AppExchange security review friction (no public endpoint to secure, no
-webhook signing secret to store or rotate) at the cost of a payment confirming a few seconds
-later than an instant webhook would. In practice this is not noticeable to a donor.</p>
+the payment succeeded. Nothing is ever pushed into your org from outside — there is no public
+endpoint to secure and no webhook signing secret to store or rotate, which removes an entire
+class of AppExchange security-review friction.</p>
+<h3 id="what-that-costs-the-gift-is-an-opportunity-minutes-later-not-seconds-later">What that costs: the gift is an Opportunity minutes later, not seconds later<a class="headerlink" href="#what-that-costs-the-gift-is-an-opportunity-minutes-later-not-seconds-later" title="Permanent link">#</a></h3>
+<p>Read this before you go looking for a missing donation.</p>
+<p>The donor's card is charged the moment they submit — that part is instant, and their
+thank-you page confirms it. What happens minutes later is the <strong>Salesforce record</strong>. The
+donation form's own status poll only <em>reports</em> what Stripe says; it does not create anything.
+Creating the Contact and the Opportunity is done by the <strong>Donation Finalizer</strong> background job,
+on its schedule.</p>
+<p>So the normal, healthy sequence is: card charged → donor thanked → up to one Finalizer
+interval passes → Opportunity appears. At the shipped cadence that is <strong>up to 5 minutes</strong>; if
+your admin has widened the interval (Settings → System → Scheduled Jobs) it is up to whatever
+they chose, at most an hour. Nothing is lost in the gap — the payment is already recorded as a
+<code>Donation_Staging__c</code> row and the finalizer works through them in order.</p>
+<p>Two practical consequences:</p>
+<ul>
+<li><strong>A gift that isn't in Salesforce yet is not a lost gift.</strong> Give it an interval before
+  treating it as a problem, then check the Donation Monitor tab (below).</li>
+<li><strong>A gift that never arrives means the finalizer isn't running</strong>, not that the payment
+  failed. The Donation Monitor says so explicitly when that is the case.</li>
+</ul>
+<p>This is a deliberate boundary rather than a limitation to engineer around: the public donation
+form runs as the Experience Cloud guest user, and a guest user is not permitted to create
+Contacts or Opportunities at all. The record has to be written by a background job running in
+system context, and background jobs in Salesforce run on a schedule.</p>
 <h2 id="the-flow">The flow<a class="headerlink" href="#the-flow" title="Permanent link">#</a></h2>
 <pre class="mermaid"><code>sequenceDiagram
     participant Donor
@@ -2327,12 +2416,13 @@ later than an instant webhook would. In practice this is not noticeable to a don
     Stripe--&gt;&gt;Donor: Redirect to /thank-you?access=…
     Form-&gt;&gt;Apex: checkPaymentStatus() / checkStagingPaymentStatus()
     Apex-&gt;&gt;Stripe: Retrieve PaymentIntent
-    Apex-&gt;&gt;Staging: finalizeSucceededStaging() → creates Opportunity
-    Recon-&gt;&gt;Stripe: Backup sweep, catches anything the poll missed</code></pre>
+    Apex--&gt;&gt;Form: Reports the status — creates nothing
+    Recon-&gt;&gt;Stripe: Re-fetch on the Finalizer schedule
+    Recon-&gt;&gt;Staging: finalizeSucceededStaging() → creates the Opportunity</code></pre>
 <p>A <code>Donation_Staging__c</code> row exists between "donor started paying" and "payment confirmed" —
 there is deliberately no Opportunity yet at that point, so an abandoned or failed payment
 never creates a donation record. Finalization is idempotent: it's keyed on
-<code>Opportunity.Stripe_Payment_Intent_Id__c</code>, so a guest poll and the backup batch racing each
+<code>Opportunity.Stripe_Payment_Intent_Id__c</code>, so the Finalizer and the payment sweep racing each
 other can never create two Opportunities for the same payment.</p>
 <p>Before any of that, the attempt has to get past the checkout limits. A public form is reachable
 by a script as well as a donor, so every guest-initiated checkout is counted first — attempts
@@ -2540,6 +2630,54 @@ off the Opportunity fields, not through <code>Payment_Method__c</code>.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="who-can-see-the-gateway-identifiers">Who can see the gateway identifiers<a class="headerlink" href="#who-can-see-the-gateway-identifiers" title="Permanent link">#</a></h3>
+<p>None of these values is a credential — the gateway secret key lives only in a Named Credential
+and never touches a field — but a <code>cus_</code> customer id is still a handle on a real payer at the
+processor, so the saved-card object hands it out on a need-to-know basis.</p>
+<table>
+<thead>
+<tr>
+<th>Field on <strong>Saved Payment Method</strong></th>
+<th>Fundraising Admin</th>
+<th>Fundraising User</th>
+<th>Fundraising Read Only</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Stripe_Customer_Id__c</code> (<code>cus_...</code>)</td>
+<td>✅</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Stripe_Payment_Method_Id__c</code> (<code>pm_...</code>)</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅ (read)</td>
+</tr>
+</tbody>
+</table>
+<p>The split follows what each one is actually used for. The <code>cus_</code> id is written once when a card
+is saved and then never read again by the app; nothing in any screen displays it, so taking it
+away from the two non-admin permission sets removes a value from view without removing a
+capability. The <code>pm_</code> token is different — it is the key the app joins on when staff switch which
+card a recurring gift charges, and when the <strong>Saved Card</strong> page works out which gifts would break
+if that card expired. Both of those are staff jobs, so both permission sets keep it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Field access here is not cosmetic — it decides whether a page loads at all</p>
+<p>Salesforce enforces field-level security on these reads by <em>refusing the query</em>, not by
+blanking the column. Revoke a field that a screen's query asks for and the screen fails
+outright for everyone in that permission set, with an error rather than a gap. That is why
+<code>Stripe_Customer_Id__c</code> could be narrowed safely (nothing queries it) and why the <code>pm_</code>
+token cannot simply be taken away from staff. If you clone these permission sets, keep the
+<code>pm_</code> grant.</p>
+</div>
+<p>The org-wide sharing default on Saved Payment Method stays <strong>Public Read/Write</strong>, deliberately:
+staff who administer a donor's recurring gift need the donor's card rows, and there is nothing
+sensitive left on the record once the identifiers above are accounted for — a brand, a last four,
+an expiry month and year. Orgs that want record-level restriction can tighten the default and add
+their own sharing rules; a managed package cannot ship sharing rules on your behalf.</p>
 <h2 id="what-currency-a-gift-is-recorded-in">What currency a gift is recorded in<a class="headerlink" href="#what-currency-a-gift-is-recorded-in" title="Permanent link">#</a></h2>
 <p>Every gift is recorded in <strong>your org's own currency</strong>. There is nothing to configure, which is
 the point — in a single-currency org it is simply the currency the org runs on, and in an org

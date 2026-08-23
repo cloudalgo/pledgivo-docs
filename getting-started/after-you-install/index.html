@@ -630,6 +630,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. Confirm record type mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#offline-donation-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assign the Offline Donation layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -712,6 +729,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="8. Background jobs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#job-cadence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The families, and which cadences you can change
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1816,6 +1850,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="2. Confirm record type mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#offline-donation-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assign the Offline Donation layout
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1898,6 +1949,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="8. Background jobs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#job-cadence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The families, and which cadences you can change
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2202,6 +2270,36 @@ gifts and you want the app to write to those instead.</p>
 <p>Remapping later does not move donations that were already written under the old record
 type. Decide now if you are going to.</p>
 </div>
+<h3 id="offline-donation-layout">Assign the Offline Donation layout<a class="headerlink" href="#offline-donation-layout" title="Permanent link">#</a></h3>
+<p><span class="fn-chip">Setup only</span> — one minute, and only if you record gifts that arrive
+outside the payment gateway.</p>
+<p>The app ships a record type called <strong>Offline Donation</strong> for cheques, cash at an event, and wires
+reconciled by hand, together with an <strong>Offline Donation Layout</strong> that omits every gateway field
+and the Refund action — a gift that was never charged through a processor has no payment account,
+no PaymentIntent, and nothing to refund, so showing those fields invites staff to fill in numbers
+that mean nothing.</p>
+<p><strong>The package can ship the layout but cannot assign it to your profiles.</strong> Which layout a profile
+sees for a record type is stored on the Profile, and Profiles are not a packageable component in a
+second-generation managed package — so on a fresh install the Offline Donation record type falls
+back to whatever Opportunity layout your profile already had, and the gateway fields reappear.
+Nothing breaks; the form is just wrong for the job.</p>
+<p>To fix it, in Salesforce <strong>Setup → Object Manager → Opportunity → Page Layouts → Page Layout
+Assignment → Edit Assignment</strong>: find the <strong>Offline Donation</strong> column, select the cells for the
+profiles your fundraising staff use, and set them to <strong>Offline Donation Layout</strong>. Save. Do the same
+for <strong>Donation Layout</strong> and <strong>Grant Layout</strong> in their columns if those are not already assigned.
+Packaged layouts appear with the namespace prefix in that list, so look for the one whose name ends
+in <em>Offline Donation Layout</em> rather than an exact string match.</p>
+<div class="admonition tip">
+<p class="admonition-title">Why the record type exists at all</p>
+<p>Anything saved on the <strong>Donation</strong> record type must name a payment account — the app rejects
+the save otherwise, because a gift recorded without one cannot be refunded, receipted from the
+processor, or reconciled against a payout. An offline gift never had an account to name. The
+separate record type is what lets that rule stay strict without making genuinely offline gifts
+unrecordable, and it follows your record-type mapping rather than a fixed name, so it still
+guards the right record type if you point the Donation slot at one of your own. Offline gifts
+are receipt-numbered on the same series as gateway gifts — the year-end statement shows no
+gaps.</p>
+</div>
 <h2 id="create-the-site">3. Create the donation site<a class="headerlink" href="#create-the-site" title="Permanent link">#</a></h2>
 <p><span class="fn-chip">Get Started step 3, part one</span></p>
 <p>Donors give on an Experience Cloud site, not inside Salesforce. Internal-only use — staff
@@ -2423,8 +2521,17 @@ one exists, the donation form cannot take money and the guide cannot grade itsel
 <p>Full walkthrough: <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
 <h2 id="background-jobs">8. Background jobs<a class="headerlink" href="#background-jobs" title="Permanent link">#</a></h2>
 <p>Donations are finalized, payments swept, refunds reconciled, and campaign totals repaired by
-scheduled Apex — <strong>24 cron entries</strong> in total. The install creates all 24, and the step still
-reports "24 of 24 background jobs are scheduled". <strong>Press the button anyway.</strong></p>
+scheduled Apex — <strong>24 cron entries</strong> on the settings a fresh install ships with. The install
+creates all 24, and the step still reports "24 of 24 background jobs are scheduled".
+<strong>Press the button anyway.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">24 is the default, not a fixed number</p>
+<p>Salesforce has no sub-hourly schedule, so a job that runs every five minutes is really twelve
+separate cron entries an hour apart in start time. Two of the families let you choose that
+cadence — see <a href="#job-cadence">the table below</a> — and the count moves with it: putting the
+finalizer on 15 minutes replaces its twelve entries with four, and the step then reports
+16 of 16. The console always grades your org against the cadence you chose, never against 24.</p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">This is the one step a fresh install does not finish for you</p>
 <p>A scheduled job belongs to whoever scheduled it, and <code>CronTrigger.OwnerId</code> is stamped when the
@@ -2501,9 +2608,15 @@ means the jobs are not running and nothing is waiting on them; red means gifts a
 <p class="admonition-title">A green job count is not proof the jobs are running</p>
 <p>"24 of 24 background jobs are scheduled" says the cron entries exist — a job that is
 scheduled but fails on every fire still counts. The console therefore reads a second signal:
-the finalizer stamps the time each time it <em>completes</em> a pass, and if that stamp is more than
-30 minutes old (six missed passes) this step goes red regardless of the job count. That is
-the number to trust.</p>
+the finalizer stamps the time each time it <em>completes</em> a pass, and if that stamp is too old
+this step goes red regardless of the job count. That is the number to trust.</p>
+<p>"Too old" tracks the cadence you chose rather than being a fixed clock — <strong>three missed
+passes, and never less than 30 minutes</strong>. On the default five-minute finalizer that is 30
+minutes, six missed passes. On an hourly one it is three hours. A fixed threshold could not
+work here: 30 minutes is shorter than a single pass at the slowest cadence, so an org
+finalizing hourly would have reported itself broken for half of every hour while working
+perfectly. Slowing the finalizer therefore buys you slower detection as well as fewer jobs —
+that is the trade, and it is the reason the default is five minutes.</p>
 </div>
 <p>You need this step after a fresh install, if some jobs were aborted (a deployment that touched a
 scheduled class will do it), or if the post-install script did not complete. Settings console →
@@ -2514,12 +2627,14 @@ a healthy org changes nothing: a job that exists <em>and is running</em> keeps i
 cadence you customized. A job whose owner no longer resolves is aborted and recreated under you.</p>
 <p>To confirm a gift really landed, open <strong>Donation Monitor</strong>: it lists every staging record still
 waiting, and warns at the top when the <code>Finalizer</code> family is not scheduled.</p>
+<h3 id="job-cadence">The families, and which cadences you can change<a class="headerlink" href="#job-cadence" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
 <th>Family</th>
 <th>Count</th>
 <th>Cadence</th>
+<th>Yours to change?</th>
 </tr>
 </thead>
 <tbody>
@@ -2527,34 +2642,51 @@ waiting, and warns at the top when the <code>Finalizer</code> family is not sche
 <td><code>Finalizer-&lt;m&gt;</code></td>
 <td>12</td>
 <td>Every 5 minutes</td>
+<td><strong>Yes</strong> — 5, 10, 15, 20, 30 or 60</td>
 </tr>
 <tr>
 <td><code>ReconciliationHeartbeat-&lt;m&gt;</code></td>
 <td>4</td>
 <td>Every 15 minutes</td>
+<td><strong>Yes</strong> — same six choices</td>
 </tr>
 <tr>
 <td><code>Fundraising — Guest Request Sweep-&lt;m&gt;</code></td>
 <td>3</td>
 <td>Every 20 minutes</td>
+<td>No</td>
 </tr>
 <tr>
 <td>Recurring donations, retention purge</td>
 <td>2</td>
 <td>Daily</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>StripePaymentSweep</code>, <code>RefundReconcile</code></td>
 <td>2</td>
 <td>Hourly</td>
+<td>No</td>
 </tr>
 <tr>
 <td><code>CampaignRollup</code></td>
 <td>1</td>
 <td>Nightly</td>
+<td>No</td>
 </tr>
 </tbody>
 </table>
+<p>Counts and cadences above are the defaults. Change the two settable ones in <strong>Settings →
+System → Scheduled Jobs</strong>, which shows what each cadence costs you in cron entries before you
+save it — Salesforce caps an org at 100 scheduled Apex jobs in total, and this app is not the
+only thing in your org competing for them.</p>
+<div class="admonition warning">
+<p class="admonition-title">The finalizer is the one to leave alone unless you have a reason</p>
+<p>It is what turns a confirmed card payment into a donation record, so its cadence is the delay
+a donor's gift waits before it appears in Salesforce — and, as described above, it also sets
+how long a genuinely stopped pipeline stays quiet before the console says so. Widen it to free
+up cron slots, not to tidy the list.</p>
+</div>
 <h2 id="branding">9. Organization name and logo<a class="headerlink" href="#branding" title="Permanent link">#</a></h2>
 <p>Your organization name and logo appear on the donation form, the receipt email, and the donor
 portal. The install seeds a <strong>placeholder logo</strong> so nothing renders broken on day one — it is not

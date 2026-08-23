@@ -937,6 +937,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Scheduled Jobs (System → Scheduled Jobs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cadence is a trade between how fresh your data is and how many job slots you spend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2050,6 +2067,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Scheduled Jobs (System → Scheduled Jobs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cadence is a trade between how fresh your data is and how many job slots you spend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -2957,7 +2991,9 @@ the "Copy CLI command" action on Site &amp; Domain. Run the CLI command yourself
 from the Site &amp; Domain panel.</p>
 </div>
 <h3 id="scheduled-jobs-system-scheduled-jobs">Scheduled Jobs (<code>System → Scheduled Jobs</code>)<a class="headerlink" href="#scheduled-jobs-system-scheduled-jobs" title="Permanent link">#</a></h3>
-<p>Controls the package's background cron schedule directly — not <code>Settings__c</code> fields.</p>
+<p>Controls the package's background cron schedule. The two cadences it can change are stored on
+<code>Settings__c</code> (<strong>Finalizer Interval (Minutes)</strong> and <strong>Heartbeat Interval (Minutes)</strong>); everything
+else on this panel acts on cron entries directly.</p>
 <p>Every scheduled job appears as a card showing what it does, when it runs, and whether it is
 waiting or paused. The two <strong>families</strong> — Donation Finalizer and Reconciliation Heartbeat —
 expand to a cadence editor, because they need to run more often than once an hour and Salesforce
@@ -2965,6 +3001,65 @@ can only express that as several jobs spaced across the hour (which is why one f
 dozen rows; they are not duplicates). Every other job runs on a fixed schedule and its card is
 read-only: to move one, use Salesforce <strong>Setup → Scheduled Jobs</strong> and search for the job name
 printed at the bottom of its card.</p>
+<h4 id="the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend">The cadence is a trade between how fresh your data is and how many job slots you spend<a class="headerlink" href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend" title="Permanent link">#</a></h4>
+<p>A Salesforce org can hold <strong>100 scheduled jobs in total</strong> — across every package and everything
+your own admins have scheduled. At the shipped cadences this package occupies <strong>24 of them</strong>: 12
+for the Donation Finalizer (every 5 minutes), 4 for the Reconciliation Heartbeat (every 15), and 8
+fixed single jobs. That is the largest single thing on the panel, and it is adjustable:</p>
+<table>
+<thead>
+<tr>
+<th>Finalizer interval</th>
+<th>Jobs used</th>
+<th>What a donor's gift looks like</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5 min (default)</td>
+<td>12</td>
+<td>The donation record appears within about five minutes of the payment</td>
+</tr>
+<tr>
+<td>10 min</td>
+<td>6</td>
+<td>Within about ten minutes</td>
+</tr>
+<tr>
+<td>15 min</td>
+<td>4</td>
+<td>Within about fifteen minutes</td>
+</tr>
+<tr>
+<td>20 min</td>
+<td>3</td>
+<td>Within about twenty minutes</td>
+</tr>
+<tr>
+<td>30 min</td>
+<td>2</td>
+<td>Within about half an hour</td>
+</tr>
+<tr>
+<td>60 min</td>
+<td>1</td>
+<td>Up to an hour</td>
+</tr>
+</tbody>
+</table>
+<p>The delay is real but it is not a payment delay: the donor is charged and sees their thank-you page
+immediately, and the finalizer is what turns that charge into the Contact and Opportunity your staff
+see in Salesforce. Nothing is lost while it waits. Widen the interval if you are short of job slots;
+keep it at 5 if your team works from the donation records as gifts arrive.</p>
+<p>Widening the finalizer costs one more thing, less obvious than the delay: it is also how quickly
+the console notices a pipeline that has genuinely <strong>stopped</strong>. That alarm waits three missed passes
+and never less than 30 minutes — so at the default cadence it speaks up after 30 minutes, and on an
+hourly finalizer after three hours. It has to scale that way, or an org finalizing hourly would
+report itself broken for half of every hour while working perfectly.</p>
+<p>The Reconciliation Heartbeat is a safety net rather than a donor-facing path, so it can safely run
+less often than the Finalizer.</p>
+<p>Both intervals must divide the hour evenly (5, 10, 15, 20, 30 or 60). A value typed straight into
+the Custom Setting that is not on that list is ignored and the packaged default is used instead.</p>
 <table>
 <thead>
 <tr>
@@ -2981,8 +3076,8 @@ printed at the bottom of its card.</p>
 </tr>
 <tr>
 <td>"Run every" cadence + <strong>Save</strong> (per job family)</td>
-<td>Reschedules how often the Donation Finalizer / Reconciliation Heartbeat jobs fire</td>
-<td>Immediate — but this is two separate steps under the hood (abort the old schedule, then create the new one). If the second step fails after the first succeeds, that job family ends up scheduled nowhere until you save again. For the Donation Finalizer family, that means donations stop turning into Opportunities until it's rescheduled — watch for a "0 scheduled" state after a save.</td>
+<td>Reschedules how often the Donation Finalizer / Reconciliation Heartbeat jobs fire, <strong>and stores the choice</strong> on <code>Settings__c</code> so upgrades, Health Check fixes and settings saves all keep it</td>
+<td>Immediate. Clearing the old entries and creating the new ones is one action, so a save that fails leaves the family as it was rather than scheduled nowhere. Re-saving the same interval is safe.</td>
 </tr>
 <tr>
 <td><strong>Run now</strong> — Recurring donations</td>

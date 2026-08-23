@@ -1544,7 +1544,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>101 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>103 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1899,7 +1899,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Finalizer_Heartbeat__c</code></td>
 <td>Finalizer Heartbeat</td>
 <td>DateTime</td>
-<td>Machine-managed. Do not edit — the finalizer job stamps this every time it completes a pass, and the setup console reads it to tell you whether gifts are still being turned into records.<br><em>Docs: This exists because a scheduled-job COUNT cannot detect a job that is scheduled but not running. The setup console's "background jobs" check counts CronTrigger rows, which stay at 24/24 even when every run is aborting; this marker is written from inside the job itself, so it only advances when a pass genuinely completed.  The guest donation path reads it before creating a PaymentIntent, and answers two different questions from the one value. STALE (older than the threshold, but set): the pipeline was running and has paused, which recovers on its own, so the gift is still taken and a PIPELINE_STALE Transaction_Log__c row is written so the admin's Recent Errors panel and Get Started step both go red. NULL: no pass has EVER completed in this org, so nothing has demonstrated that a charged card becomes an Opportunity here — the donation form and the ticket page refuse the payment outright and say why, and the refusal lifts on the first completed pass because finish() stamps this field whether or not the pass had rows. Do not conflate the two: gating checkout on staleness would take a healthy org offline over a half-hour job pause.  Staleness threshold lives in SettingsService.FINALIZER_STALE_MINUTES; the finalizer itself runs every 5 minutes, so 30 minutes is six missed passes.</em></td>
+<td>Machine-managed. Do not edit — the finalizer job stamps this every time it completes a pass, and the setup console reads it to tell you whether gifts are still being turned into records.<br><em>Docs: This exists because a scheduled-job COUNT cannot detect a job that is scheduled but not running. The setup console's "background jobs" check counts CronTrigger rows, which stay at 24/24 even when every run is aborting; this marker is written from inside the job itself, so it only advances when a pass genuinely completed.  The guest donation path reads it before creating a PaymentIntent, and answers two different questions from the one value. STALE (older than the threshold, but set): the pipeline was running and has paused, which recovers on its own, so the gift is still taken and a PIPELINE_STALE Transaction_Log__c row is written so the admin's Recent Errors panel and Get Started step both go red. NULL: no pass has EVER completed in this org, so nothing has demonstrated that a charged card becomes an Opportunity here — the donation form and the ticket page refuse the payment outright and say why, and the refusal lifts on the first completed pass because finish() stamps this field whether or not the pass had rows. Do not conflate the two: gating checkout on staleness would take a healthy org offline over a half-hour job pause.  Staleness threshold is SettingsService.finalizerStaleMinutes(), which is DERIVED from Finalizer_Interval_Minutes__c rather than fixed: three missed passes, never less than a 30-minute floor. At the packaged 5-minute cadence that is 30 minutes (six missed passes), unchanged; at the longest admin-selectable cadence of 60 minutes it is 180. It has to move with the cadence, or an org finalizing hourly reads as stale for half of every hour while working perfectly.</em></td>
+</tr>
+<tr>
+<td><code>Finalizer_Interval_Minutes__c</code></td>
+<td>Finalizer Interval (Minutes)</td>
+<td>Number</td>
+<td>How often the background job that turns paid checkouts into donation records runs, in minutes. Lower means donations appear sooner but uses more of your org's 100 scheduled-job slots; 5 minutes uses 12 slots, 15 minutes uses 4. Change this from Settings then Scheduled Jobs rather than editing it here.<br><em>Docs: Added for audit finding F-119. Before it existed the cadence dropdown on the Scheduled Jobs panel wrote only to CronTrigger, so the next PostInstallHandler.scheduleJobs() call — an upgrade, the Health Check Fix button, or any settings save — re-added the missing 5-minute offsets and silently reverted the admin's choice, while expectedJobCount() went on grading against 12 finalizer entries and reported a permanent shortfall.</em></td>
 </tr>
 <tr>
 <td><code>Footer_Text__c</code></td>
@@ -1948,6 +1954,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Guest Checkout Attempts Per Email</td>
 <td>Number</td>
 <td>How many checkout attempts one email address may start on one campaign inside the window below. Blank means 5; zero switches this limit off entirely. Raise it if supporters legitimately retry several times; lower it if you are seeing card-testing activity.<br><em>Docs: Per email AND campaign, not per email alone — a supporter giving to two appeals in one sitting is normal behaviour and must not be throttled for it. This key catches the repeated retry; the per-campaign ceiling below catches the attacker who rotates addresses past it.</em></td>
+</tr>
+<tr>
+<td><code>Heartbeat_Interval_Minutes__c</code></td>
+<td>Heartbeat Interval (Minutes)</td>
+<td>Number</td>
+<td>How often the alarm that watches for a stalled donation pipeline runs, in minutes. 15 minutes is the default and uses 4 of your org's 100 scheduled-job slots. Change this from Settings then Scheduled Jobs rather than editing it here.<br><em>Docs: These entries start at :03 rather than :00 so a heartbeat never fires in the same minute as a finalizer. Every allowed interval is greater than 3, so that offset stays valid at any cadence. Audit finding F-119.</em></td>
 </tr>
 <tr>
 <td><code>Inline_Video_Embeds_Enabled__c</code></td>

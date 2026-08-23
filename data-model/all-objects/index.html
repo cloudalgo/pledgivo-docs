@@ -3399,7 +3399,7 @@
 <td><code>Fee_Amount__c</code></td>
 <td>Fee Amount</td>
 <td>Currency</td>
-<td>Portion of the checkout amount that is the donor-covered processing fee, rather than the gift itself.<br><em>Docs: A typed field rather than another key in Options_JSON__c, deliberately: Options_JSON__c is donor-supplied form data echoed back verbatim, and a money value that decides what gets charged must not live in the same blob a guest can write. FeeCoverageService.computeFee is the only writer, called from DonationService.createDonorAndIntent, which recomputes the fee from the campaign flag and Settings__c rather than trusting any amount the browser sends. Amount__c is the GROSS (gift + this) — that is what the PaymentIntent charges and what Opportunity.Amount becomes, so subtracting this recovers the gift the donor chose.</em></td>
+<td>Portion of the checkout amount that is the donor-covered processing fee, rather than the gift itself.<br><em>Docs: A typed field rather than another key in Options_JSON__c, deliberately: Options_JSON__c is donor-supplied form data echoed back verbatim, and a money value that decides what gets charged must not live in the same blob a guest can write. FeeCoverageService.computeFee is the only writer, called from DonationService.createDonorAndIntent and (for ticket orders) EventRegistrationController.CreateTicketIntent, both of which recompute the fee from the campaign flag and Settings__c rather than trusting any amount the browser sends. Amount__c is the GROSS (gift + this) — that is what the PaymentIntent charges and what Opportunity.Amount becomes, so subtracting this recovers the gift the donor chose.</em></td>
 </tr>
 <tr>
 <td><code>Finalization_Error__c</code></td>
@@ -3708,7 +3708,7 @@
 <td><code>Fee_Amount__c</code></td>
 <td>Fee Amount</td>
 <td>Currency</td>
-<td>Processing fee amount added by the donor, if fee coverage was selected. Included in the total Amount charged.<br><em>Docs: Written at finalize by DonationService.processOneTimeStagingRecord and RecurringDonationService.processRenewal from the value FeeCoverageService.computeFee() produced when the PaymentIntent was created; EventPurchaseService always writes 0 (ticket orders don't offer fee coverage).  The gross-up is true gross-up, not gift × percent — the processor charges its percentage on the total it captures, so a $100 gift under 2.9% + $0.30 carries a $3.30 fee, not $3.20. See FeeCoverageService for the formula; it is the only place it exists.  Reporting note: this is a component of Amount, not an addition to it. "Gift revenue" is Amount − Fee_Amount__c; Amount is what the card was charged.  Not the same thing as the Stripe fee the org itself absorbs on a donation where the donor declined to cover it, which never appears on the Opportunity at all.</em></td>
+<td>Processing fee amount added by the donor, if fee coverage was selected. Included in the total Amount charged.<br><em>Docs: Written at finalize by DonationService.processOneTimeStagingRecord and RecurringDonationService.processRenewal from the value FeeCoverageService.computeFee() produced when the PaymentIntent was created. Since 2026-08-22 EventPurchaseService writes it too, from the staging row: a covered fee on a ticket order becomes its own zero-goods-value OpportunityLineItem, so Amount (which the platform derives from the lines) still equals the capture and this field is the slice of it the buyer added on top — the same convention as the donation path, not a special case.  The gross-up is true gross-up, not gift × percent — the processor charges its percentage on the total it captures, so a $100 gift under 2.9% + $0.30 carries a $3.30 fee, not $3.20. See FeeCoverageService for the formula; it is the only place it exists.  Reporting note: this is a component of Amount, not an addition to it. "Gift revenue" is Amount − Fee_Amount__c; Amount is what the card was charged.  Not the same thing as the Stripe fee the org itself absorbs on a donation where the donor declined to cover it, which never appears on the Opportunity at all.</em></td>
 </tr>
 <tr>
 <td><code>Funds_Available_On__c</code></td>
@@ -5187,7 +5187,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>100 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>101 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Package configuration settings</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5476,6 +5476,12 @@
 <td>Event Donation Product Id</td>
 <td>Text</td>
 <td>Machine-managed. Do not edit — Id of the packaged "Donation" add-on product seeded at install.<br><em>Docs: Id (as text) of the generic package Product2 used for the fully-deductible donation add-on line on event ticket orders. Seeded by PostInstallHandler; blank until that runs.</em></td>
+</tr>
+<tr>
+<td><code>Event_Fee_Product_Id__c</code></td>
+<td>Event Fee Product Id</td>
+<td>Text</td>
+<td>Machine-managed. Do not edit — Id of the packaged "Event Processing Fee" product seeded at install.<br><em>Docs: Id (as text) of the packaged Product2 that carries the donor-covered processing fee as its own order line, so Opportunity.Amount still equals what the card was charged. Seeded by PostInstallHandler; blank until that runs, and a blank one makes finalization of a fee-covered ticket order fail loudly rather than silently drop the fee.</em></td>
 </tr>
 <tr>
 <td><code>Event_Pricebook_Id__c</code></td>

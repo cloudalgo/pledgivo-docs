@@ -2712,7 +2712,11 @@ the schedule's Amount stays at the $100 the donor chose, and each renewal re-gro
 whatever the fee rate is that month. If your processor's rate changes, you update it in one
 place and every covered recurring donor's next charge follows — nothing drifts, and no
 donor's coverage silently stops after the first gift.</p>
-<p>Event and ticket orders never offer coverage, regardless of the campaign flag.</p>
+<p>Ticket orders offer it on the same terms. The campaign flag is the same flag, the gross-up
+is the same calculation, and it is computed on the tickets plus any add-on gift — never on
+itself. On the resulting order the covered fee is its own line worth nothing to the buyer, so
+<strong>Amount</strong> still equals what the card was charged and the fee lands wholly inside the
+deductible remainder rather than beside the goods-and-services figure.</p>
 <h2 id="what-the-processor-actually-kept">What the processor actually kept<a class="headerlink" href="#what-the-processor-actually-kept" title="Permanent link">#</a></h2>
 <p>The <strong>Amount</strong> on a gift is what the donor was charged. It is not what you received. Stripe takes
 its cut before the money reaches your balance, and the two figures are never the same.</p>
@@ -2797,6 +2801,10 @@ cannot disagree about one order.</p>
 <tr>
 <td>An event/ticket order</td>
 <td>Gift total, goods-and-services value, and the deductible remainder — stated separately</td>
+</tr>
+<tr>
+<td>An event/ticket order where the donor covered the fee</td>
+<td>The same three figures — the covered fee sits inside the deductible remainder</td>
 </tr>
 <tr>
 <td>A partially refunded plain donation</td>

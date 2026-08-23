@@ -7885,7 +7885,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This class is the ONLY place the fee formula lives. Every write path that charges a donor-covered fee — <a href="#apex-donationservice-createdonorandintent"><code>DonationService.createDonorAndIntent</code></a> for one-time gifts and recurring signups, <a href="#apex-recurringrenewalbatch"><code>RecurringRenewalBatch</code></a> for every later renewal — calls computeFee here rather than carrying its own arithmetic, so a rate change in Settings__c reaches all of them at once.</p>
-<p>Event ticket orders deliberately do NOT offer fee coverage. A ticket order already has a quid-pro-quo split to disclose on the receipt (goods value vs deductible remainder); adding a third component the donor chose would make that letter harder to read for no fundraising gain.</p>
+<p>Event ticket orders offer it too, since 2026-08-22 — <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.CreateTicketIntent calls computeFee on the ticket+add-on subtotal and <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a> turns the result into its own fully-deductible order line, so Opportunity.Amount still equals the Stripe capture. The receipt gains no third component: the covered fee is a contribution, so it lands inside the existing deductible remainder rather than beside the goods-value figure.</p>
 <p>NOT <code>gift * percent</code>. The processor charges its percentage on the TOTAL it captures, so a naive percentage-of-gift leaves the org short by the fee on the fee. At Stripe's US standard 2.9% + $0.30 a $100 gift needs $3.30 added, not $3.20: the org is charged 2.9% of $103.30 ($3.00) plus $0.30, netting exactly $100.00.</p>
 <p>The rate components go to the browser, not a precomputed fee, because the donor changes the amount as they type and a round-trip per keystroke is not worth it. The client estimate is display only — createDonorAndIntent recomputes the authoritative fee server-side from these same settings and charges THAT, so a tampered client cannot choose what it pays.</p>
 </div>
@@ -9957,6 +9957,11 @@
 <p>This class is called from <a href="#apex-postinstallhandler-seedeventdonationproduct"><code>PostInstallHandler.seedEventDonationProduct</code></a>(), which runs as a per-package system user, and in that context a <code>with sharing</code> class cannot resolve Pricebook2 at all — standardPricebookId() dies with "sObject type 'Pricebook2' is not supported" and the packaged Event Donation product ships with no PricebookEntry pair, so the event donation add-on line silently cannot be sold.</p>
 <p>Found 2026-08-09 by install-testing into a real subscriber org; it does not reproduce in a dev org, where an admin reads Pricebook2 in any sharing mode.</p>
 <p>Sharing was never doing enforcement work here anyway: every query and DML below is already explicitly SYSTEM_MODE / <code>as system</code>, and pricebook plumbing carries no donor data and no record-level privacy interest.</p>
+<p>CURRENCY — why the currency is a parameter, and why the lookup is filtered by it.</p>
+<p>In a Multi-Currency org a PricebookEntry inserted without an explicit CurrencyIsoCode takes the INSERTING USER'S personal currency, while the order Opportunity is stamped with the currency the donor was actually charged in (<a href="#apex-currencystamphelper"><code>CurrencyStampHelper</code></a>, from Donation_Staging__c.Currency_Code__c). The platform then refuses the OpportunityLineItem that joins them — "pricebook entry currency code does not match opportunity currency code" — so on an org whose corporate currency differs from the seeding user's, EVERY event order died at finalize, AFTER the card had already been charged. Found 2026-08-22 on a multi-currency scratch org; a follow-on to audit finding F-125, which introduced the Opportunity-side stamp.</p>
+<p>The entry currency is therefore taken from the ORDER, not from the org. Pinning it to the org currency would agree with the Opportunity only for as long as <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a>'s Phase 1 makes every transaction org-denominated; threading it through means the two sides match BY CONSTRUCTION, and per-campaign currency (Phase 2) needs no change here.</p>
+<p>Stamping new entries is only half of it. An entry left behind in some other currency must not be handed back for reuse either, because the order that would reference it cannot — hence the CurrencyIsoCode filter on the lookup. Inserting a second entry for the same product in a different currency is legal: a multi-currency pricebook holds one entry per product PER CURRENCY.</p>
+<p>All of it is a no-op in a single-currency org, where the field does not exist — which is also why the field is named as a string and the lookup is dynamic. A typed CurrencyIsoCode reference would not COMPILE there, and for a managed package that means the version will not install. Same rule, and the same reason, as CurrencyStampHelper's.</p>
 </div>
 <table>
 <thead>
@@ -9978,8 +9983,13 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-pricebookservice-ensureentriesfor"></a><code>ensureEntriesFor(2 args)</code></td>
+<td><code>Map&lt;Id, Id&gt;</code></td>
 <td></td>
-<td><em>calls:</em> <a href="#apex-postinstallhandler-seedeventpricebook">PostInstallHandler.seedEventPricebook()</a></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-postinstallhandler-seedeventpricebook">PostInstallHandler.seedEventPricebook()</a>, <a href="#apex-currencyresolver-fororg">CurrencyResolver.forOrg()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12383,6 +12393,7 @@
 <p>String-splicing three fragments made every fragment responsible for its own trailing comma, so adding a key in the wrong place produced malformed JSON that only surfaced at render time. And a character override that repeated a base key emitted a DUPLICATE JSON key — legal to write, resolved by last-wins on read, but impossible to reason about.</p>
 <p>With a Map, putAll gives character() a defined, deliberate win over the derived base: that is how Marigold squares its hero and Sanctuary swaps its card shadow for a hairline border.</p>
 <p>The lookup is by name, so renaming the pricebook would normally strand the one an earlier version already created and silently insert an empty replacement beside it — with every existing PricebookEntry still hanging off the old record. LEGACY_EVENT_ PRICEBOOK_NAME exists solely to make that rename survivable: if only the old-named pricebook is present, it is renamed in place rather than abandoned, so its entries come along and no duplicate appears. Remove the constant and the adopt branch once no org can still hold a pricebook under the old name.</p>
+<p>A covered fee gets its own order line so Opportunity.Amount stays equal to what the card was charged — the same convention the one-time donation path uses, where Amount is the gross and Fee_Amount__c is the slice of it the donor added. A separate product from the donation add-on keeps fee revenue out of add-on totals in standard product reporting.</p>
 </div>
 <table>
 <thead>
@@ -12485,6 +12496,16 @@
 </tr>
 <tr>
 <td><a id="apex-postinstallhandler-seedeventdonationproduct"></a><code>seedEventDonationProduct(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-applogger-error">AppLogger.error()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-postinstallhandler-seedeventfeeproduct"></a><code>seedEventFeeProduct(0 args)</code></td>
 <td><code>void</code></td>
 <td></td>
 </tr>
@@ -13579,6 +13600,7 @@
 <p>The three org-wide fallbacks behind the public page's contact band. Each returns null when unset so the band can omit the line entirely rather than print an empty label — a contact block showing "Phone:" with nothing after it reads as broken, which is the opposite of the trust the band exists to build. A campaign's own Contact_*_Override__c wins over these; CampaignService resolves that precedence, not this class.</p>
 <p>Reads Support_Phone__c rather than a contact-specific field — an org has one support number, and the payment-failure emails and the public contact band should never be able to disagree about what it is.</p>
 <p>These seven describe the ORGANIZATION, not a theme. They lived on Campaign_Design__c until 2026-08-12, where a campaign switching from one packaged theme to another would have silently changed which privacy policy its donors were pointed at. Each returns null when unset so the footer can omit the line or the icon entirely — a dead "Terms" link or a social icon that opens nothing is worse for trust than no link at all, which is the whole point of the band they render in. A campaign's own *_Override__c wins over these; <a href="#apex-campaignservice-resolveidentity"><code>CampaignService.resolveIdentity</code></a> owns that precedence, not this class.</p>
+<p>Deliberately a SECOND product rather than reusing the donation add-on one: both lines are fully deductible and both would sum correctly, but a covered fee is not an extra gift, and sharing the product would inflate every add-on total an admin reports on by the fees.</p>
 <p><a href="#apex-recordtypemappingservice"><code>RecordTypeMappingService</code></a> owns the delimited-encoding format (what the string MEANS); this class only owns the mechanics of splitting/joining that string across the 4 physical Settings__c chunk fields (WHERE it's stored). Replaces the former Record_Type_Mapping__c custom object (deleted 2026-08-03) — Custom Settings fields cap at 255 chars with no Long Text Area option, so the encoded table is chunked here instead of living in a dedicated Long-Text-capable object.</p>
 <p>Reads via getOrgDefaults(), never getInstance() — record type mapping config is an org-wide singleton with no profile/user tier, and getInstance()'s hierarchy resolution caches on first call for the rest of the transaction, which previously made this read (when it ran first) silently freeze OTHER getInstance()-based accessors (e.g. eventDeductibleMode()) against later same-transaction Settings__c DML — a real Apex custom-settings platform gotcha, not just a test artifact.</p>
 </div>
@@ -14013,6 +14035,11 @@
 </tr>
 <tr>
 <td><a id="apex-settingsservice-eventdonationproductid"></a><code>eventDonationProductId(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-settingsservice-eventfeeproductid"></a><code>eventFeeProductId(0 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>

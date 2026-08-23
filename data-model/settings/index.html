@@ -1544,7 +1544,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>100 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>101 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1846,6 +1846,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Event Donation Product Id</td>
 <td>Text</td>
 <td>Machine-managed. Do not edit — Id of the packaged "Donation" add-on product seeded at install.<br><em>Docs: Id (as text) of the generic package Product2 used for the fully-deductible donation add-on line on event ticket orders. Seeded by PostInstallHandler; blank until that runs.</em></td>
+</tr>
+<tr>
+<td><code>Event_Fee_Product_Id__c</code></td>
+<td>Event Fee Product Id</td>
+<td>Text</td>
+<td>Machine-managed. Do not edit — Id of the packaged "Event Processing Fee" product seeded at install.<br><em>Docs: Id (as text) of the packaged Product2 that carries the donor-covered processing fee as its own order line, so Opportunity.Amount still equals what the card was charged. Seeded by PostInstallHandler; blank until that runs, and a blank one makes finalization of a fee-covered ticket order fail loudly rather than silently drop the fee.</em></td>
 </tr>
 <tr>
 <td><code>Event_Pricebook_Id__c</code></td>

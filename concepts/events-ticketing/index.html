@@ -1979,6 +1979,12 @@ tier's percentage blank has not configured that tier, so the purchase records <s
 logs a warning rather than reading the fair-market field a percentage org never fills. The tier
 editor refuses to save a tier with no percentage while the org is in Percentage mode, so the only
 way to reach that state is to switch modes after the tier already existed.</p>
+<p>If the campaign offers <strong>Let donors cover processing fees</strong>, the checkout also asks the buyer
+to add the processing fee on top. That amount is grossed up from the tickets and any add-on
+gift, recorded as its own order line, and treated as <strong>fully deductible</strong> — the buyer received
+nothing of value for it. So it raises the charge and the deductible remainder by the same
+figure and leaves the goods-and-services value untouched. See
+<a href="../donations-payments/#when-the-donor-covers-the-processing-fee">when the donor covers the processing fee</a>.</p>
 <p>Every receipt surface honours that split, not just the emailed one: a ticket buyer who opens their
 receipt in the donor portal, and an admin who prints one from the Opportunity, both see the gift
 total, the goods-and-services value, and the deductible remainder stated separately. The one case

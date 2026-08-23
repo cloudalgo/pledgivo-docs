@@ -1,0 +1,172 @@
+WEBVTT
+
+1
+00:00:02.567 --> 00:00:04.500
+Fundraising software
+that doesn't
+
+2
+00:00:04.500 --> 00:00:06.167
+live in your
+Salesforce org.
+
+3
+00:00:06.167 --> 00:00:07.567
+It lives somewhere else.
+
+4
+00:00:08.367 --> 00:00:11.033
+Your donation platform
+holds the donors.
+
+5
+00:00:11.033 --> 00:00:13.200
+Salesforce gets a
+copy overnight.
+
+6
+00:00:13.200 --> 00:00:14.933
+The two never quite agree.
+
+7
+00:00:15.733 --> 00:00:18.333
+Pledgivo removes
+the second system.
+
+8
+00:00:18.333 --> 00:00:18.900
+One org.
+
+9
+00:00:18.900 --> 00:00:20.533
+One copy of the truth.
+
+10
+00:00:22.133 --> 00:00:24.833
+A public donation form,
+backed by Stripe.
+
+11
+00:00:24.833 --> 00:00:27.567
+The card is tokenised
+in the browser; the
+
+12
+00:00:27.567 --> 00:00:30.000
+gift lands as a
+standard Opportunity.
+
+13
+00:00:30.800 --> 00:00:33.367
+Salesforce owns the
+schedule and charges
+
+14
+00:00:33.367 --> 00:00:36.100
+the saved card itself
+— not a subscription
+
+15
+00:00:36.100 --> 00:00:37.700
+living in another system.
+
+16
+00:00:38.500 --> 00:00:40.900
+Every appeal is a
+standard Salesforce
+
+17
+00:00:40.900 --> 00:00:43.333
+Campaign — no parallel
+object — themed
+
+18
+00:00:43.333 --> 00:00:46.000
+by a page design you
+compose from blocks.
+
+19
+00:00:46.800 --> 00:00:49.033
+Ticketed events
+with tiered pricing
+
+20
+00:00:49.033 --> 00:00:50.967
+and real capacity,
+on the same
+
+21
+00:00:50.967 --> 00:00:52.833
+pipeline as every
+other gift.
+
+22
+00:00:54.600 --> 00:00:56.700
+Donors manage
+their own giving.
+
+23
+00:00:56.700 --> 00:00:58.433
+A link in their inbox — no
+
+24
+00:00:58.433 --> 00:01:00.467
+account, no
+password to reset.
+
+25
+00:01:01.267 --> 00:01:03.267
+Branded receipts
+from Settings.
+
+26
+00:01:03.267 --> 00:01:05.967
+Refund from the
+Opportunity or from Stripe
+
+27
+00:01:05.967 --> 00:01:08.667
+— an hourly reconciler
+keeps both in step.
+
+28
+00:01:10.267 --> 00:01:11.400
+And it travels.
+
+29
+00:01:11.400 --> 00:01:13.467
+Two lines of
+HTML put a live
+
+30
+00:01:13.467 --> 00:01:15.633
+campaign on any
+site you own.
+
+31
+00:01:16.767 --> 00:01:19.600
+A managed package
+on the current API.
+
+32
+00:01:19.600 --> 00:01:21.767
+No public webhook
+to secure.
+
+33
+00:01:21.767 --> 00:01:24.067
+NPSP detected,
+never required.
+
+34
+00:01:24.867 --> 00:01:25.567
+Pledgivo.
+
+35
+00:01:25.567 --> 00:01:26.467
+Coming soon.
+
+36
+00:01:26.467 --> 00:01:28.967
+Book a demo at
+cloudalgo dot com.

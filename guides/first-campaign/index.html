@@ -1945,8 +1945,10 @@ called everywhere afterwards — on its directory card, on its record page, and 
 See <a href="../../concepts/campaigns/#three-kinds-of-fundraiser">Three kinds of fundraiser</a> for what each
 one changes.</p>
 <p>Choosing <strong>Ongoing</strong> removes the goal and end-date fields from the rest of the wizard, because an
-ongoing fund uses neither. Everything else — story, designations, questions, page design — is the
-same on all three.</p>
+ongoing fund uses neither — and an Ongoing fundraiser is not allowed to carry a Goal Amount, so if
+you switch an existing crowdfunding campaign over, the wizard asks you to clear the goal first and
+the save is refused until you do. Everything else — story, designations, questions, page design —
+is the same on all three.</p>
 <p>Give the campaign a name donors will recognize; it appears on the public page and in receipt
 emails. The record is a standard Salesforce Campaign, so it also shows up in campaign reports and
 hierarchies exactly as any other Campaign does.</p>

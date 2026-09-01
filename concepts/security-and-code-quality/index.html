@@ -1807,24 +1807,24 @@ the documentation generators.</p>
 </tr>
 <tr>
 <td>High</td>
-<td>61</td>
+<td>48</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td>8,593</td>
+<td>6,762</td>
 </tr>
 <tr>
 <td>Low</td>
-<td>17,506</td>
+<td>17,512</td>
 </tr>
 <tr>
 <td>Info</td>
-<td>895</td>
+<td>897</td>
 </tr>
 </tbody>
 </table>
-<p><strong>27,055 total</strong> — and that number needs explaining rather than burying, because five style rules
-account for roughly three-quarters of it:</p>
+<p><strong>25,219 total</strong> — and that number needs explaining rather than burying, because five style rules
+account for more than four-fifths of it:</p>
 <table>
 <thead>
 <tr>
@@ -1841,17 +1841,17 @@ account for roughly three-quarters of it:</p>
 </tr>
 <tr>
 <td><code>ApexUnitTestClassShouldHaveRunAs</code></td>
-<td>2,691</td>
+<td>2,694</td>
 <td>A preference that every test method wrap itself in <code>System.runAs</code>. Test-only; no shipped behaviour.</td>
 </tr>
 <tr>
 <td><code>MethodNamingConventions</code></td>
-<td>2,597</td>
+<td>2,601</td>
 <td>PMD's default naming pattern rejects the <code>test_thing_doesThing</code> convention used throughout the test suite. Test-only.</td>
 </tr>
 <tr>
 <td><code>ApexDoc</code></td>
-<td>2,251</td>
+<td>2,255</td>
 <td>Missing doc blocks on individual members. Class-level doc blocks are what the published code reference is generated from, and those are required by the project's own rules.</td>
 </tr>
 <tr>
@@ -1927,10 +1927,9 @@ in the code itself.</p>
 </tr>
 </tbody>
 </table>
-<p>The other 58 High findings are none of them security-tagged: empty catch blocks that are guarded
-optional reads rather than swallowed errors, four unused bindings that a bundler and a destructuring
-idiom actually require, and the rest inside vendored FFLib, which this package carries as source so
-that installing it does not force you to install a library first.</p>
+<p>The other 45 High findings are none of them security-tagged: four unused bindings that a bundler
+and a destructuring idiom actually require, and the remaining 41 inside vendored FFLib, which this
+package carries as source so that installing it does not force you to install a library first.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a
 <a href="../../reference/analyzer-exceptions/">Code Analyzer exceptions report</a> listing each finding it does
 not fix, what the rule flags, why it is not a defect here, and how to check that for yourself

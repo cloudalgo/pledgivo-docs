@@ -157,7 +157,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-30</span>
+          <span class="fn-brand__ver">1.0.0-1</span>
         
       </a>
 
@@ -1736,17 +1736,19 @@ a dependency. Installing Pledgivo is all you need.</p>
 </div>
 <div class="fn-status-strip">
   <span class="fn-chip">Package type: 2GP managed</span>
-  <span class="fn-chip">Namespace: pledgivo_test (pre-release builds)</span>
+  <span class="fn-chip">Namespace: pledgivo</span>
   <span class="fn-chip">API version: 67.0</span>
 </div>
 
-<div class="admonition note">
-<p class="admonition-title">Which namespace prefix your org will show</p>
-<p>Pre-release builds are packaged under <strong><code>pledgivo_test</code></strong>, so every packaged API name in your
-org reads <code>pledgivo_test__Donation__c</code> and the Settings tab is <code>pledgivo_test__Settings</code>. The
-general-availability release moves to <strong><code>pledgivo</code></strong>. Wherever this documentation writes
-<code>pledgivo__</code>, substitute whichever prefix your installed version actually carries — check any
-packaged field in Setup → Object Manager if you are unsure.</p>
+<div class="admonition warning">
+<p class="admonition-title">Upgrading from a pre-release <code>pledgivo_test</code> build</p>
+<p>Builds before 2026-09-01 were packaged under a throwaway <strong><code>pledgivo_test</code></strong> namespace. A
+managed package is permanently bound to its namespace, so <strong>there is no upgrade path from one
+of those builds to this one</strong> — Salesforce treats them as unrelated packages. If Setup →
+Installed Packages shows a namespace of <code>pledgivo_test</code>, uninstall it before installing this
+version, and expect to re-enter your configuration. Current builds carry <strong><code>pledgivo</code></strong>, so
+every packaged API name reads <code>pledgivo__Donation__c</code> and the Settings tab is
+<code>pledgivo__Settings</code> — exactly as this documentation writes them.</p>
 </div>
 <h2 id="install-steps">Install steps<a class="headerlink" href="#install-steps" title="Permanent link">#</a></h2>
 <div class="admonition tip">

@@ -1741,7 +1741,7 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">6,664</td>
+<td style="text-align: right;">3,625</td>
 <td>5 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
@@ -1756,7 +1756,7 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>25,119</strong></td>
+<td style="text-align: right;"><strong>22,080</strong></td>
 <td><strong>53 individually justified</strong></td>
 </tr>
 </tbody>
@@ -2012,7 +2012,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 25,066 findings are Moderate, Low and Info style and maintainability
+<p>The other 22,027 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2035,11 +2035,6 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">2,694</td>
 </tr>
 <tr>
-<td><code>pmd:MethodNamingConventions</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">2,601</td>
-</tr>
-<tr>
 <td><code>pmd:ApexDoc</code></td>
 <td>Low</td>
 <td style="text-align: right;">2,255</td>
@@ -2058,11 +2053,6 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td><code>regex:NoTrailingWhitespace</code></td>
 <td>Info</td>
 <td style="text-align: right;">777</td>
-</tr>
-<tr>
-<td><code>pmd:ApexUnitTestClassShouldHaveAsserts</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">200</td>
 </tr>
 <tr>
 <td><code>pmd:FieldDeclarationsShouldBeAtStart</code></td>
@@ -2099,6 +2089,16 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td>Moderate</td>
 <td style="text-align: right;">116</td>
 </tr>
+<tr>
+<td><code>pmd:UnusedLocalVariable</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">110</td>
+</tr>
+<tr>
+<td><code>cpd:DetectCopyPasteForApex</code></td>
+<td>Info</td>
+<td style="text-align: right;">98</td>
+</tr>
 </tbody>
 </table>
 <p>The single largest group is the SLDS hardcoded-value rule. Those hits are the <em>fallback</em>
@@ -2130,11 +2130,15 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Rule set</td>
-<td><code>sf code-analyzer run --rule-selector Recommended</code></td>
+<td><code>sf code-analyzer run --config-file code-analyzer.yml --rule-selector Recommended</code></td>
+</tr>
+<tr>
+<td>Analyzer config</td>
+<td><code>code-analyzer.yml</code> + <code>scripts/lint/pmd/pledgivo-conventions.xml</code></td>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>25,119 (after declared path exclusions)</td>
+<td>22,080 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

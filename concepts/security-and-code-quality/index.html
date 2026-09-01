@@ -1485,6 +1485,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The latest scan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two rules are measured against this project's conventions, not PMD's defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1676,6 +1693,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The latest scan">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two rules are measured against this project's conventions, not PMD's defaults
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1811,7 +1845,7 @@ the documentation generators.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td>6,664</td>
+<td>3,625</td>
 </tr>
 <tr>
 <td>Low</td>
@@ -1823,8 +1857,8 @@ the documentation generators.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>25,119 total</strong> — and that number needs explaining rather than burying, because five style rules
-account for more than four-fifths of it:</p>
+<p><strong>22,080 total</strong> — and that number needs explaining rather than burying, because five style rules
+account for nearly nine-tenths of it:</p>
 <table>
 <thead>
 <tr>
@@ -1845,11 +1879,6 @@ account for more than four-fifths of it:</p>
 <td>A preference that every test method wrap itself in <code>System.runAs</code>. Test-only; no shipped behaviour.</td>
 </tr>
 <tr>
-<td><code>MethodNamingConventions</code></td>
-<td>2,601</td>
-<td>PMD's default naming pattern rejects the <code>test_thing_doesThing</code> convention used throughout the test suite. Test-only.</td>
-</tr>
-<tr>
 <td><code>ApexDoc</code></td>
 <td>2,255</td>
 <td>Missing doc blocks on individual members. Class-level doc blocks are what the published code reference is generated from, and those are required by the project's own rules.</td>
@@ -1859,10 +1888,32 @@ account for more than four-fifths of it:</p>
 <td>2,037</td>
 <td>Whitespace.</td>
 </tr>
+<tr>
+<td><code>AnnotationsNamingConventions</code></td>
+<td>1,319</td>
+<td>Annotation casing. Whitespace's cousin.</td>
+</tr>
 </tbody>
 </table>
 <p>None of those five is a defect, and none of them can be. What matters is the severity split above,
 and the eight findings below.</p>
+<h3 id="two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Two rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
+<p><code>code-analyzer.yml</code> re-registers two PMD rules through a custom ruleset
+(<code>scripts/lint/pmd/pledgivo-conventions.xml</code>) so that they test what they are meant to test:</p>
+<ul>
+<li><strong><code>MethodNamingConventions</code></strong> rejected the <code>test_thing_doesThing</code> naming used throughout the
+  test suite, which is a deliberate convention, not an accident — 2,601 findings, none of them
+  actionable. Retuned to this project's <code>testPattern</code>, it reports 4.</li>
+<li><strong><code>ApexUnitTestClassShouldHaveAsserts</code></strong> only recognises <code>System.assert*</code> and <code>Assert.*</code>. Most
+  service, domain and selector tests here assert through fflib-apex-mocks, where
+  <code>mocks.verify(uow, 1).commitWork()</code> <em>is</em> the assertion — it throws when the interaction did not
+  happen. PMD counted 200 mock-verified tests as having none. Widened to accept mock verification
+  and this repo's named assertion helpers, it reports 15.</li>
+</ul>
+<p>Both rules are still enforcing: a method named badly and a test that neither asserts nor verifies
+are both still reported. That was checked against a deliberately bad fixture rather than assumed,
+because a mis-registered custom rule and a correctly-registered one look identical on a clean
+tree — both produce zero findings. The remaining 19 are all in vendored FFLib.</p>
 <h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
 <p>The analyzer tags eight findings across the whole package as security-relevant. All eight are
 listed here with a verdict; each one is also recorded in the project's triage record or annotated

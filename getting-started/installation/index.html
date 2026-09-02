@@ -1833,7 +1833,8 @@ with the two that can only be done in Salesforce Setup spelled out. The in-app
    won't let a <em>managed</em> permission set grant access to an external credential principal, so
    the package cannot ship this and neither packaged set can be edited to add it. Create your
    own permission set in your org, give it External Credential Principal Access to the Stripe
-   credential's <code>OrgPrincipal</code>, and assign it to your fundraising users <strong>and</strong> your site's
+   credential's principal (<code>OrgPrincipal</code> is only the suggested name — yours is whatever you
+   typed), and assign it to your fundraising users <strong>and</strong> your site's
    guest user. Until that's done, every Stripe callout fails with an authorization error even
    though the secret key is stored correctly. See
    <a href="../after-you-install/#grant-the-credential">Grant the Stripe credential</a>.</p>

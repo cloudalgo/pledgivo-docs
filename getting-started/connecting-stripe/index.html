@@ -680,6 +680,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#which-names-are-yours-and-which-must-match" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which names are yours, and which must match
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-two-stripe-keys-and-what-each-one-may-do" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -692,10 +703,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#scoping-the-public-key" class="md-nav__link">
+  <a href="#scoping-the-donor-key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scoping the public key
+        Scoping the donor key
       
     </span>
   </a>
@@ -1740,6 +1751,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#which-names-are-yours-and-which-must-match" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which names are yours, and which must match
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#the-two-stripe-keys-and-what-each-one-may-do" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1752,10 +1774,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#scoping-the-public-key" class="md-nav__link">
+  <a href="#scoping-the-donor-key" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scoping the public key
+        Scoping the donor key
       
     </span>
   </a>
@@ -1895,7 +1917,7 @@
 <tr>
 <td>Secrets</td>
 <td>An External Credential + Named Credential <strong>you build in Setup</strong> — nothing ships with the package, and the package creates nothing</td>
-<td>The Stripe secret key. Never stored in a custom field, never readable back, not even by the admin who entered it.</td>
+<td>Your two Stripe restricted keys. Never stored in a custom field, never readable back, not even by the admin who entered them.</td>
 </tr>
 <tr>
 <td>Per-account config</td>
@@ -1919,7 +1941,7 @@ fiscal sponsee) and route different campaigns to different accounts.</p>
 <h2 id="connect-an-account">Connect an account<a class="headerlink" href="#connect-an-account" title="Permanent link">#</a></h2>
 <p>Your secret keys go into Salesforce <strong>credentials</strong> you build in Setup — never into a field on
 a record, and never through this app. <strong>Settings → Payments</strong> is the guide for that build: it
-lists the eleven things that have to be true, gives you the exact values to paste, and then reads
+lists the twelve things that have to be true, gives you the exact values to paste, and then reads
 your org back to tell you which ones are done and which one is wrong.</p>
 <p>Never worked with Stripe's API before? Read
 <a href="#the-two-stripe-keys-and-what-each-one-may-do">The two Stripe keys, and what each one may do</a>
@@ -1937,30 +1959,42 @@ account — which cannot be created until the credentials it names exist. So the
 genuinely circular for exactly one lap: build the pair, create the account, then press
 <strong>Re-check</strong> and all six grade themselves at once. They are shown in neutral grey rather than
 red for that reason: the panel has no verdict on them yet, not a bad one.</p>
-<p>Above the eleven steps is a short <strong>Before you start</strong> map. Read it before you open Setup:
+<p>Above the twelve steps is a short <strong>Before you start</strong> map. Read it before you open Setup:
 the steps cross three different places, and the map says which. Collect your three Stripe
 keys first (it links straight to the API keys page for the mode this account is in), then
 do the Setup work, then come back to this panel for the two checks. Every step title also
 carries a tag — <strong>Salesforce Setup</strong> or <strong>This page</strong> — so you can see at a glance where
 the next one happens.
 2. Work down the guide. Steps 1–6 build the credential pair in <strong>Setup → Named Credentials</strong>:
-   an External Credential with a Named Principal carrying your secret key as an encrypted
+   an External Credential with a Named Principal carrying your restricted key as an encrypted
    parameter, an <code>Authorization</code> header that <em>references</em> that parameter, and a Named Credential
    pointing at <code>https://api.stripe.com</code> with the right callout options ticked. Each step has a
    <strong>Take me there</strong> link and, where the check can be made, a status read from your org rather
    than a tick you give yourself. Do this twice — once for each of the two credentials described
    under step 9 below.</p>
-<p>The panel suggests a name for <strong>both</strong> credentials (<code>Stripe_Auth_Public</code> and
-<code>Stripe_Auth_Admin</code>, and <code>Stripe_Public</code> / <code>Stripe_Admin</code> for the two Named Credentials) —
-two credentials cannot share a name. Once you have built them, it stops suggesting and
-prints the names your org actually uses.</p>
+<p><strong>The names are yours to choose.</strong> The panel <em>suggests</em> one for each credential
+(<code>Stripe_Auth_Donor_Restricted</code> and <code>Stripe_Auth_Admin_Restricted</code> for the External
+Credentials, <code>Stripe_Donor_Restricted</code> and <code>Stripe_Admin_Restricted</code> for the Named
+Credentials), but nothing in the app matches on them — it reads whatever names you saved on
+the Payment Account record. Call them after the Stripe account they authenticate
+(<code>Stripe_Auth_Chapter_West</code>, <code>Stripe_Chapter_West</code>) if that is how you will recognise them
+later. The only hard rules are that two credentials cannot share a name, and that what you
+type on the Payment Account record must match the Named Credential names exactly. Once you
+have built them, the panel stops suggesting and prints the names your org actually uses.</p>
+<p><strong>This matters most if you run more than one Stripe account.</strong> Each Payment Account record
+points at its own pair of credentials, so a second Stripe account needs a second pair with
+<em>different</em> names — reusing the suggested ones is impossible for the second account. Naming
+them for the fund, chapter or region they collect for is what makes the Payment Account
+picker readable when you map a campaign to an account. See
+<a href="#which-names-are-yours-and-which-must-match">Which names are yours, and which must match</a>.</p>
 <p><strong>Step 2 asks for a different key on each credential</strong> and says which is which: a
-charge-only restricted <code>rk_…</code> key on the public credential, and a back-office key on the
-admin one — best a <em>second</em> restricted key scoped to refunds and reads, or your full <code>sk_…</code>
-secret key if you would rather not scope one. This is the one place where getting them the
-wrong way round is silent — both keys authenticate perfectly well, so an admin key on the
-public credential works, and hands the public internet a refund button. Step 10 is what
-catches it.
+charge-only restricted <code>rk_…</code> key on the donor credential, and a <em>second</em> restricted key
+scoped to refunds and reads on the admin one. <strong>Both must be restricted keys.</strong> A full <code>sk_…</code>
+secret key is not an accepted value on either: the guide probes both credentials and keeps the
+account off <em>Ready to take payments</em> for as long as one of them answers a call it should have
+refused. This is also the one place where getting the two the wrong way round is silent — both
+keys authenticate perfectly well, so an admin key on the donor credential works, and hands the
+public internet a refund button. Steps 10 and 11 are what catch both mistakes.
 3. Step 5 is <strong>Allowed Namespaces for Callouts</strong>, and it is the one step whose absence looks like
    nothing at all. Because this app's Apex ships inside a managed package and the credential is
    one <em>you</em> built, Salesforce blocks the call unless the package's namespace is listed on the
@@ -1980,7 +2014,7 @@ second and every charge fails with <em>"You don't have read permissions on the U
 Credential object."</em> — a message the donor never sees and that surfaces only in <strong>Diagnostic
 Logs</strong>. This grant cannot ship inside the package: Salesforce strips standard-object
 permissions out of an installed permission set.
-5. Step 8 assigns the <strong>public</strong> credential's permission set to your Experience Cloud <strong>site
+5. Step 8 assigns the <strong>donor</strong> credential's permission set to your Experience Cloud <strong>site
    guest user</strong> — do this only if you take donations from public pages. It also names every
    permission set your guest user holds and asks you to confirm none of them grants the <em>admin</em>
    credential; see <em>A guest user must never hold the admin credential</em> below.</p>
@@ -1996,10 +2030,10 @@ has no site.
 <p>Once an account exists the step stops offering to create one and shows that single account
 instead, with <strong>Edit</strong> and <strong>Test</strong> on the row — there is no Delete anywhere, on this step or
 the accounts tab (see below). Showing one account is deliberate: step 9 is about the one
-account these eleven steps are grading, and a second account is a separate decision
+account these twelve steps are grading, and a second account is a separate decision
 that belongs on the <strong>Payment accounts</strong> tab, where the whole list is visible. If you run more
 than one account, the step names which one it is grading and the <strong>Showing</strong> switcher at the
-top of the panel moves the eleven steps to another.</p>
+top of the panel moves the twelve steps to another.</p>
 <p>The form asks for <strong>two</strong> credentials, and both are required:</p>
 <table>
 <thead>
@@ -2011,12 +2045,12 @@ top of the panel moves the eleven steps to another.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Public named credential</strong></td>
+<td><strong>Donor restricted key credential</strong></td>
 <td>Taking payments — the charge path a public donation page reaches</td>
 <td>Staff <em>and</em> your site guest user (step 8)</td>
 </tr>
 <tr>
-<td><strong>Admin named credential</strong></td>
+<td><strong>Admin restricted key credential</strong></td>
 <td>Back-office only: staff refunds, the refund/dispute reconcilers, the orphan-payment sweep, off-session recurring renewals, and <strong>Test connection</strong></td>
 <td>Staff who issue refunds and whoever owns the scheduled jobs — <strong>never</strong> the guest user</td>
 </tr>
@@ -2028,16 +2062,23 @@ set it up. A fresh install owns all 24 jobs with a system user that cannot be gr
 so restart them under your own login <em>after</em> granting yourself the admin credential — see
 <a href="../after-you-install/#background-jobs">Background jobs</a>. The <strong>Scheduled Jobs</strong> health row goes
 red and names the owner when this is wrong.</p>
-<p>Splitting them is what keeps an anonymous visitor's principal from reaching a key that can
-issue refunds. If you'd rather run a single key for now, point both fields at the same
-credential — the app accepts it; it just gives you no separation, and the guide grades the
-affected steps amber rather than green to say so.
-7. Step 10 proves your <strong>public</strong> key really is scoped charge-only. It is on demand: press the
+<p>Both fields take a credential <strong>name</strong>, never a key — and the name is whatever you called the
+Named Credential, since nothing in the app looks one up by name. Splitting them is what keeps an
+anonymous visitor's principal from reaching a key that can issue refunds. You <em>can</em> point both
+fields at the same credential and the app will accept it, but one key cannot be scoped two ways:
+steps 10 and 11 then grade <strong>Failed</strong> rather than green, and the account stays off <em>Ready to take
+payments</em>.
+7. Step 10 proves your <strong>donor</strong> key really is scoped charge-only. It is on demand: press the
    button and the app makes a single read-only call that a charge-only key is not allowed to
    make. If that call succeeds, the credential your guest user holds carries a key with refund
-   rights — your admin key or your secret key — and the step reports a <strong>failure</strong> rather than a
-   pending item.
-8. Step 11, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
+   rights — the admin key, or a secret key that should not be there at all — and the step reports
+   a <strong>failure</strong> rather than a pending item.
+8. Step 11 proves your <strong>admin</strong> key is a restricted key and not your full secret key. Same shape,
+   different question: one read-only call for something no part of this app ever asks the admin
+   key to do. A scoped key refuses it with <code>403</code> and the step goes green; a full secret key answers
+   it, and the step reports a <strong>failure</strong> that keeps the account off <em>Ready to take payments</em> until
+   the key is replaced. It reads one product and changes nothing.
+9. Step 12, <strong>Test connection</strong>, makes one read-only Stripe API call. It moves no money and
    creates nothing — it just proves the whole chain works before you route a campaign to it. It
    is also the only thing that settles the steps the guide asked you to confirm yourself: if the
    call comes back, the key is present and valid, the header is right, and the namespace grant is
@@ -2049,7 +2090,7 @@ rather than remembering what it told you last time.</p>
 <div class="admonition danger">
 <p class="admonition-title">Coming back to change an account's credentials? Don't — add a new account</p>
 <p>Editing a saved payment account is fine for its label or its publishable key. Changing
-<strong>Public named credential</strong> or <strong>Admin named credential</strong> so they point at a <em>different</em>
+<strong>Donor restricted key credential</strong> or <strong>Admin restricted key credential</strong> so they point at a <em>different</em>
 Stripe account is not: every saved card (<code>pm_…</code>) and every recurring schedule set up through
 this account can only be charged by the Stripe account that created it. Re-point the
 credentials and those charges start failing — silently, at the next renewal, not at the
@@ -2063,6 +2104,91 @@ what lets those renewals and refunds keep working.</p>
 It is not conditional on whether anything depends on the account yet — a card saved a minute
 from now depends on it just as much. See also
 <a href="#route-a-campaign-to-an-account">A payment account can be deactivated, never deleted</a>.</p>
+</div>
+<h2 id="which-names-are-yours-and-which-must-match">Which names are yours, and which must match<a class="headerlink" href="#which-names-are-yours-and-which-must-match" title="Permanent link">#</a></h2>
+<p>Almost every name on this page is a <strong>suggestion</strong>. The setup panel prints one so the instructions
+read as something you can follow rather than a blank to fill in — but the app never looks for those
+names. It reads whatever names you saved on the Payment Account record and calls those. So name
+each credential for the Stripe account, fund, chapter or region it serves, in whatever wording your
+team will recognise a year from now.</p>
+<p>Two things do have to match, and both are matches to something <em>you</em> chose rather than to something
+the package ships:</p>
+<table>
+<thead>
+<tr>
+<th>What you name</th>
+<th>Yours to choose?</th>
+<th>What depends on it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>External Credential (suggested <code>Stripe_Auth_Donor_Restricted</code> / <code>Stripe_Auth_Admin_Restricted</code>)</td>
+<td><strong>Yes — anything</strong></td>
+<td>The Named Credential's Authentication Reference, and the <code>{!$Credential.…}</code> merge formula in the header, both of which you write</td>
+</tr>
+<tr>
+<td>External Credential Principal (suggested <code>OrgPrincipal</code>)</td>
+<td><strong>Yes — anything</strong></td>
+<td>The permission set grant you make in step 7, which you pick from a list</td>
+</tr>
+<tr>
+<td>Authentication Parameter holding the key (suggested <code>SecretKey</code>)</td>
+<td><strong>Yes — anything</strong></td>
+<td>The <code>{!$Credential.&lt;credential&gt;.&lt;parameter&gt;}</code> merge formula, which you write. Spell it the same in both places</td>
+</tr>
+<tr>
+<td>Named Credential (suggested <code>Stripe_Donor_Restricted</code> / <code>Stripe_Admin_Restricted</code>)</td>
+<td><strong>Yes — anything</strong></td>
+<td><strong>Must match</strong> the value you type in <strong>Donor restricted key credential</strong> / <strong>Admin restricted key credential</strong> on the Payment Account record, exactly</td>
+</tr>
+<tr>
+<td>Your credential-access permission set (suggested <code>Stripe_Credential_Access</code>)</td>
+<td><strong>Yes — anything</strong></td>
+<td>Nothing. The panel never looks a set up by name — it discovers whichever of your permission sets carries the grant and reports that one back to you</td>
+</tr>
+<tr>
+<td>Payment Account record <strong>Name</strong></td>
+<td><strong>Yes — anything</strong></td>
+<td>Nothing technical. It is the label you pick from when routing a campaign, so make it say which Stripe account it is</td>
+</tr>
+</tbody>
+</table>
+<p>And three things are <strong>fixed</strong> — typing anything else here will not work:</p>
+<table>
+<thead>
+<tr>
+<th>Fixed value</th>
+<th>Where</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Authorization</code></td>
+<td>The custom header name on both Named Credentials</td>
+<td>Stripe authenticates with a bearer token in this header, and the app looks for this header by name when it grades the step</td>
+</tr>
+<tr>
+<td><code>https://api.stripe.com</code></td>
+<td>The Named Credential URL</td>
+<td>Stripe's API endpoint</td>
+</tr>
+<tr>
+<td><code>Fundraising_Admin</code>, <code>Fundraising_User</code>, <code>Fundraising_ReadOnly</code>, <code>Fundraising_GuestDonor</code></td>
+<td>The permission sets that ship with the app</td>
+<td>These are installed by the package. You assign them; you cannot rename them, and no permission set you build yourself substitutes for one</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Your org's namespace can rewrite a name behind your back</p>
+<p>Developer and scratch orgs carry a namespace of their own, and Salesforce silently prepends it
+when you save an External Credential — so one you named <code>Stripe_Auth_Donor_Restricted</code> is
+stored as <code>yourns__Stripe_Auth_Donor_Restricted</code>. The merge formula must contain that <em>whole</em>
+stored name, and Salesforce accepts a formula naming a credential that does not exist without
+a word of complaint. Always read the <strong>Name</strong> back off the saved record rather than copying
+what you typed. Production orgs without a namespace are unaffected.</p>
 </div>
 <h2 id="the-two-stripe-keys-and-what-each-one-may-do">The two Stripe keys, and what each one may do<a class="headerlink" href="#the-two-stripe-keys-and-what-each-one-may-do" title="Permanent link">#</a></h2>
 <p>If you've never worked with Stripe's API before, start here — the rest of this page assumes it.</p>
@@ -2091,33 +2217,37 @@ different keys rather than using one everywhere.</p>
 <tr>
 <td><strong>Restricted</strong></td>
 <td><code>rk_live_…</code> / <code>rk_test_…</code></td>
-<td>The <strong>public</strong> External Credential, and — recommended — the <strong>admin</strong> one too</td>
+<td>Both External Credentials — the <strong>donor</strong> one and the <strong>admin</strong> one</td>
 <td>Only what you explicitly grant it, resource by resource. Each credential gets its own key with its own scopes.</td>
 </tr>
 <tr>
 <td><strong>Secret</strong></td>
 <td><code>sk_live_…</code> / <code>sk_test_…</code></td>
-<td>The <strong>admin</strong> External Credential, if you would rather not scope a second restricted key</td>
+<td><strong>Nowhere in this app.</strong> Not accepted on either credential</td>
 <td>Everything your Stripe account can do — unrestricted, with no scopes to choose.</td>
 </tr>
 </tbody>
 </table>
-<p>Both credentials can be restricted keys, and that is the recommended setup: two keys, each scoped
-to its own job. The full secret key remains supported on the admin credential — it needs no scoping
-and nothing a donor touches ever reaches it — but it can do anything your Stripe account can do, so
-prefer the scoped key where you are willing to build one.</p>
+<p>Both credentials take a restricted key, and there is no alternative: two keys, each scoped to its
+own job. A full secret key can do anything your Stripe account can do, and a single leaked copy is
+unrecoverable, so the app refuses to certify a setup that uses one. Nothing blocks you from saving
+it — Salesforce never lets anything read a stored secret back, so no field validation could see it —
+but the two live checks call each credential and grade it <strong>Failed</strong> when it answers a request a
+scoped key would have refused. An account with a secret key on it keeps working and can never reach
+<em>Ready to take payments</em>.</p>
 <p>A restricted key is one you build by hand. In the Dashboard press <strong>Create restricted key</strong>
 (<a href="https://docs.stripe.com/keys/restricted-api-keys">Stripe: restricted API keys</a>); Stripe lists
 every resource in your account and you set each one to <strong>None</strong>, <strong>Read</strong> or <strong>Write</strong>. Write
 includes Read, so a resource marked Write needs nothing else. Under the covers Stripe maps this to
 HTTP verbs — reading is a <code>GET</code>, creating or changing is a <code>POST</code> — and when a key reaches for
 something it wasn't granted, Stripe answers <code>403 Forbidden</code> rather than doing it quietly.</p>
-<p>The secret key is not something you build; it already exists, and you reveal it. Whichever kind of
-key you put on the admin credential, only staff-triggered and scheduled work touches it: issuing
-refunds, reading disputes, the nightly reconcilers, off-session recurring renewals, and <strong>Test
-connection</strong>. Nothing a donor's browser does reaches it. Stripe itself recommends using restricted
-keys wherever a full secret key isn't required, which is why the scoped admin key below is the
-recommendation and the unrestricted key is the fallback.</p>
+<p>The secret key is not something you build; it already exists, and you reveal it — and it is the one
+key that has no home here. Only staff-triggered and scheduled work touches the admin credential:
+issuing refunds, reading disputes, the nightly reconcilers, off-session recurring renewals, and
+<strong>Test connection</strong>. Nothing a donor's browser does reaches it. That is a reason to scope its key
+carefully, not a reason to skip scoping: Stripe itself recommends restricted keys wherever a full
+secret key isn't required (<a href="https://docs.stripe.com/keys/restricted-api-keys">Stripe: restricted API keys</a>),
+and this app requires them on both credentials.</p>
 <div class="admonition tip">
 <p class="admonition-title">Build the whole thing in test mode first</p>
 <p>A key beginning <code>rk_test_</code> or <code>sk_test_</code> only ever reaches Stripe's test mode: no real card is
@@ -2126,7 +2256,7 @@ and live are separate worlds — a PaymentIntent created with a test key is invi
 key, and vice versa. Connect a test-mode Payment Account while you build campaigns, then repeat
 the whole setup with the <code>_live_</code> pair when you're ready to accept real donations.</p>
 </div>
-<h3 id="scoping-the-public-key">Scoping the public key<a class="headerlink" href="#scoping-the-public-key" title="Permanent link">#</a></h3>
+<h3 id="scoping-the-donor-key">Scoping the donor key<a class="headerlink" href="#scoping-the-donor-key" title="Permanent link">#</a></h3>
 <p>Scope it to exactly this and nothing more — leave every other resource Stripe offers on <strong>None</strong>:</p>
 <table>
 <thead>
@@ -2184,13 +2314,12 @@ the whole setup with the <code>_live_</code> pair when you're ready to accept re
 outright or — worse, because it is silent — returns it without the expansion, leaving every
 donation with a blank processor fee and net, and leaving the refund reconciler blind to refunds
 issued in the Stripe Dashboard.</p>
-<p>The public key's whole job is to let a donor's browser start and complete a payment. Everything
+<p>The donor key's whole job is to let a donor's browser start and complete a payment. Everything
 that reverses money, reads the back-office ledger, or charges a saved card while nobody is
 watching runs on the admin key instead — and the admin key is never granted to your guest user.</p>
 <h3 id="scoping-the-admin-key">Scoping the admin key<a class="headerlink" href="#scoping-the-admin-key" title="Permanent link">#</a></h3>
-<p>You can leave the admin credential on your full secret key and skip this section entirely. If you
-would rather scope it — and you should, for the same reason you scoped the public one — build a
-<strong>second</strong> restricted key with exactly these permissions:</p>
+<p>This section is not optional. Build a <strong>second</strong> restricted key — separate from the donor one, and
+never your full secret key — with exactly these permissions:</p>
 <table>
 <thead>
 <tr>
@@ -2252,18 +2381,24 @@ the key as <strong>working, without the account name</strong>. That is the expec
 only positive proof available that the key an anonymous visitor's session can reach cannot issue
 a refund.</p>
 <h2 id="one-credential-or-two">One credential, or two?<a class="headerlink" href="#one-credential-or-two" title="Permanent link">#</a></h2>
-<p>Two is the default and the safer answer. One is supported.</p>
+<p>Two. One still functions, but it can no longer be certified.</p>
 <p>If you point both fields at the same Named Credential, everything works — the app routes both
 donor-facing and back-office calls to it, and nothing breaks. What you give up is the guarantee:
-your site guest user is granted whatever credential the public field names, so a single shared
-credential means an anonymous visitor's session holds a key that can issue refunds. The Payments
-panel marks that configuration <strong>amber</strong> rather than green and says so plainly, every time you
-open it. It will not stop you, and it will not pretend the setup is finished either.</p>
+your site guest user is granted whatever credential the donor field names, so a single shared
+credential means an anonymous visitor's session holds a key that can issue refunds. There is no
+way to scope one key correctly for both roles at once — the donor role requires <em>Refunds: None</em>
+and the admin role requires <em>Refunds: Write</em>.</p>
+<p>Because of that, the Payments panel grades both key-scope checks <strong>Failed</strong> in shared mode, and a
+shared account can never reach <em>Ready to take payments</em>. This is a change from earlier releases,
+which marked the configuration amber: the account still takes donations exactly as before, and an
+upgrade breaks nothing, but the panel no longer offers a shade of green for a setup that cannot be
+scoped. The credential-shape rows above them stay amber, since the credentials themselves are
+built correctly — it is the sharing that cannot be graded good.</p>
 <p>Shared mode also switches off the guest-user detector described below: with one principal there is
-nothing to compare, so the check would fire permanently and tell you only what the amber already
-said.</p>
-<p>Split them when you can. It costs one extra credential and one extra permission set, and it is
-the difference between "nobody has abused this yet" and "nobody can."</p>
+nothing to compare, so the check would fire permanently and tell you only what the failed key-scope
+rows already said.</p>
+<p>Split them. It costs one extra credential and one extra permission set, and it is the difference
+between "nobody has abused this yet" and "nobody can."</p>
 <div class="admonition tip">
 <p class="admonition-title">The two checkboxes Salesforce gets wrong</p>
 <p>A brand-new Named Credential ships with <strong>Generate Authorization Header</strong> ticked and <strong>Allow
@@ -2293,14 +2428,17 @@ Callouts</em> checkbox or a credential's URL, because Salesforce doesn't expose 
 callout checkboxes are set correctly, who holds which permission set, and the Payment Account
 itself. What it can't, it says so plainly rather than showing you an error — the one thing this
 panel will never do is state something about your org that it did not actually read.</p>
-<p>Amber never blocks you, and the guide still reaches <strong>ready</strong> with amber steps on it. Two live
-calls settle the rest between them: step 10's probe proves the key your guest user holds really
-is restricted, and step 11's <strong>Test connection</strong> proves the whole chain — key, header, callout
-options, namespace grant — actually works end to end. Both are read-only and move no money.</p>
+<p>Amber never blocks you, and the guide still reaches <strong>ready</strong> with amber steps on it. Three
+live calls settle the rest between them: step 10's probe proves the key your guest user holds
+really is restricted, step 11's proves your back-office key is a scoped restricted key rather
+than your full secret key, and step 12's <strong>Test connection</strong> proves the whole chain — key,
+header, callout options, namespace grant — actually works end to end. All three are read-only
+and move no money. Unlike amber, a failed probe <em>does</em> block: the guide cannot reach <strong>ready</strong>
+while either key-scope step is red.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Public donations need the guest user grant</p>
-<p>Granting the <strong>public</strong> credential to your site's <strong>guest user</strong> (step 8) is the one step that
+<p>Granting the <strong>donor</strong> credential to your site's <strong>guest user</strong> (step 8) is the one step that
 widens what an anonymous visitor can reach through your org, so it is deliberately yours to
 make — the package never does it quietly on your behalf.</p>
 <p>Public donations fail at the payment step until you do it, even though everything else on the
@@ -2312,18 +2450,21 @@ reach a shared org-level identity, never a per-user one.</p>
 <div class="admonition danger">
 <p class="admonition-title">A guest user must never hold the admin credential</p>
 <p>Step 8 asks two questions, not one. As well as checking that your site guest user <em>does</em> hold
-a credential grant, it asks you to confirm that the grant is the <strong>public</strong> one and not the
+a credential grant, it asks you to confirm that the grant is the <strong>donor</strong> one and not the
 admin one — and it names the exact permission sets your guest user holds so you can go and
 check:</p>
 <blockquote>
-<p>1 site guest user can reach a credential through <code>Stripe_Public_Access</code>, so public donation
-pages can charge a card. Confirm that set grants the PUBLIC credential only — a guest holding
-the admin credential can issue refunds. "Prove the public key is restricted" proves it from
-the other side.</p>
+<p>1 site guest user can reach a credential through <code>Stripe_Credential_Access</code>, so public
+donation pages can charge a card. Confirm that set grants the DONOR credential only — a guest
+holding the admin credential can issue refunds. "Prove the donor key is restricted" proves it
+from the other side.</p>
 </blockquote>
+<p>The permission-set name in that sentence is <em>your</em> name, read back off your org — the panel is
+quoting whatever you called the set, not a name it expects.</p>
 <p>That state is exactly what running two credentials exists to prevent. Whether the admin
-credential carries a scoped key or the full secret key, anything reaching it can refund a
-charge and read your back-office ledger — and on a full secret key, act on your Stripe account
+credential is scoped to refunds and disputes, anything reaching it can refund a
+charge and read your back-office ledger — and if someone put a full secret key there, act on
+your Stripe account
 outside the donation path entirely. A guest user's principal is reachable
 by every anonymous visitor to your public pages, so a grant made there is a live exposure
 rather than a piece of setup still outstanding.</p>
@@ -2333,7 +2474,8 @@ credential the grant belongs to — that record isn't queryable from packaged Ap
 names the sets rather than claiming a pairing it never actually read. Step 10 catches the same
 exposure from the other direction and does grade it <strong>red</strong>: it makes a real refund-shaped call
 on the key your guest user can reach, and a key that answers instead of refusing is a key with
-refund rights sitting on the public credential — either your admin key or your secret key.</p>
+refund rights sitting on the donor credential — the admin key, or a secret key that should
+not be in the org at all.</p>
 <p><strong>The fix, if the answer is wrong, is one change in Setup:</strong> open the permission set that
 carries the <em>admin</em> External Credential Principal Access grant and remove your site guest user
 from it. The guest user should hold one credential and one only — the public, restricted,

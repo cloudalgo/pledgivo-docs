@@ -2049,19 +2049,22 @@ read access to Campaign</strong> step reads the grant back and reports <strong>D
 <p>Finally, grant the <strong>public</strong> Stripe credential to that same Guest User — the same <strong>Builder →
 Settings → General → Guest User Profile → View Users</strong> route as above. Salesforce does not let a
 managed permission set grant access to an external credential principal, so this package can never
-ship that grant — you create your own permission set holding that credential's <code>OrgPrincipal</code> and
+ship that grant — you create your own permission set (name it whatever you like) holding that
+credential's principal and
 assign it to the guest user as well as to your fundraising staff. Keep the <strong>admin</strong> credential's
 grant on a <em>separate</em> permission set that the guest user is never assigned: it carries the full
 secret key, so a guest user holding it can issue refunds. Unlike the Public Access toggle above,
 this one <strong>is</strong> machine-checked: the un-numbered guest-credential row at the foot of the Site &amp;
 Domain panel reads the grant back via <code>SetupEntityAccess</code> and reports <strong>Done</strong> once a permission
-set granting the public credential's principal is assigned to the site's guest user, or <strong>Pending</strong>
+set granting the donor credential's principal is assigned to the site's guest user, or <strong>Pending</strong>
 with the specific reason (no grant found at all vs. granted but not assigned to this guest user)
 otherwise. That row grades the
-public credential only — on the Payments panel, <strong>Let your public site use the credential</strong> names
+donor credential only — on the Payments panel, <strong>Let your public site use the credential</strong> names
 the exact permission sets your guest user holds so you can confirm none of them is the admin one,
-and <strong>Prove the public key is restricted</strong> catches the same exposure from the other side by proving
-the key a guest can reach cannot issue a refund.
+and <strong>Prove the donor key is restricted</strong> catches the same exposure from the other side by proving
+the key a guest can reach cannot issue a refund. (<strong>Prove the admin key is restricted</strong> does the
+same for the back-office key, which no guest can reach — that one is about limiting the blast radius
+if the key ever leaks, not about guest exposure.)
 Full walkthrough: <a href="../after-you-install/#grant-the-credential">Grant the Stripe credential</a>.</p>
 <h2 id="6-publish-then-activate">6. Publish, then activate<a class="headerlink" href="#6-publish-then-activate" title="Permanent link">#</a></h2>
 <p>These are two separate actions on two separate screens, and you need both. Publishing without

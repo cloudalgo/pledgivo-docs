@@ -2423,29 +2423,41 @@ integration:</p>
 <thead>
 <tr>
 <th>Pair</th>
+<th>Suggested names</th>
 <th>Key to use</th>
 <th>Who is allowed to reach it</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Public</strong> — <code>Stripe_Auth_Public</code> + <code>Stripe_Public</code></td>
+<td><strong>Donor</strong></td>
+<td><code>Stripe_Auth_Donor_Restricted</code> + <code>Stripe_Donor_Restricted</code></td>
 <td>A <strong>restricted</strong> key (<code>rk_live_…</code> / <code>rk_test_…</code>) that can create charges and nothing else</td>
 <td>Staff <strong>and</strong> the site's guest user</td>
 </tr>
 <tr>
-<td><strong>Admin</strong> — <code>Stripe_Auth_Admin</code> + <code>Stripe_Admin</code></td>
-<td>A back-office key — best a <em>second</em> restricted key scoped to refunds and reads, or your full secret key (<code>sk_live_…</code> / <code>sk_test_…</code>)</td>
+<td><strong>Admin</strong></td>
+<td><code>Stripe_Auth_Admin_Restricted</code> + <code>Stripe_Admin_Restricted</code></td>
+<td>A <strong>second restricted</strong> key, scoped to refunds and reads</td>
 <td>Staff only. <strong>Never</strong> the guest user</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Those names are suggestions, not requirements.</strong> The app reads whichever credential names you
+save on the Payment Account record, so call the pair anything your team will recognise —
+<code>Stripe_Auth_Chapter_West</code> and <code>Stripe_Chapter_West</code> if that is the Stripe account it belongs to.
+If you connect more than one Stripe account you will <em>need</em> different names for the second pair.
+The full list of what you may rename and what you may not is in
+<a href="../connecting-stripe/#which-names-are-yours-and-which-must-match">Which names are yours, and which must match</a>.</p>
+<p><strong>A full secret key (<code>sk_live_…</code> / <code>sk_test_…</code>) is not an accepted value on either credential.</strong>
+The setup guide calls each one and grades it Failed when it answers a request a scoped key would
+have refused, so an account running a secret key can never reach <em>Ready to take payments</em>.</p>
 <p>New to Stripe, or not sure which key is which and what to switch on when you create the restricted
 one? <a href="../connecting-stripe/#the-two-stripe-keys-and-what-each-one-may-do">The two Stripe keys, and what each one may do</a>
 covers it from the start, with the exact permissions to grant.</p>
 <div class="admonition info">
 <p class="admonition-title">Why the panel cannot grade this stage yet</p>
-<p>The eleven steps are graded <em>per payment account</em> — the checks read the credential a payment
+<p>The twelve steps are graded <em>per payment account</em> — the checks read the credential a payment
 account names. Until <a href="#add-the-payment-account">section 7</a> creates that account, the six
 build steps report <strong>Action needed</strong> no matter how correctly you have built them in Setup.
 That is why the panel leads with a <strong>Do this next</strong> card instead of the step list, and why
@@ -2464,13 +2476,13 @@ Build the pair first, and let the grading catch up afterwards.</p>
 <p>The external credential holds the secret; the named credential holds the URL and the callout
 options. Neither is usable without the other.</p>
 <div class="fn-steps">
-<figure class="fn-step" data-title="New external credential"><img src="../../assets/images/gs-26-extcred-new.png" alt="New External Credential form with label, name and authentication protocol" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>Security → Named Credentials → External Credentials → New</b>. Label it for humans, name it <code>Stripe_Auth_Public</code>, and set <b>Authentication Protocol</b> to <b>Custom</b> — Stripe authenticates with a bearer token, not OAuth.</figcaption></figure>
+<figure class="fn-step" data-title="New external credential"><img src="../../assets/images/gs-26-extcred-new.png" alt="New External Credential form with label, name and authentication protocol" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup → <b>Security → Named Credentials → External Credentials → New</b>. Label it for humans, name it <code>Stripe_Auth_Donor_Restricted</code>, and set <b>Authentication Protocol</b> to <b>Custom</b> — Stripe authenticates with a bearer token, not OAuth.</figcaption></figure>
 <figure class="fn-step" data-title="Saved — the related lists appear"><img src="../../assets/images/gs-27-extcred-public-saved.png" alt="Saved external credential showing the Principals and Custom Headers related lists" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Saved. The <b>Principals</b> and <b>Custom Headers</b> lists only appear after the first save, which is why this is two operations and not one. <b>Check the Name field on the saved record before you go further</b> — whatever Salesforce stored there is what the header formula must use. (This capture is from a namespaced test org taken before the 2026-09-01 namespace swap, so the saved name carries a <code>pledgivo_test__</code> prefix where yours would read <code>pledgivo__</code>; in your org the name is exactly what you typed.)</figcaption></figure>
 <figure class="fn-step" data-title="The principal and its SecretKey"><img src="../../assets/images/gs-28-extcred-principal-modal.png" alt="Create Principal modal with parameter name, sequence number and identity type" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <b>Create Principal</b> modal. Parameter name <b>OrgPrincipal</b>, <b>Sequence Number</b> 1 (required, and it defaults correctly), identity type <b>Named Principal</b>. Add one authentication parameter named <b>SecretKey</b> whose value is <code>Bearer&nbsp;rk_…</code> — <b>the word <code>Bearer</code> and a space must precede the key</b>, because the header is passed through verbatim. Once saved the value is write-only: Salesforce will never show it again, to you or to any Apex.</figcaption></figure>
-<figure class="fn-step" data-title="The Authorization header"><img src="../../assets/images/gs-29-extcred-public-header.png" alt="External credential showing its principal and an Authorization custom header" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The public credential with both pieces: the principal, and a custom header named <b>Authorization</b> whose value is <code>{!$Credential.<i>YourCredentialName</i>.SecretKey}</code>. <b>The middle of that formula is the credential's saved API name</b> — copy it from the record rather than retyping it. A formula pointing at a name that does not exist saves without complaint and fails silently at the first live donation.</figcaption></figure>
-<figure class="fn-step" data-title="The admin credential"><img src="../../assets/images/gs-30-extcred-admin-complete.png" alt="The completed admin external credential" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The second external credential, <code>Stripe_Auth_Admin</code> — identical in shape, different key, its own <code>OrgPrincipal</code>. The two share no state, which is the point: a leak of one does not expose the other.</figcaption></figure>
+<figure class="fn-step" data-title="The Authorization header"><img src="../../assets/images/gs-29-extcred-public-header.png" alt="External credential showing its principal and an Authorization custom header" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The donor credential with both pieces: the principal, and a custom header named <b>Authorization</b> whose value is <code>{!$Credential.<i>YourCredentialName</i>.<i>YourParameterName</i>}</code>. <b>The header name <code>Authorization</code> is fixed</b> — Stripe requires it and the setup guide looks for it. <b>Both halves inside the braces are names you chose</b>: the credential's saved API name and the authentication parameter you stored the key in. Copy them from the record rather than retyping them. A formula pointing at a name that does not exist saves without complaint and fails silently at the first live donation.</figcaption></figure>
+<figure class="fn-step" data-title="The admin credential"><img src="../../assets/images/gs-30-extcred-admin-complete.png" alt="The completed admin external credential" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The second external credential, <code>Stripe_Auth_Admin_Restricted</code> — identical in shape, different key, its own <code>OrgPrincipal</code>. The two share no state, which is the point: a leak of one does not expose the other.</figcaption></figure>
 <figure class="fn-step" data-title="New named credential"><img src="../../assets/images/gs-31-namedcred-new.png" alt="New Named Credential form with URL and callout options" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>Named Credentials → New</b>. URL <code>https://api.stripe.com</code>, no trailing path, and the external credential you just built. Everything else you need is on this same form — you do not have to save and re-edit.</figcaption></figure>
-<figure class="fn-step" data-title="The public named credential"><img src="../../assets/images/gs-32-namedcred-public-saved.png" alt="Saved public named credential with its callout options" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The saved public credential and the two checkboxes that decide whether any of this works. <b>Allow Formulas in HTTP Header</b> must be <b>on</b> or your merge field is sent to Stripe as literal text. <b>Generate Authorization Header</b> must be <b>off</b> or Salesforce overwrites your header with its own and Stripe answers 401. Salesforce's defaults are the wrong way round on both.</figcaption></figure>
+<figure class="fn-step" data-title="The donor named credential"><img src="../../assets/images/gs-32-namedcred-public-saved.png" alt="Saved donor named credential with its callout options" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The saved donor credential and the two checkboxes that decide whether any of this works. <b>Allow Formulas in HTTP Header</b> must be <b>on</b> or your merge field is sent to Stripe as literal text. <b>Generate Authorization Header</b> must be <b>off</b> or Salesforce overwrites your header with its own and Stripe answers 401. Salesforce's defaults are the wrong way round on both.</figcaption></figure>
 <figure class="fn-step" data-title="The admin named credential"><img src="../../assets/images/gs-33-namedcred-admin-saved.png" alt="Saved admin named credential" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The admin named credential — same URL, same two checkbox corrections, pointed at the admin external credential.</figcaption></figure>
 <figure class="fn-step" data-title="Allowed Namespaces for Callouts"><img src="../../assets/images/gs-34-namedcred-namespaces.png" alt="Named credential detail page showing the allowed namespaces field" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The step nothing warns you about. A named credential built by an admin is invisible to managed-package code until the package's namespace is listed in <b>Allowed Namespaces for Callouts</b>. It is a free-text field with no picker, so a typo fails at callout time rather than at save time. Do it on <b>both</b> credentials.</figcaption></figure>
 <figure class="fn-step" data-title="Both in the list"><img src="../../assets/images/gs-35-namedcred-both-listed.png" alt="Setup Named Credentials list showing both Stripe credentials" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Setup listing both named credentials, each a <i>Secured Endpoint</i> against <code>https://api.stripe.com</code>. This is the finished state of stage 2 — and the state that unlocks the <b>Add account</b> button back in the console.</figcaption></figure>
@@ -2491,15 +2503,18 @@ principal — the API rejects it outright. That is why these sets have to be one
 your own org, and why <code>Fundraising_Admin</code> can never ship with the grant on it.</p>
 </div>
 <p>Build one permission set per credential, so that "who can charge" and "who can refund" are two
-different answers:</p>
+different answers. <strong>Name these sets whatever you like</strong> — the app never looks for them by name; it
+discovers which of your permission sets carries the grant and reports it back to you. Something
+like <em>Stripe Donor Access</em> / <em>Stripe Admin Access</em>, or the Stripe account's own name if you run
+several, will read better in six months than anything generic:</p>
 <ol>
 <li>Setup → <strong>Permission Sets → New</strong>. Leave <strong>License</strong> as <code>--None--</code>.</li>
 <li>On the set: <strong>Apps → External Credential Principal Access → Edit</strong>.</li>
-<li>Enable the entry for your credential's principal — it reads like <code>Stripe_Auth_Public - OrgPrincipal</code> → <strong>Save</strong>.</li>
+<li>Enable the entry for your credential's principal — it reads like <code>Stripe_Auth_Donor_Restricted - OrgPrincipal</code>, or whatever you named yours → <strong>Save</strong>.</li>
 <li>On the same set: <strong>Object Settings → User External Credentials → Edit</strong>, tick <strong>Read</strong> and
    <strong>Create</strong> → <strong>Save</strong>.</li>
-<li><strong>Manage Assignments</strong> → add the people who take payments (public set) or issue refunds (admin set).</li>
-<li>Assign the <strong>public</strong> set — and only the public set — to the site guest user, via
+<li><strong>Manage Assignments</strong> → add the people who take payments (donor set) or issue refunds (admin set).</li>
+<li>Assign the <strong>donor</strong> set — and only the donor set — to the site guest user, via
    <a href="#the-guest-user">the Public Access Settings route</a>.</li>
 </ol>
 <div class="admonition danger">
@@ -2521,8 +2536,8 @@ still fail.</p>
 </div>
 <div class="fn-steps">
 <figure class="fn-step" data-title="External Credential Principal Access"><img src="../../assets/images/gs-36-extcred-principal-access.png" alt="External Credential Principal Access page listing both principals" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The page that is easy to miss — it is under <b>Apps</b> on the permission set, not under Object Settings or System Permissions. Both principals are listed, and they look almost identical: read the credential name in the row before you enable one.</figcaption></figure>
-<figure class="fn-step" data-title="Granted"><img src="../../assets/images/gs-37-extcred-access-granted.png" alt="Permission set showing the enabled external credential principal" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The grant saved on the permission set. One set can carry the grants for every gateway account you connect — you do not need a new one per account — but keep public and admin apart, because one of them is about to be assigned to an anonymous user.</figcaption></figure>
-<figure class="fn-step" data-title="The guest user's three sets"><img src="../../assets/images/gs-38-guest-user-final-permsets.png" alt="Guest user holding three permission sets" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The finished guest user: <b>Fundraising Guest Donor</b> (packaged), your <b>Campaign read</b> set, and the <b>public</b> credential set. Three sets, no more. From this moment a public donation can reach Stripe.</figcaption></figure>
+<figure class="fn-step" data-title="Granted"><img src="../../assets/images/gs-37-extcred-access-granted.png" alt="Permission set showing the enabled external credential principal" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The grant saved on the permission set. One set can carry the grants for every gateway account you connect — you do not need a new one per account — but keep donor and admin apart, because one of them is about to be assigned to an anonymous user.</figcaption></figure>
+<figure class="fn-step" data-title="The guest user's three sets"><img src="../../assets/images/gs-38-guest-user-final-permsets.png" alt="Guest user holding three permission sets" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The finished guest user: <b>Fundraising Guest Donor</b> (packaged), your <b>Campaign read</b> set, and the <b>donor</b> credential set (whatever you named it). Three sets, no more. From this moment a public donation can reach Stripe.</figcaption></figure>
 </div>
 
 <div class="admonition danger">
@@ -2530,7 +2545,7 @@ still fail.</p>
 <p>Assigning to staff but not to the site guest user is the failure mode that looks healthiest:
 internal testing works and every public donation fails at payment.</p>
 <p>The opposite mistake is worse and just as quiet. Putting the guest user on the set that grants
-the <strong>admin</strong> credential lets an anonymous visitor's session reach a full secret key, refunds
+the <strong>admin</strong> credential lets an anonymous visitor's session reach the back-office key, refunds
 included.</p>
 </div>
 <h2 id="add-the-payment-account">7. Add the payment account and prove it works<a class="headerlink" href="#add-the-payment-account" title="Permanent link">#</a></h2>
@@ -2545,7 +2560,7 @@ one exists, the donation form cannot take money and the guide cannot grade itsel
 <figure class="fn-step" data-title="Stage 2, now graded"><img src="../../assets/images/gs-42-payments-stage2-graded.png" alt="Stage 2 steps now graded green after the account was saved" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The six build steps you completed in [section 5](#build-the-credential-pair), grading green for the first time. Nothing about the credentials changed — the account gave the checks something to read.</figcaption></figure>
 <figure class="fn-step" data-title="The two live proofs"><img src="../../assets/images/gs-43-payments-stage4-test.png" alt="Stage 4 with the restricted-key check and the connection test" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> Stage 4 with both buttons now live, and the reference table of values beside them. Everything in that table is a placeholder pattern — <code>rk_test_…PUBLIC</code>, <code>{!$Credential.…SecretKey}</code>, <code>https://api.stripe.com</code> — never a real key. The console has no way to display a secret, by design.</figcaption></figure>
 <figure class="fn-step" data-title="Callout options, confirmed"><img src="../../assets/images/gs-44-callout-options-green.png" alt="The three callout option rows all reading correct" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The checkbox audit, read back from your actual credential rather than assumed: <b>Enabled for Callouts</b> on, <b>Generate Authorization Header</b> off, <b>Allow Formulas in HTTP Header</b> on. Two of those three are the opposite of Salesforce's defaults, so this row is worth reading rather than skimming.</figcaption></figure>
-<figure class="fn-step" data-title="Prove the public key is restricted"><img src="../../assets/images/gs-45-payments-restricted-key.png" alt="Payments panel with two steps left, before the connection test" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>2 steps left.</b> <i>Prove the public key is restricted</i> asks Stripe what the public key is actually allowed to do, and fails you if it turns out to be a full secret key. It is the only check that can catch that mistake — no amount of Setup inspection can, because Salesforce cannot read back a saved secret.</figcaption></figure>
+<figure class="fn-step" data-title="Prove the donor key is restricted"><img src="../../assets/images/gs-45-payments-restricted-key.png" alt="Payments panel with the key-scope check, before the connection test" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <i>Prove the donor key is restricted</i> asks Stripe what the donor key is actually allowed to do, and fails you if it turns out to carry refund rights. Its sibling, <i>Prove the admin key is restricted</i>, asks the same question of the back-office key and fails you if it turns out to be a full secret key. They are the only checks that can catch either mistake — no amount of Setup inspection can, because Salesforce cannot read back a saved secret. <i>(Filmed before the admin check was added, so the shot shows one live check where there are now two.)</i></figcaption></figure>
 <figure class="fn-step" data-title="Connection test passed"><img src="../../assets/images/gs-46-test-connection-passed.png" alt="Connection test reporting a successful Stripe response" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> <b>1 step left</b>, and step 11 answered: a real callout to Stripe under the credential you built, reporting the account Stripe replied with. This exercises the whole chain end to end — key, header, callout options, namespace grant, permission-set grant. If it passes, the credential is correct regardless of what anything else says.</figcaption></figure>
 <figure class="fn-step" data-title="The accounts table"><img src="../../assets/images/gs-47-accounts-table.png" alt="Payment accounts tab listing the configured account" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The <b>Payment accounts</b> tab — every account, its mode, its credentials and whether it is active, with the guide one tab away. Most orgs need exactly one row here; multiple accounts exist for organizations that split gifts across separate Stripe accounts.</figcaption></figure>
 </div>

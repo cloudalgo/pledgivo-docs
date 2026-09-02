@@ -2521,14 +2521,14 @@ can be <strong>deactivated but never deleted</strong> (see the callout below).</
 <td>Immediate. The processor list is built from what the package actually implements — <strong>Stripe</strong> today. There are no reserved "coming soon" options to pick and then be blocked on.</td>
 </tr>
 <tr>
-<td>Public named credential</td>
+<td>Donor Restricted Key</td>
 <td>The credential donor-facing charges authenticate with — a <strong>restricted, charge-only</strong> key, and the one your site guest user is granted</td>
-<td>Immediate. There is no secret-key field anywhere in this panel: you build the External Credential and Named Credential yourself in Setup, and the record stores only the credential's <em>name</em>. The guided checklist above the account list walks that build and then reads your org back to grade it.</td>
+<td>Immediate. Despite the name, this field holds a credential <em>name</em>, never a key: there is no secret-key field anywhere in this panel. You build the External Credential and Named Credential yourself in Setup — <strong>named whatever suits you</strong>, since nothing in the app looks them up by name — and the record stores the name you chose. That is what lets one org run several gateway accounts and tell them apart here. The guided checklist above the account list walks that build and then reads your org back to grade it.</td>
 </tr>
 <tr>
-<td>Admin named credential</td>
-<td>The credential back-office work authenticates with — the <strong>full</strong> key used by refunds, the reconcilers, the orphan sweep, off-session recurring renewals and Test connection</td>
-<td>Immediate. Never grant this one to a site guest user; step 9 of the checklist names the permission sets your guest holds and asks you to confirm this isn't among them, and step 7's probe reports a failure outright if the guest-reachable key turns out to be a full one. Naming the same credential in both fields is accepted and warns rather than blocks — the checklist then grades the affected steps amber.</td>
+<td>Admin Restricted Key</td>
+<td>The credential back-office work authenticates with — a <strong>second restricted</strong> key, scoped to refunds and the reads the reconcilers, orphan sweep, off-session recurring renewals and Test connection need</td>
+<td>Immediate, and again a credential <em>name</em> of your choosing, not a key. <strong>A full secret key is not an accepted value on either credential</strong>: steps 10 and 11 of the checklist each make one live call the scoped key should refuse, and an unrestricted key answers instead — grading the step <strong>Failed</strong> and keeping the account off <em>Ready to take payments</em> until the key is scoped. Never grant this credential to a site guest user; step 9 names the permission sets your guest holds and asks you to confirm this isn't among them. Naming the same credential in both fields is accepted and warns rather than blocks — but one key cannot be scoped two ways, so at least one of the two probes then grades <strong>Failed</strong>.</td>
 </tr>
 <tr>
 <td>Publishable key</td>
@@ -2543,7 +2543,7 @@ can be <strong>deactivated but never deleted</strong> (see the callout below).</
 <tr>
 <td><strong>Test connection</strong> button</td>
 <td>Verifies the account can reach the gateway on its <strong>admin</strong> credential</td>
-<td>Runs a real, live connectivity check against the gateway every time you click it — not cached or simulated. It says nothing about the public credential; step 7's <strong>Run the check</strong> button is what settles that one.</td>
+<td>Runs a real, live connectivity check against the gateway every time you click it — not cached or simulated. It says nothing about <em>scope</em>: step 10's and step 11's <strong>Run the check</strong> buttons are what settle whether each key is genuinely restricted.</td>
 </tr>
 </tbody>
 </table>

@@ -2111,6 +2111,26 @@ read as something you can follow rather than a blank to fill in — but the app 
 names. It reads whatever names you saved on the Payment Account record and calls those. So name
 each credential for the Stripe account, fund, chapter or region it serves, in whatever wording your
 team will recognise a year from now.</p>
+<p>This matters most the day you connect a <strong>second</strong> Stripe account. Two credentials cannot share a
+name, so the second pair needs its own — and the names you pick are what you will be reading in
+three separate places afterwards: the credential picker on each Payment Account record, the
+<strong>Payment account</strong> field you set on a campaign to route its donations, and the Payments panel's
+own account switcher. <code>Stripe_Auth_Chapter_West</code> / <code>Stripe_Chapter_West</code> next to
+<code>Stripe_Auth_Gala</code> / <code>Stripe_Gala</code> tells you which Stripe account a campaign's money lands in at a
+glance; <code>Stripe_Auth_Donor_Restricted_2</code> does not. Nothing technical depends on the choice, which
+is exactly why it is worth making deliberately — the app will never correct it for you.</p>
+<div class="admonition tip">
+<p class="admonition-title">Let the panel write the names for you</p>
+<p>You do not have to hand-edit four names and a merge formula to get there. On the <strong>Build the
+credentials</strong> stage, the box marked <strong>Name these credentials after</strong> takes whatever word tells
+this gateway account apart — a chapter, a fund, a legal entity — and rewrites every name the
+panel suggests around it, so <code>Chapter West</code> gives you <code>Stripe_Auth_Chapter_West_Donor</code> →
+<code>Stripe_Chapter_West_Donor</code> and the matching admin pair, ready to copy into Setup. Nothing is
+saved and nothing is created: it only changes what the instructions suggest, and it never
+renames a credential you have already built. Leave it empty and you get the role-based defaults
+in the tables below. The box disappears once all four credentials exist, because from then on
+the panel is reading your org's real names rather than proposing any.</p>
+</div>
 <p>Two things do have to match, and both are matches to something <em>you</em> chose rather than to something
 the package ships:</p>
 <table>

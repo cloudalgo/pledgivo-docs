@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-2</span>
+          <span class="fn-brand__ver">1.0.0-3</span>
         
       </a>
 
@@ -1822,11 +1822,14 @@ demonstrably needs. A guest submission is written as a staging row and picked up
 job running in an authenticated context — a guest cannot create a Contact or an Opportunity, and
 cannot read one back.</p>
 <h2 id="the-latest-scan">The latest scan<a class="headerlink" href="#the-latest-scan" title="Permanent link">#</a></h2>
-<p class="fn-chip">Scanned 1 September 2026 · Code Analyzer 0.53.0 · rule selector <code>Recommended</code></p>
+<p class="fn-chip">Scanned 2 September 2026 · Code Analyzer 0.53.0 · rule selector <code>Recommended</code></p>
 
 <p>Engines: PMD, ESLint (including the LWC and SLDS rule sets), CPD, RetireJS, and Code Analyzer's
-regex engine. Scope is the packaged source, the build and setup scripts, the widget source, and
-the documentation generators.</p>
+regex engine. Scope is <code>base/</code> — the packaged source, and only that. The gate measures what a
+subscriber installs, so a red build always means the product has a problem, never that a local
+build script does. The build and setup scripts, the widget source and the documentation generators
+were in scope until 2 September 2026 and contributed 13 findings between them; dropping them is why
+the totals below are slightly lower than the previous scan's.</p>
 <table>
 <thead>
 <tr>
@@ -1841,23 +1844,23 @@ the documentation generators.</p>
 </tr>
 <tr>
 <td>High</td>
-<td>48</td>
+<td>44</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td>3,625</td>
+<td>3,622</td>
 </tr>
 <tr>
 <td>Low</td>
-<td>17,510</td>
+<td>17,508</td>
 </tr>
 <tr>
 <td>Info</td>
-<td>897</td>
+<td>895</td>
 </tr>
 </tbody>
 </table>
-<p><strong>22,080 total</strong> — and that number needs explaining rather than burying, because five style rules
+<p><strong>22,069 total</strong> — and that number needs explaining rather than burying, because five style rules
 account for nearly nine-tenths of it:</p>
 <table>
 <thead>
@@ -1870,7 +1873,7 @@ account for nearly nine-tenths of it:</p>
 <tbody>
 <tr>
 <td><code>slds/no-hardcoded-values-slds2</code></td>
-<td>11,121</td>
+<td>11,119</td>
 <td>Literal CSS values. Every one is the <em>fallback half</em> of the <code>var(--token, value)</code> pattern this package requires, so a campaign's own branding wins when it sets a token and the intended design renders when it doesn't. <strong>Auto-fixing these would break theming for every campaign that overrides a token.</strong> They are reported and deliberately kept.</td>
 </tr>
 <tr>
@@ -1978,9 +1981,9 @@ in the code itself.</p>
 </tr>
 </tbody>
 </table>
-<p>The other 45 High findings are none of them security-tagged: four unused bindings that a bundler
-and a destructuring idiom actually require, and the remaining 41 inside vendored FFLib, which this
-package carries as source so that installing it does not force you to install a library first.</p>
+<p>The other 41 High findings are none of them security-tagged: every one of them is inside vendored
+FFLib, which this package carries as source so that installing it does not force you to install a
+library first.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a
 <a href="../../reference/analyzer-exceptions/">Code Analyzer exceptions report</a> listing each finding it does
 not fix, what the rule flags, why it is not a defect here, and how to check that for yourself

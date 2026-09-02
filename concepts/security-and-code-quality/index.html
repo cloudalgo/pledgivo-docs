@@ -1829,7 +1829,13 @@ regex engine. Scope is <code>base/</code> — the packaged source, and only that
 subscriber installs, so a red build always means the product has a problem, never that a local
 build script does. The build and setup scripts, the widget source and the documentation generators
 were in scope until 2 September 2026 and contributed 13 findings between them; dropping them is why
-the totals below are slightly lower than the previous scan's.</p>
+the totals below are slightly lower than the previous scan's. A further eight Low findings went the
+same day without being descoped: five were fixed — three unfiltered SOQL reads in the post-install
+and setup paths, and an SLDS grid class this package was overriding instead of owning — and three
+were given a written verdict and suppressed against that one file and that one rule, so each rule
+carries on enforcing everywhere else. The Low count below falls by five rather than eight, because
+the regression tests written for those fixes are themselves three more test methods without a
+<code>System.runAs</code> wrapper, which is the largest style rule in the table further down.</p>
 <table>
 <thead>
 <tr>
@@ -1852,7 +1858,7 @@ the totals below are slightly lower than the previous scan's.</p>
 </tr>
 <tr>
 <td>Low</td>
-<td>17,508</td>
+<td>17,503</td>
 </tr>
 <tr>
 <td>Info</td>
@@ -1860,7 +1866,7 @@ the totals below are slightly lower than the previous scan's.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>22,069 total</strong> — and that number needs explaining rather than burying, because five style rules
+<p><strong>22,064 total</strong> — and that number needs explaining rather than burying, because five style rules
 account for nearly nine-tenths of it:</p>
 <table>
 <thead>

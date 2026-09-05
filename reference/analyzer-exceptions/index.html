@@ -1754,6 +1754,61 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#stripejs-loaded-from-jsstripecom-in-the-two-visualforce-payment-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stripe.js loaded from js.stripe.com in the two Visualforce payment pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identifiers-named-credential-signature-that-hold-no-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identifiers named credential / signature that hold no secret
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#field-names-that-merely-contain-sign-auth-token-or-credit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Field names that merely contain sign, auth, token or credit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fields-that-hold-a-named-credentials-name-not-a-key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields that hold a Named Credential's name, not a key
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-record-capability-tokens-idempotency-keys-and-sha-256-hashes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-record capability tokens, idempotency keys and SHA-256 hashes
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1831,13 +1886,13 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>High</td>
-<td style="text-align: right;">44</td>
+<td style="text-align: right;">46</td>
 <td>Every one, individually justified below</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">3,695</td>
-<td>5 carrying a <code>Security</code> tag, justified below</td>
+<td style="text-align: right;">3,722</td>
+<td>33 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
@@ -1851,8 +1906,8 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>23,063</strong></td>
-<td><strong>49 individually justified</strong></td>
+<td style="text-align: right;"><strong>23,092</strong></td>
+<td><strong>79 individually justified</strong></td>
 </tr>
 </tbody>
 </table>
@@ -2077,8 +2132,218 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="stripejs-loaded-from-jsstripecom-in-the-two-visualforce-payment-pages">Stripe.js loaded from js.stripe.com in the two Visualforce payment pages<a class="headerlink" href="#stripejs-loaded-from-jsstripecom-in-the-two-visualforce-payment-pages" title="Permanent link">#</a></h3>
+<p class="ca-meta"><strong>Working as designed</strong> &middot; 2 findings &middot; <code>LoadJavaScriptHtmlScript</code></p>
+
+<p><strong>What the rule flags.</strong> PMD's LoadJavaScriptHtmlScript (AppExchange rule set) flags a <code>&lt;script src&gt;</code> that points at an external host. The review expects JavaScript to ship inside the package as a static resource, so that the code Salesforce reviewed is the code that runs.</p>
+<p><strong>Why it is not a defect here.</strong> Stripe.js is the one script that cannot be bundled. Stripe requires it to be loaded from <code>https://js.stripe.com/v3/</code> at page load and forbids self-hosting, because the library is what keeps card data out of the merchant's origin (PCI DSS SAQ A eligibility) and Stripe patches it in place without a version change. Loading a frozen copy would ship a payment library that is out of date the day it is built. The package confines the load to exactly these two Visualforce pages, which exist only to host the Payment Element in an iframe and to receive the 3-D Secure / bank-authentication redirect; no Lightning Web Component loads any external JavaScript or CSS.</p>
+<p><strong>How to verify.</strong> <code>grep -rn 'loadScript\|loadStyle' base/main/default/lwc</code> returns nothing, and these two pages are the only <code>&lt;script src=</code> in the package. <code>js.stripe.com</code> is a packaged CSP trusted site. The exception is written up as FP-9 in docs/security/appexchange-security-review-readiness.md, and the pages carry the reason in a comment beside the tag.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line(s)</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base/main/default/pages/stripePayment.page</code></td>
+<td>40</td>
+<td><code>&lt;script src="https://js.stripe.com/v3/"&gt;</code> on the iframe host page for the Payment Element.</td>
+</tr>
+<tr>
+<td><code>base/main/default/pages/stripePaymentReturn.page</code></td>
+<td>28</td>
+<td>Same tag on the 3-D Secure / bank-authentication return page, which must call Stripe.js to read the redirect result.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="identifiers-named-credential-signature-that-hold-no-secret">Identifiers named credential / signature that hold no secret<a class="headerlink" href="#identifiers-named-credential-signature-that-hold-no-secret" title="Permanent link">#</a></h3>
+<p class="ca-meta"><strong>False positive</strong> &middot; 10 findings &middot; <code>AvoidHardcodedCredentialsInFieldDecls</code>, <code>AvoidHardcodedCredentialsInVarAssign</code>, <code>AvoidHardcodedCredentialsInVarDecls</code></p>
+
+<p><strong>What the rule flags.</strong> PMD's AvoidHardcodedCredentialsInVarDecls / InVarAssign / InFieldDecls (AppExchange rule set) flag a variable, field or assignment whose identifier looks like a credential (<code>credential</code>, <code>key</code>, <code>secret</code>, <code>signature</code>, ...) and whose right-hand side is a string, on the theory that the string is the secret.</p>
+<p><strong>Why it is not a defect here.</strong> Every flagged site is the identifier pattern matching a name, not a value. Two families: (1) the value is a Named Credential's <strong>API name</strong>, never its contents — <code>'callout:' + acct.Stripe_Donor_Restricted_Key__c</code> is the exact shape AGENTS.md Rule 9 mandates for consuming a credential, and the setup guide's <code>credentials</code> / <code>credential</code> locals hold the names an admin typed for the credentials they built by hand; (2) the identifier is about something else entirely — <code>NO_CREDENTIAL_YET</code> is the sentinel label the setup checklist shows before an admin has created a credential, and the two <code>Signature</code> sites are the default sign-off line of outbound email (<code>'our team'</code>, <code>'The &lt;org&gt; team'</code>). No secret material exists anywhere in package source: the only place a Stripe key lives is inside a Named Credential the subscriber builds in Setup, which Apex cannot read back.</p>
+<p><strong>How to verify.</strong> <code>Payment_Account__c.Stripe_*_Restricted_Key__c</code> are Text(80) fields whose <code>&lt;description&gt;</code> states they hold a Named Credential name, consumed as <code>'callout:' + name</code>. <code>scripts/lint/security-review-scan.py</code> inventories every <code>key</code>/<code>token</code>/<code>secret</code>-named field on each CI run against a baseline. The Named-Credential-only rule is FP-4 in docs/security/appexchange-security-review-readiness.md.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line(s)</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base/main/default/classes/payment/service/PaymentSetupGuideService.cls</code></td>
+<td>116</td>
+<td><code>NO_CREDENTIAL_YET = 'No credential yet'</code> — the label the setup checklist shows before an admin has built a Named Credential.</td>
+</tr>
+<tr>
+<td><code>base/main/default/classes/payment/service/PaymentSetupGuideService.cls</code></td>
+<td>906, 906, 906, 906, 1570</td>
+<td><code>String credentials</code> / <code>String credential</code> locals holding Named Credential <strong>names</strong> while the guide checks which ones the admin has created.</td>
+</tr>
+<tr>
+<td><code>base/main/default/classes/payment/stripe/StripeGateway.cls</code></td>
+<td>132, 133</td>
+<td><code>'callout:' + acct.Stripe_*_Restricted_Key__c</code> — the mandated way to address a Named Credential; the field holds its name.</td>
+</tr>
+<tr>
+<td><code>base/main/default/classes/setup/controller/PostInstallHandler.cls</code></td>
+<td>145</td>
+<td>Seeds <code>Settings__c.Email_Signature__c</code> with <code>'The &lt;org name&gt; team'</code> on first install — an email sign-off.</td>
+</tr>
+<tr>
+<td><code>base/main/default/classes/setup/service/SettingsService.cls</code></td>
+<td>1039</td>
+<td><code>DEFAULT_SIGNATURE = 'our team'</code> — the default email sign-off; <em>signature</em> here is the closing line of a message.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="field-names-that-merely-contain-sign-auth-token-or-credit">Field names that merely contain sign, auth, token or credit<a class="headerlink" href="#field-names-that-merely-contain-sign-auth-token-or-credit" title="Permanent link">#</a></h3>
+<p class="ca-meta"><strong>False positive</strong> &middot; 10 findings &middot; <code>ProtectSensitiveData</code></p>
+
+<p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name matches a list of sensitive-looking substrings, and asks that such data be stored in Protected Custom Settings or Protected Custom Metadata instead.</p>
+<p><strong>Why it is not a defect here.</strong> These fields match on a substring of an ordinary English word and carry nothing sensitive. <code>Designation__c</code> and <code>Default_Designation__c</code> (the fund a gift is earmarked for) and <code>Campaign_Design__c.Theme_Tokens_JSON__c</code> match on <em>sign</em> and <em>token</em> — one is a lookup to a program, the other is a JSON map of CSS design-token overrides that the service layer filters against a packaged catalog. <code>Email_Signature__c</code> is the sign-off line printed on outbound email. <code>Re_Auth_Required__c</code> and <code>Re_Auth_Link_Sent_At__c</code> match on <em>auth</em> and are a checkbox and a timestamp recording that a donor must complete 3-D Secure on-session for a renewal and when they were last reminded. <code>Portal_Token_TTL_Hours__c</code> is a number of hours. <code>Soft_Credit_Automation_Enabled__c</code> matches on <em>credit</em> and is a feature toggle for soft-credit rollups; it has nothing to do with a payment card. A Protected Custom Setting could not hold any of them: they are per-record business data, and the two on <code>Settings__c</code> are admin-visible configuration that the Settings console edits.</p>
+<p><strong>How to verify.</strong> Each field's <code>&lt;description&gt;</code> in base/main/default/objects/ says what it holds. The package stores no secret in any Custom Setting, protected or not — the org-wide credentials live only in Named Credentials (FP-4 in docs/security/appexchange-security-review-readiness.md), which is what the rule's remediation is for.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line(s)</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base/main/default/objects/Campaign_Design__c/fields/Theme_Tokens_JSON__c.field-meta.xml</code></td>
+<td>1</td>
+<td>CSS design-token overrides as JSON; <em>token</em> means a CSS custom property.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Donation_Designation__c/fields/Designation__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Lookup to the fund a gift split supports; matches on <em>sign</em>.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Recurring_Designation__c/fields/Designation__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Lookup to the fund a recurring split supports; matches on <em>sign</em>.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Recurring_Donation__c/fields/Designation__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Single-fund lookup on a recurring schedule; matches on <em>sign</em>.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Recurring_Donation__c/fields/Re_Auth_Link_Sent_At__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Timestamp of the last 3-D Secure reminder email; matches on <em>auth</em>.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Recurring_Donation__c/fields/Re_Auth_Required__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Checkbox: the donor must complete 3-D Secure on-session; matches on <em>auth</em>.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Settings__c/fields/Default_Designation__c.field-meta.xml</code></td>
+<td>1</td>
+<td>18-character Id of the fallback fund, stored as text because a Custom Setting cannot hold a lookup; matches on <em>sign</em>.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Settings__c/fields/Email_Signature__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Sign-off line printed above the footer of every outbound email.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Settings__c/fields/Portal_Token_TTL_Hours__c.field-meta.xml</code></td>
+<td>1</td>
+<td>A number of hours — the ceiling on a donor-portal session's lifetime.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Settings__c/fields/Soft_Credit_Automation_Enabled__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Feature toggle for soft-credit rollups; matches on <em>credit</em>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fields-that-hold-a-named-credentials-name-not-a-key">Fields that hold a Named Credential's name, not a key<a class="headerlink" href="#fields-that-hold-a-named-credentials-name-not-a-key" title="Permanent link">#</a></h3>
+<p class="ca-meta"><strong>Working as designed</strong> &middot; 3 findings &middot; <code>ProtectSensitiveData</code></p>
+
+<p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name contains <em>key</em>, expecting the value to be a secret that belongs in a Protected Custom Setting or Protected Custom Metadata.</p>
+<p><strong>Why it is not a defect here.</strong> <code>Stripe_Donor_Restricted_Key__c</code> and <code>Stripe_Admin_Restricted_Key__c</code> are Text(80) fields holding the <strong>API name</strong> of a Named Credential the subscriber admin built by hand in Setup, and Apex consumes them as <code>'callout:' + name</code>. The key itself is inside the Named Credential and is never readable from Apex, a field, or the UI. The fields are per-Payment-Account rather than org-wide because one org can run several gateway accounts (for example one per legal entity), which a hierarchy setting cannot model. <code>Publishable_Key__c</code> holds Stripe's publishable key, which Stripe designs to be embedded in browser-side code and is sent to every donor's browser by construction; it authorises nothing on its own.</p>
+<p><strong>How to verify.</strong> Both restricted-key fields say in their <code>&lt;description&gt;</code> that they hold a name and that an unrestricted secret key is not an acceptable value for the credential behind it; <code>StripeGateway.cls</code> builds the endpoint as <code>'callout:' + acct.Stripe_Donor_Restricted_Key__c</code>. AGENTS.md Rule 9 makes this the required pattern, and FP-4 in docs/security/appexchange-security-review-readiness.md documents it for the reviewer.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line(s)</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base/main/default/objects/Payment_Account__c/fields/Publishable_Key__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Stripe publishable key — designed to be sent to the browser; secret key is never in a field.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Payment_Account__c/fields/Stripe_Admin_Restricted_Key__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Text(80): API name of the Named Credential holding the back-office restricted key.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Payment_Account__c/fields/Stripe_Donor_Restricted_Key__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Text(80): API name of the Named Credential holding the charge-only restricted key.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="per-record-capability-tokens-idempotency-keys-and-sha-256-hashes">Per-record capability tokens, idempotency keys and SHA-256 hashes<a class="headerlink" href="#per-record-capability-tokens-idempotency-keys-and-sha-256-hashes" title="Permanent link">#</a></h3>
+<p class="ca-meta"><strong>Working as designed</strong> &middot; 5 findings &middot; <code>ProtectSensitiveData</code></p>
+
+<p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name contains <em>token</em>, <em>key</em> or <em>hash</em>, expecting a secret that belongs in a Protected Custom Setting or Protected Custom Metadata.</p>
+<p><strong>Why it is not a defect here.</strong> None of these is an org-wide secret, and none could live in a setting: each is per-record transactional state. <code>Donation_Staging__c.Access_Token__c</code> is a 256-bit random capability token minted server-side for one guest checkout; it scopes three guest actions to that single staging row, cannot read any other record, and dies with the row. <code>Idempotency_Key__c</code> on <code>Donation_Staging__c</code> and <code>Guest_Request__c</code> is a client-generated request identifier whose only job is to make a double-submit reuse the first attempt; possessing one grants nothing, and the unique index on it is the race backstop. <code>Portal_Access_Token__c.Code_Hash__c</code> and <code>Session_Hash__c</code> hold the SHA-256 of the emailed sign-in code and of the browser session token respectively — the raw value is never stored, the code hash is nulled the moment the code is redeemed, and the session hash is a unique external Id so a per-request lookup is selective. Storing hashes rather than values is precisely the control the rule is asking for.</p>
+<p><strong>How to verify.</strong> The five properties of each URL-borne token (entropy, expiry, single-use, revocation, guest FLS posture) are written in the field <code>&lt;description&gt;</code> and tabulated in FP-16 of docs/security/appexchange-security-review-readiness.md. <code>SecureTokens.opaque()</code> mints the staging token; <code>DonorPortalService</code> writes only hashes to <code>Portal_Access_Token__c</code>.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Line(s)</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base/main/default/objects/Donation_Staging__c/fields/Access_Token__c.field-meta.xml</code></td>
+<td>1</td>
+<td>256-bit random capability token scoped to one staging row; properties in FP-16.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Donation_Staging__c/fields/Idempotency_Key__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Client-generated ticket-checkout attempt id; unique index is the double-submit backstop.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Guest_Request__c/fields/Idempotency_Key__c.field-meta.xml</code></td>
+<td>1</td>
+<td>Client-generated request id so a double-click cannot queue the same work twice.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Portal_Access_Token__c/fields/Code_Hash__c.field-meta.xml</code></td>
+<td>1</td>
+<td>SHA-256 of the emailed sign-in code, nulled on redemption; the code itself is never stored.</td>
+</tr>
+<tr>
+<td><code>base/main/default/objects/Portal_Access_Token__c/fields/Session_Hash__c.field-meta.xml</code></td>
+<td>1</td>
+<td>SHA-256 of the browser session token, unique external Id; the token itself is never stored.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 23,014 findings are Moderate, Low and Info style and maintainability
+<p>The other 23,013 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2196,7 +2461,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Rule set</td>
-<td><code>sf code-analyzer run --config-file code-analyzer.yml --rule-selector Recommended</code></td>
+<td><code>sf code-analyzer run --config-file code-analyzer.yml --rule-selector Recommended --rule-selector AppExchange</code> — a superset of the AppExchange security review's own <code>AppExchange</code> + <code>Recommended:Security</code> command</td>
 </tr>
 <tr>
 <td>Analyzer config</td>
@@ -2204,7 +2469,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>23,063 (after declared path exclusions)</td>
+<td>23,092 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

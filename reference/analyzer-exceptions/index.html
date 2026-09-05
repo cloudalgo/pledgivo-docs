@@ -1944,7 +1944,7 @@ defined in the triage file, not chosen per-run.</p>
 
 <p><strong>What the rule flags.</strong> PMD's ApexSharingViolations flags a class declared without <code>with sharing</code> / <code>without sharing</code> / <code>inherited sharing</code>.</p>
 <p><strong>Why it is not a defect here.</strong> These are private inner classes extending a framework base (<code>ControllerAction</code>, <code>GuestAction</code>) whose data access is gated by that framework, not by a class-level keyword. An inner class inherits its caller's sharing context, which is exactly the ambiguity the rule detects—but here it is the intended design: the base class decides, so stating a mode on the inner class would be a behavioural claim rather than a clarification. This is deliberately NOT the same call as the <code>SetupController</code> inner classes triaged separately, where adding the keyword was a genuine no-op that removed ambiguity.</p>
-<p><strong>How to verify.</strong> Verdicts recorded in docs/code-analyzer-triage-2026-09-01.md. Guest-reachable data access is enforced in the <code>GuestAction</code> framework and in the selector layer, where FLS and CRUD are asserted centrally (<code>enforceCRUD=true, enforceFLS=true</code>).</p>
+<p><strong>How to verify.</strong> The verdict record is <code>scripts/lint/analyzer-exceptions.json</code>, which this page is generated from. Guest-reachable data access is enforced in the <code>GuestAction</code> framework and in the selector layer, where FLS and CRUD are asserted centrally (<code>enforceCRUD=true, enforceFLS=true</code>).</p>
 <table>
 <thead>
 <tr>

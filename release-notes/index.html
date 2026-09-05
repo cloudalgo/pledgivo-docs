@@ -154,7 +154,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-4</span>
+          <span class="fn-brand__ver">1.0.0-5</span>
         
       </a>
 
@@ -1642,6 +1642,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#100-5-5-september-2026-pre-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.0.0-5 — 5 September 2026 · pre-release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#100-4-2-september-2026-pre-release" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1724,6 +1735,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#100-5-5-september-2026-pre-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.0.0-5 — 5 September 2026 · pre-release
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#100-4-2-september-2026-pre-release" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1804,6 +1826,28 @@
 from. Uninstall that package first, then install the current version. See
 <a href="../getting-started/installation/">Installation</a>.</p>
 </div>
+<h2 id="100-5-5-september-2026-pre-release">1.0.0-5 — 5 September 2026 · pre-release<a class="headerlink" href="#100-5-5-september-2026-pre-release" title="Permanent link">#</a></h2>
+<ul>
+<li>The staff consoles now check for a package licence seat. A user who holds the permission set
+  but no seat sees a notice in place of the console; assign seats under <strong>Setup → Installed
+  Packages → Manage Licenses</strong>. Donor and guest pages never check for a seat.</li>
+<li>Donor portal sign-in is now a two-step emailed code instead of an emailed link. The donor types
+  their email, receives an eight-character code that is good for 15 minutes and works once, and
+  types it on the next screen. Sessions end after a period of inactivity and after a fixed
+  maximum, the donor can sign out, and staff can end one by setting the donor's Portal Access
+  Token record to Revoked. Links sent before the upgrade stop working; donors simply request a
+  code. The wording on both sign-in screens comes from your Donor Portal settings — review it
+  after upgrading. See <a href="../concepts/donor-portal/">Donor portal</a> and
+  <a href="../guides/publish-donor-portal/">Publish the donor portal</a>.</li>
+<li>The Fundraisers console is rebuilt as a tabbed workspace, and a new <strong>Donors</strong> console tab
+  joins it in the app: find any donor, open them as a tab, send a portal code, print or email a
+  receipt, refund a gift, or answer a request. See <a href="../guides/donors-console/">Donors console</a>.</li>
+<li>Dialogs on record pages (refunds, campaign updates, documents, FAQs, custom questions, event
+  tickets) use the platform's standard modal. Appearance only; nothing to configure.</li>
+<li>Security-review readiness: every open finding in the package's AppExchange readiness audit is
+  closed, and the inventory is re-checked on every change. See
+  <a href="../concepts/security-and-code-quality/">Security &amp; code quality</a>.</li>
+</ul>
 <h2 id="100-4-2-september-2026-pre-release">1.0.0-4 — 2 September 2026 · pre-release<a class="headerlink" href="#100-4-2-september-2026-pre-release" title="Permanent link">#</a></h2>
 <ul>
 <li>Stripe credential fields are now named for what they must hold: a <strong>restricted</strong> key. A

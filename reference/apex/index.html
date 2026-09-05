@@ -300,6 +300,25 @@
   
 
             
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../release-notes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Release notes
+
+      </a>
+    </li>
+  
+
+            
           </ul>
         </nav>
       <div class="md-header__title fn-header__title" data-md-component="header-title">
@@ -1540,6 +1559,33 @@
     
   
     Pricing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
   
 
     
@@ -6007,6 +6053,7 @@
 <p>Turns published Campaign_Post__c rows into the two lists the public page renders: a document shelf and an update timeline. Also keeps each Document post's stored file details in step with the file attached to it.</p>
 <p>FFLib role: Service.</p>
 <p>Deliberate FFLib exception: ContentDocumentLink, ContentVersion and ContentDistribution are read with inline SOQL and ContentDistribution is inserted directly rather than through a selector and Unit of Work. These are platform file objects with no package selector, and DistributionPublicUrl is populated by the platform only after commit — a UoW-deferred insert could not return the URL in the same transaction, which is the whole point of the call.</p>
+<p>SYSTEM_MODE on every one of those reads: standard object, package cannot grant. A 2GP permission set cannot ship a grant on ContentDocumentLink, ContentVersion or ContentDistribution (AGENTS.md, Change Management), so a USER_MODE read would depend on a manual admin step the install cannot verify. Each query is keyed by the Campaign_Post__c Ids, ContentVersion Ids or ContentDocument Ids the caller already holds — the record being saved, or the file just attached to it — so no row outside the post's own attachment is reachable, and nothing read here leaves the transaction except the file details stamped onto that same post.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The two Type__c values, public so <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> can validate the type its panels send without a second copy of the strings. They are a discriminator, not a user choice — the admin never picks one, because each authoring panel owns exactly one type and passes it on the admin's behalf. Anything that is not a Document is read as an Update, so a row carrying an unexpected value still renders as text rather than as a document card with no file behind it.</p>

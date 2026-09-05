@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -693,6 +693,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -753,6 +757,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -1231,10 +1291,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sending-a-donor-their-portal-link" class="md-nav__link">
+  <a href="#sending-a-donor-their-sign-in-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sending a donor their portal link
+        Sending a donor their sign-in code
       
     </span>
   </a>
@@ -1730,10 +1790,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sending-a-donor-their-portal-link" class="md-nav__link">
+  <a href="#sending-a-donor-their-sign-in-code" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sending a donor their portal link
+        Sending a donor their sign-in code
       
     </span>
   </a>
@@ -1856,31 +1916,34 @@ the donor. Either way it is filled, so a gift never falls out of an Account-grou
 See <a href="../donations-payments/">Donations &amp; payments</a> for the full Opportunity field picture.</p>
 <h2 id="donor-facing-self-service">Donor-facing self-service<a class="headerlink" href="#donor-facing-self-service" title="Permanent link">#</a></h2>
 <p>Returning donors can manage their own recurring gifts, view their giving history, and update
-a saved payment method through the <strong>donor portal</strong> — a token-authorized page (no login
-required; possession of a mailed or emailed link <em>is</em> the access grant). See
-<a href="../../guides/publish-donor-portal/">Publish a donor portal page</a>.</p>
-<h3 id="sending-a-donor-their-portal-link">Sending a donor their portal link<a class="headerlink" href="#sending-a-donor-their-portal-link" title="Permanent link">#</a></h3>
-<p>The portal is passwordless, and the only way in is a link the donor requests for themselves. That
-is the right default and it strands three people: the donor whose link expired, the donor who
+a saved payment method through the <strong>donor portal</strong> — no login required. The donor enters their
+email, receives a short sign-in code, and types it in; nothing in the email signs them in on its
+own. See <a href="../../guides/publish-donor-portal/">Publish a donor portal page</a>.</p>
+<h3 id="sending-a-donor-their-sign-in-code">Sending a donor their sign-in code<a class="headerlink" href="#sending-a-donor-their-sign-in-code" title="Permanent link">#</a></h3>
+<p>The portal is passwordless, and the ordinary way in is a code the donor requests for themselves.
+That is the right default and it strands three people: the donor whose code expired, the donor who
 deleted the email, and the donor who is on the phone with you right now.</p>
-<p><strong>Send Portal Link</strong>, on the Contact and Account record pages, is the staff-side door into the same
-flow. It confirms before it issues, showing the address the mail will actually reach — worth
-reading in a Person Account org, where the address lives on the Account rather than on a contact
-lookup. Then it offers two ways out, because the support call has two shapes:</p>
+<p><strong>Send Portal Access Code</strong>, on the Contact and Account record pages, is the staff-side door into
+the same flow. It confirms before it issues, showing the address the mail will actually reach —
+worth reading in a Person Account org, where the address lives on the Account rather than on a
+contact lookup. Nothing is created until you press one of the two buttons, and either one replaces
+any code that donor already holds, so the previous one stops working immediately:</p>
 <ul>
-<li><strong>Send Link</strong> emails the link to the donor.</li>
-<li><strong>Show Link</strong> puts the same link on screen with a copy button, for the donor already on the phone
-  — and for the donor with no email address on file at all, who can be handed a link but never
+<li><strong>Send Code</strong> emails the code to the donor.</li>
+<li><strong>Show Code</strong> puts the same code on screen with a copy button, for the donor already on the phone
+  — and for the donor with no email address on file at all, who can be read a code but never
   mailed one.</li>
 </ul>
-<p>Either way the panel stays open afterwards showing the link that was issued, so you can read it
-out. It is not written to any log.</p>
+<p>Either way the donor still types their own email address alongside the code, so a code read out
+over the phone is not on its own enough to open someone else's dashboard.</p>
 <div class="admonition warning">
-<p class="admonition-title">Issuing a link invalidates the previous one</p>
-<p>Both buttons mint a fresh token, and a donor only ever has one live link. If they find the old
-email after you've issued a new link, the old one will no longer work — so tell them to use the
+<p class="admonition-title">Issuing a code invalidates the previous one</p>
+<p>Both buttons mint a fresh code, and a donor only ever has one live code. If they find the older
+email after you've issued a new code, the old one will no longer work — so tell them to use the
 one you just sent. That's also why the buttons become <strong>Done</strong> once used rather than staying
-pressable: pressing again would quietly invalidate the link you just handed over.</p>
+pressable: pressing again would quietly invalidate the code you just handed over. The code is
+short-lived either way — the <strong>Portal code expiry</strong> setting decides how short — and five wrong
+attempts lock it, at which point the donor needs a new one.</p>
 </div>
 <h3 id="giving-history-on-the-donors-page">Giving history on the donor's page<a class="headerlink" href="#giving-history-on-the-donors-page" title="Permanent link">#</a></h3>
 <p>The donor's record page carries a <strong>giving statement</strong> card — the same annual summary a donor can

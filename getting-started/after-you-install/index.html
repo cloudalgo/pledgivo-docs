@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -646,6 +646,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#record-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The record pages, and the part of them that is yours
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1008,6 +1019,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1068,6 +1083,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -1896,6 +1967,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#record-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The record pages, and the part of them that is yours
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2332,6 +2414,31 @@ guards the right record type if you point the Donation slot at one of your own. 
 are receipt-numbered on the same series as gateway gifts — the year-end statement shows no
 gaps.</p>
 </div>
+<h3 id="record-pages">The record pages, and the part of them that is yours<a class="headerlink" href="#record-pages" title="Permanent link">#</a></h3>
+<p><span class="fn-chip">Read once</span> — nothing to do today, but it explains a surprise that
+otherwise arrives with your first upgrade.</p>
+<p>The package ships ten Lightning record pages — for Campaign, Contact, Account, Opportunity and
+its own objects — and assigns each one as the <strong>Pledgivo app's</strong> default for that object. That
+scoping is deliberate: a Contact opened inside the Pledgivo app gets the donor page with lifetime
+giving and recurring schedules, and the same Contact opened in Sales or Service still gets
+whatever page your org already showed there. Nothing you had is replaced.</p>
+<p>The pages themselves are managed. You cannot edit them, and each upgrade updates them for you. If
+you would rather use your own page, assign it — <strong>your assignment always wins over the package's</strong>,
+and an upgrade never takes it back. The trade is that you then own it: components added in a later
+version land on the packaged page, not on yours.</p>
+<div class="admonition warning">
+<p class="admonition-title">Page layouts do not upgrade — new fields will not appear on their own</p>
+<p>Every one of these pages renders the record's fields through the standard <strong>Details</strong> section,
+and that section reads your <strong>page layout</strong>, not the Lightning page. Page layouts install
+<em>unmanaged</em>: they are yours to edit from day one, and for exactly that reason Salesforce never
+upgrades them. So when a later version adds a field, the field is installed and the app writes
+to it — but it is invisible until someone adds it to the layout in <strong>Setup → Object Manager →
+<em>object</em> → Page Layouts</strong>. Release notes name new fields for this reason; treat that list as a
+short layout to-do, not just news.</p>
+</div>
+<p>These pages are assigned for desktop. In the Salesforce mobile app, records open on whatever page
+your org already uses for them — the app's consoles and record-page components are built for a
+full-width screen, and a phone-sized version is not part of this release.</p>
 <h2 id="create-the-site">3. Create the donation site<a class="headerlink" href="#create-the-site" title="Permanent link">#</a></h2>
 <p><span class="fn-chip">Get Started step 3, part one</span></p>
 <p>Donors give on an Experience Cloud site, not inside Salesforce. Internal-only use — staff
@@ -2750,8 +2857,8 @@ band of every public donation page. They live here rather than on a page design 
 describe your organization, not a visual style — so changing a campaign's style never changes
 which privacy policy its donors are pointed at. Leave any of them blank and the footer omits it.</p>
 <p>The same panel holds your gift rules: minimum and maximum amount, suggested amounts,
-processing-fee percentage and fixed portion, the donation page path, donor portal link expiry, and
-the default thank-you button. There is no mailing address field — receipts take their address from
+processing-fee percentage and fixed portion, the donation page path, the three donor-portal
+sign-in windows (code expiry, idle timeout, session cap), and the default thank-you button. There is no mailing address field — receipts take their address from
 your Salesforce company information.</p>
 <p>The Get Started step reads back what a donor will see: <em>'Public pages show "Acme Nonprofit"'</em>. Set
 the display name before you send anyone a link.</p>

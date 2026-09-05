@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -813,6 +813,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -873,6 +877,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -1799,7 +1859,12 @@ with the two that can only be done in Salesforce Setup spelled out. The in-app
    for the optional hosts (video, stock photos) you can add later if you want them.</li>
 <li><strong>Assign the <code>Fundraising_Admin</code> permission set</strong> to the user who will complete setup.
    This grants full CRUD on every Pledgivo object plus access to the Settings console —
-   nothing in setup is reachable without it.</li>
+   nothing in setup is reachable without it. <strong>Also assign that user a package licence</strong> under
+   <strong>Setup → Installed Packages → Manage Licenses</strong> (next to the package, click <em>Manage
+   Licenses</em> and add them). A permission set opens the doors; the licence is the seat — a
+   staff user with the permission set but no seat sees a "this tab needs a fundraising
+   licence" notice on the console tabs instead of their content. Repeat both steps together
+   for every staff user you add later; donors and event attendees never need a licence.</li>
 <li><strong>Open the Pledgivo app.</strong> App Launcher → <strong>Pledgivo</strong>. The app lands on <strong>Donation
    Monitor</strong>, the tab you will live in once gifts start arriving; the <strong>Settings</strong> tab at the
    far right (visible to <code>Fundraising_Admin</code> users only) is where the rest of setup happens.</li>

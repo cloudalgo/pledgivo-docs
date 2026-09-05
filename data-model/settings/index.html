@@ -156,7 +156,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -688,6 +688,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -748,6 +752,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -1576,7 +1636,7 @@
 <p class="fn-dek">The Hierarchy Custom Setting backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>103 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>106 fields</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1751,13 +1811,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Donor_Portal_Confirmation_Message__c</code></td>
 <td>Donor Portal Confirmation Message</td>
 <td>TextArea</td>
-<td>Copy shown after a donor submits their email, explaining the link (if sent) and how long it lasts. Leave blank to use the default wording.</td>
+<td>Tell donors to enter the 8-character code you emailed them, and that it is short-lived. Phrase it conditionally ("if a matching donor record exists, we've sent a code") — the screen looks the same for an address you have no record of, so wording that states a code was definitely sent would be untrue for those visitors and leave them waiting for an email that never comes. Leave blank to use the default wording.<br><em>Docs: How long the code lasts is Portal_Code_TTL_Minutes__c, and this copy deliberately quotes no number — an admin who changes that TTL would otherwise leave a stale figure on screen. Seeded at install and repaired on upgrade by PostInstallHandler.retireSupersededPortalCopy, which rewrites this field ONLY while it still holds a wording this package itself shipped (SettingsService.isSupersededPortalConfirmationMessage, which knows every generation including the retired magic-link one). Once an admin edits it, their words are theirs forever and no upgrade will touch them again. Read at runtime through SettingsService.donorPortalConfirmationMessage().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Confirmation_Title__c</code></td>
 <td>Donor Portal Confirmation Title</td>
 <td>Text</td>
-<td>Heading shown after a donor submits their email for a portal link. Leave blank to use the default wording.</td>
+<td>Heading above the code-entry box, shown once a donor has submitted their email. Leave blank to use the default wording.</td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Empty_History_Message__c</code></td>
@@ -1811,7 +1871,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Donor_Portal_Request_Subtitle__c</code></td>
 <td>Donor Portal Request Subtitle</td>
 <td>TextArea</td>
-<td>Copy shown below the heading explaining how the magic-link email works. Leave blank to use the default wording.</td>
+<td>Tell donors what happens after they enter their email: you send an 8-character sign-in code to that address, which they type on the next screen to reach their gifts, recurring donations and receipts. Leave blank to use the default wording.<br><em>Docs: Seeded at install and repaired on upgrade by PostInstallHandler.retireSupersededPortalCopy, which rewrites this field ONLY while it still holds a wording this package itself shipped (SettingsService.isSupersededPortalRequestSubtitle). The moment an admin edits it, their words are theirs forever and no upgrade will touch them again — so an org that customized the old magic-link copy keeps describing a flow that no longer exists until someone rewrites it by hand. Read at runtime through SettingsService.donorPortalRequestSubtitle().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Request_Title__c</code></td>
@@ -2072,10 +2132,28 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SettingsService.detectAndUpdateOrgFeatures() and SetupController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. SettingsService.personAccountEnabled() would combine the two, but has no production caller — see the note above that method for why pointing isPersonAccountOrg() at it would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
 </tr>
 <tr>
-<td><code>Portal_Token_TTL_Hours__c</code></td>
-<td>Portal Link Expiry (Hours)</td>
+<td><code>Portal_Code_Max_Per_Hour__c</code></td>
+<td>Portal Sign-In Codes Per Hour</td>
 <td>Number</td>
-<td>Hours a donor-portal magic link stays valid before it expires, e.g. 3. Leave blank for the 3-hour default. Raise it only if donors report links dying before they get to them - the link is a bearer credential sitting in an inbox, so a longer window is a longer exposure.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 3h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a magic link effectively permanent). Drives how far ahead of issuance DonorPortalService sets Contact/Account.Portal_Token_Expires_At__c. The default was 24h through 1.0.0-16; it was cut to 3h because the token is neither single-use nor device-bound, so the expiry window is the whole of its security.</em></td>
+<td>Total donor portal sign-in codes this org will email in any one hour, across all supporters combined. Blank means 100; zero switches the limit off entirely. Raise it only if a genuine surge of supporters signing in is being turned away — each code sent uses one of the org's daily emails.<br><em>Docs: The sign-in code request form is public and unauthenticated, so without an org-wide ceiling a script cycling a handful of known supporter addresses can spend the whole daily email allocation - which silently kills every receipt, statement and staff notification for the rest of the day. The per-donor cooldown cannot stop that on its own, because it resets for each new address the attacker tries. Tripping this limit is SILENT: the visitor sees the same response they would have seen anyway. Saying "too many requests" here would confirm that requests are being made, and the whole sign-in flow is built so that nothing distinguishes a matched address from an unmatched one.</em></td>
+</tr>
+<tr>
+<td><code>Portal_Code_TTL_Minutes__c</code></td>
+<td>Portal Code Expiry (Minutes)</td>
+<td>Number</td>
+<td>Minutes an emailed sign-in code stays valid. Leave blank for 15. Values outside 5-60 are adjusted automatically.</td>
+</tr>
+<tr>
+<td><code>Portal_Idle_Timeout_Minutes__c</code></td>
+<td>Portal Idle Timeout (Minutes)</td>
+<td>Number</td>
+<td>Minutes of inactivity before an open donor-portal session is signed out. Leave blank for 30. Values outside 5-120 are adjusted automatically.</td>
+</tr>
+<tr>
+<td><code>Portal_Token_TTL_Hours__c</code></td>
+<td>Portal Session Cap (Hours)</td>
+<td>Number</td>
+<td>The absolute limit on how long a donor-portal session can last, in hours, no matter how active the donor is. Leave blank for the 4-hour default. Capped at 168 (7 days) so a mis-set value can't make a session effectively permanent.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 4h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a session effectively permanent). This is the ABSOLUTE cap on the session, distinct from Portal_Idle_Timeout_Minutes__c (the sliding inactivity window) and Portal_Code_TTL_Minutes__c (the emailed sign-in code's own, much shorter, redemption window) - the three fields describe three different clocks in the 2026-09-05 auth redesign. Renamed from "Portal Link Expiry (Hours)" / default 3h in that redesign, when the donor-portal credential moved from a single emailed magic link to a short-lived code plus a session token; the prior doc comment describing a magic link's inbox-exposure window no longer applied.</em></td>
 </tr>
 <tr>
 <td><code>Privacy_URL__c</code></td>

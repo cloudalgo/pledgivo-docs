@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Give returning donors magic-link, token-authorized access to their giving history and recurring gifts — no login required.">
+        <meta name="description" content="Give returning donors code-based, session-authorized access to their giving history and recurring gifts — no login required.">
       
       
       
@@ -99,7 +99,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Publish a donor portal page - Pledgivo" />
-<meta property="og:description" content="Give returning donors magic-link, token-authorized access to their giving history and recurring gifts — no login required." />
+<meta property="og:description" content="Give returning donors code-based, session-authorized access to their giving history and recurring gifts — no login required." />
 <meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/publish-donor-portal.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -107,7 +107,7 @@
 <meta property="og:url" content="https://pledgivo.cloudalgo.com/guides/publish-donor-portal/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Publish a donor portal page - Pledgivo" />
-<meta property="twitter:description" content="Give returning donors magic-link, token-authorized access to their giving history and recurring gifts — no login required." />
+<meta property="twitter:description" content="Give returning donors code-based, session-authorized access to their giving history and recurring gifts — no login required." />
 <meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/guides/publish-donor-portal.png" />
 </head>
   
@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -695,6 +695,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -758,6 +762,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -1047,10 +1107,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-token-based-not-login-based" class="md-nav__link">
+  <a href="#why-a-code-not-a-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why token-based, not login-based
+        Why a code, not a login
       
     </span>
   </a>
@@ -1080,10 +1140,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-customize-the-request-link-and-confirmation-screens" class="md-nav__link">
+  <a href="#2-customize-the-two-sign-in-screens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Customize the request-link and confirmation screens
+        2. Customize the two sign-in screens
       
     </span>
   </a>
@@ -1690,10 +1750,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-token-based-not-login-based" class="md-nav__link">
+  <a href="#why-a-code-not-a-login" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why token-based, not login-based
+        Why a code, not a login
       
     </span>
   </a>
@@ -1723,10 +1783,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-customize-the-request-link-and-confirmation-screens" class="md-nav__link">
+  <a href="#2-customize-the-two-sign-in-screens" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Customize the request-link and confirmation screens
+        2. Customize the two sign-in screens
       
     </span>
   </a>
@@ -1797,7 +1857,7 @@
 <p class="fn-eyebrow">Guides</p>
 
 <h1 id="publish-a-donor-portal-page">Publish a donor portal page<a class="headerlink" href="#publish-a-donor-portal-page" title="Permanent link">#</a></h1>
-<p class="fn-dek">Donors don't create an account or log in. A link mailed or emailed to them is the access grant — the token in the URL is the only credential.</p>
+<p class="fn-dek">Donors don't create an account or log in. They type their email, receive a short sign-in code, and type that — which opens a session that lives in the browser tab and nowhere else.</p>
 
 <p>This guide covers the admin side. For a walkthrough of what a donor sees and every self-service
 action they can take, with screenshots, see <a href="../../concepts/donor-portal/">The donor portal</a>.</p>
@@ -1819,15 +1879,46 @@ action they can take, with screenshots, see <a href="../../concepts/donor-portal
 </div>
 <p class="fn-figure-caption">Seven strings a donor reads word for word, set in one panel. Nothing here changes what the portal does — only what it says while doing it.</p>
 
-<h2 id="why-token-based-not-login-based">Why token-based, not login-based<a class="headerlink" href="#why-token-based-not-login-based" title="Permanent link">#</a></h2>
+<h2 id="why-a-code-not-a-login">Why a code, not a login<a class="headerlink" href="#why-a-code-not-a-login" title="Permanent link">#</a></h2>
 <p>Requiring donors to create a portal login is friction most never clear — a login they'll
-create once and forget. The donor portal instead uses a signed, single-purpose link
-(<code>/donor?t=…</code>); anyone with the link can view that specific donor's dashboard, and no one
-without it can. This is a deliberate trade-off: possession of the link <strong>is</strong> the
-authentication. Links are generated and delivered by Salesforce in a dedicated magic-link
-email, sent only when a donor explicitly requests access (see step 2) — never typed in or
-guessable, and the token is not a record Id and record Ids are never used to address these
-pages directly.</p>
+create once and forget. The donor portal asks for two things instead: an email address the
+donor knows, and an 8-character code delivered to the mailbox that address belongs to.</p>
+<p>Sign-in is two screens. The donor enters their email; Salesforce sends a code to it; the
+donor types the code on the next screen. A correct code is destroyed on use and exchanged for
+a <strong>session token</strong>, which the page keeps in the browser tab's own storage. Nothing is ever
+carried in the URL, so there is no address-bar token to appear in browser history, in a
+<code>Referer</code> header, or in a proxy or CDN log — and no link anyone can forward, deliberately or
+by accident, that would hand over a donor's dashboard.</p>
+<p>Four things bound a session. Three of them are durations you set in Settings; the fourth is a
+deliberate act by the donor or your staff:</p>
+<table>
+<thead>
+<tr>
+<th>Bound</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code expiry</td>
+<td>The emailed code is short-lived — 15 minutes by default. Five wrong attempts lock it, and the donor requests a new one</td>
+</tr>
+<tr>
+<td>Idle timeout</td>
+<td>A session that goes untouched for 30 minutes (default) ends itself, so an abandoned tab stops working</td>
+</tr>
+<tr>
+<td>Session cap</td>
+<td>An absolute ceiling — 4 hours by default — regardless of how active the donor is</td>
+</tr>
+<tr>
+<td>Sign Out / staff revoke</td>
+<td>The donor ends the session from the portal. Staff can end one by setting that donor's Portal Access Token record to <strong>Revoked</strong> — but the package ships no tab or related list for that object, so an admin has to open the record directly</td>
+</tr>
+</tbody>
+</table>
+<p>Record Ids are never used to address these pages: the session identifies the donor, and every
+portal action is scoped to the donor that session belongs to.</p>
 <h2 id="before-you-start">Before you start<a class="headerlink" href="#before-you-start" title="Permanent link">#</a></h2>
 <p>Confirm you have an Experience Cloud site provisioned, including a Donor Dashboard page at the
 <code>donor</code> URL (Professional edition orgs and orgs without a site can't publish this) — see
@@ -1841,13 +1932,26 @@ independent "Show <em>panel</em>" toggle — turn it on to show that panel to do
 (Under the hood these are stored as inverted <code>Donor_Portal_Hide_*__c</code> fields, but the panel
 presents them as normal, positive-framed toggles.)</p>
 <div class="fn-shot"><img src="../../assets/images/set-donor-portal.png" alt="Donor Portal settings panel"></div>
-<p class="fn-figure-caption">**What it shows.** The Donor Portal panel's Panels section — toggles for the giving summary, recurring gifts, donation history, and saved cards sections, each with helper text — and the start of the Request-Link Screen copy fields below.</p>
+<p class="fn-figure-caption">**What it shows.** The Donor Portal panel's Panels section — toggles for the giving summary, recurring gifts, donation history, and saved cards sections, each with helper text — and the start of the sign-in screen copy fields below.</p>
 
-<h2 id="2-customize-the-request-link-and-confirmation-screens">2. Customize the request-link and confirmation screens<a class="headerlink" href="#2-customize-the-request-link-and-confirmation-screens" title="Permanent link">#</a></h2>
-<p>The same panel controls the copy shown on the "request a link" screen (where a donor who
-didn't keep their original link can ask for a new one by email) and the confirmation screen
-shown after a link is requested. Both default to reasonable generic copy; personalize them
-with your org's name and tone.</p>
+<h2 id="2-customize-the-two-sign-in-screens">2. Customize the two sign-in screens<a class="headerlink" href="#2-customize-the-two-sign-in-screens" title="Permanent link">#</a></h2>
+<p>The same panel controls the copy on both steps of sign-in: the <strong>request</strong> screen, where a
+donor types the email they gave when they donated, and the <strong>confirmation</strong> screen, whose
+title and message caption the box the donor types the emailed code into. Both default to
+reasonable generic copy; personalize them with your org's name and tone.</p>
+<div class="admonition warning">
+<p class="admonition-title">Keep the confirmation message conditional</p>
+<p>The confirmation screen renders identically whether or not the address matched a donor
+record — that identical response is what stops the form being a way to test who supports
+you, and nothing you write here can change it. What flat copy ("check your inbox — your code
+is on its way") <em>does</em> do is state something untrue to a visitor you have no record of, and
+leave them waiting for an email that never arrives. Keep the hedge the default copy uses:
+<em>if a matching donor record exists</em> — it is the one wording that is accurate for both
+outcomes.</p>
+<p>For the same reason, don't quote the code's lifetime as a fixed number here — the screen
+reads it from your <strong>Portal code expiry</strong> setting, so a number typed into this field goes
+stale the moment someone changes that setting.</p>
+</div>
 <h2 id="3-set-empty-state-messaging">3. Set empty-state messaging<a class="headerlink" href="#3-set-empty-state-messaging" title="Permanent link">#</a></h2>
 <p>If a donor has no recurring gifts or no giving history yet, the portal shows an empty-state
 message rather than a blank panel — customize this too, so a first-time donor doesn't land on
@@ -1855,7 +1959,7 @@ something that reads like an error.</p>
 <h2 id="4-publish-the-experience-cloud-site">4. Publish the Experience Cloud site<a class="headerlink" href="#4-publish-the-experience-cloud-site" title="Permanent link">#</a></h2>
 <p>Publishing the underlying Experience Cloud site is a separate step from the Settings toggles
 above — Setup → Digital Experiences → your site → <strong>Publish</strong>. Settings changes take effect
-immediately for anyone with a valid link; site-level changes (a new LWC version, for example)
+immediately for anyone signed in; site-level changes (a new LWC version, for example)
 require a publish to go live for guest users.</p>
 <div class="admonition warning">
 <p class="admonition-title">Publish, then hard-reload before verifying</p>

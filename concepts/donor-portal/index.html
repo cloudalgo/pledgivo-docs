@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="What a donor sees and can change themselves — a token-authorized dashboard for giving history, recurring gifts, saved cards, tickets, and tax statements.">
+        <meta name="description" content="What a donor sees and can change themselves — a code sign-in and a session-bounded dashboard for giving history, recurring gifts, saved cards, tickets, and tax statements.">
       
       
       
@@ -99,7 +99,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="The donor portal - Pledgivo" />
-<meta property="og:description" content="What a donor sees and can change themselves — a token-authorized dashboard for giving history, recurring gifts, saved cards, tickets, and tax statements." />
+<meta property="og:description" content="What a donor sees and can change themselves — a code sign-in and a session-bounded dashboard for giving history, recurring gifts, saved cards, tickets, and tax statements." />
 <meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/donor-portal.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -107,7 +107,7 @@
 <meta property="og:url" content="https://pledgivo.cloudalgo.com/concepts/donor-portal/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="The donor portal - Pledgivo" />
-<meta property="twitter:description" content="What a donor sees and can change themselves — a token-authorized dashboard for giving history, recurring gifts, saved cards, tickets, and tax statements." />
+<meta property="twitter:description" content="What a donor sees and can change themselves — a code sign-in and a session-bounded dashboard for giving history, recurring gifts, saved cards, tickets, and tax statements." />
 <meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/donor-portal.png" />
 </head>
   
@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -693,6 +693,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -753,6 +757,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -2056,24 +2116,40 @@
 <p class="fn-dek">Every self-service action a donor can take without phoning your office — and exactly what each one does to their giving. No account, no password, no login screen.</p>
 
 <p>This page walks the portal as a donor experiences it. For the admin side — enabling panels,
-writing the request-link copy, publishing the site — see
+writing the sign-in copy, publishing the site — see
 <a href="../../guides/publish-donor-portal/">Publish a donor portal page</a>.</p>
 <h2 id="getting-in">Getting in<a class="headerlink" href="#getting-in" title="Permanent link">#</a></h2>
-<p>There is no sign-up and no password. A donor asks for a link, the link arrives by email, and the
-token in that link is the credential. Links expire — three hours after they're issued by default,
-adjustable in Settings.</p>
-<div class="fn-shot"><img src="../../assets/images/public-donor-request-link.png" alt="Donor portal request-a-link screen"></div>
-<p class="fn-figure-caption">**What it shows.** The no-token landing page at `/donor`. One email field, one button, and the terms stated plainly underneath: the link expires in three hours, and we never reveal whether an address is on file. (The screenshot predates the current default of three hours and the wording is generated from your own **Donor portal link validity** setting, so what a donor actually reads is whatever you have configured.) The three blocks below it answer the question a first-time visitor actually has — *no password to remember*, *your card is never stored here*, *everything in one place*.</p>
+<p>There is no sign-up and no password, and nothing in the email signs a donor in by itself.
+Sign-in is two screens. The donor types the email they gave when they donated; a short code —
+eight characters, no lookalike letters — arrives in that mailbox; they type the code on the next
+screen. The code is good for 15 minutes by default, and is destroyed the moment it is used, so
+the same code never works twice.</p>
+<p>What the donor gets in exchange is a <strong>session</strong>, held by the browser tab and never put in the
+address bar. It ends when they press <strong>Sign out</strong>, after 30 minutes of inactivity, or 4 hours
+after they signed in — whichever comes first. All three durations are adjustable in Settings.</p>
+<p>Closing the tab ends it <em>on that device</em> — the browser discards the token and there is nothing
+left to reuse — but the session record in Salesforce stays live until the idle window or the
+4-hour cap runs out. On a shared computer the two are not the same thing, which is why the
+portal has a <strong>Sign out</strong> button and why it is worth telling donors to use it.</p>
+<p>Staff can end a live session as well, by setting that donor's <strong>Portal Access Token</strong> record to
+<code>Revoked</code> — every subsequent request re-checks it, so the next click is refused. Be aware that
+the package ships no tab, related list, or button for that object: an admin who needs to do this
+has to open the record themselves. Day to day, a session ends because the donor signed out or
+because one of the two clocks ran out.</p>
+<p>Five wrong codes lock the one that was sent; the donor asks for a new one and starts again.</p>
+<div class="fn-shot"><img src="../../assets/images/public-donor-request-link.png" alt="Donor portal sign-in screen"></div>
+<p class="fn-figure-caption">**What it shows.** The signed-out landing page at `/donor`. One email field, one button, and the terms stated plainly underneath: we never reveal whether an address is on file. (The screenshot predates the two-step code sign-in, and the copy is yours to write — the request and confirmation wording both come from your Donor Portal settings, so what a donor actually reads is whatever you have configured.) The three blocks below it answer the question a first-time visitor actually has — *no password to remember*, *your card is never stored here*, *everything in one place*.</p>
 
 <div class="admonition note">
 <p class="admonition-title">The same response either way</p>
 <p>Submitting an address that isn't on file produces the identical confirmation screen as one that
 is. The portal never confirms or denies that someone is a donor — that would turn the form into
 a way to test whether a given person supports your organization.</p>
-<p>The same holds for a donor who asks twice. Requests inside a five-minute window don't mint a new
-link — the confirmation screen still appears, but the link already in the donor's inbox keeps
-working. Without that, anyone who knew a donor's email address could invalidate every link the
-moment it was sent, simply by submitting the form again.</p>
+<p>The same holds for a donor who asks twice. Requests inside a five-minute window don't mint a
+new code — the confirmation screen still appears, but the code already in the donor's inbox
+keeps working. Without that, anyone who knew a donor's email address could invalidate every
+code the moment it was sent, simply by submitting the form again. Nor does asking for a fresh
+code sign anyone out: an already-open session in another tab is left alone.</p>
 </div>
 <h2 id="the-dashboard">The dashboard<a class="headerlink" href="#the-dashboard" title="Permanent link">#</a></h2>
 <div class="fn-shot"><img src="../../assets/images/public-donor-dashboard.png" alt="Donor portal dashboard"></div>
@@ -2243,7 +2319,7 @@ produced.</p>
 <tbody>
 <tr>
 <td>Editing name, email, or address</td>
-<td>A public token-authorized page that can rewrite donor records is a data-integrity problem, not a convenience. Changes go through your staff.</td>
+<td>A public page that can rewrite donor records on a session alone is a data-integrity problem, not a convenience. Changes go through your staff.</td>
 </tr>
 <tr>
 <td>Permanently deleting a saved card</td>
@@ -2251,7 +2327,7 @@ produced.</p>
 </tr>
 <tr>
 <td>Seeing any other donor's data</td>
-<td>The token addresses exactly one donor. It is not a record Id, and record Ids are never used to address these pages.</td>
+<td>The session addresses exactly one donor. It is not a record Id, and record Ids are never used to address these pages.</td>
 </tr>
 <tr>
 <td>Making a new gift</td>

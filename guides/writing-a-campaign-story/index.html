@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://pledgivo.cloudalgo.com/guides/writing-a-campaign-story/">
       
       
-        <link rel="prev" href="../first-campaign/">
+        <link rel="prev" href="../donors-console/">
       
       
         <link rel="next" href="../setup-ticketed-event/">
@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -695,6 +695,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -758,6 +762,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -2056,10 +2116,12 @@ Check the images on a campaign before you re-share its link to a new audience.</
 from any host that is not on your org's <strong>CSP Trusted Sites</strong> list. Files stored in your own
 org — a Salesforce Files public link, or a hero uploaded in <strong>Designs</strong> — are served from your
 own file domain and always work. <strong>Everything else does not, until you add it.</strong></p>
-<p>The failure is silent by design. There is no error in the wizard, no warning on save, and in
-most browsers not even a broken-image icon — just an empty space where the picture should be.
-An admin who pastes a URL from their own website, checks nothing, and shares the campaign
-finds out from a donor.</p>
+<p>The failure on the page is silent: nothing errors on save, and in most browsers there is not
+even a broken-image icon — just an empty space where the picture should be. The Image popover
+and the Hero image field both notice when the address you pasted points outside your org and
+say so at that moment. Neither can read your org's trusted-site list from a browser, so the
+warning tells you what to check rather than that the image will definitely fail — but if you
+dismiss it without checking, the next person to notice is a donor.</p>
 <p>To use an outside host, add it once in <strong>Setup → Security → CSP Trusted Sites → New Trusted
 Site</strong>: the host's URL, any name you like, the <strong>Image</strong> directive ticked, and <strong>Context</strong> left
 as <em>All</em>. The full recipe and the hosts the package already trusts are in
@@ -2086,6 +2148,9 @@ design's video backdrop colour if you did not give one — with a play button an
 clicking it opens the video on YouTube in a new tab. Nothing at all is loaded from YouTube until the
 donor clicks. That costs your page no third-party requests, no cookies, and no consent banner
 question, which is why it is the default.</p>
+<p>The Video popover tells you which of the two you are about to get, every time you insert one, so you
+do not have to remember how this org is configured — it either says the video will open YouTube in a
+new tab, or that inline playback is on and reminds you that it needs the trusted site below.</p>
 <h3 id="playing-the-video-on-the-page-instead">Playing the video on the page instead<a class="headerlink" href="#playing-the-video-on-the-page-instead" title="Permanent link">#</a></h3>
 <p>If you would rather the video played in place, it takes two steps — a setting, and a one-time piece
 of org configuration you have to do yourself.</p>
@@ -2141,8 +2206,11 @@ poster card immediately.</p>
 <p>Playback uses <code>youtube-nocookie.com</code>, YouTube's privacy-enhanced host, and the player loads lazily —
 it does not fetch until the donor scrolls it into view. The player occupies the same shape as the
 poster card, so the page does not jump when you switch the setting.</p>
-<p>Story <strong>images</strong> need no trusted site at all. They load from wherever you host them, like the hero
-image.</p>
+<p>Story <strong>images</strong> need a trusted site of their own whenever they are hosted outside your org — the
+same rule as the hero image, and the same rule as the video above, only under the <strong>Image</strong>
+directive instead of <strong>Frame</strong>. See <a href="#images-and-video-are-links-not-uploads">An outside host needs a CSP trusted
+site</a> above. An image on a Salesforce Files public link
+needs nothing.</p>
 <h2 id="stories-written-before-all-this">Stories written before all this<a class="headerlink" href="#stories-written-before-all-this" title="Permanent link">#</a></h2>
 <p>Nothing needs migrating. A story written as plain paragraphs, with or without a leading <code>&gt;</code> for a
 quote, was already valid in this format and renders exactly as it did before — same paragraphs, same
@@ -2212,12 +2280,12 @@ buttons for the same effect.</p>
       <nav class="fn-foot__nav" aria-label="Footer">
         
           <a
-            href="../first-campaign/"
+            href="../donors-console/"
             class="fn-foot__page fn-foot__page--prev"
             rel="prev"
           >
             <span class="fn-foot__dir">Previous</span>
-            <span class="fn-foot__pagetitle">Set up your first campaign</span>
+            <span class="fn-foot__pagetitle">Work the Donors console</span>
           </a>
         
         

@@ -156,7 +156,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -692,6 +692,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -752,6 +756,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -2172,9 +2232,12 @@ there is no external database holding your donors, no nightly sync to reconcile,
 system that can disagree with your reports. A donation is a standard Opportunity from the moment it
 is confirmed.</p>
 <h3 id="do-donors-need-a-login">Do donors need a login?<a class="headerlink" href="#do-donors-need-a-login" title="Permanent link">#</a></h3>
-<p>No. The donor portal is reached through a private link rather than a password — donors see their
-giving history, manage recurring gifts and saved cards, and download tax statements without an
-account being created for them. See <a href="../concepts/donor-portal/">The donor portal</a>.</p>
+<p>No. A donor types the email they gave when they donated, receives an 8-character sign-in code in
+that mailbox, and enters it — two screens, no account created, no password to remember or reset.
+The code buys a session that lives in the browser tab and never appears in the address bar, so
+there is no link to forward and nothing in a browser history or a proxy log that would open
+someone's dashboard. Signed in, donors see their giving history, manage recurring gifts and saved
+cards, and download tax statements. See <a href="../concepts/donor-portal/">The donor portal</a>.</p>
 <h2 id="payments">Payments<a class="headerlink" href="#payments" title="Permanent link">#</a></h2>
 <h3 id="do-card-numbers-ever-reach-salesforce">Do card numbers ever reach Salesforce?<a class="headerlink" href="#do-card-numbers-ever-reach-salesforce" title="Permanent link">#</a></h3>
 <p>No. Stripe.js collects the card in an iframe served by Stripe and tokenizes it in the browser; the

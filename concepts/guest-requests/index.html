@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -693,6 +693,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -753,6 +757,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -1872,7 +1932,7 @@ from a stranger about <em>which</em> record to touch.</p>
 </table>
 <div class="admonition note">
 <p class="admonition-title">The Subject field <em>is</em> the authorization decision, written down</p>
-<p>When a donor submits, the controller resolves their magic-link token to a donor, finds the gift
+<p>When a donor submits, the controller resolves their portal session token to a donor, finds the gift
 or order among <strong>that donor's own records</strong>, and stamps the id it found on the request. The
 visitor never names a target. Handlers are required to act only on this field — reading a
 record id out of the payload instead would be an insecure direct object reference with an

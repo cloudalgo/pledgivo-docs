@@ -159,7 +159,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -1030,6 +1030,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1090,6 +1094,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -2279,9 +2339,19 @@ run, or not at all).</p>
 <td>Immediate — enforced server-side before any Stripe callout; also passed to the donation form as a client-side hint</td>
 </tr>
 <tr>
-<td>Donor portal link validity (hours)</td>
-<td>How long a donor's magic-link sign-in stays valid. Defaults to <strong>3 hours</strong>; the request screen and the email both quote whatever you set here, so the donor is never told a window you haven't configured</td>
-<td>Immediate for newly-issued links; does not shorten/lengthen a link already sent to a donor</td>
+<td>Portal session cap (hours)</td>
+<td>The absolute ceiling on a donor-portal session, however active the donor is. Defaults to <strong>4 hours</strong>; anything above 168 (7 days) is treated as 168</td>
+<td>Immediate for sessions started from now on. A session already open keeps the cap it was stamped with at sign-in</td>
+</tr>
+<tr>
+<td>Portal code expiry (minutes)</td>
+<td>How long the emailed 8-character sign-in code stays valid before the donor must ask for a new one. Defaults to <strong>15 minutes</strong>; values outside 5–60 are pulled back into that range</td>
+<td>Immediate for codes issued from now on. The confirmation screen quotes whatever you set here, so a donor is never told a window you have not configured</td>
+</tr>
+<tr>
+<td>Portal idle timeout (minutes)</td>
+<td>How long an open portal session may sit untouched before the donor is signed out. Defaults to <strong>30 minutes</strong>; values outside 5–120 are pulled back into that range</td>
+<td>Immediate — the window is re-read on each portal call, so a change reaches sessions that are already open</td>
 </tr>
 <tr>
 <td>Default thank-you CTA URL / label</td>
@@ -2336,7 +2406,7 @@ run, or not at all).</p>
 <tr>
 <td><strong>Reset to defaults</strong> button</td>
 <td>Resets settings to their packaged defaults</td>
-<td>Immediate, but <strong>narrower than the label suggests</strong> — it resets exactly 13 fields (the four retry/grace/dunning/retry-count values, suggested amounts, auto-receipt toggle, debug logging, the four donor-option toggles, and the two company-match follow-up fields). It does <strong>not</strong> touch org name, Tax ID, email colors/copy, min/max amounts, portal link validity, thank-you CTA, or NPSP sync toggles.</td>
+<td>Immediate, but <strong>narrower than the label suggests</strong> — it resets exactly 13 fields (the four retry/grace/dunning/retry-count values, suggested amounts, auto-receipt toggle, debug logging, the four donor-option toggles, and the two company-match follow-up fields). It does <strong>not</strong> touch org name, Tax ID, email colors/copy, min/max amounts, the three donor-portal sign-in windows, thank-you CTA, or NPSP sync toggles.</td>
 </tr>
 </tbody>
 </table>
@@ -2429,7 +2499,7 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 </tr>
 <tr>
 <td>Donor portal path</td>
-<td>Path fragment for the donor-portal link included in dunning emails</td>
+<td>Path fragment for the donor-portal link included in the sign-in-code and dunning emails (the link opens the sign-in screen; it carries no credential of its own)</td>
 <td>Immediate, but <strong>inconsistently normalized</strong>: most consumers of this value auto-fix a missing leading slash, but the Dunning email template concatenates it raw. If you omit the leading slash here, the link in dunning emails specifically can come out malformed even though everywhere else treats it the same either way. Enter it with a leading slash (e.g. <code>/donor</code>) to avoid the discrepancy.</td>
 </tr>
 </tbody>
@@ -2921,12 +2991,12 @@ portal open may not see a just-changed title, message, or visibility toggle with
 </tr>
 <tr>
 <td>Request title / subtitle</td>
-<td>Copy on the portal's magic-link request screen</td>
+<td>Copy on step 1 of sign-in, where a donor enters their email</td>
 <td>Immediate, browser-cached</td>
 </tr>
 <tr>
 <td>Confirmation title / message</td>
-<td>Copy shown after a donor requests a magic link</td>
+<td>Copy on step 2 of sign-in, captioning the box the donor types the emailed code into</td>
 <td>Immediate, browser-cached</td>
 </tr>
 <tr>
@@ -2937,11 +3007,12 @@ portal open may not see a just-changed title, message, or visibility toggle with
 </tbody>
 </table>
 <div class="admonition warning">
-<p class="admonition-title">Keep the confirmation message generic</p>
-<p>The same confirmation message is shown whether or not the entered email actually matched a
-donor — this is a deliberate anti-enumeration measure. Nothing in the code enforces this; if
-you customize the message, keep it generic yourself, or you risk leaking whether an email
-address is a donor in your system.</p>
+<p class="admonition-title">Keep the confirmation message conditional</p>
+<p>The code renders this one message whether or not the entered email matched a donor, so
+customizing it cannot leak who is on your list — the screen does not branch, and there is
+nothing for a custom string to give away. What a custom string <em>can</em> be is <strong>untrue</strong>: word
+it as a flat "we've emailed you a code" and half the people who read it were sent nothing.
+Keep the "if a matching donor record exists" hedge, or an equivalent, for that reason.</p>
 </div>
 <hr />
 <h2 id="system">System<a class="headerlink" href="#system" title="Permanent link">#</a></h2>

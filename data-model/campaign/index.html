@@ -156,7 +156,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.0.0-3</span>
+          <span class="fn-brand__ver">1.0.0-4</span>
         
       </a>
 
@@ -688,6 +688,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -748,6 +752,62 @@
     
   
     Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
   
 
     
@@ -1748,7 +1808,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Campaign_Subtype__c</code></td>
 <td>Campaign Subtype</td>
 <td>Picklist</td>
-<td>What kind of fundraiser this is. Crowdfunding runs toward a goal and shows donors a progress bar. Ongoing has no goal or end date and never closes on its own. Event sells tickets to a dated event instead of collecting gifts.<br><em>Docs: Read by CampaignService.getPublicExperienceConfig() to choose the guest shell composition, and by the campaign gallery for its badge/filter. Every value shares the single packaged Fundraising record type, so this picklist, not RecordTypeId, is the real behavioral switch — a maintainer adding a new fundraiser shape should add a value here, not a new record type.  The three labels below are the product's ONE vocabulary for these values and are mirrored verbatim in publicCampaignGallery's SUBTYPES, admFundraiserDetail's SUBTYPE pill, and the create wizard's two-question type step. Before 2026-08-23 each surface named General differently ("General Crowdfunding" here, "Campaign - general appeal" in the wizard, "Crowdfunding" in the gallery, "Campaign" in the console), so an admin could not match what they created to what the directory listed. Renaming one alone re-opens that gap.  General and Open_Donation render identically apart from the progress bar - see CampaignService.PROGRESS_BAR_SUBTYPES, which holds General alone. The distinction is the goal/deadline, not the layout, which is exactly what the labels say.  That distinction is enforced, not merely described: Campaigns.rejectGoalOnOngoing() refuses to save an Open_Donation campaign carrying a positive Goal_Amount__c (audit F-126, 2026-09-01), so the two values cannot converge on the same rendering. A record in that state is a contradiction rather than an unusual-but-valid one, and it is rejected rather than silently corrected so the admin's input is never destroyed without being reported.  The guard fires on the write that INTRODUCES the contradiction, not on every write to a row that has it. A record already in that state whose subtype and goal are both unchanged still accepts unrelated writes - refusing them would make it permanently un-editable, and because commitWork() is all-or-nothing one such row would fail an entire CampaignRollupBatch chunk of 200. Editing either half still rejects.</em></td>
+<td>What kind of fundraiser this is. Crowdfunding runs toward a goal and shows donors a progress bar. Ongoing has no goal or end date and never closes on its own. Event sells tickets to a dated event instead of collecting gifts.<br><em>Docs: Read by CampaignService.getPublicExperienceConfig() to choose the guest shell composition, and by the campaign gallery for its badge/filter. Every value shares the single packaged Fundraising record type, so this picklist, not RecordTypeId, is the real behavioral switch — a maintainer adding a new fundraiser shape should add a value here, not a new record type.  The three labels below are the product's ONE vocabulary for these values and are mirrored verbatim in publicCampaignGallery's SUBTYPES, admFundraiserRecord's SUBTYPE pill, and the create wizard's two-question type step. Before 2026-08-23 each surface named General differently ("General Crowdfunding" here, "Campaign - general appeal" in the wizard, "Crowdfunding" in the gallery, "Campaign" in the console), so an admin could not match what they created to what the directory listed. Renaming one alone re-opens that gap.  General and Open_Donation render identically apart from the progress bar - see CampaignService.PROGRESS_BAR_SUBTYPES, which holds General alone. The distinction is the goal/deadline, not the layout, which is exactly what the labels say.  That distinction is enforced, not merely described: Campaigns.rejectGoalOnOngoing() refuses to save an Open_Donation campaign carrying a positive Goal_Amount__c (audit F-126, 2026-09-01), so the two values cannot converge on the same rendering. A record in that state is a contradiction rather than an unusual-but-valid one, and it is rejected rather than silently corrected so the admin's input is never destroyed without being reported.  The guard fires on the write that INTRODUCES the contradiction, not on every write to a row that has it. A record already in that state whose subtype and goal are both unchanged still accepts unrelated writes - refusing them would make it permanently un-editable, and because commitWork() is all-or-nothing one such row would fail an entire CampaignRollupBatch chunk of 200. Editing either half still rejects.</em></td>
 </tr>
 <tr>
 <td><code>Capacity_Mode__c</code></td>

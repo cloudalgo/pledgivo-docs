@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Free for up to 200 donations a year, then a flat $299 a month for unlimited. Priced per Salesforce org — never as a percentage of what you raise.">
+        <meta name="description" content="$49 per fundraising admin a month, or $490 a year. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise.">
       
       
       
@@ -24,7 +24,7 @@
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
-  <title>Pledgivo Pricing: A Free Plan, or $299 a Month Unlimited</title>
+  <title>Pledgivo Pricing: $49 Per User, Unlimited Donations</title>
 
     
       <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
@@ -89,18 +89,18 @@
         "offers": [
           {
             "@type": "Offer",
-            "name": "Free",
-            "price": "0",
+            "name": "Pledgivo, monthly",
+            "price": "49",
             "priceCurrency": "USD",
-            "description": "Up to 200 donations per year, per Salesforce org. Every feature, and it does not expire.",
+            "description": "Per licensed fundraising admin, per month, with a three-licence minimum — from $147 a month. Every feature, unlimited donations; donors and event attendees never need a licence.",
             "url": "https://pledgivo.cloudalgo.com/pricing/"
           },
           {
             "@type": "Offer",
-            "name": "Pledgivo",
-            "price": "299",
+            "name": "Pledgivo, annual",
+            "price": "490",
             "priceCurrency": "USD",
-            "description": "Unlimited donations, per Salesforce org. $2,990 a year if paid annually.",
+            "description": "Per licensed fundraising admin, per year — two months free against monthly billing. Three-licence minimum, from $1,470 a year.",
             "url": "https://pledgivo.cloudalgo.com/pricing/"
           }
         ]
@@ -112,7 +112,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Pricing - Pledgivo" />
-<meta property="og:description" content="Free for up to 200 donations a year, then a flat $299 a month for unlimited. Priced per Salesforce org — never as a percentage of what you raise." />
+<meta property="og:description" content="$49 per fundraising admin a month, or $490 a year. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise." />
 <meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/pricing.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -120,7 +120,7 @@
 <meta property="og:url" content="https://pledgivo.cloudalgo.com/pricing/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Pricing - Pledgivo" />
-<meta property="twitter:description" content="Free for up to 200 donations a year, then a flat $299 a month for unlimited. Priced per Salesforce org — never as a percentage of what you raise." />
+<meta property="twitter:description" content="$49 per fundraising admin a month, or $490 a year. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise." />
 <meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/pricing.png" />
 </head>
   
@@ -1558,60 +1558,34 @@
      the question a first-time visitor asks before any of the six reference
      sections, so it sits directly after Home in the masthead.
 
-     doc: The largest number on the page is deliberately not a price. It used to
-     be the 0% we take of each donation; since the free plan landed it is the $0
-     itself, with 0% moved to third in the band. Both make the same argument
-     from different ends — a rival's headline is a percentage of money raised,
-     and ours is nothing at all — but a visitor deciding whether to try this is
-     answered by "free" faster than by "no commission", and leading with $299
-     buries both under a figure that looks larger than a competitor's "free".
-     The plans are set as one ruled rate card rather than floating shadowed
-     boxes: this theme is hairlines and Fraunces numerals, and the usual SaaS
-     pricing card belongs to a different design system. The paid column is
-     marked with a red rule rather than a fill, because a filled column would
-     out-shout the $0 and that figure has to stay the loudest thing here.
+     doc: PER-USER MODEL, replacing the free-plan + $299 flat model, on the
+     owner's decision of 2026-09-05. $49 per licensed user a month, $490 a year
+     (two months free), minimum three licences so the floor is $147 a month or
+     $1,470 a year. Only fundraising admins are licensed — donors, event
+     attendees and portal visitors never are. There is ONE edition: every
+     feature, unlimited donations, and no percentage of what is raised. The
+     free plan, the 200-donation ceiling, and the "Powered by Pledgivo" donor-
+     page line all belonged to the old model; anything still describing them
+     is stale.
 
-     doc: The FREE column carries the primary button and the paid column the
-     ghost one, which inverts the usual pricing page on purpose. There is one
-     door into this product and it is the free install — nobody buys a seat
-     before running a campaign, and moving up is a billing change we start by
-     talking to the customer. A primary button on the paid column would point
-     at a checkout that does not exist.
-
-     doc: Neither column ticks its donor-page credit line. A "Powered by
-     Pledgivo" line is a limitation on the free plan and an absence on the paid
-     one; a checkmark beside either is a lie about what it is. Both sit in
-     .fn-pr-tier__note under the list instead.
-
-     doc: TWO PLANS, replacing the three volume tiers, on the owner's decision
-     of 2026-08-19. The 30-day trial and the 25% nonprofit discount went with
-     them: a free plan that does not expire makes a countdown trial redundant,
-     and the discount was dropped outright rather than reworded. Anything that
-     still describes a trial or a discount is stale and belongs to the old model.
-
-     doc: THE 200-DONATION CEILING IS NOT ENFORCED IN THE PACKAGE. Nothing in
-     base/ counts donations against a plan, blocks campaign creation, or warns
-     in the settings console — the behaviour described in section 05 is a
-     commercial term this page states and a human follows up on, not something
-     the code does. It is deliberately written as what happens ("we get in touch
-     before it bites"), never as an automatic block, so the page stays true
-     until the enforcement work ships. When it does ship, revisit that answer.
-
-     doc: PRICES ARE PROVISIONAL. They must stay in step with the "Pricing Model
-     Suggestion" table in specs/02-product-overview.md, which labels itself a
-     suggestion for go-to-market planning with final pricing set by the product
-     team before the AppExchange listing. $299 appears in the rate card, in the
-     money-flow aside in section 03, and again in the worked example in section
-     04; $2,990 appears in the rate card and section 04. The same figures are in
-     the SoftwareApplication "offers" block in overrides/main.html, which only
-     renders on this page. Confirm all of them together before republishing.
+     doc: The loudest figures on the page are the 0% and the $0-for-donors,
+     not the $49. The rival's headline is a percentage of money raised; ours
+     is that the people who give and attend are never billed at all. The rate
+     card's two columns are the same plan on two billing periods, never two
+     editions — if a feature is ever restricted by billing period, the
+     "every feature" chip in the hero has to go.
 
      doc: Markup is hand-written HTML rather than markdown, matching index.md.
      Every block has a rule in the "Pricing" section at the foot of
      assets/css/field-notes.css; the two are a pair and are used by no other
      page. Links are plain relative URLs because MkDocs only rewrites links it
      parsed from markdown — mkdocs_hooks.on_post_build resolves each one against
-     the built site and fails the build on a miss. -->
+     the built site and fails the build on a miss.
+
+     doc: The same figures are in the SoftwareApplication "offers" block in
+     overrides/main.html, which only renders on this page, and in the one-line
+     summaries on index.md, faq.md and getting-started/installation.md. There
+     is no shared source — confirm all of them together before republishing. -->
 
 <div class="fn-field" aria-hidden="true">
   <div class="fn-sk fn-sk--receipt">
@@ -1648,134 +1622,133 @@
 
 <div class="fn-pr-hero">
   <p class="fn-eyebrow">Pricing</p>
-  <h1 class="fn-home-h1">Free. The whole product, <em>not a sample</em> of it.</h1>
-  <p class="fn-dek">Install from the AppExchange and run real campaigns on your own Salesforce
-  org — every feature, no credit card, no expiry date. The free plan covers your first 200
-  donations a year. Past that it is a flat $299 a month, and still never a percentage of what
+  <h1 class="fn-home-h1">Pay for your team. <em>Never</em> for your donors.</h1>
+  <p class="fn-dek">One plan: $49 a month for each fundraising admin, with a three-licence
+  minimum. Only the staff who run your fundraising need a licence — donors, event attendees and
+  portal visitors never do. Every feature, unlimited donations, and never a percentage of what
   you raise.</p>
   <div class="fn-pr-chips">
-    <span class="fn-chip">Free, not a free trial</span>
-    <span class="fn-chip">No credit card</span>
-    <span class="fn-chip">Every feature, both plans</span>
+    <span class="fn-chip">One plan, every feature</span>
+    <span class="fn-chip">Unlimited donations</span>
+    <span class="fn-chip">Donors are never billed</span>
     <span class="fn-chip">0% of every donation</span>
   </div>
 </div>
 
 <!-- doc: The zero band. Deliberately the same four-column ruled strip as the
-     home page's proof block, so the two pages read as one publication. Three of
-     the four figures are a zero or a one: the strip is a list of things you are
-     not billed for, which is the argument the rest of the page elaborates. -->
+     home page's proof block, so the two pages read as one publication. Two of
+     the four figures are a zero: the strip leads with what you are NOT billed
+     for — donors and a cut of donations — which is the argument the rest of
+     the page elaborates. -->
 <div class="fn-pr-zero">
   <div>
-    <b class="fn-pr-zero__big">$0</b>
-    <span>To install and run. Every feature, on your own org, with no card and no expiry date.</span>
+    <b class="fn-pr-zero__big">$49</b>
+    <span>Per fundraising admin, per month — or $490 a year, which is two months free.</span>
   </div>
   <div>
-    <b>200</b>
-    <span>Donations a year on the free plan. Real campaigns, real donors, real money banked.</span>
+    <b>3</b>
+    <span>Licence minimum. The whole org starts at $147 a month, or $1,470 a year.</span>
+  </div>
+  <div>
+    <b>$0</b>
+    <span>For donors and event attendees. Giving, registering and the donor portal never need a licence.</span>
   </div>
   <div>
     <b>0%</b>
     <span>Of every donation. We take no cut — not at $500 raised, and not at $500,000.</span>
-  </div>
-  <div>
-    <b>$299</b>
-    <span>A month once you outgrow it — whatever those donations turn out to be worth.</span>
   </div>
 </div>
 
 <section class="fn-pr-sec">
   <div class="fn-sec-head">
     <span class="fn-sec-head__n">01</span>
-    <h2>Two plans</h2>
-    <p>One is free and stays free. The other lifts the ceiling — not the feature list.</p>
+    <h2>One plan, two ways to pay</h2>
+    <p>The same product either way — annual billing simply makes two months of it free.</p>
   </div>
 
   <div class="fn-pr-rate">
     <div class="fn-pr-tier">
-      <div class="fn-pr-tier__tag">Start here</div>
-      <h3>Free</h3>
-      <p class="fn-pr-tier__for">Smaller programmes — and anyone who would rather run a real campaign than evaluate one.</p>
-      <div class="fn-pr-tier__price"><b>$0</b><i>/mo</i></div>
-      <span class="fn-pr-tier__unit">Per Salesforce org, no card required</span>
-      <div class="fn-pr-tier__cap">
-        <b>Up to 200</b>
-        <span>donations per year</span>
-      </div>
-      <ul>
-        <li>Every feature in the package</li>
-        <li>Unlimited campaigns and staff users</li>
-        <li>Community support</li>
-      </ul>
-      <p class="fn-pr-tier__note">Donor pages carry a small <b>Powered by Pledgivo</b> line.</p>
-      <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Install free</a>
-    </div>
-
-    <div class="fn-pr-tier fn-pr-tier--pick">
-      <div class="fn-pr-tier__tag">Most organisations</div>
+      <div class="fn-pr-tier__tag">Monthly</div>
       <h3>Pledgivo</h3>
-      <p class="fn-pr-tier__for">Year-round giving, recurring donors and ticketed events.</p>
-      <div class="fn-pr-tier__price"><b>$299</b><i>/mo</i></div>
-      <span class="fn-pr-tier__unit">Per Salesforce org — or $2,990 a year</span>
+      <p class="fn-pr-tier__for">Month to month, cancel any time. The whole package from day one.</p>
+      <div class="fn-pr-tier__price"><b>$49</b><i>/user/mo</i></div>
+      <span class="fn-pr-tier__unit">Minimum 3 licences — from $147 a month</span>
       <div class="fn-pr-tier__cap">
         <b>Unlimited</b>
         <span>donations per year</span>
       </div>
       <ul>
         <li>Every feature in the package</li>
-        <li>Unlimited campaigns and staff users</li>
-        <li>Email support, next business day</li>
+        <li>Unlimited campaigns and donations</li>
+        <li>Licences for fundraising admins only</li>
       </ul>
-      <p class="fn-pr-tier__note">Donor pages carry <b>your own branding</b> and nothing else.</p>
-      <a class="fn-btn fn-btn--ghost" href="../getting-started/installation/">Start free, move up later</a>
+      <p class="fn-pr-tier__note">Donors, event attendees and portal visitors <b>never need a licence</b>.</p>
+      <a class="fn-btn fn-btn--ghost" href="../getting-started/installation/">Install the package</a>
+    </div>
+
+    <div class="fn-pr-tier fn-pr-tier--pick">
+      <div class="fn-pr-tier__tag">Annual — two months free</div>
+      <h3>Pledgivo, billed yearly</h3>
+      <p class="fn-pr-tier__for">The same plan on an annual bill — twelve months for the price of ten.</p>
+      <div class="fn-pr-tier__price"><b>$490</b><i>/user/yr</i></div>
+      <span class="fn-pr-tier__unit">Minimum 3 licences — from $1,470 a year</span>
+      <div class="fn-pr-tier__cap">
+        <b>Unlimited</b>
+        <span>donations per year</span>
+      </div>
+      <ul>
+        <li>Every feature in the package</li>
+        <li>Unlimited campaigns and donations</li>
+        <li>Licences for fundraising admins only</li>
+      </ul>
+      <p class="fn-pr-tier__note">Works out to about <b>$41 a user a month</b>.</p>
+      <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Install the package</a>
     </div>
 
     <div class="fn-pr-rate__foot">
-      <span><b>Annual billing</b> — $2,990 a year, which is two months free.</span>
-      <span><b>Approaching 200?</b> Campaigns already running are never interrupted. We get in touch first.</span>
-      <span><b>Moving up</b> is a billing change, not a migration. Nothing is reinstalled and no data moves.</span>
+      <span><b>Who needs a licence</b> — only the staff who run your fundraising. Donors and attendees never do.</span>
+      <span><b>Adding a licence</b> is a billing change, not a project. Grant the permission set and the new admin is working the same day.</span>
+      <span><b>Questions?</b> <a href="https://cloudalgo.com/contact">Get in touch</a> — pricing, procurement or anything else.</span>
     </div>
   </div>
 </section>
 
-<!-- doc: The plans differ by annual volume, the Powered by line and support
-     level, never by feature, so this table has a single "Both plans" column
-     rather than one column per plan — a two-column grid of identical ticks
-     would be a wall of the same mark repeated twenty-six times. If a feature is
-     ever restricted to the paid plan, this table stops being true and the
-     "every feature, both plans" chip in the hero has to go with it. -->
+<!-- doc: There is one edition, so this table has a single "Included" column
+     rather than one column per plan — a grid of identical ticks would be a
+     wall of the same mark repeated twenty-six times. If a feature is ever
+     restricted by billing period or licence count, this table stops being
+     true and the "one plan, every feature" chip in the hero goes with it. -->
 <section class="fn-pr-sec">
   <div class="fn-sec-head">
     <span class="fn-sec-head__n">02</span>
-    <h2>What's in both plans</h2>
-    <p>All of it. The plans move on volume, branding and support — never on features.</p>
+    <h2>What's in the plan</h2>
+    <p>All of it. There is one edition, and the price moves only with the size of your team.</p>
   </div>
   <div class="fn-pr-tablewrap">
     <table class="fn-pr-table">
       <thead>
-        <tr><th>Capability</th><th>What you get</th><th>Both plans</th></tr>
+        <tr><th>Capability</th><th>What you get</th><th>Included</th></tr>
       </thead>
       <tbody>
         <tr><td>Donation forms</td><td>Branded, embeddable one-off and recurring giving forms on your Experience Cloud site</td><td class="tick">Included</td></tr>
         <tr><td>Recurring giving</td><td>Self-managed monthly and annual schedules, charged off-session, with dunning and retries</td><td class="tick">Included</td></tr>
         <tr><td>Campaigns</td><td>Donation, crowdfunding and event campaign types, with goal tracking and a public gallery</td><td class="tick">Included</td></tr>
         <tr><td>Events &amp; ticketing</td><td>Tiered ticket types, seat holds, guest naming and door check-in</td><td class="tick">Included</td></tr>
-        <tr><td>Donor portal</td><td>Donors update their own card, change or stop a schedule, and download receipts</td><td class="tick">Included</td></tr>
+        <tr><td>Donor portal</td><td>Donors update their own card, change or stop a schedule, and download receipts — no licence needed</td><td class="tick">Included</td></tr>
         <tr><td>Receipts &amp; email</td><td>Branded receipt and notification templates, sent from your own org</td><td class="tick">Included</td></tr>
         <tr><td>Refunds</td><td>Full and partial refunds from the donation record, netted through every rollup</td><td class="tick">Included</td></tr>
         <tr><td>NPSP</td><td>Detected automatically; recurring donations and designations sync to NPSP's own objects</td><td class="tick">Included</td></tr>
         <tr><td>Person Accounts</td><td>Detected automatically — no separate edition and no configuration</td><td class="tick">Included</td></tr>
         <tr><td>Multiple Stripe accounts</td><td>Connect more than one Stripe account and route each campaign to exactly one — separate credentials per account, and test kept apart from live</td><td class="tick">Included</td></tr>
         <tr><td>Diagnostics &amp; retention</td><td>An in-app log viewer, org configuration health checks, and a nightly purge that deletes old records past the window you set</td><td class="tick">Included</td></tr>
-        <tr><td>Staff users</td><td>Every user in the org can be granted access; the bill does not move</td><td class="tick">Unlimited</td></tr>
+        <tr><td>Donations</td><td>However many you take — the bill never moves with volume, count or value</td><td class="tick">Unlimited</td></tr>
         <tr><td>Your data</td><td>Standard Campaign, Opportunity and Contact records in your org — no external platform, no sync job</td><td class="tick">Included</td></tr>
       </tbody>
     </table>
   </div>
-  <p class="fn-pr-note">The two plans differ on exactly three things: how many donations a year
-  you can take, whether your donor pages carry a <b>Powered by Pledgivo</b> line, and whether
-  support is the community forum or email with a next-business-day reply. Every capability above
-  is in both.</p>
+  <p class="fn-pr-note">The only number on your bill is how many fundraising admins hold a licence
+  — never how many donations you took, how much they were worth, or how many donors and event
+  attendees used your public pages.</p>
 </section>
 
 <!-- doc: The money-flow diagram. The subscription box hangs off the rail on a
@@ -1819,12 +1792,12 @@
       </div>
     </div>
     <div class="fn-pr-flow__aside">
-      <b>Pledgivo — $0 or $299 a month</b>
-      <span>A flat subscription billed to you like any other software. It is never deducted from a gift.</span>
+      <b>Pledgivo — $49 a user a month</b>
+      <span>A flat per-seat subscription billed to you like any other software. It is never deducted from a gift.</span>
     </div>
     <p class="fn-pr-flow__note">Which is why the price is identical whether you raise <b>$5,000</b> or
-    <b>$5,000,000</b>. The only thing that moves you off the free plan is the <b>number</b> of
-    donations you take, never their size.</p>
+    <b>$5,000,000</b>. The only thing that moves the bill is the <b>number of licensed admins</b>,
+    never the number or size of your donations.</p>
   </div>
 </section>
 
@@ -1847,21 +1820,22 @@
   </div>
 
   <div class="fn-pr-worked">
-    <b>A year on the paid plan, at three different results</b>
+    <b>A year with three licensed admins, at three different results</b>
     <table class="fn-pr-worked__t">
       <thead>
         <tr><th>If you raise</th><th>Pledgivo costs</th><th>A 2% platform fee would cost</th></tr>
       </thead>
       <tbody>
-        <tr><td>$250,000</td><td>$3,588</td><td>$5,000</td></tr>
-        <tr><td>$500,000</td><td>$3,588</td><td>$10,000</td></tr>
-        <tr><td>$1,000,000</td><td>$3,588</td><td>$20,000</td></tr>
+        <tr><td>$250,000</td><td>$1,470</td><td>$5,000</td></tr>
+        <tr><td>$500,000</td><td>$1,470</td><td>$10,000</td></tr>
+        <tr><td>$1,000,000</td><td>$1,470</td><td>$20,000</td></tr>
       </tbody>
     </table>
-    <p class="fn-pr-worked__note">The middle column is $299 a month and does not move, because
-    our price is a function of how many donations you record, not how much they were worth — and
-    on annual billing it falls to $2,990. The right-hand column is a <b>hypothetical</b> 2% platform fee, shown to make the shape
-    of percentage-based pricing visible — it is not any particular platform's published rate. Card
+    <p class="fn-pr-worked__note">The middle column is three licences on annual billing — $490 a
+    user a year — and does not move, because our price is a function of how many admins run your
+    fundraising, never how much it raised. On monthly billing the same team is $1,764 a year. The
+    right-hand column is a <b>hypothetical</b> 2% platform fee, shown to make the shape of
+    percentage-based pricing visible — it is not any particular platform's published rate. Card
     processing sits outside all of this and is paid to Stripe on your own account, whichever way
     you fundraise.</p>
   </div>
@@ -1871,36 +1845,34 @@
   <div class="fn-sec-head">
     <span class="fn-sec-head__n">05</span>
     <h2>Questions worth asking first</h2>
-    <p>Particularly the one about reaching 200 donations mid-campaign.</p>
+    <p>Particularly the one about who actually needs a licence.</p>
   </div>
   <div class="fn-pr-faq">
     <div>
-      <h3>What counts as a donation?</h3>
-      <p>One completed gift — a single donation, one charge of a <a href="../concepts/recurring-giving/">recurring schedule</a>, or one
-      <a href="../concepts/events-ticketing/">ticket order</a>. Refunded and failed payments do not count towards the free plan's 200.</p>
+      <h3>Who needs a licence?</h3>
+      <p>Only fundraising admins — the staff who build campaigns, manage donations and configure
+      the app inside your org. Three is the minimum, and most organisations need no more than a
+      handful.</p>
     </div>
     <div>
-      <h3>Is the free plan a trial?</h3>
-      <p>No. It does not expire, it does not ask for a card, and it is not a cut-down edition — it is the
-      complete package running on your own org, with a 200-donation-a-year ceiling and a <b>Powered by
-      Pledgivo</b> line on your donor pages.</p>
+      <h3>Do donors or event attendees need one?</h3>
+      <p>Never. Giving, registering for an event, and using the <a href="../concepts/donor-portal/">donor portal</a> all happen on your
+      public pages — no licence, no login to your org, no effect on your bill.</p>
     </div>
     <div>
-      <h3>What happens when we reach 200?</h3>
-      <p>Campaigns already running keep taking donations. Nothing is switched off mid-appeal and no gift is
-      ever refused — the thing we would be interrupting is the thing you built the campaign for. What
-      the ceiling governs is starting a <em>new</em> campaign. We get in touch as you approach it and
-      move you across before it bites.</p>
+      <h3>Is there a limit on donations?</h3>
+      <p>No. Every licence includes unlimited donations, campaigns and events — the bill moves
+      with the size of your team, never with your fundraising results.</p>
     </div>
     <div>
-      <h3>What is the "Powered by Pledgivo" line?</h3>
-      <p>One line of text at the foot of your public donation pages on the free plan, linking back to us. On
-      the paid plan it is not there and your <a href="../concepts/page-sections/">donor pages</a> carry your branding only.</p>
+      <h3>Why a three-licence minimum?</h3>
+      <p>It sets the floor of the subscription: every org starts at $147 a month, or $1,470 a
+      year. You can hold more licences than you have admins today and grow into them.</p>
     </div>
     <div>
-      <h3>Is it priced per user?</h3>
-      <p>No. The subscription covers a Salesforce org and every user in it can be given access.
-      Adding staff never changes the bill.</p>
+      <h3>How does annual billing work?</h3>
+      <p>$490 a user a year instead of $49 a month — twelve months for the price of ten, about
+      $41 a user a month. The plan is otherwise identical.</p>
     </div>
     <div>
       <h3>Do you take a cut of donations?</h3>
@@ -1948,42 +1920,42 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What counts as a donation?",
+      "name": "Who needs a licence?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "One completed gift — a single donation, one charge of a recurring schedule, or one ticket order. Refunded and failed payments do not count towards the free plan's 200."
+        "text": "Only fundraising admins — the staff who build campaigns, manage donations and configure the app inside your org. Three is the minimum, and most organisations need no more than a handful."
       }
     },
     {
       "@type": "Question",
-      "name": "Is the free plan a trial?",
+      "name": "Do donors or event attendees need one?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. It does not expire, it does not ask for a card, and it is not a cut-down edition — it is the complete package running on your own org, with a 200-donation-a-year ceiling and a Powered by Pledgivo line on your donor pages."
+        "text": "Never. Giving, registering for an event, and using the donor portal all happen on your public pages — no licence, no login to your org, no effect on your bill."
       }
     },
     {
       "@type": "Question",
-      "name": "What happens when we reach 200?",
+      "name": "Is there a limit on donations?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Campaigns already running keep taking donations. Nothing is switched off mid-appeal and no gift is ever refused — the thing we would be interrupting is the thing you built the campaign for. What the ceiling governs is starting a new campaign. We get in touch as you approach it and move you across before it bites."
+        "text": "No. Every licence includes unlimited donations, campaigns and events — the bill moves with the size of your team, never with your fundraising results."
       }
     },
     {
       "@type": "Question",
-      "name": "What is the \"Powered by Pledgivo\" line?",
+      "name": "Why a three-licence minimum?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "One line of text at the foot of your public donation pages on the free plan, linking back to us. On the paid plan it is not there and your donor pages carry your branding only."
+        "text": "It sets the floor of the subscription: every org starts at $147 a month, or $1,470 a year. You can hold more licences than you have admins today and grow into them."
       }
     },
     {
       "@type": "Question",
-      "name": "Is it priced per user?",
+      "name": "How does annual billing work?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. The subscription covers a Salesforce org and every user in it can be given access. Adding staff never changes the bill."
+        "text": "$490 a user a year instead of $49 a month — twelve months for the price of ten, about $41 a user a month. The plan is otherwise identical."
       }
     },
     {
@@ -2040,11 +2012,11 @@
     </svg>
   </div>
   <div>
-    <h2>Start on the free plan. It doesn't expire.</h2>
-    <p>Install from the AppExchange, run a real campaign end to end, and decide with your own
-    numbers in front of you.</p>
+    <h2>Three licences. Every feature. Unlimited giving.</h2>
+    <p>Install the package, run a real campaign end to end, and decide with your own numbers in
+    front of you. Questions about pricing or procurement? <a href="https://cloudalgo.com/contact">Get in touch</a>.</p>
   </div>
-  <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Install free
+  <a class="fn-btn fn-btn--primary" href="../getting-started/installation/">Install the package
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
   </a>
 </div>

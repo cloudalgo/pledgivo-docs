@@ -3459,11 +3459,11 @@ body::after {
   border-bottom: 1.6px solid var(--fn-accent);
   transform: rotate(-45deg);
 }
-/* The one line per card that is NOT a tick. What separates the plans on donor
-   pages is a credit line, and a credit line is a limitation on the free plan
-   and an absence on the paid one - neither is a feature, and both read as a
-   lie with a checkmark beside them. Set below the list, in the faint ink, so
-   it reads as a footnote to the card rather than as its fifth benefit. */
+/* The one line per card that is NOT a tick. It carries the card's caveat or
+   arithmetic - who is never licensed, what the annual rate works out to - and
+   neither is a feature, so a checkmark beside it would misread. Set below the
+   list, in the faint ink, so it reads as a footnote to the card rather than
+   as its fifth benefit. */
 .md-typeset .fn-pr-tier__note {
   font-size: .78rem;
   line-height: 1.5;

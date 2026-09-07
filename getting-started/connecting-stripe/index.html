@@ -2112,20 +2112,27 @@ public internet a refund button. Steps 8 and 9 are what catch both mistakes.
    donation, not a refund — however correct everything else is. There are screenshots of the field
    and of the confirmation it leaves behind in
    <a href="../after-you-install/#build-the-credential-pair">After you install</a>.
-4. Step 5 creates a <strong>permission set of your own</strong> carrying the External Credential Principal
-   Access grant, and assigns it to the staff who take payments or issue refunds. In split mode
-   there are two grants to make — one per credential — and the step grades both.</p>
-<p><strong>The same set also needs Read and Create on the standard User External Credential object</strong>
+4. Step 5 creates <strong>two permission sets of your own</strong>, because two audiences hold them. The
+   <strong>site set</strong> carries the External Credential Principal Access grant for the <em>donor</em> credential
+   and is assigned to your site guest user (step 6) and to staff who take payments; its License
+   must stay <code>--None--</code>, or it cannot be assigned to a guest user. The <strong>admin set</strong> carries the
+   grant for the <em>admin</em> credential and is assigned to staff who issue refunds and to every user
+   who owns a scheduled job — a scheduled job authenticates as its own owner, so a reconciler
+   scheduled by an admin who never held the set fails quietly. The admin set is never assigned to
+   the guest user. Names are yours to choose (the panel suggests <code>Fundraising_Site_Guest_Access</code>
+   and <code>Fundraising_Payments_Admin</code>); the panel finds each set by the grant on it and reports
+   which is missing.</p>
+<p><strong>Both sets also need Read and Create on the standard User External Credential object</strong>
 (<em>Object Settings → User External Credentials</em>). A callout needs both grants: the principal,
 and that object, which is where Salesforce writes the row that mints the credential. Miss the
 second and every charge fails with <em>"You don't have read permissions on the User External
 Credential object."</em> — a message the donor never sees and that surfaces only in <strong>Diagnostic
 Logs</strong>. This grant cannot ship inside the package: Salesforce strips standard-object
 permissions out of an installed permission set.
-5. Step 6 assigns the <strong>donor</strong> credential's permission set to your Experience Cloud <strong>site
-   guest user</strong> — do this only if you take donations from public pages. It also names every
-   permission set your guest user holds and asks you to confirm none of them grants the <em>admin</em>
-   credential; see <em>A guest user must never hold the admin credential</em> below.</p>
+5. Step 6 assigns the <strong>site set</strong> (the one carrying the donor credential) to your Experience
+   Cloud <strong>site guest user</strong> — do this only if you take donations from public pages. It also
+   names every permission set your guest user holds and asks you to confirm none of them grants
+   the <em>admin</em> credential; see <em>A guest user must never hold the admin credential</em> below.</p>
 <p><strong>This step has a prerequisite nothing else on the page mentions: the site itself.</strong> There is
 no site guest user until an Experience Cloud site exists, so on a fresh org every instruction
 here points at screens that aren't there yet. Build the site first — <strong>Settings → Site &amp;
@@ -2274,9 +2281,9 @@ the package ships:</p>
 <td><strong>Must match</strong> the value you type in <strong>Donor restricted key credential</strong> / <strong>Admin restricted key credential</strong> on the Payment Account record, exactly</td>
 </tr>
 <tr>
-<td>Your credential-access permission set (suggested <code>Stripe_Credential_Access</code>)</td>
+<td>Your two credential permission sets (suggested <code>Fundraising_Site_Guest_Access</code> / <code>Fundraising_Payments_Admin</code>)</td>
 <td><strong>Yes — anything</strong></td>
-<td>Nothing. The panel never looks a set up by name — it discovers whichever of your permission sets carries the grant and reports that one back to you</td>
+<td>Nothing. The panel never looks a set up by name — it discovers whichever of your sets carry a grant and, in split mode, tells you which of the two is missing</td>
 </tr>
 <tr>
 <td>Payment Account record <strong>Name</strong></td>
@@ -2599,7 +2606,7 @@ a credential grant, it asks you to confirm that the grant is the <strong>donor</
 admin one — and it names the exact permission sets your guest user holds so you can go and
 check:</p>
 <blockquote>
-<p>1 site guest user can reach a credential through <code>Stripe_Credential_Access</code>, so public
+<p>1 site guest user can reach a credential through <code>Fundraising_Site_Guest_Access</code>, so public
 donation pages can charge a card. Confirm that set grants the DONOR credential only — a guest
 holding the admin credential can issue refunds. "Prove the donor key is restricted" proves it
 from the other side.</p>

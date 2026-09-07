@@ -2198,6 +2198,22 @@ code the moment it was sent, simply by submitting the form again. Nor does askin
 code sign anyone out: an already-open session in another tab is left alone.</p>
 </div>
 <p>Every link to the portal — on the public pages and in email — is built from the <strong>Experience Site URL</strong> and <strong>Donor portal path</strong> on the Settings tab; change either there and every link follows.</p>
+<p>Donors are offered the portal in four places, and every one of them is the same address —
+your Experience Site URL plus the portal path from the Settings tab:</p>
+<ul>
+<li>the <strong>Manage your giving</strong> row in the contact band at the foot of every public campaign,
+  event and gallery page;</li>
+<li>the thank-you page, under the receipt, once the receipt has been sent;</li>
+<li>the receipt and the other donor emails, in a "Manage your giving" block — the block is on
+  the receipt (DonationReceipt), the dunning notice (DunningEmail), the failed-payment alert
+  (FailedPaymentAlert), the re-authorization request (ReAuthRequired), the recurring-donation
+  confirmation (RecurringDonationConfirmation) and the refund notification (RefundNotification);</li>
+<li>the link a staff member sends from a donor's record.</li>
+</ul>
+<p>Each email button is built from the Experience Site URL and the Donor portal path. It
+prints on every one of those templates, so until the Experience Site URL is set (installation
+step 5, written into Settings from the Site &amp; Domain panel) the button goes nowhere — set it
+before you turn on automatic receipts.</p>
 <h2 id="the-dashboard">The dashboard<a class="headerlink" href="#the-dashboard" title="Permanent link">#</a></h2>
 <div class="fn-shot"><img src="../../assets/images/public-donor-dashboard.png" alt="Donor portal dashboard"></div>
 <p class="fn-figure-caption">**What it shows.** The full dashboard for a donor with three recurring gifts, three saved cards, two events, and nineteen gifts across three years. The left rail carries identity and totals — lifetime giving, this year, gift count — a *Where it went* donut broken down by fund, saved cards, downloadable annual statements per year, and a trust block. The right column is the working area: monthly giving, events, and giving history.</p>

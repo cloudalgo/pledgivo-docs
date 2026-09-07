@@ -2150,20 +2150,21 @@ donation form cannot submit — see <a href="../installation/">Installation</a>.
 Campaign records, and Salesforce does not let a managed package ship permissions on standard
 objects — they are removed when the package version is built — so <code>Fundraising_GuestDonor</code>
 carries every custom object and field grant your public pages need and can never carry this one.
-Without it a visitor gets an error on every campaign, donation and ticket page. Do it in <strong>Setup → Profiles → your
-site's guest user profile → Edit</strong>, then scroll to <strong>Standard Object Permissions</strong> and tick
-<strong>Read</strong> on the <em>Campaigns</em> row → <strong>Save</strong>. A guest user must never hold Create, Edit or Delete on
-Campaign.</p>
-<div class="admonition note">
-<p class="admonition-title">If your profile page looks different</p>
-<p>Orgs that have switched on the <strong>Enhanced Profile User Interface</strong> (<em>Setup → User Management
-Settings</em>, off by default) get a different profile page: no Standard Object Permissions grid,
-and instead an <strong>Object Settings</strong> section — go to <strong>Object Settings → Campaigns → Edit</strong> and
-tick <strong>Read</strong> there. Same grant, different screen. If neither description matches what you are
-looking at, use the permission-set route below instead; it looks the same in every org.</p>
-</div>
-<p>Granting it through a permission set of your own and assigning that to the guest user works
-equally well. This one <strong>is</strong> machine-checked: the Site &amp; Domain panel's <strong>Give the guest user
+Without it a visitor gets an error on every campaign, donation and ticket page.</p>
+<p>Build it as a permission set — the same screen in every org, and the one figure gs-38 shows:</p>
+<ol>
+<li><strong>Setup → Permission Sets → New.</strong> Label it <strong>Guest Campaign Read</strong> (any name works; this one
+   matches the screenshots). Leave <strong>License</strong> as <code>--None--</code> — a set created under a specific user
+   licence refuses to go onto a guest user, and the error does not mention the licence.</li>
+<li><strong>Object Settings → Campaigns → Edit</strong> → tick <strong>Read</strong> — and nothing else — → <strong>Save</strong>.</li>
+<li>Assign it from the guest user's own record, by the <strong>Guest User Profile → View Users</strong> route
+   above: <strong>Permission Set Assignments → Edit Assignments</strong> → move <em>Guest Campaign Read</em> to
+   <em>Enabled</em> → <strong>Save</strong>. <strong>Manage Assignments</strong> on the permission set does not list a site guest user.</li>
+</ol>
+<p>A guest user must never hold Create, Edit or Delete on Campaign. If you have already built the
+donor credential set in <a href="../connecting-stripe/">Connecting Stripe</a>, you may add this grant to that
+set instead of creating a second one; the Site &amp; Domain check reads the grant, not the set.
+This one <strong>is</strong> machine-checked: the Site &amp; Domain panel's <strong>Give the guest user
 read access to Campaign</strong> step reads the grant back and reports <strong>Done</strong> or <strong>Pending</strong>.</p>
 <p>Finally, grant the <strong>public</strong> Stripe credential to that same Guest User — the same <strong>Builder →
 Settings → General → Guest User Profile → View Users</strong> route as above. Salesforce does not let a

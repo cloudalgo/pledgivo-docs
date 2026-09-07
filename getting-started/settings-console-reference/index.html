@@ -2842,8 +2842,9 @@ permission set when the version is built and rejects the second outright, so
 <code>Fundraising_GuestDonor</code> carries every custom-object and custom-field grant your public pages
 need and neither of these two. Both are therefore one-time admin grants — and both are read
 back here, so you see <strong>Done</strong> or <strong>Pending</strong> rather than being asked to confirm your own work.
-The Campaign step counts the grant wherever it lives: on the guest user's profile (the usual
-place) or on a permission set of your own assigned to it.</p>
+The Campaign step reads the grant itself, not the set that carries it — build it as a
+permission set of your own (the guide calls it <strong>Guest Campaign Read</strong>; the name is yours)
+and assign it to the guest user.</p>
 </div>
 <div class="admonition info">
 <p class="admonition-title">The guest credential grant is machine-checked, not self-confirmed</p>

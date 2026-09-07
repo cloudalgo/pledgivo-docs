@@ -2539,15 +2539,14 @@ View Users →</strong> the user named <em>"&lt;your site&gt; Site Guest User"</
 <td>Every custom object and field a public donation, event or ticket page reads</td>
 </tr>
 <tr>
-<td>A <strong>Campaign read</strong> set you create</td>
+<td>A <strong>Guest Campaign Read</strong> set you create (the name is yours; that is the one in the screenshots)</td>
 <td>You, by hand</td>
 <td>Campaign is a <em>standard</em> object, and Salesforce strips standard-object permissions out of a packaged permission set at build time</td>
 </tr>
 </tbody>
 </table>
 <p>A fundraiser <strong>is</strong> a Campaign record, so without that second grant every public campaign,
-donation and ticket page fails to load. Granting <strong>Read</strong> on Campaign directly on the guest user's
-profile works just as well — Site &amp; Domain counts either route.</p>
+donation and ticket page fails to load.</p>
 <div class="admonition danger">
 <p class="admonition-title">Read, and nothing else</p>
 <p>A guest user must never hold Create, Edit or Delete on Campaign. When you create the

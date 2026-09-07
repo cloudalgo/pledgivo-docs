@@ -1927,17 +1927,18 @@ with the two that can only be done in Salesforce Setup spelled out. The in-app
    <strong>Page Structure</strong> rail before publishing, or it publishes above your campaign gallery; and
    <strong>publish and activate are separate actions</strong> — if Experience Workspaces or the All Sites
    pane won't load in your org, the guide gives a Metadata API route to activation.</li>
-<li><strong>Grant the guest user permission set — and Campaign read on its profile.</strong> Assign
+<li><strong>Grant the guest user permission set — and Campaign read through a set of your own.</strong> Assign
    <code>Fundraising_GuestDonor</code> to your Experience Cloud site's guest <strong>user</strong> — not its profile;
    permission sets attach to users. Reach that user through Experience Builder → the settings
    gear → <strong>General</strong> → the <strong>Guest User Profile</strong> link → <strong>View Users</strong>; it is not listed under
    Setup → Users, and Administration → Members does not reach it (the
    <a href="../experience-cloud-setup/">Experience Cloud guide</a> spells the route out). Without this
-   assignment, guest donors can view campaign pages but the donation form cannot submit. Then
-   grant that guest user's <strong>profile</strong> <strong>Read</strong> on the standard <strong>Campaign</strong> object,
-   which the permission set cannot do for you: a managed package is not allowed to ship
-   standard object permissions, so this one grant is always yours to make. Without it every
-   public campaign, donation and ticket page fails to load. The Settings console's
+   assignment, guest donors can view campaign pages but the donation form cannot submit.
+   Then build one permission set of your own — <strong>Guest Campaign Read</strong> is the name the
+   screenshots use; the name is yours to choose — that grants <strong>Read</strong> on the standard
+   <strong>Campaign</strong> object, Read and nothing else, and assign it to that same guest user. A managed
+   package is not allowed to ship standard-object permissions, so this one grant is always yours
+   to make. Without it every public campaign, donation and ticket page fails to load. The Settings console's
    <strong>Site &amp; Domain</strong> panel checks both against your org — steps 4 and 5.</li>
 <li>
 <p><strong>Authorize the Stripe external credential — in a permission set you create.</strong> Salesforce
@@ -1985,7 +1986,7 @@ for how that works.</p>
     <li><button type="button" data-t="136"><b>2:16</b> About Pledgivo</button></li>
   </ul>
 </div>
-<p class="fn-figure-caption">The three guest-user steps, done by hand on a real org. The last one — granting Campaign read in Public Access Settings — is the step the package cannot ship for you, and until it is done the fifty-eight packaged Campaign field grants do nothing.</p>
+<p class="fn-figure-caption">The three guest-user steps, done by hand on a real org. The last one — granting Campaign read by hand — is the step the package cannot ship for you, and until it is done the fifty-eight packaged Campaign field grants do nothing.</p>
 
 <h2 id="what-gets-installed">What gets installed<a class="headerlink" href="#what-gets-installed" title="Permanent link">#</a></h2>
 <table>

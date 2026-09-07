@@ -2554,6 +2554,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pfsitepath" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public Site Path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pfstory" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2866,7 +2877,7 @@
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Lightning web component, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>100</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>101</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -2903,8 +2914,8 @@
 <li>
 <p><strong><a href="#group-pf">Pf (public guest helper blocks)</a></strong></p>
 <hr />
-<p>9 bundles</p>
-<p><a href="#pfattribution">Attribution Capture Utility</a> · <a href="#pfcontactband">Public Contact Band</a> · <a href="#pfgivingstatement">Donor Portal Giving Statement</a> · <a href="#pfhero">Campaign Hero</a> · <a href="#pfpageblocks">Page Blocks</a> · <a href="#pfsectiontabs">Public Campaign Reference Tabs</a> · <a href="#pfstory">Public Campaign Story</a> · <a href="#pfstyles">Public Shared Style Primitives</a> · <a href="#pftrustbar">Trust Bar</a></p>
+<p>10 bundles</p>
+<p><a href="#pfattribution">Attribution Capture Utility</a> · <a href="#pfcontactband">Public Contact Band</a> · <a href="#pfgivingstatement">Donor Portal Giving Statement</a> · <a href="#pfhero">Campaign Hero</a> · <a href="#pfpageblocks">Page Blocks</a> · <a href="#pfsectiontabs">Public Campaign Reference Tabs</a> · <a href="#pfsitepath">Public Site Path</a> · <a href="#pfstory">Public Campaign Story</a> · <a href="#pfstyles">Public Shared Style Primitives</a> · <a href="#pftrustbar">Trust Bar</a></p>
 </li>
 <li>
 <p><strong><a href="#group-df">Df (donation form family)</a></strong></p>
@@ -2963,6 +2974,7 @@
 <p>Set on the HOST, not on a wrapper div: this component declares its own primitives on :host as var(--pf-…, fallback), and a custom property is substituted on the element that declares it. See c/<a href="#uipagetheme"><code>uiPageTheme</code></a>.</p>
 <p>Experience Builder wraps every component it hosts in a section with its own 16px padding and no overflow clip. On a component that IS the page that padding renders as a white frame down all four edges, and it also lets this page's full-bleed bands (margin-inline: calc(50% - 50vw)) overhang into a horizontal scrollbar. Releasing it is what makes the masthead and the closing band actually reach the glass.</p>
 <p>The serial number assigned by ReceiptNumberService, read from the server. This used to be the last 8 characters of receiptToken — i.e. part of the bearer credential that authorizes this page — printed onto a document donors email, print and file with an accountant. Never derive a visible reference from the token again.</p>
+<p>Both links go through c/<a href="#pfsitepath"><code>pfSitePath</code></a> so they carry the site's URL prefix. The portal path itself is the admin's (Donor_Portal_Path__c), published on getUiConfig.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
 </div>
@@ -2983,6 +2995,7 @@
 <p>Portal-session gated, not authenticated — a guest holding a valid session token calls DonorPortalController.getDashboard/pauseRecurring/resumeRecurring/cancelRecurring/ retryNowRecurring/reinstateRecurring/changeRecurringAmount/changeRecurringDesignation/ skipNextRecurringPayment/removeWalletCard to manage their own recurring gifts and saved cards, and never addresses a record by Id (IDOR prevention, same pattern as <a href="#publicdonationreceipt"><code>publicDonationReceipt</code></a>'s Receipt_Token__c). Sign-in is two calls: requestAccessCode emails an 8-character code (anti-enumeration — always reports success), then verifyAccessCode exchanges the email+code pair for an opaque session token. The token is never carried in the URL; it lives only in this component's state, mirrored to sessionStorage under SESSION_KEY so a refresh restores the session but a closed tab loses it. endSession revokes the token server-side on Sign Out (best-effort — local state clears regardless).</p>
 <p>The card-replace modal reuses the exact same stripePayment.page iframe/postMessage contract as <a href="#dfform"><code>dfForm</code></a>, but in Stripe's SETUP-intent mode (no charge) via createCardSetupIntent — see the lwc-conventions skill for the shared iframe/postMessage message-type contract. Removing a saved card is refused server-side while a live recurring gift still bills it.</p>
 <p>Every schedule- or money-changing action is gated behind _openConfirm, which states what will happen, when, and what will NOT happen, and offers the gentler alternative (pause instead of cancel, change amount instead of pause) before the destructive one.</p>
+<p>The "Make a donation" link on the signed-out gate. Site-absolute via c/<a href="#pfsitepath"><code>pfSitePath</code></a> — href="/" resolved to the domain root, not to this site's home, on a prefixed site.</p>
 <p>The org's default design record, applied as --pf-* custom properties on this component's own host. The portal has no campaign to read a design from, so before this it painted the package's shipped clay-and-moss palette no matter what the admin had chosen in the settings console — a donor arriving from a teal directory landed on a warm orange portal. Everything the design record does not name (the moss "steady" tones, the honey cautions, the error reds) keeps its designed value; see c/<a href="#uipagetheme"><code>uiPageTheme</code></a> for why.</p>
 <p>Deliberately independent of the access token: the sign-in screen is themed too, and it renders before any donor is identified.</p>
 <p>The footer band's two payloads. On the public pages these are campaign-resolved and arrive with the campaign; the portal has no campaign, so getPortalConfig resolves them through the same CampaignService methods against an empty one and they fall through to the org's Settings values.</p>
@@ -2998,6 +3011,8 @@
 <p>aria-invalid is bound as a string, not a boolean: an absent attribute and aria-invalid ="false" both mean valid, but the colour change on the border means nothing to a screen reader, so the state has to be announced somewhere.</p>
 <p>aria-describedby is computed, not a constant, because the ids it names have to EXIST. A describedby pointing at an element that is not in the DOM is a dangling reference: some screen readers announce nothing for it and others fall back to reading the field's own text, so the field arrives sounding either silent or wrong before the donor has made any mistake at all. The code field's hint is permanent, so only its error id is added.</p>
 <p>Sign out follows the SESSION, not a successful load. It used to reuse hasDashboard, which excludes errorMessage by design (that gate owns the dashboard body) - so a failed load hid the only control that ends a still-live session, in precisely the moment a donor on a shared device reaches for it.</p>
+<p>Built with c/pfSitePath so the row's link carries the site's URL prefix.</p>
+<p>Both go through c/pfSitePath so they carry the site's URL prefix.</p>
 <p>The token is captured before the call and re-checked after it, because this is the one read that outlives the session that asked for it: it fires on a timer, so a donor can sign out (or sign out and let someone else sign in on a shared device) while it is in flight. Writing the reply back unconditionally would render the previous donor's giving history under the next donor's session until their own load returned.</p>
 <p>Two different failures, two different answers. An invalid session (the one string DonorPortalService raises for one) ends the session and drops the donor at sign-in with the "session ended" notice - spec section 5. Anything else is the page itself failing: it keeps the session and shows the page-level banner with a Try again, because signing a donor out over a network blip loses a session that was never invalid.</p>
 <p>A rejected entry renders under the field that was rejected, never through the page-level errorMessage banner. That banner is a direct child of the root, outside the centred content column, so routing form validation to it put a full-width red bar across the masthead for a mistyped address.</p>
@@ -3060,6 +3075,7 @@
 <p>Set on the HOST, not on a wrapper div: this component declares its own primitives on :host as var(--pf-…, fallback), and a custom property is substituted on the element that declares it. See c/<a href="#uipagetheme"><code>uiPageTheme</code></a>.</p>
 <p>Experience Builder wraps every component it hosts in a section with its own 16px padding and no overflow clip. On a component that IS the page that padding renders as a white frame down all four edges, and it also lets this page's full-bleed bands (margin-inline: calc(50% - 50vw)) overhang into a horizontal scrollbar. Releasing it is what makes the masthead and the closing band actually reach the glass.</p>
 <p>The order's receipt serial number, from the server. This used to be the last 8 characters of receiptToken — the bearer credential that authorizes this page — printed at the top of a sheet donors hand to a door attendant. Blank for an order placed before receipt numbering shipped; the page shows no reference rather than reviving the token one.</p>
+<p>All three links go through c/<a href="#pfsitepath"><code>pfSitePath</code></a> so they carry the site's URL prefix. The portal path itself is the admin's (Donor_Portal_Path__c), published on getUiConfig.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>receiptToken</code></p>
 </div>
@@ -3124,7 +3140,10 @@
 <p>The org's default design record, applied as --pf-* custom properties on this component's own host, so the thank-you page wears the palette an admin chose in the settings console. A donor lands here seconds after paying on a page that carried the campaign's design. Painting this one in the package's shipped palette instead made the confirmation look like a different site — the worst possible moment to look like a different site.</p>
 <p>Set on the HOST, not on a wrapper div: this component declares its own primitives on :host as var(--pf-…, fallback), and a custom property is substituted on the element that declares it. See c/<a href="#uipagetheme"><code>uiPageTheme</code></a>.</p>
 <p>The footer's two payloads come off getThankYou, not off getUiConfig, because they are campaign-resolved: a campaign may override the support email, the phone, the terms and privacy links and the footer line. getUiConfig is cacheable and campaign-blind — bolting these onto it would hand every campaign the same footer and, worse, make a cacheable method read a record, which its own class header rules out.</p>
+<p>Site-absolute, via c/<a href="#pfsitepath"><code>pfSitePath</code></a>: href="/" pointed at the domain root, which on a prefixed site is not this site at all.</p>
 <p>This page is the whole route, not a block on one, so the Experience Builder section wrapping it must give up its padding — otherwise the paper ground and the footer band both stop 16px short of the glass and the page reads as a card floating on white. The trust bar's 100vw bleed needs the same treatment (the section clips it).</p>
+<p>The route is named here, not just the query string, so it goes through c/pfSitePath — a document-relative 'thank-you?...' would double the segment the moment this page is served with a trailing slash.</p>
+<p>All three are built by c/pfSitePath so they carry the site's URL prefix. Each still returns null when there is nothing to address, and the template hides the link.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>accessToken</code>, <code>receiptToken</code></p>
 </div>
@@ -4390,6 +4409,21 @@
 <p>Every panel that has content stays in the DOM and is hidden with the <code>hidden</code> attribute rather than removed, so the documents and answers a search engine, a printer or a screen reader should see are all present regardless of which tab the donor left open.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>defaultTab</code>, <code>documents</code>, <code>faqs</code>, <code>meta</code>, <code>sections</code>, <code>updates</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="pfsitepath">Public Site Path<a class="headerlink" href="#pfsitepath" title="Permanent link">#</a></h4>
+<p><code>pfSitePath</code></p>
+<p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Service module for public (Experience Cloud) bundles: builds a site-absolute href from a path, honouring the site's URL prefix. Not for internal Lightning-page bundles.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The one way a public bundle builds a link to another page on the same Experience site. <code>@salesforce/community/basePath</code> is '' on a site served at the domain root and '/fundraising' (no trailing slash) on one served under a URL prefix — the prefix is the admin's to choose, so no bundle may hardcode it. A root-relative href="/donor" lands on the wrong site the moment a prefix exists, and a document-relative 'donor' breaks the moment the current page gains a trailing slash; this helper is immune to both.</p>
+<p>IMPORTANT: importing anything from @salesforce/community/<em> restricts the importing bundle (and every bundle that imports THAT) to Experience Builder targets. That is why this lives in its own pf</em> module and not in c/<a href="#uibase"><code>uiBase</code></a>, which internal Lightning-page bundles extend. Never import this module from a lex<em>, adm</em> or set* bundle.</p>
+</div>
 </div>
 </div>
 <div class="fn-entry">

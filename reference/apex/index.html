@@ -13430,6 +13430,10 @@
 <p>WHY THIS EXISTS: every public component must label money with the currency the gateway is actually charged in. Components were instead using @salesforce/i18n/currency (the running USER's currency, which in a multi-currency org is not the org's) or a hardcoded '$'. Threading currencyCode through ~18 unrelated Apex payloads would couple every one of them to a formatting concern; one cacheable read is shared by all of them (LDS caches it, so this costs a single round-trip per session).</p>
 <p>The value comes from <a href="#apex-currencyresolver-fororg"><code>CurrencyResolver.forOrg</code></a>(), which reads the ORG's own currency. It used to come from Settings__c.Default_Currency__c — an admin-typed setting seeded to 'USD' at install, which meant an INR org charged and labelled every gift in USD until someone noticed. That field is deleted; do not reintroduce a settings-sourced currency here.</p>
 <p>WITHOUT SHARING is deliberately NOT used: this touches no records. Settings__c.getInstance() is a custom-setting read, which is exempt from CRUD/FLS, so guests resolve it without a grant.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The donor-portal route, relative to the site root. Every public bundle builds its "Manage your giving" link as basePath + portalPath through c/pfSitePath; this is the one place the admin-configured path reaches the browser.</p>
+</div>
 <table>
 <thead>
 <tr>

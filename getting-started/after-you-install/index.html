@@ -2585,13 +2585,13 @@ integration:</p>
 <tr>
 <td><strong>Donor</strong></td>
 <td><code>Stripe_Auth_Donor_Restricted</code> + <code>Stripe_Donor_Restricted</code></td>
-<td>A <strong>restricted</strong> key (<code>rk_live_…</code> / <code>rk_test_…</code>) that can create charges and nothing else</td>
+<td>A <strong>restricted</strong> key (<code>rk_live_…</code> / <code>rk_test_…</code>) that can take a payment and read its result, but never refund</td>
 <td>Staff <strong>and</strong> the site's guest user</td>
 </tr>
 <tr>
 <td><strong>Admin</strong></td>
 <td><code>Stripe_Auth_Admin_Restricted</code> + <code>Stripe_Admin_Restricted</code></td>
-<td>A <strong>second restricted</strong> key, scoped to refunds and reads</td>
+<td>A <strong>second restricted</strong> key, scoped to refunds, renewals and the reconcilers' reads</td>
 <td>Staff only. <strong>Never</strong> the guest user</td>
 </tr>
 </tbody>

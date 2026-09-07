@@ -1919,10 +1919,12 @@ to say which field is wrong:</p>
 </table>
 <p>You build that set <strong>twice per Stripe account</strong>, once per role. The <strong>public</strong> credential carries a
 restricted, charge-only key and its permission set goes to payment staff and — if you take public
-donations — the site guest user. The <strong>admin</strong> credential carries the full key used by refunds, the
-reconcilers, the orphan sweep, off-session renewals and Test connection, and its permission set goes
-to staff only, never the guest user. <code>Payment_Account__c</code> names both. Pointing both fields at one
-credential is supported and graded amber, because your guest user then reaches a key that can refund.</p>
+donations — the site guest user. The <strong>admin</strong> credential carries a second restricted key — one that can
+refund — used by refunds, the reconcilers, the orphan sweep, off-session renewals and Test connection,
+and its permission set goes to staff only, never the guest user. <code>Payment_Account__c</code> names both.
+Pointing both fields at one credential still works but is graded <strong>Failed</strong> by the key-scope checks,
+because your guest user then reaches a key that can refund. The exact permission rows for each key
+are in <a href="../../getting-started/connecting-stripe/#scoping-the-donor-key">Connecting Stripe</a>.</p>
 <p>Each account gets its own credentials, so a multi-account org keeps its keys separated the way
 Stripe does. No custom field anywhere stores a secret key, and nothing reads one back — the merge
 formula is resolved by the platform at callout time. The <code>Payment_Account__c</code> record carries

@@ -2174,11 +2174,14 @@ anonymous visitor's principal from reaching a key that can issue refunds. You <e
 fields at the same credential and the app will accept it, but one key cannot be scoped two ways:
 steps 10 and 11 then grade <strong>Failed</strong> rather than green, and the account stays off <em>Ready to take
 payments</em>.
-7. Step 10 proves your <strong>donor</strong> key really is scoped charge-only. It is on demand: press the
-   button and the app makes a single read-only call that a charge-only key is not allowed to
-   make. If that call succeeds, the credential your guest user holds carries a key with refund
-   rights — the admin key, or a secret key that should not be there at all — and the step reports
-   a <strong>failure</strong> rather than a pending item.
+7. Step 10 proves your <strong>donor</strong> key cannot issue a refund. It is on demand: press the button
+   and the app makes a single request to create a charge, with nothing to charge. Stripe keeps one
+   permission for creating charges and issuing refunds, so a key without Write on <strong>Charges and
+   Refunds</strong> is refused outright with <code>403</code>, and the step goes green. A key that holds Write is
+   stopped only by the missing parameters — nothing is charged, but the credential your guest user
+   holds carries refund rights (Write on that row, the admin key, or a secret key that should not
+   be there at all) — and the step reports a <strong>failure</strong> rather than a pending item. Leave the row
+   on <strong>None</strong>: nothing the donation form does needs it, and only Write on it can refund.
 8. Step 11 proves your <strong>admin</strong> key is a restricted key and not your full secret key. Same shape,
    different question: one read-only call for something no part of this app ever asks the admin
    key to do. A scoped key refuses it with <code>403</code> and the step goes green; a full secret key answers
@@ -2375,71 +2378,77 @@ carefully, not a reason to skip scoping: Stripe itself recommends restricted key
 secret key isn't required (<a href="https://docs.stripe.com/keys/restricted-api-keys">Stripe: restricted API keys</a>),
 and this app requires them on both credentials.</p>
 <div class="admonition tip">
-<p class="admonition-title">Build the whole thing in test mode first</p>
-<p>A key beginning <code>rk_test_</code> or <code>sk_test_</code> only ever reaches Stripe's test mode: no real card is
-charged and no real money moves (<a href="https://docs.stripe.com/test-mode">Stripe: test mode</a>). Test
-and live are separate worlds — a PaymentIntent created with a test key is invisible to a live
-key, and vice versa. Connect a test-mode Payment Account while you build campaigns, then repeat
-the whole setup with the <code>_live_</code> pair when you're ready to accept real donations.</p>
+<p class="admonition-title">Build the whole thing in a sandbox first</p>
+<p>A key beginning <code>rk_test_</code> or <code>sk_test_</code> only ever reaches a Stripe <strong>sandbox</strong> — what Stripe
+used to call test mode: no real card is charged and no real money moves
+(<a href="https://docs.stripe.com/sandboxes">Stripe: sandboxes</a>). Sandbox and live are separate
+worlds — a PaymentIntent created with a sandbox key is invisible to a live key, and vice versa.
+Connect a sandbox Payment Account while you build campaigns, then repeat the whole setup with
+the <code>_live_</code> pair when you're ready to accept real donations.</p>
 </div>
 <h3 id="scoping-the-donor-key">Scoping the donor key<a class="headerlink" href="#scoping-the-donor-key" title="Permanent link">#</a></h3>
-<p>Scope it to exactly this and nothing more — leave every other resource Stripe offers on <strong>None</strong>:</p>
+<p>Scope it to exactly this and nothing more — leave every other row Stripe offers on <strong>None</strong>. The
+row names are the ones on Stripe's <strong>Create restricted key</strong> screen as of September 2026; Stripe
+keeps one permission for charges and refunds together, and files balance transactions under
+<strong>Balance</strong>:</p>
 <table>
 <thead>
 <tr>
-<th>Stripe resource</th>
-<th>Public (restricted) key</th>
+<th>Stripe permission</th>
+<th>Donor (restricted) key</th>
 <th>Why</th>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Payment Intents</td>
+<td>Write</td>
+<td>Starting and confirming a donation or ticket purchase</td>
+</tr>
+<tr>
+<td>Setup Intents</td>
+<td>Write</td>
+<td>Saving a card for a recurring gift</td>
+</tr>
 <tr>
 <td>Customers</td>
 <td>Write</td>
 <td>Creating the customer a <strong>recurring</strong> signup saves its card against — one-time gifts and ticket purchases create none</td>
 </tr>
 <tr>
-<td>PaymentIntents</td>
-<td>Write</td>
-<td>Starting and confirming a donation or ticket purchase</td>
-</tr>
-<tr>
-<td>SetupIntents</td>
-<td>Write</td>
-<td>Saving a card for a recurring gift</td>
-</tr>
-<tr>
-<td>PaymentMethods</td>
+<td>Payment Methods</td>
 <td>Write</td>
 <td>Attaching and reading the saved card</td>
 </tr>
 <tr>
-<td>Charges</td>
-<td><strong>Read</strong></td>
-<td>Confirming a gift server-side, and noticing a refund issued in the dashboard</td>
+<td>Charges and Refunds</td>
+<td><strong>None</strong> — never Write</td>
+<td>Nothing on this key needs it. Only Write on this row can refund, and Write is the one thing the guest key must never have — see below</td>
 </tr>
 <tr>
-<td>Balance transactions</td>
-<td><strong>Read</strong></td>
-<td>Recording the processor fee and the net amount on each gift</td>
-</tr>
-<tr>
-<td>Refunds</td>
+<td>Balance</td>
 <td><strong>None</strong></td>
-<td>The whole point — see below</td>
+<td>Nothing on this key reads your balance directly</td>
 </tr>
 <tr>
-<td>Disputes</td>
+<td>Payment Disputes</td>
 <td><strong>None</strong></td>
 <td>Read on the back-office key only</td>
 </tr>
+<tr>
+<td>Accounts, Products, everything else</td>
+<td><strong>None</strong></td>
+<td>Never called on this key</td>
+</tr>
 </tbody>
 </table>
-<p>The two <strong>Read</strong> rows are not optional. Confirming a payment re-reads the PaymentIntent with
-<code>latest_charge.balance_transaction</code> expanded, so a key scoped without them either fails the read
-outright or — worse, because it is silent — returns it without the expansion, leaving every
-donation with a blank processor fee and net, and leaving the refund reconciler blind to refunds
-issued in the Stripe Dashboard.</p>
+<p>Four Write rows and nothing else. Confirming a payment re-reads the PaymentIntent with
+<code>latest_charge.balance_transaction</code> expanded, and Stripe fills that expansion in — charge, fee
+and net — on the Payment Intents permission alone. That was measured against a key scoped exactly
+as above on 2026-09-07; earlier versions of this guide asked for Read on Charges and Refunds and
+on Balance for the expand, and neither is needed. A key with Read on Charges and Refunds can list
+every charge and refund on your account, which is nothing an anonymous visitor's session should be
+able to do.</p>
 <p>The donor key's whole job is to let a donor's browser start and complete a payment. Everything
 that reverses money, reads the back-office ledger, or charges a saved card while nobody is
 watching runs on the admin key instead — and the admin key is never granted to your guest user.</p>
@@ -2449,36 +2458,31 @@ never your full secret key — with exactly these permissions:</p>
 <table>
 <thead>
 <tr>
-<th>Stripe resource</th>
+<th>Stripe permission</th>
 <th>Admin (restricted) key</th>
 <th>Why</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Refunds</td>
-<td><strong>Write</strong></td>
-<td>Issuing a refund from the donation record, and the refund reconciler's reads</td>
-</tr>
-<tr>
-<td>PaymentIntents</td>
+<td>Payment Intents</td>
 <td><strong>Write</strong></td>
 <td>Off-session renewals of recurring gifts, and the orphan sweep's re-reads</td>
 </tr>
 <tr>
-<td>Disputes</td>
+<td>Charges and Refunds</td>
+<td><strong>Write</strong></td>
+<td>Issuing a refund from the donation record, the refund reconciler's reads, and the one read <strong>Test connection</strong> makes</td>
+</tr>
+<tr>
+<td>Balance</td>
+<td><strong>Read</strong></td>
+<td>The fee and net figures on a refund or a renewal</td>
+</tr>
+<tr>
+<td>Payment Disputes</td>
 <td><strong>Read</strong></td>
 <td>Recording a chargeback against the donation it belongs to</td>
-</tr>
-<tr>
-<td>Charges</td>
-<td><strong>Read</strong></td>
-<td>Matching a refund or dispute back to the gift that produced it</td>
-</tr>
-<tr>
-<td>Balance transactions</td>
-<td><strong>Read</strong></td>
-<td>The fee and net figures on a refund</td>
 </tr>
 <tr>
 <td>Customers</td>
@@ -2486,34 +2490,42 @@ never your full secret key — with exactly these permissions:</p>
 <td>Resolving the donor behind a saved card at renewal time</td>
 </tr>
 <tr>
-<td>Payment methods</td>
+<td>Payment Methods</td>
 <td><strong>Read</strong></td>
 <td>Reading the saved card a renewal charges</td>
+</tr>
+<tr>
+<td>Setup Intents, Accounts, Products, everything else</td>
+<td><strong>None</strong></td>
+<td>Never called on this key</td>
 </tr>
 </tbody>
 </table>
 <p>Leave everything else on <strong>None</strong>.</p>
 <div class="admonition note">
-<p class="admonition-title">One thing a scoped admin key cannot do — and it is fine</p>
-<p><strong>Test connection</strong> first asks Stripe for your account profile, so it can print your account
-name and mode back to you. That read sits behind its own Stripe permission that a correctly
-scoped restricted key is not granted — so when Stripe refuses it, the app falls back to a
-second read-only call the admin key must be able to make anyway (listing refunds) and reports
-the key as <strong>working, without the account name</strong>. That is the expected result on a scoped key.
-<strong>Never widen a key just to make this button print a name.</strong></p>
+<p class="admonition-title">Test connection prints no account name — and that is fine</p>
+<p><strong>Test connection</strong> makes one read the back-office key must be able to make anyway — listing
+refunds — and reports the key as <strong>working</strong>. It does not print your account name: reading the
+account profile needs <em>Accounts: Read</em>, a permission this app never asks a key for, so it is
+left off both keys on purpose. <strong>Never widen a key just to make this button print a name.</strong></p>
 </div>
-<p>Step 10 of the guide checks the <em>Refunds: None</em> row for you. Stripe answers a restricted key with
-<code>403 Forbidden</code> when it reaches for something it has no permission for, and that refusal is the
-only positive proof available that the key an anonymous visitor's session can reach cannot issue
-a refund.</p>
+<p>Step 10 of the guide checks the <em>Charges and Refunds</em> row for you, by asking Stripe to create a
+charge with the donor key and nothing to charge. On that request Stripe checks a key's permission
+before it looks at the body, so a key on <strong>None</strong> is refused with <code>403 Forbidden</code> and nothing
+happens — that refusal is the only positive proof available that the key an anonymous visitor's
+session can reach cannot issue a refund, because charges and refunds share the one permission. A
+key on <strong>Write</strong> is told instead which parameters are missing; nothing is charged, but that answer
+is what fails the check, because it proves the key holds the permission that refunds. (The check
+deliberately does not ask for a refund: Stripe validates a refund request before it checks the
+permission, so an empty refund request answers <code>400</code> to every key and proves nothing.)</p>
 <h2 id="one-credential-or-two">One credential, or two?<a class="headerlink" href="#one-credential-or-two" title="Permanent link">#</a></h2>
 <p>Two. One still functions, but it can no longer be certified.</p>
 <p>If you point both fields at the same Named Credential, everything works — the app routes both
 donor-facing and back-office calls to it, and nothing breaks. What you give up is the guarantee:
 your site guest user is granted whatever credential the donor field names, so a single shared
 credential means an anonymous visitor's session holds a key that can issue refunds. There is no
-way to scope one key correctly for both roles at once — the donor role requires <em>Refunds: None</em>
-and the admin role requires <em>Refunds: Write</em>.</p>
+way to scope one key correctly for both roles at once — the donor role requires <em>Charges and
+Refunds: None</em> and the admin role requires <em>Charges and Refunds: Write</em>.</p>
 <p>Because of that, the Payments panel grades both key-scope checks <strong>Failed</strong> in shared mode, and a
 shared account can never reach <em>Ready to take payments</em>. This is a change from earlier releases,
 which marked the configuration amber: the account still takes donations exactly as before, and an
@@ -2612,7 +2624,7 @@ misconfiguration, not a bug in the package.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">One account per mode, routed explicitly</p>
-<p>Because test and live are separate worlds (see <em>Build the whole thing in test mode first</em>
+<p>Because test and live are separate worlds (see <em>Build the whole thing in a sandbox first</em>
 above), each mode needs its <strong>own</strong> Payment Account and its <strong>own</strong> credential — you cannot
 flip one account between them. Route each campaign explicitly; nothing switches automatically
 when you go live.</p>

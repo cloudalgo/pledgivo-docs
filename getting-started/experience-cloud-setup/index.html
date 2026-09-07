@@ -1977,6 +1977,19 @@ than what you asked for — <code>giving</code> came back as <code>givingvforces
 a completely clean org, not only when the prefix was already taken. Never hardcode the
 prefix anywhere; take it from that query.</p>
 </div>
+<p>Once the site exists, open the Settings console's <strong>Experience Cloud → Site &amp; Domain</strong> panel,
+pick it in the <strong>Create or choose your site</strong> step, and click <strong>Use this site</strong> — that writes the
+site's address into Settings as the Experience Site URL.</p>
+<div class="admonition warning">
+<p class="admonition-title">This URL is the only source of every donor-portal link</p>
+<p>The sign-in email, the "Manage your giving" links on the public pages, and the
+link a staff member sends from a donor record are all built from this one value.
+Until it is set, the public sign-in form accepts an email and sends nothing — the
+reason is recorded in Diagnostic Logs — and the staff "Send portal link" action
+is disabled with the same message. Paste the address of the <strong>LWR site</strong> (the one
+ending in the URL prefix you chose, e.g. <code>/fundraising</code>), never the companion
+Visualforce site that Salesforce creates alongside it.</p>
+</div>
 <h2 id="3-build-the-donate-page">3. Build the Donate page<a class="headerlink" href="#3-build-the-donate-page" title="Permanent link">#</a></h2>
 <p>Campaigns, fundraiser pages, team pages, and event registration all share <strong>one</strong> page and
 <strong>one</strong> component — <code>Public Fundraising Experience</code>. It reads the campaign's record type,

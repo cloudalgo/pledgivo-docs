@@ -2070,7 +2070,13 @@ the steps cross three different places, and the map says which. Collect your thr
 keys first (it links straight to the API keys page for the mode this account is in), then
 do the Setup work, then come back to this panel for the two checks. Every step title also
 carries a tag — <strong>Salesforce Setup</strong> or <strong>This page</strong> — so you can see at a glance where
-the next one happens.
+the next one happens.</p>
+<p><strong>Each Setup step draws the screen you are about to open.</strong> From step 1 to step 6 the panel
+shows a replica of the actual Salesforce dialog — the same fields in the same order, in the
+state Salesforce presents them <em>before</em> you touch anything — with a coloured note beside each
+field saying what to type, which name is yours to pick, which default is wrong, and which
+field to leave alone. Read the note beside the field, not a list underneath the screen. The
+values in the replica are the ones your org needs, so it doubles as the thing you copy from.
 2. Work down the guide. Steps 1–4 build the credential pair in <strong>Setup → Named Credentials</strong>:
    an External Credential with a Named Principal carrying your restricted key as an encrypted
    parameter, an <code>Authorization</code> header that <em>references</em> that parameter, and a Named Credential

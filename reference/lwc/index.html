@@ -2830,6 +2830,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uisetupreplica" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup Screen Replica Styles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uistatementprint" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2877,7 +2888,7 @@
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Lightning web component, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>101</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>102</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -2926,8 +2937,8 @@
 <li>
 <p><strong><a href="#group-ui">Ui (shared primitives)</a></strong></p>
 <hr />
-<p>18 bundles</p>
-<p><a href="#uiapexerror">Apex Error Formatting Utility</a> · <a href="#uibase">Internal Base Component</a> · <a href="#uiconfirmdialog">Confirm Dialog</a> · <a href="#uidialogstyles">Dialog Shared Styles</a> · <a href="#uifontstacks">Font Stack Allowlist</a> · <a href="#uilicensenotice">Licence Notice</a> · <a href="#uimarkdown">Markdown Renderer</a> · <a href="#uimarkdowneditor">Markdown Editor</a> · <a href="#uimarkdownparser">Markdown Parser</a> · <a href="#uimodal">Ember Modal</a> · <a href="#uimoney">Money Formatting Utility</a> · <a href="#uipagetheme">Page Theme (shared)</a> · <a href="#uiqrcode">QR Code</a> · <a href="#uireceiptdocument">Receipt Document</a> · <a href="#uisectionbleed">Section Bleed Utility</a> · <a href="#uisegmented">Ember Segmented Control</a> · <a href="#uistatementprint">Giving Statement Print Utility</a> · <a href="#uitoggle">Ember Toggle</a></p>
+<p>19 bundles</p>
+<p><a href="#uiapexerror">Apex Error Formatting Utility</a> · <a href="#uibase">Internal Base Component</a> · <a href="#uiconfirmdialog">Confirm Dialog</a> · <a href="#uidialogstyles">Dialog Shared Styles</a> · <a href="#uifontstacks">Font Stack Allowlist</a> · <a href="#uilicensenotice">Licence Notice</a> · <a href="#uimarkdown">Markdown Renderer</a> · <a href="#uimarkdowneditor">Markdown Editor</a> · <a href="#uimarkdownparser">Markdown Parser</a> · <a href="#uimodal">Ember Modal</a> · <a href="#uimoney">Money Formatting Utility</a> · <a href="#uipagetheme">Page Theme (shared)</a> · <a href="#uiqrcode">QR Code</a> · <a href="#uireceiptdocument">Receipt Document</a> · <a href="#uisectionbleed">Section Bleed Utility</a> · <a href="#uisegmented">Ember Segmented Control</a> · <a href="#uisetupreplica">Setup Screen Replica Styles</a> · <a href="#uistatementprint">Giving Statement Print Utility</a> · <a href="#uitoggle">Ember Toggle</a></p>
 </li>
 </ul>
 </div>
@@ -4318,6 +4329,8 @@
 <p>Fold the admin credential into the same check and a guest user holding the FULL key — the very exposure the split exists to prevent — would light this step green. The opposite fault is therefore invisible here by design and is caught in the Payments panel instead (PaymentSetupGuideService step 8, which reports it as a failure); the mirror row's copy says so and points the admin there.</p>
 <p>Labeled with the public address donors actually visit, falling back to the URL path prefix only when ConnectApi reports no site URL. The prefix alone is not an address — Salesforce may store something other than what the admin typed, so a picker labeled with it reads as a mismatch the admin cannot explain (2026-08-17 walkthrough, finding 10).</p>
 <p><code>persisted</code> is why this is not just an Id comparison. When no site has been saved the panel falls back to CommunityService's name/prefix discovery and the picker pre-selects what it found — so selection and current site matched, the button rendered disabled, and step 2's own instruction ("pick it from the list, and click Use this site") could not be carried out at all (2026-08-17 naive-admin walkthrough, finding 11). Nothing is saved in that state, so there is always something to persist.</p>
+<p>Step 5's Setup replica prints two values the admin retypes into Setup — the label of the permission set they are about to create, and its API name. Both are SUGGESTIONS and not platform literals (the check below reads the Campaign grant, never the name), so they are drawn italic through gd-own; they match the install guide's screenshots so an admin following both sees one name rather than two. The chip vocabulary is c/<a href="#uisetupreplica"><code>uiSetupReplica</code></a>, shared with the Payments guide, where these replicas were designed.</p>
+<p>Click anywhere on a replica field to copy it — the chip inside carries no handler of its own, the click bubbles here, so there is one copy path instead of two that can drift. The flash is applied to the element rather than through a reactive class because re-rendering the pane to light one box up would rebuild every box around it; re-adding the class after a forced reflow is what makes a second click restart the animation instead of doing nothing. A refused clipboard write does not flash: the value is on screen and selectable, so there is nothing to recover, and a flash would claim a copy that did not happen.</p>
 <p>onError sets _sitesError rather than leaving the picker's failure indistinguishable from "this org genuinely has no sites" (I7, 2026-08-10 final review) — a failed load without this rendered an empty combobox with no toast, no error text and the explanatory "no sites found" hint suppressed (it only appears once _sitesLoaded is true).</p>
 <p>Clears _guestCheck and sets _guestCheckPending BEFORE the call fires, regardless of whether networkId is truthy — previously the clear only happened on the falsy branch, so a re-check dispatched for a newly selected site left the PREVIOUS site's payload (and its green Done chips) on screen for the whole in-flight window, and permanently if the call then failed (I5). onError now resolves to the same honest {verified:false} shape a successful-but-unverified response would produce, so a failed re-check degrades to "Can't verify" rather than staying silently stale.</p>
 <p>requestedNetworkId is captured at dispatch time and compared against the live selectedNetworkId when the response lands, so a stale response from a superseded selection (rapid re-selection, out-of-order network replies) is discarded instead of overwriting a newer in-flight or completed check.</p>
@@ -4854,6 +4867,16 @@
 <p>This is a RADIO GROUP, and says so. It used to be a row of buttons binding aria-pressed to a <code>selected</code> property this getter never computed, so LWC omitted the attribute from every one of them: the control that exists because lightning-radio-group could not be themed announced no selection at all, and conveyed it by background colour alone (audit F-45). Declaring the role is only half a fix — the role promises arrow-key navigation and a single tab stop, so handleKey and the roving tabindex below are part of the contract, not extras.</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>label</code>, <code>options</code>, <code>value</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="uisetupreplica">Setup Screen Replica Styles<a class="headerlink" href="#uisetupreplica" title="Permanent link">#</a></h4>
+<p><code>uiSetupReplica</code></p>
+<p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
+<p>CSS-only bundle: the replica of a Salesforce Setup screen (gd-rep) and the annotation layer (gd-ann) that marks up the fields an admin must fill in. Imported by the setup guides in the Settings console; nothing is rendered on its own.</p>
 </div>
 </div>
 <div class="fn-entry">

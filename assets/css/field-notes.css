@@ -831,6 +831,11 @@ body,
   border-radius: 2px;
   background: rgba(239, 239, 236, 0.28);
   cursor: pointer;
+  /* Dragging the knob is a pointer gesture the track owns outright — without
+     these the browser's own touch-scroll and text-selection handling fight
+     the drag, most visibly on touch where the page scrolls instead of seeking. */
+  touch-action: none;
+  user-select: none;
 }
 /* A 3px line is honest about how much room the film has, but it is a hopeless
    click target — the padding gives it a 16px one without moving the line. */

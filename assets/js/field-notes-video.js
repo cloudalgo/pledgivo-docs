@@ -168,14 +168,39 @@
       var r = track.getBoundingClientRect();
       return Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
     }
-    track.addEventListener('click', function (e) {
+    function seekTo(e) {
       if (video.duration) video.currentTime = ratio(e) * video.duration;
-    });
-    track.addEventListener('mousemove', function (e) {
+    }
+    function showTip(e) {
       var x = ratio(e);
       tip.style.left = (x * 100) + '%';
       tip.textContent = fmt(x * (video.duration || 0));
+    }
+    // doc: A plain `click` listener only fires when pointerdown and pointerup
+    // land on the same element, so dragging the knob off the track (which is
+    // 3px tall) and releasing over the video below it silently dropped the
+    // seek. Pointer events + setPointerCapture keep every pointermove routed
+    // to the track for the life of the gesture regardless of where the
+    // pointer ends up, which is what makes a press-and-drag scrub work at all.
+    var dragging = false;
+    track.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      track.setPointerCapture(e.pointerId);
+      seekTo(e);
+      showTip(e);
+      wake();
     });
+    track.addEventListener('pointermove', function (e) {
+      showTip(e);
+      if (dragging) { seekTo(e); wake(); }
+    });
+    function endDrag(e) {
+      if (!dragging) return;
+      dragging = false;
+      if (track.hasPointerCapture(e.pointerId)) track.releasePointerCapture(e.pointerId);
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
     track.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowRight') { video.currentTime += 5; e.preventDefault(); }
       if (e.key === 'ArrowLeft') { video.currentTime -= 5; e.preventDefault(); }

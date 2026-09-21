@@ -1957,6 +1957,7 @@
 <p>Record page for a donation, adding what the Opportunity fields cannot show alone: a sidebar breaking the gift into its net, processor-fee and donor-covered parts and offering the printable receipt, plus any refund request the donor raised.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
+<p>The highlights panel names its own actions instead of inheriting the Opportunity page layout's. Layout assignment is per profile and a 2GP cannot ship it, so in a subscriber org the packaged "Donation Layout" (which carries Refund Donation and Resend Receipt) reaches nobody and the actions never appeared. FlexiPage app-level actionOverrides do package, and with enableActionsConfiguration on, the action list lives on this page. Refund Donation still self-gates on the Process_Refunds custom permission inside the action, so listing it does not widen who can refund.</p>
 <p>Under the field detail, not in the sidebar: a refund request carries a donor's sentence and two reply boxes, and the narrow column would wrap all three. It sits on the Detail tab (the one that opens by default) so a request waiting on somebody is visible without a click. The panel renders nothing but its own empty state on the gifts that never had a request, which is nearly all of them.</p>
 </div>
 <table>

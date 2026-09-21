@@ -1979,8 +1979,22 @@ days after the original gift a refund can still be issued (180 by default).</p>
 
 <ol>
 <li>Open the donation's <strong>Opportunity</strong> record.</li>
-<li>Use the <strong>Refund Donation</strong> action (visible only to users with <code>Process_Refunds</code>).</li>
+<li>
+<p>Use the <strong>Refund Donation</strong> action in the record's header (visible only to users with <code>Process_Refunds</code>).</p>
+<div class="admonition note">
+<p class="admonition-title">The action comes from the record page, not your page layout</p>
+<p>The packaged <strong>Donation Record Page</strong> lists <strong>Refund Donation</strong> and <strong>Resend Receipt</strong> itself,
+so they appear for every user who opens an Opportunity through the Pledgivo app, whatever
+page layout their profile has. Page-layout assignment is per profile and cannot be shipped in a
+package, which is why relying on the layout left the action missing in some orgs. If someone
+opens gifts from another app, or you have assigned your own Opportunity record page, add
+the action to that page's highlights panel. The action refuses gifts that cannot be refunded
+(for example offline gifts with no card payment) with a message.</p>
+</div>
+<ol>
 <li>Choose full or partial, and confirm.</li>
+</ol>
+</li>
 </ol>
 <div class="fn-shot"><img src="../../assets/images/lex-refund-donation-action.png" alt="Refund Donation action panel"></div>
 <p class="fn-figure-caption">**What it shows.** The Refund Donation quick action open on an Opportunity, with a Refund Amount field pre-filled with the full remaining refundable amount (edit it down for a partial refund) and a destructive "Refund" button.</p>

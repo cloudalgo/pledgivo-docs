@@ -1989,7 +1989,7 @@
 
 <h2 id="watch-it-first">Watch it first<a class="headerlink" href="#watch-it-first" title="Permanent link">#</a></h2>
 <div class="fn-film">
-  <div class="fn-vp" data-chapters='[[0, &quot;The Get Started checklist&quot;], [21, &quot;Eight rows, graded against your org&quot;], [34, &quot;Row 1 \u2014 give your team access&quot;], [55, &quot;Row 2 \u2014 confirm the record type mapping&quot;], [73, &quot;Row 7 \u2014 your organization name and logo&quot;], [103, &quot;The optional row \u2014 content hosts&quot;], [124, &quot;Email &amp; Receipts&quot;], [196, &quot;Refunds&quot;], [232, &quot;Recurring &amp; Dunning&quot;], [272, &quot;Donor Portal&quot;], [337, &quot;The checklist is the map.&quot;], [354, &quot;About Pledgivo&quot;]]'>
+  <div class="fn-vp" data-chapters='[[0, &quot;The Get Started checklist&quot;], [21, &quot;Eight rows, graded against your org&quot;], [35, &quot;Row 1 \u2014 give your team access&quot;], [57, &quot;Row 2 \u2014 confirm the record type mapping&quot;], [75, &quot;Row 7 \u2014 your organization name and logo&quot;], [101, &quot;The optional row \u2014 content hosts&quot;], [123, &quot;Email &amp; Receipts&quot;], [194, &quot;Refunds&quot;], [229, &quot;Recurring &amp; Dunning&quot;], [269, &quot;Donor Portal&quot;], [330, &quot;The checklist is the map.&quot;], [347, &quot;About Pledgivo&quot;]]'>
     <video controls playsinline preload="metadata" width="1600" height="1228" poster="../../assets/video/get-started-checklist-poster.png">
       <source src="../../assets/video/get-started-checklist.mp4" type="video/mp4">
       <track kind="captions" srclang="en" label="English" src="../../assets/video/get-started-checklist.vtt">
@@ -1999,16 +1999,16 @@
   <ul class="fn-chapters">
     <li><button type="button" data-t="0"><b>0:00</b> The Get Started checklist</button></li>
     <li><button type="button" data-t="21"><b>0:21</b> Eight rows, graded against your org</button></li>
-    <li><button type="button" data-t="34"><b>0:34</b> Row 1 — give your team access</button></li>
-    <li><button type="button" data-t="55"><b>0:55</b> Row 2 — confirm the record type mapping</button></li>
-    <li><button type="button" data-t="73"><b>1:13</b> Row 7 — your organization name and logo</button></li>
-    <li><button type="button" data-t="103"><b>1:43</b> The optional row — content hosts</button></li>
-    <li><button type="button" data-t="124"><b>2:04</b> Email &amp; Receipts</button></li>
-    <li><button type="button" data-t="196"><b>3:16</b> Refunds</button></li>
-    <li><button type="button" data-t="232"><b>3:52</b> Recurring &amp; Dunning</button></li>
-    <li><button type="button" data-t="272"><b>4:32</b> Donor Portal</button></li>
-    <li><button type="button" data-t="337"><b>5:37</b> The checklist is the map.</button></li>
-    <li><button type="button" data-t="354"><b>5:54</b> About Pledgivo</button></li>
+    <li><button type="button" data-t="35"><b>0:35</b> Row 1 — give your team access</button></li>
+    <li><button type="button" data-t="57"><b>0:57</b> Row 2 — confirm the record type mapping</button></li>
+    <li><button type="button" data-t="75"><b>1:15</b> Row 7 — your organization name and logo</button></li>
+    <li><button type="button" data-t="101"><b>1:41</b> The optional row — content hosts</button></li>
+    <li><button type="button" data-t="123"><b>2:03</b> Email &amp; Receipts</button></li>
+    <li><button type="button" data-t="194"><b>3:14</b> Refunds</button></li>
+    <li><button type="button" data-t="229"><b>3:49</b> Recurring &amp; Dunning</button></li>
+    <li><button type="button" data-t="269"><b>4:29</b> Donor Portal</button></li>
+    <li><button type="button" data-t="330"><b>5:30</b> The checklist is the map.</button></li>
+    <li><button type="button" data-t="347"><b>5:47</b> About Pledgivo</button></li>
   </ul>
 </div>
 <p class="fn-figure-caption"><b>What it is.</b> Six minutes through the Get Started checklist and the four General panels behind it — team access, record types, organization branding, the optional content hosts, then Email &amp; Receipts, Refunds, Recurring &amp; Dunning and the Donor Portal wording. Filmed in a real org: every value typed here was read back out of the settings record afterwards, which is why the run can claim a panel saved rather than that it looked saved.</p>
@@ -2147,8 +2147,8 @@ reaching them shouldn't mean walking into the console that changes the org's set
 Logging panel above still sets <em>what</em> gets logged; the Diagnostic Logs tab is where you read it.
 See <a href="../../guides/monitor-and-diagnose/">Monitor donations and read the logs</a>.</p>
 </div>
-<div class="fn-shot"><img src="../../assets/images/set-health-check.png" alt="Health Check panel showing a mix of healthy, attention, and failed signals"></div>
-<p class="fn-figure-caption">**What it shows.** The Health panel with a status pill per signal — here Record Type Mappings, Payment Accounts, and SOQL Limit read HEALTHY, Experience Cloud Site reads ATTENTION (site is still "Under Construction"), and Scheduled Jobs reads FAILED (0 of 17 running) — plus a Scheduled Jobs section with "Run a job now" actions. This isn't a hypothetical all-green state: it's exactly the kind of mixed result you'll see on a fresh org before every job has been scheduled and the site published.</p>
+<div class="fn-shot"><img src="../../assets/images/set-health-check.png" alt="Health Check panel showing healthy signals and one failed signal, the donor email sender"></div>
+<p class="fn-figure-caption">**What it shows.** The Health Check panel with a status pill per signal — here Scheduled Jobs (24 of 24 scheduled), Gifts Being Recorded, Record Type Mappings, Payment Accounts, SOQL Limit and Experience Cloud Site all read HEALTHY, while Donor Email Sender reads FAILED because the from-address is not an Org-Wide Email Address yet. A red row always says what to fix and where, so a mixed result like this is the normal state of a new org.</p>
 
 <h2 id="a-practical-first-pass">A practical first pass<a class="headerlink" href="#a-practical-first-pass" title="Permanent link">#</a></h2>
 <p>For a first-time setup, start on <strong>Start here → Get Started</strong> and work its list top to bottom —

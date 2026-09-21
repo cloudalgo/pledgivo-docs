@@ -1960,6 +1960,23 @@ days after the original gift a refund can still be issued (180 by default).</p>
 <p class="fn-figure-caption">**What it shows.** The Refunds panel — the "Enable refunds" toggle, the "Let donors request a refund" toggle, and the Refund window (days) field, each with helper text explaining what it controls. These are the org-wide switches; they're separate from the per-Opportunity Refund Donation action below.</p>
 
 <h2 id="issue-a-refund-from-salesforce">Issue a refund from Salesforce<a class="headerlink" href="#issue-a-refund-from-salesforce" title="Permanent link">#</a></h2>
+<p>Watch a partial refund issued from the Donors console:</p>
+<div class="fn-film">
+  <div class="fn-vp" data-chapters='[[0, &quot;Refund a gift&quot;], [10, &quot;Refund part of the gift&quot;], [39, &quot;Wrap up&quot;], [47, &quot;About Pledgivo&quot;]]'>
+    <video controls playsinline preload="metadata" width="1600" height="1228" poster="../../assets/video/feature-staff-refund-poster.png">
+      <source src="../../assets/video/feature-staff-refund.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="../../assets/video/feature-staff-refund.vtt">
+      Your browser does not support embedded video. The same steps are written out in order on this page.
+    </video>
+  </div>
+  <ul class="fn-chapters">
+    <li><button type="button" data-t="0"><b>0:00</b> Refund a gift</button></li>
+    <li><button type="button" data-t="10"><b>0:10</b> Refund part of the gift</button></li>
+    <li><button type="button" data-t="39"><b>0:39</b> Wrap up</button></li>
+    <li><button type="button" data-t="47"><b>0:47</b> About Pledgivo</button></li>
+  </ul>
+</div>
+
 <ol>
 <li>Open the donation's <strong>Opportunity</strong> record.</li>
 <li>Use the <strong>Refund Donation</strong> action (visible only to users with <code>Process_Refunds</code>).</li>
@@ -1968,14 +1985,44 @@ days after the original gift a refund can still be issued (180 by default).</p>
 <div class="fn-shot"><img src="../../assets/images/lex-refund-donation-action.png" alt="Refund Donation action panel"></div>
 <p class="fn-figure-caption">**What it shows.** The Refund Donation quick action open on an Opportunity, with a Refund Amount field pre-filled with the full remaining refundable amount (edit it down for a partial refund) and a destructive "Refund" button.</p>
 
+<p>You can also start from the <a href="../donors-console/#refund-a-gift">Donors console</a>: open the donor, find the
+gift in the <strong>Donations</strong> tab and use the <strong>Refund</strong> link on its row. The dialog opens with the full
+amount filled in; refund less for a partial refund, choose a reason, and read the warning — the money
+leaves your Stripe balance the moment you confirm, and a refund cannot be undone. Afterwards the gift
+is marked partially refunded, with the amount refunded, the amount remaining and the gateway
+reference kept on the record.</p>
 <p>This calls <code>RefundService</code>, which issues the refund through Stripe and updates the
 Opportunity's refund fields immediately — you don't have to wait for the reconciliation job to
 see it reflected.</p>
 <h2 id="when-the-donor-asked-for-it">When the donor asked for it<a class="headerlink" href="#when-the-donor-asked-for-it" title="Permanent link">#</a></h2>
+<p>Watch a donor ask from the portal, and the request arrive on the gift:</p>
+<div class="fn-film">
+  <div class="fn-vp" data-chapters='[[0, &quot;Donor refund requests&quot;], [10, &quot;Donor asks&quot;], [38, &quot;Staff act&quot;], [62, &quot;Wrap up&quot;], [72, &quot;About Pledgivo&quot;]]'>
+    <video controls playsinline preload="metadata" width="1600" height="1228" poster="../../assets/video/feature-donor-refund-request-poster.png">
+      <source src="../../assets/video/feature-donor-refund-request.mp4" type="video/mp4">
+      <track kind="captions" srclang="en" label="English" src="../../assets/video/feature-donor-refund-request.vtt">
+      Your browser does not support embedded video. The same steps are written out in order on this page.
+    </video>
+  </div>
+  <ul class="fn-chapters">
+    <li><button type="button" data-t="0"><b>0:00</b> Donor refund requests</button></li>
+    <li><button type="button" data-t="10"><b>0:10</b> Donor asks</button></li>
+    <li><button type="button" data-t="38"><b>0:38</b> Staff act</button></li>
+    <li><button type="button" data-t="62"><b>1:02</b> Wrap up</button></li>
+    <li><button type="button" data-t="72"><b>1:12</b> About Pledgivo</button></li>
+  </ul>
+</div>
+
 <p>Donors can request a refund from their own portal, if you turn on <strong>Let donors request a refund</strong>
 in the same Refunds panel. It is off until you switch it on. Nothing is refunded by asking — each
 request lands in the <strong>Guest Requests</strong> tab at <em>Awaiting Review</em>, and the gift's owner and your
 reply-to address are emailed.</p>
+<p>On the donor's side, they ask for a sign-in link from the portal, receive a one-time code by email,
+and sign in to see their giving history. On a gift inside the refund window they choose to request a
+refund and say why; the form states that nothing is refunded automatically, that the gift stays as it
+is while under review, and that they will be emailed when the request is received and again when it
+is decided. On your side the request also appears in a <strong>Refund requests</strong> card on the gift's
+Opportunity record, marked awaiting review, with the donor's words quoted.</p>
 <p>When you open <strong>Refund Donation</strong> on a gift that has a request waiting, the donor's own words are
 quoted at the top of the panel, above everything else, with the date they asked and the request's
 name.</p>

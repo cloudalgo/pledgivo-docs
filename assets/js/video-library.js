@@ -54,6 +54,14 @@
     v.setAttribute('playsinline', '');
     if (video.poster) v.setAttribute('poster', video.poster);
 
+    /* doc: WebM first - the browser takes the first <source> it can play, and
+       the VP9 file is the smaller of the two; the MP4 is the fallback. */
+    if (video.webm) {
+      var webm = document.createElement('source');
+      webm.src = video.webm;
+      webm.type = 'video/webm';
+      v.appendChild(webm);
+    }
     var source = document.createElement('source');
     source.src = video.src;
     source.type = 'video/mp4';

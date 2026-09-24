@@ -682,8 +682,8 @@ body,
 /* ---------- The frame ---------- */
 
 /* No fixed aspect ratio: the landing film is 16:9 but both screen-capture
-   walkthroughs are 1600x1228, and a 16:9 frame would crop a third off the
-   Salesforce UI they exist to show. The <video> carries width/height
+   walkthroughs are now 3840x2160 (16:9, matching YouTube), so the frame
+   needs no special-casing. The <video> carries width/height
    attributes instead, so the browser reserves the right box before the file
    loads and nothing reflows underneath the reader. */
 .md-typeset .fn-vp {

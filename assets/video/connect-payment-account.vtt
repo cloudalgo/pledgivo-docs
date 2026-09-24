@@ -13,38 +13,38 @@ WEBVTT
 <v Payments>Step 1 — the external credential, twice — Custom protocol; one credential for the public site, one for the back office
 
 4
-00:01:20.825 --> 00:03:01.665
+00:01:20.825 --> 00:03:03.585
 <v Payments>Step 2 — the principal, and the secret — Named Principal, one authentication parameter, holding the key
 
 5
-00:03:01.665 --> 00:03:22.190
+00:03:03.585 --> 00:03:24.110
 <v Payments>Step 3 — the Authorization header — A merge formula, not a value — the key never appears here
 
 6
-00:03:22.190 --> 00:03:54.950
+00:03:24.110 --> 00:03:58.550
 <v Payments>Steps 4 to 6 — the named credential — Point it at the gateway, allow the package namespace, formulas on
 
 7
-00:03:54.950 --> 00:05:05.190
+00:03:58.550 --> 00:05:12.670
 <v Payments>Step 7 — let your staff use it — Principal access plus User External Credential, read and create
 
 8
-00:05:05.190 --> 00:05:23.315
+00:05:12.670 --> 00:05:30.795
 <v Payments>Step 8 — let your public site use it — The donor credential's permission set goes onto the guest user
 
 9
-00:05:23.315 --> 00:05:49.835
+00:05:30.795 --> 00:05:58.995
 <v Payments>Step 9 — the payment account record — Name the two named credentials, paste the publishable key, choose the mode
 
 10
-00:05:49.835 --> 00:06:22.985
+00:05:58.995 --> 00:06:32.145
 <v Payments>Steps 10 and 11 — the two live checks — One passed, one failed — and the failure is the point
 
 11
-00:06:22.985 --> 00:06:41.215
+00:06:32.145 --> 00:06:50.375
 <v Wrap up>Nothing is connected until it is tested.
 
 12
-00:06:41.215 --> 00:07:07.315
+00:06:50.375 --> 00:07:16.475
 <v About Pledgivo>Fundraising and donation management, native to Salesforce. Docs: pledgivo.cloudalgo.com
 

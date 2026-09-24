@@ -85,8 +85,16 @@
     video.preload = 'metadata';
     video.poster = link.dataset.fnPoster || '';
 
+    var href = link.getAttribute('href');
+    /* doc: the film is published as a WebM twin beside the MP4; offer it first. */
+    if (/\.mp4$/.test(href) && !/pledgivo-/.test(href)) {
+      var webm = document.createElement('source');
+      webm.src = href.replace(/\.mp4$/, '.webm');
+      webm.type = 'video/webm';
+      video.appendChild(webm);
+    }
     var source = document.createElement('source');
-    source.src = link.getAttribute('href');
+    source.src = href;
     source.type = 'video/mp4';
     video.appendChild(source);
 

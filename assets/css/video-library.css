@@ -130,7 +130,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4.6rem;
+  width: 7.5rem;
   aspect-ratio: 16 / 9;
   background: var(--fn-ink);
   border-radius: calc(var(--fn-radius) * 0.6);
@@ -167,3 +167,14 @@
   font-size: 0.62rem;
   color: var(--fn-ink-faint);
 }
+
+/* Description, learning points and transcript under the player. Plain flow layout, no positioning. */
+.vl-about { margin-top: 1rem; }
+.vl-about .vl-desc { font-size: 1rem; line-height: 1.55; }
+.vl-about h3 { margin: 1rem 0 .3rem; font-size: .95rem; }
+.vl-about ul { margin: 0 0 1rem 1.1rem; }
+.vl-transcript { margin-top: 1rem; border: 1px solid var(--md-default-fg-color--lightest); border-radius: 8px; padding: .5rem .9rem; }
+.vl-transcript summary { cursor: pointer; font-weight: 600; }
+.vl-transcript[open] { max-height: 26rem; overflow-y: auto; }
+.vl-transcript p { margin: .45rem 0; font-size: .9rem; line-height: 1.5; }
+.vl-transcript button { font: inherit; font-variant-numeric: tabular-nums; font-weight: 600; background: none; border: 0; padding: 0; margin-right: .3rem; color: var(--md-accent-fg-color); cursor: pointer; }

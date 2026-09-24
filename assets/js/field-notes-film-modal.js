@@ -86,16 +86,11 @@
     video.poster = link.dataset.fnPoster || '';
 
     var href = link.getAttribute('href');
-    /* doc: the film is published as a WebM twin beside the MP4; offer it first. */
-    if (/\.mp4$/.test(href) && !/pledgivo-/.test(href)) {
-      var webm = document.createElement('source');
-      webm.src = href.replace(/\.mp4$/, '.webm');
-      webm.type = 'video/webm';
-      video.appendChild(webm);
-    }
+    /* doc: the docs site plays WebM only; the trigger's href is already the .webm
+     * (the MP4 is the YouTube upload copy and is never linked from a page). */
     var source = document.createElement('source');
     source.src = href;
-    source.type = 'video/mp4';
+    source.type = 'video/webm';
     video.appendChild(source);
 
     /* doc: The captions track is the reason these films are worth opening

@@ -54,17 +54,11 @@
     v.setAttribute('playsinline', '');
     if (video.poster) v.setAttribute('poster', video.poster);
 
-    /* doc: WebM first - the browser takes the first <source> it can play, and
-       the VP9 file is the smaller of the two; the MP4 is the fallback. */
-    if (video.webm) {
-      var webm = document.createElement('source');
-      webm.src = video.webm;
-      webm.type = 'video/webm';
-      v.appendChild(webm);
-    }
+    /* doc: WebM only - the docs site plays the VP9/Opus encode and never the
+       YouTube MP4, which stays a single copy in the film's folder for upload. */
     var source = document.createElement('source');
-    source.src = video.src;
-    source.type = 'video/mp4';
+    source.src = video.webm;
+    source.type = 'video/webm';
     v.appendChild(source);
 
     if (video.vtt) {
@@ -113,6 +107,60 @@
       currentApi.video.play();
     });
 
+    function numbered(video) {
+      return (video.n ? (video.n < 10 ? '0' : '') + video.n + '. ' : '') + video.title;
+    }
+
+    // doc: description, learning points and a collapsible transcript sit under the player; the
+    // transcript lines carry their start time and seek the video when clicked, like chapters.
+    var about = document.getElementById('vlAbout');
+    about.addEventListener('click', function (event) {
+      var button = event.target.closest('button[data-t]');
+      if (!button || !currentApi) return;
+      currentApi.video.currentTime = Number(button.dataset.t);
+      currentApi.video.play();
+    });
+
+    function renderAbout(video) {
+      about.innerHTML = '';
+      if (video.description) {
+        var p = document.createElement('p');
+        p.className = 'vl-desc';
+        p.textContent = video.description;
+        about.appendChild(p);
+      }
+      if (video.learn && video.learn.length) {
+        var h = document.createElement('h3');
+        h.textContent = 'In this video';
+        about.appendChild(h);
+        var ul = document.createElement('ul');
+        video.learn.forEach(function (x) {
+          var li = document.createElement('li');
+          li.textContent = x;
+          ul.appendChild(li);
+        });
+        about.appendChild(ul);
+      }
+      if (video.transcript && video.transcript.length) {
+        var d = document.createElement('details');
+        d.className = 'vl-transcript';
+        var sm = document.createElement('summary');
+        sm.textContent = 'Transcript';
+        d.appendChild(sm);
+        video.transcript.forEach(function (row) {
+          var line = document.createElement('p');
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.dataset.t = String(row[0]);
+          b.textContent = fmtTime(row[0]);
+          line.appendChild(b);
+          line.appendChild(document.createTextNode(' ' + row[1]));
+          d.appendChild(line);
+        });
+        about.appendChild(d);
+      }
+    }
+
     function renderChapters(video) {
       chaptersList.innerHTML = '';
       if (!video.chapters.length) {
@@ -155,7 +203,8 @@
 
       kicker.textContent = [video.duration, GROUP_LABELS[video.group] || video.group]
         .filter(Boolean).join(' · ');
-      title.textContent = video.title;
+      title.textContent = numbered(video);
+      renderAbout(video);
 
       stage.innerHTML = '';
       var frame = buildFrame(video);
@@ -218,7 +267,7 @@
           meta.className = 'vl-item__meta';
           var itemTitle = document.createElement('span');
           itemTitle.className = 'vl-item__title';
-          itemTitle.textContent = video.title;
+          itemTitle.textContent = numbered(video);
           meta.appendChild(itemTitle);
           if (video.duration) {
             var duration = document.createElement('span');

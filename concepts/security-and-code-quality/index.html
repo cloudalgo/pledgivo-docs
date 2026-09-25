@@ -1616,6 +1616,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-false-positive-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The false-positive documents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-it-stays-this-way" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1878,6 +1889,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#the-false-positive-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The false-positive documents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#how-it-stays-this-way" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2078,9 +2100,10 @@ are both still reported. That was checked against a deliberately bad fixture rat
 because a mis-registered custom rule and a correctly-registered one look identical on a clean
 tree — both produce zero findings. The remaining 19 are all in vendored FFLib.</p>
 <h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
-<p>The analyzer tags eight findings across the whole package as security-relevant. All eight are
-listed here with a verdict; each one is also recorded in the project's triage record or annotated
-in the code itself.</p>
+<p>The analyzer tags 25 findings across the whole package as security-relevant (scan of 2026-09-25,
+<code>AppExchange</code> + <code>Recommended:Security</code> rule selectors — the same command the AppExchange reviewer
+runs). All of them are listed here with a verdict; each one is also recorded in the project's
+triage record or annotated in the code itself.</p>
 <table>
 <thead>
 <tr>
@@ -2093,33 +2116,21 @@ in the code itself.</p>
 <tbody>
 <tr>
 <td>High</td>
-<td><code>VfUnescapeEl</code></td>
-<td><code>stripePayment.page</code></td>
-<td>The unescaped value is <code>System.URL.getOrgDomainUrl()</code> — your own org domain, from the platform. No user input is on the path.</td>
-</tr>
-<tr>
-<td>High</td>
-<td><code>VfUnescapeEl</code></td>
-<td><code>stripePaymentReturn.page</code></td>
-<td>Same value, same getter.</td>
-</tr>
-<tr>
-<td>High</td>
-<td><code>no-inner-html</code></td>
-<td><code>publicThankYou.js</code></td>
-<td>Writes a QR code onto the ticket page. The SVG is emitted by a QR encoder as a procedural matrix — it is not markup built from anything a donor typed.</td>
+<td><code>LoadJavaScriptHtmlScript</code></td>
+<td><code>stripePayment.page</code>, <code>stripePaymentReturn.page</code></td>
+<td>The one external script the package loads is Stripe.js, which Stripe requires to be loaded from <code>js.stripe.com</code> and never bundled or pinned, for PCI reasons. It runs in a Visualforce iframe that holds no Salesforce session.</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td><code>ApexSharingViolations</code></td>
-<td><code>DonationMonitorController</code></td>
-<td>An inner class. Apex inner classes don't inherit the outer class's sharing keyword, which is what the rule detects; this one runs under the enclosing admin-only controller action.</td>
+<td><code>ProtectSensitiveData</code> (18)</td>
+<td><code>Payment_Account__c</code>, <code>Donation_Staging__c</code>, <code>Guest_Request__c</code>, <code>Portal_Access_Token__c</code>, <code>Recurring_Donation__c</code>, <code>Settings__c</code> and three <code>Designation__c</code> fields</td>
+<td>A substring match on the field name (<code>Key</code>, <code>Token</code>, <code>Hash</code>, <code>Sign…</code>, <code>Auth</code>). Three hold a Named Credential's <em>name</em> (never a key), five hold hashes or single-use capability tokens that are worthless outside the flow that issued them, and the other ten are <code>Designation</code>, <code>Re_Auth…</code>, <code>Email_Signature</code>, <code>Soft_Credit_Automation…</code> — no secret in any of them.</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td><code>ApexSharingViolations</code></td>
-<td><code>EventRegistrationController</code></td>
-<td>An inner class implementing the guest ticket flow, whose data access is gated by the guest action framework rather than by class-level sharing.</td>
+<td><code>ApexDangerousMethods</code> (3)</td>
+<td><code>DonationDesignations</code>, <code>RecurringDonations</code>, <code>Contacts</code></td>
+<td>Disables the FFLib trigger-layer CRUD re-check on a rollup that reads and writes only its own totals. The DML itself still runs under the platform's access rules.</td>
 </tr>
 <tr>
 <td>Moderate</td>
@@ -2129,27 +2140,60 @@ in the code itself.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td><code>ApexDangerousMethods</code></td>
-<td><code>DonationDesignations</code></td>
-<td>Disables the FFLib trigger-layer CRUD re-check on a rollup that reads and writes only its own totals. The DML itself still runs under the platform's access rules.</td>
-</tr>
-<tr>
-<td>Moderate</td>
-<td><code>ApexDangerousMethods</code></td>
-<td><code>RecurringDonations</code></td>
-<td>The same, behind an explicit flag, for the same reason.</td>
+<td><code>AvoidHardcodedCredentialsInVarAssign</code></td>
+<td><code>PostInstallHandler</code></td>
+<td>Seeds the default email sign-off into <code>Settings__c.Email_Signature__c</code> on first install. <em>Signature</em> is the closing line of an email; the packaged field name cannot be renamed.</td>
 </tr>
 </tbody>
 </table>
-<p>The other 41 High findings are none of them security-tagged: every one of them is inside vendored
-FFLib, which this package carries as source so that installing it does not force you to install a
-library first.</p>
+<p>Three findings that used to appear in this table are gone rather than justified: the ticket page's
+<code>innerHTML</code> write (the QR code is now a template-bound <code>&lt;svg&gt;</code> path, so there is no DOM sink at
+all), and eight credential-shaped identifier names that were renamed to say what they actually
+hold (a Named Credential <em>endpoint</em>, a setup-checklist label, an email closing).</p>
+<p>The 41 remaining High findings are none of them security-tagged: every one of them is inside
+vendored FFLib, which this package carries as source so that installing it does not force you to
+install a library first.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a
 <a href="../../reference/analyzer-exceptions/">Code Analyzer exceptions report</a> listing each finding it does
 not fix, what the rule flags, why it is not a defect here, and how to check that for yourself
 against the code. That page is generated from a live scan rather than written by hand, and the
 build fails if a new finding appears without a justification <em>or</em> if a justification outlives the
 finding it explains — so it cannot quietly go out of date.</p>
+<h2 id="the-false-positive-documents">The false-positive documents<a class="headerlink" href="#the-false-positive-documents" title="Permanent link">#</a></h2>
+<p>Salesforce's review process expects a written response to every finding a partner does not fix,
+from both scanners it runs. Both responses are published here, and this is their only copy — the
+same files are what the submission uploads, so a reviewer reading the site and a reviewer reading
+the submission see the same document.</p>
+<table>
+<thead>
+<tr>
+<th>Scanner</th>
+<th>What it answers</th>
+<th>Document</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Force.com Source Code Scanner (Checkmarx), run through the Partner Security Portal on 2026-09-16</td>
+<td>All 474 reported paths, grouped by rule and resolved to the code location each one points at</td>
+<td><a href="../../assets/security-review/checkmarx-false-positives.pdf">PDF</a> · <a href="../../assets/security-review/checkmarx-false-positives.xlsx">XLSX</a></td>
+</tr>
+<tr>
+<td>Salesforce Code Analyzer, <code>AppExchange</code> + <code>Recommended:Security</code> (the command in <a href="#the-latest-scan">The latest scan</a>)</td>
+<td>Every finding in the table above, one response each, joined from the same triage record CI enforces</td>
+<td><a href="../../assets/security-review/code-analyzer-false-positives.pdf">PDF</a> · <a href="../../assets/security-review/code-analyzer-false-positives.xlsx">XLSX</a></td>
+</tr>
+</tbody>
+</table>
+<p>Each document opens with the scan it answers (scanner version, command, source commit and
+finding count), explains how to read a response, summarises the verdicts by rule, and then gives
+one response per finding — what the rule flags, why it is not a defect at that site, and the
+command or file that lets you check the claim. An appendix lists every raw finding with its
+response number. The spreadsheet holds the same responses as rows, for anyone who prefers to
+filter.</p>
+<p>They are built, not written: a script in the repository turns the scan output and the triage
+record into the PDF and spreadsheet, so when a finding is fixed or a verdict changes the
+document is regenerated from source rather than edited by hand.</p>
 <div class="admonition note">
 <p class="admonition-title">What this page does not claim</p>
 <p>Code Analyzer is a static analyzer, not an audit, and a clean scan is not a security

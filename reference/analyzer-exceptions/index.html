@@ -1737,17 +1737,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#innerhtml-used-to-paint-an-apex-generated-qr-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        innerHTML used to paint an Apex-generated QR code
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#no-sharing-keyword-on-a-vendored-fflib-class" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1912,28 +1901,28 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>High</td>
-<td style="text-align: right;">44</td>
+<td style="text-align: right;">43</td>
 <td>Every one, individually justified below</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">3,827</td>
-<td>32 carrying a <code>Security</code> tag, justified below</td>
+<td style="text-align: right;">3,806</td>
+<td>23 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">19,261</td>
+<td style="text-align: right;">19,270</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">918</td>
+<td style="text-align: right;">899</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>24,050</strong></td>
-<td><strong>76 individually justified</strong></td>
+<td style="text-align: right;"><strong>24,018</strong></td>
+<td><strong>66 individually justified</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1968,28 +1957,6 @@ defined in the triage file, not chosen per-run.</p>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactoryTest.cls</code></td>
 <td>270</td>
 <td>Catches the expected <code>InvalidFieldException</code>; the following <code>catch (Exception e)</code> fails the test on any other type.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="innerhtml-used-to-paint-an-apex-generated-qr-code">innerHTML used to paint an Apex-generated QR code<a class="headerlink" href="#innerhtml-used-to-paint-an-apex-generated-qr-code" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>Working as designed</strong> &middot; 1 finding &middot; <code>@lwc/lwc/no-inner-html</code></p>
-
-<p><strong>What the rule flags.</strong> The LWC ESLint rule <code>@lwc/lwc/no-inner-html</code> forbids <code>innerHTML</code>, which is the standard DOM XSS sink.</p>
-<p><strong>Why it is not a defect here.</strong> The assigned string is not markup from any user or request. It is SVG path data generated procedurally in Apex by <code>QrCodeEncoder</code>—a monochrome matrix rendered as <code>&lt;path&gt;</code> geometry, containing no script, no event handlers, no external references and no interpolated text. It is injected rather than templated because LWC provides no way to build an arbitrary SVG path from a string at render time.</p>
-<p><strong>How to verify.</strong> <code>QrCodeEncoder_Test</code> asserts the generated output is script-free. The call site is <code>_paintQrCodes()</code> and is guarded to run once per deck (<code>this._qrPainted</code>), so the sink is not re-entered on reactive updates. The comment above the method records both facts.</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Line(s)</th>
-<th>Detail</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>base/main/default/lwc/publicThankYou/publicThankYou.js</code></td>
-<td>661</td>
-<td>Paints the Apex-generated ticket QR SVG into its slot, once per deck.</td>
 </tr>
 </tbody>
 </table>
@@ -2137,10 +2104,10 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h3 id="identifiers-named-credential-signature-that-hold-no-secret">Identifiers named credential / signature that hold no secret<a class="headerlink" href="#identifiers-named-credential-signature-that-hold-no-secret" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>False positive</strong> &middot; 10 findings &middot; <code>AvoidHardcodedCredentialsInFieldDecls</code>, <code>AvoidHardcodedCredentialsInVarAssign</code>, <code>AvoidHardcodedCredentialsInVarDecls</code></p>
+<p class="ca-meta"><strong>False positive</strong> &middot; 1 finding &middot; <code>AvoidHardcodedCredentialsInVarAssign</code></p>
 
 <p><strong>What the rule flags.</strong> PMD's AvoidHardcodedCredentialsInVarDecls / InVarAssign / InFieldDecls (AppExchange rule set) flag a variable, field or assignment whose identifier looks like a credential (<code>credential</code>, <code>key</code>, <code>secret</code>, <code>signature</code>, ...) and whose right-hand side is a string, on the theory that the string is the secret.</p>
-<p><strong>Why it is not a defect here.</strong> Every flagged site is the identifier pattern matching a name, not a value. Two families: (1) the value is a Named Credential's <strong>API name</strong>, never its contents — <code>'callout:' + acct.Stripe_Donor_Restricted_Key__c</code> is the exact shape AGENTS.md Rule 9 mandates for consuming a credential, and the setup guide's <code>credentials</code> / <code>credential</code> locals hold the names an admin typed for the credentials they built by hand; (2) the identifier is about something else entirely — <code>NO_CREDENTIAL_YET</code> is the sentinel label the setup checklist shows before an admin has created a credential, and the two <code>Signature</code> sites are the default sign-off line of outbound email (<code>'our team'</code>, <code>'The &lt;org&gt; team'</code>). No secret material exists anywhere in package source: the only place a Stripe key lives is inside a Named Credential the subscriber builds in Setup, which Apex cannot read back.</p>
+<p><strong>Why it is not a defect here.</strong> The one remaining site is the identifier pattern matching a name, not a value: <code>PostInstallHandler</code> seeds <code>Settings__c.Email_Signature__c</code> with <code>'The &lt;org name&gt; team'</code> on first install — <em>signature</em> there is the closing line of an outbound email, and the field's API name is packaged and cannot be renamed. The other eight hits this rule used to produce were cleared on 2026-09-25 by renaming the identifiers to say what they hold (<code>donorEndpoint</code> / <code>adminEndpoint</code> for <code>'callout:' + &lt;Named Credential name&gt;</code>, <code>AWAITING_SETUP_LABEL</code>, <code>DEFAULT_EMAIL_CLOSING</code>, <code>holderName</code> / <code>roleSummary</code>). No secret material exists anywhere in package source: the only place a Stripe key lives is inside a Named Credential the subscriber builds in Setup, which Apex cannot read back.</p>
 <p><strong>How to verify.</strong> <code>Payment_Account__c.Stripe_*_Restricted_Key__c</code> are Text(80) fields whose <code>&lt;description&gt;</code> states they hold a Named Credential name, consumed as <code>'callout:' + name</code>. <code>scripts/lint/security-review-scan.py</code> inventories every <code>key</code>/<code>token</code>/<code>secret</code>-named field on each CI run against a baseline. The Named-Credential-only rule is FP-4 in docs/security/appexchange-security-review-readiness.md.</p>
 <table>
 <thead>
@@ -2152,29 +2119,9 @@ defined in the triage file, not chosen per-run.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>base/main/default/classes/payment/service/PaymentSetupGuideService.cls</code></td>
-<td>116</td>
-<td><code>NO_CREDENTIAL_YET = 'No credential yet'</code> — the label the setup checklist shows before an admin has built a Named Credential.</td>
-</tr>
-<tr>
-<td><code>base/main/default/classes/payment/service/PaymentSetupGuideService.cls</code></td>
-<td>948, 948, 948, 948, 1654</td>
-<td><code>String credentials</code> / <code>String credential</code> locals holding Named Credential <strong>names</strong> while the guide checks which ones the admin has created.</td>
-</tr>
-<tr>
-<td><code>base/main/default/classes/payment/stripe/StripeGateway.cls</code></td>
-<td>148, 149</td>
-<td><code>'callout:' + acct.Stripe_*_Restricted_Key__c</code> — the mandated way to address a Named Credential; the field holds its name.</td>
-</tr>
-<tr>
 <td><code>base/main/default/classes/setup/controller/PostInstallHandler.cls</code></td>
 <td>151</td>
 <td>Seeds <code>Settings__c.Email_Signature__c</code> with <code>'The &lt;org name&gt; team'</code> on first install — an email sign-off.</td>
-</tr>
-<tr>
-<td><code>base/main/default/classes/setup/service/SettingsService.cls</code></td>
-<td>1071</td>
-<td><code>DEFAULT_SIGNATURE = 'our team'</code> — the default email sign-off; <em>signature</em> here is the closing line of a message.</td>
 </tr>
 </tbody>
 </table>
@@ -2320,7 +2267,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 23,974 findings are Moderate, Low and Info style and maintainability
+<p>The other 23,952 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2340,12 +2287,12 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:ApexUnitTestClassShouldHaveRunAs</code></td>
 <td>Low</td>
-<td style="text-align: right;">3,012</td>
+<td style="text-align: right;">3,015</td>
 </tr>
 <tr>
 <td><code>pmd:ApexDoc</code></td>
 <td>Low</td>
-<td style="text-align: right;">2,392</td>
+<td style="text-align: right;">2,396</td>
 </tr>
 <tr>
 <td><code>regex:NoMixedIndentation</code></td>
@@ -2355,12 +2302,12 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:AnnotationsNamingConventions</code></td>
 <td>Low</td>
-<td style="text-align: right;">1,498</td>
+<td style="text-align: right;">1,501</td>
 </tr>
 <tr>
 <td><code>regex:NoTrailingWhitespace</code></td>
 <td>Info</td>
-<td style="text-align: right;">777</td>
+<td style="text-align: right;">764</td>
 </tr>
 <tr>
 <td><code>pmd:FieldDeclarationsShouldBeAtStart</code></td>
@@ -2405,7 +2352,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:UnusedLocalVariable</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">111</td>
+<td style="text-align: right;">110</td>
 </tr>
 </tbody>
 </table>
@@ -2446,7 +2393,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>24,050 (after declared path exclusions)</td>
+<td>24,018 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

@@ -3966,28 +3966,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apex-stripepaymentpagecontroller" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        StripePaymentPageController
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#apex-stripepaymentreturncontroller" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        StripePaymentReturnController
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-striperesponse" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4792,6 +4770,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-recordaccess" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RecordAccess
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-securetokens" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4933,7 +4922,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>214</code></span><span><b>Test classes</b><code>149</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>213</code></span><span><b>Test classes</b><code>148</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4982,7 +4971,7 @@
 <li>
 <p><strong><a href="#domain-payment">Payment</a></strong></p>
 <hr />
-<p>19 classes</p>
+<p>17 classes</p>
 <p><a href="#domain-payment-root">Core</a> · <a href="#domain-payment-domain">Domains</a> · <a href="#domain-payment-selector">Selectors</a> · <a href="#domain-payment-service">Services</a> · <a href="#domain-payment-stripe">Stripe</a></p>
 </li>
 <li>
@@ -5000,7 +4989,7 @@
 <li>
 <p><strong><a href="#domain-shared">Shared</a></strong></p>
 <hr />
-<p>22 classes</p>
+<p>23 classes</p>
 <p><a href="#domain-shared-root">Core</a> · <a href="#domain-shared-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-shared-selector">Selectors</a></p>
 </li>
 </ul>
@@ -5197,8 +5186,11 @@
 <p>One controller serves two panels because one object (Campaign_Post__c) backs both — see that object's header for why. Every method therefore takes a postType and passes it straight through to the service, which scopes the query and the Campaign visibility toggle by it. The panels stay independent: neither can read, edit or delete the other's rows, and neither ever sends a type the admin chose — each panel hardcodes its own.</p>
 <p>No read here is cacheable=true. Both panels are editors that reload their own list straight after every save, and a cached read hands back the pre-save list until the page is reloaded.</p>
 <p>The panel hides its delete buttons when this is false rather than letting the admin press one and read a permission error. Fundraising_User ships with allowDelete=false on Campaign_Post__c, so this is the common case, not an edge.</p>
+<p>Whether an upload from this user will get a public link. Publishing a file needs the platform's "Create Public Links" permission, which describe cannot report, so without this the admin would upload, see no error, and find the card missing from the public page. Only the Documents panel publishes files.</p>
 <p>The campaign and the type both come from the STORED row, never from the client. Trusting the posted campaignId would let a caller pair a campaign they can see with a post Id belonging to one they cannot and edit it anyway; trusting the posted type would let the Updates panel retype a document row (and so publish a document card with no file behind it, past the service's guard) or hide a row from the panel that owns it.</p>
+<p>Record-level edit, checked here because the Unit of Work commits without sharing. The object's OWD is Public Read/Write today, but a subscriber that tightens it to Read Only must actually get read-only posts.</p>
 <p>fflib's Unit of Work commits at SYSTEM_MODE, so nothing downstream re-checks delete permission — without this the service would delete for any user who can reach the class. See <a href="#apex-controlleraction"><code>ControllerAction</code></a>.requireDeletable.</p>
+<p>The object-level check above says the user may delete posts; this one says they may delete THIS post — sharing and ownership, which the without-sharing commit would otherwise ignore.</p>
 <p>Campaign_Post__c is a Lookup child with an org-wide default of Public Read/Write, so its own sharing refuses nobody and a campaignId arriving from an LWC is unvetted. The record it belongs to is the thing worth protecting, so every action asks the same question the fundraisers console asks: can the running user see the parent Campaign? Same shape as <a href="#apex-eventticketadmincontroller"><code>EventTicketAdminController</code></a>.requireCampaignVisible, and for the same reason the message is caller-supplied — a distinct "no access" reply would confirm the record exists.</p>
 <p>Rejecting an unknown type in doValidate, rather than letting it fall through to the service's "anything that is not a Document is an Update" default, keeps a typo in a future panel from silently listing and writing Update rows while the developer believes they are working on a third type. Returns the message rather than calling addError itself because addError is protected on ControllerAction — only the inner action classes can reach it.</p>
 <p>Campaign__c and Type__c are deliberately absent — both are set once, at insert, by the caller above. A post never moves campaign and never changes type; letting either arrive through the form is the whole attack surface this controller is guarding.</p>
@@ -5373,6 +5365,8 @@
 <p>Not a fundraiser setting — it is what the Story step's preview needs to render video the way the donor will see it. Without it the preview always shows the facade card, so an org that opted into inline playback would show its authors the one thing they cannot check by looking. The record page's Story tab gets the same value from <a href="#apex-campaignstorycontroller-getstory"><code>CampaignStoryController.getStory</code></a>.</p>
 <p>Settings__c.Event_Deductible_Mode__c ('Fair Market Value' or 'Percentage'). The Tickets step needs it BEFORE a campaign exists (getEventTickets, which also returns it, needs a campaignId) so it can show the Deductible % input and gate Next when the org deducts by percentage. Without it the wizard collected no percentage, <a href="#apex-eventticketadmincontroller-savetickettypes"><code>EventTicketAdminController.saveTicketTypes</code></a> rejected every tier, and the event page said "Tickets are no longer available". The server gate is unchanged and remains the authority; this only lets the UI ask the right question.</p>
 <p>Not a plain sVal assignment, and deliberately so — this is the choke point every story passes through, so a client that skips the editor cannot land markup or a hostile URL. See <a href="#apex-campaignservice-normalizestorymarkdown"><code>CampaignService.normalizeStoryMarkdown</code></a>.</p>
+<p>The Unit of Work commits in SYSTEM_MODE, so these are the only checks between the edit wizard (or the list/Kanban toggle) and the Campaign row. Visibility is asked first and answers "Fundraiser not found" exactly as a missing record does; edit access is asked second (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a>, owner decision D-1), so a user who can only read a fundraiser can no longer change it, pause it or take it live.</p>
+<p>The payment account Id arrives from the wizard and is written through the SYSTEM_MODE Unit of Work, so without this re-read a client could point a fundraiser at a deactivated account, at an Id of another object, or at an account the picker never offered. The picker (GetFundraiserOptions) lists selectAllActive(); this is the same rule, enforced on the server. An inactive or unknown Id gets the same message.</p>
 </div>
 <table>
 <thead>
@@ -5651,6 +5645,7 @@
 <p>The read behind admCampaignUpdatesTab and admCampaignDocumentsTab. Drafts are included on purpose — an admin has to see what is not yet live — and the Type__c filter is what keeps the two panels independent of each other even though one object backs both. User mode, unlike the guest method below: an internal editor must obey the running user's sharing and FLS, and <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> has already checked that they can see the parent Campaign.</p>
 <p>Used by the save and delete paths to re-read a post the client named, so the controller can gate on its parent Campaign and read back the stored File_URL__c before allowing a document to be published.</p>
 <p>Sort_Order__c leads with NULLS LAST so a blank value falls through to pure date ordering rather than pinning every unordered post above the ordered ones.</p>
+<p>SYSTEM_MODE and sharing lifted because the question is about every post in the org, not the ones the running user can see: revoking a link another post still serves would break that post's public card, and a staff member who cannot see it has no way to notice. Only Id and File_URL__c leave CampaignPostService, which uses them to decide and returns neither.</p>
 </div>
 <table>
 <thead>
@@ -5693,6 +5688,11 @@
 </tr>
 <tr>
 <td><a id="apex-campaignpostsselector-selectpublishedbycampaignidsystemmode"></a><code>selectPublishedByCampaignIdSystemMode(1 arg)</code></td>
+<td><code>List&lt;Campaign_Post__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpostsselector-selectbyfileurlssystemmode"></a><code>selectByFileUrlsSystemMode(1 arg)</code></td>
 <td><code>List&lt;Campaign_Post__c&gt;</code></td>
 <td></td>
 </tr>
@@ -5909,6 +5909,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The admin editors' read. Drafts included and one Type__c only, because Updates and Documents are two separate panels that must not see each other's rows.</p>
+<p>Every post, org-wide, still serving one of these public file links. Read before a link is revoked, so a file two posts share keeps working for the one that is not letting go of it.</p>
 </div>
 </div>
 </div>
@@ -6052,6 +6053,8 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Structural twin of <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a> — same three-method shape and the same two-phase saveSelection (create new Content_Template__c rows first so their Ids exist, THEN the campaign's own selection fields are updated), differing only by RecordType ('FAQ' here, 'Custom_Question' there) and target fields (Campaign.FAQ_Ids__c/FAQs_Active__c vs Campaign.Custom_Question_Ids__c/Custom_Questions_Active__c). Formerly backed by a standalone Campaign_FAQ__c object; merged into Campaign fields (2026-08) since it only ever held a single selection row per campaign.</p>
+<p>The campaign's FAQ selection fields are written through the SYSTEM_MODE Unit of Work, which would save them onto any Campaign Id the browser sent. The gate therefore sits here, in the service, so every caller inherits it: the running user must be able to see the Campaign (<a href="#apex-campaignsselector-selectidsvisibletouser"><code>CampaignsSelector.selectIdsVisibleToUser</code></a>, the same check <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> and <a href="#apex-eventticketadmincontroller"><code>EventTicketAdminController</code></a> make), and a campaign they cannot see answers exactly as a missing one does. Seeing is not enough to change it: once visibility passes, the user must also hold edit access on the campaign (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a> — readiness finding F-11, closed by owner decision D-1). Visibility is asked first so a hidden campaign is still reported as not found rather than as not editable.</p>
+<p>Every templateId in the payload is re-read and checked before anything is written, because the Unit of Work commits in SYSTEM_MODE and would otherwise save whatever Id the browser sent: an FAQ save could rewrite a template of the other record type, and a user who can only read the shared library (Fundraising_ReadOnly) could edit a template other campaigns display. A referenced template must exist and carry this service's record type; one the row also edits must be editable by the running user (<a href="#apex-recordaccess"><code>RecordAccess</code></a>, which asks UserRecordAccess). Reuse-only rows need no edit access: picking a template changes the Campaign, not the template.</p>
 </div>
 <table>
 <thead>
@@ -6101,26 +6104,34 @@
 <div class="fn-entry__body">
 <p>Turns published Campaign_Post__c rows into the two lists the public page renders: a document shelf and an update timeline. Also keeps each Document post's stored file details in step with the file attached to it.</p>
 <p>FFLib role: Service.</p>
-<p>Deliberate FFLib exception: ContentDocumentLink, ContentVersion and ContentDistribution are read with inline SOQL and ContentDistribution is inserted directly rather than through a selector and Unit of Work. These are platform file objects with no package selector, and DistributionPublicUrl is populated by the platform only after commit — a UoW-deferred insert could not return the URL in the same transaction, which is the whole point of the call.</p>
+<p>Deliberate FFLib exception: ContentDocument, ContentDocumentLink, ContentVersion and ContentDistribution are read with inline SOQL and written directly rather than through a selector and Unit of Work. These are platform file objects with no package selector, and DistributionPublicUrl is populated by the platform only after commit — a UoW-deferred insert could not return the URL in the same transaction, which is the whole point of the call.</p>
 <p>SYSTEM_MODE on every one of those reads: standard object, package cannot grant. A 2GP permission set cannot ship a grant on ContentDocumentLink, ContentVersion or ContentDistribution (AGENTS.md, Change Management), so a USER_MODE read would depend on a manual admin step the install cannot verify. Each query is keyed by the Campaign_Post__c Ids, ContentVersion Ids or ContentDocument Ids the caller already holds — the record being saved, or the file just attached to it — so no row outside the post's own attachment is reachable, and nothing read here leaves the transaction except the file details stamped onto that same post.</p>
+<p>The one write that is NOT system mode is the public link itself: ContentDistribution is inserted in USER_MODE, so the platform's "Create Public Links" permission decides whether the uploader may publish the file to the internet. A user without it gets a post with no link, and the Documents panel says why.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The two Type__c values, public so <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> can validate the type its panels send without a second copy of the strings. They are a discriminator, not a user choice — the admin never picks one, because each authoring panel owns exactly one type and passes it on the admin's behalf. Anything that is not a Document is read as an Update, so a row carrying an unexpected value still renders as text rather than as a document card with no file behind it.</p>
 <p>Set while stampFromVersions saves its own results. That save fires the Campaign_Post__c before-update trigger, which calls applyFileDetails and would re-resolve from ContentDocumentLink — and inside a ContentVersion after-insert trigger the link row for a just-attached file is not queryable yet, so the second pass would find nothing and clear the values the first one had just worked out. The flag makes the write authoritative.</p>
 <p>No file object is touched here. A site guest cannot query ContentDocumentLink, ContentVersion or ContentDistribution at all — that access is gated by the Query All Files permission, which a Guest license cannot hold and which a fundraising app has no business asking for. Resolving the download link while the public page rendered therefore returned nothing, and every document rendered as an untyped, unsized, unclickable card. The details are resolved once by an internal user and stored on the post instead; this read just plays them back.</p>
+<p>A published document with no stored link is left off the page rather than rendered as a card that opens nothing. savePost refuses to publish one, but a post can still lose its link after publishing — its file replaced by someone without "Create Public Links", or deleted from Files directly.</p>
 <p>This block serves the two internal authoring panels; the rest of the class serves the public page. They meet only at the record. The panels are independent by design — an update is text and a document is a file, and neither needs the other — so every method here is scoped by postType and no admin path ever sees both types at once.</p>
 <p>A Document is created first and its file attached afterwards, because lightning-file-upload needs a record to attach to. That ordering is the reason for the publish guard: between those two steps the row is a document with no file, and publishing it would put a card on the public page whose href is null — pfSectionTabs renders &lt;a href={doc.url}&gt;, so the donor gets a card that looks live and does nothing.</p>
 <p>The stored File_URL__c is the only signal available here, and it is the right one: it is what the public page actually reads, so if it is blank the card would be dead whatever the file situation looks like elsewhere.</p>
-<p>The file is read BEFORE the post is deleted and deleted AFTER, because the platform cascades ContentDocumentLink away with the record — asking afterwards finds nothing and the file survives as an orphan with a live public URL. Deleting the ContentDocument (not the link) is deliberate: the link alone would leave the ContentDistribution serving the file to anyone who kept the URL.</p>
-<p>SYSTEM_MODE because deleting the file is cleanup the app owes the record, not an action the admin asked for in its own right — they deleted a post. The caller has already checked they may delete Campaign_Post__c (<a href="#apex-controlleraction"><code>ControllerAction</code></a>.requireDeletable).</p>
+<p>The file is planned BEFORE the post is deleted and retired AFTER, because the platform cascades ContentDocumentLink away with the record — asking afterwards finds nothing and the file survives as an orphan with a live public URL. What retiring means is decided by FileRetirement: a file that was uploaded to this post and lives nowhere else is deleted; a file that came from elsewhere, or is also attached to another record, is kept and only the public link this post served is revoked. Only Document posts carry a file the package published, so an Update post's attachments are never touched.</p>
 <p>Assigns rather than saves, because the caller is a before-update trigger and a before trigger must not run DML on its own records. A Document post with nothing attached any more has its three fields cleared, which is what makes "save the record again" the repair action the field help tells the admin to use.</p>
 <p>FirstPublishLocationId is the record the file was attached to, and for a brand-new file it is the only link available here — the ContentDocumentLink row the platform writes alongside the version is not queryable from this trigger yet. A new version of a file that is ALREADY attached carries no FirstPublishLocationId, and for those the link does exist by now, so the two lookups together cover both ways a file can arrive.</p>
 <p>A version that names where it was first published has already answered the question, so a file attached to anything else costs one type check and no query — which matters, because this trigger sees every file uploaded in the org.</p>
 <p>FileExtension is derived by the platform during the save, so it is still null on the trigger's own copy of the record and a post stamped straight from Trigger.new came out with no file type at all. Re-reading is the fix, and it happens only for the versions that survived the filter above — an unrelated file upload still costs no query.</p>
+<p>Only a post whose new file actually got a public link retires the old one. When the link could not be minted the post is left pointing at nothing, and deleting the file donors were downloading until a moment ago would turn a permissions problem into data loss — so the old file stays until someone who can publish replaces it again.</p>
+<p>The ContentVersion trigger runs as whoever uploaded the file, and the Unit of Work commits without sharing — so without this gate, attaching a file to any post the uploader can merely SEE would overwrite that post's public link and delete the file it was serving. A post is stamped only when the uploader could have edited it themselves, can see its campaign (Campaign__c is a lookup, so post access does not imply it), and it is a Document post — a file dropped on an Update post is never published.</p>
 <p>Attaching a file to a post that already has one is a REPLACEMENT, not a second attachment — the row renders a single download card and File_URL__c holds a single link, so the superseded file becomes invisible to every screen the app has while its ContentDistribution goes on serving it to anyone holding the URL.</p>
 <p>That is the same orphan deletePost exists to prevent, and it matters more here: "Replace file" is what an admin reaches for after uploading the wrong document, so leaving the old one live defeats the one repair the UI offers. Runs after the stamp commit so the post already points at the survivor, and keeps by ContentDocumentId rather than by what the link query returns — the link row for a just-attached file is not queryable yet on the FirstPublishLocationId path.</p>
-<p>SYSTEM_MODE for the same reason as deletePost — revoking the file the admin just replaced is cleanup the record owes itself, not a delete they asked for by name.</p>
+<p>Decides, for each file a post is letting go of, whether the file is the post's to destroy. It is only when the file was FIRST uploaded to one of the releasing posts and is attached to nothing else — its owner's own library link aside. A file that came from a Campaign record, a library or another post is someone else's content that happened to be attached here; deleting it would remove it from those places too, with no warning and with system-mode rights the admin never had. Those files are only detached, and the public link this post was serving is revoked so the donor-facing URL still dies.</p>
+<p>The plan is built before anything is written, because deletePost has to read the post's links before its own delete cascades them away.</p>
+<p>Revokes only the link the releasing post was serving, and only when no other post still serves the same URL — two Document posts can legitimately point at one file, and revoking the shared link would kill the other post's card with it.</p>
+<p>SYSTEM_MODE on all three writes: retiring the file is cleanup the record owes itself after an action the caller was already authorised for — deleting the post (CampaignPostController checks record-level delete access) or replacing its file (stampablePosts checks record-level edit access) — not a file operation the user asked for by name, and the package cannot grant rights on the file objects.</p>
+<p>A post normally holds one file, but it can hold two — a replacement uploaded by someone who could not publish it keeps the old file attached. The newest upload wins, decided by the latest version's CreatedDate, so the answer does not depend on the order the platform happens to return link rows in.</p>
 <p>ContentDistribution is queried before it is created. A distribution is per ContentVersion and permanent, so minting one on every save would leak a fresh public URL each time an admin touched the record and eventually hit the daily DML ceiling.</p>
+<p>USER_MODE because minting a public link is the uploader's act of publishing a file to the internet, and the platform has a permission for exactly that — "Create Public Links". A system-mode insert skipped it, so any user who could attach a file could publish it. Partial success, not all-or-nothing: one file that cannot be published must not stop the others, and must not roll back the upload that got us here. A failed row simply gets no URL, and <a href="#apex-recordaccess-cancreatepubliclinks"><code>RecordAccess.canCreatePublicLinks</code></a>() lets the Documents panel say why before the admin uploads.</p>
 <p>Formatting lives here rather than in the stored value so there is one rounding rule in one place, and so File_Size__c stays a plain byte count that nothing downstream has to reparse. Static and public because CampaignPostController renders the same label in the Documents editor — an admin comparing the console against the live page should not be reading two different roundings of the same file. It is not on <a href="#apex-icampaignpostservice"><code>ICampaignPostService</code></a>: a pure formatter has no behavior worth mocking, and putting it on the interface would force every test double to stub it.</p>
 </div>
 <table>
@@ -6168,6 +6179,11 @@
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-campaignpostsselector-newinstance">CampaignPostsSelector.newInstance()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-campaignpostservice-setvisibility"></a><code>setVisibility(3 args)</code></td>
 <td><code>void</code></td>
 <td></td>
@@ -6180,6 +6196,11 @@
 <tr>
 <td><a id="apex-campaignpostservice-stampfromversions"></a><code>stampFromVersions(1 arg)</code></td>
 <td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-recordaccess-editableids">RecordAccess.editableIds()</a>, <a href="#apex-campaignpostsselector-newinstance">CampaignPostsSelector.newInstance()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-recordaccess-cancreatepubliclinks">RecordAccess.canCreatePublicLinks()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -6217,6 +6238,7 @@
 <p>Public because the thank-you page renders the same footer band as the donation page and must resolve it the same way — same precedent as resolveThankYouCta. A second resolver there would be a second place for a privacy URL to come from, which is exactly the divergence this method exists to prevent.</p>
 <p>Public for the same reason as resolveIdentity above — <a href="#apex-thankyoucontroller"><code>ThankYouController</code></a> renders the same band and must not grow its own copy of the campaign-over-org fallback.</p>
 <p>The single override rule for every campaign-over-org field on the public page. Blank means "use the org's", never "show nothing" — a campaign that fills in nothing still gets a complete page. Named campaignOverride, not override, because <code>override</code> is an Apex reserved word.</p>
+<p>The footer's privacy, terms and social links are admin-typed URLs that land in an href on a guest page, so they pass the same isSafeExternalUrl rule as the thank-you CTA: a javascript:/data: value or one carrying a quote comes back null, and pfContactBand hides a null link rather than rendering it. The check runs after the campaign-over-org fallback, so an unsafe campaign override is dropped, not replaced by the org value.</p>
 <p>The venue row is the one contact detail a ticket-holder needs and a donor never does. It renders when Venue_Name__c is set and is absent otherwise — no toggle, no new field, so a plain donation campaign never has to think about it.</p>
 <p>The ORGANIZATION's design — the Campaign_Design__c an admin flagged Is_Default__c in the settings console — with no campaign in play. Every public page EXCEPT the donation page paints itself with this: the directory, the donor portal, the thank-you page, the receipt, the ticket wallet and the event registration page. Only the donation/campaign page reads a campaign's own Design__c, because only a campaign can carry one. Without this the other six would each ship a hard-coded palette that silently disagrees with the console the moment an admin picks a different theme — which is exactly how the portal came to be warm clay-and-moss while the directory next to it was teal.</p>
 <p>Deliberately a SLICE, not the whole designToMap payload: a directory has no form, so the block JSON, form copy defaults and exit-intent config would be dead weight on a page that loads before anything else. Every color here has already passed safeHex; the two font values are restricted picklist TOKENS (Google_Lora, not a CSS stack) which the LWC resolves through its own closed allowlist, so nothing on this map can reach CSS raw.</p>
@@ -6385,6 +6407,8 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Structural twin of <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a> — same three-method shape and the same two-phase saveSelection (new Content_Template__c rows committed first so their Ids exist, THEN the campaign's own selection fields are updated), differing only by RecordType ('Custom_Question' here, 'FAQ' there) and target fields (Campaign.Custom_Question_Ids__c/ Custom_Questions_Active__c vs Campaign.FAQ_Ids__c/FAQs_Active__c). Consumed by <a href="#apex-campaignquestioncontroller"><code>CampaignQuestionController</code></a> and, at donation time, by <a href="#apex-donationservice"><code>DonationService</code></a> when resolving submitted answers against the campaign's active questions. Formerly backed by a standalone Custom_Question__c object; merged into Campaign fields (2026-08) since it only ever held a single selection row per campaign.</p>
+<p>The campaign's question selection fields are written through the SYSTEM_MODE Unit of Work, which would save them onto any Campaign Id the browser sent. The gate therefore sits here, in the service, so every caller inherits it: the running user must be able to see the Campaign (<a href="#apex-campaignsselector-selectidsvisibletouser"><code>CampaignsSelector.selectIdsVisibleToUser</code></a>, the same check <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> and <a href="#apex-eventticketadmincontroller"><code>EventTicketAdminController</code></a> make), and a campaign they cannot see answers exactly as a missing one does. Seeing is not enough to change it: once visibility passes, the user must also hold edit access on the campaign (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a> — readiness finding F-11, closed by owner decision D-1). Visibility is asked first so a hidden campaign is still reported as not found rather than as not editable.</p>
+<p>Every templateId in the payload is re-read and checked before anything is written, because the Unit of Work commits in SYSTEM_MODE and would otherwise save whatever Id the browser sent: a question save could rewrite a template of the other record type, and a user who can only read the shared library (Fundraising_ReadOnly) could edit a template other campaigns display. A referenced template must exist and carry this service's record type; one the row also edits must be editable by the running user (<a href="#apex-recordaccess"><code>RecordAccess</code></a>, which asks UserRecordAccess). Reuse-only rows need no edit access: picking a template changes the Campaign, not the template.</p>
 </div>
 <table>
 <thead>
@@ -6633,6 +6657,11 @@
 </div>
 <div class="fn-entry__body">
 <p>Ops alarm for the webhook-free pipeline (now critical infrastructure). Since donations finalize only via the scheduler, a stalled/unscheduled reconciler would silently stop creating records while donors still see success. This schedulable flags donations the donor CONFIRMED but that remain unfinalized past a threshold: it writes a HEARTBEAT_ALERT Transaction_Log__c and emails the Fundraising admins. Pair with the "Stuck / Unfinalized" staging list view.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>PAY-4: rows stuck in 'Processing' are paid orders whose second finalize commit never landed. They are counted into the same alarm; before 2026-09-25 they were invisible to it because only Submitted rows were counted.</p>
+<p>D-18: recurring schedules parked for staff review (a renewal PaymentIntent that never settled, or could not be read back) ride the same alarm. The renewal batch stops retrying them, so without this count they would wait silently for someone to open the record.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -6645,6 +6674,11 @@
 <tr>
 <td><a id="apex-reconciliationheartbeat-execute"></a><code>execute(1 arg)</code></td>
 <td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -6669,6 +6703,7 @@
 <p>Multi-account: refunds/disputes for a PaymentIntent are visible only through the Stripe account that created it, so start() lists against EVERY active Payment_Account__c and remembers which account produced each PI (gatewayByPI) for the authoritative re-fetch. All Stripe callouts happen in start() (two list calls per active account, plus one retrievePaymentIntent per matched-refund PI — capped by piBudget, which shrinks as account count rises to stay under the per-transaction callout limit); Stateful carries the per-PI authoritative totals, the per-PI dispute snapshots, and both cursor high-water marks through to finish().</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
+<p>The cursors are org-wide state, so they are read from — and written back to — the org-default row only. getInstance() resolves the hierarchy for the RUNNING user (the admin who scheduled the job): if that user or their profile had a Settings__c row, the cursor was read from and advanced on that row, and a different scheduler would silently restart from the org default's stale cursor.</p>
 <p>Populated ONLY from the external-refund branch, never from a lost dispute. A lost chargeback reverses the gift through the same recordRefundedTotal, but the donor raised it with their own bank and has already been told the outcome by that bank — a "your gift has been refunded" note from the charity there is redundant at best and tone-deaf in a case the org may still contest.</p>
 <p>That isolation has a price the batch scope pays for it: DML statements scale with the chunk size. One commit is not one statement — recordRefundedTotal writes the Opportunity, a fully-refunded event order also releases seats and cancels attendees through releaseForOpportunity, and the Opportunity update then fires the rollup triggers, whose own DML counts against the SAME per-transaction ceiling of 150. So the scope passed by <a href="#apex-refundreconciliationscheduler"><code>RefundReconciliationScheduler</code></a> (10) is a correctness contract with this loop, not a tuning knob — see the rationale there before changing it.</p>
 <p>Note why the fix is a smaller scope and not "stop committing when DML runs low": the records this loop skips are NOT re-offered. finish() advances the refund and dispute cursors unconditionally once every chunk has run, so a record deferred here is never re-listed by a future start() — it is dropped permanently, which is exactly the hazard the cursorTarget hold-back exists to prevent on the callout side. Bounding the chunk keeps every record inside a transaction that can afford to commit it.</p>
@@ -6695,7 +6730,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-refundservice-recordrefundedtotal">RefundService.recordRefundedTotal()</a>, <a href="#apex-stripeamount-tomajor">StripeAmount.toMajor()</a>, <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -6725,7 +6760,7 @@
 <div class="fn-entry">
 <div class="fn-entry__id">
 <h4 id="apex-refundreconciliationscheduler">RefundReconciliationScheduler<a class="headerlink" href="#apex-refundreconciliationscheduler" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public without sharing</code></p>
+<p><code>class</code> · <code>public with sharing</code></p>
 <p>implements Schedulable</p>
 <p class="fn-entry__src"><code>donation/<wbr>async/<wbr>RefundReconciliationScheduler.cls</code></p>
 </div>
@@ -6771,6 +6806,7 @@
 <li><strong>canceled</strong> → staging Failed (event tickets: seats released first).</li>
 <li><strong>pending past TTL</strong> → staging Expired (event tickets: seats released first).</li>
 <li><strong>still pending</strong> → left for the next run.</li>
+<li><strong>stale Processing event order</strong> (paid, attendee commit never landed) → finished through the event finalize path; never expired or failed, whatever Stripe or the TTL says.</li>
 <li><strong>no intent at all</strong> → nothing to re-fetch; retired on the TTL fallback like any unpaid row.</li>
 <li><strong>exception</strong> → Finalization_Error__c recorded; left for retry (event tickets: seats released too if the error pushes the staging past TTL into Expired).</li>
 </ul>
@@ -6779,6 +6815,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Direct DML, not UnitOfWork, and SYSTEM_MODE — same reasoning as <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a>'s cursor: this is the job's own bookkeeping on a config record, written after the finalize work has already committed through its own services, and the scheduled user (whoever installed the package) may hold no FLS on the field. Swallowed on failure: a missed stamp costs a false stale alarm, which is far cheaper than failing a pass that already recorded real gifts.</p>
+<p>PAY-4: a stale Processing event row is finished through the same finalizeSucceededEventStaging call as a Submitted one; its findExistingOrder path repairs the existing order instead of creating a second. The canceled, TTL and error-expiry branches below all skip a Processing row.</p>
 </div>
 <table>
 <thead>
@@ -6826,7 +6863,7 @@
 <div class="fn-entry">
 <div class="fn-entry__id">
 <h4 id="apex-stagingreconciliationscheduler">StagingReconciliationScheduler<a class="headerlink" href="#apex-stagingreconciliationscheduler" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public without sharing</code></p>
+<p><code>class</code> · <code>public with sharing</code></p>
 <p>implements Schedulable</p>
 <p class="fn-entry__src"><code>donation/<wbr>async/<wbr>StagingReconciliationScheduler.cls</code></p>
 </div>
@@ -6865,6 +6902,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Scheduled by <a href="#apex-postinstallhandler-schedulejobs"><code>PostInstallHandler.scheduleJobs</code></a>() at install. The name and :07 offset match what scripts/apex/schedule-reconciliation-jobs.apex has always used, so an org that ran that dev script before upgrading stays idempotent under scheduleIfAbsent.</p>
+<p>PAY-3 (2026-09-25). Holding the cursor keeps the window open but does not page through it: while an account takes more than 100 succeeded PaymentIntents per window, each run re-reads the newest 100. The SWEEP_TRUNCATED row is the signal that the account needs a manual look (or a paging change) — it is no longer silent.</p>
 </div>
 <table>
 <thead>
@@ -6917,6 +6955,7 @@
 <p>The donation objects are NOT Private — Donation_Staging__c, Payment_Method__c and Recurring_Donation__c all ship sharingModel ReadWrite (only Log__c and Event_Attendee__c are Private). That is a recorded decision, not an oversight: audit finding F-116, and the reasoning is in docs/security-posture-and-operations-plan-2026-08-23.md. This class does not rely on the OWD either way; it relies on SYSTEM_MODE selectors.</p>
 <p>Backs the dfForm LWC (guest donation form). createDonorAndIntent only stages the gift — <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a> (run later by <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> or <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a>) is what actually creates the Contact/Account and the Opportunity, so nothing here performs donor or donation DML directly.</p>
 <p>No client calls this today. dfForm used to poll it to build a "View Receipt" link on its in-form thank-you step, but that link was never rendered and the poll could only ever fire with a null access token; the whole block was deleted 2026-08-23. The standalone thank-you page resolves the same value through <a href="#apex-thankyoucontroller"><code>ThankYouController</code></a> instead. Kept because it is a correct, token-guarded read and the surface is packaged.</p>
+<p>Tribute message cap (security review D-8), refused here — before the Stripe callout — so the donor fixes it on the form. <a href="#apex-donationservice"><code>DonationService</code></a> still sanitizes at finalize (links stripped, cut to the same limit) for any request that skipped this, and <a href="#apex-receiptservice"><code>ReceiptService</code></a> refuses to e-mail a message that is not clean.</p>
 </div>
 <table>
 <thead>
@@ -6979,7 +7018,7 @@
 <p>Returns { rows, rowLimit, schedulerScheduled } rather than a bare list. Every row here is waiting on <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a>, so when the Finalizer family is not scheduled the whole page is measuring a stopped clock — an admin reading a growing list has no way to tell "payments are failing" from "the job that resolves them was aborted".</p>
 <p>needsAttention splits the list the same way: only a row the donor actually confirmed, or one carrying an error, or an expired ticket hold still holding seats, is a problem — a plain Pending row is an abandoned checkout nobody was charged for, and counting those as stuck made a healthy org look broken (25 rows, 21 of them merely abandoned).</p>
 <p>expiresAt, reservationReleased and seatsHeld feed the page's one filterable list: each row prints its own expiry window, and an expired ticket hold names how many seats it is still keeping off sale. needsAttention is what the page's Show filter switches on, so the abandoned/needs-attention split stays a server-side rule with a single definition.</p>
-<p>Runs the exact same callout + outcome logic as the scheduled reconciliation pass for one record, so an admin does not have to wait for the next Finalizer tick. It is therefore idempotent in the same way that pass is — a row already finalized simply resolves again.</p>
+<p>Runs the exact same callout + outcome logic as the scheduled reconciliation pass for one record, so an admin does not have to wait for the next Finalizer tick. It is therefore idempotent in the same way that pass is — a row already finalized simply resolves again. Because that pass runs in system context, the action first asks <a href="#apex-idonationstagingselector"><code>IDonationStagingSelector</code></a>.selectIdsVisibleToUser (USER_MODE) whether the running user can see the row, and refuses with one message for "missing" and "not yours" alike, so the answer never confirms that a hidden row exists (owner decision D-3). The donor-portal retry is a different path with its own token check and is not affected.</p>
 </div>
 <table>
 <thead>
@@ -8065,6 +8104,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>finalizeSucceededStaging is the SOLE creator of donation <a href="#apex-opportunities"><code>Opportunities</code></a> and is idempotent on Stripe_Payment_Intent_Id__c, so it is safe to call from more than one path: <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> (the normal webhook-free finalizer) and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> (the orphaned-PaymentIntent repair path) both invoke it directly. It publishes DonationFinalized__e (consumed by DonationFinalizedSubscriber consumed by <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a>) and calls <a href="#apex-receiptservice"><code>ReceiptService</code></a> for the donor-facing email.</p>
 <p>Org-level twin of the campaign gate above: refuse before any Stripe callout when the finalizer has never completed a pass in this org, because a gift taken in that state is charged and never becomes an Opportunity. Deliberately NOT the staleness rule that alarmIfFinalizerStale below uses — staleness is transient and recovers, and refusing live gifts over a half-hour gap would be a worse outage than the one it warns about. See <a href="#apex-settingsservice-ischeckoutblocked"><code>SettingsService.isCheckoutBlocked</code></a> and audit finding §4b.</p>
+<p>validateAmountBounds is the one place the org's Min/Max Donation Amount is enforced on a guest-supplied gift. It is public static so the ticket checkout applies the same bounds to an event donation add-on (<a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.CreateTicketIntent) instead of keeping a second copy of the rule.</p>
 <p>The org-wide master switch is re-checked here and not merely on the way out to the form. Options_JSON__c comes from a guest-callable endpoint, so "the form didn't show the section" is a statement about the browser, not about what can reach this method. Refusing the capture is also what makes the switch a real off switch: with no Tribute_Type__c on the Opportunity, ReceiptService.buildTributeNotification returns null on its existing gates and no e-card goes out.</p>
 <p>This runs on every finalized gift including a recurring gift's first installment, because that installment does have a real URL behind it. Later renewals have no URL at all — they are created by the scheduler — so <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a> copies the attribution stored on the Recurring_Donation__c instead. See <a href="#apex-attributioncapture-copy"><code>AttributionCapture.copy</code></a>().</p>
 <p>Raises the "gifts are being charged but not recorded" alarm without touching the donor's journey. Called from the guest path after the staging row is committed, so the log row can point at the specific gift at risk.</p>
@@ -8113,6 +8153,16 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-applogger-debug">AppLogger.debug()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationservice-validateamountbounds"></a><code>validateAmountBounds(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-mindonationamount">SettingsService.minDonationAmount()</a>, <a href="#apex-settingsservice-maxdonationamount">SettingsService.maxDonationAmount()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -8427,6 +8477,9 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Every outbound donor/staff email in the package funnels through this class — donation and event-ticket receipts, recurring confirmation/failed-payment/dunning/re-auth notices, dispute alerts, and tribute notifications. Callers include <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a>, <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>, <a href="#apex-recurringrenewalbatch"><code>RecurringRenewalBatch</code></a>, and <a href="#apex-refundreconciliationbatch"><code>RefundReconciliationBatch</code></a>. Every send method is best-effort: a template/limit/missing-email failure is logged via <a href="#apex-applogger"><code>AppLogger</code></a> and swallowed so it can never roll back an already-finalized donation or payment.</p>
+<p>Longest tribute message the e-card carries (security review D-8). The message is typed by an anonymous donor and emailed, from the organisation's own sender, to an address that donor also typed — so without limits the tribute form is a free relay for long spam bodies under a charity's name. 500 characters is a generous card note. The donation form refuses a longer message at submit (<a href="#apex-donationformcontroller"><code>DonationFormController</code></a>) and caps its textarea; this class truncates again at finalize for any request that skipped the form.</p>
+<p>What counts as a link for the strip rule: anything starting with an http or https scheme, or a bare <code>www.</code> host, case-insensitive, up to the next whitespace. A donor's note to an honoree has no need to carry a link, and a link is the payload a relay abuser wants delivered; plain domain names without <code>www.</code> are left alone because they are not clickable in the e-card (see sanitizeTributeMessage on escaping).</p>
+<p>Makes a donor-typed tribute message safe to e-mail: links stripped (TRIBUTE_LINK), the spaces a removed link leaves behind collapsed, then cut to TRIBUTE_MESSAGE_MAX_LENGTH. Stripping runs BEFORE the cut so a truncation can never leave the head of a link behind. Line breaks are kept. Blank in, or blank after stripping, returns null. No HTML escaping happens here, on purpose: the TributeInHonorOf/TributeInMemoryOf templates are Classic custom-HTML templates, and renderStoredEmailTemplate HTML-escapes every merge field in the HTML body (verified in the dev org on 2026-09-25: <code>&lt;b&gt;</code> renders as <code>&amp;lt;b&amp;gt;</code>, <code>"</code> as <code>&amp;quot;</code>, a newline as <code>&lt;br&gt;</code>). Escaping here as well would show the honoree literal <code>&amp;amp;lt;</code> text. The message is not merged into the subject.</p>
 <p>The eligibility rules live in resendBlockReason below and are read a second time by <a href="#apex-receiptadmincontroller-getresendcontext"><code>ReceiptAdminController.getResendContext</code></a>, which uses them to gray the button out with a reason rather than letting staff click into an error. That controller read is the courtesy; this call is the enforcement — a caller that skips the panel still gets checked.</p>
 <p>Split out from resendReceipt for the same reason as buildDisputeAlert and buildTributeNotification — Messaging.sendEmail is metered against the org's DAILY email allocation even inside a test, so a test that depends on a successful send starts failing once a suite run exhausts it. Every eligibility rule lives here rather than in the sender, which makes "would this resend be allowed, and which template would it use?" assertable without spending a send.</p>
 <p>Public and static rather than private because ReceiptAdminController.getResendContext calls it to gray the button out with the same wording the send would have thrown. It is a pure predicate over one record — no SOQL, no DML, no state — so sharing it directly is safe and keeps a single copy of the policy. Reaching past <a href="#apex-ireceiptservice"><code>IReceiptService</code></a> for it is deliberate: putting it on the interface would imply an instance behavior it isn't.</p>
@@ -8442,6 +8495,8 @@
 <p>The message is produced by Messaging.renderStoredEmailTemplate(templateId, whoId, whatId), which renders a stored template into a SingleEmailMessage WITHOUT sending it (one SOQL query). That indirection is what makes an admin-editable template possible here at all: the recipient is an arbitrary address the donor typed in, not an org Contact, so the usual setTemplateId + setTargetObjectId route — which can only deliver to the target Contact — is unavailable. Rendering first, then addressing, separates "whose fields merge in" (the donor Contact, as whoId) from "who receives it" (the honoree, via setToAddresses).</p>
 <p>Tribute_Ecard_Requested__c is the donor's consent, and it is the FIRST thing checked — an address on the record is not permission to use it. The form hides the address input when the donor unticks "send an e-card" but keeps the typed value in component state, so a declined e-card still arrives here with Tribute_Notification_Email__c populated. dfForm now clears the address on untick as well; this gate is the half that also covers rows written before that fix and any future caller that fills the field directly. Getting this wrong emails an In_Memory_Of notice to a bereaved family the donor deliberately chose not to contact — see docs/gap-audit-2026-08-07.md §1.1.</p>
 <p>The donor Contact is the template's merge source, and its absence is a hard stop rather than a fallback. The previous Apex-built body degraded to "A donor has made a donation…" when neither donor lookup resolved (an imported or organization-donor row); that is precisely the unattributable message the audit objected to — an unsolicited email to a stranger who cannot tell who sent it or why. Skipping is also what sendRefundNotification does in the same situation. See docs/gap-audit-2026-08-07.md §2.1.</p>
+<p>Defensive half of the D-8 limits. The template merges Tribute_Message__c straight off the record, so the only way to keep an over-long or link-bearing message out of the e-card at this point is not to send it. <a href="#apex-donationservice"><code>DonationService</code></a> stores the message already sanitized, so this fires only for a row written some other way (an older finalize, a staff edit); the gift itself is untouched and the skip is logged for the admin.</p>
+<p>The test is "too long or holds a link", not "differs from the sanitized form": a staff edit with a double space is harmless and must still send.</p>
 <p>Null the target explicitly. Whether renderStoredEmailTemplate leaves whoId on the returned message is not something to depend on either way: if it does, the platform rejects a message that carries both a targetObjectId and toAddresses, and worse, a surviving target would make the DONOR a recipient of a message written to the honoree's family. One line removes the question.</p>
 </div>
 <table>
@@ -8453,6 +8508,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><a id="apex-receiptservice-sanitizetributemessage"></a><code>sanitizeTributeMessage(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
 <tr>
 <td><a id="apex-receiptservice-senddonationreceipt"></a><code>sendDonationReceipt(1 arg)</code></td>
 <td><code>void</code></td>
@@ -8642,6 +8702,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>recordRefundedTotal is the single refunded-total → Payment_Status__c mapping, shared with <a href="#apex-refundreconciliationbatch"><code>RefundReconciliationBatch</code></a> for BOTH externally-refunded-in-Stripe totals and lost-dispute reversals — keeping one status transition rule for every path a donation can end up refunded.</p>
 <p>The one place that answers "could this gift's status be refunded at all?". Exposed as a method rather than the set itself so callers cannot mutate it, and so <a href="#apex-refundrequesthandler"><code>RefundRequestHandler</code></a> (which screens a donor's refund request before parking it for review) asks the refund service the same question refund() asks itself instead of keeping a second copy that quietly drifts out of step.</p>
+<p>PAY-2 (2026-09-25, refined the same day). The rule, in order: (1) Idempotent-Replayed: true — a replay. Nothing is recorded, whatever the totals say. (2) Idempotent-Replayed: false — Stripe executed this request, so money moved. The refund is recorded as the fresh locked total plus this call's amount, EVEN IF that total already reaches this call's target. That is the case the totals rule got wrong: two concurrent refunds of DIFFERENT amounts on one gift (A = 30 commits first, then B = 25 re-reads 30, which is past its own target of 25) are two distinct keys and two real refunds, and B must record 55, not nothing. (3) header absent — the pre-refinement fallback: a replay when the fresh locked total already reaches the target. The replay log says the verdict came from the fallback, and the success log names the header as absent, so a reader can tell which rule ran. This rule can still under-record in the case above; RefundReconciliationBatch heals that from Stripe's own refund list, whereas an over-statement would never heal, because the reconciler only ever raises a total. A replay records nothing, sends no second donor email and leaves the guest refund request alone (the winning call closed it), then returns a success-shaped result carrying the committed total. If the winning call's own commit failed after its callout, a replay under rule (1) still records nothing; that refund was logged pre-commit by the winner and is likewise healed by the reconciler.</p>
 </div>
 <table>
 <thead>
@@ -8768,10 +8829,12 @@
 <div class="fn-entry__body">
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Donation_Staging__c is the pending-donation session record created by <a href="#apex-donationformcontroller-createdonorandintent"><code>DonationFormController.createDonorAndIntent</code></a> and addressed only by its unguessable Access_Token__c — never by Id — until <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a> links it to a real Opportunity. No CRUD/FLS enforcement (constructor below): every caller is either the unauthenticated guest or an Automated Process batch/scheduler.</p>
+<p>Donation_Staging__c is the pending-donation session record created by <a href="#apex-donationformcontroller-createdonorandintent"><code>DonationFormController.createDonorAndIntent</code></a> and addressed only by its unguessable Access_Token__c — never by Id — until <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a> links it to a real Opportunity. No CRUD/FLS enforcement (constructor below): every caller is either the unauthenticated guest or a scheduled reconciliation job.</p>
 <p>Intent-less rows are deliberately INCLUDED (they were excluded until 2026-08-14). A row with no Stripe_Intent_Id__c has nothing to re-fetch, but excluding it left it non-terminal forever: no pass ever selected it, so it could never expire and sat in the admin monitor permanently. The batch now selects it and retires it on the TTL fallback instead (<a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a>.effectiveExpiry). No production path creates such a row — <a href="#apex-donationservice"><code>DonationService</code></a> and <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a> both mint an intent before insert — but seed scripts and hand-built rows do, and an unreachable terminal state is a defect regardless of who writes the row.</p>
+<p>PAY-4 (2026-09-25): an Event_Ticket row left in 'Processing' for longer than STALE_PROCESSING_MINUTES is also selected. <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a> stamps Processing in the same commit as the paid Opportunity and its seats, then writes attendees and stamps Completed in a second commit; if that second commit throws, nothing else ever retries it and the paid order sits without attendees. Re-selecting it sends it back through finalizeSucceededEventStaging, whose findExistingOrder/repairExistingOrder path finishes the order against the Opportunity that already exists — the unique Opportunity.Stripe_Payment_Intent_Id__c is the backstop against a second order. The LastModifiedDate guard keeps an order that is being finalized right now out of the pass. Donation rows are deliberately NOT included: the donation path commits atomically and never writes Processing, and DonationService.finalizeSucceededStaging returns early without re-stamping when the Opportunity exists, so a Processing donation row would be re-selected on every run forever.</p>
 <p>SYSTEM_MODE for the same reason every other read on this object is: Donation_Staging__c carries the guest's own submission and is never granted to a reading user directly.</p>
 <p>SYSTEM_MODE is load-bearing here, not inherited habit. The caller is the guest user, and an Experience Cloud guest sees no staging row it did not create under secure guest-user record access — a USER_MODE count would return 0 for every attacker and the throttle would never fire. The count leaves the method as a bare Integer, so nothing about another visitor's row is exposed by reading it in system mode.</p>
+<p>USER_MODE on purpose — the one read on this object that is. It answers "can the running staff user see these staging rows?" for the Donation Monitor's "Retry now" (owner decision D-3), whose action then runs the reconciler in system context. Object access, FLS on Id and record sharing all apply, so a user with no Donation_Staging__c access gets an empty set rather than a thrown QueryException (caught here, as <a href="#apex-campaignsselector"><code>CampaignsSelector</code></a> does).</p>
 </div>
 <table>
 <thead>
@@ -8818,6 +8881,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-donationstagingselector-countstaleprocessing"></a><code>countStaleProcessing(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-donationstagingselector-countrecentbyemailandcampaign"></a><code>countRecentByEmailAndCampaign(3 args)</code></td>
 <td><code>Integer</code></td>
 <td></td>
@@ -8855,6 +8923,11 @@
 <tr>
 <td><a id="apex-donationstagingselector-selectnonterminalforadmin"></a><code>selectNonTerminalForAdmin(1 arg)</code></td>
 <td><code>List&lt;Donation_Staging__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationstagingselector-selectidsvisibletouser"></a><code>selectIdsVisibleToUser(1 arg)</code></td>
+<td><code>Set&lt;Id&gt;</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -8995,7 +9068,7 @@
 <p>FFLib role: controller. Reads through selectors, writes nothing; minting and sending the access code is delegated to <a href="#apex-idonorportalservice"><code>IDonorPortalService</code></a>.issueAccessCodeForDonor.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Kept separate from <a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a> on purpose. That class is the guest-facing side of the code-based portal — it is <code>without sharing</code> and every one of its methods is reachable by an unauthenticated visitor, authorized only by possession of a code/session. A staff method placed there would inherit that posture for no reason. This one is <code>with sharing</code>, so a staff member can only issue a code for a donor they can already see, and the two audiences never share a class.</p>
+<p>Kept separate from <a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a> on purpose. That class is the guest-facing side of the code-based portal — it is <code>without sharing</code> and every one of its methods is reachable by an unauthenticated visitor, authorized only by possession of a code/session. A staff method placed there would inherit that posture for no reason. This one is <code>with sharing</code>, and the two audiences never share a class. The keyword alone does NOT confine staff to donors they can see: the service it calls is <code>without sharing</code>, and sharing follows the class that runs the query. The confinement is <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>.resolveStaffDonorEmail, which re-reads the donor in USER_MODE before any code is minted and refuses a record the staff member cannot see.</p>
 <p>No custom-permission gate. Issuing a code is not destructive and cannot be aimed anywhere — the address is always re-read from the donor record inside the service, never accepted from the caller — so record visibility plus the Fundraising_User class grant is the whole authorization story, the same call made for <a href="#apex-receiptadmincontroller"><code>ReceiptAdminController</code></a>.</p>
 <p>Not cacheable. The donor's email address is the one thing this panel exists to confirm before a mail leaves the org, and a cached read would let staff send to an address that was corrected on the record minutes earlier.</p>
 <p>Same mint, no mail. Kept as its own action rather than a flag on SendPortalLinkAction so the two are separately grantable and separately readable in a log — one of them puts a bearer credential on a staff member's screen and the other puts it in the donor's inbox.</p>
@@ -9037,6 +9110,10 @@
 <div class="fn-entry__body">
 <p>Guest-facing controller for the emailed-access-code donor portal.</p>
 <p>A donor requests a code by email (requestAccessCode), redeems it for a bearer session token (verifyAccessCode), and every subsequent data method takes that opaque session token, re-validates it server-side, and scopes all work to the resolved donor — no client-supplied record id is trusted. Every @AuraEnabled method delegates to a <a href="#apex-controlleraction"><code>ControllerAction</code></a> inner class, so the { success, data / error } envelope, try/catch, and <a href="#apex-applogger"><code>AppLogger</code></a> wiring live in ONE place (<a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>()) — never inline here. requestAccessCode and endSession are deliberately enumeration-safe (see their action classes); verifyAccessCode is the one action on this controller that lets a specific, generic <a href="#apex-appexception"><code>AppException</code></a> surface as the error envelope (see <a href="#apex-guestaction"><code>GuestAction</code></a>.callerSafeMessage).</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The session touch is written after perform(): several actions call Stripe, and a callout after uncommitted DML throws. finally, so a failed action still counts as use.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -9181,6 +9258,7 @@
 <div class="fn-entry__body">
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
+<p>Scoped waiver of fflib's trigger-level CRUD assertion, for the package's own donor rollup write only. <a href="#apex-campaignservice-rollupdonorsummary"><code>CampaignService.rollupDonorSummary</code></a> sets it around its commit and restores it in a finally block. That commit runs SYSTEM_MODE through fflib_SObjectUnitOfWork.SimpleDML, but this trigger still re-asserts Contact.isUpdateable() for the RUNNING user — so a staff member who may edit a donation but not a Contact could not close a gift: the donor rollup fired from OpportunityTrigger, this assertion threw, and the whole Opportunity save rolled back. The rollup fields (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c) are package-maintained aggregates no user edits, so the running user's Contact CRUD is not the authorization that matters; their Opportunity edit, which the platform already enforced, is. Every other Contact write — a staff edit in the UI, a guest donor insert, an import — leaves the flag false and keeps the assertion. Mirrors <a href="#apex-recurringdonations"><code>RecurringDonations</code></a>.</p>
 <p>There is deliberately no onAfterInsert override here. Campaign membership for donors is handled by <a href="#apex-campaignmembersyncservice"><code>CampaignMemberSyncService</code></a> off the DonationFinalized__e event, not by a Contact trigger — a Contact insert has no campaign context, and the Guest License user who creates the donor on a public gift cannot create a CampaignMember at all.</p>
 </div>
 <table>
@@ -9229,6 +9307,7 @@
 <p>The ACCOUNT arm of the donor dual-field strategy (<a href="#apex-donorresolutionservice-ispersonaccountorg"><code>DonorResolutionService.isPersonAccountOrg</code></a> decides which arm applies). Only Person Account / organization donors live here — a standard Contact donor's business Account is never rolled up through this selector.</p>
 <p>Selects Id only — mirrors the Contact twin (<a href="#apex-contactsselector-selectidbyemailsystem"><code>ContactsSelector.selectIdByEmailSystem</code></a>): the issue cooldown that used to ride along on this query now reads Portal_Access_Token__c.Issued_At__c instead, via <a href="#apex-portalaccesstokensselector"><code>PortalAccessTokensSelector</code></a>.</p>
 <p>PersonEmail and IsPersonAccount do not exist as compilable fields in an org without Person Accounts, so this is dynamic SOQL and the caller MUST check DonorResolutionService.isPersonAccountOrg() first — invoking it in a standard org throws an INVALID_FIELD query exception, it does not simply return nothing.</p>
+<p>The Person Account twin of <a href="#apex-contactsselector-selectemailsbyidsystem"><code>ContactsSelector.selectEmailsByIdSystem</code></a>. Same dynamic-SOQL constraint as selectPersonDonorById: PersonEmail and IsPersonAccount only exist in a Person-Account-enabled org, so the caller MUST check <a href="#apex-donorresolutionservice"><code>DonorResolutionService</code></a> .isPersonAccountOrg() first.</p>
 <p>The Person-Account twin of <a href="#apex-contactsselector-selectdonorspaged"><code>ContactsSelector.selectDonorsPaged</code></a>, answering the SAME question with the same segment vocabulary — a donor is someone with a won gift on the rollup or an Active recurring commitment. Keeping the two arms in lockstep is what makes the console show the same chips and the same counts whichever account model the org runs.</p>
 <p>Raw SOQL rather than newQueryFactory, for the same reason every other method in this class is: IsPersonAccount and PersonEmail do not exist until Person Accounts are enabled, so naming them in a field list would not compile in a standard org. USER_MODE still enforces CRUD and FLS — the mode does that work here, not the QueryFactory.</p>
 <p>CALLABLE ONLY in a Person-Account-enabled org — DonorResolutionService.isPersonAccountOrg() is the gate, and <a href="#apex-donorconsolecontroller"><code>DonorConsoleController</code></a> is the only caller. A resolved Id set rather than a semi-join, for the reason spelled out on <a href="#apex-contactsselector"><code>ContactsSelector</code></a>.DONOR_RECURRING: SOQL will not accept a sub-select on either side of an OR, and "gave before OR gives monthly" is the donor test both arms have to answer.</p>
@@ -9291,6 +9370,11 @@
 </tr>
 <tr>
 <td><a id="apex-accountsselector-selectpersondonorbyid"></a><code>selectPersonDonorById(1 arg)</code></td>
+<td><code>List&lt;Account&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-accountsselector-selectpersondonoremailbyidsystem"></a><code>selectPersonDonorEmailByIdSystem(1 arg)</code></td>
 <td><code>List&lt;Account&gt;</code></td>
 <td></td>
 </tr>
@@ -9393,6 +9477,11 @@
 </tr>
 <tr>
 <td><a id="apex-contactsselector-selectdonordetailbyid"></a><code>selectDonorDetailById(1 arg)</code></td>
+<td><code>List&lt;Contact&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-contactsselector-selectemailsbyid"></a><code>selectEmailsById(1 arg)</code></td>
 <td><code>List&lt;Contact&gt;</code></td>
 <td></td>
 </tr>
@@ -9561,7 +9650,7 @@
 <p>verifyAccessCode exchanges a correct, unexpired code for a 256-bit bearer session token: the row's Code_Hash__c is destroyed (structural single-use — replay of a redeemed code can never match anything) and Session_Hash__c / Session_Expires_At__c are stamped instead, capped at <a href="#apex-settingsservice-portaltokenttlhours"><code>SettingsService.portalTokenTtlHours</code></a>() from redemption. A wrong code increments Attempt_Count__c and locks the row at 5 attempts (MAX_CODE_ATTEMPTS); every failure — unknown email, wrong code, expired code, a locked row, or a replayed code — throws the SAME INVALID_MSG, so no response ever tells an attacker which of those it was.</p>
 <p>validateToken authenticates that session: it looks up the Active Portal_Access_Token__c row by Session_Hash__c and enforces TWO independent expirations, either of which rejects with the same INVALID_MSG — the ABSOLUTE cap (Session_Expires_At__c, set once at redemption and never extended) and a SLIDING idle window (Last_Used_At__c vs <a href="#apex-settingsservice"><code>SettingsService</code></a> .portalIdleTimeoutMinutes()) that a successful validate extends forward, subject to a TOUCH_STALENESS_MINUTES guard so an actively-polling page does not turn every read into a write. Either expiration flips the row to Expired so it becomes purgeable. endSession lets the donor revoke their own Active row (sign-out) — idempotent and silent on an already-inactive or unknown session, for the same anti-enumeration reason.</p>
 <p>The staff twins — issueAccessCodeForDonor / createAccessCodeForDonor — share issueCodeRow with the public requestAccessCode path and the same buildCodeEmail template.</p>
-<p>WITHOUT SHARING: runs privileged so the Experience Cloud guest user (which has no FLS/ sharing on Contact/Account, or on Portal_Access_Token__c) can resolve donor records and mint a Portal_Access_Token__c row. All access is gated by the code or session it produces; no client-supplied record id is ever trusted.</p>
+<p>WITHOUT SHARING: runs privileged so the Experience Cloud guest user (which has no FLS/ sharing on Contact/Account, or on Portal_Access_Token__c) can resolve donor records and mint a Portal_Access_Token__c row. Guest access is gated by the code or session it produces; no client-supplied record id is trusted on a guest path. The two staff twins are the exception: they take a record Id from <a href="#apex-donorportaladmincontroller"><code>DonorPortalAdminController</code></a>, so they re-read the donor in the STAFF user's mode first (resolveStaffDonorEmail) and refuse a donor that user cannot see — this class's <code>without sharing</code> must not become a way to reach records outside their access.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Every recurring-management mutation (pause/resume/cancel/retryNow/updateCard/reinstate) delegates to <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a> after requireOwnership's IDOR check — this class owns token validation and donor scoping only, never the Stripe subscription logic itself.</p>
@@ -9579,7 +9668,10 @@
 <p>There is deliberately one signature. Until 2026-09-07 a linkBase overload carried Site.getBaseUrl() from the guest request into the queueable, on the theory that only the request could see the right host — and the host it saw was the companion Visualforce site (…/fundraisingvforcesite), which has no donor portal. The base is now a Settings read (portalLinkBase), which answers identically in any context, so nothing needs to be threaded through.</p>
 <p>The no-send twin. Staff who already have the donor on the phone do not need a mail round trip, and a donor with no address on file cannot be mailed at all — but the code itself mints either way, so refusing to produce one would strand exactly the donor who needs staff help most. Code minting is identical to the send path, which is why the panel warns before either one and offers neither twice.</p>
 <p>Split out of issueAccessCodeForDonor for the same reason as <a href="#apex-receiptservice"><code>ReceiptService</code></a>.buildResendReceipt — Messaging.sendEmail is metered against the org's DAILY allocation even inside a test, so a test that depends on a successful send starts failing once a suite run exhausts it. Every eligibility rule and the code minting itself live here, which makes "would this code be issuable, and to what address?" assertable without spending a send.</p>
+<p>STAFF path. USER_MODE reads, so the staff member's own sharing and FLS decide whether the donor exists for them. The record Id arrives from an LWC; before this gate the reads ran SYSTEM_MODE inside a <code>without sharing</code> class, so any user holding the controller could mint a portal code for — and learn the email of — a donor their sharing hides. A contact that does not come back is refused with the same message the panel's own context read shows. A user with no Contact or Account access at all does not get zero rows from a USER_MODE read — the platform throws "sObject type ... is not supported". That is the same refusal in a louder voice, so it is answered with the same readable message.</p>
+<p>GUEST path, used by submitAttendeeNames and submitRefundRequest after validateToken and requireOwnedOrder / requireOwnedDonation have proven the session and the gift's ownership, so the Ids come from the verified session, never from the request. SYSTEM_MODE reads for both arms: the guest user has no Account access at all, and the USER_MODE staff read this path used to share threw "sObject type 'Account' is not supported", which failed every refund request and attendee-naming submission from a Person Account donor.</p>
 <p>Read-only calls (getDashboard, etc.) go through here on every page load, so without this guard every donor click becomes a DML transaction just to refresh a sliding window that barely moved. Two minutes is small enough that the idle window (<a href="#apex-settingsservice"><code>SettingsService</code></a> .portalIdleTimeoutMinutes()) still reflects genuine recent activity to within a couple of minutes, and large enough that a donor rapidly navigating the portal skips almost every write.</p>
+<p>Set by validateToken when the session's Last_Used_At__c is stale, written by recordSessionUse. The write cannot happen inside validateToken: card updates, retries and SetupIntents call Stripe after validation, and Apex refuses a callout once the transaction holds uncommitted DML ("You have uncommitted work pending"), so every such action failed whenever the donor's previous portal call was over two minutes old.</p>
 <p>The link base is the configured Experience Site URL and nothing else. Two earlier sources were removed on 2026-09-07 and must not come back:
 - Site.getBaseUrl(). From the LWR guest request AND from the queueable this class enqueues, it was observed returning the companion Visualforce site (…/fundraisingvforcesite) rather than the LWR site the donor is on, so the emailed sign-in link opened a page with no donor portal on it. That behaviour is observed, not documented (unverified against Salesforce docs on 2026-09-07); the fix does not depend on the reason, because there is no context in which the companion site is the right answer for a donor-facing link.
 - URL.getOrgDomainUrl(). "Keep a value rather than throw" mailed donors a link to the internal login page. Returning null is honest, and every caller now handles it: requestAccessCode() logs and sends nothing, the staff paths throw staffLinkBlockReason(), and the admin panel shows "-" plus the block reason.</p>
@@ -9588,6 +9680,7 @@
 <p>The donor half of "I need this gift back". Nothing here refunds anything and nothing here can: the request is queued as a Guest_Request__c and parks at Awaiting Review for a person, who issues the refund from the donation record if they agree. See <a href="#apex-refundrequesthandler"><code>RefundRequestHandler</code></a>.</p>
 <p>Every mutation below is bracketed by beginPortalWrite/endPortalWrite. The donor runs as the Guest User, which can never hold Edit on Recurring_Donation__c, so fflib's trigger-level CRUD assertion has to be waived for the write — see <a href="#apex-recurringdonations"><code>RecurringDonations</code></a>.suppressTriggerCrudCheck for why that is safe and what actually authorizes the change. The bracket is a try/finally, not a bare assignment: a validation failure inside the service must not leave the waiver on for the rest of the transaction.</p>
 <p>The returned <code>mode</code> is the campaign's RESOLVED designation mode, so the portal can hide the control entirely for a campaign that offers no choice ('Assigned' — one fixed fund — or 'None'). It is a display decision only; changeDesignation re-validates the chosen fund against the same config server-side and rejects anything out of scope.</p>
+<p>D-13 (2026-09-25): the portal sends the SetupIntent it confirmed, never a card id. The card stored is the one Stripe reports on that SetupIntent, and only when the SetupIntent succeeded for this gift's own Stripe customer (RecurringDonationService. updatePaymentMethodFromSetupIntent). Ownership of the gift is checked first, as for every other portal mutation.</p>
 <p>Idempotent by design — a card already flagged Removed__c returns quietly instead of throwing, because the client may retry a request whose response it never saw. Ownership is resolved through selectByDonorSystem (the UNFILTERED donor-scoped read) rather than selectValidByDonorSystem precisely so the already-removed case is distinguishable from the not-yours case. Promoting a replacement default matters beyond cosmetics: <a href="#apex-paymentmethodservice-savewalletcard"><code>PaymentMethodService.saveWalletCard</code></a> decides a new card's Is_Default__c from whether the donor already has one, so a wallet left with no default silently makes the next saved card default too.</p>
 <p>This is a DESERIALIZATION target, not an Aura parameter type — the component sends a JSON string and submitAttendeeNames parses it. An Apex inner class cannot be a parameter of a component-called method: the list arrives the right length with every property null, so a fully filled-in form reads as an empty submission. That is not a validation failure the caller can see, which is why it is written down here rather than left to be rediscovered. attendeeId is a String for the same reason it is untrusted — it is parsed to an Id and matched against the order's own seats before it is used for anything.</p>
 </div>
@@ -9627,7 +9720,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-portalaccesstokensselector-newinstance">PortalAccessTokensSelector.newInstance()</a>, <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-settingsservice-portalcodettlminutes">SettingsService.portalCodeTtlMinutes()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-settingsservice-portalidletimeoutminutes">SettingsService.portalIdleTimeoutMinutes()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a>, <a href="#apex-settingsservice-donorportalshowsummary">SettingsService.donorPortalShowSummary()</a>, <a href="#apex-settingsservice-donorportalshowrecurring">SettingsService.donorPortalShowRecurring()</a>, <a href="#apex-settingsservice-donorportalshowhistory">SettingsService.donorPortalShowHistory()</a>, <a href="#apex-settingsservice-donorportalshowwallet">SettingsService.donorPortalShowWallet()</a>, <a href="#apex-settingsservice-donorportalrequesttitle">SettingsService.donorPortalRequestTitle()</a>, <a href="#apex-settingsservice-donorportalrequestsubtitle">SettingsService.donorPortalRequestSubtitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationtitle">SettingsService.donorPortalConfirmationTitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationmessage">SettingsService.donorPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-donorportalemptyrecurringmessage">SettingsService.donorPortalEmptyRecurringMessage()</a>, <a href="#apex-settingsservice-donorportalemptyhistorymessage">SettingsService.donorPortalEmptyHistoryMessage()</a>, <a href="#apex-settingsservice-donorportalemptywalletmessage">SettingsService.donorPortalEmptyWalletMessage()</a>, <a href="#apex-campaignservice-resolvecontact">CampaignService.resolveContact()</a>, <a href="#apex-campaignservice-resolveidentity">CampaignService.resolveIdentity()</a>, <a href="#apex-opportunitiesselector-newinstance">OpportunitiesSelector.newInstance()</a>, <a href="#apex-recurringdonationsselector-newinstance">RecurringDonationsSelector.newInstance()</a>, <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a>, <a href="#apex-refundrequesthandler-evaluate">RefundRequestHandler.evaluate()</a>, <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-donationdesignationsselector-newinstance">DonationDesignationsSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-portalaccesstokensselector-newinstance">PortalAccessTokensSelector.newInstance()</a>, <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-settingsservice-portalcodettlminutes">SettingsService.portalCodeTtlMinutes()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-emailsenderservice-applysender">EmailSenderService.applySender()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-settingsservice-portalidletimeoutminutes">SettingsService.portalIdleTimeoutMinutes()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9637,7 +9730,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-settingsservice-portalcodettlminutes">SettingsService.portalCodeTtlMinutes()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-portalaccesstokensselector-newinstance">PortalAccessTokensSelector.newInstance()</a>, <a href="#apex-settingsservice-portalidletimeoutminutes">SettingsService.portalIdleTimeoutMinutes()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a>, <a href="#apex-settingsservice-donorportalshowsummary">SettingsService.donorPortalShowSummary()</a>, <a href="#apex-settingsservice-donorportalshowrecurring">SettingsService.donorPortalShowRecurring()</a>, <a href="#apex-settingsservice-donorportalshowhistory">SettingsService.donorPortalShowHistory()</a>, <a href="#apex-settingsservice-donorportalshowwallet">SettingsService.donorPortalShowWallet()</a>, <a href="#apex-settingsservice-donorportalrequesttitle">SettingsService.donorPortalRequestTitle()</a>, <a href="#apex-settingsservice-donorportalrequestsubtitle">SettingsService.donorPortalRequestSubtitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationtitle">SettingsService.donorPortalConfirmationTitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationmessage">SettingsService.donorPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-donorportalemptyrecurringmessage">SettingsService.donorPortalEmptyRecurringMessage()</a>, <a href="#apex-settingsservice-donorportalemptyhistorymessage">SettingsService.donorPortalEmptyHistoryMessage()</a>, <a href="#apex-settingsservice-donorportalemptywalletmessage">SettingsService.donorPortalEmptyWalletMessage()</a>, <a href="#apex-campaignservice-resolvecontact">CampaignService.resolveContact()</a>, <a href="#apex-campaignservice-resolveidentity">CampaignService.resolveIdentity()</a>, <a href="#apex-opportunitiesselector-newinstance">OpportunitiesSelector.newInstance()</a>, <a href="#apex-recurringdonationsselector-newinstance">RecurringDonationsSelector.newInstance()</a>, <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a>, <a href="#apex-refundrequesthandler-evaluate">RefundRequestHandler.evaluate()</a>, <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-donationdesignationsselector-newinstance">DonationDesignationsSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-settingsservice-portalcodettlminutes">SettingsService.portalCodeTtlMinutes()</a>, <a href="#apex-contactsselector-newinstance">ContactsSelector.newInstance()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-accountsselector-newinstance">AccountsSelector.newInstance()</a>, <a href="#apex-portalaccesstokensselector-newinstance">PortalAccessTokensSelector.newInstance()</a>, <a href="#apex-settingsservice-portalidletimeoutminutes">SettingsService.portalIdleTimeoutMinutes()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-settingsservice-experiencesiteurl">SettingsService.experienceSiteUrl()</a>, <a href="#apex-settingsservice-donorportalpath">SettingsService.donorPortalPath()</a>, <a href="#apex-settingsservice-emailbrandcolor">SettingsService.emailBrandColor()</a>, <a href="#apex-settingsservice-emailheadingcolor">SettingsService.emailHeadingColor()</a>, <a href="#apex-settingsservice-emailbackgroundcolor">SettingsService.emailBackgroundColor()</a>, <a href="#apex-settingsservice-orgmailingaddress">SettingsService.orgMailingAddress()</a>, <a href="#apex-settingsservice-orglogourl">SettingsService.orgLogoUrl()</a>, <a href="#apex-settingsservice-donorportalshowsummary">SettingsService.donorPortalShowSummary()</a>, <a href="#apex-settingsservice-donorportalshowrecurring">SettingsService.donorPortalShowRecurring()</a>, <a href="#apex-settingsservice-donorportalshowhistory">SettingsService.donorPortalShowHistory()</a>, <a href="#apex-settingsservice-donorportalshowwallet">SettingsService.donorPortalShowWallet()</a>, <a href="#apex-settingsservice-donorportalrequesttitle">SettingsService.donorPortalRequestTitle()</a>, <a href="#apex-settingsservice-donorportalrequestsubtitle">SettingsService.donorPortalRequestSubtitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationtitle">SettingsService.donorPortalConfirmationTitle()</a>, <a href="#apex-settingsservice-donorportalconfirmationmessage">SettingsService.donorPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-donorportalemptyrecurringmessage">SettingsService.donorPortalEmptyRecurringMessage()</a>, <a href="#apex-settingsservice-donorportalemptyhistorymessage">SettingsService.donorPortalEmptyHistoryMessage()</a>, <a href="#apex-settingsservice-donorportalemptywalletmessage">SettingsService.donorPortalEmptyWalletMessage()</a>, <a href="#apex-campaignservice-resolvecontact">CampaignService.resolveContact()</a>, <a href="#apex-campaignservice-resolveidentity">CampaignService.resolveIdentity()</a>, <a href="#apex-opportunitiesselector-newinstance">OpportunitiesSelector.newInstance()</a>, <a href="#apex-recurringdonationsselector-newinstance">RecurringDonationsSelector.newInstance()</a>, <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a>, <a href="#apex-refundrequesthandler-evaluate">RefundRequestHandler.evaluate()</a>, <a href="#apex-paymentmethodsselector-newinstance">PaymentMethodsSelector.newInstance()</a>, <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-donationdesignationsselector-newinstance">DonationDesignationsSelector.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9658,6 +9751,16 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-portalaccesstokensselector-newinstance">PortalAccessTokensSelector.newInstance()</a>, <a href="#apex-settingsservice-portalidletimeoutminutes">SettingsService.portalIdleTimeoutMinutes()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donorportalservice-recordsessionuse"></a><code>recordSessionUse(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9900,6 +10003,10 @@
 <p>EventCheckInController — admin API behind the record view "Check-In" tab. Lists the attendee roster for an event campaign and flips each seat's Event_Attendee__c.Check_In_Status__c (Registered ⇄ Checked-In / No-show) at the door.</p>
 <p>Reads via <a href="#apex-eventattendeesselector"><code>EventAttendeesSelector</code></a> (USER_MODE, staff-facing); all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
 <p>Scope: check-in only mutates Check_In_Status__c — never the seat's identity, order, or ticket tier. 'Cancelled' (refunded) is NOT a settable target here: a seat is voided by a refund, not by a door scan, so the door can only move a seat between Registered / Checked-In / No-show. A seat already Cancelled is left untouched.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The Unit of Work commits in SYSTEM_MODE, so without this check any user with the class grant could flip a seat they can only read. Event_Attendee__c is Private and a seat is owned by whoever the purchase path ran as, never by the door staff, so Fundraising_User and Fundraising_Admin carry Modify All on the object: that is what makes every seat editable to them, and this check is what holds everyone else to their own access.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -9941,6 +10048,7 @@
 <p>Master-detail access is defined by the master record, so asking whether the running user can see the parent Campaign under USER_MODE is the same question the platform would have asked about the child, and the one the child's ungrantable describe cannot answer.</p>
 <p>Writes need this gate just as much as reads, and for a while they did not have it. The rationale that used to sit here — that the Unit of Work commits in user mode, so the platform would enforce master-inherited access on the write itself — is simply false: <a href="#apex-application"><code>Application</code></a>.cls builds its UnitOfWorkFactory from a bare List&lt;SObjectType&gt;, which makes fflib use SimpleDML, and SimpleDML is declared <code>without sharing</code> and commits at AccessLevel.SYSTEM_MODE. Nothing downstream re-checks the caller.</p>
 <p>Every entry point that writes a tier therefore calls this method itself, exactly like the read and delete paths. The message is caller-supplied so a failed gate is indistinguishable from a genuine not-found — a distinct "no access" reply would confirm the record exists.</p>
+<p>The write-side gate: visibility first (so a hidden event still answers as not found), then edit access on the campaign itself (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a>, owner decision D-1). A tier and the Product2 a new tier creates are both part of the event's configuration, so a user who may only read the event may no longer add, change or delete its tickets. Reads keep the visibility-only gate above.</p>
 <p>requireCampaignVisible on its own is not enough for an update. buildTierFromMap takes the tier id straight off the client payload and constructs new Event_Ticket_Type__c(Id = ...) without re-reading it, so a caller who legitimately administers campaign A can post A's id alongside a tier id belonging to campaign B and write to B's tier — the campaign gate passes because A really is visible, and the blind registerDirty never consults B.</p>
 <p>This method closes that by re-reading every supplied tier and refusing any whose Campaign__c is not the campaign already gated above. Ids that resolve to nothing are refused too, so a deleted or fabricated id cannot be distinguished from one on another event.</p>
 <p>Highlight_Label__c is both the badge copy and the on-switch, so "two highlighted tiers" is not something the platform can reject — it just makes the badge meaningless, since three tiers all reading "Most popular" recommend nothing. Both editors (the fundraiser wizard's Tickets step and the record view's Tickets tab) let an admin highlight a tier without thinking about the others, so the demotion happens here, once, rather than in each editor's client code where a stale list would miss a tier. It is an editing convention, not a data constraint: an API or Data Loader write bypasses this method entirely, and publicEventRegistration renders whatever it is given.</p>
@@ -10420,6 +10528,13 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Collaborators worth knowing by name when reading this class: <a href="#apex-pricebookservice"><code>PricebookService</code></a> (resolves the PricebookEntry every OLI needs, in one bulk call hoisted above the per-tier loop — see that class for why it's direct SOQL/DML rather than UoW-managed); <a href="#apex-eventavailabilityservice"><code>EventAvailabilityService</code></a> (the same capacity/sale-window math the registration UI runs client-side, re-checked here server-side); and <a href="#apex-refundservice"><code>RefundService</code></a>.releaseForOpportunity, which this interface exposes so a full refund can give sold seats back to their tiers in the SAME UoW as the refund write.</p>
+<p>Most tickets one guest checkout may buy (security review D-5). The ticket form is public, so the quantity is attacker-controlled; without a ceiling one request could hold a whole event's capacity for the 30-minute reservation window, or ask this service to build thousands of Event_Attendee__c rows in one finalize transaction. 50 covers any realistic group booking (a large table or a school party) while keeping one order's finalize comfortably inside DML-row and CPU limits. <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a> refuses a larger order before the Stripe callout; the registration page caps its selector at the same number so a donor meets the rule before they submit.</p>
+<p>Longest first or last name accepted for a purchaser or an attendee — the length of Donation_Staging__c.First_Name__c/Last_Name__c and Event_Attendee__c.First_Name__c/ Last_Name__c. Checked before the charge, because a longer value would otherwise only fail at insert time, after Stripe had already created the PaymentIntent (or, for an attendee row, after the money was captured).</p>
+<p>Longest e-mail address accepted — the platform length of an Email field.</p>
+<p>Deliberately STRICTER than the platform's Email-field validation, never looser: every shape this accepts was confirmed to insert into an Email field in the dev org (2026-09-25 probe), so an address that passes here can never fail with INVALID_EMAIL_ADDRESS at finalize, after the card was charged. The platform also accepts a few shapes this refuses (a quoted local part, a doubled or trailing dot in the local part, a numeric top-level domain); none of those is a realistic donor address.</p>
+<p>PAY-4 follow-on (2026-09-25): the repair used to stamp Completed as soon as seats existed, which is precisely the state a crash between UoW #1 and UoW #2 leaves behind: seats committed, none linked to their OLI, no CampaignMember sync. The reconciler then closed the order with those gaps baked in. It now finishes UoW #2 instead. A second repair is a no-op: the staging is Completed and every linkable seat is linked, so nothing is registered, nothing commits, and the sync (which skips existing members) is not re-run.</p>
+<p>A negative donation add-on is refused at finalize as well as at checkout (EventRegistrationController.CreateTicketIntent). Options_JSON__c is guest-supplied, and a negative add-on means the buyer was charged less than the tickets cost, so the order must not finalize whatever else lines up. The reason is stamped on Finalization_Error__c for the admin, the same way a line-total mismatch is. Only the sign is re-checked here, not the org min/max: by now the money has been captured, and an admin changing the bounds after the checkout must not strand a legitimate paid order. The reservation-release path still parses the row normally, so the held seats go back on sale.</p>
+<p>Finalize-time backstop for the D-5 limits. The controller refuses an over-long name or a malformed attendee e-mail before the charge, so these branches only fire for a staging row written before that check existed. The card is already captured here, so the seat is kept and the bad value is trimmed (name) or dropped (e-mail) rather than failing the whole paid order.</p>
 </div>
 <table>
 <thead>
@@ -10430,6 +10545,11 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><a id="apex-eventpurchaseservice-isvalidemail"></a><code>isValidEmail(1 arg)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
 <tr>
 <td><a id="apex-eventpurchaseservice-finalizesucceededeventstaging"></a><code>finalizeSucceededEventStaging(2 args)</code></td>
 <td><code>Id</code></td>
@@ -10442,7 +10562,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-pricebookservice-eventpricebookid">PricebookService.eventPricebookId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-pricebookservice-eventpricebookid">PricebookService.eventPricebookId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-settingsservice-eventsynccampaignmembers">SettingsService.eventSyncCampaignMembers()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-settingsservice-eventdonationproductid">SettingsService.eventDonationProductId()</a>, <a href="#apex-settingsservice-eventfeeproductid">SettingsService.eventFeeProductId()</a>, <a href="#apex-settingsservice-eventdeductiblemode">SettingsService.eventDeductibleMode()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10550,6 +10670,10 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>Ticket-purchase counterpart to the base donation flow — GetEventCampaign delegates to <a href="#apex-icampaignservice"><code>ICampaignService</code></a>.getEventCampaignConfig (the form payload plus the optional story / documents / updates / FAQ sections, because a ticket page is a whole page rather than an embedded form), and GetEventTickets/<a href="#apex-eventavailabilityservice-computeavailability"><code>EventAvailabilityService.computeAvailability</code></a> mirror the tier-availability math the guest event page renders. createTicketIntent is the most complex write path in either domain folder: see its own doc block for the lock-ordering and idempotency-retry design.</p>
 <p>getEventCampaignConfig, not getCampaignWithQuestions: a ticket page is a whole page, so it carries the same optional story / documents / updates / FAQ sections a donation page does. The plain form payload leaves them out on purpose, for the embedded-form entry points that would pay for them and render nothing.</p>
+<p>Guest input limits (security review D-5), checked before the dedupe probe, the throttle and the Stripe callout. Every value here is guest-supplied and is written to a Donation_Staging__c row and later to Event_Attendee__c rows; a value the platform would refuse at insert time (a name over 80 characters, a malformed address, an Options_JSON__c over its length) used to fail only AFTER the PaymentIntent existed — or, for an attendee row, after the card had been captured. The limits live on <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a> so the finalize-time backstop there reads the same numbers. Returns the first problem as donor-facing text, or null when the order is acceptable.</p>
+<p>A selection that is not the expected object shape is left to the order path, which refuses it with its own message after the open-campaign gate; these limits only read well-formed rows.</p>
+<p>Summed, not overwritten: a payload may repeat a tier id, and EventPurchaseService.parseSelection sums repeated lines at finalize. With last-write-wins here, <code>[{A,1},{A,5}]</code> charged and reserved 5 seats while finalize built 6 and failed its line-total-vs-capture assertion.</p>
+<p>The donation add-on is guest-supplied and goes straight into the charge, so it is bounds-checked here, before the Stripe callout. A negative value used to pass: it lowered the charge below the ticket price, and the order then failed at every finalize because the lines no longer matched the capture (security review GUEST-1). A non-zero add-on is a gift, so it takes the same org min/max as the donation form (<a href="#apex-donationservice-validateamountbounds"><code>DonationService.validateAmountBounds</code></a>). EventPurchaseService refuses a negative add-on again at finalize, so a staging row that skipped this check cannot finalize.</p>
 </div>
 <table>
 <thead>
@@ -10638,6 +10762,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>This is what makes the queue reliable; <a href="#apex-guestrequestqueueable"><code>GuestRequestQueueable</code></a> only makes it fast. Every way the immediate path can be lost — the queueable limit already spent, the enqueuing transaction rolled back, a handler that failed with attempts still on the clock — ends with a row sitting Pending, and this picks it up.</p>
 <p>The grace period exists so the sweep and the Queueable are not racing for the same row seconds after it was submitted. They cannot both apply a request even if they overlap — process() claims the row to Processing before running anything — but a sweep that routinely grabs rows the Queueable is about to handle turns the fast path into dead work for no benefit.</p>
+<p>SCOPE_SIZE is kept small on purpose. <a href="#apex-attendeenaminghandler"><code>AttendeeNamingHandler</code></a>.supersede runs one query and one commit per naming request inside its loop, so it is safe only while a chunk holds a handful of rows. Raise it only after that handler is bulkified.</p>
 </div>
 <table>
 <thead>
@@ -10690,7 +10815,7 @@
 <div class="fn-entry">
 <div class="fn-entry__id">
 <h4 id="apex-guestrequestsweepscheduler">GuestRequestSweepScheduler<a class="headerlink" href="#apex-guestrequestsweepscheduler" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public without sharing</code></p>
+<p><code>class</code> · <code>public with sharing</code></p>
 <p>implements Schedulable</p>
 <p class="fn-entry__src"><code>guestrequest/<wbr>async/<wbr>GuestRequestSweepScheduler.cls</code></p>
 </div>
@@ -10742,7 +10867,7 @@
 <div class="fn-entry__body">
 <p>GuestRequestController — staff API behind the record-page guest-request panel.</p>
 <p>The panel renders on two objects and scopes itself from whichever record it is placed on: an Opportunity lists that one gift's requests, a Campaign lists every request raised against the campaign. Reads go through <a href="#apex-guestrequestsselector"><code>GuestRequestsSelector</code></a>; the two writes run through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
-<p>SECURITY — read this before adding a method. GuestRequestsSelector is SYSTEM_MODE throughout (it has to be: the guest user and the Automated Process user both hold no access to the object), so it will happily return any request to anyone who knows an id. The gate is requireVisible() below, and it belongs on EVERY entry point. A guest request carries the donor's email address and, on a refund request, the sentence they wrote explaining why they want their money back — a method that skips the gate has built an IDOR that leaks exactly that.</p>
+<p>SECURITY — read this before adding a method. GuestRequestsSelector is SYSTEM_MODE throughout (it has to be: the guest user holds no access to the object, and the sweep's scheduling user need not), so it will happily return any request to anyone who knows an id. The gate is requireVisible() below, and it belongs on EVERY entry point. A guest request carries the donor's email address and, on a refund request, the sentence they wrote explaining why they want their money back — a method that skips the gate has built an IDOR that leaks exactly that.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Not cacheable, and deliberately so. The list changes the moment a reviewer completes or declines a row, and the same queue is worked from the Guest Requests tab and the fundraiser console at the same time — a cached read shows a colleague's closed request as still open until the page is reloaded, which is how the same refund gets issued twice.</p>
@@ -10790,6 +10915,10 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The seat cap is not a governor-limit hedge — an order cannot hold more seats than the checkout allowed. It is there because Payload_JSON__c arrived from an unauthenticated browser, and a payload naming 50,000 seats must be refused rather than parsed.</p>
+<p>D-6 — the latest list of names for an order wins. Each submission from the portal is its own Guest_Request__c (the idempotency key covers the payload, so a corrected list is a new row, not a duplicate), and the handler only ever fills BLANK seats. Without this rule, two lists queued for one order race: whichever runs first names the seats, and the other finds them taken and is silently ignored — so a donor's correction could lose to the mistake it was meant to fix, depending only on which row the queue claimed first.</p>
+<p>The rule is enforced here, in the system-context processor, and not when the guest submits: the guest insert path runs as the Guest user, which can never hold Edit on Guest_Request__c, and the submit path should stay a plain insert. Two halves:
+1. A request that has a NEWER naming request on the same order (one that has not been refused — Declined or Failed) is itself declined without touching any seat. This is the half that guarantees the outcome: it holds whatever order the queue claims rows in, including both rows being claimed by the same sweep.
+2. Older naming requests on the same order still sitting Pending are closed at once as Declined with the same donor-facing sentence, so the dashboard and the staff console stop showing them as waiting. Processing rows are left alone — their own handler run writes their outcome last, and reaches the same verdict through half 1. This write is best-effort: if it fails, half 1 still declines those rows when their turn comes. Declined is the existing status reused for "superseded": it is terminal, it is never retried, and the donor-facing message says why. No new picklist value was added. "Newer" means a later CreatedDate, with the record id breaking a same-second tie.</p>
 <p>Deliberately parses the payload rather than reading Event_Attendee__c. Showing the seats as they stand today would answer a different question, and it would need a master-detail read that the caller has no parent gate for. See <a href="#apex-guestrequestcontroller"><code>GuestRequestController</code></a>.GetRequest.</p>
 </div>
 <table>
@@ -10808,7 +10937,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-guestrequestoutcome-declined">GuestRequestOutcome.declined()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-guestrequestoutcome-completed">GuestRequestOutcome.completed()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-guestrequestoutcome-declined">GuestRequestOutcome.declined()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-guestrequestoutcome-completed">GuestRequestOutcome.completed()</a>, <a href="#apex-guestrequestsselector-newinstance">GuestRequestsSelector.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10992,7 +11121,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for Guest_Request__c — the queue of requests raised from the public site.</p>
-<p>FFLib role: Selector. Every read here is SYSTEM_MODE, and that is a deliberate decision rather than convenience: the only two callers are the unauthenticated guest user (who holds no field-level access to this object at all, by design — see Fundraising_GuestDonor) and the Automated Process user running the sweep and purge batches. A USER_MODE read would return nothing for either of them.</p>
+<p>FFLib role: Selector. Every read here is SYSTEM_MODE, and that is a deliberate decision rather than convenience: the only two callers are the unauthenticated guest user (who holds no field-level access to this object at all, by design — see Fundraising_GuestDonor) and the user the sweep and purge batches run as (whoever scheduled them). A USER_MODE read would return nothing for the guest, and a scheduling user need not hold any grant on the object.</p>
 <p>Because these queries do not enforce sharing or FLS, the authorization gate lives in the caller: <a href="#apex-donorportalservice"><code>DonorPortalService</code></a> resolves the visitor's access token to a donor, works out which records that donor owns, and only then asks this selector about those ids. A caller that passes in an id a visitor supplied has built an IDOR — nothing in this class will stop it.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -11088,7 +11217,7 @@
 <div class="fn-entry__body">
 <p>The lifecycle of a public request: queue it, claim it, run its handler, close it.</p>
 <p>FFLib role: Service. It owns the queue mechanics and knows nothing about what any particular request means — that lives in the <a href="#apex-iguestrequesthandler"><code>IGuestRequestHandler</code></a> implementations <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> resolves.</p>
-<p><code>without sharing</code> because the two callers have no sharing to inherit that would help: the unauthenticated guest submitting a request, and the Automated Process user sweeping the queue. The check that matters happened before submit() was ever called — see the note on Submission.subjectId.</p>
+<p><code>without sharing</code> because the two callers have no sharing to inherit that would help: the unauthenticated guest submitting a request, and the scheduled job sweeping the queue. The check that matters happened before submit() was ever called — see the note on Submission.subjectId.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Three attempts, then the row is left Failed and the sweep stops looking at it. The failures worth retrying are transient (a row locked by another transaction, a limit hit under load); a payload the handler cannot read fails identically every time, which is why a handler returns <code>declined</code> for that case and skips the retries entirely.</p>
@@ -11115,7 +11244,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-guestrequestsselector-newinstance">GuestRequestsSelector.newInstance()</a>, <a href="#apex-guestrequestrouter-resolve">GuestRequestRouter.resolve()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td><em>calls:</em> <a href="#apex-guestrequestsselector-newinstance">GuestRequestsSelector.newInstance()</a>, <a href="#apex-guestrequestrouter-resolve">GuestRequestRouter.resolve()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11125,7 +11254,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-guestrequestsselector-newinstance">GuestRequestsSelector.newInstance()</a>, <a href="#apex-guestrequestrouter-resolve">GuestRequestRouter.resolve()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a></td>
+<td><em>calls:</em> <a href="#apex-guestrequestsselector-newinstance">GuestRequestsSelector.newInstance()</a>, <a href="#apex-guestrequestrouter-resolve">GuestRequestRouter.resolve()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-guestrequestoutcome-failed">GuestRequestOutcome.failed()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -11832,8 +11961,12 @@
 <p>If the Stripe account has automatic email receipts switched on for successful payments, this makes Stripe send its own receipt IN ADDITION to the one <a href="#apex-receiptservice"><code>ReceiptService</code></a> sends. That is a dashboard setting on the subscriber's own Stripe account, not something the package can read or set — see the guest-donation guide.</p>
 <p>retrievePaymentIntent reads through the RESTRICTED donor credential even though back-office jobs call it too. It is guest-reachable (the donation and event-registration status polls both land here), so it has to work with the key a public page can reach; the reconcilers simply reuse that read rather than needing a second, more powerful one.</p>
 <p>The request expands latest_charge.balance_transaction, and Stripe fills that expansion in on Payment Intents permission alone: a sandbox key with Write on Payment Intents and NO Charges and Refunds or Balance permission returned the charge and its balance transaction, fee and net included (measured 2026-09-07, scripts/dev/ stripe-key-scope-probe.py). Until that measurement the donor matrix carried Read on both rows for this call; neither is needed, and the guest-held key is scoped without them.</p>
+<p>These are the values a caller should trust over anything the browser reported. The renewal job reads createdAt to decide when a payment that never settled has waited long enough to need a person (D-18), and the first-gift finalize path reads paymentMethodId so the card saved for renewals is the one that actually paid (D-13).</p>
 <p>Null is the correct outcome far more often than it looks, and it is NOT an error: Stripe posts the balance transaction when the charge settles, so a PaymentIntent read before that — typically a card charge fetched the same instant it succeeded, which on this card-only flow is the common case — legitimately has none. Callers must read null as "not known yet" and leave the field alone rather than writing a zero fee, which would look like a free charge.</p>
 <p>Amounts are scaled with the BALANCE TRANSACTION's own currency, not the PaymentIntent's. They differ whenever the charge is settled into a different currency than it was presented in, and it is the settlement currency the fee and net are denominated in — scaling those by the presentment currency would be wrong by up to 100x the moment either side is a zero-decimal currency such as JPY.</p>
+<p>Stripe returns at most 100 intents per page, newest first, and says so with has_more. Until 2026-09-25 the flag was ignored, so a window holding more than 100 intents returned only its newest 100 and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> advanced its cursor past the rest — an orphaned charge among the older ones was never looked at again. The sweep now reads lastIntentsListTruncated() and holds the cursor, the same way it handles its repair cap.</p>
+<p>D-13 (2026-09-25). The donor-portal card update used to trust the payment method id the browser reported after stripe.confirmSetup(). A caller can now send the SetupIntent id instead and let <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a> check status == 'succeeded' and that the intent's customer is the schedule's own before using the payment method Stripe recorded on it. The id is shape-checked before any callout (only a seti_ id can reach Stripe) and then URL-encoded as a single path segment, so a tampered value can never re-target the request. Reads through the donor credential: the call is made from the guest portal.</p>
+<p>Returns the created refund AND whether Stripe replayed it. Stripe marks a response it answered from its idempotency cache, rather than by executing the request, with the response header <code>Idempotent-Replayed: true</code> (https://docs.stripe.com/error-low-level#idempotency). <a href="#apex-refundservice"><code>RefundService</code></a> needs that answer to tell "a concurrent call with my key already refunded this" from "my call really moved money", which the Opportunity's totals alone cannot always tell apart. idempotentReplay is true for 'true', false for 'false' (both compared case-insensitively) and null when the header is absent or unrecognised — null is the caller's cue to fall back to its own judgement, never an implied false.</p>
 <p>Set only by StripeGateway_Test. Site.getSiteId() returns null in a test by default and nothing in Apex can make it return otherwise, so simulating a public site request needs this seam. It is read only when Test.isRunningTest() is true, so it cannot weaken the guard in a subscriber org.</p>
 <p>The predicate is "am I serving a public site request", not "is this user a guest", for two reasons: it also catches a LOGGED-IN community user on the same path, and it avoids depending on UserInfo.getUserType() returning 'Guest', which this repo has never been able to confirm from official documentation. The User.UserType FIELD value is proven in three places (<a href="#apex-paymentsetupguideservice"><code>PaymentSetupGuideService</code></a>.readGrants, <a href="#apex-setupcontroller"><code>SetupController</code></a>, <a href="#apex-communityservice"><code>CommunityService</code></a>); the session-level UserInfo equivalent is not, so the guard does not rest on it. Site.getSiteId() is documented to return null when the current request is not a site request, which is exactly the question asked here.</p>
 <p>This is the second of two layers, and it is defense against a FUTURE DEVELOPER rather than against a subscriber admin — which is why it is not redundant with the per-operation credential routing above it. Routing decides WHICH KEY an operation uses, so a leaked donor key cannot refund; this guard decides WHICH CALLER may run it at all.</p>
@@ -11841,6 +11974,7 @@
 <p>The log line is written BEFORE the throw because a tripped guard is a code defect, and it must be diagnosable from the log rather than only from whatever the caller does with the message. The message names the operation and nothing else — never a credential name or any part of a key.</p>
 <p>The guard asks where the CALLER is running, not which credential resolved, so an account that names the same credential in both fields (shared mode, a supported configuration) gets exactly the same answer.</p>
 <p>The reverse direction — a back-office operation running on the donor credential — is deliberately NOT guarded. It fails loudly at Stripe with an HTTP 403, harms nothing, and the credential routing already prevents it.</p>
+<p>PAY-1 (2026-09-25). retrievePaymentIntent already encoded its id; the three payment-method and customer paths did not. RecurringDonationService additionally rejects a malformed pm_ id before any callout, so this is the second of two layers, not the only one.</p>
 <p>The credential is the first parameter rather than instance state because it is the one thing that varies per operation: a donor-facing call names publicCredential, a back-office call names adminCredential. Passing it explicitly at every call site is what makes the split auditable — StripeGateway_Test asserts the exact set of endpoints each side calls, so a call routed to the wrong credential fails a test rather than silently succeeding at Stripe.</p>
 <p>testConnection is reached only from the internal setup console, and it probes the ADMIN credential: that is the credential an admin most needs reassurance about — a broken donor key shows up the first time a donation is taken, a broken admin key only at the first refund or renewal. It therefore says nothing about the donor credential.</p>
 <p>Until 2026-09-07 it read /v1/account first and fell back to the refunds list on a 403. The account profile sits behind Stripe's Accounts Read permission, which nothing else in this package needs, so a correctly scoped admin key was refused it on every run and the fallback was the only path a documented setup ever took. Reading it first also invited exactly the wrong fix — widening the key so a button prints a name. The refunds list is now the only call: the refund reconciler makes that read on every run, so it is inside the documented scope by definition; it moves no money and creates nothing. Account name, country and mode are never reported; the account's mode is already known from its publishable key (Payment_Account__c.Mode__c).</p>
@@ -11880,6 +12014,11 @@
 </tr>
 <tr>
 <td><a id="apex-stripegateway-lastdisputeslisttruncated"></a><code>lastDisputesListTruncated(0 args)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-stripegateway-lastintentslisttruncated"></a><code>lastIntentsListTruncated(0 args)</code></td>
 <td><code>Boolean</code></td>
 <td></td>
 </tr>
@@ -11969,6 +12108,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-stripegateway-retrievesetupintent"></a><code>retrieveSetupIntent(1 arg)</code></td>
+<td><code>[GatewayResult](#apex-gatewayresult).Intent</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-stripegateway-attachpaymentmethod"></a><code>attachPaymentMethod(3 args)</code></td>
 <td><code>void</code></td>
 <td></td>
@@ -11985,7 +12129,7 @@
 </tr>
 <tr>
 <td><a id="apex-stripegateway-refund"></a><code>refund(3 args)</code></td>
-<td><code>String</code></td>
+<td><code>[GatewayResult](#apex-gatewayresult).Refund</code></td>
 <td></td>
 </tr>
 <tr>
@@ -12001,65 +12145,6 @@
 <tr>
 <td><a id="apex-stripegateway-probeadminkeyscope"></a><code>probeAdminKeyScope(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="fn-entry">
-<div class="fn-entry__id">
-<h4 id="apex-stripepaymentpagecontroller">StripePaymentPageController<a class="headerlink" href="#apex-stripepaymentpagecontroller" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public with sharing</code></p>
-<p class="fn-entry__src"><code>payment/<wbr>stripe/<wbr>StripePaymentPageController.cls</code></p>
-</div>
-<div class="fn-entry__body">
-<p>Renders the org domain URL for postMessage origin validation in the VF stripe payment page.</p>
-<div class="fn-docnote">
-<p class="fn-docnote__label">Docs note</p>
-<p>This tiny controller backs stripePayment.page, the Visualforce page that hosts Stripe.js inside an iframe so no card data ever touches this org's own DOM — a donation LWC talks to it only via window.postMessage, never by injecting Stripe's script directly into the LWC's page.</p>
-<p>That indirection is deliberate: the AppExchange Security Review's Source Scanner flags dynamic third-party script injection, so the iframe+postMessage pattern was chosen specifically to stay compliant while still tokenizing card data client-side (the browser only ever sends Apex a paymentMethod.id, never raw card details — see <a href="#apex-ipaymentgateway"><code>IPaymentGateway</code></a>/<a href="#apex-stripegateway"><code>StripeGateway</code></a>).</p>
-<p>getAllowedOrigin() is the other half of that safety: both this page and the LWC validate the postMessage event.origin against the org's own domain before trusting a message, in either direction.</p>
-<p><a href="#apex-stripepaymentreturncontroller"><code>StripePaymentReturnController</code></a> backs the redirect-return counterpart of this same page for flows that leave the iframe (e.g. 3DS).</p>
-</div>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-stripepaymentpagecontroller-getallowedorigin"></a><code>getAllowedOrigin(0 args)</code></td>
-<td><code>String</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="fn-entry">
-<div class="fn-entry__id">
-<h4 id="apex-stripepaymentreturncontroller">StripePaymentReturnController<a class="headerlink" href="#apex-stripepaymentreturncontroller" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public with sharing</code></p>
-<p class="fn-entry__src"><code>payment/<wbr>stripe/<wbr>StripePaymentReturnController.cls</code></p>
-</div>
-<div class="fn-entry__body">
-<p>Backs stripePaymentReturn.page — renders the org domain URL as a postMessage-origin fallback.</p>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-stripepaymentreturncontroller-getallowedorigin"></a><code>getAllowedOrigin(0 args)</code></td>
-<td><code>String</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -12128,7 +12213,7 @@
 <div class="fn-entry">
 <div class="fn-entry__id">
 <h4 id="apex-recurringdonationscheduler">RecurringDonationScheduler<a class="headerlink" href="#apex-recurringdonationscheduler" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public without sharing</code></p>
+<p><code>class</code> · <code>public with sharing</code></p>
 <p>implements Schedulable</p>
 <p class="fn-entry__src"><code>recurring/<wbr>async/<wbr>RecurringDonationScheduler.cls</code></p>
 </div>
@@ -12181,6 +12266,8 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This batch owns only the callout + two-phase commit shape. The actual dunning cadence — how many retries, how many days apart, when a decline is terminal vs. soft, when the donor gets a re-auth link — lives entirely in <a href="#apex-recurringdonationservice-processrenewal"><code>RecurringDonationService.processRenewal</code></a> (TERMINAL_DECLINE_CODES, INDETERMINATE_DECLINE, the RenewalOutcome result). Read that method for the state machine; read this class only for how/when it gets invoked per due schedule.</p>
+<p>D-18 (2026-09-25): a schedule carrying Pending_Payment_Intent__c is not charged. Phase 1 retrieves that PaymentIntent instead and hands the retrieved intent to processRenewal exactly as if it were a fresh charge result, so one state machine decides both. A failed retrieve is classified the same way a failed charge is (transient means look again tomorrow). When processRenewal parks a schedule for staff review this class writes the <a href="#apex-applogger"><code>AppLogger</code></a> error after the commit, naming the intent.</p>
+<p>PAY-5 (2026-09-25): before this, a Retry Now on the same day as a decline replayed the declined key and Stripe returned the cached 402 for 24h without contacting the card network. The amount is deliberately NOT part of the key: a fee-rate change between an indeterminate attempt and its re-verify would change the key and risk charging twice.</p>
 </div>
 <table>
 <thead>
@@ -12203,7 +12290,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-recurringdonationservice-advancescheduledate">RecurringDonationService.advanceScheduleDate()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12232,11 +12319,12 @@
 <p>Not cacheable=true on purpose. The panel re-reads itself after every action, so a cached response would leave a just-paused gift still rendering as Active until a full reload.</p>
 <p>Takes a Payment_Method__c record Id, NOT a Stripe pm_ id. The client never names a Stripe object — the wallet row is looked up and its Stripe id read server-side, so a tampered request cannot point a schedule at a card that is not this donor's.</p>
 <p>Unlike the write actions this one does NOT refuse a user without the permission — it answers with canManage=false so the panel can render the gift read-only rather than as an error. Nothing here is privileged; it is the same schedule state the record page already shows.</p>
-<p>Queues the charge for the next renewal-batch run rather than calling Stripe inline — retryNow only moves Next_Retry_Date__c. Staff should be told "we'll try again", not shown a result that has not happened yet.</p>
+<p>Queues the charge for the next renewal-batch run rather than calling Stripe inline — retryNow only moves Next_Retry_Date__c. Staff should be told "we'll try again", not shown a result that has not happened yet. Staff go through retryNowAfterReview, which also releases a schedule parked because its pending payment is missing from Stripe.</p>
 <p>The org's min/max gift bounds are enforced by the service, not restated here — the donor form and the donor portal are checked against the same limits, and a second copy of them in a controller is a copy that will eventually disagree.</p>
 <p>Reinstates on the card already on the schedule (null second argument = no swap). Staff cannot supply a new card here and must not: keying a donor's card into an internal screen would put a PAN in front of a fundraiser and produce a charge with no donor mandate behind it. Switching to a card the donor already saved is a separate action.</p>
 <p>The chosen card is re-checked against THIS schedule's donor before it is used. Without that, a valid Payment_Method__c id belonging to any other donor would be accepted and the next installment would bill a stranger's card.</p>
 <p>The can* flags mirror the service's own preconditions so the panel can disable a button instead of letting staff click it and read an error. They are a display convenience ONLY — every service method re-asserts its own rules, so a stale panel cannot be used to push through a transition the schedule does not allow.</p>
+<p>needsStaffReview / staffReviewDetail (D-18): a renewal payment Stripe has not settled and the renewal job has stopped checking on its own. The panel shows the reason and enables Retry now, which is the documented way out of that state.</p>
 <p>Lists only cards the donor has ALREADY saved. There is deliberately no "add a card" path on the staff side — collecting a card requires the donor's browser (Stripe.js) and their mandate; a fundraiser typing one in would breach both. A donor with one card on file therefore sees no switch option here, which is correct: there is nothing to switch to.</p>
 <p>Mirrors <a href="#apex-donorportalservice-getrecurringfundoptions"><code>DonorPortalService.getRecurringFundOptions</code></a> — the same resolved config the donor's own change-fund picker is built from, so staff and donor are offered exactly the same funds for a given campaign.</p>
 </div>
@@ -12308,6 +12396,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This is the internal/admin cancel path — a staff user acting on a known Recurring_Donation__c Id. The donor-portal self-serve cancel is a separate path (<a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, scoped by the donor's capability token rather than a raw Id a guest could enumerate) and does not go through this controller.</p>
+<p>Gated by Manage_Recurring_Gifts, the same custom permission as every other staff change to a schedule (<a href="#apex-recurringdonationadmincontroller"><code>RecurringDonationAdminController</code></a>). Cancelling is the one terminal change, so leaving it open to any user with the class grant while pausing required the permission had the gate backwards. The check lives here and not in the service for the reason RecurringDonationAdminController records: the donor portal cancels through the same service method as a guest, who holds no custom permission.</p>
 </div>
 <table>
 <thead>
@@ -12348,7 +12437,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>onAfterInsert's createHistoryRecords is the ONLY place Recurring_Donation_History__c gets written automatically in this package — pause/resume/cancel/reinstate/renewal (all in <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>) mutate Recurring_Donation__c directly and do not append a History row. A reader looking for a full audit trail of status changes will not find one here beyond the initial "Created" event.</p>
-<p>This is the only fflib CRUD-security waiver in the package. It is scoped to a single transaction window rather than disabled outright in the constructor precisely so an unrelated caller cannot inherit it.</p>
+<p>One of two fflib CRUD-security waivers in the package (the other is <a href="#apex-contacts"><code>Contacts</code></a>.suppressTriggerCrudCheck, for the donor rollup). It is scoped to a single transaction window rather than disabled outright in the constructor precisely so an unrelated caller cannot inherit it.</p>
 </div>
 <table>
 <thead>
@@ -12478,6 +12567,7 @@
 <p>Every donor who holds a live commitment, as an Id set — the second arm of the Donors console's "who is a donor" test (<a href="#apex-contactsselector"><code>ContactsSelector</code></a>.DONOR_SCOPE / <a href="#apex-accountsselector"><code>AccountsSelector</code></a>. PA_DONOR_SCOPE). It exists as a set rather than as a semi-join inside those conditions because SOQL rejects <code>A OR Id IN (SELECT ...)</code> outright — "Semi join sub-selects are not allowed with the 'OR' operator" — and the donor test is an OR by definition. GROUP BY, so the 50k row cap counts DONORS rather than schedules: an org would need 50,000 people holding live commitments to reach it.</p>
 <p>stripePaymentMethodId is skipped entirely when blank rather than bound as null — a null bind in <code>Stripe_Payment_Method_Id__c = :token</code> matches every schedule that has no token at all, which would report unrelated gifts as depending on this card.</p>
 <p>The guard has to match on BOTH the Payment_Method__c lookup and the Stripe id because a schedule written before the lookup existed carries only the latter, and the Stripe id is what the renewal batch actually charges. Matching on one alone would let a donor remove a card that is still funding a live gift.</p>
+<p>countPendingPaymentReview feeds <a href="#apex-reconciliationheartbeat"><code>ReconciliationHeartbeat</code></a>'s alarm (D-18). It counts schedules holding a renewal PaymentIntent that Stripe never settled and that the renewal batch will no longer look up on its own: the ones parked for staff review (no retry date), and the ones that stopped being chargeable while a payment was still open (any status but Active or Paused), because such a payment can still settle in Stripe with nothing recorded.</p>
 <p>countLiveDonorsByCampaign answers the console's "Recurring donors" figure, which is a count of PEOPLE, not of schedules - one donor with a monthly gift and a separate annual pledge to the same fundraiser is one recurring donor. countByCampaign counts schedules in every status and is not a substitute.</p>
 </div>
 <table>
@@ -12600,6 +12690,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-recurringdonationsselector-countpendingpaymentreview"></a><code>countPendingPaymentReview(0 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-recurringdonationsselector-countlivedonorsbycampaign"></a><code>countLiveDonorsByCampaign(1 arg)</code></td>
 <td><code>Integer</code></td>
 <td></td>
@@ -12628,14 +12723,24 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Self-managed recurring donations (Phase B) — no Stripe Subscription object anywhere in this class. Signup is split in two: activateRecurringStaging (guest context) records the donor's mandate on Donation_Staging__c and creates nothing, then createScheduleFromStaging builds the Active Recurring_Donation__c in system context from inside <a href="#apex-donationservice"><code>DonationService</code></a>'s finalize path, alongside gift #1's Opportunity; <a href="#apex-recurringrenewalbatch"><code>RecurringRenewalBatch</code></a> drives every later charge off-session via <a href="#apex-ipaymentgateway"><code>IPaymentGateway</code></a>.chargeOffSession, and processRenewal is the dunning state machine that decides what a charge outcome means for the schedule.</p>
-<p>processRenewal's three branches: a successful charge creates the installment Opportunity and advances Next_Payment_Date__c (advanceScheduleDate, which anchors off the schedule's OWN due date rather than today, so a late-running batch doesn't drift the billing cycle); requiresAction sets Re_Auth_Required__c and throttles re-auth emails to once per reAuthThrottleDays; a decline checks TERMINAL_DECLINE_CODES (e.g. stolen_card, expired_card) to fail the schedule immediately versus scheduling a retry via <a href="#apex-settingsservice-retryintervaldays"><code>SettingsService.retryIntervalDays</code></a>()/maxFailedPaymentRetries(). INDETERMINATE_DECLINE is the sentinel used when the gateway callout itself failed (timeout, etc.) rather than returning a real decline code — treated as retryable, never terminal.</p>
+<p>processRenewal's three branches: a successful charge creates the installment Opportunity and advances Next_Payment_Date__c (advanceScheduleDate, which anchors off the schedule's OWN due date rather than today, so a late-running batch doesn't drift the billing cycle); requiresAction sets Re_Auth_Required__c and throttles re-auth emails to once per reAuthThrottleDays; a decline checks TERMINAL_DECLINE_CODES (e.g. stolen_card, expired_card) to fail the schedule immediately versus scheduling a retry via <a href="#apex-settingsservice-retryintervaldays"><code>SettingsService.retryIntervalDays</code></a>()/maxFailedPaymentRetries(). INDETERMINATE_DECLINE is the sentinel used when the gateway callout itself failed (timeout, etc.) rather than returning a real decline code — treated as retryable, never terminal. An HTTP-200 PaymentIntent that is still unsettled (status processing, or anything outside DEFINITE_FAILURE_STATUSES that is not succeeded/requires_action) takes the same INDETERMINATE path: dunning counters stay put, so the renewal idempotency key does not rotate and a decline email is never sent for money that may still move.</p>
+<p>D-18 (2026-09-25): an unsettled intent's id is stored on Pending_Payment_Intent__c, and while it is set RecurringRenewalBatch RETRIEVES that intent instead of charging again. A same-key replay only returns Stripe's saved first answer and stops working once the key expires after 24 hours, so a second charge beside a slow first one was possible before. The retrieved status then decides: succeeded runs the success branch, requires_action the re-auth branch, requires_payment_method or canceled the decline branch (all three clear the field), and anything else keeps the id and checks again tomorrow. An intent still unsettled pendingReviewAfterDays (3) after Stripe created it, or one that cannot be read back at all, is parked for staff review: the id stays, Next_Retry_Date__c is cleared so the due selector skips the schedule, Last_Error__c starts with STAFF_REVIEW_PREFIX and names the intent, and <a href="#apex-reconciliationheartbeat"><code>ReconciliationHeartbeat</code></a> counts it. Every staff and donor action that re-queues a charge (retryNow, updatePaymentMethod, reinstateRecurring) sets Next_Retry_Date__c to today and leaves the id alone, so the next run retrieves first rather than charging fresh. A pure callout failure with nothing pending keeps the older same-key behaviour: nothing is stored because no intent id came back.</p>
 <p>The pause/resume/cancel/reinstate methods here mutate Recurring_Donation__c directly and do NOT write a Recurring_Donation_History__c row — see <a href="#apex-recurringdonations-onafterinsert"><code>RecurringDonations.onAfterInsert</code></a>, which writes the schedule's one Created row. The self-service and term methods added 2026-08-06 DO append history (changeAmount, changeDesignation, skipNextPayment, and processRenewal when a capped schedule completes), all through registerHistory below, so a donor-visible change to a live commitment is auditable even though the older status transitions are not.</p>
+<p>A schedule parked for staff review (D-18) waits for a person to look at the payment in Stripe. The donor portal's retry must not un-park it: that would take it out of the heartbeat's count without anyone having looked.</p>
+<p>D-18 (2026-09-25): without this a schedule parked as "could not be found in Stripe" had no way out. Retry now kept the stored id, the next run looked the missing payment up again and parked it again, and there was nothing in Stripe to cancel. Only the staff action clears the id, and only for that parking reason: staff have checked the Stripe Dashboard, while a donor could not know whether the payment exists under another payment account, where charging afresh would bill them twice. A schedule parked for any other reason keeps its id, and the next run reads the payment before charging.</p>
+<p>PAY-5 (2026-09-25): retryNow keeps Failed_Payment_Count__c so the next renewal attempt carries a new idempotency key. The count now reads as "declines since the last successful charge"; a successful charge still zeroes it.</p>
 <p>The stored Recurring_Designation__c rows are re-derived from their percentages rather than left alone. processRenewal already allocates each installment by percentage, so a stale split Amount__c would not misallocate anything — but it WOULD be read by anyone reporting on the schedule's own children, and a $50 split sitting under a $100 gift is simply wrong on its face. A split with no percentage (a fixed-amount split) is left as authored; scaling it would silently reinterpret an amount the donor chose deliberately.</p>
 <p>Validation is delegated to <a href="#apex-icampaigndesignationservice"><code>ICampaignDesignationService</code></a>.filterAllowedSplits — the SAME authority the public donation form is checked against, so a fund the campaign will not accept at checkout cannot be reached by editing an existing schedule either. That method SUBSTITUTES the campaign default rather than rejecting, so the returned split is compared back against what was asked for: a substitution means the request was not allowed, and a donor who asked for fund A must never silently end up giving to fund B.</p>
 <p>A skipped cycle does NOT count toward Installment_Cap__c: the counter only moves on a successful capture, so a 12-payment pledge with one skip still collects 12 payments (it just finishes a month later). Refused while a retry is pending or re-auth is outstanding, because in both cases the "next payment" is a charge that has already failed — skipping it would quietly write off money the donor still owes rather than skipping a future one.</p>
+<p>D-13 (2026-09-25): the portal used to post the new card's pm_ id straight from the browser, so any card id the donor's browser could name was attached to the schedule's customer and charged from then on. Now the server retrieves the SetupIntent and accepts it only when (1) it has succeeded, (2) it belongs to THIS schedule's Stripe customer — every recurring signup mints its own customer, so that ties it to this gift — and (3) its payment_method is a well-formed pm_ id. The card stored is the one Stripe reports, never one the browser named. Any mismatch is logged and refused with a donor-safe message.</p>
+<p>Each card-change attempt gets its own idempotency key. A fixed per-gift key made Stripe hand back the already-confirmed SetupIntent to a second attempt inside its 24-hour key window, and the card form never mounted. An unconfirmed SetupIntent moves no money, so a duplicate from a double click costs nothing.</p>
 <p>This method used to create the whole schedule inline, which could never work: the guest user has no Create on Contact or Recurring_Donation__c, and both objects carry fflib domain triggers whose handleAfterInsert re-asserts object CRUD <em>regardless</em> of the DML's AccessLevel — so a SYSTEM_MODE insert still threw "Permission to create an Contact denied". Guest Users can never be granted that Create (platform restriction), so staging-only is the correct shape, and it matches the one-time path exactly.</p>
 <p>The caller is responsible for the post-commit follow-up (donor confirmation email and the optional NPSP mirror) because neither can run until the schedule has a real Id.</p>
+<p>D-13 (2026-09-25): the card a schedule charges every month used to be whatever pm_ id the donor's browser posted to activateRecurringStaging. The finalize path already holds the PaymentIntent it retrieved from Stripe, and that intent's payment_method is the card that actually paid gift #1 and was saved to the customer (setup_future_usage). When the two differ the retrieved one wins, the mismatch is logged, and no wallet row is written, because the snapshot's brand and last four describe the other card.</p>
 <p>This catch is load-bearing only in an NPSP org, which is why its absence survived so long. Without NPSP the method returns at its getGlobalDescribe type guard and nothing can throw; with NPSP it proceeds to <a href="#apex-recurringdonationsselector-selectbyid"><code>RecurringDonationsSelector.selectById</code></a>, whose fflib base asserts object read at query-BUILD time — so a caller not holding Fundraising_Admin took an uncaught CrudException mid-finalize. Note the callers here are <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> running as their batch owner, NOT the Automated Process user that drives the DonationFinalized__e seam, so the Automated-Process reasoning used elsewhere in the NPSP path does not apply. Found by the Rule 7 NPSP org run, 2026-09-01.</p>
+<p>PAY-5 follow-on (2026-09-25): this is an allow-list of definite failures rather than a deny-list of pending states, so a status Stripe adds later falls on the safer side (store the intent id and look it up next run, no decline email) instead of the side that rotates the key and can charge twice at once. The same set classifies a retrieved pending intent (D-18): these two statuses clear Pending_Payment_Intent__c and take the decline path.</p>
+<p>A look-up that keeps failing for a reason on our side (a broken Named Credential, a deleted Payment Account, a revoked key) would otherwise be re-tried daily with nothing telling staff. Its Last_Error__c carries the day the look-ups started failing, and once that is pendingReviewAfterDays old the schedule is parked, which the heartbeat counts. The date lives in the text because Last_Error__c is long text and cannot be filtered on.</p>
+<p>PAY-1 (2026-09-25). This is the first of two layers — <a href="#apex-stripegateway"><code>StripeGateway</code></a> also URL-encodes every variable path segment. Checked in updatePaymentMethod, reinstateRecurring (only when a card is supplied) and activateRecurringStaging. Underscores are allowed after the prefix because Stripe's documented test payment methods carry them ("pm_card_visa", "pm_card_chargeCustomerFail", used by scripts/apex/force-renewal.apex) and so do the dev seed ids in scripts/apex/seed-donor-portal.apex; the first version of this check refused them. An underscore cannot introduce a path separator, a query string or a fragment, so widening the class to [A-Za-z0-9_] does not reopen what PAY-1 closed.</p>
 </div>
 <table>
 <thead>
@@ -12672,6 +12777,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-recurringdonationservice-retrynowafterreview"></a><code>retryNowAfterReview(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-recurringdonationservice-changeamount"></a><code>changeAmount(2 args)</code></td>
 <td><code>void</code></td>
 <td></td>
@@ -12698,7 +12808,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-attributioncapture-copy">AttributionCapture.copy()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-attributioncapture-copy">AttributionCapture.copy()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12707,8 +12817,13 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-recurringdonationservice-updatepaymentmethodfromsetupintent"></a><code>updatePaymentMethodFromSetupIntent(2 args)</code></td>
+<td><code>void</code></td>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-attributioncapture-copy">AttributionCapture.copy()</a>, <a href="#apex-designationsplits-allocatebypercentage">DesignationSplits.allocateByPercentage()</a>, <a href="#apex-settingsservice-maxfailedpaymentretries">SettingsService.maxFailedPaymentRetries()</a>, <a href="#apex-settingsservice-retryintervaldays">SettingsService.retryIntervalDays()</a>, <a href="#apex-settingsservice-dunningemailfrequencydays">SettingsService.dunningEmailFrequencyDays()</a></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12738,7 +12853,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12747,8 +12862,13 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-recurringdonationservice-createschedulefromstaging"></a><code>createScheduleFromStaging(5 args)</code></td>
+<td><code>Recurring_Donation__c</code></td>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -12946,7 +13066,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-settingsservice-issupersededportalconfirmationmessage">SettingsService.isSupersededPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-issupersededportalrequestsubtitle">SettingsService.isSupersededPortalRequestSubtitle()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-settingsservice-issupersededportalconfirmationmessage">SettingsService.isSupersededPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-issupersededportalrequestsubtitle">SettingsService.isSupersededPortalRequestSubtitle()</a>, <a href="#apex-refundreconciliationbatch-start">RefundReconciliationBatch.start()</a>, <a href="#apex-stripepaymentsweep-execute">StripePaymentSweep.execute()</a>, <a href="#apex-paymentgatewayfactory-hasactiveaccount">PaymentGatewayFactory.hasActiveAccount()</a>, <a href="#apex-settingsservice-finalizerintervalminutes">SettingsService.finalizerIntervalMinutes()</a>, <a href="#apex-settingsservice-heartbeatintervalminutes">SettingsService.heartbeatIntervalMinutes()</a>, <a href="#apex-guestrequestsweepscheduler-jobnamefor">GuestRequestSweepScheduler.jobNameFor()</a>, <a href="#apex-guestrequestsweepscheduler-cronfor">GuestRequestSweepScheduler.cronFor()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -13231,6 +13351,7 @@
 <p>The page now pins each heading's id with an attr_list <code>{ #slug }</code> so the anchor survives renumbering and rewording. Adding a step here means adding a section AND its <code>{ #slug }</code> there. Four of them had drifted apart again by 2026-08-18, so the pairing is no longer trusted to reviewers: docs-site/scripts/mkdocs_hooks.py reads the anchors back out of this class and fails the docs build when one is missing from that page. A renamed section now breaks a build instead of quietly breaking a link.</p>
 <p>The package ships CSP trusted sites for Stripe and nothing else. That is a deliberate install-experience decision: every packaged CspTrustedSite is listed in the "Approve Third-Party Access" dialog a subscriber sees mid-install, and a fundraising package asking to reach five unfamiliar domains reads as a warning rather than as a payment integration.</p>
 <p>The hosts below back OPTIONAL features, so they are the subscriber's call to add — Setup → CSP Trusted Sites — and this step tells them which one unlocks what. Apex cannot create them: CspTrustedSite.SObjectType.getDescribe().isCreateable() is false, and the Apex Metadata API supports only Layout and CustomMetadata records. So this step detects and explains; it can never offer a one-click fix.</p>
+<p>Two jobs need a grant the packaged permission sets cannot give (added 2026-09-25 with the security-review hardening): publishing a file on a campaign's Documents panel needs the platform's Create Public Links (PermissionsChatterFileLink), because the public link is now minted in user mode; and pausing, changing or stopping a recurring gift needs the Manage_Recurring_Gifts custom permission, which Fundraising_Admin carries and Fundraising_User deliberately does not. Neither is needed to take a donation, so the step is optional and never moves the counter. It pairs with the after-you-install section "Two things the permission sets cannot give" and reads both counts live, so the line changes the moment an admin adds a grant. A read the running user cannot make reports "could not be checked" rather than zero, because a zero would tell an admin to grant something they may already have granted.</p>
 <p>The object-access leg was added 2026-08-19 (audit F-76). Until then this row graded the principal grant alone and went green on an org where every public donation still died at the callout with "You don't have read permissions on the User External Credential object" — the Site &amp; Domain panel's step 5 already reported that org as broken, so the console contradicted itself on the same fact, and this row was the one an admin sees first. It is a distinct 'warn' rather than 'fail' because the two grants are separate pieces of work and an admin who has done one has genuinely done half of the step.</p>
 <p>Five of this file's inner action classes carry an explicit <code>with sharing</code>; the rest carry no keyword. That asymmetry is deliberate, not an oversight. An Apex inner class inherits its sharing context from the CALLER, not from the outer class, so none of them is self-documenting — but every one is private and reachable only through <code>public with sharing class SetupController</code>, so the effective context is already the user's in all cases. The five keywords were added on 2026-09-01 to clear PMD's ApexSharingViolations, which flags only the subset it can see; adding the keyword to the remaining classes would be churn with no behaviour change. If one of these is ever made reachable from a caller outside this class, the keyword stops being decorative — state it.</p>
 <p>Returns the raw Settings__c on purpose — <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
@@ -13238,6 +13359,7 @@
 <p>The allowed intervals are NOT redeclared here — SettingsService owns the one list, because the same set has to gate this panel, the stored Settings__c value, and the cron offsets PostInstallHandler generates. A second copy went stale the first time it existed (this panel offered 5/10/15/30/60 while the packaged cadence was fixed at 5). Audit finding F-119.</p>
 <p>Shared by AbortJobFamily and ScheduleJobFamily so a cadence change cannot half-happen — see the note inside ScheduleJobFamily.doExecute(). Audit finding F-119.</p>
 <p>GetNamedCredentials bounds its read at 1,000 rows. That is a guard, not a paging boundary — the result populates a single combobox in the payments panel, and an org with a thousand Named Credentials has an unusable picklist long before it has a truncated one. The bound exists so an org that somehow does hold more fails as a short list rather than as a LimitException that takes the whole Settings console down with it.</p>
+<p>Object-level Create/Edit gate for the two Settings-console saves (owner decision D-2). The Unit of Work commits in SYSTEM_MODE and neither Payment_Account__c nor Campaign_Design__c has a Domain trigger to re-assert CRUD, so without this a user who can reach the console with read-only access (Fundraising User and Fundraising Read Only both hold Read only on these objects) could still create or rewrite a payment account or a page design. The sibling delete actions already use ControllerAction.requireDeletable; this is the same check for the other two verbs. A save with an Id is an edit, so it asks isUpdateable(); a save without one is a create, so it asks isCreateable().</p>
 <p>SavePaymentAccount answers with { id, warning } rather than a bare Id so the console can say something at the moment a shared credential is chosen. A WARNING, never a block. Running one credential in both roles is a configuration an admin may choose deliberately, and blocking it would fight a decision they have just made. The value here is timing: it catches the exposure at the moment it is created rather than on the next guide load, which the admin may never open again.</p>
 <p>Returns the rows AND the verdict on which of them are read-only, because the two have to agree and only one of them can be authoritative. The verdict is computed by the same isSystemTemplateName() that SavePageDesign and DeletePageDesign enforce, so a row the client shows as editable is a row the server will actually accept.</p>
 <p>setDesigns used to decide this for itself, from its own copy of the name list, and the copy drifted: by 2026-08-20 it held ten retired names and not one of the six the package actually seeds (audit F-46). The shipped designs stayed protected only by a description-text fallback, while any admin who named their own design "Default" or "Gala Night" lost Edit and Delete on a record they owned. A client that is TOLD cannot drift; a client that re-derives a server rule eventually will.</p>
@@ -13779,6 +13901,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>selectPreferredNetwork() resolves which Network row to report when a subscriber org has more than one Experience Cloud site (or a renamed/duplicate one) matching by name or URL prefix — it prefers an exact URL-prefix match that is Live, then any URL-prefix match, then a Live name match, then falls back to the first row queried. This tie-break order exists because "Fundraising"/"fundraising" is only a convention this package seeds, not something enforced — an admin can rename or recreate the site, and the setup console's site-status panel should still find the right one rather than surface a false "no site" result.</p>
 <p>The four Network fields this class reads, carried as a plain object rather than the SObject the query returns. The seams below hand back NetworkRow so a test can stub them WITHOUT fabricating a Network record: the Network type does not exist in an org where Digital Experiences is off, and JSON.deserialize(..., SObject.class) of an absent type throws a message-less JSONException — which getSiteStatus() then swallows into exists=false, so the stub failed silently and eight tests failed for a reason that had nothing to do with the logic under test. Mapping to NetworkRow happens AFTER the query, so a real org without the feature still throws inside the seam exactly as before, which is what isDigitalExperiencesEnabled() detects.</p>
+<p>Split out of checkGuestPermissionSet() so a test can make the read throw and prove the row then stays unverified; a real SYSTEM_MODE PermissionSetAssignment read has no way to fail on demand inside a test transaction.</p>
 <p>Object access reaches a guest user through TWO channels and both have to count: the guest user's PROFILE (the usual one — a profile owns a backing PermissionSet whose IsOwnedByProfile is true, and that row shows up in PermissionSetAssignment like any other) and any regular permission set assigned to it.</p>
 <p>Querying PermissionSetAssignment first and ObjectPermissions second covers both without a separate profile query — verified against a live org 2026-08-16, where the guest user's assignments were its profile-owned set plus two regular sets. @TestVisible protected virtual for the same reason as resolveGuestUserId(): a Guest-licensed User cannot be created from Apex DML, so a test can only reach both branches by stubbing.</p>
 <p>TWO WAYS TO ANSWER THE SAME QUESTION, and the precise one is the one that cannot run where it matters. queryStripePrincipalIds() walks the configured Named Credential to its principals through ConnectApi, which is refused to packaged Apex in an installed org (audit F-58, reproduced and controlled 2026-08-18) — so this row sat permanently on "Can't verify" for admins who had done everything right, and the one failure it exists to catch (staff granted, guest not) was never caught (F-77).</p>
@@ -13786,7 +13909,7 @@
 <p>'precise' is what the panel reads to decide whether its Done sentence carries the can't-attribute-a-grant caveat. It is deliberately NOT a third status: a negative here is decisive either way (no ExternalCredentialParameter row anywhere means no guest can reach any credential), and only the positive is ambiguous. Owner decision 2026-08-19: green with the caveat in the sentence, because this row's color IS its whole answer — a permanently uncleared row is precisely the F-77 complaint, and Get Started step 5 already goes green on this same coarse evidence, so anything else re-opens the cross-panel contradiction F-76 closed.</p>
 <p>Matching on PermissionSetId alone also covers a grant delivered through a permission set GROUP — it is not the gap it looks like. Verified against a live org 2026-08-11: adding a granting permission set to a group makes the platform materialize a SECOND SetupEntityAccess row whose ParentId is the group's own backing PermissionSet (Type = 'Group'), and a group assignment's PermissionSetAssignment.PermissionSetId points at that same backing permission set. So queryGrantingPermSetIds() returns the group's id too and this join hits. Guest users can be assigned permission set groups, so the case is reachable.</p>
 <p>SetupEntityType = 'ExternalCredentialParameter' is the discriminator checkStripeCredentialAccess()'s own header already specifies — SetupEntityId alone is not enough, since an arbitrary stand-in id used for test coverage could otherwise collide with an unrelated SetupEntityAccess row of a different entity type that happens to share a key prefix pattern.</p>
-<p>Pulled into its own @TestVisible protected virtual seam, like queryNetworks()/resolveGuestUserId() above, because SetupEntityAccess.SetupEntityType is a system-derived, non-writeable field (confirmed against a live org, 2026-08-11: DML on an explicit SetupEntityType throws "Field is not writeable") — so a test cannot insert a row whose SetupEntityType is 'ExternalCredentialParameter' without a real ExternalCredentialPrincipal id, which is not creatable via Apex DML. Stubbing this seam (see CommunityService_Test's StubStripeCheck) is the only way to test the join logic without asserting on org state.</p>
+<p>Pulled into its own @TestVisible protected virtual seam, like queryNetworks() above and resolveGuestUserId() below, because SetupEntityAccess.SetupEntityType is a system-derived, non-writeable field (confirmed against a live org, 2026-08-11: DML on an explicit SetupEntityType throws "Field is not writeable") — so a test cannot insert a row whose SetupEntityType is 'ExternalCredentialParameter' without a real ExternalCredentialPrincipal id, which is not creatable via Apex DML. Stubbing this seam (see CommunityService_Test's StubStripeCheck) is the only way to test the join logic without asserting on org state.</p>
 <p>The same SetupEntityAccess read as queryGrantingPermSetIds() above with the principal filter removed — every permission set in this org that grants SOME external credential principal. It is what checkStripeCredentialAccess() falls back to when the ConnectApi walk to a particular credential's principals is refused, which in an installed org is always (audit F-58); see that method's own note for why the coarse answer is worth having and what it deliberately cannot prove.</p>
 <p>SYSTEM_MODE and @TestVisible protected virtual for exactly the reasons spelled out on queryGrantingPermSetIds(): SetupEntityAccess.SetupEntityType is not writeable, so no test can manufacture a row of this type, and without the seam every branch downstream of a non-empty result is unreachable code.</p>
 <p>Shared by checkGuestPermissionSet() and checkStripeCredentialAccess() — both need the same site's guest user, resolved by the exact-name convention "&lt;Site Name&gt; Site Guest User" (see checkGuestPermissionSet()'s header for why an exact match, not LIKE). @TestVisible protected virtual, like queryNetworks()/ queryNetworkById() above, so a test can hand back an arbitrary user Id — a real Guest-licensed User cannot be created from Apex DML, so checkStripeCredentialAccess()'s "assignedToGuest=true" test path has no other way to reach the assignment-count query without asserting on org state.</p>
@@ -15156,6 +15279,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Thresholds are Tier 1 settings (Settings__c, via <a href="#apex-settingsservice"><code>SettingsService</code></a>), editable by an admin in the Settings console without a package upgrade — a limit that can only be changed by shipping a new version is not a limit anyone can respond to an incident with. This is the package's own control, not a replacement for the gateway's. Stripe Radar sees signals no Salesforce-side count can (card fingerprints across merchants, device, network), and the two are complementary: Radar blocks the individual charge, this stops the flood from reaching the org at all. The admin-facing write-up is in the Stripe integration guide.</p>
+<p>The per-email bucket is keyed on the address trimmed and lower-cased, so "A@x.com" and " a@x.com " are one donor and share one count (security review GUEST-9). The key is normalised here rather than left to the query's collation, so the limit does not depend on how the selector happens to compare text.</p>
 </div>
 <table>
 <thead>
@@ -15178,7 +15302,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-guestintentmaxperemail">SettingsService.guestIntentMaxPerEmail()</a>, <a href="#apex-settingsservice-guestintentemailwindowminutes">SettingsService.guestIntentEmailWindowMinutes()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-guestintentmaxpercampaign">SettingsService.guestIntentMaxPerCampaign()</a>, <a href="#apex-settingsservice-guestintentcampaignwindowminutes">SettingsService.guestIntentCampaignWindowMinutes()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-guestintentmaxperemail">SettingsService.guestIntentMaxPerEmail()</a>, <a href="#apex-settingsservice-guestintentemailwindowminutes">SettingsService.guestIntentEmailWindowMinutes()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-guestintentmaxpercampaign">SettingsService.guestIntentMaxPerCampaign()</a>, <a href="#apex-settingsservice-guestintentcampaignwindowminutes">SettingsService.guestIntentCampaignWindowMinutes()</a>, <a href="#apex-settingsservice-portalcodemaxperhour">SettingsService.portalCodeMaxPerHour()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15393,6 +15517,74 @@
 <tr>
 <td><a id="apex-querycondition-getbindings"></a><code>getBindings(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-recordaccess">RecordAccess<a class="headerlink" href="#apex-recordaccess" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>RecordAccess.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>RecordAccess — answers the two access questions a describe call cannot: may the running user EDIT these particular records, and may they mint a public link to a file?</p>
+<p>FFLib role: shared static utility (not registered in <a href="#apex-application"><code>Application</code></a> — it has no state and no behaviour worth mocking; tests exercise it through a real user).</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Why it exists. fflib's Unit of Work commits at SYSTEM_MODE inside a <code>without sharing</code> inner class (fflib_SObjectUnitOfWork.SimpleDML), so registerDirty() saves a record the running user could only read. Object-level permission is checkable by describe and <a href="#apex-controlleraction"><code>ControllerAction</code></a> does that; RECORD-level edit is not — only UserRecordAccess answers it, and it accounts for sharing rules, the role hierarchy, teams and Modify All the same way the platform would. Code that writes on a user's behalf asks here before it registers the write.</p>
+<p>Deliberate FFLib exception: UserRecordAccess and PermissionSetAssignment are platform access objects with no package selector (UserRecordAccess rejects the ORDER BY every fflib QueryFactory appends), so both are read inline, here and nowhere else.</p>
+<p>UserRecordAccess answers at most 200 RecordIds per query; larger sets are chunked. Not final only so a test can shrink it and prove the chunking with two records.</p>
+<p>Every fundraiser-console write — the Story tab, ticket tiers (and the Product a new tier creates), FAQ and question selections, fundraiser edit, the active toggle and the updates/documents visibility toggle — goes through the Unit of Work, which commits in SYSTEM_MODE. Before this gate, seeing a campaign was enough to change it (readiness finding F-11; owner decision D-1, option a, 2026-09-25). Callers keep their own visibility check FIRST, so a campaign the user cannot see is still reported as "not found" and this message never confirms a hidden record exists.</p>
+<p>Two questions, both required. The object check is Campaign's Edit permission, which for Campaign is granted by the Marketing User checkbox on the user record, not by a permission set alone (help.salesforce.com, "Who has access to <a href="#apex-campaigns"><code>Campaigns</code></a>?"). The record check is UserRecordAccess.HasEditAccess, which adds sharing, the role hierarchy and ownership. Asking both keeps the answer right whichever way a subscriber has configured Campaign sharing.</p>
+<p>Fundraiser CREATE has no record to ask UserRecordAccess about, so the gate is the object-level Create permission — again the Marketing User checkbox for Campaign.</p>
+<p>Test seam, empty in every real context. Controller and service tests that mock the Campaign selector work with generated Ids that exist in no table, so UserRecordAccess can never call them editable; a test adds its fake Id here to reach the code after the gate. The gate itself is proven against real records and real users in RecordAccess_Test.</p>
+<p>"Create Public Links" (PermissionsChatterFileLink) is what the platform checks when a ContentDistribution is inserted in user mode — and it is invisible to describe: ContentDistribution reports isCreateable() == true for a user who does not hold it (probed 2026-09-25 with a Minimum Access user: describe true, USER_MODE insert fails with INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY). A profile is backed by a permission set row, so one join over PermissionSetAssignment covers profile and permission sets together. Used only to warn in the Documents panel before an upload; the insert itself is the enforcement.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-recordaccess-editableids"></a><code>editableIds(1 arg)</code></td>
+<td><code>Set&lt;Id&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recordaccess-deletableids"></a><code>deletableIds(1 arg)</code></td>
+<td><code>Set&lt;Id&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recordaccess-iseditable"></a><code>isEditable(1 arg)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recordaccess-isdeletable"></a><code>isDeletable(1 arg)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recordaccess-requirecampaigneditable"></a><code>requireCampaignEditable(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recordaccess-requirecampaigncreateable"></a><code>requireCampaignCreateable(0 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-recordaccess-cancreatepubliclinks"></a><code>canCreatePublicLinks(0 args)</code></td>
+<td><code>Boolean</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -15651,6 +15843,7 @@
 <p>This exists as its own controller rather than two client calls to <a href="#apex-receiptcontroller"><code>ReceiptController</code></a> and <a href="#apex-eventticketscontroller"><code>EventTicketsController</code></a> because the page needs one round trip, and because the per-seat QR codes are generated server-side by <a href="#apex-qrcodeencoder"><code>QrCodeEncoder</code></a> — the LWC never encodes anything. The page is a real Experience Cloud route (/thank-you) rather than a step inside the donation form specifically so a conversion produces its own pageview for analytics.</p>
 <p>Two payload builders, ONE key set. giftSummary reads the finalized Opportunity; pendingSummary reads the Donation_Staging__c row the donor's own checkout wrote, and returns the same keys with the finalizer-only ones null. That symmetry is deliberate: the finalizer runs on a five-minute cron, so a donor arriving on ?access= usually lands on the pending payload, and the page must render a real confirmation from it rather than a holding message. The null keys are what the page replaces with one quiet placeholder line.</p>
 <p>The page footer, resolved exactly as the donation page's band resolves it — same two <a href="#apex-campaignservice"><code>CampaignService</code></a> methods, same campaign-over-org fallback, same showContact gate. A donor who lands here has just come from that page; a footer that named a different support address or dropped the privacy link would read as a different site.</p>
+<p>Each printed stub's reference is the order's Receipt_Number__c plus the seat number (RCPT-2026-000142-1), the same order reference the /tickets page prints. It used to be the last eight characters of Receipt_Token__c, which put part of a capability token on a stub that is carried in public and photographed (security review GUEST-4). An order finalized before receipt numbering shipped has no number, so its seats print no reference and no QR rather than falling back to the token.</p>
 </div>
 <table>
 <thead>
@@ -15725,7 +15918,7 @@
 <div class="fn-entry">
 <div class="fn-entry__id">
 <h4 id="apex-retentionpurgescheduler">RetentionPurgeScheduler<a class="headerlink" href="#apex-retentionpurgescheduler" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public without sharing</code></p>
+<p><code>class</code> · <code>public with sharing</code></p>
 <p>implements Schedulable</p>
 <p class="fn-entry__src"><code>shared/<wbr>async/<wbr>RetentionPurgeScheduler.cls</code></p>
 </div>

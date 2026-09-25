@@ -1509,6 +1509,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#when-stripe-hasnt-settled-a-renewal-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Stripe hasn't settled a renewal yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#donor-self-service" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1972,6 +1983,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#when-stripe-hasnt-settled-a-renewal-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Stripe hasn't settled a renewal yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#donor-self-service" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2218,6 +2240,62 @@ or the org's configured retry/grace-period limits are exhausted — at which poi
 </table>
 <p>See <a href="../../guides/recurring-dunning/">Configure recurring dunning</a> for a walkthrough of tuning
 these.</p>
+<h2 id="when-stripe-hasnt-settled-a-renewal-yet">When Stripe hasn't settled a renewal yet<a class="headerlink" href="#when-stripe-hasnt-settled-a-renewal-yet" title="Permanent link">#</a></h2>
+<p>Most renewals come back from Stripe as paid or declined within the same call. A few do not: the
+call times out, or Stripe reports the payment as still processing. The renewal job never answers
+that by charging again, because the first charge may yet succeed and the donor would pay twice.
+Instead it keeps the Stripe payment's reference on the gift (<strong>Pending Payment Intent</strong>) and, on
+the next run, looks that payment up rather than creating a new one:</p>
+<ul>
+<li><strong>Paid</strong> — recorded exactly as an ordinary renewal.</li>
+<li><strong>Declined</strong> — enters dunning like any other failed charge.</li>
+<li><strong>Needs the donor to authenticate</strong> — follows the usual re-authentication path.</li>
+<li><strong>Still processing</strong> — left alone and looked up again the next day.</li>
+</ul>
+<p>A look-up that fails for any other reason (a timeout, a Stripe outage, a revoked or mis-scoped
+key, a missing Payment Account) says nothing about the payment itself. The job keeps the reference,
+writes the reason to <strong>Last Error</strong> ("Could not check pending renewal payment … since <em>date</em>")
+and looks again the next day. Fix the cause and the next run picks up where it left off. The date
+is the day the look-ups started failing; a successful look-up resets it.</p>
+<p>The gift is parked for a person to check in four cases:</p>
+<ul>
+<li>Stripe still has no answer <strong>three days</strong> after it created the payment.</li>
+<li>A look-up returns the payment with <strong>no creation time</strong>, so its age cannot be measured.</li>
+<li>Stripe answers that it has <strong>no record of the payment</strong> (for example, the payment account's
+  keys were swapped for a different Stripe account). A "not found" page that did not come from
+  Stripe itself — a wrong Named Credential URL, a proxy error — does not count; it is looked up
+  again like any other failed look-up.</li>
+<li>The look-ups themselves have been failing for <strong>three days</strong>. Fix the cause (the Stripe check
+  in Settings shows whether the payment account can reach Stripe), then use <strong>Retry now</strong> to look
+  the payment up again.</li>
+</ul>
+<p>When a gift is parked, <strong>Last Error</strong> starts with "Needs staff review:" and no further retry is
+scheduled. Manage Recurring Gift shows that message and enables <strong>Retry now</strong>; <strong>Skip next
+payment</strong> stays off while a payment is still in doubt; pausing the gift keeps the message, because
+the payment is still in doubt. The reconciliation heartbeat's alert e-mail ("N payment(s) need
+attention") counts it. If the donor changes their card in the portal,
+the gift is queued for the next run, which looks the payment up again before any new charge; it
+is parked again if the payment is still unsettled, and recorded if it has settled.
+Look the payment up in the Stripe Dashboard. Once Stripe shows it as paid or failed, use
+<strong>Retry now</strong> on Manage Recurring Gift. Retry now does not charge anything itself. It queues the
+gift for the next run, which reads the pending payment and then records it or starts dunning,
+exactly as above. <strong>Do not record a paid one by hand</strong> — the next run records it too, and the gift
+would be counted twice.</p>
+<p>For the "no record of the payment" case, check the Stripe Dashboard of <strong>every</strong> payment account
+first. If none has the payment, <strong>Retry now</strong> on Manage Recurring Gift clears the stored reference,
+and the next run charges the renewal afresh. Only the staff Retry now does this. The donor portal's
+retry is refused on any parked gift, because a donor cannot tell whether the payment exists under
+another account, where a fresh charge would bill them twice.</p>
+<p>If <strong>every</strong> gift on one payment account parks as "no record of the payment", suspect the payment
+account's setup before the payments: the renewal job charges with the admin key's Named Credential
+but looks payments up with the donor key's. Check that both credentials point at the same Stripe
+account.</p>
+<p>After <strong>Retry now</strong> on a gift parked because look-ups kept failing, the three-day count starts
+again from that day.</p>
+<p>A gift that is cancelled or ends while a renewal is still waiting on Stripe keeps its reference,
+and the heartbeat keeps counting it: that payment can still settle in Stripe, and no run will
+record it now the gift is no longer active. Check it in the Stripe Dashboard and refund or record
+it as appropriate; then an administrator clears <strong>Pending Payment Intent</strong> on the gift.</p>
 <h2 id="donor-self-service">Donor self-service<a class="headerlink" href="#donor-self-service" title="Permanent link">#</a></h2>
 <p>A donor can manage their recurring gift from the <a href="../../guides/publish-donor-portal/">donor portal</a>
 — a token-authorized page, no login required. From there they can:</p>
@@ -2231,8 +2309,12 @@ these.</p>
   something else without being told.</li>
 <li><strong>Skip the next payment</strong> — moves the next payment date on by one cycle without consuming an
   installment of a pledge term. Unavailable mid-dunning, where the schedule has a failed charge
-  to resolve first.</li>
-<li><strong>Switch or add a saved card</strong>, or <strong>cancel</strong> the gift entirely.</li>
+  to resolve first, and while a renewal is still waiting on Stripe (above) — skipping would move
+  the date past a payment that may already have been taken.</li>
+<li><strong>Switch or add a saved card</strong>, or <strong>cancel</strong> the gift entirely. A new card is confirmed with
+  Stripe before the gift moves onto it: the portal hands back only the Stripe setup reference, and
+  the card is read from Stripe's own record of that setup, so a card belonging to someone else's
+  Stripe customer cannot be attached.</li>
 </ul>
 <p>Every one of these writes a <code>Recurring_Donation_History__c</code> row. The schedule's own fields keep
 no history of their prior values, so that trail is the only record of what a donor changed and
@@ -2286,6 +2368,14 @@ of waiting for the next scheduled attempt.</p>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title">Reinstate after the donor has changed their card</p>
+<p>Reinstating on the same day as a decline, with the same card still on the gift, spends one
+renewal cycle for nothing. Stripe recognises the attempt as a repeat of that day's declined one
+and returns the same decline. The schedule is not stuck, and the next retry is a fresh attempt.
+Reinstate once the donor has put a working card on file (or use <strong>Switch card</strong> first). A
+different card always makes a new attempt.</p>
+</div>
 <p>Cancelling is deliberately not here — it's the separate <strong>Stop Recurring Donation</strong> action, because
 it's terminal and needs a reason, and an irreversible button sitting one click from the reversible
 ones is a mistake waiting to happen.</p>
@@ -2307,6 +2397,11 @@ answer: there is nothing to switch to.</p>
 can see the gift can see its state and answer a donor's question, and only someone trusted with the
 permission can change it. Add the permission to another permission set if you want a wider group of
 fundraisers making these changes.</p>
+<p>The same permission gates <strong>Stop Recurring Donation</strong>. Cancelling is the one change that cannot be
+undone, so it is held to at least the bar the reversible changes are; a user without the permission
+who runs the action gets "You are not authorized to cancel recurring gifts." (Before 2026-09-25 the
+stop action checked only that the user could run it, which put the terminal change behind a lower
+bar than a pause.)</p>
 <p>Every action re-checks the permission and the schedule's own rules on the server. A panel left open
 on a stale screen can't be used to push through a change the schedule no longer allows.</p>
 <h2 id="related-reference">Related reference<a class="headerlink" href="#related-reference" title="Permanent link">#</a></h2>

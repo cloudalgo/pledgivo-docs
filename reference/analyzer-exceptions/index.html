@@ -1737,32 +1737,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#unescaped-visualforce-merge-field-holding-the-orgs-own-domain" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unescaped Visualforce merge field holding the org's own domain
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#innerhtml-used-to-paint-an-apex-generated-qr-code" class="md-nav__link">
     <span class="md-ellipsis">
       
         innerHTML used to paint an Apex-generated QR code
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#inner-classes-with-no-sharing-keyword-where-access-is-decided-by-the-framework-base-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Inner classes with no sharing keyword, where access is decided by the framework base class
       
     </span>
   </a>
@@ -1906,7 +1884,7 @@
 <h1 id="code-analyzer-exceptions">Code Analyzer Exceptions<a class="headerlink" href="#code-analyzer-exceptions" title="Permanent link">#</a></h1>
 <div class="ca-actions" markdown="0">
   <button type="button" class="ca-print" onclick="window.print()">Print / Save as PDF</button>
-  <span class="ca-stamp">Generated 2026-09-08 from a live scan</span>
+  <span class="ca-stamp">Generated 2026-09-25 from a live scan</span>
 </div>
 
 <p>This page exists for one purpose: to answer, in writing and in one place, <em>why</em> every
@@ -1934,28 +1912,28 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>High</td>
-<td style="text-align: right;">46</td>
+<td style="text-align: right;">44</td>
 <td>Every one, individually justified below</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">3,723</td>
-<td>33 carrying a <code>Security</code> tag, justified below</td>
+<td style="text-align: right;">3,827</td>
+<td>32 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">18,467</td>
+<td style="text-align: right;">19,261</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">902</td>
+<td style="text-align: right;">918</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>23,138</strong></td>
-<td><strong>79 individually justified</strong></td>
+<td style="text-align: right;"><strong>24,050</strong></td>
+<td><strong>76 individually justified</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1993,33 +1971,6 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="unescaped-visualforce-merge-field-holding-the-orgs-own-domain">Unescaped Visualforce merge field holding the org's own domain<a class="headerlink" href="#unescaped-visualforce-merge-field-holding-the-orgs-own-domain" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>False positive</strong> &middot; 2 findings &middot; <code>VfUnescapeEl</code></p>
-
-<p><strong>What the rule flags.</strong> PMD's VfUnescapeEl flags a merge field rendered without <code>HTMLENCODE</code>/<code>JSENCODE</code>, the classic Visualforce XSS vector.</p>
-<p><strong>Why it is not a defect here.</strong> <code>{!allowedOrigin}</code> is not user input and cannot be influenced by a request. It is produced server-side by the page controller from <code>System.URL.getOrgDomainUrl()</code>—the running org's own domain—and its only use is as the <code>targetOrigin</code> argument to <code>window.postMessage</code>. An attacker who could set this value would already control the org's domain. Escaping it would be actively harmful: <code>postMessage</code> requires an exact origin string, and an HTML-encoded one would never match, breaking the payment iframe's return channel.</p>
-<p><strong>How to verify.</strong> Both pages derive <code>PARENT_ORIGIN</code> from <code>document.referrer</code> first and use the Apex-rendered value only as a fallback, and both refuse to post to the <code>'*'</code> wildcard—the comment above the code says so explicitly. These are the only two packaged Visualforce pages; they exist solely because Stripe.js needs a real page to redirect back to after off-platform 3DS/bank authentication.</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Line(s)</th>
-<th>Detail</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>base/main/default/pages/stripePayment.page</code></td>
-<td>81</td>
-<td><code>{!allowedOrigin}</code> used as the postMessage targetOrigin fallback when document.referrer is unavailable.</td>
-</tr>
-<tr>
-<td><code>base/main/default/pages/stripePaymentReturn.page</code></td>
-<td>100</td>
-<td>Identical use on the 3DS/bank-authentication return page.</td>
-</tr>
-</tbody>
-</table>
 <h3 id="innerhtml-used-to-paint-an-apex-generated-qr-code">innerHTML used to paint an Apex-generated QR code<a class="headerlink" href="#innerhtml-used-to-paint-an-apex-generated-qr-code" title="Permanent link">#</a></h3>
 <p class="ca-meta"><strong>Working as designed</strong> &middot; 1 finding &middot; <code>@lwc/lwc/no-inner-html</code></p>
 
@@ -2037,35 +1988,8 @@ defined in the triage file, not chosen per-run.</p>
 <tbody>
 <tr>
 <td><code>base/main/default/lwc/publicThankYou/publicThankYou.js</code></td>
-<td>665</td>
+<td>661</td>
 <td>Paints the Apex-generated ticket QR SVG into its slot, once per deck.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="inner-classes-with-no-sharing-keyword-where-access-is-decided-by-the-framework-base-class">Inner classes with no sharing keyword, where access is decided by the framework base class<a class="headerlink" href="#inner-classes-with-no-sharing-keyword-where-access-is-decided-by-the-framework-base-class" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>Working as designed</strong> &middot; 2 findings &middot; <code>ApexSharingViolations</code></p>
-
-<p><strong>What the rule flags.</strong> PMD's ApexSharingViolations flags a class declared without <code>with sharing</code> / <code>without sharing</code> / <code>inherited sharing</code>.</p>
-<p><strong>Why it is not a defect here.</strong> These are private inner classes extending a framework base (<code>ControllerAction</code>, <code>GuestAction</code>) whose data access is gated by that framework, not by a class-level keyword. An inner class inherits its caller's sharing context, which is exactly the ambiguity the rule detects—but here it is the intended design: the base class decides, so stating a mode on the inner class would be a behavioural claim rather than a clarification. This is deliberately NOT the same call as the <code>SetupController</code> inner classes triaged separately, where adding the keyword was a genuine no-op that removed ambiguity.</p>
-<p><strong>How to verify.</strong> The verdict record is <code>scripts/lint/analyzer-exceptions.json</code>, which this page is generated from. Guest-reachable data access is enforced in the <code>GuestAction</code> framework and in the selector layer, where FLS and CRUD are asserted centrally (<code>enforceCRUD=true, enforceFLS=true</code>).</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Line(s)</th>
-<th>Detail</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>base/main/default/classes/donation/controller/DonationMonitorController.cls</code></td>
-<td>63</td>
-<td><code>GetStuckDonations</code>, a private inner class extending <code>ControllerAction</code>.</td>
-</tr>
-<tr>
-<td><code>base/main/default/classes/fundraising/controller/EventRegistrationController.cls</code></td>
-<td>162</td>
-<td><code>CreateTicketIntent</code>, a private inner class extending <code>GuestAction</code>; its data access is gated by the guest-action framework.</td>
 </tr>
 </tbody>
 </table>
@@ -2092,7 +2016,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h3 id="configurationdisabletriggercrudsecurity-in-a-rollup-domain-constructor">Configuration.disableTriggerCRUDSecurity() in a rollup domain constructor<a class="headerlink" href="#configurationdisabletriggercrudsecurity-in-a-rollup-domain-constructor" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>Working as designed</strong> &middot; 2 findings &middot; <code>ApexDangerousMethods</code></p>
+<p class="ca-meta"><strong>Working as designed</strong> &middot; 3 findings &middot; <code>ApexDangerousMethods</code></p>
 
 <p><strong>What the rule flags.</strong> PMD's ApexDangerousMethods flags <code>Configuration.disableTriggerCRUDSecurity()</code>, which turns off FFLib's own CRUD assertion inside the trigger layer.</p>
 <p><strong>Why it is not a defect here.</strong> The FFLib domain layer re-asserts <code>isCreateable()</code> on every record even when the DML is running in SYSTEM_MODE, which makes an internally-triggered rollup fail for any user who cannot directly create the rolled-up record. These two domains recompute totals only—<code>Designation__c</code> and recurring-donation aggregates—and the call scopes the opt-out to the FFLib trigger check alone. The DML itself still runs under the platform's rules; the platform's own CRUD, FLS and sharing enforcement is untouched. Without it, a non-admin donation write silently stops rolling up fund totals.</p>
@@ -2112,8 +2036,13 @@ defined in the triage file, not chosen per-run.</p>
 <td>Designation total rollup. Without the opt-out the rollup silently stops recomputing fund totals for non-admin users.</td>
 </tr>
 <tr>
+<td><code>base/main/default/classes/donor/domain/Contacts.cls</code></td>
+<td>28</td>
+<td>Donor rollup (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c), behind <code>suppressTriggerCrudCheck</code>, which only CampaignService's rollup commit sets and restores in <code>finally</code>. Without it a staff user who can edit a donation but not a Contact cannot close a gift.</td>
+</tr>
+<tr>
 <td><code>base/main/default/classes/recurring/domain/RecurringDonations.cls</code></td>
-<td>40</td>
+<td>41</td>
 <td>Same call, behind the explicit <code>suppressTriggerCrudCheck</code> flag rather than unconditional.</td>
 </tr>
 </tbody>
@@ -2155,7 +2084,7 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWork.cls</code></td>
-<td>298, 616, 887, 895, 896, 904, 905, 913, 959, 967</td>
+<td>305, 623, 894, 902, 903, 911, 912, 920, 966, 974</td>
 <td>Ten sites, all reading only <code>getName()</code> to key the per-type work maps.</td>
 </tr>
 <tr>
@@ -2197,12 +2126,12 @@ defined in the triage file, not chosen per-run.</p>
 <tbody>
 <tr>
 <td><code>base/main/default/pages/stripePayment.page</code></td>
-<td>40</td>
+<td>53</td>
 <td><code>&lt;script src="https://js.stripe.com/v3/"&gt;</code> on the iframe host page for the Payment Element.</td>
 </tr>
 <tr>
 <td><code>base/main/default/pages/stripePaymentReturn.page</code></td>
-<td>28</td>
+<td>40</td>
 <td>Same tag on the 3-D Secure / bank-authentication return page, which must call Stripe.js to read the redirect result.</td>
 </tr>
 </tbody>
@@ -2229,22 +2158,22 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/payment/service/PaymentSetupGuideService.cls</code></td>
-<td>939, 939, 939, 939, 1645</td>
+<td>948, 948, 948, 948, 1654</td>
 <td><code>String credentials</code> / <code>String credential</code> locals holding Named Credential <strong>names</strong> while the guide checks which ones the admin has created.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/payment/stripe/StripeGateway.cls</code></td>
-<td>146, 147</td>
+<td>148, 149</td>
 <td><code>'callout:' + acct.Stripe_*_Restricted_Key__c</code> — the mandated way to address a Named Credential; the field holds its name.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/setup/controller/PostInstallHandler.cls</code></td>
-<td>145</td>
+<td>151</td>
 <td>Seeds <code>Settings__c.Email_Signature__c</code> with <code>'The &lt;org name&gt; team'</code> on first install — an email sign-off.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/setup/service/SettingsService.cls</code></td>
-<td>1063</td>
+<td>1071</td>
 <td><code>DEFAULT_SIGNATURE = 'our team'</code> — the default email sign-off; <em>signature</em> here is the closing line of a message.</td>
 </tr>
 </tbody>
@@ -2391,7 +2320,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 23,059 findings are Moderate, Low and Info style and maintainability
+<p>The other 23,974 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2406,17 +2335,17 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-hardcoded-values-slds2</code></td>
 <td>Low</td>
-<td style="text-align: right;">11,774</td>
+<td style="text-align: right;">12,240</td>
 </tr>
 <tr>
 <td><code>pmd:ApexUnitTestClassShouldHaveRunAs</code></td>
 <td>Low</td>
-<td style="text-align: right;">2,827</td>
+<td style="text-align: right;">3,012</td>
 </tr>
 <tr>
 <td><code>pmd:ApexDoc</code></td>
 <td>Low</td>
-<td style="text-align: right;">2,332</td>
+<td style="text-align: right;">2,392</td>
 </tr>
 <tr>
 <td><code>regex:NoMixedIndentation</code></td>
@@ -2426,7 +2355,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:AnnotationsNamingConventions</code></td>
 <td>Low</td>
-<td style="text-align: right;">1,416</td>
+<td style="text-align: right;">1,498</td>
 </tr>
 <tr>
 <td><code>regex:NoTrailingWhitespace</code></td>
@@ -2436,22 +2365,22 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:FieldDeclarationsShouldBeAtStart</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">221</td>
+<td style="text-align: right;">249</td>
 </tr>
 <tr>
 <td><code>pmd:CyclomaticComplexity</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">175</td>
+<td style="text-align: right;">198</td>
 </tr>
 <tr>
 <td><code>pmd:ExcessiveParameterList</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">155</td>
+<td style="text-align: right;">168</td>
 </tr>
 <tr>
 <td><code>pmd:CognitiveComplexity</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">130</td>
+<td style="text-align: right;">143</td>
 </tr>
 <tr>
 <td><code>pmd:IfElseStmtsMustUseBraces</code></td>
@@ -2459,24 +2388,24 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">125</td>
 </tr>
 <tr>
+<td><code>pmd:EmptyStatementBlock</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">124</td>
+</tr>
+<tr>
 <td><code>pmd:IfStmtsMustUseBraces</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">122</td>
 </tr>
 <tr>
-<td><code>pmd:EmptyStatementBlock</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">120</td>
+<td><code>cpd:DetectCopyPasteForApex</code></td>
+<td>Info</td>
+<td style="text-align: right;">116</td>
 </tr>
 <tr>
 <td><code>pmd:UnusedLocalVariable</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">111</td>
-</tr>
-<tr>
-<td><code>cpd:DetectCopyPasteForApex</code></td>
-<td>Info</td>
-<td style="text-align: right;">100</td>
 </tr>
 </tbody>
 </table>
@@ -2497,7 +2426,7 @@ does not follow.</p>
 <tbody>
 <tr>
 <td>Generated</td>
-<td>2026-09-08</td>
+<td>2026-09-25</td>
 </tr>
 <tr>
 <td>Triage source</td>
@@ -2517,7 +2446,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>23,138 (after declared path exclusions)</td>
+<td>24,050 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

@@ -1040,6 +1040,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#who-can-publish-a-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can publish a file
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1883,6 +1894,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#who-can-publish-a-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who can publish a file
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2006,10 +2028,12 @@ uploaded.</p>
 <p>Until a file is attached, the row shows a <strong>No file</strong> tag and its <strong>Publish</strong> button stays disabled.
 That is deliberate: the public download card is a link wrapped around the file, so publishing one
 with nothing behind it would put a card on your page that looks live and does nothing.</p>
-<p>To replace a file later, use <strong>Replace file</strong> on the row and upload a new one. The old file is
-deleted with it, and its download link stops working — the row and the public card only ever show
-one file, so a superseded file left behind would be invisible to you while its link went on serving
-the wrong document to anyone who kept it.</p>
+<p>To replace a file later, use <strong>Replace file</strong> on the row and upload a new one. The old file's
+download link stops working, and the old file itself is deleted if it was uploaded to this document
+and is attached nowhere else (see <a href="#unpublishing-and-deleting">Unpublishing and deleting</a>). The row
+and the public card only ever show one file, so a superseded file left serving would be invisible to
+you while its link went on handing the wrong document to anyone who kept it. If the new file could
+not be published (see below), the old one is left exactly as it was.</p>
 <h3 id="how-a-file-becomes-a-public-link">How a file becomes a public link<a class="headerlink" href="#how-a-file-becomes-a-public-link" title="Permanent link">#</a></h3>
 <p>Attaching the file is the whole of it. Behind the scenes, the package mints a public download link
 for the file and stores it on the post, together with the file's type and size — that is what the
@@ -2017,6 +2041,21 @@ row's file tag and size read back, and what the public card uses.</p>
 <p>It has to work this way round because a website visitor has no permission to read a Salesforce file
 at all. The link is resolved once, by you, and the public page just plays back what was stored.</p>
 <p>Use <strong>Open the file donors download</strong> on any row to check the exact link a donor gets.</p>
+<h3 id="who-can-publish-a-file">Who can publish a file<a class="headerlink" href="#who-can-publish-a-file" title="Permanent link">#</a></h3>
+<p>A download link is only minted when all of these hold for the person who uploads the file:</p>
+<ul>
+<li><strong>They have the Salesforce permission "Create Public Links".</strong> This is a platform permission,
+  not a package one, so no package permission set can carry it. The standard <em>Standard User</em>,
+  <em>Marketing User</em> and <em>System Administrator</em> profiles include it; <em>Minimum Access</em> and most
+  custom profiles built from it do not. Add it under the user's profile or a permission set of
+  your own: <strong>System Permissions → Create Public Links</strong>
+  (<a href="https://help.salesforce.com/s/articleView?id=sf.admin_files_libraries_content_deliveries_public_links.htm&amp;type=5">Salesforce Help</a>).</li>
+<li><strong>They can edit the document post</strong> and <strong>can see its campaign</strong> under your org's sharing.</li>
+<li><strong>The post is a document.</strong> A file dropped on an update is attached but never published.</li>
+</ul>
+<p>When the permission is missing, the Documents panel says so at the top before anything is
+uploaded. If a file is uploaded anyway, it stays attached to the post but gets no link, so its
+<strong>Publish</strong> button stays disabled. Ask someone who has the permission to use <strong>Replace file</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">A published file is public to anyone with the URL</p>
 <p>The download link is permanent and public: anyone holding it can open the file, whether or not
@@ -2047,9 +2086,15 @@ first thing a ticket-holder sees.</p>
 <h2 id="unpublishing-and-deleting">Unpublishing and deleting<a class="headerlink" href="#unpublishing-and-deleting" title="Permanent link">#</a></h2>
 <p><strong>Unpublish</strong> drops a post out of its tab immediately, and if it was the last one there, the tab goes
 with it. Nothing is deleted, so you can put it back with <strong>Publish</strong>.</p>
-<p><strong>Delete</strong> is permanent, and asks first. Deleting a document deletes its attached file too, and the
-public download link stops working — which is the point: a file left behind would go on serving
-itself to anyone who kept the URL.</p>
+<p><strong>Delete</strong> is permanent, and asks first. The public download link stops working either way, which
+is the point: a link left behind would go on serving the file to anyone who kept the URL. What
+happens to the file itself depends on where it came from:</p>
+<ul>
+<li><strong>Uploaded to this document and attached nowhere else</strong>: the file is deleted with the post.</li>
+<li><strong>Also attached elsewhere</strong> (the campaign record, a library, another document post): the file is
+  only detached from this post and stays where else it lives. If another document post still
+  serves the same link, that link keeps working for that post.</li>
+</ul>
 <h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">#</a></h2>
 <ul>
 <li><a href="../../concepts/page-sections/">Sections and the contact band</a> — which sections a campaign renders.</li>

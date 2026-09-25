@@ -2025,7 +2025,13 @@ step's only content would be the buyer's own name, already filled in and locked,
 rather than shown empty — and because the step numbers are positional, Payment becomes step 2.</p>
 <p><strong>"I'll name them later"</strong> takes the whole guest list off the buyer's hands. The seats are still
 held and the tickets still issue; the names can be filled in afterwards. Use it when someone is
-buying a table before they know who is sitting at it.</p>
+buying a table before they know who is sitting at it.
+If the buyer sends a second list before the first has been applied, the later list wins: the
+earlier one is declined with the message "These names were replaced by a later list you sent for
+this order", so two lists never overwrite each other seat by seat.</p>
+<p><strong>One order holds at most 50 tickets</strong>, and attendee names and e-mail addresses are capped at 80
+characters. The form enforces both as the buyer types, and the server refuses an order that breaks
+either, so the limits hold for a request that did not come from the form.</p>
 <p>A completed step turns clickable, so a buyer can go back and change an answer without losing the
 rest of the order. Anything that blocks the next step is reported inline, next to the button that
 refused to advance — and when a missing guest name is the reason, that seat's card opens and
@@ -2121,6 +2127,13 @@ campaign's own record page: search a name, mark them <strong>Checked In</strong>
 can't: which tier they bought, what the order actually paid, and who else came in on the same order
 — useful when a family of four arrives and only one of them is in front of you. The same check-in
 control is on it.</p>
+<p>Checking a seat in edits that seat's record, so whoever flips it must be able to edit it under
+your org's sharing. Seats are private and owned by whoever the purchase ran as, never by the door
+staff, so <strong>Fundraising User</strong> and <strong>Fundraising Admin</strong> carry <em>Modify All</em> on Event Attendee:
+anyone holding either set can check in any seat. If you give the check-in controller to a
+permission set of your own without Modify All, its users can check in only the seats your sharing
+lets them edit, and get "You do not have permission to check in this attendee." on the rest.
+Fundraising Read-Only cannot check anyone in.</p>
 <p>A refunded seat is cancelled, not deleted, and its control is locked rather than hidden. Whoever is
 holding that ticket at the door still needs to see the seat — and to see that it's void.</p>
 <h2 id="seats-are-reserved-before-the-charge-completes">Seats are reserved before the charge completes<a class="headerlink" href="#seats-are-reserved-before-the-charge-completes" title="Permanent link">#</a></h2>

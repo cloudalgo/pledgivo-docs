@@ -661,6 +661,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. Give your team access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beyond-the-permission-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two things the permission sets cannot give
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2036,6 +2053,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="1. Give your team access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beyond-the-permission-sets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Two things the permission sets cannot give
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2391,8 +2425,15 @@ scheduled jobs, the step reopens on its own.</p>
 </tr>
 </tbody>
 </table>
-<p>An eighth item — <strong>Trust the content hosts you actually use</strong> — is listed but never counts
-against your seven. See <a href="#third-party-content">Third-party content</a>.</p>
+<p>Two more items are listed after the seven but never count against them, because neither is
+needed to take a donation:</p>
+<ul>
+<li><strong>Add the two grants the permission sets cannot give</strong> reports how many of your fundraising
+  staff hold <em>Create Public Links</em> and <em>Manage Recurring Gifts</em>, read live from your org. See
+  <a href="#beyond-the-permission-sets">Two things the permission sets cannot give</a>.</li>
+<li><strong>Trust the content hosts you actually use</strong> lists the optional video and stock-photo hosts.
+  See <a href="#third-party-content">Third-party content</a>.</li>
+</ul>
 <p>Two of the seven steps span more than one section here, because the checklist counts <em>outcomes</em>
 and this page follows <em>work order</em>. Step 3 is created early and activated last, on purpose: you
 publish a site while you are building it and activate it once everything behind it works. Step 4
@@ -2408,7 +2449,7 @@ is on screen; hovering pauses it, and touching any control hands it back to you 
 <div class="fn-steps">
 <figure class="fn-step" data-title="Get Started, near the end"><img src="../../assets/images/gs-01-get-started-console.png" alt="Get Started panel reading 6 of 7 complete with one step left" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The console at the end of a real setup: <b>6 / 7 Complete</b> — <i>"One step left before this org is ready to take donations. It is walked through on another panel."</i> Steps 1 and 2 are <span class="fn-chip">DONE</span> with their evidence quoted from the org — "2 user(s) hold Fundraising Admin or Fundraising User", and a mapping line reading N of N — and step 3, <b>Activate your donation site</b>, is the one still open. Nothing here was ticked by hand.</figcaption></figure>
 <figure class="fn-step" data-title="Steps 3 to 5"><img src="../../assets/images/gs-02-get-started-site-payment.png" alt="Get Started steps 3, 4 and 5 with their live evidence lines" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The middle of the checklist. Step 3 is <b>Partly done</b> and says exactly why — <i>Site "Fundraising" exists but is not activated yet (status: UnderConstruction)</i>. Step 4 is done, "1 active payment account(s) configured". Step 5 is done and carries a <span class="fn-chip">SETUP ONLY</span> flag with a <b>Do this in Setup</b> block: the app can verify the grant but can never make it for you.</figcaption></figure>
-<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled". Shown here after the restart; on a fresh install this row is amber until the jobs are re-owned. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter.</figcaption></figure>
+<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled". Shown here after the restart; on a fresh install this row is amber until the jobs are re-owned. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter. (This screenshot predates the second optional step, <b>Add the two grants the permission sets cannot give</b>, which now sits just above it.)</figcaption></figure>
 </div>
 
 <div class="fn-status-strip">
@@ -2466,6 +2507,48 @@ every app setting are read-only for that set. They still <em>see</em> those reco
 or a payment account for a campaign keeps working — they just cannot edit them from a record page,
 the API, or Data Loader. If someone on your team needs to configure payments, designs, or org
 settings, give them <code>Fundraising_Admin</code>; there is no middle tier.</p>
+<h3 id="beyond-the-permission-sets">Two things the permission sets cannot give<a class="headerlink" href="#beyond-the-permission-sets" title="Permanent link">#</a></h3>
+<p>The packaged sets cover the package's own objects and screens. Two jobs also need a permission the
+sets do not carry, so check them for the people who will do those jobs. The Get Started panel's
+optional step <strong>Add the two grants the permission sets cannot give</strong> counts, live, how many of your
+fundraising staff already hold each one:</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>What they also need</th>
+<th>Where to add it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Publish a file on a campaign's <strong>Documents</strong> panel</td>
+<td>The Salesforce system permission <strong>Create Public Links</strong>. It is a platform permission, and a package permission set cannot carry it. The <em>Standard User</em>, <em>Marketing User</em> and <em>System Administrator</em> profiles already include it; <em>Minimum Access</em> does not.</td>
+<td>The user's profile, or a permission set of your own → <strong>System Permissions → Create Public Links</strong>. <a href="../../guides/campaign-posts/#who-can-publish-a-file">Who can publish a file</a></td>
+</tr>
+<tr>
+<td>Pause, resume, change, or <strong>stop</strong> a donor's recurring gift</td>
+<td>The <strong>Manage Recurring Gifts</strong> custom permission. <code>Fundraising_Admin</code> includes it; <code>Fundraising_User</code> does not. Without it the recurring-gift panel is read-only and <strong>Stop Recurring Donation</strong> refuses with "You are not authorized to cancel recurring gifts."</td>
+<td>A permission set of your own → <strong>Custom Permissions → Manage Recurring Gifts</strong>, assigned to the fundraisers you trust with billing changes. <a href="../../concepts/recurring-giving/#who-can-use-it">Who can use it</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Changing a fundraiser needs Campaign edit, which comes from the Marketing User checkbox.</strong>
+Salesforce grants create and edit on campaigns through the <strong>Marketing User</strong> checkbox on the user
+record, not through a permission set, so none of the packaged sets can give it. System
+Administrators need it too; the profile alone is not enough. Every change made
+in the Fundraisers console needs it: creating a fundraiser, editing it, switching it live or
+pausing it, the Story tab, ticket tiers, the FAQ and question selections, and showing or hiding the
+Updates and Documents panels. A staff user without it can still open and read every fundraiser,
+but each save is refused with <em>"You don't have edit access to this campaign."</em> (or <em>"You don't have
+permission to create campaigns."</em> for a new one). To give it: Setup → <strong>Users → Users</strong> → <strong>Edit</strong>
+next to the person → tick <strong>Marketing User</strong> → <strong>Save</strong>. Your campaign sharing must also give them
+edit access to the fundraiser itself.</p>
+<p><strong>Edits and deletes follow your org's sharing.</strong> A staff user can edit or delete a campaign post,
+or edit a shared FAQ or question template, only when your sharing gives them edit access to that
+record. <code>Fundraising_ReadOnly</code> cannot edit either. Checking an event seat in is the exception:
+<code>Fundraising_User</code> and <code>Fundraising_Admin</code> carry <em>Modify All</em> on Event Attendee, so anyone holding
+either set can check in any seat (<a href="../../concepts/events-ticketing/">checking in</a>).</p>
 <h2 id="record-types">2. Confirm record type mapping<a class="headerlink" href="#record-types" title="Permanent link">#</a></h2>
 <p>The app writes donations, events, and tributes onto Opportunity and Campaign record types.
 The install seeds a <strong>default mapping of eight records</strong> pointing at the record types it ships,

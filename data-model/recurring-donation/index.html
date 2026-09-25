@@ -1730,7 +1730,7 @@
 <p class="fn-dek">Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>39 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p><code>custom</code> · <code>40 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1992,6 +1992,12 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Payment Method</td>
 <td>Lookup → <code>Payment_Method__c</code></td>
 <td>The saved payment method record associated with this recurring gift, if tracked.<br><em>Docs: Kept in sync automatically, not just set once at signup. RecurringDonationService. updatePaymentMethod calls PaymentMethodService.saveWalletCard and registers the returned Payment_Method__c on this schedule via uow.registerRelationship, so a card swap updates both this lookup and Stripe_Payment_Method_Id__c together in the same unit of work.</em></td>
+</tr>
+<tr>
+<td><code>Pending_Payment_Intent__c</code></td>
+<td>Pending Payment Intent</td>
+<td>Text</td>
+<td>Set automatically when a renewal payment is still being processed by Stripe. The next run checks that payment rather than charging again. If it stays set for more than three days, the schedule stops retrying and Last Error asks staff to review the payment in Stripe.<br><em>Docs: Security change log D-18 (2026-09-25). An off-session renewal can come back from Stripe still in flight (status processing). Before this field existed the renewal job re-sent the charge with the same idempotency key to find out how it ended, but Stripe answers a repeated key with the response it saved the first time, not the payment's current state, so the job could never see the payment settle, and once the key expired after 24 hours the next run created a second payment beside the first. Storing the PaymentIntent id lets the job read the live payment instead (IPaymentGateway.retrievePaymentIntent) and never charge again while an earlier payment for the same period might still complete. RecurringDonationService.processRenewal is the only writer. It clears the field on every settled outcome (succeeded, declined, canceled, needs authentication). A value that is still set with no Next_Retry_Date__c marks a schedule parked for staff review: the payment has not settled after three days. RecurringDonationsSelector's due condition skips those schedules and ReconciliationHeartbeat counts them in its admin alert. The three staff permission sets grant read only. A person editing the value would either repeat a charge (by clearing it) or read a different payment (by changing it). The guest permission set carries no grant.</em></td>
 </tr>
 <tr>
 <td><code>Re_Auth_Link_Sent_At__c</code></td>

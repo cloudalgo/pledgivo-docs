@@ -2676,7 +2676,7 @@ family under <strong>Settings → System → Scheduled Jobs</strong>, then come 
 this queue is day-to-day operations rather than setup.</p>
 <h2 id="what-the-donor-sees">What the donor sees<a class="headerlink" href="#what-the-donor-sees" title="Permanent link">#</a></h2>
 <div class="fn-shot"><img src="../../assets/images/df-donation-form.png" alt="Public donation form"></div>
-<p class="fn-figure-caption">**What it shows.** A live public donation form — amount tiles with a custom-amount input, a One-time/Monthly/Annually frequency toggle, fund designation and split-gift options, donor info fields, tribute/dedication and employer-match blocks, and a sticky gift summary sidebar with "Secure & encrypted" / "Powered by Stripe" trust badges. This is the Compose step described in [Campaigns](campaigns.md) rendered for a guest.</p>
+<p class="fn-figure-caption">**What it shows.** A live public donation form — amount tiles with a custom-amount input, a One-time/Monthly/Annually frequency toggle, fund designation and split-gift options, donor info fields, tribute/dedication and employer-match blocks, and a gift summary sidebar with "Secure & encrypted" / "Powered by Stripe" trust badges. This is the Compose step described in [Campaigns](campaigns.md) rendered for a guest.</p>
 
 <h2 id="after-the-gift-the-confirmation-page">After the gift — the confirmation page<a class="headerlink" href="#after-the-gift-the-confirmation-page" title="Permanent link">#</a></h2>
 <p>The moment a payment clears, the donor is sent to <strong><code>/thank-you</code></strong> — a real page on its own
@@ -3404,6 +3404,12 @@ from an organisation they have no relationship with.</p>
 booked straight to an organisation account. There is nobody to name as the giver, and "a donor has
 made a donation in memory of your mother" from an organisation the recipient has never heard of is
 worse than sending nothing. The skip is recorded in <strong>Application Logs</strong>.</p>
+<p>The donor's <strong>message is capped at 500 characters and cannot carry a link.</strong> The form stops at 500
+characters and says so; anything starting <code>http</code>, <code>https</code> or <code>www.</code> is removed before the gift is
+saved. The e-card goes to an address the recipient never handed you, so it must not become a way to
+send a stranger a link under your organisation's name. A message edited by hand on the gift record
+past either limit is not trimmed at send time — the e-card is skipped instead, and the skip is
+logged the same way.</p>
 <h2 id="crediting-someone-who-didnt-pay">Crediting someone who didn't pay<a class="headerlink" href="#crediting-someone-who-didnt-pay" title="Permanent link">#</a></h2>
 <p>A gift has one payer, but often more than one person it should show up for. Someone gives $500 in
 honour of a board member's retirement — the board member never opened their wallet, yet the next time

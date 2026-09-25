@@ -1737,17 +1737,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#no-sharing-keyword-on-a-vendored-fflib-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        No sharing keyword on a vendored FFLib class
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#configurationdisabletriggercrudsecurity-in-a-rollup-domain-constructor" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1906,12 +1895,12 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">3,806</td>
-<td>23 carrying a <code>Security</code> tag, justified below</td>
+<td style="text-align: right;">3,803</td>
+<td>22 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">19,270</td>
+<td style="text-align: right;">19,276</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
@@ -1921,8 +1910,8 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>24,018</strong></td>
-<td><strong>66 individually justified</strong></td>
+<td style="text-align: right;"><strong>24,021</strong></td>
+<td><strong>65 individually justified</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1957,28 +1946,6 @@ defined in the triage file, not chosen per-run.</p>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactoryTest.cls</code></td>
 <td>270</td>
 <td>Catches the expected <code>InvalidFieldException</code>; the following <code>catch (Exception e)</code> fails the test on any other type.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="no-sharing-keyword-on-a-vendored-fflib-class">No sharing keyword on a vendored FFLib class<a class="headerlink" href="#no-sharing-keyword-on-a-vendored-fflib-class" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>Third-party vendored code</strong> &middot; 1 finding &middot; <code>ApexSharingViolations</code></p>
-
-<p><strong>What the rule flags.</strong> Same ApexSharingViolations rule, on the vendored FFLib Unit of Work.</p>
-<p><strong>Why it is not a defect here.</strong> Access level for the Unit of Work comes from whoever constructs it, not from the class itself; a keyword here would not reach the inner <code>SimpleDML</code> class that performs the DML, because inner classes do not inherit the container's declaration. The one place this genuinely matters is already patched and documented as a local fork: <code>SimpleDML</code> is declared <code>without sharing</code> so that guest writes carrying a lookup to a record the Guest License cannot see do not fail at commit.</p>
-<p><strong>How to verify.</strong> The class header carries the explanation in a <code>// doc:</code> comment with the Apex Developer Guide citation. The <code>SimpleDML</code> fork is entry 3 of the FFLib fork log in DEPENDENCIES.md.</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Line(s)</th>
-<th>Detail</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWork.cls</code></td>
-<td>59</td>
-<td>The Unit of Work class itself. The inner <code>SimpleDML</code> that performs the DML is explicitly declared <code>without sharing</code> as a documented local fork.</td>
 </tr>
 </tbody>
 </table>
@@ -2051,7 +2018,7 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWork.cls</code></td>
-<td>305, 623, 894, 902, 903, 911, 912, 920, 966, 974</td>
+<td>319, 637, 908, 916, 917, 925, 926, 934, 980, 988</td>
 <td>Ten sites, all reading only <code>getName()</code> to key the per-type work maps.</td>
 </tr>
 <tr>
@@ -2267,7 +2234,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 23,952 findings are Moderate, Low and Info style and maintainability
+<p>The other 23,956 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2287,7 +2254,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:ApexUnitTestClassShouldHaveRunAs</code></td>
 <td>Low</td>
-<td style="text-align: right;">3,015</td>
+<td style="text-align: right;">3,016</td>
 </tr>
 <tr>
 <td><code>pmd:ApexDoc</code></td>
@@ -2302,7 +2269,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:AnnotationsNamingConventions</code></td>
 <td>Low</td>
-<td style="text-align: right;">1,501</td>
+<td style="text-align: right;">1,506</td>
 </tr>
 <tr>
 <td><code>regex:NoTrailingWhitespace</code></td>
@@ -2337,7 +2304,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:EmptyStatementBlock</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">124</td>
+<td style="text-align: right;">122</td>
 </tr>
 <tr>
 <td><code>pmd:IfStmtsMustUseBraces</code></td>
@@ -2393,7 +2360,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>24,018 (after declared path exclusions)</td>
+<td>24,021 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

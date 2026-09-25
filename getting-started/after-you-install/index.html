@@ -2507,6 +2507,11 @@ every app setting are read-only for that set. They still <em>see</em> those reco
 or a payment account for a campaign keeps working — they just cannot edit them from a record page,
 the API, or Data Loader. If someone on your team needs to configure payments, designs, or org
 settings, give them <code>Fundraising_Admin</code>; there is no middle tier.</p>
+<p>Saving anything in the Settings console also needs the <strong>Manage Fundraising Settings</strong> custom
+permission, which <code>Fundraising_Admin</code> carries. It only matters if you build an admin permission set
+of your own instead of assigning the packaged one: add <strong>Custom Permissions → Manage Fundraising
+Settings</strong> to it, or every save in the console is refused with "You are not authorized to change
+fundraising settings."</p>
 <h3 id="beyond-the-permission-sets">Two things the permission sets cannot give<a class="headerlink" href="#beyond-the-permission-sets" title="Permanent link">#</a></h3>
 <p>The packaged sets cover the package's own objects and screens. Two jobs also need a permission the
 sets do not carry, so check them for the people who will do those jobs. The Get Started panel's

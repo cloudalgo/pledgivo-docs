@@ -4792,6 +4792,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-systemdml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SystemDML
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-testdatafactory" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4922,7 +4933,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>213</code></span><span><b>Test classes</b><code>148</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>214</code></span><span><b>Test classes</b><code>149</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4989,7 +5000,7 @@
 <li>
 <p><strong><a href="#domain-shared">Shared</a></strong></p>
 <hr />
-<p>23 classes</p>
+<p>24 classes</p>
 <p><a href="#domain-shared-root">Core</a> · <a href="#domain-shared-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-shared-selector">Selectors</a></p>
 </li>
 </ul>
@@ -6740,7 +6751,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-refundservice-recordrefundedtotal">RefundService.recordRefundedTotal()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
+<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-refundservice-recordrefundedtotal">RefundService.recordRefundedTotal()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-stripeamount-tomajor">StripeAmount.toMajor()</a>, <a href="#apex-applogger-info">AppLogger.info()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -9258,7 +9269,7 @@
 <div class="fn-entry__body">
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Scoped waiver of fflib's trigger-level CRUD assertion, for the package's own donor rollup write only. <a href="#apex-campaignservice-rollupdonorsummary"><code>CampaignService.rollupDonorSummary</code></a> sets it around its commit and restores it in a finally block. That commit runs SYSTEM_MODE through fflib_SObjectUnitOfWork.SimpleDML, but this trigger still re-asserts Contact.isUpdateable() for the RUNNING user — so a staff member who may edit a donation but not a Contact could not close a gift: the donor rollup fired from OpportunityTrigger, this assertion threw, and the whole Opportunity save rolled back. The rollup fields (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c) are package-maintained aggregates no user edits, so the running user's Contact CRUD is not the authorization that matters; their Opportunity edit, which the platform already enforced, is. Every other Contact write — a staff edit in the UI, a guest donor insert, an import — leaves the flag false and keeps the assertion. Mirrors <a href="#apex-recurringdonations"><code>RecurringDonations</code></a>.</p>
+<p>Scoped waiver of fflib's trigger-level CRUD assertion, for the package's own donor rollup write only. <a href="#apex-campaignservice-rollupdonorsummary"><code>CampaignService.rollupDonorSummary</code></a> sets it around its commit and restores it in a finally block. That commit runs SYSTEM_MODE, <code>without sharing</code>, through <a href="#apex-systemdml"><code>SystemDML</code></a> (the rollup family), but this trigger still re-asserts Contact.isUpdateable() for the RUNNING user — so a staff member who may edit a donation but not a Contact could not close a gift: the donor rollup fired from OpportunityTrigger, this assertion threw, and the whole Opportunity save rolled back. The rollup fields (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c) are package-maintained aggregates no user edits, so the running user's Contact CRUD is not the authorization that matters; their Opportunity edit, which the platform already enforced, is. Every other Contact write — a staff edit in the UI, a guest donor insert, an import — leaves the flag false and keeps the assertion. Mirrors <a href="#apex-recurringdonations"><code>RecurringDonations</code></a>.</p>
 <p>There is deliberately no onAfterInsert override here. Campaign membership for donors is handled by <a href="#apex-campaignmembersyncservice"><code>CampaignMemberSyncService</code></a> off the DonationFinalized__e event, not by a Contact trigger — a Contact insert has no campaign context, and the Guest License user who creates the donor on a public gift cannot create a CampaignMember at all.</p>
 </div>
 <table>
@@ -10052,7 +10063,7 @@
 <p>A HALF-filled row used to be skipped here as well, which is how a tier the admin had plainly typed vanished with no message. Only a wholly blank row is skipped now; a row with a name but no price (or the reverse) rejects the batch so the wizard can say so.</p>
 <p>The authorization check for every read in this controller. Event_Ticket_Type__c queries run SYSTEM_MODE because 2GP cannot grant object permissions on a master-detail detail of a standard master (full reasoning in <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a>'s class header), so the selector layer can no longer refuse anyone — this method is where that refusal moved.</p>
 <p>Master-detail access is defined by the master record, so asking whether the running user can see the parent Campaign under USER_MODE is the same question the platform would have asked about the child, and the one the child's ungrantable describe cannot answer.</p>
-<p>Writes need this gate just as much as reads, and for a while they did not have it. The rationale that used to sit here — that the Unit of Work commits in user mode, so the platform would enforce master-inherited access on the write itself — is simply false: <a href="#apex-application"><code>Application</code></a>.cls builds its UnitOfWorkFactory from a bare List&lt;SObjectType&gt;, which makes fflib use SimpleDML, and SimpleDML is declared <code>without sharing</code> and commits at AccessLevel.SYSTEM_MODE. Nothing downstream re-checks the caller.</p>
+<p>Writes need this gate just as much as reads, and for a while they did not have it. The rationale that used to sit here — that the Unit of Work commits in user mode, so the platform would enforce master-inherited access on the write itself — is simply false: <a href="#apex-application"><code>Application</code></a>.cls builds its UnitOfWorkFactory from a bare List&lt;SObjectType&gt;, which makes fflib use SimpleDML, and SimpleDML was declared <code>without sharing</code> and commits at AccessLevel.SYSTEM_MODE, so nothing downstream re-checked the caller. Since 2026-09-25 SimpleDML is <code>inherited sharing</code> and the platform enforces the master-inherited sharing on the write too; this gate stays because it is the FLS/object check, which SYSTEM_MODE still skips, and because it is where the user-facing error comes from.</p>
 <p>Every entry point that writes a tier therefore calls this method itself, exactly like the read and delete paths. The message is caller-supplied so a failed gate is indistinguishable from a genuine not-found — a distinct "no access" reply would confirm the record exists.</p>
 <p>The write-side gate: visibility first (so a hidden event still answers as not found), then edit access on the campaign itself (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a>, owner decision D-1). A tier and the Product2 a new tier creates are both part of the event's configuration, so a user who may only read the event may no longer add, change or delete its tickets. Reads keep the visibility-only gate above.</p>
 <p>requireCampaignVisible on its own is not enough for an update. buildTierFromMap takes the tier id straight off the client payload and constructs new Event_Ticket_Type__c(Id = ...) without re-reading it, so a caller who legitimately administers campaign A can post A's id alongside a tier id belonging to campaign B and write to B's tier — the campaign gate passes because A really is visible, and the blind registerDirty never consults B.</p>
@@ -11660,7 +11671,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>Payment_Method__c is display/dedup metadata for the donor portal's saved-card list, not the billing-critical record — the Stripe payment method id actually charged for a renewal lives on Recurring_Donation__c.Stripe_Payment_Method_Id__c, stamped directly by the caller. That split matters because saveWalletCard() leaves an existing wallet row untouched on a dedup match rather than refreshing it: Guest User licenses can never be granted object-level Edit (a hard Salesforce platform restriction, not a policy choice), and every caller of this method runs in guest context. The single exception is reinstateIfRemoved() below — see its header for why a re-added card has to be written back and why that one write is safe.</p>
 <p>Prefer the gateway overload for any synchronous, DML-free caller — passing a stale snapshot here would persist card metadata that no longer matches Stripe. This overload takes paymentAccountId explicitly because it has no gateway instance to read it off; the caller parked the snapshot at intent time and must park the account with it.</p>
-<p>This is the one place saveWalletCard* writes to an EXISTING wallet row; every other match path still returns it untouched, per the class header. It is safe from guest context despite the Guest License never holding object-level Edit, because Payment_Method__c has no trigger (so fflib's domain-layer CRUD re-assertion never runs) and fflib_SObjectUnitOfWork.SimpleDML pins AccessLevel.SYSTEM_MODE. Adding a trigger to this object would break that and must be paired with the suppressTriggerCrudCheck waiver the other guest-written domains use.</p>
+<p>This is the one place saveWalletCard* writes to an EXISTING wallet row; every other match path still returns it untouched, per the class header. It is safe from guest context despite the Guest License never holding object-level Edit, because Payment_Method__c has no trigger (so fflib's domain-layer CRUD re-assertion never runs) and the guest caller's Unit of Work commits through <a href="#apex-systemdml"><code>SystemDML</code></a> (AccessLevel.SYSTEM_MODE, <code>without sharing</code>). Adding a trigger to this object would break that and must be paired with the suppressTriggerCrudCheck waiver the other guest-written domains use.</p>
 </div>
 <table>
 <thead>
@@ -12859,7 +12870,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-designationsplits-parse">DesignationSplits.parse()</a>, <a href="#apex-paymentmethodservice-newinstance">PaymentMethodService.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -13333,6 +13344,7 @@
 <p>Backing controller for the entire internal admin setup console — record type mapping, general settings, payment account CRUD/connection test, page-design CRUD, scheduled-job status, org feature detection, and the health check panel. Nearly every read method here is deliberately NOT @AuraEnabled(cacheable=true): the setup screens re-load imperatively after every save/reset so the admin sees their own change immediately, and a cacheable method served imperatively would instead return Lightning's stale client cache.</p>
 <p>SYSTEM_TEMPLATE_NAMES (below) protects the six packaged page-design themes seeded by <a href="#apex-postinstallhandler"><code>PostInstallHandler</code></a>, plus ten legacy names from the 2026-08-13 catalog cull and the 2026-07-24 theme rebuild before it, from admin edit/delete — see isSystemTemplateName() at the page-design CRUD actions. It is the ONLY definition of that rule: GetPageDesigns ships the resulting verdict to setDesigns rather than letting the client re-derive it. runHealthCheck()'s scheduled-job check and getSetupGuide()'s "background jobs" step share countPipelineJobs(), which counts every cron entry <a href="#apex-postinstallhandler-schedulejobs"><code>PostInstallHandler.scheduleJobs</code></a>() creates and grades it against that class's own <a href="#apex-postinstallhandler-expectedjobcount"><code>PostInstallHandler.expectedJobCount</code></a>() — see expectedPipelineJobs().</p>
 <p>getSetupGuide() is the backing read for the Get Started panel (setGetStarted): the ordered, live-checked version of the post-install checklist published at docs-site/docs/getting-started/after-you-install.md and pointed at by the package's postInstallUrl. Keep the two in step — a step added here needs a section there, and vice versa, or the page a subscriber is redirected to stops matching what their org shows them.</p>
+<p>Every action that writes the org-wide Settings__c record opens its doValidate() with requireSettingsPermission(). The write itself runs <code>upsert as system</code> inside <a href="#apex-settingsservice"><code>SettingsService</code></a> because a Hierarchy Custom Setting needs Customize <a href="#apex-application"><code>Application</code></a>, which no packaged permission set can grant — so the authorization has to live here, at the caller, as an explicit custom-permission check rather than being implied by which permission set carries classAccess. Only Fundraising_Admin grants Manage_Fundraising_Settings. Readiness finding F-13.</p>
 <p>NO LONGER PART OF CADENCE EDITING, and has no caller in the package (F-119). The panel used to abort here and schedule in a second round trip; that could come apart, leaving a family scheduled nowhere when the second call failed, so ScheduleJobFamily now does both in one transaction via the shared abortFamilyJobs() helper. Its rationale is written out there, not here.</p>
 <p>Kept as a supported entry point rather than deleted: stopping a family outright — to quiet a misbehaving job, or before a deployment that touches a scheduled class — is a real admin need that nothing else expresses, and the packaged @AuraEnabled surface is frozen for anyone who has already wired it up. Anything that wants a family stopped AND restarted must call scheduleJobFamily, never this followed by a schedule.</p>
 <p>The donation-pipeline monitor's two methods (getStuckDonations, retryDonationStagingNow) used to live here and moved to <a href="#apex-donationmonitorcontroller"><code>DonationMonitorController</code></a> on 2026-08-14, with the LWC, when the monitor became its own Lightning tab. They had to leave: this class is granted to Fundraising_Admin only, because it is the sole entry point behind every settings panel, and the monitor is meant for program staff who must never reach the console. Do not add monitor methods back here.</p>
@@ -13361,7 +13373,7 @@
 <p>The object-access leg was added 2026-08-19 (audit F-76). Until then this row graded the principal grant alone and went green on an org where every public donation still died at the callout with "You don't have read permissions on the User External Credential object" — the Site &amp; Domain panel's step 5 already reported that org as broken, so the console contradicted itself on the same fact, and this row was the one an admin sees first. It is a distinct 'warn' rather than 'fail' because the two grants are separate pieces of work and an admin who has done one has genuinely done half of the step.</p>
 <p>Five of this file's inner action classes carry an explicit <code>with sharing</code>; the rest carry no keyword. That asymmetry is deliberate, not an oversight. An Apex inner class inherits its sharing context from the CALLER, not from the outer class, so none of them is self-documenting — but every one is private and reachable only through <code>public with sharing class SetupController</code>, so the effective context is already the user's in all cases. The five keywords were added on 2026-09-01 to clear PMD's ApexSharingViolations, which flags only the subset it can see; adding the keyword to the remaining classes would be churn with no behaviour change. If one of these is ever made reachable from a caller outside this class, the keyword stops being decorative — state it.</p>
 <p>Returns the raw Settings__c on purpose — <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() re-keys every SObject in a payload to unprefixed field API names before it reaches the browser, so the eleven set* panels can keep reading data.Org_Logo_URL__c under any namespace. Do not hand-map it here; that was the shape of the original bug's fix and it only ever covered this one payload. See the namespace note on <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
-<p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that <a href="#apex-settingsservice"><code>SettingsService</code></a> defaults to — the nulls below are deliberate, not a failed parse.</p>
+<p>Blanking either fee-coverage field is a supported way to fall back to the Stripe US standard (2.9% + $0.30) that SettingsService defaults to — the nulls below are deliberate, not a failed parse.</p>
 <p>The allowed intervals are NOT redeclared here — SettingsService owns the one list, because the same set has to gate this panel, the stored Settings__c value, and the cron offsets PostInstallHandler generates. A second copy went stale the first time it existed (this panel offered 5/10/15/30/60 while the packaged cadence was fixed at 5). Audit finding F-119.</p>
 <p>Shared by AbortJobFamily and ScheduleJobFamily so a cadence change cannot half-happen — see the note inside ScheduleJobFamily.doExecute(). Audit finding F-119.</p>
 <p>GetNamedCredentials bounds its read at 1,000 rows. That is a guard, not a paging boundary — the result populates a single combobox in the payments panel, and an org with a thousand Named Credentials has an unusable picklist long before it has a truncated one. The bound exists so an org that somehow does hold more fails as a short list rather than as a LimitException that takes the whole Settings console down with it.</p>
@@ -15546,7 +15558,7 @@
 <p>FFLib role: shared static utility (not registered in <a href="#apex-application"><code>Application</code></a> — it has no state and no behaviour worth mocking; tests exercise it through a real user).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Why it exists. fflib's Unit of Work commits at SYSTEM_MODE inside a <code>without sharing</code> inner class (fflib_SObjectUnitOfWork.SimpleDML), so registerDirty() saves a record the running user could only read. Object-level permission is checkable by describe and <a href="#apex-controlleraction"><code>ControllerAction</code></a> does that; RECORD-level edit is not — only UserRecordAccess answers it, and it accounts for sharing rules, the role hierarchy, teams and Modify All the same way the platform would. Code that writes on a user's behalf asks here before it registers the write.</p>
+<p>Why it exists. Until 2026-09-25 fflib's Unit of Work committed at SYSTEM_MODE inside a <code>without sharing</code> inner class (fflib_SObjectUnitOfWork.SimpleDML), so registerDirty() saved a record the running user could only read. SimpleDML is now <code>inherited sharing</code>, so a staff commit is sharing-enforced by the platform; these gates stay as defence in depth and as the source of the friendly error before the DML. Object-level permission is checkable by describe and <a href="#apex-controlleraction"><code>ControllerAction</code></a> does that; RECORD-level edit is not — only UserRecordAccess answers it, and it accounts for sharing rules, the role hierarchy, teams and Modify All the same way the platform would. Code that writes on a user's behalf asks here before it registers the write.</p>
 <p>Deliberate FFLib exception: UserRecordAccess and PermissionSetAssignment are platform access objects with no package selector (UserRecordAccess rejects the ORDER BY every fflib QueryFactory appends), so both are read inline, here and nowhere else.</p>
 <p>UserRecordAccess answers at most 200 RecordIds per query; larger sets are chunked. Not final only so a test can shrink it and prove the chunking with two records.</p>
 <p>Every fundraiser-console write — the Story tab, ticket tiers (and the Product a new tier creates), FAQ and question selections, fundraiser edit, the active toggle and the updates/documents visibility toggle — goes through the Unit of Work, which commits in SYSTEM_MODE. Before this gate, seeing a campaign was enough to change it (readiness finding F-11; owner decision D-1, option a, 2026-09-25). Callers keep their own visibility check FIRST, so a campaign the user cannot see is still reported as "not found" and this message never confirms a hidden record exists.</p>
@@ -15633,6 +15645,52 @@
 <tr>
 <td><a id="apex-securetokens-opaque"></a><code>opaque(1 arg)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-systemdml">SystemDML<a class="headerlink" href="#apex-systemdml" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public without sharing</code></p>
+<p>extends fflib_SObjectUnitOfWork.SimpleDML</p>
+<p class="fn-entry__src"><code>shared/<wbr>SystemDML.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>@description Unit of Work DML strategy for the writes where the running user is, by design, not the authority over the records: Experience Cloud guest entry points, the finalizer and renewal jobs, the DonationFinalized__e subscriber, and the package-maintained rollups a trigger fires. Every other commitWork() uses fflib's default SimpleDML, which since 2026-09-25 is <code>inherited sharing</code> and therefore enforces the running user's record sharing on staff writes. FFLib role: IDML implementation, passed explicitly with <code>Application.UnitOfWork.newInstance(new SystemDML())</code>.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Why a separate class. SimpleDML used to be <code>without sharing</code>, which made EVERY commit in the package bypass record sharing — including a staff user's registerDirty() on a record they could only read (readiness F-10, Checkmarx <code>Sharing</code> finding on fflib_SObjectUnitOfWork.cls). The fix inverts the default: SimpleDML now follows its caller, and the bypass is opted into here, one construction site at a time, each carrying a <code>// SystemDML:</code> reason that names its family: guest      — the Guest User licence holds no sharing; a Donation_Staging__c or Guest_Request__c row carries a lookup to a Campaign the guest may not be shared (external OWD Private), and <code>with sharing</code> DML fails with INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY. job        — a batch or queueable runs as whoever scheduled it and must write every donor's records; the DonationFinalized__e subscriber runs as Automated Process, which owns nothing. rollup     — a trigger-fired aggregate (Campaign, Contact, Account, Designation__c totals) written for whoever saved the gift, who need not be able to edit the parent. The same reasoning as <a href="#apex-contacts"><code>Contacts</code></a>.suppressTriggerCrudCheck, one level down. The DML bodies are repeated here rather than inherited on purpose: <code>inherited sharing</code> resolves against the class whose method executes the statement, so a subclass that only re-declared the keyword and inherited SimpleDML's methods would still commit with its caller's sharing. AccessLevel.SYSTEM_MODE matches SimpleDML — object and field permissions are enforced one layer up, in the Selectors and by Security.stripInaccessible, never by the DML access mode.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-systemdml-dmlinsert"></a><code>dmlInsert(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-systemdml-dmlupdate"></a><code>dmlUpdate(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-systemdml-dmlupsert"></a><code>dmlUpsert(2 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-systemdml-dmldelete"></a><code>dmlDelete(1 arg)</code></td>
+<td><code>void</code></td>
 <td></td>
 </tr>
 </tbody>

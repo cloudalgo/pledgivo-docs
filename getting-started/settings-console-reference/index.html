@@ -809,6 +809,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#licence-seats-general-licence-seats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Licence &amp; Seats (General → Licence &amp; Seats)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2083,6 +2094,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#licence-seats-general-licence-seats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Licence &amp; Seats (General → Licence &amp; Seats)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2664,6 +2686,50 @@ See <a href="../../guides/monitor-and-diagnose/#diagnostic-logs">Monitor donatio
 running the purge manually will remove more history at once than the nightly job typically
 would.</p>
 </div>
+<h3 id="licence-seats-general-licence-seats">Licence &amp; Seats (<code>General → Licence &amp; Seats</code>)<a class="headerlink" href="#licence-seats-general-licence-seats" title="Permanent link">#</a></h3>
+<p>Read-only. Nothing on this panel is a setting; it is the one place inside the app that shows the
+package licence the way Salesforce records it, so an admin does not have to find <em>Installed
+Packages</em> to answer "how many seats do we have left?"</p>
+<table>
+<thead>
+<tr>
+<th>Shown</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>The licence status Salesforce holds for this org (Active, Trial, Expired, Suspended). Anything other than Active or Trial closes every staff console until the subscription is put right — assigning seats does not reopen them</td>
+</tr>
+<tr>
+<td>Seats</td>
+<td><em>Used of allowed</em>, with a meter that turns amber at one seat left and red when every seat is taken. A site licence shows <strong>Site licence</strong> instead of a count — every user in the org is covered and there is nothing to assign</td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>The renewal date, or <strong>Never</strong> for a licence with no end date. Inside 30 days the panel says so in amber</td>
+</tr>
+<tr>
+<td>Assign seats</td>
+<td>The Setup path — <strong>Setup → Installed Packages → Manage Licenses</strong> — because a package cannot assign its own seats; only a Salesforce admin can</td>
+</tr>
+<tr>
+<td>Manage subscription</td>
+<td>Opens the subscription portal in a new tab, carrying your org Id so the portal can find the right account. This is where seats are added or a lapsed subscription renewed</td>
+</tr>
+</tbody>
+</table>
+<p>The panel reads the same <code>PackageLicense</code> record the platform uses to block unlicensed users, so
+what it shows is what Salesforce will enforce. In an org where the package is not installed as a
+managed package — a developer scratch org — it says so and shows nothing else, which is correct:
+there is no licence to read.</p>
+<div class="admonition note">
+<p class="admonition-title">The Health Check board carries the same facts as one row</p>
+<p><strong>Package Licence</strong> under System → Health Check goes amber inside 30 days of expiry or with one
+seat or fewer left, and red once the licence has expired, so an approaching problem shows up on
+the board an admin already looks at rather than only on a panel they have to remember.</p>
+</div>
 <hr />
 <h2 id="payments">Payments<a class="headerlink" href="#payments" title="Permanent link">#</a></h2>
 <h3 id="payment-accounts-payments-payment-accounts">Payment Accounts (<code>Payments → Payment Accounts</code>)<a class="headerlink" href="#payment-accounts-payments-payment-accounts" title="Permanent link">#</a></h3>
@@ -3179,6 +3245,11 @@ Record Type than the packaged default.</p>
 <td>Experience Cloud Site</td>
 <td>Confirms a site is connected</td>
 <td><em>(Known UI gap.)</em> Its Fix button shows a success message but does not actually create anything — it only returns the same CLI command shown on the Site &amp; Domain panel. The check will still show as failing after you click Fix; you still need to run that command yourself.</td>
+</tr>
+<tr>
+<td>Package Licence</td>
+<td>Reads the org's licence for this package: <strong>green</strong> while it is active with seats to spare, <strong>amber</strong> when it expires within 30 days or one seat or fewer is left, <strong>red</strong> once it has expired. Not installed as a managed package (a developer org) is green — there is no licence to check</td>
+<td>No Fix button — seats are assigned under Setup → Installed Packages → Manage Licenses, and renewals happen on the subscription portal linked from <a href="#licence-seats-general-licence-seats">Licence &amp; Seats</a></td>
 </tr>
 </tbody>
 </table>

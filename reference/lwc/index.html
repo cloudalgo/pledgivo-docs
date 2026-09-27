@@ -2420,6 +2420,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#setlicense" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings: Licence &amp; Seats
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setlogging" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2936,7 +2947,7 @@
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Lightning web component, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>102</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>103</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -2967,8 +2978,8 @@
 <li>
 <p><strong><a href="#group-set">Set (settings console panels)</a></strong></p>
 <hr />
-<p>16 bundles</p>
-<p><a href="#setcheckoutprotection">Settings: Checkout Protection</a> · <a href="#setdesigns">Settings: Page Designs</a> · <a href="#setdonorportal">Settings: Donor Portal</a> · <a href="#setemail">Settings: Email &amp; Receipts</a> · <a href="#setevents">Settings: Events &amp; Ticketing</a> · <a href="#setgetstarted">Settings: Get Started</a> · <a href="#sethealth">Settings: Health Check</a> · <a href="#setlogging">Settings: Logging</a> · <a href="#setorganization">Settings: Organization &amp; Donations</a> · <a href="#setpayments">Settings: Payment Accounts</a> · <a href="#setpubliclinks">Settings: Public Links</a> · <a href="#setrecordtypes">Settings: Record Type Mapping</a> · <a href="#setrecurring">Settings: Recurring &amp; Dunning</a> · <a href="#setrefunds">Settings: Refunds</a> · <a href="#setscheduledjobs">Settings: Scheduled Jobs</a> · <a href="#setsite">Settings: Site &amp; Domain</a></p>
+<p>17 bundles</p>
+<p><a href="#setcheckoutprotection">Settings: Checkout Protection</a> · <a href="#setdesigns">Settings: Page Designs</a> · <a href="#setdonorportal">Settings: Donor Portal</a> · <a href="#setemail">Settings: Email &amp; Receipts</a> · <a href="#setevents">Settings: Events &amp; Ticketing</a> · <a href="#setgetstarted">Settings: Get Started</a> · <a href="#sethealth">Settings: Health Check</a> · <a href="#setlicense">Settings: Licence &amp; Seats</a> · <a href="#setlogging">Settings: Logging</a> · <a href="#setorganization">Settings: Organization &amp; Donations</a> · <a href="#setpayments">Settings: Payment Accounts</a> · <a href="#setpubliclinks">Settings: Public Links</a> · <a href="#setrecordtypes">Settings: Record Type Mapping</a> · <a href="#setrecurring">Settings: Recurring &amp; Dunning</a> · <a href="#setrefunds">Settings: Refunds</a> · <a href="#setscheduledjobs">Settings: Scheduled Jobs</a> · <a href="#setsite">Settings: Site &amp; Domain</a></p>
 </li>
 <li>
 <p><strong><a href="#group-pf">Pf (public guest helper blocks)</a></strong></p>
@@ -4159,6 +4170,20 @@
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
+<h4 id="setlicense">Settings: Licence &amp; Seats<a class="headerlink" href="#setlicense" title="Permanent link">#</a></h4>
+<p><code>setLicense</code></p>
+<p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Settings-console panel showing this org's licence for the package — seats used and allowed, status and expiry — with links to assign seats in Setup and to manage the subscription.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>"Licence &amp; Seats" panel of the Settings console (General group). Reads LicenseController.getSeatSummary() — the org's PackageLicense row shaped by LicenseService.getSeatSummary() — and renders one of three shapes: not installed (a source-deployed org: the package has no licence to show), a site licence (unlimited seats), or a seat-limited licence with a used/allowed meter, status pill and expiry. It never decides anything: the platform blocks unlicensed direct access on its own and the tab shells gate on LicenseController.getLicenseStatus(); this panel only makes the seat count visible so an admin sees "2 of 3 used" before the third colleague is locked out. The "Manage subscription" button opens LicenseService.subscriptionPortalUrl() (the packaged Subscription_Portal_Url label plus ?org=&lt;Org Id&gt;) in a new tab; seat assignment itself stays in Setup → Installed Packages → Manage Licenses, which is spelled out as a breadcrumb because that page cannot be deep-linked from a managed component. The read is live (not cacheable) on purpose — an admin opens this right after assigning seats and expects the new number without a hard reload.</p>
+</div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="setlogging">Settings: Logging<a class="headerlink" href="#setlogging" title="Permanent link">#</a></h4>
 <p><code>setLogging</code></p>
 <p><code>not exposed</code></p>
@@ -4732,11 +4757,12 @@
 <p><code>not exposed</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Panel the internal console tabs render in place of their content when the running user holds no seat on the package licence — explains the cause and points them to their admin. Shared by all four tab shells so the message cannot drift.</p>
+<p>Panel the staff console tabs render in place of their content when the user is not licensed — no seat, or an expired or suspended subscription — naming the cause, the Setup path for a seat, and the subscription portal. Shared by all five tab shells.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>The panel every internal Tab shell (<a href="#lexfundraisersconsole"><code>lexFundraisersConsole</code></a>, <a href="#lexfundraisingsettings"><code>lexFundraisingSettings</code></a>, <a href="#lexdiagnosticlogs"><code>lexDiagnosticLogs</code></a>, <a href="#lexdonationmonitor"><code>lexDonationMonitor</code></a>) swaps in when LicenseController.getLicenseStatus() answers licensed:false — the running user holds no seat on the package licence. Purely presentational: no Apex, no state, one message. Shared so the four shells cannot drift on what an unlicensed user is told, and so the fix (ask an admin for a seat in Setup → Installed Packages → Manage Licenses) is spelled out once.</p>
-<p>Rendering this panel is the whole enforcement: the shell renders it INSTEAD of its content, so an unlicensed user gets a readable explanation rather than a half-broken console. The shells fail OPEN — a load error on the licence read renders the tab normally — so this panel only ever appears on a positive "no seat" verdict.</p>
+<p>The panel every internal Tab shell (<a href="#lexfundraisersconsole"><code>lexFundraisersConsole</code></a>, <a href="#lexfundraisingsettings"><code>lexFundraisingSettings</code></a>, <a href="#lexdiagnosticlogs"><code>lexDiagnosticLogs</code></a>, <a href="#lexdonationmonitor"><code>lexDonationMonitor</code></a>, <a href="#lexdonorsconsole"><code>lexDonorsConsole</code></a>) swaps in when LicenseController.getLicenseStatus() answers licensed:false. Shared so the shells cannot drift on what a blocked user is told, and so the fix is spelled out once.</p>
+<p>Since 2026-09-25 the panel re-reads the same cacheable getLicenseStatus() (a second call is served from the client cache, so the shells still make one round trip) to learn WHY the user is blocked — <code>reason</code> is one of LicenseService.REASON_NO_SEAT / REASON_EXPIRED / REASON_SUSPENDED — and to pick up <code>portalUrl</code>, the packaged Subscription_Portal_Url label plus the org Id. No seat: ask an admin for one under Setup → Installed Packages → Manage Licenses. Expired or suspended: assigning seats will not help, so the panel says so and points the admin at the subscription portal instead. If the read fails or carries no reason the copy falls back to the no-seat wording — the shells fail OPEN, so this panel only ever appears on a positive "not licensed" verdict.</p>
+<p>Rendering this panel is the whole enforcement: the shell renders it INSTEAD of its content, so a blocked user gets a readable explanation rather than a half-broken console.</p>
 </div>
 </div>
 </div>

@@ -4411,6 +4411,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-ipackagelicensesselector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPackageLicensesSelector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-ipaymentaccountsselector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4426,6 +4437,17 @@
     <span class="md-ellipsis">
       
         IUsersSelector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-packagelicensesselector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PackageLicensesSelector
       
     </span>
   </a>
@@ -4933,7 +4955,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>214</code></span><span><b>Test classes</b><code>149</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>216</code></span><span><b>Test classes</b><code>150</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4994,7 +5016,7 @@
 <li>
 <p><strong><a href="#domain-setup">Setup</a></strong></p>
 <hr />
-<p>24 classes</p>
+<p>26 classes</p>
 <p><a href="#domain-setup-controller">Controllers</a> · <a href="#domain-setup-domain">Domains</a> · <a href="#domain-setup-selector">Selectors</a> · <a href="#domain-setup-service">Services</a></p>
 </li>
 <li>
@@ -12975,12 +12997,13 @@
 <p class="fn-entry__src"><code>setup/<wbr>controller/<wbr>LicenseController.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Internal-only licence read for the Lightning tab shells. One cacheable method, one boolean.</p>
+<p>Internal-only licence reads for the Lightning tab shells and the Settings console: the seat gate (getLicenseStatus, cacheable) and the org's seat summary (getSeatSummary, live).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The four Tab-level consoles (lexFundraisersConsole, lexFundraisingSettings, lexDiagnosticLogs, lexDonationMonitor) each call getLicenseStatus() on load and swap in the uiLicenseNotice panel when <code>licensed</code> comes back false. The verdict itself lives in <a href="#apex-licenseservice"><code>LicenseService</code></a> (fail-open — see its header); this class only carries it across the wire in the standard { success, data } envelope.</p>
 <p>DELIBERATELY a separate controller rather than a field on <a href="#apex-uiconfigcontroller-getuiconfig"><code>UiConfigController.getUiConfig</code></a>(): that payload is dual-use — Fundraising_GuestDonor grants it, and eleven guest-facing bundles read it — and donors never need a licence, so the licence read must not ride on anything a guest page loads. This class is granted to Fundraising_Admin and Fundraising_User only, never to the guest permission set.</p>
-<p>cacheable=true is safe here, unlike the setup-panel reads: the answer changes only when an admin (re)assigns a package licence in Setup, and a page reload after that is an acceptable cost for saving a server round-trip on every tab open.</p>
+<p>cacheable=true is safe on getLicenseStatus, unlike the setup-panel reads: the answer changes only when an admin (re)assigns a package licence in Setup, and a page reload after that is an acceptable cost for saving a server round-trip on every tab open. When the verdict is licensed:false the payload also carries <code>reason</code> (no_seat | expired | suspended) and <code>portalUrl</code>, which uiLicenseNotice uses to pick its copy and its "Manage subscription" link; a licensed verdict carries neither, so the shells' <code>licensed === false</code> gate is unchanged.</p>
+<p>getSeatSummary() is deliberately NOT cacheable: it feeds the "Licence &amp; Seats" settings panel, which an admin opens right after assigning seats in Setup and expects to see the new count without a hard reload (the setup-panel rule).</p>
 </div>
 <table>
 <thead>
@@ -12993,6 +13016,11 @@
 <tbody>
 <tr>
 <td><a id="apex-licensecontroller-getlicensestatus"></a><code>getLicenseStatus(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td><code>@AuraEnabled</code></td>
+</tr>
+<tr>
+<td><a id="apex-licensecontroller-getseatsummary"></a><code>getSeatSummary(0 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
@@ -13350,6 +13378,7 @@
 <p>The donation-pipeline monitor's two methods (getStuckDonations, retryDonationStagingNow) used to live here and moved to <a href="#apex-donationmonitorcontroller"><code>DonationMonitorController</code></a> on 2026-08-14, with the LWC, when the monitor became its own Lightning tab. They had to leave: this class is granted to Fundraising_Admin only, because it is the sole entry point behind every settings panel, and the monitor is meant for program staff who must never reach the console. Do not add monitor methods back here.</p>
 <p>There is no deletePaymentAccount counterpart. A payment account cannot be deleted at all — the <a href="#apex-paymentaccounts"><code>PaymentAccounts</code></a> domain class refuses every delete — so the console offers deactivation (Is_Active__c) instead. See audit finding F-124.</p>
 <p>The diagnostic-log read (getRecentLogs) used to live here and moved to <a href="#apex-diagnosticlogcontroller"><code>DiagnosticLogController</code></a> on 2026-08-15, with the list itself, when reading Log__c became its own Diagnostic Logs tab. It had to leave for the same reason the donation monitor did: this class is granted to Fundraising_Admin only, because it is the sole entry point behind every settings panel, and troubleshooting staff must be able to read logs without being handed the console. getRecentErrorLogs above stays — it reads Transaction_Log__c (the Stripe callout audit trail) for the Logging panel's own error list, not Log__c.</p>
+<p>Health row <code>package_license</code>: pass when the package is source-deployed (no row to check), on a site licence, or with seats to spare; warn when the licence expires within <a href="#apex-licenseservice"><code>LicenseService</code></a>.EXPIRY_WARNING_DAYS or fewer than two seats remain; fail when it has expired. Never fixable from here — seats are bought on the publisher's subscription portal and assigned in Setup.</p>
 <p>No 'experience_site' branch. It used to return CreateExperienceSite().doExecute(), whose payload is a CLI command rather than a created site — the callers treat any non-error return as "fixed", so the panel claimed success and nothing happened. Site creation is not automatable; setSite still calls createExperienceSite() to FETCH that command, which is honest, and is the only remaining caller.</p>
 <p>The silent fall-through this replaces is what let the site button lie. Both callers (setGetStarted.handleFix, setHealth.handleFix) toast "Applied the recommended fix" on ANY non-error return, so an itemId with no branch — a removed fixer, a typo, a step whose fix was never written — reported success and did nothing. An unknown id is now an error the admin can see, which is the only honest answer when nothing was repaired.</p>
 <p>The ordered, live-checked post-install checklist behind the Get Started panel. Each step reports its own status from the org rather than from a stored "done" flag, so an admin who undoes a step (deactivates the last payment account, aborts the cron jobs) sees it reopen. That is deliberate: there is no Setup_Step_Complete__c field anywhere, and there should not be one — a checklist that remembers being ticked lies the moment the org drifts.</p>
@@ -13778,6 +13807,17 @@
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
+<h4 id="apex-ipackagelicensesselector">IPackageLicensesSelector<a class="headerlink" href="#apex-ipackagelicensesselector" title="Permanent link">#</a></h4>
+<p><code>interface</code> · <code>public</code></p>
+<p>extends fflib_ISObjectSelector</p>
+<p class="fn-entry__src"><code>setup/<wbr>selector/<wbr>IPackageLicensesSelector.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Selector contract for the subscriber org's PackageLicense rows — the platform's own record of how many seats this package has, how many are used, and when the licence expires.</p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="apex-ipaymentaccountsselector">IPaymentAccountsSelector<a class="headerlink" href="#apex-ipaymentaccountsselector" title="Permanent link">#</a></h4>
 <p><code>interface</code> · <code>public</code></p>
 <p>extends fflib_ISObjectSelector</p>
@@ -13793,6 +13833,52 @@
 <p class="fn-entry__src"><code>setup/<wbr>selector/<wbr>IUsersSelector.cls</code></p>
 </div>
 <div class="fn-entry__body"></div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-packagelicensesselector">PackageLicensesSelector<a class="headerlink" href="#apex-packagelicensesselector" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p>extends fflib_SObjectSelector · implements <a href="#apex-ipackagelicensesselector">IPackageLicensesSelector</a></p>
+<p class="fn-entry__src"><code>setup/<wbr>selector/<wbr>PackageLicensesSelector.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Selector for PackageLicense — the read-only platform object a subscriber org holds for every installed managed package. It carries the seat count, seats used, status and expiry that the Settings console's "Licence &amp; Seats" panel and the Health Check's package_license row display.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>PackageLicense is queryable but never createable/updateable (verified by describe at API 67.0), so this selector is read-only by construction. There is at most one row per namespace in an org. A source-deployed dev org has none — every consumer treats "no row" as "not an installed package", never as an error (<a href="#apex-licenseservice-getseatsummary"><code>LicenseService.getSeatSummary</code></a>()). AllowedLicenses = -1 means a site-wide (unlimited) licence; ExpirationDate null means the licence never expires. A plain install with no LMA licence record reads Status=Free, AllowedLicenses=-1, UsedLicenses=0 — i.e. it looks unlimited, which is the fail-open shape <a href="#apex-licenseservice"><code>LicenseService</code></a> relies on. USER_MODE: PackageLicense is a Setup object every authenticated user can read, so no SYSTEM_MODE escape is needed here; if a subscriber's profile somehow could not read it the caller's catch turns that into installed:false and the console shows nothing alarming.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-packagelicensesselector-newinstance"></a><code>newInstance(0 args)</code></td>
+<td><code>[IPackageLicensesSelector](#apex-ipackagelicensesselector)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-packagelicensesselector-getsobjecttype"></a><code>getSObjectType(0 args)</code></td>
+<td><code>Schema.SObjectType</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-packagelicensesselector-getsobjectfieldlist"></a><code>getSObjectFieldList(0 args)</code></td>
+<td><code>List&lt;Schema.SObjectField&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-packagelicensesselector-selectbynamespace"></a><code>selectByNamespace(1 arg)</code></td>
+<td><code>List&lt;PackageLicense&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
@@ -15353,13 +15439,19 @@
 </div>
 <div class="fn-entry__body">
 <p>Answers one question: does the running user hold a seat on this package's licence?</p>
-<p>Static utility (like <a href="#apex-donorresolutionservice"><code>DonorResolutionService</code></a>), not an <a href="#apex-application"><code>Application</code></a>.Service binding — it holds no state beyond a per-transaction cache and has exactly one read-only method.</p>
+<p>Static utility (like <a href="#apex-donorresolutionservice"><code>DonorResolutionService</code></a>), not an <a href="#apex-application"><code>Application</code></a>.Service binding — it holds no state beyond a per-transaction cache. Three read-only entry points: isCurrentUserLicensed() (the seat gate), getSeatSummary() (the org's PackageLicense row, for the Settings console and the Health Check) and blockReason() (why a blocked user is blocked, for uiLicenseNotice's copy).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Why this exists at all: Salesforce's per-seat licensing (LMA) caps how many users an admin can ASSIGN, and blocks unlicensed users from packaged Apex entry points "in most cases" — but packaged Lightning web components are NOT licence-enforced by the platform. Without an in-app check, an org could buy one seat and run every console tab for its whole staff. Salesforce's documented ISV pattern is UserInfo.isCurrentUserLicensed(namespace) in an Apex controller, with the component deciding what to render — which is exactly what this class feeds, through <a href="#apex-licensecontroller-getlicensestatus"><code>LicenseController.getLicenseStatus</code></a>().</p>
 <p>FAIL OPEN, always. Every path that cannot positively prove "unlicensed" answers true: an org with no namespace (the dev scratch org, where the package is source-deployed rather than installed) is licensed; an exception from the platform call is licensed. The check exists to nudge honest orgs toward buying seats, and a licensing bug must degrade to "everything works" — never to a paying customer locked out of their own donation data. Guest/donor surfaces never consult this class at all: donors and event attendees never need a licence, and no guest controller may ever call it.</p>
+<p>getSeatSummary() reads the org's PackageLicense row through <a href="#apex-packagelicensesselector"><code>PackageLicensesSelector</code></a> (USER_MODE) and shapes it for the "Licence &amp; Seats" settings panel and the Health Check's package_license row. It fails open in the same spirit: any exception, or no row at all (a source-deployed dev org), is reported as installed:false and nothing else — a display surface must never invent a problem the platform did not report.</p>
+<p>subscriptionPortalUrl() is where a blocked user or an admin is sent to buy or manage seats. It comes from the packaged custom label Subscription_Portal_Url (upgradeable by a package version, never edited in the subscriber org) with the subscriber's Org Id appended as ?org=, so the publisher's billing site can pre-fill which LMA licence to act on. The Org Id is not a secret — it is on every Setup page — and nothing else about the org is sent.</p>
+<p>Days-to-expiry at or under which the Health Check turns the package_license row amber. Thirty days matches the renewal-notice window on the publisher's billing site.</p>
+<p>A blocked user's reason, consumed by uiLicenseNotice to choose its copy. Only ever meaningful when isCurrentUserLicensed() is false.</p>
+<p>Test seam for the PackageLicense read: the object cannot be inserted, so tests hand the summary path a synthetic row (or none) instead of depending on the org they run in.</p>
 <p>Test seam for the final verdict (the <a href="#apex-settingsservice"><code>SettingsService</code></a> *Override idiom) — packaged tests must pass in both a licensed and an unlicensed org, so they pin the answer rather than depend on the org the suite happens to run in.</p>
 <p>Test seam for the namespace lookup: the dev org describes to an empty prefix, so forcing one here is the only way a test can reach the UserInfo call (and its fail-open catch — 'pledgivo' is not an installed licence in the dev org, so the platform call throws and the catch is exercised for real).</p>
+<p>PackageLicense.Status is documented as Active, Expired, Free or Trial; the platform flips it to Expired when the LMA licence lapses, so the status is trusted alongside the date, and a suspended LMA licence is reported as Suspended by the same field.</p>
 <p>Derived from a describe at runtime, never hardcoded — the same idiom as <a href="#apex-controlleraction"><code>ControllerAction</code></a>.unprefixed(): a namespaced org describes Settings__c as ns__Settings__c (two "__"), an unmanaged org as Settings__c (one). Returns the bare namespace ('pledgivo'), which is what UserInfo.isCurrentUserLicensed() takes.</p>
 </div>
 <table>
@@ -15374,6 +15466,26 @@
 <tr>
 <td><a id="apex-licenseservice-iscurrentuserlicensed"></a><code>isCurrentUserLicensed(0 args)</code></td>
 <td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-licenseservice-getseatsummary"></a><code>getSeatSummary(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-licenseservice-blockreason"></a><code>blockReason(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-licenseservice-subscriptionportalurl"></a><code>subscriptionPortalUrl(0 args)</code></td>
+<td><code>String</code></td>
 <td></td>
 </tr>
 </tbody>

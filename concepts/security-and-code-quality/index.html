@@ -1998,20 +1998,12 @@ demonstrably needs. A guest submission is written as a staging row and picked up
 job running in an authenticated context — a guest cannot create a Contact or an Opportunity, and
 cannot read one back.</p>
 <h2 id="the-latest-scan">The latest scan<a class="headerlink" href="#the-latest-scan" title="Permanent link">#</a></h2>
-<p class="fn-chip">Scanned 2 September 2026 · Code Analyzer 0.53.0 · rule selector <code>Recommended</code></p>
+<p class="fn-chip">Scanned 28 September 2026 · Code Analyzer 0.53.0 · rule selector <code>Recommended</code></p>
 
 <p>Engines: PMD, ESLint (including the LWC and SLDS rule sets), CPD, RetireJS, and Code Analyzer's
 regex engine. Scope is <code>base/</code> — the packaged source, and only that. The gate measures what a
 subscriber installs, so a red build always means the product has a problem, never that a local
-build script does. The build and setup scripts, the widget source and the documentation generators
-were in scope until 2 September 2026 and contributed 13 findings between them; dropping them is why
-the totals below are slightly lower than the previous scan's. A further eight Low findings went the
-same day without being descoped: five were fixed — three unfiltered SOQL reads in the post-install
-and setup paths, and an SLDS grid class this package was overriding instead of owning — and three
-were given a written verdict and suppressed against that one file and that one rule, so each rule
-carries on enforcing everywhere else. The Low count below falls by five rather than eight, because
-the regression tests written for those fixes are themselves three more test methods without a
-<code>System.runAs</code> wrapper, which is the largest style rule in the table further down.</p>
+build script does.</p>
 <table>
 <thead>
 <tr>
@@ -2026,69 +2018,100 @@ the regression tests written for those fixes are themselves three more test meth
 </tr>
 <tr>
 <td>High</td>
-<td>44</td>
+<td>26</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td>3,622</td>
+<td>1,260</td>
 </tr>
 <tr>
 <td>Low</td>
-<td>17,503</td>
+<td>118</td>
 </tr>
 <tr>
 <td>Info</td>
-<td>895</td>
+<td>138</td>
 </tr>
 </tbody>
 </table>
-<p><strong>22,064 total</strong> — and that number needs explaining rather than burying, because five style rules
-account for nearly nine-tenths of it:</p>
+<p><strong>1,542 total</strong>, down from 22,064 on 2 September. Almost none of that drop came from switching
+rules off. Most of it was fixed in the code:</p>
+<ul>
+<li><strong>Every public class, method and property now has an ApexDoc block</strong>, vendored FFLib and the
+  test classes included (2,411 findings on 28 September, now 0).</li>
+<li><strong>Field declarations come before methods</strong> in every class (0 remaining).</li>
+<li><strong>The vendored FFLib source was normalised</strong> to the package's own whitespace, brace and
+  annotation-casing style (<code>NoMixedIndentation</code>, <code>NoTrailingWhitespace</code> and
+  <code>AnnotationsNamingConventions</code> are all at 0). That reformatting changed layout only, and the
+  full Apex suite passes on the result.</li>
+</ul>
+<p>Two rules are disabled in <code>code-analyzer.yml</code>, and each has its reason written next to it. Neither
+is a security rule, and neither runs under the <code>AppExchange</code> + <code>Recommended:Security</code> selectors
+the AppExchange reviewer uses:</p>
 <table>
 <thead>
 <tr>
 <th>Rule</th>
-<th>Count</th>
-<th>What it is</th>
+<th>Findings when disabled</th>
+<th>Why it does not apply here</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>slds/no-hardcoded-values-slds2</code></td>
-<td>11,119</td>
-<td>Literal CSS values. Every one is the <em>fallback half</em> of the <code>var(--token, value)</code> pattern this package requires, so a campaign's own branding wins when it sets a token and the intended design renders when it doesn't. <strong>Auto-fixing these would break theming for every campaign that overrides a token.</strong> They are reported and deliberately kept.</td>
+<td>12,606</td>
+<td>Asks for every literal CSS value to become an SLDS styling hook. This package styles with its own <code>--pf-*</code> tokens, where the literal is the <em>fallback half</em> of the <code>var(--token, value)</code> pattern: a campaign's own branding wins when it sets a token, and the intended design renders when it doesn't. The rule cannot be satisfied without giving up theming, and <strong>its auto-fix would break every campaign that overrides a token.</strong></td>
 </tr>
 <tr>
 <td><code>ApexUnitTestClassShouldHaveRunAs</code></td>
-<td>2,694</td>
-<td>A preference that every test method wrap itself in <code>System.runAs</code>. Test-only; no shipped behaviour.</td>
-</tr>
-<tr>
-<td><code>ApexDoc</code></td>
-<td>2,255</td>
-<td>Missing doc blocks on individual members. Class-level doc blocks are what the published code reference is generated from, and those are required by the project's own rules.</td>
-</tr>
-<tr>
-<td><code>NoMixedIndentation</code></td>
-<td>2,037</td>
-<td>Whitespace.</td>
-</tr>
-<tr>
-<td><code>AnnotationsNamingConventions</code></td>
-<td>1,319</td>
-<td>Annotation casing. Whitespace's cousin.</td>
+<td>3,064</td>
+<td>Reports every test method that doesn't wrap itself in <code>System.runAs</code>. That's one finding per method, and none of them is in shipped code. Tests whose result depends on who is running them (CRUD/FLS, sharing, guest access) already run as a constructed user.</td>
 </tr>
 </tbody>
 </table>
-<p>None of those five is a defect, and none of them can be. What matters is the severity split above,
-and the eight findings below.</p>
+<p>What remains is mostly design-size advice:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CyclomaticComplexity</code></td>
+<td>201</td>
+</tr>
+<tr>
+<td><code>ExcessiveParameterList</code></td>
+<td>170</td>
+</tr>
+<tr>
+<td><code>CognitiveComplexity</code></td>
+<td>143</td>
+</tr>
+<tr>
+<td><code>EmptyStatementBlock</code></td>
+<td>123</td>
+</tr>
+<tr>
+<td><code>DetectCopyPasteForApex</code></td>
+<td>116</td>
+</tr>
+<tr>
+<td><code>UnusedLocalVariable</code></td>
+<td>110</td>
+</tr>
+</tbody>
+</table>
+<p>None of those six is a defect. What matters is the severity split above, and the findings below.</p>
 <h3 id="two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Two rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
 <p><code>code-analyzer.yml</code> re-registers two PMD rules through a custom ruleset
 (<code>scripts/lint/pmd/pledgivo-conventions.xml</code>) so that they test what they are meant to test:</p>
 <ul>
 <li><strong><code>MethodNamingConventions</code></strong> rejected the <code>test_thing_doesThing</code> naming used throughout the
   test suite, which is a deliberate convention, not an accident — 2,601 findings, none of them
-  actionable. Retuned to this project's <code>testPattern</code>, it reports 4.</li>
+  actionable. Retuned to this project's <code>testPattern</code>, it reports none.</li>
 <li><strong><code>ApexUnitTestClassShouldHaveAsserts</code></strong> only recognises <code>System.assert*</code> and <code>Assert.*</code>. Most
   service, domain and selector tests here assert through fflib-apex-mocks, where
   <code>mocks.verify(uow, 1).commitWork()</code> <em>is</em> the assertion — it throws when the interaction did not
@@ -2098,9 +2121,9 @@ and the eight findings below.</p>
 <p>Both rules are still enforcing: a method named badly and a test that neither asserts nor verifies
 are both still reported. That was checked against a deliberately bad fixture rather than assumed,
 because a mis-registered custom rule and a correctly-registered one look identical on a clean
-tree — both produce zero findings. The remaining 19 are all in vendored FFLib.</p>
+tree — both produce zero findings. The 15 that remain are all in vendored FFLib's own tests.</p>
 <h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
-<p>The analyzer tags 25 findings across the whole package as security-relevant (scan of 2026-09-25,
+<p>The analyzer tags 24 findings across the whole package as security-relevant (scan of 2026-09-28,
 <code>AppExchange</code> + <code>Recommended:Security</code> rule selectors — the same command the AppExchange reviewer
 runs). All of them are listed here with a verdict; each one is also recorded in the project's
 triage record or annotated in the code itself.</p>
@@ -2150,7 +2173,7 @@ triage record or annotated in the code itself.</p>
 <code>innerHTML</code> write (the QR code is now a template-bound <code>&lt;svg&gt;</code> path, so there is no DOM sink at
 all), and eight credential-shaped identifier names that were renamed to say what they actually
 hold (a Named Credential <em>endpoint</em>, a setup-checklist label, an email closing).</p>
-<p>The 41 remaining High findings are none of them security-tagged: every one of them is inside
+<p>The other 24 High findings are none of them security-tagged: every one of them is inside
 vendored FFLib, which this package carries as source so that installing it does not force you to
 install a library first.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a

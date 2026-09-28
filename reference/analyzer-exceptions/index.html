@@ -1895,22 +1895,22 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">1,516</td>
+<td style="text-align: right;">1,260</td>
 <td>22 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">18,199</td>
+<td style="text-align: right;">118</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">135</td>
+<td style="text-align: right;">138</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>19,876</strong></td>
+<td style="text-align: right;"><strong>1,542</strong></td>
 <td><strong>48 individually justified</strong></td>
 </tr>
 </tbody>
@@ -1966,17 +1966,17 @@ defined in the triage file, not chosen per-run.</p>
 <tbody>
 <tr>
 <td><code>base/main/default/classes/donation/domain/DonationDesignations.cls</code></td>
-<td>25</td>
+<td>36</td>
 <td>Designation total rollup. Without the opt-out the rollup silently stops recomputing fund totals for non-admin users.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/donor/domain/Contacts.cls</code></td>
-<td>28</td>
+<td>52</td>
 <td>Donor rollup (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c), behind <code>suppressTriggerCrudCheck</code>, which only CampaignService's rollup commit sets and restores in <code>finally</code>. Without it a staff user who can edit a donation but not a Contact cannot close a gift.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/recurring/domain/RecurringDonations.cls</code></td>
-<td>41</td>
+<td>61</td>
 <td>Same call, behind the explicit <code>suppressTriggerCrudCheck</code> flag rather than unconditional.</td>
 </tr>
 </tbody>
@@ -2003,7 +2003,7 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactory.cls</code></td>
-<td>179</td>
+<td>180</td>
 <td>Upstream overrides <code>equals</code> without <code>hashCode</code>. QueryFactory instances are never used as Map keys or Set members anywhere in this package.</td>
 </tr>
 <tr>
@@ -2013,22 +2013,22 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWork.cls</code></td>
-<td>318, 640, 912, 920, 921, 929, 930, 938, 984, 992</td>
+<td>442, 767, 1039, 1047, 1048, 1056, 1057, 1065, 1111, 1119</td>
 <td>Ten sites, all reading only <code>getName()</code> to key the per-type work maps.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWorkTest.cls</code></td>
-<td>941, 1002</td>
+<td>945, 1026</td>
 <td>Two sites in upstream's own test class.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjects.cls</code></td>
-<td>59</td>
+<td>70</td>
 <td>Stores the describe on the domain base class for subclass use.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectsTest.cls</code></td>
-<td>41</td>
+<td>42</td>
 <td>Reads only <code>getKeyPrefix()</code>.</td>
 </tr>
 </tbody>
@@ -2077,7 +2077,7 @@ defined in the triage file, not chosen per-run.</p>
 <tbody>
 <tr>
 <td><code>base/main/default/classes/setup/controller/PostInstallHandler.cls</code></td>
-<td>164</td>
+<td>254</td>
 <td>Seeds <code>Settings__c.Email_Signature__c</code> with <code>'The &lt;org name&gt; team'</code> on first install — an email sign-off.</td>
 </tr>
 </tbody>
@@ -2224,7 +2224,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 19,828 findings are Moderate, Low and Info style and maintainability
+<p>The other 1,494 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2236,26 +2236,6 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>eslint:@salesforce-ux/slds/no-hardcoded-values-slds2</code></td>
-<td>Low</td>
-<td style="text-align: right;">12,606</td>
-</tr>
-<tr>
-<td><code>pmd:ApexUnitTestClassShouldHaveRunAs</code></td>
-<td>Low</td>
-<td style="text-align: right;">3,064</td>
-</tr>
-<tr>
-<td><code>pmd:ApexDoc</code></td>
-<td>Low</td>
-<td style="text-align: right;">2,411</td>
-</tr>
-<tr>
-<td><code>pmd:FieldDeclarationsShouldBeAtStart</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">256</td>
-</tr>
 <tr>
 <td><code>pmd:CyclomaticComplexity</code></td>
 <td>Moderate</td>
@@ -2311,6 +2291,26 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td>Low</td>
 <td style="text-align: right;">54</td>
 </tr>
+<tr>
+<td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
+<td>Low</td>
+<td style="text-align: right;">46</td>
+</tr>
+<tr>
+<td><code>eslint:@lwc/lwc-platform/no-inline-disable</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr>
+<td><code>pmd:ClassNamingConventions</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr>
+<td><code>pmd:AvoidHardcodingId</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">27</td>
+</tr>
 </tbody>
 </table>
 <p>The single largest group is the SLDS hardcoded-value rule. Those hits are the <em>fallback</em>
@@ -2350,7 +2350,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>19,876 (after declared path exclusions)</td>
+<td>1,542 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

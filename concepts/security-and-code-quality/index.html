@@ -1589,10 +1589,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
+  <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Two rules are measured against this project's conventions, not PMD's defaults
+        Three rules are measured against this project's conventions, not PMD's defaults
       
     </span>
   </a>
@@ -1862,10 +1862,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
+  <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Two rules are measured against this project's conventions, not PMD's defaults
+        Three rules are measured against this project's conventions, not PMD's defaults
       
     </span>
   </a>
@@ -2018,11 +2018,11 @@ build script does.</p>
 </tr>
 <tr>
 <td>High</td>
-<td>26</td>
+<td>22</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td>1,260</td>
+<td>1,031</td>
 </tr>
 <tr>
 <td>Low</td>
@@ -2030,11 +2030,11 @@ build script does.</p>
 </tr>
 <tr>
 <td>Info</td>
-<td>138</td>
+<td>137</td>
 </tr>
 </tbody>
 </table>
-<p><strong>1,542 total</strong>, down from 22,064 on 2 September. Almost none of that drop came from switching
+<p><strong>1,308 total</strong>, down from 22,064 on 2 September. Almost none of that drop came from switching
 rules off. Most of it was fixed in the code:</p>
 <ul>
 <li><strong>Every public class, method and property now has an ApexDoc block</strong>, vendored FFLib and the
@@ -2044,6 +2044,9 @@ rules off. Most of it was fixed in the code:</p>
   annotation-casing style (<code>NoMixedIndentation</code>, <code>NoTrailingWhitespace</code> and
   <code>AnnotationsNamingConventions</code> are all at 0). That reformatting changed layout only, and the
   full Apex suite passes on the result.</li>
+<li><strong>Unused local variables are gone</strong> (110 on 28 September, now 0). Where the discarded call
+  mattered (a matcher registration, a call expected to throw), the call was kept and only the
+  variable dropped.</li>
 </ul>
 <p>Two rules are disabled in <code>code-analyzer.yml</code>, and each has its reason written next to it. Neither
 is a security rule, and neither runs under the <code>AppExchange</code> + <code>Recommended:Security</code> selectors
@@ -2091,22 +2094,24 @@ the AppExchange reviewer uses:</p>
 <td>143</td>
 </tr>
 <tr>
-<td><code>EmptyStatementBlock</code></td>
-<td>123</td>
-</tr>
-<tr>
 <td><code>DetectCopyPasteForApex</code></td>
-<td>116</td>
+<td>115</td>
 </tr>
 <tr>
-<td><code>UnusedLocalVariable</code></td>
-<td>110</td>
+<td><code>AvoidBooleanMethodParameters</code></td>
+<td>98</td>
+</tr>
+<tr>
+<td><code>FieldNamingConventions</code></td>
+<td>77</td>
 </tr>
 </tbody>
 </table>
-<p>None of those six is a defect. What matters is the severity split above, and the findings below.</p>
-<h3 id="two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Two rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
-<p><code>code-analyzer.yml</code> re-registers two PMD rules through a custom ruleset
+<p>None of those six is a defect. The last two ask for renamed fields and changed method signatures
+on classes a released version already ships, so they are left as they are rather than changed
+for style. What matters is the severity split above, and the findings below.</p>
+<h3 id="three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Three rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
+<p><code>code-analyzer.yml</code> re-registers three PMD rules through a custom ruleset
 (<code>scripts/lint/pmd/pledgivo-conventions.xml</code>) so that they test what they are meant to test:</p>
 <ul>
 <li><strong><code>MethodNamingConventions</code></strong> rejected the <code>test_thing_doesThing</code> naming used throughout the
@@ -2117,6 +2122,11 @@ the AppExchange reviewer uses:</p>
   <code>mocks.verify(uow, 1).commitWork()</code> <em>is</em> the assertion — it throws when the interaction did not
   happen. PMD counted 200 mock-verified tests as having none. Widened to accept mock verification
   and this repo's named assertion helpers, it reports 15.</li>
+<li><strong><code>EmptyStatementBlock</code></strong> reported 123 empty bodies that the language or the architecture
+  requires: overrides of a deliberately abstract hook, interface methods a class does not need,
+  virtual hooks, and private no-arg constructors. Retuned to skip those shapes, it still reports
+  every empty <code>if</code>, loop or plain method, and finds 4: the explicit no-arg constructors of two
+  vendored FFLib error classes.</li>
 </ul>
 <p>Both rules are still enforcing: a method named badly and a test that neither asserts nor verifies
 are both still reported. That was checked against a deliberately bad fixture rather than assumed,
@@ -2173,7 +2183,7 @@ triage record or annotated in the code itself.</p>
 <code>innerHTML</code> write (the QR code is now a template-bound <code>&lt;svg&gt;</code> path, so there is no DOM sink at
 all), and eight credential-shaped identifier names that were renamed to say what they actually
 hold (a Named Credential <em>endpoint</em>, a setup-checklist label, an email closing).</p>
-<p>The other 24 High findings are none of them security-tagged: every one of them is inside
+<p>The other 20 High findings are none of them security-tagged: every one of them is inside
 vendored FFLib, which this package carries as source so that installing it does not force you to
 install a library first.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a

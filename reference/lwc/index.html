@@ -158,7 +158,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.2.0-1</span>
+          <span class="fn-brand__ver">1.2.0-2</span>
         
       </a>
 
@@ -1753,6 +1753,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#publicpagenotfound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page Not Found
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#publicthankyou" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2958,7 +2969,7 @@
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Lightning web component, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>104</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>105</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -2971,8 +2982,8 @@
 <li>
 <p><strong><a href="#group-public">Public (Experience Cloud guest pages)</a></strong></p>
 <hr />
-<p>7 bundles</p>
-<p><a href="#publiccampaigngallery">Campaign Gallery</a> · <a href="#publicdonationreceipt">Donation Receipt</a> · <a href="#publicdonordashboard">Donor Dashboard</a> · <a href="#publiceventregistration">Event Registration</a> · <a href="#publiceventtickets">Event Tickets</a> · <a href="#publicfundraisingexperience">Public Fundraising Experience</a> · <a href="#publicthankyou">Thank You</a></p>
+<p>8 bundles</p>
+<p><a href="#publiccampaigngallery">Campaign Gallery</a> · <a href="#publicdonationreceipt">Donation Receipt</a> · <a href="#publicdonordashboard">Donor Dashboard</a> · <a href="#publiceventregistration">Event Registration</a> · <a href="#publiceventtickets">Event Tickets</a> · <a href="#publicfundraisingexperience">Public Fundraising Experience</a> · <a href="#publicpagenotfound">Page Not Found</a> · <a href="#publicthankyou">Thank You</a></p>
 </li>
 <li>
 <p><strong><a href="#group-lex">Lex (internal Lightning Experience)</a></strong></p>
@@ -3213,6 +3224,27 @@
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
+<h4 id="publicpagenotfound">Page Not Found<a class="headerlink" href="#publicpagenotfound" title="Permanent link">#</a></h4>
+<p><code>publicPageNotFound</code></p>
+<p><code>exposed</code> · <code>Page, Default</code></p>
+</div>
+<div class="fn-entry__body">
+<p>The fundraising site's page-not-found message. Drop it onto the site's Error page in Experience Builder in place of the default text; it links donors to the open fundraisers and the donor portal.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The fundraising site's page-not-found message. An Enhanced LWR site renders its Error page for any URL that matches no route — a mistyped campaign slug, a link to a page that was removed, an old bookmark. Out of the box that page is one line of rich text reading "Invalid Page", with no way back into the site. This component replaces it.</p>
+<p>Routes and pages cannot be packaged (Experience Cloud routes deploy but never ship in a 2GP), so installing the package does not put this on the Error page. The admin drags it there once in Experience Builder: Pages -&gt; Error -&gt; delete the default text -&gt; drag "Page Not Found" into the content region -&gt; Publish. The step is in the Experience Cloud setup guide.</p>
+<p>Guest surface: it reads no donor data and never consults LicenseService (AGENTS.md Rule 10). It makes the same two cacheable reads the thank-you page makes: getUiConfig for the trust strip's organization name, mark and tax ID, and getOrgDefaultTheme so the page wears the org's default design instead of the shipped palette.</p>
+<p>The requested path is echoed back so a donor can see the typo they made. It is read from window.location and bound as template text, so the platform escapes it — it is never written as markup.</p>
+<p>donorPortalPath — the donor portal page's path on this site, without the site prefix (default "donor", the route the package's setup script creates). Blank hides both portal links, for an org that has not published the portal.</p>
+<p>The page opens with the same trust strip as the thank-you page (c/<a href="#pftrustbar"><code>pfTrustbar</code></a>), fed from the same cacheable getUiConfig read, so a donor who mistypes a link still lands on a page that carries the organization's name and mark rather than a bare canvas.</p>
+<p>This is the whole Error page, so the Builder section around it gives up its padding — otherwise the canvas and its glows stop short of the page edges — its clip, so the canvas can cover the platform's empty line below the section (see the .nf-page rule in the stylesheet), and the theme's content-width cap, so the trust strip and canvas reach both edges of a screen wider than 1800px.</p>
+</div>
+<p><strong><code>@api</code> properties:</strong> <code>donorPortalPath</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="publicthankyou">Thank You<a class="headerlink" href="#publicthankyou" title="Permanent link">#</a></h4>
 <p><code>publicThankYou</code></p>
 <p><code>exposed</code> · <code>Page, Default</code></p>
@@ -3229,7 +3261,7 @@
 <p>Set on the HOST, not on a wrapper div: this component declares its own primitives on :host as var(--pf-…, fallback), and a custom property is substituted on the element that declares it. See c/<a href="#uipagetheme"><code>uiPageTheme</code></a>.</p>
 <p>The footer's two payloads come off getThankYou, not off getUiConfig, because they are campaign-resolved: a campaign may override the support email, the phone, the terms and privacy links and the footer line. getUiConfig is cacheable and campaign-blind — bolting these onto it would hand every campaign the same footer and, worse, make a cacheable method read a record, which its own class header rules out.</p>
 <p>Site-absolute, via c/<a href="#pfsitepath"><code>pfSitePath</code></a>: href="/" pointed at the domain root, which on a prefixed site is not this site at all.</p>
-<p>This page is the whole route, not a block on one, so the Experience Builder section wrapping it must give up its padding — otherwise the paper ground and the footer band both stop 16px short of the glass and the page reads as a card floating on white. The trust bar's 100vw bleed needs the same treatment (the section clips it).</p>
+<p>This page is the whole route, not a block on one, so the Experience Builder section wrapping it must give up its padding — otherwise the paper ground and the footer band both stop 16px short of the glass and the page reads as a card floating on white. The trust bar's 100vw bleed needs the same treatment (the section clips it). The clip is horizontal only (<code>clip visible</code>): the page is at least one viewport tall and pulls its bottom margin in over the platform's empty line below the section (see the .thx-page rule), so a vertical clip would cut its last line of canvas off.</p>
 <p>The route is named here, not just the query string, so it goes through c/pfSitePath — a document-relative 'thank-you?...' would double the segment the moment this page is served with a trailing slash.</p>
 <p>All three are built by c/pfSitePath so they carry the site's URL prefix. Each still returns null when there is nothing to address, and the template hides the link.</p>
 </div>
@@ -4869,7 +4901,7 @@
 <p>Reusable Ember-branded modal shell (header, body, footer, progress) used by the Settings dialogs.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Composed (as &lt;c-ui-modal&gt;) by <a href="#lexfundraisersconsole"><code>lexFundraisersConsole</code></a>'s new/edit fundraiser wizard and by the Settings console panels for their dialogs (<a href="#setpayments"><code>setPayments</code></a>' account editor, <a href="#setrecordtypes"><code>setRecordTypes</code></a>' override editor, <a href="#setdesigns"><code>setDesigns</code></a>' preview and delete confirm) — all tab-hosted. Record-page dialogs use lightning/modal instead. It is the one modal chrome shared across the internal console, kept deliberately separate from the guest-facing Stripe payment iframe (which is never a modal — it is a stable sibling element, see <a href="#dfform"><code>dfForm</code></a>'s doc note on why it must not remount).</p>
+<p>Composed (as &lt;c-ui-modal&gt;) by <a href="#lexfundraisersconsole"><code>lexFundraisersConsole</code></a>'s new/edit fundraiser wizard and by the Settings console panels for their dialogs (<a href="#setpayments"><code>setPayments</code></a>' account editor, <a href="#setrecordtypes"><code>setRecordTypes</code></a>' override editor, <a href="#setdesigns"><code>setDesigns</code></a>' page-design wizard, preview and delete confirm) — all tab-hosted. The two multi-step wizards use size="xl" + flush. Record-page dialogs use lightning/modal instead. It is the one modal chrome shared across the internal console, kept deliberately separate from the guest-facing Stripe payment iframe (which is never a modal — it is a stable sibling element, see <a href="#dfform"><code>dfForm</code></a>'s doc note on why it must not remount).</p>
 <p>size caps the box width - sm 28rem for confirms, md 35rem for short forms, lg 56rem for panel content, xl 72rem for the multi-step wizards whose step bodies are two-column. Anything wider than its content reads as a misfire.</p>
 <p>The backdrop is inert and Escape does nothing: only the X button (and the parent's own footer actions) close the modal. The console's dialogs hold typed input — most of all the multi-step fundraiser wizard — and a stray click outside the box or a stray keypress used to discard all of it with no way back. See the lwc-conventions skill's dismissal rule.</p>
 </div>
@@ -4966,6 +4998,8 @@
 <p>Scoped by walking UP from the calling component's own host to its enclosing sections — never by Builder section id. Those ids (<code>section-eb11</code> …) belong to the org the site was authored in and silently match nothing in a subscriber org, so a managed package must resolve the target from its own position in the DOM.</p>
 <p>Builder re-renders its section chrome after our first paint, restoring the padding we just cleared, so one pass at connectedCallback is not enough. Twelve passes at 350ms covers a little over four seconds — long past the last Builder repaint on a cold load, and it stops on its own rather than leaving an interval running for the life of the page.</p>
 <p>One pass. Exported for a caller that wants to re-apply on a specific event of its own (a route change, a payload swap) rather than only on the timer below.</p>
+<p><code>options.overflow</code> replaces the section's clip (default <code>hidden</code>). Two callers pass it, both because their canvas reaches one line below the section to cover the empty line the platform's hidden region leaves under every page — a vertical clip there leaves a strip of bare page background at the bottom. The page-not-found component passes <code>visible</code> (it has no 100vw bleed to contain); the thank-you page passes <code>clip visible</code>, which keeps the horizontal clip its bleed needs — <code>clip</code>, unlike <code>hidden</code>, does not turn the other axis into a scroller.</p>
+<p><code>options.fullWidth</code> also lifts the site theme's content-width cap (Builder's "Max content width", 1800px by default, published as <code>--dxp-s-section-columns-max-width</code> and read by the section's inner columns). Only the page-not-found component passes it: on a screen wider than the cap, its trust strip and canvas would otherwise stop short of both edges. It overrides the theme token on this section alone, so every other section keeps the admin's setting.</p>
 <p>Call from connectedCallback and keep the returned function; call it from disconnectedCallback. Not optional — an interval that outlives its component keeps a reference to it alive and goes on writing styles onto a section the component has left.</p>
 </div>
 </div>

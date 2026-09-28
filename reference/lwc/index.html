@@ -2768,6 +2768,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#uiherofallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hero Image Fallback Utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#uilicensenotice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2947,7 +2958,7 @@
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Lightning web component, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>103</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>104</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -2996,8 +3007,8 @@
 <li>
 <p><strong><a href="#group-ui">Ui (shared primitives)</a></strong></p>
 <hr />
-<p>19 bundles</p>
-<p><a href="#uiapexerror">Apex Error Formatting Utility</a> · <a href="#uibase">Internal Base Component</a> · <a href="#uiconfirmdialog">Confirm Dialog</a> · <a href="#uidialogstyles">Dialog Shared Styles</a> · <a href="#uifontstacks">Font Stack Allowlist</a> · <a href="#uilicensenotice">Licence Notice</a> · <a href="#uimarkdown">Markdown Renderer</a> · <a href="#uimarkdowneditor">Markdown Editor</a> · <a href="#uimarkdownparser">Markdown Parser</a> · <a href="#uimodal">Ember Modal</a> · <a href="#uimoney">Money Formatting Utility</a> · <a href="#uipagetheme">Page Theme (shared)</a> · <a href="#uiqrcode">QR Code</a> · <a href="#uireceiptdocument">Receipt Document</a> · <a href="#uisectionbleed">Section Bleed Utility</a> · <a href="#uisegmented">Ember Segmented Control</a> · <a href="#uisetupreplica">Setup Screen Replica Styles</a> · <a href="#uistatementprint">Giving Statement Print Utility</a> · <a href="#uitoggle">Ember Toggle</a></p>
+<p>20 bundles</p>
+<p><a href="#uiapexerror">Apex Error Formatting Utility</a> · <a href="#uibase">Internal Base Component</a> · <a href="#uiconfirmdialog">Confirm Dialog</a> · <a href="#uidialogstyles">Dialog Shared Styles</a> · <a href="#uifontstacks">Font Stack Allowlist</a> · <a href="#uiherofallback">Hero Image Fallback Utility</a> · <a href="#uilicensenotice">Licence Notice</a> · <a href="#uimarkdown">Markdown Renderer</a> · <a href="#uimarkdowneditor">Markdown Editor</a> · <a href="#uimarkdownparser">Markdown Parser</a> · <a href="#uimodal">Ember Modal</a> · <a href="#uimoney">Money Formatting Utility</a> · <a href="#uipagetheme">Page Theme (shared)</a> · <a href="#uiqrcode">QR Code</a> · <a href="#uireceiptdocument">Receipt Document</a> · <a href="#uisectionbleed">Section Bleed Utility</a> · <a href="#uisegmented">Ember Segmented Control</a> · <a href="#uisetupreplica">Setup Screen Replica Styles</a> · <a href="#uistatementprint">Giving Statement Print Utility</a> · <a href="#uitoggle">Ember Toggle</a></p>
 </li>
 </ul>
 </div>
@@ -3120,6 +3131,7 @@
 <p>The ticket page is not tied to one look. It wears the same Column_Ratio__c the donation page does, so a black-tie gala, a research symposium and a community 5K are this one component wearing three design records rather than three components. The markup is three grid landmarks — banner, form, aside — placed by named grid areas, so a ratio only has to re-declare <code>grid-template-areas</code>; nothing in the ticket wizard knows or cares where the banner or the order summary ends up.</p>
 <p>A closed page has a banner, one sentence and maybe a story — nothing to put in a second column. It still emits the ratio class, which carries the banner and typography the page should keep; ev-ended only neutralises the grid (see .ev-ended in the stylesheet).</p>
 <p>The seats rail duplicated the banner's own remaining-seats chip, and only ever appeared on the retired Momentum layout mode. With one canonical layout there is no mode to hang it on and no reason to state the same number twice, so it is off everywhere.</p>
+<p>The banner image is a CSS background, and a background the site's content security policy blocks fails silently, leaving the bare gradient where the admin chose a photo. So the campaign's image is painted at once and probed off-DOM; if it cannot load, the banner moves to the packaged theme illustration, then the design's default, then the packaged generic image (c/<a href="#uiherofallback"><code>uiHeroFallback</code></a>). An event with no image keeps the gradient banner.</p>
 <p>These mirror publicFundraisingExperience's section getters one for one, deliberately. Both pages read the same two server keys, so the gating rule — a section shows when its toggle is on AND it has something behind it — is asserted in the same shape on both. The story gate additionally checks for text: a campaign that switched the section on and never wrote anything must render no heading rather than an empty one.</p>
 <p>An event is the case this rule was written for. Before the date, a ticket-holder's next question is how to get in, so Documents leads; once EndDate is past the page's job is reporting on the evening, so Updates leads.</p>
 <p>acceptingDonations is the server's own verdict (Campaign.Accept_Donations_After_End_Date__c — createTicketIntent refuses when it is false), included so the page can never offer a checkout the server would reject. It does not replace isPastEvent: this page has always closed on the day after the event and deliberately still does, which is the STRICTER of the two — an event whose campaign opted to keep taking late gifts still stops selling seats to a night that already happened.</p>
@@ -3181,7 +3193,7 @@
 <p>The inner mix is the floor: a design that picks a white page as well as a white surface would otherwise get pure white back and lose the sunken step entirely, so a few percent of the text ink guarantees the panel still reads as recessed. A design that already chose a non-white surface carries its own tint and is left alone.</p>
 <p>Server-resolved Column_Ratio__c — Campaign.Column_Ratio_Override__c first, then the design's default, then 60/40. One value carries both the proportion and which side the payment box sits on, which is why nothing here has a second "side" input to reconcile.</p>
 <p>One getter drives both the grid template and the source-order reversal, because the ratio value encodes the proportion AND the side: 40/60 is the only value that puts the payment box on the left, so it is the only one that also carries pf-2col--form-left. --pf-col-template itself is deliberately NOT a Theme_Token__mdt entry — it is derived from Column_Ratio__c, and an admin who could set both could desynchronise them.</p>
-<p>Three grounds, and none of them is an empty plate: the campaign's own header image, then the design's Default_Hero_Image_URL__c (PostInstallHandler seeds every packaged design's to the packaged DefaultHeroImage), then --plain, which drops the aspect ratio entirely and shrinks the frame to its copy rather than holding a colored void open. There is no fourth source resolved at render time — Settings' default hero was already stamped onto the design records at install, so reading it again here would be a second answer to a question the payload has already answered.</p>
+<p>Three grounds, and none of them is an empty plate: the campaign's own header image, then the design's Default_Hero_Image_URL__c (PostInstallHandler seeds every packaged design's to the packaged DefaultHeroImage), then --plain, which drops the aspect ratio entirely and shrinks the frame to its copy rather than holding a colored void open. There is no fourth source resolved at render time — Settings' default hero was already stamped onto the design records at install, so reading it again here would be a second answer to a question the payload has already answered. When the chosen image cannot load (a host the site does not trust, a dead link), the hero moves down c/<a href="#uiherofallback"><code>uiHeroFallback</code></a>'s chain and ends on a packaged image, so a configured hero never renders as a broken picture. A hero with nothing configured stays --plain.</p>
 <p>Section toggles resolved server-side (CampaignService.resolveSections) — the campaign's own Show_* flags, each already defaulted. Consumed by the tabbed well below and, from Task 10 on, by c-pf-story / c-pf-section-tabs / c-pf-contact-band.</p>
 <p>Contact and identity arrive already resolved through their per-campaign overrides (CampaignService.resolveContact / resolveIdentity), so the band below is handed finished values and never has to know an override exists.</p>
 <p>The toggle alone is not enough: an org that has filled in neither an email nor a phone anywhere — campaign override or Settings — would otherwise get a band headed "Talk to a real person" with no way to reach one, which is worse than no band. Venue does not count; an address answers "where", not "who do I ask".</p>
@@ -4487,6 +4499,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Composed by <a href="#publicfundraisingexperience"><code>publicFundraisingExperience</code></a> as the shell's hero block and imported directly by <a href="#dfform"><code>dfForm</code></a> (the 3-step donation canvas can render its own hero header without going through the shell). Self-fetches via CampaignController.getCampaignBySlug rather than receiving campaign data as a prop, so either parent only needs to pass campaignSlug. Emits a bubbling, composed <code>donate</code> CustomEvent on CTA click — the host page/shell decides what "donate" means (scroll to an embedded dfForm, or navigate to one) rather than this component owning navigation.</p>
+<p>A CSS background that the site's content security policy blocks fails silently, so the campaign's image is painted at once and probed off-DOM; if it cannot load, the backdrop moves to the packaged theme illustration, then the design's default, then the packaged generic image (c/<a href="#uiherofallback"><code>uiHeroFallback</code></a>). A campaign with no image keeps the brand gradient.</p>
 <p>the gradient runs light-to-dark, matching the direction of the with-image scrim above, because .hero-body is bottom-aligned — its copy always lands on the dark end and takes its ink from --pf-ui-on-dark. Ending on the undarkened brand color (as this did before) put light text on a light primary such as Ember coral.</p>
 <p>Subtype is NOT re-decided here. CampaignService.PROGRESS_BAR_SUBTYPES is the one place that rule lives, and its answer arrives as the showProgressBar prop; this getter only adds the local guard that the campaign actually has a goal to draw against. Until 2026-08-18 (F-42) it excluded Open_Donation on its own, which is how the hero ended up hiding a bar the donation form on the same page was drawing.</p>
 </div>
@@ -4747,6 +4760,23 @@
 <p>The map must stay in step with the picklist value sets on both fields and with the FAMILIES list in scripts/build/fetch-public-fonts.sh — an entry here whose family has no @font-face rule in the PublicFonts static resource silently falls through to the next name in its own stack. 'Modern' is the one deliberate exception: it names no bundled face and resolves to the system UI stack by design.</p>
 <p><a href="#publicfundraisingexperience"><code>publicFundraisingExperience</code></a> and <a href="#publiceventregistration"><code>publicEventRegistration</code></a> still carry private copies of this map that have already drifted apart from each other on Serif/Modern/System. They should be migrated onto this module — that migration changes how those two pages render three picklist values, so it is a deliberate change, not a refactor to slip into an unrelated PR.</p>
 <p>Token in, CSS font-family stack out. Anything unrecognized — blank, 'Inherit', a value an older package version wrote, or an outright injection attempt — returns <code>fallback</code>, so the caller always has a safe string and never has to test the result.</p>
+</div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="uiherofallback">Hero Image Fallback Utility<a class="headerlink" href="#uiherofallback" title="Permanent link">#</a></h4>
+<p><code>uiHeroFallback</code></p>
+<p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Non-exposed JS-only utility module (no markup) that orders the images a public hero or event banner tries, ending in packaged images, so a blocked or dead campaign image never leaves a broken picture.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The ordered list of images a public hero or event banner tries, and a load probe for the surfaces that paint their image as a CSS background.</p>
+<p>A campaign's Header_Image_URL__c and a design's Default_Hero_Image_URL__c can point at any host. The site's content security policy blocks every image host the admin has not added as a trusted site, and a link can simply die. Either way the donor used to see a broken picture or an empty box. The chain is: the campaign's image, then the illustration for the packaged theme the page wears (ThemeHeroFallbacks, named by the payload's design.heroFallbackKey), then the design's default, then the packaged generic DefaultHeroImage. The illustration comes before the design's default because a packaged theme's default is the org's generic picture, stamped on at install (PostInstallHandler.seedDefaultImages) and never blocked, so ahead of it the illustration would never be reached. A page with no campaign image keeps the design's default first, which is its normal look, not a fallback. The illustration and DefaultHeroImage are static resources served from the site's own origin, so no content security policy can block them; only a resource missing from the org can make them fail, and past the end of the list each surface shows its own no-image look.</p>
+<p>A blocked &lt;img&gt; fires onerror, so the experience shell advances on that. A blocked CSS background fails silently, so <a href="#pfhero"><code>pfHero</code></a> and the event banner probe each candidate with an off-DOM Image, which obeys the same img-src policy, and paint the first that loads.</p>
+<p>Walks the list in order and resolves to the first URL that loads, or null when none does. Sequential on purpose: the first candidate is the image the admin chose, and firing every probe at once would download the fallbacks on every page view where nothing is wrong.</p>
 </div>
 </div>
 </div>

@@ -2221,6 +2221,19 @@ Site</strong>: the host's URL, any name you like, the <strong>Image</strong> dir
 as <em>All</em>. The full recipe and the hosts the package already trusts are in
 <a href="../../getting-started/after-you-install/#third-party-content">After you install → Third-party content</a>.
 Add the host <em>before</em> you paste the URL, and the image works the first time you preview it.</p>
+<p><strong>The hero and the event banner degrade gracefully; story images do not.</strong> When a campaign's
+hero image or an event page's banner cannot load — a host that is not trusted, or a link that
+has gone dead — a page wearing a packaged theme (Harbor, Sunrise, Rosewater, Sanctuary,
+Marigold or Grove) shows the illustration packaged for that theme instead. A design of your
+own tries its default hero next, and then the generic packaged hero. The illustrations and
+the generic hero ship inside the package, so no trusted site is needed for them and nothing
+can block them. A
+donor never sees a hole where the hero should be, but they also do not see <em>your</em> picture. An
+image inside the story text has no such fallback and still renders as empty space.</p>
+<p>To find out which hosts are affected, open <strong>Settings → Get Started</strong> and look at the
+optional <strong>Trust the content hosts you actually use</strong> step. Below its count it names every
+outside host that a published campaign's hero or an active design's default hero comes from
+and that your org does not trust yet.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Image URLs must be <code>https://</code></p>

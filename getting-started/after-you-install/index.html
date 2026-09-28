@@ -3205,6 +3205,25 @@ your own image in <strong>Designs</strong>, or the share card in <strong>Organiz
 have chosen is never overwritten by a package upgrade. To paste a URL from an outside host
 instead — Unsplash, your own CDN — that host needs a CSP trusted site first, per the table above.</p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">An image from an untrusted host falls back to a packaged image</p>
+<p>If a campaign's hero or an event banner points at a host your org does not trust, the browser
+blocks it. A page wearing one of the packaged themes then shows an abstract illustration
+packaged for that theme. A design you created tries its own default hero next, and then the
+generic packaged hero. The illustrations and the generic hero are part of the package itself,
+so they always load and need no trusted site. The donor sees a finished page, but not your
+picture.</p>
+<p>The optional step above tells you when this is happening. After the count it lists every
+outside host that a published campaign or an active design takes its hero from and that no
+trusted site covers, for example <em>"Campaign images come from 1 host this org does not trust,
+so donors see a fallback image instead: https://cdn.example.org"</em>. Add that host with
+the <strong>Image</strong> directive and the campaign's own picture comes back. Relative links and images
+stored in Salesforce are never listed, because the browser does not block them. A custom
+domain you set up for your Experience site is not recognised as Salesforce's own and can
+appear in the list. If you do not have access to read the org's trusted-site list, the step
+says it <em>could not be checked</em> instead of guessing, and shows <em>Not checked</em> against each
+optional host rather than a count.</p>
+</div>
 <hr />
 <h2 id="when-youre-done">When you're done<a class="headerlink" href="#when-youre-done" title="Permanent link">#</a></h2>
 <p>The Get Started panel shows <strong>7/7</strong> and <em>"Your org is ready to take donations."</em> Setup is

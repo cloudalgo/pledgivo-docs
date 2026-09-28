@@ -161,7 +161,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.1.0-1</span>
+          <span class="fn-brand__ver">1.2.0-1</span>
         
       </a>
 
@@ -2538,17 +2538,22 @@ fundraising staff already hold each one:</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Changing a fundraiser needs Campaign edit, which comes from the Marketing User checkbox.</strong>
-Salesforce grants create and edit on campaigns through the <strong>Marketing User</strong> checkbox on the user
-record, not through a permission set, so none of the packaged sets can give it. System
-Administrators need it too; the profile alone is not enough. Every change made
+<p><strong>Changing a fundraiser needs Campaign edit, which takes the Marketing User checkbox and an object
+permission.</strong> Salesforce lets a user create or edit campaigns only when they have <strong>both</strong> the
+<strong>Marketing User</strong> checkbox on their user record <strong>and</strong> Create and Edit on the Campaign object.
+Neither can come from the packaged sets: the checkbox lives on the user record, and Salesforce
+removes standard-object grants from a managed package's permission sets. System Administrators
+already have the object permission but still need the checkbox. Staff on the <em>Standard User</em>
+profile, which only reads campaigns, need both. Every change made
 in the Fundraisers console needs it: creating a fundraiser, editing it, switching it live or
 pausing it, the Story tab, ticket tiers, the FAQ and question selections, and showing or hiding the
 Updates and Documents panels. A staff user without it can still open and read every fundraiser,
 but each save is refused with <em>"You don't have edit access to this campaign."</em> (or <em>"You don't have
 permission to create campaigns."</em> for a new one). To give it: Setup → <strong>Users → Users</strong> → <strong>Edit</strong>
-next to the person → tick <strong>Marketing User</strong> → <strong>Save</strong>. Your campaign sharing must also give them
-edit access to the fundraiser itself.</p>
+next to the person → tick <strong>Marketing User</strong> → <strong>Save</strong>; then, unless their profile already grants
+it, create a permission set of your own with <strong>Object Settings → Campaigns → Read, Create, Edit</strong>
+and assign it to them. Your campaign sharing must also give them edit access to the fundraiser
+itself.</p>
 <p><strong>Edits and deletes follow your org's sharing.</strong> A staff user can edit or delete a campaign post,
 or edit a shared FAQ or question template, only when your sharing gives them edit access to that
 record. <code>Fundraising_ReadOnly</code> cannot edit either. Checking an event seat in is the exception:

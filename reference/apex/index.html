@@ -158,7 +158,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.1.0-1</span>
+          <span class="fn-brand__ver">1.2.0-1</span>
         
       </a>
 
@@ -3966,6 +3966,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-stripepaymentpagecontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StripePaymentPageController
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-stripepaymentreturncontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StripePaymentReturnController
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-striperesponse" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4955,7 +4977,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>216</code></span><span><b>Test classes</b><code>150</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>218</code></span><span><b>Test classes</b><code>152</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -5004,7 +5026,7 @@
 <li>
 <p><strong><a href="#domain-payment">Payment</a></strong></p>
 <hr />
-<p>17 classes</p>
+<p>19 classes</p>
 <p><a href="#domain-payment-root">Core</a> · <a href="#domain-payment-domain">Domains</a> · <a href="#domain-payment-selector">Selectors</a> · <a href="#domain-payment-service">Services</a> · <a href="#domain-payment-stripe">Stripe</a></p>
 </li>
 <li>
@@ -9727,6 +9749,7 @@
 <p>GUEST path, used by submitAttendeeNames and submitRefundRequest after validateToken and requireOwnedOrder / requireOwnedDonation have proven the session and the gift's ownership, so the Ids come from the verified session, never from the request. SYSTEM_MODE reads for both arms: the guest user has no Account access at all, and the USER_MODE staff read this path used to share threw "sObject type 'Account' is not supported", which failed every refund request and attendee-naming submission from a Person Account donor.</p>
 <p>Read-only calls (getDashboard, etc.) go through here on every page load, so without this guard every donor click becomes a DML transaction just to refresh a sliding window that barely moved. Two minutes is small enough that the idle window (<a href="#apex-settingsservice"><code>SettingsService</code></a> .portalIdleTimeoutMinutes()) still reflects genuine recent activity to within a couple of minutes, and large enough that a donor rapidly navigating the portal skips almost every write.</p>
 <p>Set by validateToken when the session's Last_Used_At__c is stale, written by recordSessionUse. The write cannot happen inside validateToken: card updates, retries and SetupIntents call Stripe after validation, and Apex refuses a callout once the transaction holds uncommitted DML ("You have uncommitted work pending"), so every such action failed whenever the donor's previous portal call was over two minutes old.</p>
+<p>In a Person Account org the person Account wins over a Contact with the same email, and both queries always run. Every person account carries a hidden person Contact sharing its Email, so a Contact-first lookup found that Contact and keyed the donor's session on it, while the donor's gifts, recurring gifts and any staff-minted code (the Donors console passes the Account Id) live on Donor_Account__c. The result was a code staff read out that the portal then rejected, and a self-requested sign-in that opened an empty dashboard. <a href="#apex-donorresolutionservice-resolveorcreatedonor"><code>DonorResolutionService.resolveOrCreateDonor</code></a> resolves a PA-org donor to the person Account for the same reason; the portal now agrees with it.</p>
 <p>The link base is the configured Experience Site URL and nothing else. Two earlier sources were removed on 2026-09-07 and must not come back:
 - Site.getBaseUrl(). From the LWR guest request AND from the queueable this class enqueues, it was observed returning the companion Visualforce site (…/fundraisingvforcesite) rather than the LWR site the donor is on, so the emailed sign-in link opened a page with no donor portal on it. That behaviour is observed, not documented (unverified against Salesforce docs on 2026-09-07); the fix does not depend on the reason, because there is no context in which the companion site is the right answer for a donor-facing link.
 - URL.getOrgDomainUrl(). "Keep a value rather than throw" mailed donors a link to the internal login page. Returning null is honest, and every caller now handles it: requestAccessCode() logs and sends nothing, the staff paths throw staffLinkBlockReason(), and the admin panel shows "-" plus the block reason.</p>
@@ -12209,6 +12232,34 @@
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-stripepaymentpagecontroller">StripePaymentPageController<a class="headerlink" href="#apex-stripepaymentpagecontroller" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>payment/<wbr>stripe/<wbr>StripePaymentPageController.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Empty placeholder kept only because a released package version cannot drop a component.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>This class used to back stripePayment.page with a single getAllowedOrigin() method, the Apex fallback for the page's postMessage target origin. That origin now comes from the page's own window.location.origin, so the page has no controller and nothing calls this class. It shipped in 1.1.0, and a second-generation managed package cannot remove a released component until Salesforce enables component removal for the package, so it stays as an empty class. It holds no members and no permission set grants it. Delete it once removal is enabled. See docs/security/payment-site-framing.md.</p>
+</div>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-stripepaymentreturncontroller">StripePaymentReturnController<a class="headerlink" href="#apex-stripepaymentreturncontroller" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>payment/<wbr>stripe/<wbr>StripePaymentReturnController.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Empty placeholder kept only because a released package version cannot drop a component.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>This class used to back stripePaymentReturn.page with a single getAllowedOrigin() method, the Apex fallback for the page's postMessage target origin. That origin now comes from the page's own window.location.origin, so the page has no controller and nothing calls this class. It shipped in 1.1.0, and a second-generation managed package cannot remove a released component until Salesforce enables component removal for the package, so it stays as an empty class. It holds no members and no permission set grants it. Delete it once removal is enabled. See docs/security/payment-site-framing.md.</p>
+</div>
 </div>
 </div>
 <div class="fn-entry">
@@ -15705,8 +15756,8 @@
 <p>Deliberate FFLib exception: UserRecordAccess and PermissionSetAssignment are platform access objects with no package selector (UserRecordAccess rejects the ORDER BY every fflib QueryFactory appends), so both are read inline, here and nowhere else.</p>
 <p>UserRecordAccess answers at most 200 RecordIds per query; larger sets are chunked. Not final only so a test can shrink it and prove the chunking with two records.</p>
 <p>Every fundraiser-console write — the Story tab, ticket tiers (and the Product a new tier creates), FAQ and question selections, fundraiser edit, the active toggle and the updates/documents visibility toggle — goes through the Unit of Work, which commits in SYSTEM_MODE. Before this gate, seeing a campaign was enough to change it (readiness finding F-11; owner decision D-1, option a, 2026-09-25). Callers keep their own visibility check FIRST, so a campaign the user cannot see is still reported as "not found" and this message never confirms a hidden record exists.</p>
-<p>Two questions, both required. The object check is Campaign's Edit permission, which for Campaign is granted by the Marketing User checkbox on the user record, not by a permission set alone (help.salesforce.com, "Who has access to <a href="#apex-campaigns"><code>Campaigns</code></a>?"). The record check is UserRecordAccess.HasEditAccess, which adds sharing, the role hierarchy and ownership. Asking both keeps the answer right whichever way a subscriber has configured Campaign sharing.</p>
-<p>Fundraiser CREATE has no record to ask UserRecordAccess about, so the gate is the object-level Create permission — again the Marketing User checkbox for Campaign.</p>
+<p>Two questions, both required. The object check is Campaign's Edit permission, which for Campaign needs the Marketing User checkbox on the user record AND Campaign Edit from a profile or permission set (help.salesforce.com, "Who has access to <a href="#apex-campaigns"><code>Campaigns</code></a>?"); the packaged sets can carry neither, because a 2GP build strips standard-object grants. The record check is UserRecordAccess.HasEditAccess, which adds sharing, the role hierarchy and ownership. Asking both keeps the answer right whichever way a subscriber has configured Campaign sharing.</p>
+<p>Fundraiser CREATE has no record to ask UserRecordAccess about, so the gate is the object-level Create permission — again the Marketing User checkbox plus Campaign Create from a profile or permission set.</p>
 <p>Test seam, empty in every real context. Controller and service tests that mock the Campaign selector work with generated Ids that exist in no table, so UserRecordAccess can never call them editable; a test adds its fake Id here to reach the code after the gate. The gate itself is proven against real records and real users in RecordAccess_Test.</p>
 <p>"Create Public Links" (PermissionsChatterFileLink) is what the platform checks when a ContentDistribution is inserted in user mode — and it is invisible to describe: ContentDistribution reports isCreateable() == true for a user who does not hold it (probed 2026-09-25 with a Minimum Access user: describe true, USER_MODE insert fails with INSUFFICIENT_ACCESS_ON_CROSS_REFERENCE_ENTITY). A profile is backed by a permission set row, so one join over PermissionSetAssignment covers profile and permission sets together. Used only to warn in the Documents panel before an upload; the insert itself is the enforcement.</p>
 </div>

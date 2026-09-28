@@ -1862,7 +1862,7 @@
 <h1 id="code-analyzer-exceptions">Code Analyzer Exceptions<a class="headerlink" href="#code-analyzer-exceptions" title="Permanent link">#</a></h1>
 <div class="ca-actions" markdown="0">
   <button type="button" class="ca-print" onclick="window.print()">Print / Save as PDF</button>
-  <span class="ca-stamp">Generated 2026-09-27 from a live scan</span>
+  <span class="ca-stamp">Generated 2026-09-28 from a live scan</span>
 </div>
 
 <p>This page exists for one purpose: to answer, in writing and in one place, <em>why</em> every
@@ -1890,28 +1890,28 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>High</td>
-<td style="text-align: right;">43</td>
+<td style="text-align: right;">26</td>
 <td>Every one, individually justified below</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">3,809</td>
+<td style="text-align: right;">1,516</td>
 <td>22 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">19,635</td>
+<td style="text-align: right;">18,199</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">899</td>
+<td style="text-align: right;">135</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>24,386</strong></td>
-<td><strong>65 individually justified</strong></td>
+<td style="text-align: right;"><strong>19,876</strong></td>
+<td><strong>48 individually justified</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1944,7 +1944,7 @@ defined in the triage file, not chosen per-run.</p>
 <tbody>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactoryTest.cls</code></td>
-<td>270</td>
+<td>269</td>
 <td>Catches the expected <code>InvalidFieldException</code>; the following <code>catch (Exception e)</code> fails the test on any other type.</td>
 </tr>
 </tbody>
@@ -1982,7 +1982,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h3 id="style-and-performance-findings-inside-vendored-fflib">Style and performance findings inside vendored FFLib<a class="headerlink" href="#style-and-performance-findings-inside-vendored-fflib" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>Third-party vendored code</strong> &middot; 40 findings &middot; <code>ApexUnitTestMethodShouldHaveIsTestAnnotation</code>, <code>EagerlyLoadedDescribeSObjectResult</code>, <code>OverrideBothEqualsAndHashcode</code></p>
+<p class="ca-meta"><strong>Third-party vendored code</strong> &middot; 23 findings &middot; <code>EagerlyLoadedDescribeSObjectResult</code>, <code>OverrideBothEqualsAndHashcode</code></p>
 
 <p><strong>What the rule flags.</strong> Findings in base/main/default/classes/fflib/ — an eagerly-loaded describe result, test methods without <code>@IsTest</code>, and one class overriding equals without hashCode.</p>
 <p><strong>Why it is not a defect here.</strong> This directory is a vendored copy of the upstream apex-common and apex-mocks libraries, not code this package authors. It is vendored rather than taken as a package dependency so that a subscriber installs one thing instead of being forced to install FFLib into their Dev Hub first. None of these findings is a security issue or a defect: they are upstream style choices and a describe-loading preference. Patching them would fork the tree further from upstream for no functional gain, and every future upstream sync would have to re-apply them. The four patches that ARE load-bearing are patched, and each is logged.</p>
@@ -2003,27 +2003,22 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactory.cls</code></td>
-<td>178</td>
+<td>179</td>
 <td>Upstream overrides <code>equals</code> without <code>hashCode</code>. QueryFactory instances are never used as Map keys or Set members anywhere in this package.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactoryTest.cls</code></td>
-<td>289, 318, 341, 364, 380, 398, 423</td>
+<td>288, 317, 340, 363, 379, 397, 422</td>
 <td>Seven sites in upstream's own test class.</td>
 </tr>
 <tr>
-<td><code>base/main/default/classes/fflib/fflib_SObjectSelectorTest.cls</code></td>
-<td>35, 42, 67, 97, 126, 154, 166, 179</td>
-<td>Eight upstream test methods using the legacy <code>testMethod</code> keyword instead of <code>@IsTest</code>. Still valid Apex; still executed by the test runner.</td>
-</tr>
-<tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWork.cls</code></td>
-<td>319, 637, 908, 916, 917, 925, 926, 934, 980, 988</td>
+<td>318, 640, 912, 920, 921, 929, 930, 938, 984, 992</td>
 <td>Ten sites, all reading only <code>getName()</code> to key the per-type work maps.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWorkTest.cls</code></td>
-<td>943, 1004</td>
+<td>941, 1002</td>
 <td>Two sites in upstream's own test class.</td>
 </tr>
 <tr>
@@ -2035,11 +2030,6 @@ defined in the triage file, not chosen per-run.</p>
 <td><code>base/main/default/classes/fflib/fflib_SObjectsTest.cls</code></td>
 <td>41</td>
 <td>Reads only <code>getKeyPrefix()</code>.</td>
-</tr>
-<tr>
-<td><code>base/main/default/classes/fflib/fflib_StringBuilderTest.cls</code></td>
-<td>30, 38, 46, 54, 62, 70, 79, 89, 102</td>
-<td>Nine upstream test methods, same legacy keyword.</td>
 </tr>
 </tbody>
 </table>
@@ -2087,7 +2077,7 @@ defined in the triage file, not chosen per-run.</p>
 <tbody>
 <tr>
 <td><code>base/main/default/classes/setup/controller/PostInstallHandler.cls</code></td>
-<td>151</td>
+<td>164</td>
 <td>Seeds <code>Settings__c.Email_Signature__c</code> with <code>'The &lt;org name&gt; team'</code> on first install — an email sign-off.</td>
 </tr>
 </tbody>
@@ -2234,7 +2224,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 24,321 findings are Moderate, Low and Info style and maintainability
+<p>The other 19,828 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2249,42 +2239,27 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-hardcoded-values-slds2</code></td>
 <td>Low</td>
-<td style="text-align: right;">12,532</td>
+<td style="text-align: right;">12,606</td>
 </tr>
 <tr>
 <td><code>pmd:ApexUnitTestClassShouldHaveRunAs</code></td>
 <td>Low</td>
-<td style="text-align: right;">3,040</td>
+<td style="text-align: right;">3,064</td>
 </tr>
 <tr>
 <td><code>pmd:ApexDoc</code></td>
 <td>Low</td>
-<td style="text-align: right;">2,406</td>
-</tr>
-<tr>
-<td><code>regex:NoMixedIndentation</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">2,037</td>
-</tr>
-<tr>
-<td><code>pmd:AnnotationsNamingConventions</code></td>
-<td>Low</td>
-<td style="text-align: right;">1,539</td>
-</tr>
-<tr>
-<td><code>regex:NoTrailingWhitespace</code></td>
-<td>Info</td>
-<td style="text-align: right;">764</td>
+<td style="text-align: right;">2,411</td>
 </tr>
 <tr>
 <td><code>pmd:FieldDeclarationsShouldBeAtStart</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">249</td>
+<td style="text-align: right;">256</td>
 </tr>
 <tr>
 <td><code>pmd:CyclomaticComplexity</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">200</td>
+<td style="text-align: right;">201</td>
 </tr>
 <tr>
 <td><code>pmd:ExcessiveParameterList</code></td>
@@ -2297,19 +2272,9 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">143</td>
 </tr>
 <tr>
-<td><code>pmd:IfElseStmtsMustUseBraces</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">125</td>
-</tr>
-<tr>
 <td><code>pmd:EmptyStatementBlock</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">123</td>
-</tr>
-<tr>
-<td><code>pmd:IfStmtsMustUseBraces</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">122</td>
 </tr>
 <tr>
 <td><code>cpd:DetectCopyPasteForApex</code></td>
@@ -2320,6 +2285,31 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td><code>pmd:UnusedLocalVariable</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">110</td>
+</tr>
+<tr>
+<td><code>pmd:AvoidBooleanMethodParameters</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">98</td>
+</tr>
+<tr>
+<td><code>pmd:FieldNamingConventions</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">77</td>
+</tr>
+<tr>
+<td><code>eslint:@salesforce-ux/slds/no-unsupported-hooks-slds2</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">70</td>
+</tr>
+<tr>
+<td><code>pmd:NcssCount</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">62</td>
+</tr>
+<tr>
+<td><code>eslint:@salesforce-ux/slds/enforce-sds-to-slds-hooks</code></td>
+<td>Low</td>
+<td style="text-align: right;">54</td>
 </tr>
 </tbody>
 </table>
@@ -2340,7 +2330,7 @@ does not follow.</p>
 <tbody>
 <tr>
 <td>Generated</td>
-<td>2026-09-27</td>
+<td>2026-09-28</td>
 </tr>
 <tr>
 <td>Triage source</td>
@@ -2360,7 +2350,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>24,386 (after declared path exclusions)</td>
+<td>19,876 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

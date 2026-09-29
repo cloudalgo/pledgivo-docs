@@ -158,7 +158,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.2.0-4</span>
+          <span class="fn-brand__ver">1.2.0-5</span>
         
       </a>
 
@@ -2943,6 +2943,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#uitrialbadge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trial Badge
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2969,7 +2980,7 @@
 
 <h1 id="lwc-reference">LWC Reference<a class="headerlink" href="#lwc-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Lightning web component, grouped by the folder-prefix scheme (public/lex/pf/df/ui/adm/set).</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>105</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/lwc</code></span><span><b>Generator</b><code>generate_lwc_docs.py</code></span><span><b>Bundles</b><code>106</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -3018,8 +3029,8 @@
 <li>
 <p><strong><a href="#group-ui">Ui (shared primitives)</a></strong></p>
 <hr />
-<p>20 bundles</p>
-<p><a href="#uiapexerror">Apex Error Formatting Utility</a> · <a href="#uibase">Internal Base Component</a> · <a href="#uiconfirmdialog">Confirm Dialog</a> · <a href="#uidialogstyles">Dialog Shared Styles</a> · <a href="#uifontstacks">Font Stack Allowlist</a> · <a href="#uiherofallback">Hero Image Fallback Utility</a> · <a href="#uilicensenotice">Licence Notice</a> · <a href="#uimarkdown">Markdown Renderer</a> · <a href="#uimarkdowneditor">Markdown Editor</a> · <a href="#uimarkdownparser">Markdown Parser</a> · <a href="#uimodal">Ember Modal</a> · <a href="#uimoney">Money Formatting Utility</a> · <a href="#uipagetheme">Page Theme (shared)</a> · <a href="#uiqrcode">QR Code</a> · <a href="#uireceiptdocument">Receipt Document</a> · <a href="#uisectionbleed">Section Bleed Utility</a> · <a href="#uisegmented">Ember Segmented Control</a> · <a href="#uisetupreplica">Setup Screen Replica Styles</a> · <a href="#uistatementprint">Giving Statement Print Utility</a> · <a href="#uitoggle">Ember Toggle</a></p>
+<p>21 bundles</p>
+<p><a href="#uiapexerror">Apex Error Formatting Utility</a> · <a href="#uibase">Internal Base Component</a> · <a href="#uiconfirmdialog">Confirm Dialog</a> · <a href="#uidialogstyles">Dialog Shared Styles</a> · <a href="#uifontstacks">Font Stack Allowlist</a> · <a href="#uiherofallback">Hero Image Fallback Utility</a> · <a href="#uilicensenotice">Licence Notice</a> · <a href="#uimarkdown">Markdown Renderer</a> · <a href="#uimarkdowneditor">Markdown Editor</a> · <a href="#uimarkdownparser">Markdown Parser</a> · <a href="#uimodal">Ember Modal</a> · <a href="#uimoney">Money Formatting Utility</a> · <a href="#uipagetheme">Page Theme (shared)</a> · <a href="#uiqrcode">QR Code</a> · <a href="#uireceiptdocument">Receipt Document</a> · <a href="#uisectionbleed">Section Bleed Utility</a> · <a href="#uisegmented">Ember Segmented Control</a> · <a href="#uisetupreplica">Setup Screen Replica Styles</a> · <a href="#uistatementprint">Giving Statement Print Utility</a> · <a href="#uitoggle">Ember Toggle</a> · <a href="#uitrialbadge">Trial Badge</a></p>
 </li>
 </ul>
 </div>
@@ -5060,6 +5071,22 @@
 <p>Composed (as &lt;c-ui-toggle&gt;) across the Settings console panels (e.g. <a href="#setorganization"><code>setOrganization</code></a>'s NPSP sync switches, <a href="#setsite"><code>setSite</code></a>'s embed-enabled toggle) and <a href="#admeventticketstab"><code>admEventTicketsTab</code></a>'s active-ticket switch — anywhere a boolean setting needs on-brand styling that lightning-input's toggle variant can't provide (see the class-doc note on the hardcoded SLDS blue it replaces).</p>
 </div>
 <p><strong><code>@api</code> properties:</strong> <code>activeText</code>, <code>checked</code>, <code>disabled</code>, <code>inactiveText</code>, <code>label</code></p>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="uitrialbadge">Trial Badge<a class="headerlink" href="#uitrialbadge" title="Permanent link">#</a></h4>
+<p><code>uiTrialBadge</code></p>
+<p><code>not exposed</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Strip the staff console tabs show while the org is on a trial licence: days remaining plus a Complete checkout link to the subscription portal. Renders nothing for paid licences, blocked users or a failed read. Shared by all five tab shells.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The trial countdown strip every internal Tab shell (<a href="#lexfundraisersconsole"><code>lexFundraisersConsole</code></a>, <a href="#lexdonorsconsole"><code>lexDonorsConsole</code></a>, <a href="#lexdonationmonitor"><code>lexDonationMonitor</code></a>, <a href="#lexfundraisingsettings"><code>lexFundraisingSettings</code></a>, <a href="#lexdiagnosticlogs"><code>lexDiagnosticLogs</code></a>) mounts above its content. It reads the same cacheable LicenseController.getLicenseStatus() as the shell's own gate (a second call is served from the client cache, so no extra round trip) and renders only when the payload carries <code>trial</code> — a licensed user in an org whose licence is a live LMA trial. Anything else (a paid licence, a blocked user, a failed read) renders nothing, so the badge fails open exactly like the gate: it can never be the reason a console looks broken.</p>
+<p>"Complete checkout" opens the packaged Subscription_Portal_Url (plus ?org=&lt;Org Id&gt;) in a new tab. That label currently points at the pricing page; repoint it with a package upgrade when a real checkout exists and this button follows. It is deliberately loud — a Midnight card with the countdown as its largest numeral, a draining meter and a pulsing white CTA — because the whole point is that it cannot be scrolled past; it flips to Gold at 7 days or fewer (the pulse stops under prefers-reduced-motion). Trial length is set on the publisher's LMA default licence, not here.</p>
+<p>Staff-facing only. Guest and donor surfaces never consult the licence (AGENTS.md Rule 10), so this component must never be mounted from a lightningCommunity__* bundle.</p>
+</div>
 </div>
 </div>
 

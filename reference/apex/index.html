@@ -158,7 +158,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.2.0-4</span>
+          <span class="fn-brand__ver">1.2.0-5</span>
         
       </a>
 
@@ -13341,7 +13341,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>The four Tab-level consoles (lexFundraisersConsole, lexFundraisingSettings, lexDiagnosticLogs, lexDonationMonitor) each call getLicenseStatus() on load and swap in the uiLicenseNotice panel when <code>licensed</code> comes back false. The verdict itself lives in <a href="#apex-licenseservice"><code>LicenseService</code></a> (fail-open — see its header); this class only carries it across the wire in the standard { success, data } envelope.</p>
 <p>DELIBERATELY a separate controller rather than a field on <a href="#apex-uiconfigcontroller-getuiconfig"><code>UiConfigController.getUiConfig</code></a>(): that payload is dual-use — Fundraising_GuestDonor grants it, and eleven guest-facing bundles read it — and donors never need a licence, so the licence read must not ride on anything a guest page loads. This class is granted to Fundraising_Admin and Fundraising_User only, never to the guest permission set.</p>
-<p>cacheable=true is safe on getLicenseStatus, unlike the setup-panel reads: the answer changes only when an admin (re)assigns a package licence in Setup, and a page reload after that is an acceptable cost for saving a server round-trip on every tab open. When the verdict is licensed:false the payload also carries <code>reason</code> (no_seat | expired | suspended) and <code>portalUrl</code>, which uiLicenseNotice uses to pick its copy and its "Manage subscription" link; a licensed verdict carries neither, so the shells' <code>licensed === false</code> gate is unchanged.</p>
+<p>cacheable=true is safe on getLicenseStatus, unlike the setup-panel reads: the answer changes only when an admin (re)assigns a package licence in Setup, and a page reload after that is an acceptable cost for saving a server round-trip on every tab open. When the verdict is licensed:false the payload also carries <code>reason</code> (no_seat | expired | suspended) and <code>portalUrl</code>, which uiLicenseNotice uses to pick its copy and its "Manage subscription" link; a licensed verdict carries neither, so the shells' <code>licensed === false</code> gate is unchanged. A licensed verdict on an org whose licence is a live trial additionally carries <code>trial</code> ({ daysLeft, portalUrl }) — additive, so the gate is still untouched — which uiTrialBadge renders as the days-remaining badge with its checkout link. Any other licensed verdict has no <code>trial</code> key at all.</p>
 <p>getSeatSummary() is deliberately NOT cacheable: it feeds the "Licence &amp; Seats" settings panel, which an admin opens right after assigning seats in Setup and expects to see the new count without a hard reload (the setup-panel rule).</p>
 </div>
 <table>
@@ -15864,10 +15864,12 @@
 <p>subscriptionPortalUrl() is where a blocked user or an admin is sent to buy or manage seats. It comes from the packaged custom label Subscription_Portal_Url (upgradeable by a package version, never edited in the subscriber org) with the subscriber's Org Id appended as ?org=, so the publisher's billing site can pre-fill which LMA licence to act on. The Org Id is not a secret — it is on every Setup page — and nothing else about the org is sent.</p>
 <p>Days-to-expiry at or under which the Health Check turns the package_license row amber. Thirty days matches the renewal-notice window on the publisher's billing site.</p>
 <p>A blocked user's reason, consumed by uiLicenseNotice to choose its copy. Only ever meaningful when isCurrentUserLicensed() is false.</p>
+<p>The PackageLicense.Status value an LMA free-trial licence carries; trialInfo() keys on it.</p>
 <p>Test seam for the PackageLicense read: the object cannot be inserted, so tests hand the summary path a synthetic row (or none) instead of depending on the org they run in.</p>
 <p>Test seam for the final verdict (the <a href="#apex-settingsservice"><code>SettingsService</code></a> *Override idiom) — packaged tests must pass in both a licensed and an unlicensed org, so they pin the answer rather than depend on the org the suite happens to run in.</p>
 <p>Test seam for the namespace lookup: the dev org describes to an empty prefix, so forcing one here is the only way a test can reach the UserInfo call (and its fail-open catch — 'pledgivo' is not an installed licence in the dev org, so the platform call throws and the catch is exercised for real).</p>
 <p>PackageLicense.Status is documented as Active, Expired, Free or Trial; the platform flips it to Expired when the LMA licence lapses, so the status is trusted alongside the date, and a suspended LMA licence is reported as Suspended by the same field.</p>
+<p>A trial is a PackageLicense whose Status is Trial and whose ExpirationDate has not passed. The trial length is set on the publisher's LMA default licence (a Free Trial of N days, up to 90 — Salesforce ISVforce guide, "Set Default Licensing for Your Managed Package"), never in this package, so changing it needs no package version. An expired trial returns null on purpose: the seat gate already closes the consoles with the expired notice, so there is no countdown left to show. Fail-open like the rest of the class — getSeatSummary already reports any read failure as not installed, which yields null here and no badge.</p>
 </div>
 <table>
 <thead>
@@ -15896,6 +15898,11 @@
 <tr>
 <td><a id="apex-licenseservice-blockreason"></a><code>blockReason(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-licenseservice-trialinfo"></a><code>trialInfo(0 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
 <td></td>
 </tr>
 <tr>

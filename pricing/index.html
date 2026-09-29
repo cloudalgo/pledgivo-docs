@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="$49 per fundraising admin a month, or $490 a year. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise.">
+        <meta name="description" content="$49 per fundraising admin a month, or $490 a year, after a 30-day free trial. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise.">
       
       
       
@@ -116,7 +116,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Pricing - Pledgivo" />
-<meta property="og:description" content="$49 per fundraising admin a month, or $490 a year. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise." />
+<meta property="og:description" content="$49 per fundraising admin a month, or $490 a year, after a 30-day free trial. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise." />
 <meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/pricing.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -124,7 +124,7 @@
 <meta property="og:url" content="https://pledgivo.cloudalgo.com/pricing/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Pricing - Pledgivo" />
-<meta property="twitter:description" content="$49 per fundraising admin a month, or $490 a year. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise." />
+<meta property="twitter:description" content="$49 per fundraising admin a month, or $490 a year, after a 30-day free trial. Minimum three licences — from $147 a month. Every feature, unlimited donations, never a percentage of what you raise." />
 <meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/pricing.png" />
 </head>
   
@@ -171,7 +171,7 @@
           height="32"
         ><span class="fn-brand__word">Pledg<b>ivo</b></span>
         
-          <span class="fn-brand__ver">1.2.0-4</span>
+          <span class="fn-brand__ver">1.2.0-5</span>
         
       </a>
 
@@ -1731,6 +1731,20 @@
      editions — if a feature is ever restricted by billing period, the
      "every feature" chip in the hero has to go.
 
+     doc: THE 30-DAY TRIAL (owner decision of 2026-09-29). Every install starts
+     on a 30-day free trial with the whole product — the trial is not a reduced
+     edition, so it does not contradict "one plan, every feature". The length is
+     NOT set in the package: it is the Free Trial period on the publisher's LMA
+     default licence (Salesforce allows up to 90 days), so the 30 here and the
+     LMA setting must be changed together. While a trial is live every staff
+     console shows a "Trial · N days left" badge (uiTrialBadge, fed by
+     LicenseService.trialInfo()) with a Complete checkout button that opens the
+     subscription portal. When the trial ends the staff consoles close exactly as
+     they do for any lapsed licence; donation pages, receipts and the donor
+     portal are never affected. The trial mentions on faq.md,
+     getting-started/installation.md and settings-console-reference.md say the
+     same thing — confirm them together.
+
      doc: Markup is hand-written HTML rather than markdown, matching index.md.
      Every block has a rule in the "Pricing" section at the foot of
      assets/css/field-notes.css; the two are a pair and are used by no other
@@ -1780,10 +1794,11 @@
   <p class="fn-eyebrow">Pricing</p>
   <h1 class="fn-home-h1">Pay for your team. <em>Never</em> for your donors.</h1>
   <p class="fn-dek">One plan: $49 a month for each fundraising admin, with a three-licence
-  minimum. Only the staff who run your fundraising need a licence — donors, event attendees and
-  portal visitors never do. Every feature, unlimited donations, and never a percentage of what
-  you raise.</p>
+  minimum — and the first 30 days are free. Only the staff who run your fundraising need a
+  licence — donors, event attendees and portal visitors never do. Every feature, unlimited
+  donations, and never a percentage of what you raise.</p>
   <div class="fn-pr-chips">
+    <span class="fn-chip">30-day free trial</span>
     <span class="fn-chip">One plan, every feature</span>
     <span class="fn-chip">Unlimited donations</span>
     <span class="fn-chip">Donors are never billed</span>
@@ -1826,7 +1841,7 @@
     <div class="fn-pr-tier">
       <div class="fn-pr-tier__tag">Monthly</div>
       <h3>Pledgivo</h3>
-      <p class="fn-pr-tier__for">Month to month, cancel any time. The whole package from day one.</p>
+      <p class="fn-pr-tier__for">Month to month, cancel any time. The whole package from day one, after a 30-day free trial.</p>
       <div class="fn-pr-tier__price"><b>$49</b><i>/user/mo</i></div>
       <span class="fn-pr-tier__unit">Minimum 3 licences — from $147 a month</span>
       <div class="fn-pr-tier__cap">
@@ -2005,6 +2020,14 @@
   </div>
   <div class="fn-pr-faq">
     <div>
+      <h3>Is there a free trial?</h3>
+      <p>Yes — 30 days, with every feature and unlimited donations, from the day you install. A
+      badge at the top of each staff console counts the days down, and its <b>Complete
+      checkout</b> button takes you to the subscription portal when you are ready. If the trial
+      ends first, the staff consoles close until you subscribe; your donation pages, receipts and
+      donor portal keep working, and your data is untouched. <a href="../faq/#how-does-the-trial-work">How the trial works</a>.</p>
+    </div>
+    <div>
       <h3>Who needs a licence?</h3>
       <p>Only fundraising admins — the staff who build campaigns, manage donations and configure
       the app inside your org. Three is the minimum, and most organisations need no more than a
@@ -2074,6 +2097,14 @@
   "@type": "FAQPage",
   "@id": "https://pledgivo.cloudalgo.com/pricing/#faq",
   "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is there a free trial?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — 30 days, with every feature and unlimited donations, from the day you install. A badge at the top of each staff console counts the days down, and its Complete checkout button takes you to the subscription portal when you are ready. If the trial ends first, the staff consoles close until you subscribe; your donation pages, receipts and donor portal keep working, and your data is untouched."
+      }
+    },
     {
       "@type": "Question",
       "name": "Who needs a licence?",

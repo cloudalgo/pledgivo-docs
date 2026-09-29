@@ -1862,7 +1862,7 @@
 <h1 id="code-analyzer-exceptions">Code Analyzer Exceptions<a class="headerlink" href="#code-analyzer-exceptions" title="Permanent link">#</a></h1>
 <div class="ca-actions" markdown="0">
   <button type="button" class="ca-print" onclick="window.print()">Print / Save as PDF</button>
-  <span class="ca-stamp">Generated 2026-09-28 from a live scan</span>
+  <span class="ca-stamp">Generated 2026-09-29 from a live scan</span>
 </div>
 
 <p>This page exists for one purpose: to answer, in writing and in one place, <em>why</em> every
@@ -1895,7 +1895,7 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">1,031</td>
+<td style="text-align: right;">927</td>
 <td>22 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
@@ -1905,12 +1905,12 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">137</td>
+<td style="text-align: right;">127</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>1,308</strong></td>
+<td style="text-align: right;"><strong>1,194</strong></td>
 <td><strong>44 individually justified</strong></td>
 </tr>
 </tbody>
@@ -2003,7 +2003,7 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactory.cls</code></td>
-<td>180</td>
+<td>132</td>
 <td>Upstream overrides <code>equals</code> without <code>hashCode</code>. QueryFactory instances are never used as Map keys or Set members anywhere in this package.</td>
 </tr>
 <tr>
@@ -2013,7 +2013,7 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWork.cls</code></td>
-<td>442, 767, 1039, 1047, 1048, 1056, 1057, 1065, 1111, 1119</td>
+<td>442, 767, 1050, 1058, 1059, 1067, 1068, 1076, 1122, 1130</td>
 <td>Ten sites, all reading only <code>getName()</code> to key the per-type work maps.</td>
 </tr>
 <tr>
@@ -2077,7 +2077,7 @@ defined in the triage file, not chosen per-run.</p>
 <tbody>
 <tr>
 <td><code>base/main/default/classes/setup/controller/PostInstallHandler.cls</code></td>
-<td>254</td>
+<td>246</td>
 <td>Seeds <code>Settings__c.Email_Signature__c</code> with <code>'The &lt;org name&gt; team'</code> on first install — an email sign-off.</td>
 </tr>
 </tbody>
@@ -2224,7 +2224,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 1,264 findings are Moderate, Low and Info style and maintainability
+<p>The other 1,150 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2237,24 +2237,24 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 </thead>
 <tbody>
 <tr>
-<td><code>pmd:CyclomaticComplexity</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">201</td>
-</tr>
-<tr>
 <td><code>pmd:ExcessiveParameterList</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">170</td>
 </tr>
 <tr>
-<td><code>pmd:CognitiveComplexity</code></td>
+<td><code>pmd:CyclomaticComplexity</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">143</td>
+<td style="text-align: right;">157</td>
 </tr>
 <tr>
 <td><code>cpd:DetectCopyPasteForApex</code></td>
 <td>Info</td>
-<td style="text-align: right;">115</td>
+<td style="text-align: right;">105</td>
+</tr>
+<tr>
+<td><code>pmd:CognitiveComplexity</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">103</td>
 </tr>
 <tr>
 <td><code>pmd:AvoidBooleanMethodParameters</code></td>
@@ -2272,14 +2272,14 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">70</td>
 </tr>
 <tr>
-<td><code>pmd:NcssCount</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">62</td>
-</tr>
-<tr>
 <td><code>eslint:@salesforce-ux/slds/enforce-sds-to-slds-hooks</code></td>
 <td>Low</td>
 <td style="text-align: right;">54</td>
+</tr>
+<tr>
+<td><code>pmd:NcssCount</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">51</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
@@ -2302,13 +2302,13 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">27</td>
 </tr>
 <tr>
-<td><code>cpd:DetectCopyPasteForJavascript</code></td>
-<td>Info</td>
+<td><code>pmd:PropertyNamingConventions</code></td>
+<td>Moderate</td>
 <td style="text-align: right;">19</td>
 </tr>
 <tr>
-<td><code>pmd:PropertyNamingConventions</code></td>
-<td>Moderate</td>
+<td><code>cpd:DetectCopyPasteForJavascript</code></td>
+<td>Info</td>
 <td style="text-align: right;">19</td>
 </tr>
 </tbody>
@@ -2330,7 +2330,7 @@ does not follow.</p>
 <tbody>
 <tr>
 <td>Generated</td>
-<td>2026-09-28</td>
+<td>2026-09-29</td>
 </tr>
 <tr>
 <td>Triage source</td>
@@ -2350,7 +2350,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>1,308 (after declared path exclusions)</td>
+<td>1,194 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

@@ -2064,6 +2064,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-campaigntemplateselection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignTemplateSelection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-customquestionservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4781,6 +4792,39 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-packagenamespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PackageNamespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-pagewindow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PageWindow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-payloadvalues" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PayloadValues
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-preconditions" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -4818,6 +4862,17 @@
     <span class="md-ellipsis">
       
         RecordAccess
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Records
       
     </span>
   </a>
@@ -4977,7 +5032,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>218</code></span><span><b>Test classes</b><code>152</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>223</code></span><span><b>Test classes</b><code>157</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -4990,7 +5045,7 @@
 <li>
 <p><strong><a href="#domain-campaign">Campaign</a></strong></p>
 <hr />
-<p>36 classes</p>
+<p>37 classes</p>
 <p><a href="#domain-campaign-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-campaign-controller">Controllers</a> · <a href="#domain-campaign-domain">Domains</a> · <a href="#domain-campaign-selector">Selectors</a> · <a href="#domain-campaign-service">Services</a></p>
 </li>
 <li>
@@ -5044,7 +5099,7 @@
 <li>
 <p><strong><a href="#domain-shared">Shared</a></strong></p>
 <hr />
-<p>24 classes</p>
+<p>28 classes</p>
 <p><a href="#domain-shared-root">Core</a> · <a href="#domain-shared-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-shared-selector">Selectors</a></p>
 </li>
 </ul>
@@ -6135,9 +6190,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Structural twin of <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a> — same three-method shape and the same two-phase saveSelection (create new Content_Template__c rows first so their Ids exist, THEN the campaign's own selection fields are updated), differing only by RecordType ('FAQ' here, 'Custom_Question' there) and target fields (Campaign.FAQ_Ids__c/FAQs_Active__c vs Campaign.Custom_Question_Ids__c/Custom_Questions_Active__c). Formerly backed by a standalone Campaign_FAQ__c object; merged into Campaign fields (2026-08) since it only ever held a single selection row per campaign.</p>
-<p>The save is two commits, because the campaign's id list needs the Ids the first one creates. One savepoint spans both, so a rejected campaign update also takes back the FAQ templates inserted for it instead of leaving orphans in the shared library.</p>
-<p>The campaign's FAQ selection fields are written through a user-mode Unit of Work, which refuses a Campaign the user cannot edit but would still confirm that a hidden Id exists. The gate therefore sits here, in the service, so every caller inherits it: the running user must be able to see the Campaign (<a href="#apex-campaignsselector-selectidsvisibletouser"><code>CampaignsSelector.selectIdsVisibleToUser</code></a>, the same check <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> and <a href="#apex-eventticketadmincontroller"><code>EventTicketAdminController</code></a> make), and a campaign they cannot see answers exactly as a missing one does. Seeing is not enough to change it: once visibility passes, the user must also hold edit access on the campaign (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a> — readiness finding F-11, closed by owner decision D-1). Visibility is asked first so a hidden campaign is still reported as not found rather than as not editable.</p>
-<p>Every templateId in the payload is re-read and checked before anything is written, because user mode checks access, not which template an Id names, and would otherwise save whatever Id the browser sent: an FAQ save could rewrite a template of the other record type, and a user who can only read the shared library (Fundraising_ReadOnly) could edit a template other campaigns display. A referenced template must exist and carry this service's record type; one the row also edits must be editable by the running user (<a href="#apex-recordaccess"><code>RecordAccess</code></a>, which asks UserRecordAccess). Reuse-only rows need no edit access: picking a template changes the Campaign, not the template.</p>
+<p>The campaign and every referenced template are gated (visible and editable campaign, templates of this record type that the user may edit) before anything is written; the gates live in <a href="#apex-campaigntemplateselection"><code>CampaignTemplateSelection</code></a> so this service and CustomQuestionService cannot drift apart. The save is two commits, because the campaign's id list needs the Ids the first one creates. One savepoint spans both, so a rejected campaign update also takes back the FAQ templates inserted for it instead of leaving orphans in the shared library.</p>
 </div>
 <table>
 <thead>
@@ -6155,7 +6208,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-contenttemplatesselector-newinstance">ContentTemplatesSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-campaigntemplateselection-resolveordered">CampaignTemplateSelection.resolveOrdered()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -6171,11 +6224,6 @@
 <tr>
 <td><a id="apex-campaignfaqservice-saveselection"></a><code>saveSelection(3 args)</code></td>
 <td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-recordaccess-requirecampaigneditable">RecordAccess.requireCampaignEditable()</a>, <a href="#apex-contenttemplatesselector-newinstance">ContentTemplatesSelector.newInstance()</a>, <a href="#apex-recordaccess-editableids">RecordAccess.editableIds()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -6488,6 +6536,49 @@
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
+<h4 id="apex-campaigntemplateselection">CampaignTemplateSelection<a class="headerlink" href="#apex-campaigntemplateselection" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public abstract inherited sharing</code></p>
+<p class="fn-entry__src"><code>campaign/<wbr>service/<wbr>CampaignTemplateSelection.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Shared engine behind a campaign's selection from the reusable Content_Template__c library: resolves the JSON id list a Campaign stores into ordered templates, and persists the admin editor's selection (new templates, edits to reused ones, the Campaign's own id list). <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a> and <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a> each supply a subclass naming their record type, template fields and Campaign selection fields.</p>
+<p>FFLib role: Service helper — not registered with <a href="#apex-application"><code>Application</code></a>.Service; used only by the two selection services.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Extracted from <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a> and <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a>, which were structural twins differing only by record type, template fields and Campaign target fields. The sharing keyword is inherited so the Units of Work below run under exactly the sharing the calling service ran under before the extraction; both commits are user-mode anyway. A save is two commits: new templates first so their Ids exist, then the Campaign's selection fields. One savepoint spans both, so a rejected campaign update also takes back the templates inserted for it instead of leaving orphans in the shared library.</p>
+<p>The campaign's selection fields are written through a user-mode Unit of Work, which refuses a Campaign the user cannot edit but would still confirm that a hidden Id exists. The gate therefore sits here, in the shared save both services call, so every caller inherits it: the running user must be able to see the Campaign (<a href="#apex-campaignsselector-selectidsvisibletouser"><code>CampaignsSelector.selectIdsVisibleToUser</code></a>, the same check <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> and <a href="#apex-eventticketadmincontroller"><code>EventTicketAdminController</code></a> make), and a campaign they cannot see answers exactly as a missing one does. Seeing is not enough to change it: once visibility passes, the user must also hold edit access on the campaign (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a> — readiness finding F-11, closed by owner decision D-1). Visibility is asked first so a hidden campaign is still reported as not found rather than as not editable.</p>
+<p>Every templateId in the payload is re-read and checked before anything is written, because user mode checks access, not which template an Id names, and would otherwise save whatever Id the browser sent: a save could rewrite a template of the other record type, and a user who can only read the shared library (Fundraising_ReadOnly) could edit a template other campaigns display. A referenced template must exist and carry this selection's record type; one the row also edits must be editable by the running user (<a href="#apex-recordaccess"><code>RecordAccess</code></a>, which asks UserRecordAccess). Reuse-only rows need no edit access: picking a template changes the Campaign, not the template.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-campaigntemplateselection-resolveordered"></a><code>resolveOrdered(1 arg)</code></td>
+<td><code>List&lt;Content_Template__c&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-contenttemplatesselector-newinstance">ContentTemplatesSelector.newInstance()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaigntemplateselection-save"></a><code>save(3 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="apex-customquestionservice">CustomQuestionService<a class="headerlink" href="#apex-customquestionservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-icustomquestionservice">ICustomQuestionService</a></p>
@@ -6499,9 +6590,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Structural twin of <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a> — same three-method shape and the same two-phase saveSelection (new Content_Template__c rows committed first so their Ids exist, THEN the campaign's own selection fields are updated), differing only by RecordType ('Custom_Question' here, 'FAQ' there) and target fields (Campaign.Custom_Question_Ids__c/ Custom_Questions_Active__c vs Campaign.FAQ_Ids__c/FAQs_Active__c). Consumed by <a href="#apex-campaignquestioncontroller"><code>CampaignQuestionController</code></a> and, at donation time, by <a href="#apex-donationservice"><code>DonationService</code></a> when resolving submitted answers against the campaign's active questions. Formerly backed by a standalone Custom_Question__c object; merged into Campaign fields (2026-08) since it only ever held a single selection row per campaign.</p>
-<p>The save is two commits, because the campaign's id list needs the Ids the first one creates. One savepoint spans both, so a rejected campaign update also takes back the question templates inserted for it instead of leaving orphans in the shared library.</p>
-<p>The campaign's question selection fields are written through a user-mode Unit of Work, which refuses a Campaign the user cannot edit but would still confirm that a hidden Id exists. The gate therefore sits here, in the service, so every caller inherits it: the running user must be able to see the Campaign (<a href="#apex-campaignsselector-selectidsvisibletouser"><code>CampaignsSelector.selectIdsVisibleToUser</code></a>, the same check <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a> and <a href="#apex-eventticketadmincontroller"><code>EventTicketAdminController</code></a> make), and a campaign they cannot see answers exactly as a missing one does. Seeing is not enough to change it: once visibility passes, the user must also hold edit access on the campaign (<a href="#apex-recordaccess-requirecampaigneditable"><code>RecordAccess.requireCampaignEditable</code></a> — readiness finding F-11, closed by owner decision D-1). Visibility is asked first so a hidden campaign is still reported as not found rather than as not editable.</p>
-<p>Every templateId in the payload is re-read and checked before anything is written, because user mode checks access, not which template an Id names, and would otherwise save whatever Id the browser sent: a question save could rewrite a template of the other record type, and a user who can only read the shared library (Fundraising_ReadOnly) could edit a template other campaigns display. A referenced template must exist and carry this service's record type; one the row also edits must be editable by the running user (<a href="#apex-recordaccess"><code>RecordAccess</code></a>, which asks UserRecordAccess). Reuse-only rows need no edit access: picking a template changes the Campaign, not the template.</p>
+<p>The campaign and every referenced template are gated (visible and editable campaign, templates of this record type that the user may edit) before anything is written; the gates live in <a href="#apex-campaigntemplateselection"><code>CampaignTemplateSelection</code></a> so this service and CampaignFaqService cannot drift apart. The save is two commits, because the campaign's id list needs the Ids the first one creates. One savepoint spans both, so a rejected campaign update also takes back the question templates inserted for it instead of leaving orphans in the shared library.</p>
 </div>
 <table>
 <thead>
@@ -6519,7 +6608,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-contenttemplatesselector-newinstance">ContentTemplatesSelector.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-campaigntemplateselection-resolveordered">CampaignTemplateSelection.resolveOrdered()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -6535,11 +6624,6 @@
 <tr>
 <td><a id="apex-customquestionservice-saveselection"></a><code>saveSelection(3 args)</code></td>
 <td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-campaignsselector-newinstance">CampaignsSelector.newInstance()</a>, <a href="#apex-recordaccess-requirecampaigneditable">RecordAccess.requireCampaignEditable()</a>, <a href="#apex-contenttemplatesselector-newinstance">ContentTemplatesSelector.newInstance()</a>, <a href="#apex-recordaccess-editableids">RecordAccess.editableIds()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -6841,7 +6925,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -6851,7 +6935,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-refundservice-recordrefundedtotal">RefundService.recordRefundedTotal()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-stripeamount-tomajor">StripeAmount.toMajor()</a>, <a href="#apex-applogger-info">AppLogger.info()</a></td>
+<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -7425,7 +7509,7 @@
 <p>Deliberately NOT limited to the transition into Closed Won. Any save of an unnumbered Closed Won gift stamps it, so gifts that predate this change get their number the next time anyone touches them, rather than needing a migration script that would consume a block of numbers for records nobody was looking at.</p>
 <p>Every package record type is numbered — Donation, Offline Donation and Grant alike. A Closed Won gift is money received whatever route it arrived by, and an offline gift that printed "—" where the gateway ones printed a serial was the original reason this method exists. (Until 2026-08-21 a Pledge record type was excluded here as unpaid by definition; the record type has since been withdrawn in favour of Offline Donation, which is paid, so the exclusion went with it rather than being retargeted.) Non-package record types are still excluded by filterToPackageRecordTypes like every other handler here — the package must not write to an org's pre-existing sales pipeline.</p>
 <p>Runs in the BEFORE context on purpose. Stamping a field on a record the platform is already saving costs no DML and cannot recurse; doing it after insert would mean an extra update per gift and a re-entrant trigger for a value that was knowable all along.</p>
-<p>Records where an individual soft credit came from, which is what lets SoftCreditService promise never to overwrite a staff member's entry. The service writes the lookup and Soft_Credit_Source__c = 'Tribute Honoree' in one save, so its own writes arrive with the source already changed; a person editing the record in the UI changes the lookup and nothing else, and that difference is the whole signal this method reads.</p>
+<p><a href="#apex-records"><code>Records</code></a> where an individual soft credit came from, which is what lets SoftCreditService promise never to overwrite a staff member's entry. The service writes the lookup and Soft_Credit_Source__c = 'Tribute Honoree' in one save, so its own writes arrive with the source already changed; a person editing the record in the UI changes the lookup and nothing else, and that difference is the whole signal this method reads.</p>
 <p>Clearing the lookup clears the source with it — provenance for a credit that no longer exists would be stale the moment it was left behind, and would make the next automated pass treat an empty slot as spoken for.</p>
 </div>
 <table>
@@ -8244,6 +8328,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>finalizeSucceededStaging is the SOLE creator of donation <a href="#apex-opportunities"><code>Opportunities</code></a> and is idempotent on Stripe_Payment_Intent_Id__c, so it is safe to call from more than one path: <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> (the normal webhook-free finalizer) and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> (the orphaned-PaymentIntent repair path) both invoke it directly. It publishes DonationFinalized__e (consumed by DonationFinalizedSubscriber consumed by <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a>) and calls <a href="#apex-receiptservice"><code>ReceiptService</code></a> for the donor-facing email.</p>
 <p>Org-level twin of the campaign gate above: refuse before any Stripe callout when the finalizer has never completed a pass in this org, because a gift taken in that state is charged and never becomes an Opportunity. Deliberately NOT the staleness rule that alarmIfFinalizerStale below uses — staleness is transient and recovers, and refusing live gifts over a half-hour gap would be a worse outage than the one it warns about. See <a href="#apex-settingsservice-ischeckoutblocked"><code>SettingsService.isCheckoutBlocked</code></a> and audit finding §4b.</p>
+<p>Resolved by the unguessable Access_Token__c and NOT the enumerable staging Id, so a guest can only ever read the receipt of the order they themselves created — the staging Id is guessable and would leak another donor's receipt token (name, email, amount). The internal Opportunity Id is never returned to the client, and null tells the polling guest the reconciler has not yet created or linked the Opportunity.</p>
 <p>validateAmountBounds is the one place the org's Min/Max Donation Amount is enforced on a guest-supplied gift. It is public static so the ticket checkout applies the same bounds to an event donation add-on (<a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.CreateTicketIntent) instead of keeping a second copy of the rule.</p>
 <p>The org-wide master switch is re-checked here and not merely on the way out to the form. Options_JSON__c comes from a guest-callable endpoint, so "the form didn't show the section" is a statement about the browser, not about what can reach this method. Refusing the capture is also what makes the switch a real off switch: with no Tribute_Type__c on the Opportunity, ReceiptService.buildTributeNotification returns null on its existing gates and no e-card goes out.</p>
 <p>This runs on every finalized gift including a recurring gift's first installment, because that installment does have a real URL behind it. Later renewals have no URL at all — they are created by the scheduler — so <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a> copies the attribution stored on the Recurring_Donation__c instead. See <a href="#apex-attributioncapture-copy"><code>AttributionCapture.copy</code></a>().</p>
@@ -8268,6 +8353,16 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-campaignservice-assertacceptingdonations">CampaignService.assertAcceptingDonations()</a>, <a href="#apex-settingsservice-assertcheckoutnotblocked">SettingsService.assertCheckoutNotBlocked()</a>, <a href="#apex-guestthrottleservice-newinstance">GuestThrottleService.newInstance()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-securetokens-uuid">SecureTokens.uuid()</a>, <a href="#apex-securetokens-opaque">SecureTokens.opaque()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationservice-receipttokenforaccesstoken"></a><code>receiptTokenForAccessToken(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8878,7 +8973,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-soleactiveaccountid">PaymentGatewayFactory.soleActiveAccountId()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-paymentgatewayfactory-soleactiveaccountid">PaymentGatewayFactory.soleActiveAccountId()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -8888,7 +8983,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-refundsenabled">SettingsService.refundsEnabled()</a>, <a href="#apex-settingsservice-refundwindowdays">SettingsService.refundWindowDays()</a>, <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-soleactiveaccountid">PaymentGatewayFactory.soleActiveAccountId()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-stripeamount-tominor">StripeAmount.toMinor()</a>, <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -10129,6 +10224,7 @@
 <p>The single entry point for the Person Account dual-field donor strategy — <a href="#apex-donationservice"><code>DonationService</code></a>, <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>, <a href="#apex-paymentmethodservice"><code>PaymentMethodService</code></a>, <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, and the donor portal (<a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a>/<a href="#apex-donorportalservice"><code>DonorPortalService</code></a>) all resolve or create a donor through resolveOrCreateDonor rather than branching on IsPersonAccount directly. DonorContext exposes contactId/accountId as computed getters (falling back to the pre-existing Id when the donor already existed) so a caller can read the resolved Id immediately after uow.commitWork() without a second query.</p>
 <p>Standard orgs get a HOUSEHOLD Account too, not a bare private Contact: Contact.AccountId and Opportunity.AccountId are both populated, so a gift shows on an Account's related list, in every standard Opportunity report grouped by Account, and in orgs whose validation rules require Contact.AccountId — where an Account-less donor insert would otherwise fail the finalize with an error the donor never sees. It is also what makes <a href="#apex-softcreditservice"><code>SoftCreditService</code></a>.applyHouseholds() do anything in a standard org. See newHousehold() for why households are never matched by name.</p>
 <p>findLinkedStripeCustomerId was removed when one-time donations stopped using a Stripe Customer at all. It existed to let a repeat one-time donor reuse a linked customer id instead of minting a fresh one per gift; with one-time now charged customerless, and recurring deliberately requiring a FRESH customer per signup, it had no caller left. Do not reintroduce it without a reader for the value — see DonationService.</p>
+<p>Both gift finalizers (DonationService.processOneTimeStagingRecord and EventPurchaseService.finalizeNewOrder) carried this block verbatim; it lives here because it is a statement about the dual-field donor model, not about either flow.</p>
 </div>
 <table>
 <thead>
@@ -10152,6 +10248,16 @@
 <tr>
 <td><a id="apex-donorresolutionservice-resolveorcreatedonor"></a><code>resolveOrCreateDonor(4 args)</code></td>
 <td><code>DonorContext</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donorresolutionservice-linkopportunity"></a><code>linkOpportunity(3 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10734,6 +10840,7 @@
 <p>PAY-4 follow-on (2026-09-25): the repair used to stamp Completed as soon as seats existed, which is precisely the state a crash between UoW #1 and UoW #2 leaves behind: seats committed, none linked to their OLI, no CampaignMember sync. The reconciler then closed the order with those gaps baked in. It now finishes UoW #2 instead. A second repair is a no-op: the staging is Completed and every linkable seat is linked, so nothing is registered, nothing commits, and the sync (which skips existing members) is not re-run.</p>
 <p>A negative donation add-on is refused at finalize as well as at checkout (EventRegistrationController.CreateTicketIntent). Options_JSON__c is guest-supplied, and a negative add-on means the buyer was charged less than the tickets cost, so the order must not finalize whatever else lines up. The reason is stamped on Finalization_Error__c for the admin, the same way a line-total mismatch is. Only the sign is re-checked here, not the org min/max: by now the money has been captured, and an admin changing the bounds after the checkout must not strand a legitimate paid order. The reservation-release path still parses the row normally, so the held seats go back on sale.</p>
 <p>Finalize-time backstop for the D-5 limits. The controller refuses an over-long name or a malformed attendee e-mail before the charge, so these branches only fire for a staging row written before that check existed. The card is already captured here, so the seat is kept and the bad value is trimmed (name) or dropped (e-mail) rather than failing the whole paid order.</p>
+<p>One tier-stock mutation for every caller: a hold release and a sale release pass a negative sign, a re-taken hold passes a positive one. The result is clamped at zero so a stale or duplicated line can never push Quantity_Sold__c negative, and a tier deleted since the hold or sale is skipped — there is nothing left to give back or re-take.</p>
 </div>
 <table>
 <thead>
@@ -10761,7 +10868,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-recordtypeservice-getrecordtypeid">RecordTypeService.getRecordTypeId()</a>, <a href="#apex-pricebookservice-eventpricebookid">PricebookService.eventPricebookId()</a>, <a href="#apex-settlementstamphelper-applyto">SettlementStampHelper.applyTo()</a>, <a href="#apex-currencystamphelper-applyto">CurrencyStampHelper.applyTo()</a>, <a href="#apex-settingsservice-eventsynccampaignmembers">SettingsService.eventSyncCampaignMembers()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-settingsservice-eventdonationproductid">SettingsService.eventDonationProductId()</a>, <a href="#apex-settingsservice-eventfeeproductid">SettingsService.eventFeeProductId()</a>, <a href="#apex-settingsservice-eventdeductiblemode">SettingsService.eventDeductibleMode()</a></td>
+<td><em>calls:</em> <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-donorresolutionservice-resolveorcreatedonor">DonorResolutionService.resolveOrCreateDonor()</a>, <a href="#apex-donorresolutionservice-linkopportunity">DonorResolutionService.linkOpportunity()</a>, <a href="#apex-settingsservice-eventsynccampaignmembers">SettingsService.eventSyncCampaignMembers()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-attributioncapture-apply">AttributionCapture.apply()</a>, <a href="#apex-settingsservice-eventdonationproductid">SettingsService.eventDonationProductId()</a>, <a href="#apex-settingsservice-eventfeeproductid">SettingsService.eventFeeProductId()</a>, <a href="#apex-settingsservice-eventdeductiblemode">SettingsService.eventDeductibleMode()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -13204,7 +13311,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-isembedenabled">SettingsService.isEmbedEnabled()</a></td>
+<td><em>calls:</em> <a href="#apex-packagenamespace-name">PackageNamespace.name()</a>, <a href="#apex-settingsservice-isembedenabled">SettingsService.isEmbedEnabled()</a>, <a href="#apex-packagenamespace-qualify">PackageNamespace.qualify()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -13350,7 +13457,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a>, <a href="#apex-settingsservice-issupersededportalconfirmationmessage">SettingsService.isSupersededPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-issupersededportalrequestsubtitle">SettingsService.isSupersededPortalRequestSubtitle()</a>, <a href="#apex-refundreconciliationbatch-start">RefundReconciliationBatch.start()</a>, <a href="#apex-stripepaymentsweep-execute">StripePaymentSweep.execute()</a>, <a href="#apex-paymentgatewayfactory-hasactiveaccount">PaymentGatewayFactory.hasActiveAccount()</a>, <a href="#apex-settingsservice-finalizerintervalminutes">SettingsService.finalizerIntervalMinutes()</a>, <a href="#apex-settingsservice-heartbeatintervalminutes">SettingsService.heartbeatIntervalMinutes()</a>, <a href="#apex-guestrequestsweepscheduler-jobnamefor">GuestRequestSweepScheduler.jobNameFor()</a>, <a href="#apex-guestrequestsweepscheduler-cronfor">GuestRequestSweepScheduler.cronFor()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-issupersededportalconfirmationmessage">SettingsService.isSupersededPortalConfirmationMessage()</a>, <a href="#apex-settingsservice-issupersededportalrequestsubtitle">SettingsService.isSupersededPortalRequestSubtitle()</a>, <a href="#apex-refundreconciliationbatch-start">RefundReconciliationBatch.start()</a>, <a href="#apex-stripepaymentsweep-execute">StripePaymentSweep.execute()</a>, <a href="#apex-paymentgatewayfactory-hasactiveaccount">PaymentGatewayFactory.hasActiveAccount()</a>, <a href="#apex-settingsservice-finalizerintervalminutes">SettingsService.finalizerIntervalMinutes()</a>, <a href="#apex-settingsservice-heartbeatintervalminutes">SettingsService.heartbeatIntervalMinutes()</a>, <a href="#apex-guestrequestsweepscheduler-jobnamefor">GuestRequestSweepScheduler.jobNameFor()</a>, <a href="#apex-guestrequestsweepscheduler-cronfor">GuestRequestSweepScheduler.cronFor()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-applogger-info">AppLogger.info()</a>, <a href="#apex-pricebookservice-ensureentriesfor">PricebookService.ensureEntriesFor()</a>, <a href="#apex-settingsservice-portaltokenttlhours">SettingsService.portalTokenTtlHours()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -14899,7 +15006,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-donorportalservice-portallinkbase">DonorPortalService.portalLinkBase()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-postinstallhandler-seedeventpricebook">PostInstallHandler.seedEventPricebook()</a></td>
+<td><em>calls:</em> <a href="#apex-donorportalservice-portallinkbase">DonorPortalService.portalLinkBase()</a>, <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a>, <a href="#apex-donorresolutionservice-ispersonaccountorg">DonorResolutionService.isPersonAccountOrg()</a>, <a href="#apex-postinstallhandler-seedeventpricebook">PostInstallHandler.seedEventPricebook()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15063,8 +15170,18 @@
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-settingsservice-privacyurl"></a><code>privacyUrl(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15073,8 +15190,18 @@
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-settingsservice-socialfacebookurl"></a><code>socialFacebookUrl(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15083,13 +15210,28 @@
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-settingsservice-socialshareimageurl"></a><code>socialShareImageUrl(0 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>
 <tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-settingsservice-footertext"></a><code>footerText(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-payloadvalues-trimtonull">PayloadValues.trimToNull()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15408,7 +15550,6 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This is what produces the { success, data/error } response envelope every @AuraEnabled method in this package must return (see AGENTS.md). A controller method that builds its response map by hand instead of extending this class is the one place that contract can silently drift.</p>
-<p>Derived from a describe at runtime, never hardcoded: correct with no edit in an unmanaged scratch org (empty prefix) and under the <code>pledgivo</code> namespace — it needed no change for the 2026-09-01 swap. A namespaced object name carries two "<strong>" (ns__Settings__c); a bare one carries a single "</strong>".</p>
 <p>Every payload leaving an <code>@AuraEnabled</code> method is walked here: any SObject in it becomes a plain Map keyed by field API names, with the packaging namespace removed.</p>
 <p><strong>Why it exists.</strong> An SObject handed to the client serializes under its <em>runtime</em> API names, so the same Campaign arrives as <code>{"Tagline__c": ...}</code> in an unmanaged dev org and as <code>{"pledgivo__Tagline__c": ...}</code> once the package carries a namespace — while every LWC in this repo reads the unprefixed name (source never carries the prefix; see the Namespace Rule in AGENTS.md). Verified 2026-08-09 in the <code>pledgivo_test</code> org:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>JSON.serialize(new Campaign(Header_Image_URL__c=&#39;x&#39;))
@@ -15679,7 +15820,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-guestintentmaxperemail">SettingsService.guestIntentMaxPerEmail()</a>, <a href="#apex-settingsservice-guestintentemailwindowminutes">SettingsService.guestIntentEmailWindowMinutes()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-guestintentmaxpercampaign">SettingsService.guestIntentMaxPerCampaign()</a>, <a href="#apex-settingsservice-guestintentcampaignwindowminutes">SettingsService.guestIntentCampaignWindowMinutes()</a>, <a href="#apex-settingsservice-portalcodemaxperhour">SettingsService.portalCodeMaxPerHour()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-portalcodemaxperhour">SettingsService.portalCodeMaxPerHour()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -15689,7 +15830,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-settingsservice-portalcodemaxperhour">SettingsService.portalCodeMaxPerHour()</a></td>
+<td><em>calls:</em> <a href="#apex-settingsservice-portalcodemaxperhour">SettingsService.portalCodeMaxPerHour()</a>, <a href="#apex-settingsservice-guestintentmaxperemail">SettingsService.guestIntentMaxPerEmail()</a>, <a href="#apex-settingsservice-guestintentemailwindowminutes">SettingsService.guestIntentEmailWindowMinutes()</a>, <a href="#apex-applogger-warn">AppLogger.warn()</a>, <a href="#apex-settingsservice-guestintentmaxpercampaign">SettingsService.guestIntentMaxPerCampaign()</a>, <a href="#apex-settingsservice-guestintentcampaignwindowminutes">SettingsService.guestIntentCampaignWindowMinutes()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -15727,7 +15868,6 @@
 <p>Test seam for the final verdict (the <a href="#apex-settingsservice"><code>SettingsService</code></a> *Override idiom) — packaged tests must pass in both a licensed and an unlicensed org, so they pin the answer rather than depend on the org the suite happens to run in.</p>
 <p>Test seam for the namespace lookup: the dev org describes to an empty prefix, so forcing one here is the only way a test can reach the UserInfo call (and its fail-open catch — 'pledgivo' is not an installed licence in the dev org, so the platform call throws and the catch is exercised for real).</p>
 <p>PackageLicense.Status is documented as Active, Expired, Free or Trial; the platform flips it to Expired when the LMA licence lapses, so the status is trusted alongside the date, and a suspended LMA licence is reported as Suspended by the same field.</p>
-<p>Derived from a describe at runtime, never hardcoded — the same idiom as <a href="#apex-controlleraction"><code>ControllerAction</code></a>.unprefixed(): a namespaced org describes Settings__c as ns__Settings__c (two "__"), an unmanaged org as Settings__c (one). Returns the bare namespace ('pledgivo'), which is what UserInfo.isCurrentUserLicensed() takes.</p>
 </div>
 <table>
 <thead>
@@ -15761,6 +15901,194 @@
 <tr>
 <td><a id="apex-licenseservice-subscriptionportalurl"></a><code>subscriptionPortalUrl(0 args)</code></td>
 <td><code>String</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-packagenamespace">PackageNamespace<a class="headerlink" href="#apex-packagenamespace" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>PackageNamespace.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>The namespace this code is running under, worked out once from a packaged object's own describe.</p>
+<p>Source never carries the prefix (Namespace Rule), so code that has to build a prefixed name at runtime — a Named Credential grant, an SObject key in a JSON payload, a licence lookup — asks here instead of guessing from a class name or counting underscores.</p>
+<p>Usage: PackageNamespace.name();      // 'pledgivo' in a subscriber org, '' in an unmanaged dev org PackageNamespace.prefix();    // 'pledgivo__' or '' PackageNamespace.qualify('Settings__c');</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>split from name() so both branches are testable — an org can only ever be one of the two. The documented approach is the describe's getName() minus its getLocalName(); counting underscores or reading a class name both work today and both rely on undocumented shapes.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-packagenamespace-name"></a><code>name(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-packagenamespace-nameornull"></a><code>nameOrNull(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-packagenamespace-prefix"></a><code>prefix(0 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-packagenamespace-qualify"></a><code>qualify(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-pagewindow">PageWindow<a class="headerlink" href="#apex-pagewindow" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>PageWindow.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>One page of a "load more" list: a clamped size and offset, and the envelope the LWC reads back.</p>
+<p>The donor and fundraiser consoles all page the same way — a size of 1..100 (25 by default), a non-negative offset, and a &lt;code&gt;{ rows, total, offset, hasMore }&lt;/code&gt; payload — so the bounds and the shape live here once. The static helpers also cover the aggregate-row reads those controllers share, where a null aggregate must read as zero.</p>
+<p>Usage: PageWindow w = new PageWindow(size, offset); ... query with w.size() / w.offset() ... return w.wrap(rows, total);</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-pagewindow-size"></a><code>size(0 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-pagewindow-offset"></a><code>offset(0 args)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-pagewindow-wrap"></a><code>wrap(3 args)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-pagewindow-clampsize"></a><code>clampSize(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-pagewindow-clampoffset"></a><code>clampOffset(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-pagewindow-toint"></a><code>toInt(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-pagewindow-todecimal"></a><code>toDecimal(1 arg)</code></td>
+<td><code>Decimal</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-payloadvalues">PayloadValues<a class="headerlink" href="#apex-payloadvalues" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>PayloadValues.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Typed reads from the &lt;code&gt;Map&lt;String, Object&gt;&lt;/code&gt; an LWC sends to an admin controller.</p>
+<p>A payload arrives as untyped JSON, so every field needs the same null check, blank check and cast. This is the one copy of that. Each reader answers null for an absent or blank key; the strict readers throw on a malformed value (so the controller's envelope reports it) and the &lt;code&gt;...OrNull&lt;/code&gt; readers swallow it (for optional fields, and for validation that runs outside a try/catch).</p>
+<p>Usage: String name = PayloadValues.text(data, 'name'); Decimal goal = PayloadValues.decimalValue(data, 'goal'); Date posted = PayloadValues.dateOrNull(data, 'postedDate');</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-payloadvalues-text"></a><code>text(3 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-trimmedtext"></a><code>trimmedText(3 args)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-blanktonull"></a><code>blankToNull(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-trimtonull"></a><code>trimToNull(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-flag"></a><code>flag(3 args)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-id"></a><code>id(3 args)</code></td>
+<td><code>Id</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-decimalvalue"></a><code>decimalValue(3 args)</code></td>
+<td><code>Decimal</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-decimalornull"></a><code>decimalOrNull(3 args)</code></td>
+<td><code>Decimal</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-datevalue"></a><code>dateValue(3 args)</code></td>
+<td><code>Date</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-dateornull"></a><code>dateOrNull(3 args)</code></td>
+<td><code>Date</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-strictdateornull"></a><code>strictDateOrNull(3 args)</code></td>
+<td><code>Date</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-payloadvalues-datetimeornull"></a><code>datetimeOrNull(3 args)</code></td>
+<td><code>Datetime</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -15996,6 +16324,69 @@
 <tr>
 <td><a id="apex-recordaccess-cancreatepubliclinks"></a><code>canCreatePublicLinks(0 args)</code></td>
 <td><code>Boolean</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-records">Records<a class="headerlink" href="#apex-records" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>Records.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Small, type-agnostic helpers over lists of SObjects: collect Ids, group by a field, find what changed, read across a relationship, and chunk a list.</p>
+<p>Every helper takes the field once and works for any SObject type, so callers do not each keep a private "collect the Ids" loop. Nothing here queries or writes; it only reshapes records the caller already holds, so it needs no sharing or FLS decision of its own.</p>
+<p>Usage: Set&lt;Id&gt; donorIds = Records.ids(opps, Opportunity.ContactId); Map&lt;Id, List&lt;SObject&gt;&gt; byDonor = Records.groupById(opps, Opportunity.ContactId); List&lt;SObject&gt; moved = Records.changed(newOpps, oldMap, Opportunity.StageName); Object name = Records.valueOf(opp, 'Campaign.Name');</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>A list built with <code>new List&lt;SObject&gt;()</code> cannot later be cast to List&lt;Opportunity&gt;, which would make every result here unusable to a caller holding a typed list. clone() keeps the source list's concrete type and clear() empties it, so the result casts back cleanly.</p>
+<p>One loop for both entry points: a field is either an SObjectField token or a dot-notation path, and read() is the only place that tells them apart — so the Id collectors, the grouping helpers and valueOf() can never disagree about what a "field" means.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-records-ids"></a><code>ids(2 args)</code></td>
+<td><code>Set&lt;Id&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-records-idsat"></a><code>idsAt(2 args)</code></td>
+<td><code>Set&lt;Id&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-records-groupbyid"></a><code>groupById(2 args)</code></td>
+<td><code>Map&lt;Id, List&lt;SObject&gt;&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-records-groupbytext"></a><code>groupByText(2 args)</code></td>
+<td><code>Map&lt;String, List&lt;SObject&gt;&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-records-changed"></a><code>changed(4 args)</code></td>
+<td><code>List&lt;SObject&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-records-valueof"></a><code>valueOf(2 args)</code></td>
+<td><code>Object</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-records-split"></a><code>split(2 args)</code></td>
+<td><code>List&lt;List&lt;SObject&gt;&gt;</code></td>
 <td></td>
 </tr>
 </tbody>

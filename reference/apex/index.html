@@ -16487,6 +16487,7 @@
 <p>Settings__c is a Hierarchy Custom Setting — createSettings() below calls Settings__c.getOrgDefaults() + upsert, never <code>new Settings__c()</code> + insert, or the org-default row silently fails to apply to every context that reads settings without an explicit Id. The Event_* factory helpers were merged in from the former P2PTestDataFactory on 2026-07-13 — there is no separate test factory for them anymore.</p>
 <p>Every fixture is stamped with the org's own currency before it is returned, exactly as the product does at every insert site (<a href="#apex-currencystamphelper"><code>CurrencyStampHelper</code></a>). Without this, a fixture inserted in a MULTI-currency org silently takes the RUNNING USER's personal currency, so a gift created with Amount = 100 is stored as 100 of whatever the test user prefers and reads back through the corporate-currency aggregates as 100 / rate. Thirty-five tests failed that way on a multi-currency org while passing on a single-currency one — a fixture defect wearing the costume of a product bug, and it masked the real one (audit finding F-125). No-op in a single-currency org, where the field does not exist.</p>
 <p>The two entry points below exist for test classes that build their fixtures inline rather than through this factory. An unstamped fixture silently takes the RUNNING USER'S currency, not the org's, so in a multi-currency org whose corporate currency differs from the test user's every SUM(Amount) aggregate comes back converted — a gift inserted as 500 USD aggregates as 41666.67 INR and an assertion written in face value fails for a reason that has nothing to do with the code under test. Routing an inline insert through stampAndInsert() pins the fixture to the corporate currency, which is what production gifts already carry (CurrencyStampHelper stamps every donation path). No-op in a single-currency org, where there is no CurrencyIsoCode field to write. Audit finding F-125.</p>
+<p>Override-map overloads (idea borrowed from the benahm/TestDataFactory pattern, without the describe-driven defaults): each typed builder keeps its own known-valid defaults — record types, validation-rule-safe values, master-detail parents — and a caller changes only the fields its test cares about, by API name, instead of building the record and patching it line by line. Keys are field API names as written in source (no namespace prefix); an unknown key or a value of the wrong type fails the test at the put(), which is the point.</p>
 </div>
 <table>
 <thead>
@@ -16548,12 +16549,22 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-testdatafactory-createdonation"></a><code>createDonation(5 args)</code></td>
+<td><code>Opportunity</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-testdatafactory-createrefundabledonation"></a><code>createRefundableDonation(3 args)</code></td>
 <td><code>Opportunity</code></td>
 <td></td>
 </tr>
 <tr>
 <td><a id="apex-testdatafactory-createrecurringdonation"></a><code>createRecurringDonation(3 args)</code></td>
+<td><code>Recurring_Donation__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createrecurringdonation"></a><code>createRecurringDonation(5 args)</code></td>
 <td><code>Recurring_Donation__c</code></td>
 <td></td>
 </tr>
@@ -16628,6 +16639,11 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-testdatafactory-createdonationstaging"></a><code>createDonationStaging(3 args)</code></td>
+<td><code>Donation_Staging__c</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-testdatafactory-createsettings"></a><code>createSettings(1 arg)</code></td>
 <td><code>Settings__c</code></td>
 <td></td>
@@ -16645,6 +16661,26 @@
 <tr>
 <td><a id="apex-testdatafactory-createeventtickettype"></a><code>createEventTicketType(2 args)</code></td>
 <td><code>Event_Ticket_Type__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createeventtickettype"></a><code>createEventTicketType(4 args)</code></td>
+<td><code>Event_Ticket_Type__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createticketproduct"></a><code>createTicketProduct(1 arg)</code></td>
+<td><code>Product2</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createlinkedtickettier"></a><code>createLinkedTicketTier(3 args)</code></td>
+<td><code>Event_Ticket_Type__c</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-seedeventpricebook"></a><code>seedEventPricebook(0 args)</code></td>
+<td><code>Id</code></td>
 <td></td>
 </tr>
 <tr>
@@ -16670,6 +16706,26 @@
 <tr>
 <td><a id="apex-testdatafactory-grantgueststandardobjectaccess"></a><code>grantGuestStandardObjectAccess(1 arg)</code></td>
 <td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createuser"></a><code>createUser(4 args)</code></td>
+<td><code>User</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createstandarduser"></a><code>createStandardUser(2 args)</code></td>
+<td><code>User</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createuserwithpermissionset"></a><code>createUserWithPermissionSet(2 args)</code></td>
+<td><code>User</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-testdatafactory-createuserwithpermissionset"></a><code>createUserWithPermissionSet(4 args)</code></td>
+<td><code>User</code></td>
 <td></td>
 </tr>
 <tr>

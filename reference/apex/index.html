@@ -8634,7 +8634,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Optional NPSP (Nonprofit Success Pack) integration. NPSP is an OPTIONAL managed-package dependency — its objects (npsp__Allocation__c, npe03__Recurring_Donation__c) do not exist at compile time in a plain org, so this service reaches them ONLY through dynamic Schema.getGlobalDescribe() + generic SObject.put(). Every entry point is a hard no-op when NPSP is not installed or the matching Settings__c sub-toggle is off (see <a href="#apex-settingsservice"><code>SettingsService</code></a>.npsp*).</p>
-<p><code>without sharing</code>: it runs from the DonationFinalized__e platform-event subscriber (the Automated Process user) and must write NPSP records the running user has no sharing/CRUD grant on — our permission sets can't grant FLS on another package's fields. which finalizes the same event stream. Writes are best-effort: an NPSP validation/trigger rejection is logged and swallowed so it can never roll back an already-charged donation.</p>
+<p><code>without sharing</code>: it runs from the DonationFinalized__e platform-event subscriber (the Automated Process user) and must write NPSP records the running user has no sharing/CRUD grant on — our permission sets can't grant FLS on another package's fields. Writes are best-effort: an NPSP validation/trigger rejection is logged and swallowed so it can never roll back an already-charged donation.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The sibling read at the top of this method pins SYSTEM_MODE for the same reason.</p>

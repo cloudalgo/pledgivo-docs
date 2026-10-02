@@ -2171,12 +2171,6 @@ triage record or annotated in the code itself.</p>
 <td><code>fflib_SObjectUnitOfWork</code></td>
 <td>Vendored FFLib. The access level is supplied by whoever constructs the Unit of Work, so the decision is made one level up, where the analyzer can't follow it.</td>
 </tr>
-<tr>
-<td>Moderate</td>
-<td><code>AvoidHardcodedCredentialsInVarAssign</code></td>
-<td><code>PostInstallHandler</code></td>
-<td>Seeds the default email sign-off into <code>Settings__c.Email_Signature__c</code> on first install. <em>Signature</em> is the closing line of an email; the packaged field name cannot be renamed.</td>
-</tr>
 </tbody>
 </table>
 <p>Three findings that used to appear in this table are gone rather than justified: the ticket page's
@@ -2213,7 +2207,7 @@ the submission see the same document.</p>
 </tr>
 <tr>
 <td>Salesforce Code Analyzer, <code>AppExchange</code> + <code>Recommended:Security</code> (the command in <a href="#the-latest-scan">The latest scan</a>)</td>
-<td>Every finding in the table above, one response each, joined from the same triage record CI enforces</td>
+<td>Every finding in the table above, one response each, joined from the same triage record CI enforces. Each response states the scanner's claim in its own words, why that claim is false at that site, the supporting detail, the evidence to check against the code, and the sources it relies on</td>
 <td><a href="../../assets/security-review/code-analyzer-false-positives.pdf">PDF</a> · <a href="../../assets/security-review/code-analyzer-false-positives.xlsx">XLSX</a></td>
 </tr>
 </tbody>

@@ -2220,9 +2220,11 @@ the submission see the same document.</p>
 </table>
 <p>Each document opens with the scan it answers (scanner version, command, source commit and
 finding count), explains how to read a response, summarises the verdicts by rule, and then gives
-one response per finding — what the rule flags, why it is not a defect at that site, and the
-command or file that lets you check the claim. An appendix lists every raw finding with its
-response number. The spreadsheet holds the same responses as rows, for anyone who prefers to
+one response per finding. The Checkmarx response has a fixed shape: the scanner's claim (the
+rule's own description and the statement it points at), one paragraph stating why that claim is
+false for this statement, the supporting detail that traces every path reaching it, the evidence
+that was checked, and the Salesforce or vendor documentation each reason rests on. An appendix
+lists every raw finding with its response number. The spreadsheet holds the same responses as rows, for anyone who prefers to
 filter.</p>
 <p>They are built, not written: a script in the repository turns the scan output and the triage
 record into the PDF and spreadsheet, so when a finding is fixed or a verdict changes the

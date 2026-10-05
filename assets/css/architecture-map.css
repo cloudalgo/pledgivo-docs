@@ -1,0 +1,278 @@
+/* ==========================================================================
+   Architecture map — the interactive system diagram on "How Pledgivo works".
+   Built by assets/js/architecture-map.js. Field Notes rules apply: paper and
+   ink carry the structure, and the single red is spent only on what the reader
+   has asked to see — the journey or box they picked. Nothing is red at rest.
+   ========================================================================== */
+
+/* Material centres everything inside a <figure>; the panel is prose. */
+.md-typeset .fn-arch {
+  margin: 1.2rem 0 1.9rem;
+  display: block;
+  text-align: left;
+}
+.md-typeset .fn-arch.is-ready {
+  border: 1px solid var(--fn-line);
+  border-radius: var(--fn-radius);
+  background: var(--fn-panel);
+  box-shadow: 0 2px 14px rgba(28, 43, 70, 0.08);
+  overflow: hidden;
+}
+.md-typeset .fn-arch__data { display: none; }
+.md-typeset .fn-arch__fallback[hidden] { display: none; }
+
+/* ---- toolbar: journey chips + expand ---- */
+.fn-arch__bar {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0.45rem 0.45rem 0.6rem;
+  background: var(--fn-paper-dim);
+  border-bottom: 1px solid var(--fn-line);
+}
+.fn-arch__chips { display: flex; flex-wrap: wrap; gap: 0.3rem; flex: 1; min-width: 0; }
+.fn-arch__chip,
+.fn-arch__expand,
+.fn-arch__back {
+  font-family: var(--fn-font-mono);
+  font-size: 0.62rem;
+  line-height: 1;
+  color: var(--fn-ink-soft);
+  background: var(--fn-panel);
+  border: 1px solid var(--fn-line);
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+}
+.fn-arch__chip b {
+  display: inline-block;
+  margin-right: 0.4rem;
+  font-weight: 500;
+  color: var(--fn-ink-faint);
+}
+.fn-arch__chip:hover,
+.fn-arch__back:hover,
+.fn-arch__expand:hover { border-color: var(--fn-accent); color: var(--fn-accent); }
+.fn-arch__chip[aria-pressed="true"] { background: var(--fn-ink); border-color: var(--fn-ink); color: var(--fn-paper); }
+.fn-arch__chip[aria-pressed="true"] b { color: #ff8f9b; }
+.fn-arch__expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border-radius: 6px;
+  flex: none;
+}
+.fn-arch__expand svg { width: 0.85rem; height: 0.85rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---- the drawing ---- */
+/* Below the width where 9.6px labels stay legible the map keeps its size and
+   scrolls sideways inside its own frame; the page itself never scrolls. */
+.fn-arch__scroll { overflow-x: auto; overscroll-behavior-x: contain; background: var(--fn-panel); }
+.fn-arch__svg { display: block; width: 100%; min-width: 760px; height: auto; }
+
+.fn-arch__lane rect { fill: #f7f7f4; stroke: var(--fn-line-soft); stroke-width: 1; }
+.fn-arch__lane-label {
+  font-family: var(--fn-font-mono);
+  font-size: 9.2px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--fn-ink-faint);
+}
+
+.fn-arch__line { fill: none; stroke: #9a9a95; stroke-width: 1.2; }
+.fn-arch__edge.is-optional .fn-arch__line { stroke-dasharray: 4 3; }
+.fn-arch__head { fill: #9a9a95; }
+.fn-arch__head.is-on { fill: var(--fn-accent); }
+.fn-arch__flowline { fill: none; stroke: var(--fn-accent); stroke-width: 2; opacity: 0; stroke-dasharray: 6 4; }
+
+.fn-arch__label rect { fill: var(--fn-panel); stroke: var(--fn-line-soft); stroke-width: 0.8; }
+.fn-arch__label-text {
+  font-family: var(--fn-font-mono);
+  font-size: 9.6px;
+  fill: var(--fn-ink-soft);
+  text-anchor: middle;
+}
+.fn-arch__badge { display: none; }
+.fn-arch__badge circle { fill: var(--fn-accent); }
+.fn-arch__badge text {
+  font-family: var(--fn-font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  fill: #fff;
+  text-anchor: middle;
+}
+.fn-arch__label.has-badge .fn-arch__badge { display: inline; }
+
+.fn-arch__node { cursor: pointer; outline: none; }
+.fn-arch__box { fill: var(--fn-panel); stroke: var(--fn-ink); stroke-width: 1.1; transition: stroke 0.15s ease, stroke-width 0.15s ease; }
+.fn-arch__rule { stroke: var(--fn-ink); stroke-width: 1; }
+.fn-arch__tag {
+  font-family: var(--fn-font-mono);
+  font-size: 8.4px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--fn-ink-faint);
+}
+.fn-arch__title { font-family: var(--fn-font-body); font-size: 12px; font-weight: 600; fill: var(--fn-ink); }
+.fn-arch__sub { font-family: var(--fn-font-mono); font-size: 9.2px; fill: var(--fn-ink-soft); }
+
+/* People and outside websites are solid ink — the only filled boxes, so the
+   eye finds where a journey starts before reading a word. */
+.fn-arch__node.is-actor .fn-arch__box { fill: var(--fn-ink); }
+.fn-arch__node.is-actor .fn-arch__title { fill: var(--fn-paper); }
+.fn-arch__node.is-actor .fn-arch__tag,
+.fn-arch__node.is-actor .fn-arch__sub { fill: #b9b9b4; }
+.fn-arch__node.is-data .fn-arch__box { fill: var(--fn-paper-dim); }
+.fn-arch__node.is-job .fn-arch__box { stroke-dasharray: 5 3; }
+.fn-arch__node.is-external .fn-arch__box { fill: var(--fn-paper-dim); stroke: var(--fn-ink-soft); stroke-dasharray: 2 3; }
+
+.fn-arch__node:hover .fn-arch__box,
+.fn-arch__node:focus-visible .fn-arch__box { stroke: var(--fn-accent); stroke-width: 2; }
+
+/* ---- focused state: one journey, or one box and its wiring ---- */
+.fn-arch__node,
+.fn-arch__edge,
+.fn-arch__label { transition: opacity 0.2s ease; }
+.fn-arch__svg.is-focused .fn-arch__node:not(.is-on),
+.fn-arch__svg.is-focused .fn-arch__edge:not(.is-on),
+.fn-arch__svg.is-focused .fn-arch__label:not(.is-on) { opacity: 0.16; }
+.fn-arch__edge.is-on .fn-arch__line { opacity: 0; }
+.fn-arch__edge.is-on .fn-arch__flowline { opacity: 1; animation: fn-arch-march 1.1s linear infinite; }
+.fn-arch__node.is-picked .fn-arch__box { stroke: var(--fn-accent); stroke-width: 2.2; }
+.fn-arch__label.is-on rect { stroke: var(--fn-accent-soft-line); }
+.fn-arch__label.is-on .fn-arch__label-text { fill: var(--fn-ink); }
+.fn-arch__svg.is-stepping .fn-arch__edge.is-on:not(.is-step),
+.fn-arch__svg.is-stepping .fn-arch__label.is-on:not(.is-step) { opacity: 0.3; }
+@keyframes fn-arch-march { to { stroke-dashoffset: -20; } }
+
+/* ---- reading panel ---- */
+.md-typeset .fn-arch__panel {
+  border-top: 1px solid var(--fn-line);
+  padding: 0.75rem 0.95rem 0.85rem;
+  min-height: 5.5rem;
+}
+.md-typeset .fn-arch__panel p { margin: 0 0 0.5rem; }
+.md-typeset .fn-arch__hint { font-family: var(--fn-font-mono); font-size: 0.64rem; color: var(--fn-ink-faint); }
+.md-typeset .fn-arch__panel-head {
+  font-family: var(--fn-font-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.md-typeset .fn-arch__panel-n {
+  font-family: var(--fn-font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  color: #fff;
+  background: var(--fn-accent);
+  border-radius: 999px;
+  padding: 0.12rem 0.45rem;
+}
+.md-typeset .fn-arch__panel-tag {
+  font-family: var(--fn-font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fn-ink-faint);
+  border: 1px solid var(--fn-line);
+  border-radius: 4px;
+  padding: 0.12rem 0.35rem;
+}
+.md-typeset .fn-arch__panel-intro { color: var(--fn-ink-soft); max-width: 46rem; }
+.md-typeset .fn-arch__runs,
+.md-typeset .fn-arch__code { font-size: 0.7rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem; }
+.md-typeset .fn-arch__runs > span,
+.md-typeset .fn-arch__code > span {
+  font-family: var(--fn-font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fn-ink-faint);
+  min-width: 5.6rem;
+}
+.md-typeset .fn-arch__more { font-size: 0.7rem; }
+.md-typeset .fn-arch__back { margin-top: 0.2rem; }
+
+.md-typeset ol.fn-arch__steps { list-style: none; margin: 0.2rem 0 0.4rem; padding: 0; display: grid; gap: 0.15rem; }
+.md-typeset ol.fn-arch__steps li { margin: 0; }
+.md-typeset ol.fn-arch__steps li::marker { content: none; }
+.fn-arch__step {
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--fn-ink);
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.28rem 0.4rem;
+  cursor: default;
+}
+.fn-arch__step:hover,
+.fn-arch__step:focus-visible { background: var(--fn-accent-soft); outline: none; }
+.fn-arch__step b {
+  flex: none;
+  font-family: var(--fn-font-mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: #fff;
+  background: var(--fn-accent);
+  border-radius: 999px;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- expanded: the map takes the viewport ----
+   `position: fixed` is fine here: this is the documentation site, which owns
+   its viewport. AGENTS.md Rule 8 governs packaged component CSS, not this file.
+   Material makes .md-content its own stacking context (z-index 1), under the
+   sticky header (20) and the sidebars, so no z-index on the figure alone can
+   lift it over them; the content column is raised while the map is open. The
+   backdrop is inserted beside the figure by the script for the same reason:
+   one painted outside .md-content would land on top of the map. */
+html.fn-arch-locked .md-content { z-index: 30; }
+.md-typeset .fn-arch.is-expanded {
+  position: fixed;
+  inset: 0.8rem;
+  z-index: 10;
+  /* Material's figure is width: fit-content, which beats `right` */
+  width: auto;
+  max-width: none;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--fn-shadow-pop);
+}
+.fn-arch__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  background: rgba(11, 11, 11, 0.45);
+}
+.fn-arch.is-expanded .fn-arch__scroll { flex: 1; min-height: 0; overflow: auto; display: flex; align-items: center; justify-content: center; }
+.fn-arch.is-expanded .fn-arch__svg { width: auto; height: 100%; max-width: 100%; min-width: 0; }
+.fn-arch.is-expanded .fn-arch__panel { max-height: 30vh; overflow-y: auto; flex: none; }
+html.fn-arch-locked { overflow: hidden; }
+
+@media (max-width: 44.9375em) {
+  .fn-arch.is-expanded .fn-arch__svg { width: 100%; height: auto; min-width: 760px; }
+  .fn-arch.is-expanded .fn-arch__scroll { display: block; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fn-arch__edge.is-on .fn-arch__flowline { animation: none; stroke-dasharray: none; }
+  .fn-arch__node, .fn-arch__edge, .fn-arch__label, .fn-arch__box { transition: none; }
+}

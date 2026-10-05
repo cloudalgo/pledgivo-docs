@@ -1,0 +1,2626 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="One map of the whole package — what runs in the donor's browser, as the guest user, in background jobs and for staff — and the five journeys that connect them.">
+      
+      
+      
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/concepts/how-it-works/">
+      
+      
+        <link rel="prev" href="../../guides/monitor-and-diagnose/">
+      
+      
+        <link rel="next" href="../donors-accounts/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>How Pledgivo works - Pledgivo</title>
+      
+    
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/css/field-notes.css">
+    
+      <link rel="stylesheet" href="../../assets/css/analyzer-report.css">
+    
+      <link rel="stylesheet" href="../../assets/css/video-library.css">
+    
+      <link rel="stylesheet" href="../../assets/css/architecture-map.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  <meta property="og:site_name" content="Pledgivo">
+  <meta property="og:locale" content="en">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://pledgivo.cloudalgo.com/#organization",
+        "name": "CloudAlgo",
+        "url": "https://cloudalgo.com/",
+        "logo": "https://pledgivo.cloudalgo.com/assets/favicon.svg"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://pledgivo.cloudalgo.com/#website",
+        "url": "https://pledgivo.cloudalgo.com/",
+        "name": "Pledgivo",
+        "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://pledgivo.cloudalgo.com/#software",
+        "name": "Pledgivo",
+        "description": "Pledgivo is a native Salesforce AppExchange package for fundraising and donation management \u2014 donations, recurring giving, campaigns and ticketed events, all inside your org.",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Fundraising and donation management",
+        "operatingSystem": "Salesforce",
+        "url": "https://pledgivo.cloudalgo.com/",
+        "publisher": { "@id": "https://pledgivo.cloudalgo.com/#organization" }
+      }
+    ]
+  }
+  </script>
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="How Pledgivo works - Pledgivo" />
+<meta property="og:description" content="One map of the whole package — what runs in the donor's browser, as the guest user, in background jobs and for staff — and the five journeys that connect them." />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/how-it-works.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/concepts/how-it-works/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="How Pledgivo works - Pledgivo" />
+<meta property="twitter:description" content="One map of the whole package — what runs in the donor's browser, as the guest user, in background jobs and for staff — and the five journeys that connect them." />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/how-it-works.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-pledgivo-works" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+  <header class="md-header md-header--shadow fn-masthead" data-md-component="header">
+    <nav class="md-header__inner md-grid" aria-label="Header">
+      <label class="md-header__button md-icon fn-masthead__drawer" for="__drawer">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+      </label>
+
+      <a
+        href="../.."
+        title="Pledgivo"
+        class="fn-brand"
+        aria-label="Pledgivo"
+        data-md-component="logo"
+      ><img
+          class="fn-brand__mark"
+          src="../../assets/favicon.svg"
+          alt=""
+          aria-hidden="true"
+          width="32"
+          height="32"
+        ><span class="fn-brand__word">Pledg<b>ivo</b></span>
+        
+          <span class="fn-brand__ver">1.2.2-1</span>
+        
+      </a>
+
+      
+        <nav class="md-tabs fn-tabs" aria-label="Tabs" data-md-component="tabs">
+          <ul class="md-tabs__list">
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/installation/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+            
+              
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guides/first-campaign/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+            
+              
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Core Concepts
+
+        </a>
+      </li>
+    
+  
+
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../videos/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Videos
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../faq/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../support/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Support
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../pricing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Pricing
+
+      </a>
+    </li>
+  
+
+            
+              
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../release-notes/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Release notes
+
+      </a>
+    </li>
+  
+
+            
+          </ul>
+        </nav>
+      <div class="md-header__title fn-header__title" data-md-component="header-title">
+        <div class="md-header__ellipsis">
+          <div class="md-header__topic">
+            <span class="md-ellipsis">Pledgivo</span>
+          </div>
+          <div class="md-header__topic" data-md-component="header-topic">
+            <span class="md-ellipsis">
+              How Pledgivo works
+            </span>
+          </div>
+        </div>
+      </div>
+
+      
+        
+        
+          <label class="md-header__button md-icon fn-masthead__searchicon" for="__search">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+          </label>
+          <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      
+
+      
+    </nav>
+  </header>
+
+    <div class="md-container" data-md-component="container">
+      
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Pledgivo" class="md-nav__button md-logo" aria-label="Pledgivo" data-md-component="logo">
+      
+  <img src="../../assets/favicon.svg" alt="logo">
+
+    </a>
+    Pledgivo
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/after-you-install/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    After you install
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/experience-cloud-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your Experience Cloud site
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/connecting-stripe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Connecting Stripe
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/setup-assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup assistant
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/settings-console-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings console reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/first-campaign/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up your first campaign
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/fundraisers-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Fundraisers console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/donors-console/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Work the Donors console
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/writing-a-campaign-story/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write a campaign story
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/setup-ticketed-event/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Set up a ticketed event
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/campaign-posts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Post campaign updates and documents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/embed-donate-widget/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embed a donate button on your website
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/email-branding/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Brand your receipt and notification emails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/process-refund/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process a refund
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/recurring-dunning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configure recurring dunning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/publish-donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Publish a donor portal page
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/monitor-and-diagnose/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitor donations and read the logs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Pledgivo works
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How Pledgivo works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-short-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The short version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-the-code-runs-as" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who the code runs as
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-a-donor-gives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 · A donor gives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-confirming-without-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 · Confirming without webhooks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-after-the-gift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 · After the gift
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-staff-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 · Staff work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-money-that-moves-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 · Money that moves later
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-paths-on-the-same-rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other paths on the same rails
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled jobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-not-in-the-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is not in the picture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-go-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where to go next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../donors-accounts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donors & accounts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../campaigns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Campaigns
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../column-ratio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The column ratio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../page-sections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sections & the contact band
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../donations-payments/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Donations & payments
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recurring-giving/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recurring giving
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events-ticketing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events & ticketing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../donor-portal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The donor portal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guest-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guest requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../settings-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Settings & integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-and-code-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & code quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../videos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Videos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Support
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pricing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pricing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-short-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The short version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-the-code-runs-as" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who the code runs as
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-a-donor-gives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 · A donor gives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-confirming-without-webhooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 · Confirming without webhooks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-after-the-gift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 · After the gift
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-staff-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 · Staff work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-money-that-moves-later" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 · Money that moves later
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-paths-on-the-same-rails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other paths on the same rails
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-jobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled jobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-not-in-the-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is not in the picture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-go-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where to go next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+
+
+
+
+<p class="fn-eyebrow">Core Concepts</p>
+
+<h1 id="how-pledgivo-works">How Pledgivo works<a class="headerlink" href="#how-pledgivo-works" title="Permanent link">#</a></h1>
+<p class="fn-dek">Pledgivo lives entirely inside your Salesforce org. A donor's card goes straight to Stripe, a background job asks Stripe what happened, and the result lands as ordinary Opportunities and Contacts. This page draws that whole system on one map, then walks through it.</p>
+
+<figure class="fn-arch" aria-label="System map of Pledgivo: the donor's browser, guest Apex, background jobs and events, staff consoles, and Stripe">
+<script type="application/json" class="fn-arch__data">
+{
+  "view": [1000, 720],
+  "lanes": [
+    { "label": "Public internet · the donor's browser", "y": 10, "h": 110, "w": 840 },
+    { "label": "Your org · as the site guest user", "y": 130, "h": 110, "w": 840 },
+    { "label": "Your org · background jobs and events", "y": 250, "h": 340, "w": 840 },
+    { "label": "Your org · staff with a licence seat", "y": 600, "h": 110, "w": 840 }
+  ],
+  "nodes": [
+    { "id": "donor", "kind": "actor", "x": 20, "y": 44, "w": 150, "h": 68,
+      "tag": "Person", "title": "Donor", "sub": "gives · buys tickets\nchecks the portal",
+      "body": "Anyone with your site's link. Donors never log in to Salesforce and never hold a seat. The donor portal signs them in with a one-time code sent to their email.",
+      "more": { "text": "The donor portal", "href": "../donor-portal/" } },
+    { "id": "site", "kind": "page", "x": 240, "y": 44, "w": 150, "h": 68,
+      "tag": "LWC · LWR site", "title": "Public site", "sub": "/donate · /donor\n/receipt · /tickets",
+      "runs": "the site's guest user",
+      "body": "Your Experience Cloud LWR site. Its pages are packaged LWCs: the campaign gallery at /, the donation form and event registration at /donate, the donor portal at /donor, and /thank-you, /receipt and /tickets. You build the site and its routes during setup; the package doesn't install them.",
+      "code": ["publicFundraisingExperience", "dfForm", "publicEventRegistration", "publicDonorDashboard"],
+      "more": { "text": "Experience Cloud setup", "href": "../../getting-started/experience-cloud-setup/" } },
+    { "id": "frame", "kind": "page", "x": 460, "y": 44, "w": 150, "h": 68,
+      "tag": "Visualforce iframe", "title": "Payment frame", "sub": "stripePayment page\nStripe.js Elements",
+      "runs": "the site's guest user",
+      "body": "Card entry happens on a Visualforce page shown in an iframe. Stripe.js is loaded there and nowhere else, because Stripe requires it to come straight from Stripe. The card number goes from the donor's browser to Stripe, and Salesforce only ever sees the payment's Id.",
+      "code": ["stripePayment.page", "stripePaymentReturn.page", "StripePaymentPageController"] },
+    { "id": "widget", "kind": "external", "x": 680, "y": 44, "w": 150, "h": 68,
+      "tag": "Your own website", "title": "Donate widget", "sub": "embedWidget.js\nPreact · Shadow DOM",
+      "body": "A script tag you paste into your own website. It shows a campaign's amounts or ticket tiers and its progress bar, then sends the donor to your /donate page with their choice filled in. It never collects payment details.",
+      "code": ["embedWidget.js (static resource)", "lexEmbedBuilder"],
+      "more": { "text": "Embed a donate widget", "href": "../../guides/embed-donate-widget/" } },
+    { "id": "guestctl", "kind": "apex", "x": 240, "y": 164, "w": 150, "h": 68,
+      "tag": "Apex · GuestAction", "title": "Guest controllers", "sub": "DonationForm · Event\nDonorPortal · Receipt",
+      "runs": "the site's guest user (no seat, no sharing to inherit)",
+      "body": "Every Apex method a public page can call. Each one extends GuestAction, which passes deliberate messages through and turns any other error into one generic sentence; the real error goes to the log. Receipt, thank-you and ticket pages find their record by an unguessable token, never by a record Id sent from the browser.",
+      "code": ["DonationFormController", "EventRegistrationController", "DonorPortalController", "ReceiptController", "GuestAction"] },
+    { "id": "intent", "kind": "apex", "x": 460, "y": 164, "w": 150, "h": 68,
+      "tag": "Apex · service", "title": "Start a payment", "sub": "DonationService\nGuestThrottleService",
+      "runs": "the site's guest user",
+      "body": "Checks the checkout limits by counting recent staging rows, opens the PaymentIntent with the donor key, and writes the staging row. Checkout stays closed until the Donation Finalizer has run at least once.",
+      "code": ["DonationService", "GuestThrottleService", "StripeGateway"],
+      "more": { "text": "Donations & payments", "href": "../donations-payments/" } },
+    { "id": "embedapi", "kind": "apex", "x": 680, "y": 164, "w": 150, "h": 68,
+      "tag": "Apex REST · GET", "title": "Embed config", "sub": "EmbedConfigResource\n/embed/config/{slug}",
+      "runs": "the site's guest user",
+      "body": "The package's only REST endpoint, and it only answers GET. It returns a campaign's public settings and the URL to send the donor to. When the widget is switched off it answers embedEnabled: false, and it sends CORS headers only to origins on your allowlist.",
+      "code": ["EmbedConfigResource"] },
+    { "id": "watch", "kind": "job", "x": 240, "y": 284, "w": 150, "h": 68,
+      "tag": "Scheduled jobs", "title": "Watchdogs", "sub": "heartbeat · sweep\nrollups · purge",
+      "runs": "the user who scheduled the jobs",
+      "body": "The jobs that keep the pipeline honest. Every 15 minutes a heartbeat emails admins if staging rows are stuck. Every hour a sweep asks Stripe for recent payments and repairs any the Finalizer missed. Every night, other jobs roll up campaign totals and purge old logs and finished staging rows.",
+      "code": ["ReconciliationHeartbeat", "StripePaymentSweep", "CampaignRollupBatch", "RetentionPurgeBatch", "GuestRequestSweepBatch"],
+      "more": { "text": "Monitor and diagnose", "href": "../../guides/monitor-and-diagnose/" } },
+    { "id": "staging", "kind": "data", "x": 460, "y": 284, "w": 150, "h": 68,
+      "tag": "Custom object", "title": "Donation staging", "sub": "Donation_Staging__c\nPending → Completed",
+      "body": "One row per checkout attempt, written before any Salesforce record exists. A gift goes Pending, then Submitted once the browser confirms, then Completed. If the payment is cancelled it goes to Failed, and if nothing settles in time to Expired (72 hours for a gift, 30 minutes for a ticket hold). Completed rows are purged after the retention period; Failed and Expired rows are kept.",
+      "code": ["Donation_Staging__c", "DonationStagingSelector"] },
+    { "id": "recon", "kind": "job", "x": 680, "y": 284, "w": 150, "h": 68,
+      "tag": "Batch · every 5 min", "title": "Donation Finalizer", "sub": "StagingReconciliation\nScheduler + Batch",
+      "runs": "the user who scheduled the job",
+      "body": "Runs every 5 minutes by default, five staging rows per batch; you can slow it to once an hour in Settings → System → Scheduled Jobs. For each row it asks Stripe for the PaymentIntent, then finalizes, fails or expires the row. Every outcome goes to Transaction_Log__c. The Donation Monitor's Retry now button runs the same logic for a single row.",
+      "code": ["StagingReconciliationScheduler", "StagingReconciliationBatch"],
+      "more": { "text": "Donations & payments", "href": "../donations-payments/" } },
+    { "id": "settings", "kind": "data", "x": 20, "y": 394, "w": 150, "h": 68,
+      "tag": "Settings · logs", "title": "Settings & logs", "sub": "Settings__c · Log__c\nTransaction_Log__c",
+      "body": "Settings__c is a hierarchy custom setting that holds every switch on the Settings tab: site URL and paths, job timing, checkout limits, refund window, portal timeouts and retention. Log__c holds diagnostic logs at the level you choose. Transaction_Log__c is the payment audit trail. Nothing here holds a secret.",
+      "code": ["Settings__c", "SettingsService", "AppLogger", "Log__c", "Transaction_Log__c"],
+      "more": { "text": "Settings & integrations", "href": "../settings-integrations/" } },
+    { "id": "sub", "kind": "apex", "x": 240, "y": 394, "w": 150, "h": 68,
+      "tag": "Trigger · after insert", "title": "Post-gift work", "sub": "NPSP · campaign members\nmatching · soft credits",
+      "runs": "Automated Process",
+      "body": "Work that should follow a gift but must never undo it. It runs in its own transaction after the gift has committed: NPSP allocation sync, company-match follow-ups, CampaignMember sync, then soft credits. Each step catches and logs its own failure, so the others still run.",
+      "code": ["DonationFinalizedSubscriber.trigger", "DonationFinalizedSubscriberHandler", "NpspSyncService", "CompanyMatchService", "CampaignMemberSyncService", "SoftCreditService"] },
+    { "id": "event", "kind": "event", "x": 460, "y": 394, "w": 150, "h": 68,
+      "tag": "Platform event", "title": "Gift finalized", "sub": "DonationFinalized__e",
+      "body": "A high-volume platform event that is published only after the transaction commits. It carries the gift's Opportunity, staging row, campaign, donor and amount. It is an internal hand-off inside the package, not something your org needs to subscribe to.",
+      "code": ["DonationFinalized__e"] },
+    { "id": "finalize", "kind": "apex", "x": 680, "y": 394, "w": 150, "h": 68,
+      "tag": "Apex · service", "title": "Finalize the gift", "sub": "DonationService\nEventPurchaseService",
+      "runs": "the Finalizer's user",
+      "body": "Turns a paid staging row into records, exactly once. DonorResolutionService finds or creates the donor as a Contact or a Person Account, whichever your org uses. A gift becomes a Closed Won Opportunity; a ticket order becomes an Opportunity with line items and one Event_Attendee__c per seat. The record is keyed on the Stripe PaymentIntent Id, so a retry can't count the same gift twice.",
+      "code": ["DonationService", "EventPurchaseService", "DonorResolutionService", "ReceiptService"] },
+    { "id": "records", "kind": "data", "x": 460, "y": 504, "w": 150, "h": 68,
+      "tag": "Standard + custom", "title": "Gift records", "sub": "Opportunity · Contact\nRecurring_Donation__c",
+      "body": "Ordinary Salesforce data your reports already understand. The Opportunity is the gift, a Contact or Person Account is the donor, and Recurring_Donation__c is a recurring schedule; there are also designations and Event_Attendee__c rows. Every donor object carries both a Contact__c and a Donor_Account__c lookup, so it works in either account model.",
+      "code": ["Opportunity", "Contact / Account", "Recurring_Donation__c", "Event_Attendee__c"],
+      "more": { "text": "Donors & accounts", "href": "../donors-accounts/" } },
+    { "id": "money", "kind": "job", "x": 680, "y": 504, "w": 150, "h": 68,
+      "tag": "Apex · sync + batch", "title": "Refunds & renewals", "sub": "RefundService\nRecurringRenewalBatch",
+      "runs": "the staff user for a refund; the scheduling user for the batches",
+      "body": "Refunds run straight away when a staff user clicks Refund. Renewals start nightly at 02:00 and charge the saved card off-session. A declined card is retried every 3 days, up to 3 times; then the schedule fails, and it is cancelled after a 7-day grace period. Every hour another job picks up refunds and disputes made in the Stripe dashboard.",
+      "code": ["RefundService", "RecurringRenewalBatch", "RecurringAutoCancelBatch", "RefundReconciliationBatch"],
+      "more": { "text": "Recurring gifts & dunning", "href": "../../guides/recurring-dunning/" } },
+    { "id": "staff", "kind": "actor", "x": 20, "y": 634, "w": 150, "h": 68,
+      "tag": "Person · seat", "title": "Staff", "sub": "fundraisers · admins",
+      "body": "Fundraisers and admins who hold a licence seat and one of the packaged permission sets: Fundraising_Admin, Fundraising_User or Fundraising_ReadOnly.",
+      "more": { "text": "After you install", "href": "../../getting-started/after-you-install/" } },
+    { "id": "consoles", "kind": "page", "x": 240, "y": 634, "w": 150, "h": 68,
+      "tag": "LWC · Lightning", "title": "Consoles", "sub": "Monitor · Fundraisers\nDonors · Settings",
+      "runs": "the staff user",
+      "body": "There are five Lightning tabs: Donation Monitor, Fundraisers, Donors, Diagnostic Logs and Settings. Staff also get record pages for campaigns, gifts, donors and recurring schedules, and actions such as Refund, Resend receipt and Send portal link. Each tab checks for a licence seat before it shows anything.",
+      "code": ["lexDonationMonitor", "lexFundraisersConsole", "lexDonorsConsole", "lexDiagnosticLogs", "lexFundraisingSettings"] },
+    { "id": "staffapex", "kind": "apex", "x": 460, "y": 634, "w": 150, "h": 68,
+      "tag": "Apex · with sharing", "title": "Staff controllers", "sub": "LicenseService gate\nselectors + UoW",
+      "runs": "the staff user, with their own sharing and field access",
+      "body": "The @AuraEnabled methods behind the consoles. Every one returns a { success, data / error } envelope. LicenseService answers the seat check and fails open: only an explicit 'no seat' answer blocks a user, never an error.",
+      "code": ["LicenseController", "LicenseService", "ControllerAction", "RefundController"] },
+    { "id": "stripe", "kind": "external", "x": 880, "y": 10, "w": 105, "h": 700,
+      "tag": "External", "title": "Stripe", "sub": "PaymentIntents\nrefunds\ndisputes",
+      "body": "Stripe holds every card and moves every dollar. Salesforce only ever calls out to it. Each Stripe account uses two Named Credentials, which you create yourself (the package ships neither): a donor key for checkout and a back-office key for refunds, renewals and reconciliation.",
+      "code": ["Payment_Account__c", "StripeGateway"],
+      "more": { "text": "Connecting Stripe", "href": "../../getting-started/connecting-stripe/" } }
+  ],
+  "edges": [
+    { "id": "e_visit", "from": "donor", "to": "site", "fs": "right", "ts": "left", "label": "visits" },
+    { "id": "e_frame", "from": "site", "to": "frame", "fs": "right", "ts": "left", "label": "post\nMessage" },
+    { "id": "e_card", "from": "frame", "to": "stripe", "fs": "top", "ts": "left", "to_": -332, "via": [[535, 28]], "label": "card details" },
+    { "id": "e_guest", "from": "site", "to": "guestctl", "fs": "bottom", "ts": "top", "fo": -15, "to_": -15, "label": "guest Apex" },
+    { "id": "e_handoff", "from": "widget", "to": "site", "fs": "bottom", "ts": "bottom", "fo": -45, "to_": 40, "via": [[710, 125], [355, 125]], "label": "hand-off" },
+    { "id": "e_config", "from": "widget", "to": "embedapi", "fs": "bottom", "ts": "top", "label": "config" },
+    { "id": "e_new", "from": "guestctl", "to": "intent", "fs": "right", "ts": "left", "label": "new gift" },
+    { "id": "e_pi", "from": "intent", "to": "stripe", "fs": "right", "ts": "left", "to_": -115, "via": [[645, 198], [645, 245]], "label": "intent · donor key" },
+    { "id": "e_stage", "from": "intent", "to": "staging", "fs": "bottom", "ts": "top", "label": "stage row" },
+    { "id": "e_watch", "from": "watch", "to": "staging", "fs": "right", "ts": "left", "label": "watches", "optional": true },
+    { "id": "e_poll", "from": "recon", "to": "staging", "fs": "left", "ts": "right", "label": "polls" },
+    { "id": "e_status", "from": "recon", "to": "stripe", "fs": "right", "ts": "left", "to_": -42, "label": "status" },
+    { "id": "e_ok", "from": "recon", "to": "finalize", "fs": "bottom", "ts": "top", "label": "succeeded" },
+    { "id": "e_publish", "from": "finalize", "to": "event", "fs": "left", "ts": "right", "label": "publish" },
+    { "id": "e_deliver", "from": "event", "to": "sub", "fs": "left", "ts": "right", "label": "delivers" },
+    { "id": "e_create", "from": "finalize", "to": "records", "fs": "bottom", "ts": "top", "fo": -30, "to_": 45, "via": [[725, 483], [580, 483]], "label": "creates" },
+    { "id": "e_sync", "from": "sub", "to": "records", "fs": "bottom", "ts": "left", "via": [[315, 538]], "label": "NPSP · members\nsoft credits" },
+    { "id": "e_update", "from": "money", "to": "records", "fs": "left", "ts": "right", "label": "updates" },
+    { "id": "e_admin", "from": "money", "to": "stripe", "fs": "right", "ts": "left", "to_": 178, "label": "admin\nkey" },
+    { "id": "e_tab", "from": "staff", "to": "consoles", "fs": "right", "ts": "left", "label": "opens tab" },
+    { "id": "e_gate", "from": "consoles", "to": "staffapex", "fs": "right", "ts": "left", "label": "licensed" },
+    { "id": "e_read", "from": "staffapex", "to": "records", "fs": "top", "ts": "bottom", "label": "selectors + UoW" },
+    { "id": "e_refund", "from": "staffapex", "to": "money", "fs": "right", "ts": "bottom", "label": "refund" }
+  ],
+  "flows": [
+    { "id": "give", "n": "1", "title": "A donor gives",
+      "intro": "From the donate page to a charged card. No Opportunity exists yet when this journey ends; that is deliberate.",
+      "steps": [
+        { "edge": "e_visit", "text": "The donor opens a campaign's /donate page, a packaged LWC on your Experience Cloud site." },
+        { "edge": "e_guest", "text": "The form calls guest Apex. Every guest controller extends GuestAction, so an unexpected error reaches the browser as one generic sentence." },
+        { "edge": "e_new", "text": "DonationService checks the checkout limits first: 5 attempts per email per campaign in 10 minutes, and 500 per campaign in an hour." },
+        { "edge": "e_pi", "text": "It opens a Stripe PaymentIntent through the donor key's Named Credential. A recurring signup also creates a Stripe Customer, so the card can be charged again later." },
+        { "edge": "e_stage", "text": "It writes a Donation_Staging__c row with status Pending, which expires after 72 hours. No Contact or Opportunity has been created." },
+        { "edge": "e_frame", "text": "The form passes the payment to the card frame with postMessage." },
+        { "edge": "e_card", "text": "Stripe.js takes the card inside the Visualforce frame. The card number goes to Stripe and never touches Salesforce." }
+      ],
+      "more": { "text": "Donations & payments", "href": "../donations-payments/" } },
+    { "id": "confirm", "n": "2", "title": "Confirming without webhooks",
+      "intro": "Nothing is ever pushed into your org. Salesforce asks Stripe what happened, on a schedule.",
+      "steps": [
+        { "edge": "e_poll", "text": "Every 5 minutes by default, the Donation Finalizer picks up Pending and Submitted staging rows." },
+        { "edge": "e_status", "text": "For each row it asks Stripe for the PaymentIntent's current status." },
+        { "edge": "e_ok", "text": "A succeeded payment goes on to be finalized. A cancelled one marks the row Failed, and one past its expiry marks it Expired." },
+        { "edge": "e_create", "text": "Finalizing finds or creates the donor and writes a Closed Won Opportunity in the same transaction that marks the row Completed, then sends the receipt." }
+      ],
+      "more": { "text": "Monitor and diagnose", "href": "../../guides/monitor-and-diagnose/" } },
+    { "id": "after", "n": "3", "title": "After the gift",
+      "intro": "Follow-up work runs separately, so a failure there can never undo a gift.",
+      "steps": [
+        { "edge": "e_publish", "text": "Once the gift is saved, DonationService publishes DonationFinalized__e. Recurring renewals publish it too; ticket orders do not." },
+        { "edge": "e_deliver", "text": "The event's trigger runs as Automated Process, in its own transaction." },
+        { "edge": "e_sync", "text": "It runs four steps in order: NPSP allocation sync, company-match follow-ups, CampaignMember sync and soft credits. A step that fails logs its error, and the rest still run." }
+      ] },
+    { "id": "staff", "n": "4", "title": "Staff work",
+      "intro": "Everything inside Lightning runs as the signed-in user, with their own sharing and field access.",
+      "steps": [
+        { "edge": "e_tab", "text": "A staff user opens one of the tabs: Donation Monitor, Fundraisers, Donors, Diagnostic Logs or Settings." },
+        { "edge": "e_gate", "text": "The tab first asks LicenseService for a seat. Only a definite 'no seat' answer blocks it; any error lets the user in." },
+        { "edge": "e_read", "text": "Reads go through FFLib selectors and writes go through a Unit of Work, both enforcing the user's own access." },
+        { "edge": "e_refund", "text": "Refunds and recurring-gift changes each need their own custom permission: Process_Refunds and Manage_Recurring_Gifts." }
+      ],
+      "more": { "text": "Security & code quality", "href": "../security-and-code-quality/" } },
+    { "id": "money", "n": "5", "title": "Money that moves later",
+      "intro": "Refunds, renewals and disputes are the only things that use the second, back-office Stripe key.",
+      "steps": [
+        { "edge": "e_refund", "text": "A refund starts from the Refund action on the gift and runs immediately. A renewal runs in the nightly batch." },
+        { "edge": "e_admin", "text": "Refunds, off-session renewal charges and the hourly refund and dispute check all use the back-office key. Each charge carries an idempotency key, so a retry can't charge twice." },
+        { "edge": "e_update", "text": "The gift is marked Refunded or Partially_Refunded, a new installment Opportunity is created, or the gift's Dispute fields are filled in." }
+      ],
+      "more": { "text": "Process a refund", "href": "../../guides/process-refund/" } },
+    { "id": "embed", "n": "6", "title": "Embed widget",
+      "intro": "Your own website can show a campaign, but every payment still happens on your Salesforce site.",
+      "steps": [
+        { "edge": "e_config", "text": "The widget fetches the campaign's public settings from a read-only Apex REST endpoint. CORS headers go only to origins on your allowlist." },
+        { "edge": "e_handoff", "text": "When the donor clicks, the whole page moves to your /donate page with the amount filled in. From there, journey 1 takes over." }
+      ],
+      "more": { "text": "Embed a donate widget", "href": "../../guides/embed-donate-widget/" } }
+  ]
+}
+</script>
+<div class="fn-arch__fallback">
+<p>The interactive map needs JavaScript. Every box and arrow on it is described in the sections below.</p>
+</div>
+</figure>
+
+<p class="fn-figure-caption"><strong>How to read it.</strong> The four bands show who the code runs as. Solid black boxes are people; dashed boxes are scheduled jobs; boxes with a rule across the top hold data; the pill is a platform event; dotted boxes sit outside your org. Pick a journey to trace it step by step, or pick any box to see what it does, who it runs as and which classes implement it. Use the corner button to open the map full screen, and Esc to close it.</p>
+
+<h2 id="the-short-version">The short version<a class="headerlink" href="#the-short-version" title="Permanent link">#</a></h2>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Where does the card go?</td>
+<td>Straight from the donor's browser to Stripe, through Stripe.js in a Visualforce iframe. Salesforce sees only the payment's Id.</td>
+</tr>
+<tr>
+<td>When does the gift appear in Salesforce?</td>
+<td>When the Donation Finalizer next runs: within 5 minutes by default. The donor's card is charged and they are thanked immediately.</td>
+</tr>
+<tr>
+<td>Does Stripe call into my org?</td>
+<td>No. There are no webhooks and no public endpoint for Stripe. Salesforce asks Stripe, on a schedule.</td>
+</tr>
+<tr>
+<td>What does a gift become?</td>
+<td>A Closed Won Opportunity, plus a Contact or a Person Account (whichever your org uses). Both are ordinary records your reports already read.</td>
+</tr>
+<tr>
+<td>What happens if something downstream fails?</td>
+<td>NPSP sync, campaign members, matching and soft credits all run after the gift is saved, in a separate transaction. They can fail without losing the gift.</td>
+</tr>
+<tr>
+<td>Who needs a licence seat?</td>
+<td>Staff who use the consoles. Donors and event attendees never do.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="who-the-code-runs-as">Who the code runs as<a class="headerlink" href="#who-the-code-runs-as" title="Permanent link">#</a></h2>
+<p>The map's four bands are four security contexts. Almost every design choice in the package follows from which band a piece of code lives in.</p>
+<table>
+<thead>
+<tr>
+<th>Band</th>
+<th>Runs as</th>
+<th>What lives there</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>The donor's browser</strong></td>
+<td>Nobody in Salesforce</td>
+<td>The public site's LWCs, the Stripe card frame, the embed widget on your own website</td>
+<td>Nothing here is trusted. Amounts and choices are checked again in Apex.</td>
+</tr>
+<tr>
+<td><strong>Guest Apex</strong></td>
+<td>The site's guest user</td>
+<td>Guest controllers, <code>DonationService</code> starting a payment, the embed config endpoint</td>
+<td>Guest users can't hold a seat, can't edit records, and get generic error messages. Records are reached by unguessable tokens, never by a record Id sent from the browser.</td>
+</tr>
+<tr>
+<td><strong>Background</strong></td>
+<td>The user who scheduled the job, or <em>Automated Process</em> for the platform event</td>
+<td>The Donation Finalizer, the watchdogs, renewals, refund and dispute checks, post-gift work</td>
+<td>Only these paths create gifts and donors. They run in system context because a guest user structurally can't write them.</td>
+</tr>
+<tr>
+<td><strong>Staff</strong></td>
+<td>The signed-in user, with their own sharing and field access</td>
+<td>The Lightning consoles, record pages, actions and their controllers</td>
+<td>Gated by a licence seat; writes check the user's own create, edit and field permissions.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-a-donor-gives">1 · A donor gives<a class="headerlink" href="#1-a-donor-gives" title="Permanent link">#</a></h2>
+<ol>
+<li>The donor opens a campaign's <strong>/donate</strong> page. It is an LWC from the package, hosted on your Experience Cloud LWR site.</li>
+<li>The form calls <strong>guest Apex</strong>. Every guest controller extends <code>GuestAction</code>, so an unexpected failure reaches the browser as one generic sentence; the real error goes to the log.</li>
+<li><code>DonationService</code> checks the <strong>checkout limits</strong> before anything else. The defaults are 5 attempts per email per campaign in 10 minutes, and 500 per campaign in an hour. It counts existing staging rows, so a refused attempt writes nothing and never calls Stripe.</li>
+<li>It opens a <strong>Stripe PaymentIntent</strong> through the donor key's Named Credential. A one-time gift or ticket has no Stripe Customer. A recurring signup creates one and marks the payment for reuse, so the card can be charged again later.</li>
+<li>It writes a <strong><code>Donation_Staging__c</code></strong> row with status <em>Pending</em>. That row is the only thing in Salesforce at this point: no Contact and no Opportunity yet.</li>
+<li>The form passes the payment to the <strong>card frame</strong>, a Visualforce page in an iframe. Stripe.js collects the card there and confirms the payment with Stripe directly.</li>
+<li>When the browser sees the confirmation, it marks the row <em>Submitted</em>, then shows the thank-you page. The thank-you page only reports Stripe's status; it creates nothing.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Checkout stays closed until the Finalizer has run</p>
+<p>The form refuses to start a payment until the Donation Finalizer has recorded its first
+heartbeat. That stops a new org from taking money that no job would ever record.</p>
+</div>
+<h2 id="2-confirming-without-webhooks">2 · Confirming without webhooks<a class="headerlink" href="#2-confirming-without-webhooks" title="Permanent link">#</a></h2>
+<p>The <strong>Donation Finalizer</strong> (<code>StagingReconciliationScheduler</code> → <code>StagingReconciliationBatch</code>) runs every 5 minutes by default. You can slow it to once an hour in <em>Settings → System → Scheduled Jobs</em>. Each run picks up <em>Pending</em> and <em>Submitted</em> staging rows, five per batch, and asks Stripe for each PaymentIntent's current status.</p>
+<table>
+<thead>
+<tr>
+<th>Stripe says</th>
+<th>The staging row becomes</th>
+<th>What gets created</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>succeeded</code></td>
+<td><em>Completed</em></td>
+<td>The donor (found or created), a Closed Won Opportunity, and the receipt email, all in one transaction</td>
+</tr>
+<tr>
+<td><code>canceled</code></td>
+<td><em>Failed</em></td>
+<td>Nothing. A ticket hold releases its seats.</td>
+</tr>
+<tr>
+<td>Still pending after the row expires (72 h for a gift, 30 min for a ticket hold)</td>
+<td><em>Expired</em></td>
+<td>Nothing. A ticket hold releases its seats.</td>
+</tr>
+<tr>
+<td>Still pending, not yet expired</td>
+<td>Unchanged</td>
+<td>Nothing yet. The next run checks again.</td>
+</tr>
+</tbody>
+</table>
+<p>Every outcome writes a <code>Transaction_Log__c</code> row, and the <strong>Donation Monitor</strong> tab lists rows that are stuck. Its <em>Retry now</em> button runs the same logic for one row. Finalizing is keyed on the Stripe PaymentIntent Id, so the batch, the retry button and the hourly sweep can all reach the same payment without ever recording it twice.</p>
+<p>A recurring signup has one extra wait. The Finalizer holds gift #1 for up to 10 minutes while the browser saves the card for reuse. In the same transaction as that first Opportunity, it creates the <code>Recurring_Donation__c</code> schedule as <em>Active</em>. If the card details never arrive, gift #1 is still recorded, as a one-time gift.</p>
+<h2 id="3-after-the-gift">3 · After the gift<a class="headerlink" href="#3-after-the-gift" title="Permanent link">#</a></h2>
+<p>Once a gift has been saved, <code>DonationService</code> publishes <strong><code>DonationFinalized__e</code></strong>. It is a high-volume platform event delivered only after the transaction commits. Its trigger runs as <strong>Automated Process</strong>, in a transaction of its own, and does four things in order:</p>
+<ol>
+<li><strong>NPSP allocation sync</strong>, if NPSP is installed.</li>
+<li><strong>Company-match follow-ups.</strong></li>
+<li><strong>CampaignMember sync</strong>, if you've switched it on.</li>
+<li><strong>Soft credits.</strong></li>
+</ol>
+<p>Each step catches and logs its own failure, so the others still run. Because all of this happens after the gift has been saved, none of it can lose a gift. Recurring renewals publish the same event. <strong>Ticket orders don't</strong>: they finalize through <code>EventPurchaseService</code>, which handles its own campaign-member sync.</p>
+<h2 id="4-staff-work">4 · Staff work<a class="headerlink" href="#4-staff-work" title="Permanent link">#</a></h2>
+<p>Staff work in five Lightning tabs: <strong>Donation Monitor</strong>, <strong>Fundraisers</strong>, <strong>Donors</strong>, <strong>Diagnostic Logs</strong> and <strong>Settings</strong>. They also get record pages for campaigns, gifts, donors and recurring schedules, and actions such as <em>Refund</em>, <em>Resend receipt</em>, <em>Manage recurring gift</em> and <em>Send portal link</em>.</p>
+<ul>
+<li><strong>Licence check first.</strong> Every tab asks <code>LicenseService</code> whether the user holds a seat before it shows anything. This check <em>fails open</em>: only a definite "no seat" answer blocks a user, and any platform error lets them in. Public pages never check for a seat.</li>
+<li><strong>The user's own access.</strong> Controllers read through FFLib selectors and write through a Unit of Work, both enforcing the signed-in user's sharing, object and field permissions.</li>
+<li><strong>Two actions need an extra permission.</strong> Refunds need the <code>Process_Refunds</code> custom permission, and pausing, changing or stopping a recurring gift needs <code>Manage_Recurring_Gifts</code>.</li>
+</ul>
+<h2 id="5-money-that-moves-later">5 · Money that moves later<a class="headerlink" href="#5-money-that-moves-later" title="Permanent link">#</a></h2>
+<p>Each Stripe account (<code>Payment_Account__c</code>) is reached through <strong>two Named Credentials that you create</strong>; the package ships neither. The <em>donor key</em> covers checkout: creating customers and payments, and reading payment status. The <em>back-office key</em> covers everything that moves money later, or that lists your Stripe account's history.</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>When</th>
+<th>Key</th>
+<th>Result in Salesforce</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Refund</strong></td>
+<td>When a staff user clicks <em>Refund</em> (within 180 days by default)</td>
+<td>Back-office</td>
+<td>The gift becomes <em>Refunded</em> or <em>Partially_Refunded</em>. A full refund of a ticket order releases its seats.</td>
+</tr>
+<tr>
+<td><strong>Recurring renewal</strong></td>
+<td>Nightly, starting 02:00</td>
+<td>Back-office</td>
+<td>A new installment Opportunity. A decline is retried every 3 days, up to 3 times.</td>
+</tr>
+<tr>
+<td><strong>Auto-cancel</strong></td>
+<td>Right after renewals</td>
+<td>—</td>
+<td>A <em>Failed</em> schedule is cancelled after a 7-day grace period.</td>
+</tr>
+<tr>
+<td><strong>Refund &amp; dispute check</strong></td>
+<td>Hourly, at :23</td>
+<td>Back-office</td>
+<td>Picks up refunds and disputes made in the Stripe dashboard and alerts staff to a new dispute. It never issues a refund and never lowers a recorded refund.</td>
+</tr>
+<tr>
+<td><strong>Payment sweep</strong></td>
+<td>Hourly, at :07</td>
+<td>Back-office</td>
+<td>Lists the last 24 hours of payments and repairs any the Finalizer missed, up to 5 per run.</td>
+</tr>
+</tbody>
+</table>
+<p>Cancelling a recurring gift changes the schedule in Salesforce only; there is no Stripe Subscription to cancel, because Pledgivo never creates one. Each renewal is an ordinary off-session charge that the package schedules itself.</p>
+<h2 id="other-paths-on-the-same-rails">Other paths on the same rails<a class="headerlink" href="#other-paths-on-the-same-rails" title="Permanent link">#</a></h2>
+<p><strong>Event tickets.</strong> <code>publicEventRegistration</code> sits inside the same /donate page. A ticket order reserves seats by locking the ticket tiers, opens a PaymentIntent with no Stripe Customer, and writes a staging row that holds the seats for 30 minutes. One order can include up to 50 tickets. The same Finalizer and sweep pick the row up, and <code>EventPurchaseService</code> creates one Opportunity with a line item per tier and an <code>Event_Attendee__c</code> per seat. A failed or expired order gives its seats back. See <a href="../events-ticketing/">Events &amp; ticketing</a>.</p>
+<p><strong>The donor portal.</strong> At /donor, a donor asks for a sign-in code. The 8-character code is emailed to them and is valid for 15 minutes; only a hash of it is stored. After 5 wrong attempts the code is locked. Each address can request one code every 5 minutes, and the whole org is capped at 100 codes an hour. A session lasts up to 4 hours and ends after 30 idle minutes. From the portal the donor can see their giving, download statements, pause, change or cancel a recurring gift, update a card, name event attendees and ask for a refund. See <a href="../donor-portal/">The donor portal</a>.</p>
+<p><strong>The embed widget.</strong> A script on your own website fetches a campaign's public settings from <code>EmbedConfigResource</code>. That is the package's only REST endpoint; it answers only GET, and it sends CORS headers only to origins on your allowlist. When the donor clicks, the whole page moves to your /donate page with the amount filled in, so no payment ever happens on your website. See <a href="../../guides/embed-donate-widget/">Embed a donate widget</a>.</p>
+<p><strong>Receipts.</strong> When a gift is first finalized, the package emails a receipt from its <code>DonationReceipt</code> template, unless you've turned automatic receipts off. Every Opportunity carries a random 128-bit <code>Receipt_Token__c</code>, and the public /receipt page finds the gift by that token alone. Ticket confirmations, recurring confirmations, dunning, refund notices and tribute emails each have their own template.</p>
+<h2 id="scheduled-jobs">Scheduled jobs<a class="headerlink" href="#scheduled-jobs" title="Permanent link">#</a></h2>
+<p>The package schedules all of these at install. They run in system context as the user who scheduled them; saving the scheduled-jobs settings reschedules them under the admin who saved.</p>
+<table>
+<thead>
+<tr>
+<th>Job</th>
+<th>When</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Donation Finalizer</td>
+<td>Every 5 min (configurable)</td>
+<td>Confirms staging rows with Stripe and creates the records</td>
+</tr>
+<tr>
+<td>Reconciliation heartbeat</td>
+<td>Every 15 min</td>
+<td>Emails admins if staging rows are stuck</td>
+</tr>
+<tr>
+<td>Stripe payment sweep</td>
+<td>Hourly, :07</td>
+<td>Repairs payments the Finalizer missed</td>
+</tr>
+<tr>
+<td>Refund &amp; dispute check</td>
+<td>Hourly, :23</td>
+<td>Syncs refunds and disputes made in the Stripe dashboard</td>
+</tr>
+<tr>
+<td>Guest request sweep</td>
+<td>:09, :29, :49</td>
+<td>Processes queued <a href="../guest-requests/">guest requests</a></td>
+</tr>
+<tr>
+<td>Donor rollups → renewals → auto-cancel</td>
+<td>Nightly, 02:00</td>
+<td>Donor totals, then recurring charges, then cancels lapsed schedules</td>
+</tr>
+<tr>
+<td>Campaign rollups</td>
+<td>Nightly, 02:37</td>
+<td>Campaign totals and progress bars</td>
+</tr>
+<tr>
+<td>Retention purge</td>
+<td>Nightly, 03:00</td>
+<td>Deletes logs, finished staging rows, processed guest requests and old portal sessions after 90 days (portal sessions after 7)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-is-not-in-the-picture">What is not in the picture<a class="headerlink" href="#what-is-not-in-the-picture" title="Permanent link">#</a></h2>
+<p>Some things are left off the map on purpose; each absence is a design choice.</p>
+<ul>
+<li><strong>No inbound webhooks.</strong> Stripe never calls your org, so there is no public endpoint to secure and no signing secret to rotate.</li>
+<li><strong>No Stripe Subscriptions.</strong> Recurring gifts are schedules in Salesforce, charged by the package itself.</li>
+<li><strong>No CAPTCHA.</strong> Abuse protection is the checkout limits shown above, plus Stripe Radar on Stripe's side.</li>
+<li><strong>No stored secrets.</strong> Stripe keys live only in Named Credentials you create. A field may hold a credential's <em>name</em>, never a key.</li>
+<li><strong>No packaged site.</strong> The Experience Cloud site and its routes are built during setup. The package supplies the components that go on its pages.</li>
+</ul>
+<h2 id="where-to-go-next">Where to go next<a class="headerlink" href="#where-to-go-next" title="Permanent link">#</a></h2>
+<ul>
+<li><a href="../donations-payments/">Donations &amp; payments</a>: the staging and Finalizer model in depth, with the timing trade-off.</li>
+<li><a href="../recurring-giving/">Recurring giving</a> and <a href="../../guides/recurring-dunning/">Recurring gifts &amp; dunning</a>: schedules, retries and the donor emails.</li>
+<li><a href="../donors-accounts/">Donors &amp; accounts</a>: how a donor is matched or created in either account model.</li>
+<li><a href="../security-and-code-quality/">Security &amp; code quality</a>: the sharing model, field-level security and the security review.</li>
+<li><a href="../../guides/monitor-and-diagnose/">Monitor and diagnose</a>: what to check when a gift doesn't appear.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer fn-foot">
+  <div class="fn-foot__inner md-grid">
+    
+      <nav class="fn-foot__nav" aria-label="Footer">
+        
+          <a
+            href="../../guides/monitor-and-diagnose/"
+            class="fn-foot__page fn-foot__page--prev"
+            rel="prev"
+          >
+            <span class="fn-foot__dir">Previous</span>
+            <span class="fn-foot__pagetitle">Monitor donations and read the logs</span>
+          </a>
+        
+        
+          <a
+            href="../donors-accounts/"
+            class="fn-foot__page fn-foot__page--next"
+            rel="next"
+          >
+            <span class="fn-foot__dir">Next</span>
+            <span class="fn-foot__pagetitle">Donors & accounts</span>
+          </a>
+        
+      </nav>
+    
+
+    <section class="fn-foot__help" aria-labelledby="fn-foot-help">
+      <div>
+        <p class="fn-foot__helptitle" id="fn-foot-help">Need a hand with any of this?</p>
+        <p class="fn-foot__helpnote">
+          CloudAlgo can install and configure the package for you, or build the
+          customisations your fundraising program needs on top of it.
+        </p>
+      </div>
+      <a class="fn-foot__cta" href="https://cloudalgo.com/contact/" target="_blank" rel="noopener">
+        Contact us
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
+          <path fill="currentColor" d="M4 11h12.2l-5.6-5.6L12 4l8 8-8 8-1.4-1.4 5.6-5.6H4z"/>
+        </svg>
+      </a>
+    </section>
+
+    <div class="fn-foot__meta">
+      <a class="fn-foot__lockup" href="https://cloudalgo.com/" target="_blank" rel="noopener">
+        <span class="fn-foot__lead">A product by</span>
+        <img
+          class="fn-foot__logo"
+          src="../../assets/images/cloudalgo-logo-dark.svg"
+          alt="CloudAlgo"
+          width="291"
+          height="53"
+          loading="lazy"
+        >
+      </a>
+      
+        <p class="fn-foot__copy">&copy; 2026 <a href="https://cloudalgo.com/" target="_blank" rel="noopener">CloudAlgo</a>
+</p>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../assets/js/cytoscape.min.js"></script>
+      
+        <script src="../../assets/js/data-model-diagram.js"></script>
+      
+        <script src="../../assets/js/step-viewer.js"></script>
+      
+        <script src="../../assets/js/field-notes-video.js"></script>
+      
+        <script src="../../assets/js/field-notes-film-modal.js"></script>
+      
+        <script src="../../assets/js/video-library.js"></script>
+      
+        <script src="../../assets/js/architecture-map.js"></script>
+      
+    
+  </body>
+</html>

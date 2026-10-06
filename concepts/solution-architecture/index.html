@@ -6,17 +6,17 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="What Salesforce Code Analyzer reports on this package, what each security finding means, and the design decisions that remove whole categories of risk before any scanner runs.">
+        <meta name="description" content="Pledgivo is a native Salesforce AppExchange package for fundraising and donation management — donations, recurring giving, campaigns and ticketed events, all inside your org.">
       
       
       
-        <link rel="canonical" href="https://pledgivo.cloudalgo.com/concepts/security-and-code-quality/">
+        <link rel="canonical" href="https://pledgivo.cloudalgo.com/concepts/solution-architecture/">
       
       
-        <link rel="prev" href="../settings-integrations/">
+        <link rel="prev" href="../security-and-code-quality/">
       
       
-        <link rel="next" href="../solution-architecture/">
+        <link rel="next" href="../sample-api-callouts/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Security & code quality - Pledgivo</title>
+        <title>Solution architecture - Pledgivo</title>
       
     
 
@@ -104,17 +104,17 @@
 
   
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Security & code quality - Pledgivo" />
-<meta property="og:description" content="What Salesforce Code Analyzer reports on this package, what each security finding means, and the design decisions that remove whole categories of risk before any scanner runs." />
-<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/security-and-code-quality.png" />
+<meta property="og:title" content="Solution architecture - Pledgivo" />
+<meta property="og:description" content="Pledgivo is a native Salesforce AppExchange package for fundraising and donation management — donations, recurring giving, campaigns and ticketed events, all inside your org." />
+<meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/solution-architecture.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:url" content="https://pledgivo.cloudalgo.com/concepts/security-and-code-quality/" />
+<meta property="og:url" content="https://pledgivo.cloudalgo.com/concepts/solution-architecture/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="Security & code quality - Pledgivo" />
-<meta property="twitter:description" content="What Salesforce Code Analyzer reports on this package, what each security finding means, and the design decisions that remove whole categories of risk before any scanner runs." />
-<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/security-and-code-quality.png" />
+<meta property="twitter:title" content="Solution architecture - Pledgivo" />
+<meta property="twitter:description" content="Pledgivo is a native Salesforce AppExchange package for fundraising and donation management — donations, recurring giving, campaigns and ticketed events, all inside your org." />
+<meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/solution-architecture.png" />
 </head>
   
   
@@ -134,7 +134,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#security-code-quality" class="md-skip">
+        <a href="#solution-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -358,7 +358,7 @@
           </div>
           <div class="md-header__topic" data-md-component="header-topic">
             <span class="md-ellipsis">
-              Security & code quality
+              Solution architecture
             </span>
           </div>
         </div>
@@ -1528,6 +1528,34 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-and-code-quality/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & code quality
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -1547,7 +1575,7 @@
   <span class="md-ellipsis">
     
   
-    Security & code quality
+    Solution architecture
   
 
     
@@ -1565,7 +1593,7 @@
   <span class="md-ellipsis">
     
   
-    Security & code quality
+    Solution architecture
   
 
     
@@ -1593,10 +1621,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-short-version" class="md-nav__link">
+  <a href="#1-system-architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The short version
+        1. System architecture
       
     </span>
   </a>
@@ -1604,10 +1632,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-removes-risk-before-a-scanner-sees-it" class="md-nav__link">
+  <a href="#2-information-flow-one-donation-end-to-end" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What removes risk before a scanner sees it
+        2. Information flow — one donation, end to end
       
     </span>
   </a>
@@ -1615,38 +1643,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-latest-scan" class="md-nav__link">
+  <a href="#3-authentication-and-authorization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The latest scan
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The latest scan">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Three rules are measured against this project's conventions, not PMD's defaults
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#every-security-tagged-finding-and-what-it-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Every security-tagged finding, and what it is
+        3. Authentication and authorization
       
     </span>
   </a>
@@ -1654,10 +1654,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-submission-documents" class="md-nav__link">
+  <a href="#4-encryption-on-data-transfer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The submission documents
+        4. Encryption on data transfer
       
     </span>
   </a>
@@ -1665,10 +1665,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-false-positive-documents" class="md-nav__link">
+  <a href="#5-data-touchpoints" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The false-positive documents
+        5. Data touchpoints
       
     </span>
   </a>
@@ -1676,10 +1676,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-stays-this-way" class="md-nav__link">
+  <a href="#6-externally-reachable-surface-and-the-one-external-link" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it stays this way
+        6. Externally reachable surface, and the one external link
       
     </span>
   </a>
@@ -1687,10 +1687,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#test-coverage" class="md-nav__link">
+  <a href="#7-basic-usage-instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Test coverage
+        7. Basic usage instructions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-accompanying-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Accompanying documents
       
     </span>
   </a>
@@ -1701,34 +1712,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../solution-architecture/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Solution architecture
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1933,10 +1916,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-short-version" class="md-nav__link">
+  <a href="#1-system-architecture" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The short version
+        1. System architecture
       
     </span>
   </a>
@@ -1944,10 +1927,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-removes-risk-before-a-scanner-sees-it" class="md-nav__link">
+  <a href="#2-information-flow-one-donation-end-to-end" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What removes risk before a scanner sees it
+        2. Information flow — one donation, end to end
       
     </span>
   </a>
@@ -1955,38 +1938,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-latest-scan" class="md-nav__link">
+  <a href="#3-authentication-and-authorization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The latest scan
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="The latest scan">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Three rules are measured against this project's conventions, not PMD's defaults
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#every-security-tagged-finding-and-what-it-is" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Every security-tagged finding, and what it is
+        3. Authentication and authorization
       
     </span>
   </a>
@@ -1994,10 +1949,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-submission-documents" class="md-nav__link">
+  <a href="#4-encryption-on-data-transfer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The submission documents
+        4. Encryption on data transfer
       
     </span>
   </a>
@@ -2005,10 +1960,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-false-positive-documents" class="md-nav__link">
+  <a href="#5-data-touchpoints" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The false-positive documents
+        5. Data touchpoints
       
     </span>
   </a>
@@ -2016,10 +1971,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-it-stays-this-way" class="md-nav__link">
+  <a href="#6-externally-reachable-surface-and-the-one-external-link" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How it stays this way
+        6. Externally reachable surface, and the one external link
       
     </span>
   </a>
@@ -2027,10 +1982,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#test-coverage" class="md-nav__link">
+  <a href="#7-basic-usage-instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Test coverage
+        7. Basic usage instructions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-accompanying-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Accompanying documents
       
     </span>
   </a>
@@ -2054,343 +2020,225 @@
 
 
 
-<p class="fn-eyebrow">Core Concepts</p>
+<hr />
+<p>title: Solution architecture
+description: The architecture and usage document submitted with the AppExchange security review: what the package is made of, how a donation moves, where data lives and what is reachable from outside.</p>
+<hr />
+<!-- GENERATED by docs-site/scripts/generate_submission_docs.py from package-submission/src/solution-architecture.html — do not edit; edit the HTML source. -->
 
-<h1 id="security-code-quality">Security &amp; code quality<a class="headerlink" href="#security-code-quality" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every pull request into this package is scanned with Salesforce's own Code Analyzer. This page publishes what the latest scan found — including the findings that are still open — because a number you can check is worth more than an assurance you can't.</p>
+<p class="fn-eyebrow">Security review</p>
 
-<h2 id="the-short-version">The short version<a class="headerlink" href="#the-short-version" title="Permanent link">#</a></h2>
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Critical findings</strong></td>
-<td><strong>0</strong> — and 0 on every scan to date</td>
-</tr>
-<tr>
-<td><strong>Known-vulnerable JavaScript libraries</strong></td>
-<td><strong>0</strong> — RetireJS returns nothing across the shipped package</td>
-</tr>
-<tr>
-<td><strong>Card data stored in Salesforce</strong></td>
-<td><strong>None.</strong> Stripe.js tokenizes in the browser; only a payment-method ID reaches Apex</td>
-</tr>
-<tr>
-<td><strong>Public inbound endpoints</strong></td>
-<td><strong>None.</strong> Salesforce asks Stripe for payment status — nothing is pushed into your org</td>
-</tr>
-<tr>
-<td><strong>API secrets in package fields</strong></td>
-<td><strong>None.</strong> Stripe keys live only in a Named Credential your admin creates</td>
-</tr>
-<tr>
-<td><strong>Apex test coverage (packaged version)</strong></td>
-<td><strong>95%</strong>, measured by Salesforce, against a 75% requirement</td>
-</tr>
-</tbody>
-</table>
-<h2 id="what-removes-risk-before-a-scanner-sees-it">What removes risk before a scanner sees it<a class="headerlink" href="#what-removes-risk-before-a-scanner-sees-it" title="Permanent link">#</a></h2>
-<p>A static analyzer can only find problems in code that exists. Four architectural decisions mean
-large categories of them are never written in the first place.</p>
-<p><strong>No cardholder data ever reaches your org.</strong> The donation form loads Stripe's Payment Element,
-and the card is tokenized in the donor's browser. What Apex receives is an opaque payment-method
-identifier. There is no field on any object in this package that could hold a card number, and
-nothing to leak if a record is over-shared. See <a href="../donations-payments/">Donations &amp; payments</a>.</p>
-<p><strong>No inbound webhook, so no public endpoint.</strong> Most payment integrations register a URL that the
-processor calls back into. This one inverts that: after a donor pays, a scheduled job in
-Salesforce <strong>asks Stripe</strong> what happened. There is no exposed endpoint to secure, no webhook
-signing secret to store or rotate, and no unauthenticated write path into your data.</p>
-<p><strong>Secrets are never packaged.</strong> The package ships no API key, in a custom field or anywhere else.
-Your admin creates a Named Credential during setup and Salesforce holds the key; the package
-references the credential by name. See <a href="../../getting-started/connecting-stripe/">Connecting Stripe</a>.</p>
-<p><strong>The guest user can only insert.</strong> The public donation and event pages run as the Experience
-Cloud guest user, which in this package is granted the narrowest set of permissions the flow
-demonstrably needs. A guest submission is written as a staging row and picked up by a background
-job running in an authenticated context — a guest cannot create a Contact or an Opportunity, and
-cannot read one back.</p>
-<h2 id="the-latest-scan">The latest scan<a class="headerlink" href="#the-latest-scan" title="Permanent link">#</a></h2>
-<p class="fn-chip">Scanned 28 September 2026 · Code Analyzer 0.53.0 · rule selector <code>Recommended</code></p>
+<h1 id="solution-architecture">Solution architecture<a class="headerlink" href="#solution-architecture" title="Permanent link">#</a></h1>
+<div class="submission-doc" markdown="0">
+<div class="classification">This is the web rendering of <code>solution-architecture.pdf</code>, the Solution Architecture and Usage document uploaded to the AppExchange security review. Page and PDF are built from the same source.</div>
 
-<p>Engines: PMD, ESLint (including the LWC and SLDS rule sets), CPD, RetireJS, and Code Analyzer's
-regex engine. Scope is <code>base/</code> — the packaged source, and only that. The gate measures what a
-subscriber installs, so a red build always means the product has a problem, never that a local
-build script does.</p>
-<table>
-<thead>
-<tr>
-<th>Severity</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Critical</td>
-<td><strong>0</strong></td>
-</tr>
-<tr>
-<td>High</td>
-<td>22</td>
-</tr>
-<tr>
-<td>Moderate</td>
-<td>923</td>
-</tr>
-<tr>
-<td>Low</td>
-<td>129</td>
-</tr>
-<tr>
-<td>Info</td>
-<td>126</td>
-</tr>
-</tbody>
-</table>
-<p><strong>1,200 total</strong>, down from 22,064 on 2 September. Almost none of that drop came from switching
-rules off. Most of it was fixed in the code:</p>
-<ul>
-<li><strong>Every public class, method and property now has an ApexDoc block</strong>, vendored FFLib and the
-  test classes included (2,411 findings on 28 September, now 11: missing <code>@param</code>/<code>@return</code> tags on private helpers in two test classes).</li>
-<li><strong>Field declarations come before methods</strong> in every class (0 remaining).</li>
-<li><strong>The vendored FFLib source was normalised</strong> to the package's own whitespace, brace and
-  annotation-casing style (<code>NoMixedIndentation</code>, <code>NoTrailingWhitespace</code> and
-  <code>AnnotationsNamingConventions</code> are all at 0). That reformatting changed layout only, and the
-  full Apex suite passes on the result.</li>
-<li><strong>Unused local variables are gone</strong> (110 on 28 September, now 0). Where the discarded call
-  mattered (a matcher registration, a call expected to throw), the call was kept and only the
-  variable dropped.</li>
-</ul>
-<p>Two rules are disabled in <code>code-analyzer.yml</code>, and each has its reason written next to it. Neither
-is a security rule, and neither runs under the <code>AppExchange</code> + <code>Recommended:Security</code> selectors
-the AppExchange reviewer uses:</p>
-<table>
-<thead>
-<tr>
-<th>Rule</th>
-<th>Findings when disabled</th>
-<th>Why it does not apply here</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>slds/no-hardcoded-values-slds2</code></td>
-<td>12,606</td>
-<td>Asks for every literal CSS value to become an SLDS styling hook. This package styles with its own <code>--pf-*</code> tokens, where the literal is the <em>fallback half</em> of the <code>var(--token, value)</code> pattern: a campaign's own branding wins when it sets a token, and the intended design renders when it doesn't. The rule cannot be satisfied without giving up theming, and <strong>its auto-fix would break every campaign that overrides a token.</strong></td>
-</tr>
-<tr>
-<td><code>ApexUnitTestClassShouldHaveRunAs</code></td>
-<td>3,064</td>
-<td>Reports every test method that doesn't wrap itself in <code>System.runAs</code>. That's one finding per method, and none of them is in shipped code. Tests whose result depends on who is running them (CRUD/FLS, sharing, guest access) already run as a constructed user.</td>
-</tr>
-</tbody>
-</table>
-<p>What remains is mostly design-size advice:</p>
-<table>
-<thead>
-<tr>
-<th>Rule</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>CyclomaticComplexity</code></td>
-<td>157</td>
-</tr>
-<tr>
-<td><code>ExcessiveParameterList</code></td>
-<td>170</td>
-</tr>
-<tr>
-<td><code>CognitiveComplexity</code></td>
-<td>103</td>
-</tr>
-<tr>
-<td><code>DetectCopyPasteForApex</code></td>
-<td>105</td>
-</tr>
-<tr>
-<td><code>AvoidBooleanMethodParameters</code></td>
-<td>98</td>
-</tr>
-<tr>
-<td><code>FieldNamingConventions</code></td>
-<td>77</td>
-</tr>
-</tbody>
-</table>
-<p>None of those six is a defect. The last two ask for renamed fields and changed method signatures
-on classes a released version already ships, so they are left as they are rather than changed
-for style. What matters is the severity split above, and the findings below.</p>
-<h3 id="three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Three rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
-<p><code>code-analyzer.yml</code> re-registers three PMD rules through a custom ruleset
-(<code>scripts/lint/pmd/pledgivo-conventions.xml</code>) so that they test what they are meant to test:</p>
-<ul>
-<li><strong><code>MethodNamingConventions</code></strong> rejected the <code>test_thing_doesThing</code> naming used throughout the
-  test suite, which is a deliberate convention, not an accident — 2,601 findings, none of them
-  actionable. Retuned to this project's <code>testPattern</code>, it reports none.</li>
-<li><strong><code>ApexUnitTestClassShouldHaveAsserts</code></strong> only recognises <code>System.assert*</code> and <code>Assert.*</code>. Most
-  service, domain and selector tests here assert through fflib-apex-mocks, where
-  <code>mocks.verify(uow, 1).commitWork()</code> <em>is</em> the assertion — it throws when the interaction did not
-  happen. PMD counted 200 mock-verified tests as having none. Widened to accept mock verification
-  and this repo's named assertion helpers, it reports 15.</li>
-<li><strong><code>EmptyStatementBlock</code></strong> reported 123 empty bodies that the language or the architecture
-  requires: overrides of a deliberately abstract hook, interface methods a class does not need,
-  virtual hooks, and private no-arg constructors. Retuned to skip those shapes, it still reports
-  every empty <code>if</code>, loop or plain method, and finds 4: the explicit no-arg constructors of two
-  vendored FFLib error classes.</li>
-</ul>
-<p>Both rules are still enforcing: a method named badly and a test that neither asserts nor verifies
-are both still reported. That was checked against a deliberately bad fixture rather than assumed,
-because a mis-registered custom rule and a correctly-registered one look identical on a clean
-tree — both produce zero findings. The 15 that remain are all in vendored FFLib's own tests.</p>
-<h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
-<p>The analyzer tags 24 findings across the whole package as security-relevant (scan of 2026-09-28,
-<code>AppExchange</code> + <code>Recommended:Security</code> rule selectors — the same command the AppExchange reviewer
-runs). All of them are listed here with a verdict; each one is also recorded in the project's
-triage record or annotated in the code itself.</p>
-<table>
-<thead>
-<tr>
-<th>Severity</th>
-<th>Rule</th>
-<th>Where</th>
-<th>Verdict</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>High</td>
-<td><code>LoadJavaScriptHtmlScript</code></td>
-<td><code>stripePayment.page</code>, <code>stripePaymentReturn.page</code></td>
-<td>The one external script the package loads is Stripe.js, which Stripe requires to be loaded from <code>js.stripe.com</code> and never bundled or pinned, for PCI reasons. It runs in a Visualforce iframe that holds no Salesforce session.</td>
-</tr>
-<tr>
-<td>Moderate</td>
-<td><code>ProtectSensitiveData</code> (18)</td>
-<td><code>Payment_Account__c</code>, <code>Donation_Staging__c</code>, <code>Guest_Request__c</code>, <code>Portal_Access_Token__c</code>, <code>Recurring_Donation__c</code>, <code>Settings__c</code> and three <code>Designation__c</code> fields</td>
-<td>A substring match on the field name (<code>Key</code>, <code>Token</code>, <code>Hash</code>, <code>Sign…</code>, <code>Auth</code>). Three hold a Named Credential's <em>name</em> (never a key), five hold hashes or single-use capability tokens that are worthless outside the flow that issued them, and the other ten are <code>Designation</code>, <code>Re_Auth…</code>, <code>Email_Signature</code>, <code>Soft_Credit_Automation…</code> — no secret in any of them.</td>
-</tr>
-<tr>
-<td>Moderate</td>
-<td><code>ApexDangerousMethods</code> (3)</td>
-<td><code>DonationDesignations</code>, <code>RecurringDonations</code>, <code>Contacts</code></td>
-<td>Disables the FFLib trigger-layer CRUD re-check on a rollup that reads and writes only its own totals. The DML itself still runs under the platform's access rules.</td>
-</tr>
-<tr>
-<td>Moderate</td>
-<td><code>ApexSharingViolations</code></td>
-<td><code>fflib_SObjectUnitOfWork</code></td>
-<td>Vendored FFLib. The access level is supplied by whoever constructs the Unit of Work, so the decision is made one level up, where the analyzer can't follow it.</td>
-</tr>
-</tbody>
-</table>
-<p>Three findings that used to appear in this table are gone rather than justified: the ticket page's
-<code>innerHTML</code> write (the QR code is now a template-bound <code>&lt;svg&gt;</code> path, so there is no DOM sink at
-all), and eight credential-shaped identifier names that were renamed to say what they actually
-hold (a Named Credential <em>endpoint</em>, a setup-checklist label, an email closing).</p>
-<p>The other 20 High findings are none of them security-tagged: every one of them is inside
-vendored FFLib, which this package carries as source so that installing it does not force you to
-install a library first.</p>
-<p><strong>Every one of them is written up individually.</strong> The package publishes a
-<a href="../../reference/analyzer-exceptions/">Code Analyzer exceptions report</a> listing each finding it does
-not fix, what the rule flags, why it is not a defect here, and how to check that for yourself
-against the code. That page is generated from a live scan rather than written by hand, and the
-build fails if a new finding appears without a justification <em>or</em> if a justification outlives the
-finding it explains — so it cannot quietly go out of date.</p>
-<h2 id="the-submission-documents">The submission documents<a class="headerlink" href="#the-submission-documents" title="Permanent link">#</a></h2>
-<p>The two write-ups uploaded with the review are published here as pages, rendered from the same
-HTML the PDFs are printed from, so neither can drift from what Salesforce was sent:</p>
-<ul>
-<li><a href="../solution-architecture/">Solution architecture</a>: what the package is made of, how a donation
-  moves through it, where data lives, and what is reachable from outside.</li>
-<li><a href="../sample-api-callouts/">Sample API callouts</a>: every outbound request to Stripe with sample
-  bodies, and the one inbound REST endpoint the package exposes.</li>
-</ul>
-<h2 id="the-false-positive-documents">The false-positive documents<a class="headerlink" href="#the-false-positive-documents" title="Permanent link">#</a></h2>
-<p>Salesforce's review process expects a written response to every finding a partner does not fix,
-from both scanners it runs. Both responses are published here, and this is their only copy — the
-same files are what the submission uploads, so a reviewer reading the site and a reviewer reading
-the submission see the same document.</p>
-<table>
-<thead>
-<tr>
-<th>Scanner</th>
-<th>What it answers</th>
-<th>Document</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Force.com Source Code Scanner (Checkmarx), run through the Partner Security Portal on 2026-09-30</td>
-<td>All 279 reported paths, grouped by rule and resolved to the 95 code locations they point at</td>
-<td><a href="../../assets/security-review/checkmarx-false-positives.pdf">PDF</a> · <a href="../../assets/security-review/checkmarx-false-positives.xlsx">XLSX</a></td>
-</tr>
-<tr>
-<td>Salesforce Code Analyzer, <code>AppExchange</code> + <code>Recommended:Security</code> (the command in <a href="#the-latest-scan">The latest scan</a>)</td>
-<td>Every finding in the table above, one response each, joined from the same triage record CI enforces. Each response states the scanner's claim in its own words, why that claim is false at that site, the supporting detail, the evidence to check against the code, and the sources it relies on</td>
-<td><a href="../../assets/security-review/code-analyzer-false-positives.pdf">PDF</a> · <a href="../../assets/security-review/code-analyzer-false-positives.xlsx">XLSX</a></td>
-</tr>
-</tbody>
-</table>
-<p>Each document opens with the scan it answers (scanner version, command, source commit and
-finding count), explains how to read a response, summarises the verdicts by rule, and then gives
-one response per finding. The Checkmarx response has a fixed shape: the scanner's claim (the
-rule's own description and the statement it points at), one paragraph stating why that claim is
-false for this statement, the supporting detail that traces every path reaching it, the evidence
-that was checked, and the Salesforce or vendor documentation each reason rests on. An appendix
-lists every raw finding with its response number. The spreadsheet holds the same responses as rows, for anyone who prefers to
-filter.</p>
-<p>They are built, not written: a script in the repository turns the scan output and the triage
-record into the PDF and spreadsheet, so when a finding is fixed or a verdict changes the
-document is regenerated from source rather than edited by hand.</p>
-<div class="admonition note">
-<p class="admonition-title">What this page does not claim</p>
-<p>Code Analyzer is a static analyzer, not an audit, and a clean scan is not a security
-certification. This package has not completed Salesforce's AppExchange security review; when
-it does, that will be stated here as a separate fact. What the numbers above establish is that
-the code is scanned continuously, that the findings are published rather than filtered, and
-that every security-tagged one has a written verdict.</p>
+<p class="meta"><b>Solution:</b> Pledgivo &nbsp;·&nbsp; <b>Type:</b> Second-generation (2GP) managed package &nbsp;·&nbsp; <b>Namespace:</b> <code>pledgivo</code> &nbsp;·&nbsp; <b>Package version:</b> 1.2.2 (Managed-Released)<br>
+<b>Salesforce API version:</b> 67.0 &nbsp;·&nbsp; <b>Publisher:</b> CloudAlgo Private Limited &nbsp;·&nbsp; <b>Document date:</b> 6 October 2026</p>
+
+<div class="classification"><b>Architecture classification:</b> Salesforce Native Solution with Lightning Components. No external website in the data path, no partner-hosted API, no mobile app, no browser extension, no desktop client. The publisher operates one web property the package <em>links to</em> but never calls: the subscription checkout described in §6.</div>
+
+<p>Pledgivo is a fundraising and donation management application for nonprofits. It runs entirely inside the subscriber's Salesforce org. The single external integration is Stripe, used for card processing. No component of this solution is hosted by the publisher in the data path, and no subscriber or donor data reaches the publisher at any point.</p>
 </div>
-<h2 id="how-it-stays-this-way">How it stays this way<a class="headerlink" href="#how-it-stays-this-way" title="Permanent link">#</a></h2>
-<p>The scan is a required check on every pull request into the main branch, and runs again weekly so
-that a rule added in a new analyzer release surfaces against unchanged code.</p>
+
+<h2 id="1-system-architecture">1. System architecture<a class="headerlink" href="#1-system-architecture" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
+<div class="figure">
+<svg viewBox="0 0 760 330" width="100%" xmlns="http://www.w3.org/2000/svg" font-size="10">
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1C2B46"/></marker>
+    <marker id="r" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#E0533D"/></marker>
+  </defs>
+  <!-- org boundary -->
+  <rect x="200" y="10" width="360" height="310" rx="6" fill="#f5f7fa" stroke="#1C2B46" stroke-width="1.5"/>
+  <text x="380" y="27" text-anchor="middle" font-weight="700" font-size="11" fill="#1C2B46">Subscriber's Salesforce Org</text>
+  <text x="380" y="40" text-anchor="middle" font-size="8.5" fill="#5a6577">all package code and all records</text>
+
+  <!-- left: actors -->
+  <rect x="15" y="60" width="150" height="48" rx="4" fill="#fff" stroke="#1C2B46"/>
+  <text x="90" y="80" text-anchor="middle" font-weight="700">Donor browser</text>
+  <text x="90" y="94" text-anchor="middle" font-size="8.5" fill="#5a6577">unauthenticated · Guest User</text>
+
+  <rect x="15" y="200" width="150" height="48" rx="4" fill="#fff" stroke="#1C2B46"/>
+  <text x="90" y="220" text-anchor="middle" font-weight="700">Third-party website</text>
+  <text x="90" y="234" text-anchor="middle" font-size="8.5" fill="#5a6577">embeddable widget (static resource)</text>
+
+  <!-- inside org -->
+  <rect x="215" y="55" width="330" height="60" rx="4" fill="#fff" stroke="#1C2B46"/>
+  <text x="380" y="72" text-anchor="middle" font-weight="700">Experience Cloud site (Enhanced LWR)</text>
+  <text x="380" y="86" text-anchor="middle" font-size="8.5" fill="#5a6577">106 Lightning Web Components · no Aura</text>
+  <text x="380" y="99" text-anchor="middle" font-size="8.5" fill="#5a6577">guest-facing pages run as Guest User</text>
+
+  <rect x="215" y="125" width="330" height="44" rx="4" fill="#fff" stroke="#E0533D"/>
+  <text x="380" y="141" text-anchor="middle" font-weight="700">stripePayment (Visualforce iframe)</text>
+  <text x="380" y="155" text-anchor="middle" font-size="8.5" fill="#5a6577">hosts Stripe.js · postMessage with origin check · card data never enters the Salesforce DOM</text>
+
+  <rect x="215" y="180" width="330" height="58" rx="4" fill="#fff" stroke="#1C2B46"/>
+  <text x="380" y="197" text-anchor="middle" font-weight="700">Apex — FFLib Enterprise Patterns</text>
+  <text x="380" y="211" text-anchor="middle" font-size="8.5" fill="#5a6577">293 classes · Selector (SOQL) / Unit of Work (DML) / Domain / Service</text>
+  <text x="380" y="225" text-anchor="middle" font-size="8.5" fill="#5a6577">@AuraEnabled controllers · one GET-only Apex REST resource</text>
+
+  <rect x="215" y="248" width="160" height="60" rx="4" fill="#fff" stroke="#1C2B46"/>
+  <text x="295" y="265" text-anchor="middle" font-weight="700">Salesforce records</text>
+  <text x="295" y="279" text-anchor="middle" font-size="8.5" fill="#5a6577">22 packaged objects +</text>
+  <text x="295" y="291" text-anchor="middle" font-size="8.5" fill="#5a6577">Opportunity, Contact, Account,</text>
+  <text x="295" y="303" text-anchor="middle" font-size="8.5" fill="#5a6577">Campaign, Product2</text>
+
+  <rect x="385" y="248" width="160" height="60" rx="4" fill="#fff" stroke="#1C2B46" stroke-dasharray="4 3"/>
+  <text x="465" y="265" text-anchor="middle" font-weight="700">Named Credentials</text>
+  <text x="465" y="279" text-anchor="middle" font-size="8.5" fill="#5a6577">admin-created, never packaged</text>
+  <text x="465" y="291" text-anchor="middle" font-size="8.5" fill="#5a6577">hold the two Stripe</text>
+  <text x="465" y="303" text-anchor="middle" font-size="8.5" fill="#5a6577">restricted keys</text>
+
+  <!-- right: Stripe -->
+  <rect x="600" y="60" width="145" height="150" rx="4" fill="#fff" stroke="#1C2B46"/>
+  <text x="672" y="80" text-anchor="middle" font-weight="700" font-size="11">Stripe</text>
+  <text x="672" y="98" text-anchor="middle" font-size="8.5" fill="#5a6577">js.stripe.com</text>
+  <text x="672" y="111" text-anchor="middle" font-size="8.5" fill="#5a6577">api.stripe.com</text>
+  <text x="672" y="124" text-anchor="middle" font-size="8.5" fill="#5a6577">m.stripe.com</text>
+  <text x="672" y="137" text-anchor="middle" font-size="8.5" fill="#5a6577">m.stripe.network</text>
+  <text x="672" y="150" text-anchor="middle" font-size="8.5" fill="#5a6577">hooks.stripe.com</text>
+  <text x="672" y="172" text-anchor="middle" font-size="8.5" font-weight="700" fill="#1d7a46">TLS only · all A+ (Qualys)</text>
+  <text x="672" y="196" text-anchor="middle" font-size="8" fill="#5a6577">no inbound webhook</text>
+
+  <!-- arrows -->
+  <line x1="165" y1="84" x2="213" y2="84" stroke="#1C2B46" stroke-width="1.4" marker-end="url(#a)"/>
+  <text x="189" y="78" text-anchor="middle" font-size="9" font-weight="700">1</text>
+
+  <path d="M90,60 C90,-5 650,-5 672,58" fill="none" stroke="#E0533D" stroke-width="1.6" marker-end="url(#r)"/>
+  <text x="380" y="7" text-anchor="middle" font-size="8.5" fill="#E0533D" font-weight="700">2 — card details go browser → Stripe, bypassing Salesforce entirely</text>
+
+  <line x1="545" y1="209" x2="598" y2="190" stroke="#1C2B46" stroke-width="1.4" marker-end="url(#a)"/>
+  <text x="575" y="212" text-anchor="middle" font-size="9" font-weight="700">3</text>
+
+  <line x1="165" y1="224" x2="213" y2="212" stroke="#1C2B46" stroke-width="1.4" marker-end="url(#a)"/>
+  <text x="187" y="230" text-anchor="middle" font-size="9" font-weight="700">4</text>
+
+  <!-- crossed-out webhook -->
+  <line x1="598" y1="130" x2="548" y2="200" stroke="#5a6577" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="566" y1="158" x2="580" y2="172" stroke="#E0533D" stroke-width="2"/>
+  <line x1="580" y1="158" x2="566" y2="172" stroke="#E0533D" stroke-width="2"/>
+</svg>
+</div>
+<p class="caption"><b>Figure 1. Data flow.</b> Black arrows are server-side or same-origin; the red arrow carries cardholder data and never traverses Salesforce. <b>1</b> a donor loads a campaign page over HTTPS. <b>2</b> card details pass from the browser straight to Stripe. <b>3</b> Apex calls the Stripe API server-side through a Named Credential. <b>4</b> a third-party site reads campaign display configuration from the origin-allowlisted <code>EmbedConfigResource</code>, which returns no personal data. The crossed line records that no inbound webhook exists. Component counts were read from packaged source on the 1.2.2 submission commit.</p>
+
+<div class="figure figure-img"><img src="../../assets/security-review/img/architecture.png" alt="Component map of the package inside a subscriber org, with the guest and licensed-staff boundaries and the Stripe API outside"></div>
+<p class="caption"><b>Figure 2. Component map.</b> Everything inside the outer boundary is installed by the managed package into the subscriber's org; nothing of the package runs anywhere else. The <i>Guest user</i> boundary holds the only components an unauthenticated visitor can reach — the Experience site components, the Stripe.js iframe and the guest controllers, which write to <code>Donation_Staging__c</code> and nothing else directly. The <i>Licensed staff</i> boundary holds the Lightning consoles, their controllers and the refund / recurring-gift administration, every one gated by a permission set and, for the consoles, the seat check described in §3.1. The reconciler and the gift finalizer are the two server-side paths that turn a staged gift into donor and gift records; both converge on the same service, and both run without any inbound call from Stripe. Generated from the submission commit's source with per-node file references; the interactive original is in the repository.</p>
+</div>
+
+<h2 id="2-information-flow-one-donation-end-to-end">2. Information flow — one donation, end to end<a class="headerlink" href="#2-information-flow-one-donation-end-to-end" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
+<div class="figure figure-img"><img src="../../assets/security-review/img/sequence-guest-donation.png" alt="Sequence diagram of one guest donation across donor, donation form, Stripe.js iframe, guest Apex, staging row, gift records, reconciler and Stripe"></div>
+<p class="caption"><b>Figure 3. One guest donation.</b> Red dashed messages carry or confirm cardholder data and run only between the browser-hosted Stripe.js iframe and Stripe. Solid green messages are the package's own server-side calls. The browser's <code>PAYMENT_SUCCESS</code> is never trusted: it only triggers <code>checkPaymentStatus</code>, in which Apex re-fetches the PaymentIntent from Stripe and finalizes the gift itself (segment 4). Segment 5 is the scheduled reconciler that finishes any gift whose browser closed early — the reason the package needs no webhook. The numbered steps below walk the same path in prose.</p>
+<ol>
+  <li><b>Page load.</b> An unauthenticated visitor requests a campaign page from the subscriber's Experience Cloud site over HTTPS. The page is composed of packaged Lightning Web Components running in the Guest User context.</li>
+  <li><b>Intent creation.</b> The component calls a packaged <code>@AuraEnabled</code> controller. Apex creates a <code>Donation_Staging__c</code> record holding the pending gift, then issues a server-side callout to <code>POST /v1/payment_intents</code> through a Named Credential. The publishable key and the intent's <code>client_secret</code> are returned to the browser.</li>
+  <li><b>Card capture.</b> Stripe.js, loaded inside the <code>stripePayment</code> Visualforce iframe from <code>js.stripe.com</code>, renders Stripe Elements. The visitor's card number, CVC and expiry are captured by Stripe's own iframe and transmitted directly from the browser to Stripe. They never reach Salesforce, in any form, at any point. The iframe communicates with the parent component by <code>postMessage</code> with an explicit origin check on both sides.</li>
+  <li><b>Confirmation.</b> The browser confirms the PaymentIntent directly with Stripe, including any 3-D Secure step, which is served from <code>hooks.stripe.com</code>. On the save-card path only, a <code>paymentMethod.id</code> — an opaque token, not card data — is returned to Apex.</li>
+  <li><b>Outcome.</b> Apex re-fetches the PaymentIntent from Stripe's API and reads its status. The package accepts no inbound webhook, so there is no externally callable endpoint to authenticate and no webhook signing secret to store. A scheduled reconciliation job re-fetches any intent left in flight.</li>
+  <li><b>Persistence.</b> On success the gift is written through the Unit of Work as an <code>Opportunity</code> with its related records. The donor is resolved by <code>DonorResolutionService</code>, which supports standard Contact/Account orgs and Person Account orgs without branching in callers. A <code>DonationFinalized__e</code> platform event decouples the optional NPSP allocation sync; it is published and consumed inside the same package.</li>
+  <li><b>Receipt.</b> A receipt is available on a public Experience Cloud page addressed by a capability token stored in <code>Receipt_Token__c</code>.</li>
+</ol>
+</div>
+
+<h2 id="3-authentication-and-authorization">3. Authentication and authorization<a class="headerlink" href="#3-authentication-and-authorization" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
+<h3>3.1 To the Salesforce org</h3>
+<p>Staff users authenticate through Salesforce itself. The package performs no authentication of its own, ships no connected app, and carries out no OAuth flow. Three permission sets — <code>Fundraising_Admin</code>, <code>Fundraising_User</code>, <code>Fundraising_ReadOnly</code> — grant access to packaged objects, fields and Apex classes. Three custom permissions (<code>Process_Refunds</code>, <code>Manage_Recurring_Gifts</code>, <code>Manage_Fundraising_Settings</code>) gate the sensitive staff actions independently of record access.</p>
+<p>Donors are never authenticated to Salesforce. Public pages run as the site's Guest User, holding a dedicated least-privilege permission set (<code>Fundraising_GuestDonor</code>). Guest access to standard objects is a documented manual step the administrator performs, because a 2GP permission set cannot ship a grant on a standard object; the package verifies that grant at runtime and reports it in the setup console.</p>
+<p><b>Capability tokens.</b> Two package-generated tokens address specific records over guest routes: <code>Receipt_Token__c</code> (a permanent, read-only receipt, deliberately without expiry) and <code>Donation_Staging__c.Access_Token__c</code> (an in-flight checkout, short-lived). Entropy, expiry, single-use-ness, revocation path and guest-FLS posture are documented for both in the accompanying false-positive document. A third credential, the <b>donor-portal sign-in code</b>, is emailed to a donor and redeemed for a short browser session; <code>Portal_Access_Token__c</code> stores only SHA-256 hashes of the code and the session, never the raw value, and is written exclusively by the portal service.</p>
+<p><b>Seat licensing.</b> Internal console tabs check <code>UserInfo.isCurrentUserLicensed(namespace)</code> through <code>LicenseService</code> and render a notice instead of their body to a user with no seat. The check fails open on any platform error and is never consulted on a guest or donor surface.</p>
+
+<h3>3.2 To Stripe</h3>
+<p>All Stripe API keys live only inside Named Credentials that the subscriber's administrator creates by hand in Setup. The package ships no Named Credential metadata and never stores, transmits or logs a key value. The <code>Authorization</code> header is injected by the platform at callout time and never appears in packaged source.</p>
+<p>The subscriber creates two Stripe <em>restricted</em> keys with audited minimal scopes. The <b>donor key</b>, reachable on the public path, holds write on Payment Intents, Setup Intents, Customers and Payment Methods, and <em>None</em> on Charges, Refunds and Balance — so the credential exposed to the guest path structurally cannot issue a refund. The <b>administrator key</b> adds write on Payment Intents, Charges and Refunds, and read on Balance, Disputes, Customers and Payment Methods. Two runtime probes in the setup console verify the administrator actually built the keys to those scopes, rather than trusting the instruction.</p>
+<p><code>Payment_Account__c.Stripe_Donor_Restricted_Key__c</code> is a Text(80) field that holds a Named Credential API <em>name</em>, never a key. It is consumed as <code>'callout:' + value</code>, and its field description states this verbatim.</p>
+</div>
+
+<h2 id="4-encryption-on-data-transfer">4. Encryption on data transfer<a class="headerlink" href="#4-encryption-on-data-transfer" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
+<table>
+  <tr><th style="width:34%">Leg</th><th style="width:14%">Protocol</th><th>Notes</th></tr>
+  <tr><td>Donor browser → Experience Cloud site</td><td>HTTPS (TLS)</td><td>Terminated by Salesforce on the subscriber's own domain.</td></tr>
+  <tr><td>Donor browser → Stripe</td><td>HTTPS (TLS)</td><td>Card data. Direct to Stripe; Salesforce is not in this path.</td></tr>
+  <tr><td>Apex → Stripe API</td><td>HTTPS (TLS)</td><td>Server-side callout through a Named Credential. 30-second timeout. The only <code>setEndpoint</code> in the package.</td></tr>
+  <tr><td>Third-party site → <code>EmbedConfigResource</code></td><td>HTTPS (TLS)</td><td>Subscriber's own Salesforce Site. Read-only, origin-allowlisted.</td></tr>
+  <tr><td>Staff browser → publisher checkout (link only)</td><td>HTTPS (TLS)</td><td>A hyperlink opened in a new tab, not a callout; see §6. Carries the subscriber's 15-character Org Id as a query parameter and nothing else.</td></tr>
+</table>
+<p>No <code>http://</code> endpoint is called anywhere in the package. All five packaged CSP trusted sites are <code>https://</code> Stripe hosts and every one graded A+ on the Qualys SSL Server Test on 5 September 2026; the saved reports accompany this submission. Data at rest is held in Salesforce records and inherits the platform's encryption; the package stores no data anywhere else.</p>
+</div>
+
+<h2 id="5-data-touchpoints">5. Data touchpoints<a class="headerlink" href="#5-data-touchpoints" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
+<table>
+  <tr><th style="width:24%">Data</th><th>Where it lives</th><th style="width:26%">Who can read it</th></tr>
+  <tr><td>Card number, CVC, expiry</td><td><b>Nowhere in Salesforce.</b> Captured by Stripe.js in a Stripe-served iframe and transmitted browser → Stripe.</td><td>Stripe only.</td></tr>
+  <tr><td>Donor name, email, postal address</td><td><code>Contact</code> / person <code>Account</code> in the subscriber's org.</td><td>Staff with the packaged permission sets. The Guest User cannot read donor records.</td></tr>
+  <tr><td>Gift amount, currency, designation, campaign</td><td><code>Opportunity</code> and related packaged objects.</td><td>As above.</td></tr>
+  <tr><td>Payment method summary (brand, last four digits, expiry month/year)</td><td><code>Payment_Method__c</code>. Stripe's own non-sensitive card metadata; no PAN.</td><td>As above.</td></tr>
+  <tr><td>Stripe customer and payment-method identifiers</td><td>Opaque Stripe identifiers on packaged records.</td><td>As above.</td></tr>
+  <tr><td>Donor-portal sign-in code and session</td><td><code>Portal_Access_Token__c</code> — SHA-256 hashes only, short TTL, revocable by staff.</td><td>Written by the portal service; staff can revoke or purge, never read a usable value.</td></tr>
+  <tr><td>Callout and error diagnostics</td><td><code>Log__c</code> and <code>Transaction_Log__c</code> in the subscriber's org.</td><td>Staff. Never returned to a guest; guest-facing errors are collapsed to one generic line.</td></tr>
+  <tr><td>Data sent to Stripe</td><td>Subscriber's own Stripe account: amount, currency, donor name and email (on Customer create — recurring and saved-card gifts only), and PaymentIntent recovery metadata (correlation id, campaign id, donor email) used to reconcile an interrupted payment.</td><td>The subscriber, in their Stripe dashboard. The publisher has no access.</td></tr>
+  <tr><td>Data sent to the publisher</td><td><b>None by the package.</b> It emits no telemetry, no usage analytics and no phone-home traffic. The one publisher-hosted page it links to (§6) receives the Org Id in the URL only when a staff user chooses to click through.</td><td>—</td></tr>
+</table>
+</div>
+
+<h2 id="6-externally-reachable-surface-and-the-one-external-link">6. Externally reachable surface, and the one external link<a class="headerlink" href="#6-externally-reachable-surface-and-the-one-external-link" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
+<p>We list this explicitly rather than leave it to be discovered. The package exposes exactly one API endpoint and it is inbound-read-only:</p>
+<p><code>EmbedConfigResource</code> — the only <code>global</code> class in the package (1 of 293). A GET-only Apex REST resource, served by the subscriber's own Salesforce Site, that returns campaign display configuration (title, goal, suggested amounts, theme tokens) to the embeddable donation widget running on a third-party website. It returns no personal data and no donor records; it answers only origins on the subscriber's own allowlist in <code>Settings__c</code>; and it sanitizes its own error text by hand rather than relying on the shared controller wrapper. Sample requests and responses are in the accompanying <em>Sample API Callouts</em> document.</p>
+<p>Guest-reachable pages on the Experience Cloud site (campaign, donation form, event registration, donor portal, receipt) are the other externally reachable surface. Every guest-reachable controller extends <code>GuestAction</code>, which collapses any non-package exception to a single generic message and writes the detail to <code>Log__c</code>; stack traces never enter a response.</p>
+<p><b>Publisher-hosted link (not a callout).</b> Staff consoles show a trial countdown and, to a user without a seat, a licence notice. Both carry a "Complete checkout" / "Manage subscription" link to the publisher's billing site, <code>https://billing.cloudalgo.com/?app=pledgivo&amp;org=&lt;Org Id&gt;</code>, held in a protected packaged custom label (<code>Subscription_Portal_Url</code>) so it can only change by package upgrade. The link opens in a new tab; the package makes no HTTP request to that host, registers no CSP trusted site for it, and sends nothing but the Org Id, which appears on every Setup page and is not a secret. The setup console also links to the product documentation at <code>https://pledgivo.cloudalgo.com</code>. Neither host is in the donation data path and neither is reachable from a guest surface.</p>
+</div>
+
+<h2 id="7-basic-usage-instructions">7. Basic usage instructions<a class="headerlink" href="#7-basic-usage-instructions" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
+<p>These are the steps a reviewer can follow in the supplied test org to walk the complete path.</p>
+<div class="grid">
+<div class="card">
+<h4>Install and configure</h4>
+<ol>
+  <li>Install the managed package. A post-install handler seeds record types, page designs and default settings.</li>
+  <li>Assign the <b>Fundraising Admin</b> permission set to the administrator.</li>
+  <li>Open the <b>Pledgivo</b> app → <b>Settings</b> tab. The <b>Get Started</b> panel runs a step-by-step checklist that verifies each post-install step against the org live rather than asking the user to tick it off.</li>
+  <li>Create and publish an Experience Cloud site, then grant the site's Guest User read access to <code>Campaign</code> in Setup. This is the manual step a managed package cannot perform; the checklist detects and reports it.</li>
+  <li>Create the two Stripe restricted keys, store each in a Named Credential, and record the credential names on the Payment Account record. Press <b>Test connection</b>; the scope probes confirm the keys were built correctly.</li>
+</ol>
+</div>
+<div class="card">
+<h4>Walk the data</h4>
+<ol>
+  <li>Create a Campaign, set a goal, choose a page design, and publish it to the site.</li>
+  <li>Open the public campaign URL in a private browsing window — this is the Guest User path.</li>
+  <li>Give a test donation using a Stripe test card. Observe that the card fields are a Stripe-served iframe.</li>
+  <li>In the org, open the <b>Donation Monitor</b> tab: the gift is present as an Opportunity immediately, with no sync job and no waiting.</li>
+  <li>Open the receipt URL from the donation record — a guest-reachable page addressed by its capability token.</li>
+  <li>From the Opportunity, run the <b>Refund Donation</b> action (requires the <code>Process_Refunds</code> custom permission). It uses the administrator credential; the donor credential cannot perform it.</li>
+  <li>Open the <b>Diagnostic Logs</b> tab to see every callout and job with its context.</li>
+</ol>
+</div>
+</div>
+</div>
+
+<h2 id="8-accompanying-documents">8. Accompanying documents<a class="headerlink" href="#8-accompanying-documents" title="Permanent link">#</a></h2>
+<div class="submission-doc" markdown="0">
 <ul>
-<li><strong>A Critical finding fails the build.</strong> The budget is zero, and the package has never had one,
-  so any Critical is a genuine regression rather than an accepted baseline.</li>
-<li><strong>High findings are capped at the current count.</strong> A pull request that adds one fails. Raising
-  the cap is a deliberate, reviewed act that has to arrive with a written verdict for the new
-  finding — it can't be nudged up to turn a build green.</li>
-<li><strong>The analyzer version is pinned</strong>, so a red build always means new code, never a new rule
-  quietly appearing.</li>
-<li><strong>Auto-fixes are never applied wholesale</strong> — the SLDS rule above is the reason.</li>
+  <li><b>Sample API Callouts</b> — every outbound Stripe request and the one inbound endpoint, with complete header values, request bodies and sample responses.</li>
+  <li><b>Checkmarx and Code Analyzer false-positive documents</b> — one response per finding, each with the scanner's claim, why it is a false positive, and the Salesforce documentation it relies on.</li>
+  <li><b>AppExchange Security Review Readiness</b> — a per-category audit against Salesforce's Top 20 Vulnerabilities, with file-and-line evidence and re-runnable verification commands.</li>
+  <li><b>CSS positioning analysis</b> — every positioned CSS declaration in the package with its justification.</li>
+  <li><b>Qualys SSL reports</b> — for all five packaged external hosts.</li>
+  <li><b>Product and administrator documentation</b> — published at <code>https://pledgivo.cloudalgo.com</code>.</li>
 </ul>
-<p>Alongside it, a separate workflow audits the package's shipped JavaScript dependencies weekly and
-on every pull request, and fails on any advisory at any severity.</p>
-<h2 id="test-coverage">Test coverage<a class="headerlink" href="#test-coverage" title="Permanent link">#</a></h2>
-<p>145 Apex test classes and over 2,300 test methods ship inside the package. Salesforce recomputes
-coverage itself when a package version is built and refuses to release one below 75%; the current
-version measured <strong>95%</strong>.</p>
-<p>Coverage is also verified across account models a development org can't reproduce. Before a
-version ships, the same packaged build is installed into four separate orgs — standard
-Contact/Account, Person Accounts, NPSP, and Person Accounts with NPSP — and the full test suite,
-a set of probes that push real records through the real packaged triggers, and the browser-level
-donation flow are all run in each. Results are diffed against the standard-account org, so a
-difference that only appears under Person Accounts or NPSP is visible instead of being buried in
-noise common to all four.</p>
+
+<p class="footer">Pledgivo — Solution Architecture and Usage · CloudAlgo Private Limited · 6 October 2026 · package version 1.2.2. Component counts (293 Apex classes excluding tests, 106 Lightning Web Components, 22 packaged objects, 1 global class, 5 CSP trusted sites) were read from packaged source on the submission commit. Source: <code>package-submission/src/solution-architecture.html</code>, printed by <code>scripts/security/build-submission-docs.py</code>.</p>
+</div>
 
 
 
 
 
 
-
-  
-  
 
 
 
@@ -2421,22 +2269,22 @@ noise common to all four.</p>
       <nav class="fn-foot__nav" aria-label="Footer">
         
           <a
-            href="../settings-integrations/"
+            href="../security-and-code-quality/"
             class="fn-foot__page fn-foot__page--prev"
             rel="prev"
           >
             <span class="fn-foot__dir">Previous</span>
-            <span class="fn-foot__pagetitle">Settings & integrations</span>
+            <span class="fn-foot__pagetitle">Security & code quality</span>
           </a>
         
         
           <a
-            href="../solution-architecture/"
+            href="../sample-api-callouts/"
             class="fn-foot__page fn-foot__page--next"
             rel="next"
           >
             <span class="fn-foot__dir">Next</span>
-            <span class="fn-foot__pagetitle">Solution architecture</span>
+            <span class="fn-foot__pagetitle">Sample API callouts</span>
           </a>
         
       </nav>

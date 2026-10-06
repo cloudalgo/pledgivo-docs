@@ -8423,6 +8423,7 @@
 <p>finalizeSucceededStaging is the SOLE creator of donation <a href="#apex-opportunities"><code>Opportunities</code></a> and is idempotent on Stripe_Payment_Intent_Id__c, so it is safe to call from more than one path: <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> (the normal webhook-free finalizer) and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> (the orphaned-PaymentIntent repair path) both invoke it directly. It publishes DonationFinalized__e (consumed by DonationFinalizedSubscriber consumed by <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a>) and calls <a href="#apex-receiptservice"><code>ReceiptService</code></a> for the donor-facing email.</p>
 <p>Org-level twin of the campaign gate above: refuse before any Stripe callout when the finalizer has never completed a pass in this org, because a gift taken in that state is charged and never becomes an Opportunity. Deliberately NOT the staleness rule that alarmIfFinalizerStale below uses — staleness is transient and recovers, and refusing live gifts over a half-hour gap would be a worse outage than the one it warns about. See <a href="#apex-settingsservice-ischeckoutblocked"><code>SettingsService.isCheckoutBlocked</code></a> and audit finding §4b.</p>
 <p>Resolved by the unguessable Access_Token__c and NOT the enumerable staging Id, so a guest can only ever read the receipt of the order they themselves created — the staging Id is guessable and would leak another donor's receipt token (name, email, amount). The internal Opportunity Id is never returned to the client, and null tells the polling guest the reconciler has not yet created or linked the Opportunity.</p>
+<p>At API 67.0 EventBus.publish checks Create on the event for the running user and reports a denial as an unsuccessful SaveResult, not an exception, so no catch block ever sees it. Finalization runs in StagingReconciliationBatch / StripePaymentSweep, i.e. as the job owner, who needs Create on DonationFinalized__e (Fundraising_Admin / Fundraising_User). Jobs re-owned from the Settings console satisfy that; jobs scheduled another way, or an owner who later loses the set, do not. Hence the explicit isSuccess() check: without it the NPSP allocation mirror was skipped with no trace.</p>
 <p>validateAmountBounds is the one place the org's Min/Max Donation Amount is enforced on a guest-supplied gift. It is public static so the ticket checkout applies the same bounds to an event donation add-on (<a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.CreateTicketIntent) instead of keeping a second copy of the rule.</p>
 <p>The org-wide master switch is re-checked here and not merely on the way out to the form. Options_JSON__c comes from a guest-callable endpoint, so "the form didn't show the section" is a statement about the browser, not about what can reach this method. Refusing the capture is also what makes the switch a real off switch: with no Tribute_Type__c on the Opportunity, ReceiptService.buildTributeNotification returns null on its existing gates and no e-card goes out.</p>
 <p>This runs on every finalized gift including a recurring gift's first installment, because that installment does have a real URL behind it. Later renewals have no URL at all — they are created by the scheduler — so <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a> copies the attribution stored on the Recurring_Donation__c instead. See <a href="#apex-attributioncapture-copy"><code>AttributionCapture.copy</code></a>().</p>
@@ -8482,6 +8483,11 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-applogger-debug">AppLogger.debug()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-donationservice-publisherrortext"></a><code>publishErrorText(1 arg)</code></td>
+<td><code>String</code></td>
 <td></td>
 </tr>
 <tr>
@@ -12120,7 +12126,7 @@
 <div class="fn-entry">
 <div class="fn-entry__id">
 <h4 id="apex-paymentsetupguideservice">PaymentSetupGuideService<a class="headerlink" href="#apex-paymentsetupguideservice" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public virtual inherited sharing</code></p>
+<p><code>class</code> · <code>public virtual with sharing</code></p>
 <p>implements <a href="#apex-ipaymentsetupguideservice">IPaymentSetupGuideService</a></p>
 <p class="fn-entry__src"><code>payment/<wbr>service/<wbr>PaymentSetupGuideService.cls</code></p>
 </div>
@@ -12747,7 +12753,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-recurringdonationservice-advancescheduledate">RecurringDonationService.advanceScheduleDate()</a></td>
+<td><em>calls:</em> <a href="#apex-paymentgatewayfactory-getbyaccount">PaymentGatewayFactory.getByAccount()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-donationservice-publisherrortext">DonationService.publishErrorText()</a>, <a href="#apex-recurringdonationservice-advancescheduledate">RecurringDonationService.advanceScheduleDate()</a></td>
 <td></td>
 </tr>
 <tr>

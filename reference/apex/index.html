@@ -9613,6 +9613,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>Scoped waiver of fflib's trigger-level CRUD assertion, for the package's own donor rollup write only. <a href="#apex-campaignservice-rollupdonorsummary"><code>CampaignService.rollupDonorSummary</code></a> sets it around its commit and restores it in a finally block. That commit runs SYSTEM_MODE, <code>without sharing</code>, through <a href="#apex-systemdml"><code>SystemDML</code></a> (the rollup family), but this trigger still re-asserts Contact.isUpdateable() for the RUNNING user — so a staff member who may edit a donation but not a Contact could not close a gift: the donor rollup fired from OpportunityTrigger, this assertion threw, and the whole Opportunity save rolled back. The rollup fields (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c) are package-maintained aggregates no user edits, so the running user's Contact CRUD is not the authorization that matters; their Opportunity edit, which the platform already enforced, is. Every other Contact write — a staff edit in the UI, a guest donor insert, an import — leaves the flag false and keeps the assertion. Mirrors <a href="#apex-recurringdonations"><code>RecurringDonations</code></a>.</p>
 <p>There is deliberately no onAfterInsert override here. Campaign membership for donors is handled by <a href="#apex-campaignmembersyncservice"><code>CampaignMemberSyncService</code></a> off the DonationFinalized__e event, not by a Contact trigger — a Contact insert has no campaign context, and the Guest License user who creates the donor on a public gift cannot create a CampaignMember at all.</p>
+<p>ContactTrigger registers the four after events only. This domain overrides no handler; it exists for fflib's create, update, delete and undelete permission assertion, which runs in the after phase. A new onBefore* override needs its event added to the trigger, or it never runs.</p>
 </div>
 <table>
 <thead>
@@ -12906,6 +12907,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>onAfterInsert's createHistoryRecords is the ONLY place Recurring_Donation_History__c gets written automatically in this package — pause/resume/cancel/reinstate/renewal (all in <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>) mutate Recurring_Donation__c directly and do not append a History row. A reader looking for a full audit trail of status changes will not find one here beyond the initial "Created" event.</p>
 <p>One of two fflib CRUD-security waivers in the package (the other is <a href="#apex-contacts"><code>Contacts</code></a>.suppressTriggerCrudCheck, for the donor rollup). It is scoped to a single transaction window rather than disabled outright in the constructor precisely so an unrelated caller cannot inherit it.</p>
+<p>RecurringDonationTrigger registers before insert and the four after events only. The after events stay even with no override: fflib asserts the running user's create, update, delete and undelete permission there. A new onBeforeUpdate or onBeforeDelete override needs its event added to the trigger, or it never runs.</p>
 </div>
 <table>
 <thead>

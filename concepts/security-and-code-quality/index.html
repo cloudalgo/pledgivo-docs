@@ -2337,14 +2337,18 @@ the submission see the same document.</p>
 </tr>
 </tbody>
 </table>
-<p>Each document opens with the scan it answers (scanner version, command, source commit and
-finding count), explains how to read a response, summarises the verdicts by rule, and then gives
-one response per finding. The Checkmarx response has a fixed shape: the scanner's claim (the
-rule's own description and the statement it points at), one paragraph stating why that claim is
-false for this statement, the supporting detail that traces every path reaching it, the evidence
-that was checked, and the Salesforce or vendor documentation each reason rests on. An appendix
-lists every raw finding with its response number. The spreadsheet holds the same responses as rows, for anyone who prefers to
-filter.</p>
+<p>Both PDFs follow the <em>False Positive Documentation</em> template Salesforce's security team
+gives partners: the application, package and version, partner and filing date once, then the
+template's four questions — vulnerability name, detected by, detailed explanation, evidence —
+repeated once per finding (one per flagged code location for Checkmarx, one per reported
+finding for Code Analyzer), with the box the Salesforce reviewer fills in left blank under each
+one. The explanation has a fixed shape: the scanner's claim (the rule's own description and the
+statement it points at), one paragraph stating why that claim is false for this statement, the
+supporting detail, and the Salesforce or vendor documentation each reason rests on; the evidence
+gives the flagged code (for Checkmarx, the dataflow the scanner reported as well) and what was
+checked. An appendix records the scan itself and indexes every raw finding to its entry; the
+Checkmarx one also gives the code-quality paths their dispositions. Each spreadsheet holds the
+same responses as rows, for anyone who prefers to filter.</p>
 <p>They are built, not written: a script in the repository turns the scan output and the triage
 record into the PDF and spreadsheet, so when a finding is fixed or a verdict changes the
 document is regenerated from source rather than edited by hand.</p>

@@ -1945,7 +1945,7 @@
 <h1 id="code-analyzer-exceptions">Code Analyzer Exceptions<a class="headerlink" href="#code-analyzer-exceptions" title="Permanent link">#</a></h1>
 <div class="ca-actions" markdown="0">
   <button type="button" class="ca-print" onclick="window.print()">Print / Save as PDF</button>
-  <span class="ca-stamp">Generated 2026-10-02 from a live scan</span>
+  <span class="ca-stamp">Generated 2026-10-09 from a live scan</span>
 </div>
 
 <p>This page exists for one purpose: to answer, in writing and in one place, <em>why</em> every
@@ -1978,22 +1978,22 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">922</td>
+<td style="text-align: right;">914</td>
 <td>21 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">129</td>
+<td style="text-align: right;">130</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">126</td>
+<td style="text-align: right;">135</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>1,199</strong></td>
+<td style="text-align: right;"><strong>1,201</strong></td>
 <td><strong>43 individually justified</strong></td>
 </tr>
 </tbody>
@@ -2037,7 +2037,7 @@ defined in the triage file, not chosen per-run.</p>
 
 <p><strong>What the rule flags.</strong> PMD's ApexDangerousMethods flags <code>Configuration.disableTriggerCRUDSecurity()</code>, which turns off FFLib's own CRUD assertion inside the trigger layer.</p>
 <p><strong>Why it is not a defect here.</strong> The FFLib domain layer re-asserts <code>isCreateable()</code> on every record even when the DML is running in SYSTEM_MODE, which makes an internally-triggered rollup fail for any user who cannot directly create the rolled-up record. These two domains recompute totals only—<code>Designation__c</code> and recurring-donation aggregates—and the call scopes the opt-out to the FFLib trigger check alone. The DML itself still runs under the platform's rules; the platform's own CRUD, FLS and sharing enforcement is untouched. Without it, a non-admin donation write silently stops rolling up fund totals.</p>
-<p><strong>How to verify.</strong> Both call sites are annotated in place. In <code>RecurringDonations</code> the call sits behind an explicit <code>suppressTriggerCrudCheck</code> flag rather than being unconditional. The wider reasoning—that field permissions are inert without object access on a master-detail detail object—is written up in the Change Management section of AGENTS.md and in the <code>EventTicketTypesSelector</code> class header.</p>
+<p><strong>How to verify.</strong> Both call sites are annotated in place. In <code>RecurringDonations</code> the call sits behind an explicit <code>suppressTriggerCrudCheck</code> flag rather than being unconditional. The wider reasoning—that field permissions are inert without object access on a master-detail detail object—is written in the <code>EventTicketTypesSelector</code> class header, which ships in the package: a detail of a standard object cannot be granted by a packaged permission set (Salesforce ignores standard-object permissions at install, cited below), so its field permissions are inert and <code>isCreateable()</code> is false for every user without Modify All Data.</p>
 <table>
 <thead>
 <tr>
@@ -2069,7 +2069,7 @@ defined in the triage file, not chosen per-run.</p>
 
 <p><strong>What the rule flags.</strong> Findings in base/main/default/classes/fflib/ — an eagerly-loaded describe result, test methods without <code>@IsTest</code>, and one class overriding equals without hashCode.</p>
 <p><strong>Why it is not a defect here.</strong> This directory is a vendored copy of the upstream apex-common and apex-mocks libraries, not code this package authors. It is vendored rather than taken as a package dependency so that a subscriber installs one thing instead of being forced to install FFLib into their Dev Hub first. None of these findings is a security issue or a defect: they are upstream style choices and a describe-loading preference. Patching them would fork the tree further from upstream for no functional gain, and every future upstream sync would have to re-apply them. The four patches that ARE load-bearing are patched, and each is logged.</p>
-<p><strong>How to verify.</strong> The vendored tree was synced to upstream master on 2026-09-01 (apex-common <code>485d3046</code>, apex-mocks <code>6889cc05</code>), closing roughly 1,500 lines of drift, with exactly four local patches re-applied on top. Every one of those four is recorded with its reason in the FFLib fork log in DEPENDENCIES.md.</p>
+<p><strong>How to verify.</strong> The vendored tree was synced to upstream master on 2026-09-01 (apex-common <code>485d3046</code>, apex-mocks <code>6889cc05</code>), closing roughly 1,500 lines of drift, with exactly four local patches re-applied on top. Each of the four carries its reason in a comment at the patched lines (for example <code>fflib_SObjectUnitOfWork.cls:54-61</code> and <code>:165-190</code>), and a diff of the vendored tree against the two upstream commits named above shows exactly those patches.</p>
 <table>
 <thead>
 <tr>
@@ -2101,7 +2101,7 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/classes/fflib/fflib_SObjectUnitOfWorkTest.cls</code></td>
-<td>979, 1060</td>
+<td>997, 1078</td>
 <td>Two sites in upstream's own test class.</td>
 </tr>
 <tr>
@@ -2121,7 +2121,7 @@ defined in the triage file, not chosen per-run.</p>
 
 <p><strong>What the rule flags.</strong> PMD's LoadJavaScriptHtmlScript (AppExchange rule set) flags a <code>&lt;script src&gt;</code> that points at an external host. The review expects JavaScript to ship inside the package as a static resource, so that the code Salesforce reviewed is the code that runs.</p>
 <p><strong>Why it is not a defect here.</strong> Stripe.js is the one script that cannot be bundled. Stripe requires it to be loaded from <code>https://js.stripe.com/v3/</code> at page load and forbids self-hosting, because the library is what keeps card data out of the merchant's origin (PCI DSS SAQ A eligibility) and Stripe patches it in place without a version change. Loading a frozen copy would ship a payment library that is out of date the day it is built. The package confines the load to exactly these two Visualforce pages, which exist only to host the Payment Element in an iframe and to receive the 3-D Secure / bank-authentication redirect; no Lightning Web Component loads any external JavaScript or CSS.</p>
-<p><strong>How to verify.</strong> <code>grep -rn 'loadScript\|loadStyle' base/main/default/lwc</code> returns nothing, and these two pages are the only <code>&lt;script src=</code> in the package. <code>js.stripe.com</code> is a packaged CSP trusted site. The exception is written up as FP-9 in docs/security/appexchange-security-review-readiness.md, and the pages carry the reason in a comment beside the tag.</p>
+<p><strong>How to verify.</strong> <code>grep -rn 'loadScript\|loadStyle' base/main/default/lwc</code> returns nothing, and these two pages are the only <code>&lt;script src=</code> in the package. <code>js.stripe.com</code> is a packaged CSP trusted site. Both pages carry the reason in a comment beside the tag: Stripe's host keeps the integration in PCI SAQ-A scope, <code>/v3/</code> is Stripe's supported evergreen version, and <code>js.stripe.com</code> is declared to the platform as a packaged CSP trusted site.</p>
 <table>
 <thead>
 <tr>
@@ -2148,7 +2148,7 @@ defined in the triage file, not chosen per-run.</p>
 
 <p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name matches a list of sensitive-looking substrings, and asks that such data be stored in Protected Custom Settings or Protected Custom Metadata instead.</p>
 <p><strong>Why it is not a defect here.</strong> These fields match on a substring of an ordinary English word and carry nothing sensitive. <code>Designation__c</code> and <code>Default_Designation__c</code> (the fund a gift is earmarked for) and <code>Campaign_Design__c.Theme_Tokens_JSON__c</code> match on <em>sign</em> and <em>token</em> — one is a lookup to a program, the other is a JSON map of CSS design-token overrides that the service layer filters against a packaged catalog. <code>Email_Signature__c</code> is the sign-off line printed on outbound email. <code>Re_Auth_Required__c</code> and <code>Re_Auth_Link_Sent_At__c</code> match on <em>auth</em> and are a checkbox and a timestamp recording that a donor must complete 3-D Secure on-session for a renewal and when they were last reminded. <code>Portal_Token_TTL_Hours__c</code> is a number of hours. <code>Soft_Credit_Automation_Enabled__c</code> matches on <em>credit</em> and is a feature toggle for soft-credit rollups; it has nothing to do with a payment card. A Protected Custom Setting could not hold any of them: they are per-record business data, and the two on <code>Settings__c</code> are admin-visible configuration that the Settings console edits.</p>
-<p><strong>How to verify.</strong> Each field's <code>&lt;description&gt;</code> in base/main/default/objects/ says what it holds. The package stores no secret in any Custom Setting, protected or not — the org-wide credentials live only in Named Credentials (FP-4 in docs/security/appexchange-security-review-readiness.md), which is what the rule's remediation is for.</p>
+<p><strong>How to verify.</strong> Each field's <code>&lt;description&gt;</code> in base/main/default/objects/ says what it holds. The package stores no secret in any Custom Setting, protected or not — the only credential-related field in the package, <code>Payment_Account__c.Stripe_Donor_Restricted_Key__c</code>, holds the API name of a Named Credential the subscriber administrator creates in Setup and is consumed as <code>'callout:' + name</code>, which is what the rule's remediation is for.</p>
 <table>
 <thead>
 <tr>
@@ -2215,7 +2215,7 @@ defined in the triage file, not chosen per-run.</p>
 
 <p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name contains <em>key</em>, expecting the value to be a secret that belongs in a Protected Custom Setting or Protected Custom Metadata.</p>
 <p><strong>Why it is not a defect here.</strong> <code>Stripe_Donor_Restricted_Key__c</code> and <code>Stripe_Admin_Restricted_Key__c</code> are Text(80) fields holding the <strong>API name</strong> of a Named Credential the subscriber admin built by hand in Setup, and Apex consumes them as <code>'callout:' + name</code>. The key itself is inside the Named Credential and is never readable from Apex, a field, or the UI. The fields are per-Payment-Account rather than org-wide because one org can run several gateway accounts (for example one per legal entity), which a hierarchy setting cannot model. <code>Publishable_Key__c</code> holds Stripe's publishable key, which Stripe designs to be embedded in browser-side code and is sent to every donor's browser by construction; it authorises nothing on its own.</p>
-<p><strong>How to verify.</strong> Both restricted-key fields say in their <code>&lt;description&gt;</code> that they hold a name and that an unrestricted secret key is not an acceptable value for the credential behind it; <code>StripeGateway.cls</code> builds the endpoint as <code>'callout:' + acct.Stripe_Donor_Restricted_Key__c</code>. AGENTS.md Rule 9 makes this the required pattern, and FP-4 in docs/security/appexchange-security-review-readiness.md documents it for the reviewer.</p>
+<p><strong>How to verify.</strong> Both restricted-key fields say in their <code>&lt;description&gt;</code> that they hold a name and that an unrestricted secret key is not an acceptable value for the credential behind it; <code>StripeGateway.cls</code> builds the endpoint as <code>'callout:' + acct.Stripe_Donor_Restricted_Key__c</code>. The package ships no Named Credential and stores no key in any field, setting, metadata record, static resource or Apex literal: the subscriber administrator creates the credential in Setup and the field records only its API name.</p>
 <table>
 <thead>
 <tr>
@@ -2247,7 +2247,7 @@ defined in the triage file, not chosen per-run.</p>
 
 <p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name contains <em>token</em>, <em>key</em> or <em>hash</em>, expecting a secret that belongs in a Protected Custom Setting or Protected Custom Metadata.</p>
 <p><strong>Why it is not a defect here.</strong> None of these is an org-wide secret, and none could live in a setting: each is per-record transactional state. <code>Donation_Staging__c.Access_Token__c</code> is a 256-bit random capability token minted server-side for one guest checkout; it scopes three guest actions to that single staging row, cannot read any other record, and dies with the row. <code>Idempotency_Key__c</code> on <code>Donation_Staging__c</code> and <code>Guest_Request__c</code> is a client-generated request identifier whose only job is to make a double-submit reuse the first attempt; possessing one grants nothing, and the unique index on it is the race backstop. <code>Portal_Access_Token__c.Code_Hash__c</code> and <code>Session_Hash__c</code> hold the SHA-256 of the emailed sign-in code and of the browser session token respectively — the raw value is never stored, the code hash is nulled the moment the code is redeemed, and the session hash is a unique external Id so a per-request lookup is selective. Storing hashes rather than values is precisely the control the rule is asking for.</p>
-<p><strong>How to verify.</strong> The five properties of each URL-borne token (entropy, expiry, single-use, revocation, guest FLS posture) are written in the field <code>&lt;description&gt;</code> and tabulated in FP-16 of docs/security/appexchange-security-review-readiness.md. <code>SecureTokens.opaque()</code> mints the staging token; <code>DonorPortalService</code> writes only hashes to <code>Portal_Access_Token__c</code>.</p>
+<p><strong>How to verify.</strong> The five properties of each token are written in the field <code>&lt;description&gt;</code>. <code>Opportunity.Receipt_Token__c</code>: 128-bit (<code>Crypto.generateAesKey(128)</code>, hex), no expiry by design because a receipt is a permanent read-only record that can act on nothing, reusable, revoked by regenerating the field, no guest field access. <code>Donation_Staging__c.Access_Token__c</code>: 256-bit (<code>SecureTokens.opaque(32)</code>, 64 hex characters), lives as long as the staging row (terminal status at finalize, purged by the retention job after <code>Data_Retention_Days__c</code>, default 90), scoped to three actions on that one row, revoked with the row, no guest field access. The portal access code: 40-bit Crockford-base32, stored only as a SHA-256 hash, single-use (the hash is nulled at redemption and five wrong attempts lock the row), never placed in a URL. <code>SecureTokens.opaque()</code> mints the staging token; <code>DonorPortalService</code> writes only hashes to <code>Portal_Access_Token__c</code>.</p>
 <table>
 <thead>
 <tr>
@@ -2260,7 +2260,7 @@ defined in the triage file, not chosen per-run.</p>
 <tr>
 <td><code>base/main/default/objects/Donation_Staging__c/fields/Access_Token__c.field-meta.xml</code></td>
 <td>1</td>
-<td>256-bit random capability token scoped to one staging row; properties in FP-16.</td>
+<td>256-bit random capability token scoped to one staging row; properties in the field description.</td>
 </tr>
 <tr>
 <td><code>base/main/default/objects/Donation_Staging__c/fields/Idempotency_Key__c.field-meta.xml</code></td>
@@ -2285,7 +2285,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 1,156 findings are Moderate, Low and Info style and maintainability
+<p>The other 1,158 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2308,18 +2308,18 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">158</td>
 </tr>
 <tr>
-<td><code>pmd:AvoidBooleanMethodParameters</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">104</td>
+<td><code>cpd:DetectCopyPasteForApex</code></td>
+<td>Info</td>
+<td style="text-align: right;">113</td>
 </tr>
 <tr>
 <td><code>pmd:CognitiveComplexity</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">104</td>
+<td style="text-align: right;">107</td>
 </tr>
 <tr>
-<td><code>cpd:DetectCopyPasteForApex</code></td>
-<td>Info</td>
+<td><code>pmd:AvoidBooleanMethodParameters</code></td>
+<td>Moderate</td>
 <td style="text-align: right;">104</td>
 </tr>
 <tr>
@@ -2340,7 +2340,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:NcssCount</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">49</td>
+<td style="text-align: right;">50</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
@@ -2391,7 +2391,7 @@ does not follow.</p>
 <tbody>
 <tr>
 <td>Generated</td>
-<td>2026-10-02</td>
+<td>2026-10-09</td>
 </tr>
 <tr>
 <td>Triage source</td>
@@ -2411,7 +2411,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>1,199 (after declared path exclusions)</td>
+<td>1,201 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

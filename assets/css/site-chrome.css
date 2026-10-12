@@ -1,0 +1,88 @@
+/* Shared site chrome: the header and footer fragments in docs-site/theme/partials/
+   and the s-btn buttons. Loaded by both halves of the site, so every size is in
+   px: Material sets html { font-size: 125% } and rem would differ between them. */
+
+.s-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 13px 20px; border-radius: 999px; border: 1px solid transparent;
+  font: 600 15px/1 var(--fn-font-body); text-decoration: none; cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+}
+.s-btn--sm { padding: 10px 16px; font-size: 14px; }
+/* Text on the red accent is the panel token (white): colours live in tokens.css, never as hex here. */
+.s-btn--primary { background: var(--fn-accent); color: var(--fn-panel); box-shadow: 0 8px 22px -10px rgba(208, 2, 27, .7); }
+.s-btn--primary:hover { background: var(--fn-accent-ink); color: var(--fn-panel); transform: translateY(-2px); }
+.s-btn--ink { background: var(--fn-ink); color: var(--fn-paper); }
+.s-btn--ink:hover { color: var(--fn-paper); transform: translateY(-2px); box-shadow: var(--fn-shadow-pop); }
+.s-btn--ghost { background: transparent; color: var(--fn-ink); border-color: var(--fn-line); }
+.s-btn--ghost:hover { color: var(--fn-ink); border-color: var(--fn-ink); background: var(--fn-panel); }
+.s-btn:focus-visible { outline: 3px solid var(--fn-accent); outline-offset: 2px; }
+
+.site-head { background: rgba(239, 239, 236, .92); border-bottom: 1px solid var(--fn-line); font-family: var(--fn-font-body); }
+.site-head__inner { max-width: 1180px; margin: 0 auto; padding: 0 24px; height: 64px; display: flex; align-items: center; gap: 28px; }
+.site-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--em-midnight); }
+.site-brand__mark { width: 30px; height: 30px; display: block; }
+.site-brand__text { display: flex; flex-direction: column; gap: 3px; }
+.site-brand__word { font: 800 22px/1 var(--fn-font-brand); letter-spacing: -.02em; }
+.site-brand__word b { font-weight: 800; color: var(--em-primary); }
+.site-brand__by { font: 500 10.5px/1 var(--fn-font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--fn-ink-faint); }
+.site-nav { display: flex; gap: 4px; }
+.site-nav a { font-size: 15px; font-weight: 500; color: var(--fn-ink-soft); text-decoration: none; padding: 8px 12px; border-radius: 8px; }
+.site-nav a:hover { color: var(--fn-ink); background: var(--fn-paper-dim); }
+.site-nav__docs::before { content: ""; display: inline-block; width: 1px; height: 18px; background: var(--fn-line); margin-right: 14px; vertical-align: middle; }
+/* Active item: the Astro layout sets data-section on <body>; inside the docs the
+   header sits in Material's page, so "Docs" is always the active item there. */
+body[data-section="home"] .site-nav [data-nav="product"],
+body[data-section="pricing"] .site-nav [data-nav="pricing"],
+[data-md-color-scheme] .site-nav [data-nav="docs"] { color: var(--fn-ink); }
+.site-head__cta { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+/* The primary label becomes "Get it on AppExchange" at launch; it must stay on one line or it wraps into the wordmark on a phone. */
+.site-head__cta .s-btn--primary { white-space: nowrap; flex: none; }
+.site-menu { display: none; position: relative; }
+.site-menu summary { list-style: none; cursor: pointer; border: 1px solid var(--fn-line); border-radius: 8px; padding: 7px 10px; font-size: 14px; }
+.site-menu summary::-webkit-details-marker { display: none; }
+/* position: absolute is contained by .site-menu (position: relative above); the
+   panel opens under its own button and cannot leave the header. */
+.site-menu__panel { position: absolute; right: 0; top: calc(100% + 8px); min-width: 200px; background: var(--fn-panel); border: 1px solid var(--fn-line); border-radius: 12px; box-shadow: var(--fn-shadow-pop); padding: 8px; display: grid; z-index: 30; }
+.site-menu__panel a { padding: 10px 12px; border-radius: 8px; text-decoration: none; color: var(--fn-ink); font-size: 15px; }
+.site-menu__panel a:hover { background: var(--fn-paper-dim); }
+@media (max-width: 900px) {
+  .site-nav, .site-head__install { display: none; }
+  .site-menu { display: block; }
+  .site-head__inner { padding: 0 16px; gap: 12px; }
+}
+@media (max-width: 420px) {
+  .site-head__inner { padding: 0 12px; gap: 8px; }
+  .site-head__cta { gap: 6px; }
+  .site-head__cta .s-btn--primary { padding: 9px 11px; font-size: 13px; gap: 6px; }
+  /* The brand never shrinks (its text would spill over the button); it gives up size instead. */
+  .site-brand { flex: none; gap: 7px; }
+  .site-brand__mark { width: 26px; height: 26px; }
+  .site-brand__word { font-size: 19px; }
+  .site-brand__by { font-size: 9px; }
+  .site-menu summary { padding: 7px 8px; font-size: 13px; }
+}
+
+.site-foot { background: var(--fn-ink); color: var(--fn-on-ink-soft); font: 400 14px/1.6 var(--fn-font-body); }
+.site-foot a { color: inherit; text-decoration: none; }
+.site-foot a:hover { color: var(--fn-on-ink); text-decoration: underline; text-underline-offset: 3px; }
+.site-foot__help, .site-foot__cols, .site-foot__legal { max-width: 1180px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+.site-foot__help { display: flex; gap: 24px; align-items: center; justify-content: space-between; padding-top: 36px; padding-bottom: 32px; border-bottom: 1px solid var(--fn-ink-line); }
+.site-foot__helptitle { margin: 0; font: 600 20px/1.3 var(--fn-font-display); color: var(--fn-on-ink); }
+.site-foot__helpnote { margin: 6px 0 0; max-width: 60ch; }
+.site-foot__help .s-btn { flex: none; }
+.site-foot__help .s-btn:hover { text-decoration: none; }
+.site-foot__cols { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 32px; padding-top: 40px; padding-bottom: 32px; }
+.site-foot__brand .site-brand { color: var(--fn-on-ink); }
+.site-foot__brand .site-brand__by { color: var(--fn-on-ink-soft); }
+.site-foot__brand p { margin: 14px 0 0; max-width: 36ch; }
+.site-foot__h { margin: 0 0 14px; font: 500 12px var(--fn-font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fn-on-ink); }
+.site-foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.site-foot__legal { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 18px; padding-bottom: 22px; border-top: 1px solid var(--fn-ink-line); font-size: 13px; }
+@media (max-width: 760px) {
+  .site-foot__help { flex-direction: column; align-items: flex-start; }
+  .site-foot__cols { grid-template-columns: repeat(2, 1fr); }
+  .site-foot__brand { grid-column: 1 / -1; }
+  .site-foot__help, .site-foot__cols, .site-foot__legal { padding-left: 16px; padding-right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .s-btn { transition: none; } .s-btn:hover { transform: none; } }

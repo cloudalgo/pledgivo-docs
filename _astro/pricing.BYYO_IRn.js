@@ -1,0 +1,1 @@
+function e(e){return`$`+Math.round(e).toLocaleString(`en-US`)}function t(e,t){return Math.max(e.minimumLicences,t)*e.annual}export{e as n,t};

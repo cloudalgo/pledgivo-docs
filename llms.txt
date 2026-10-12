@@ -1,0 +1,20 @@
+# Pledgivo
+
+> Pledgivo is a fundraising and donation management app for nonprofit teams that run on Salesforce. It is built on the Salesforce Platform and installs into your own org: donation pages, recurring giving, campaigns and ticketed events, with card payments through Stripe and every gift recorded on your donor records. It costs $49 per fundraising admin a month or $490 a year, with a three-licence minimum, unlimited donations and no percentage of any gift, and it is supported for organisations in the US and the UK.
+
+## Product
+
+- [Pledgivo](https://pledgivo.cloudalgo.com/): Pledgivo runs donation pages, monthly giving and ticketed events inside your Salesforce org. Gifts go straight to your donor records with nothing to sync.
+- [Pricing](https://pledgivo.cloudalgo.com/pricing/): Pledgivo pricing: $49 per fundraising admin a month or $490 a year, after a 5-day trial. Three-licence minimum, unlimited donations, no percentage of gifts.
+
+## Documentation
+
+- [Documentation](https://pledgivo.cloudalgo.com/docs/): Pledgivo documentation: install the fundraising package, connect Stripe, launch a first campaign and run donations and refunds in Salesforce.
+- [Installation](https://pledgivo.cloudalgo.com/getting-started/installation/): Install the Pledgivo fundraising package in Salesforce: requirements, supported editions, the permission set to assign, the guest-user step and upgrades.
+- [After you install](https://pledgivo.cloudalgo.com/getting-started/after-you-install/): A screenshot-by-screenshot walkthrough of one-time setup: permission sets, record types, the Experience site and guest user, Stripe credentials, activation.
+- [Connecting Stripe](https://pledgivo.cloudalgo.com/getting-started/connecting-stripe/): Connect Stripe to Salesforce for donations: build the Stripe credential in Setup with the Payments panel's guided checklist, then route your campaigns to it.
+- [Set up your first campaign](https://pledgivo.cloudalgo.com/guides/first-campaign/): Create a donation page in Salesforce: go from a blank Campaign record to a published, donor-ready page with Pledgivo, including the Page Canvas composer.
+- [How Pledgivo works](https://pledgivo.cloudalgo.com/concepts/how-it-works/): One map of the whole package — what runs in the donor's browser, as the guest user, in background jobs and for staff — and the five journeys that connect them.
+- [Security and code quality](https://pledgivo.cloudalgo.com/concepts/security-and-code-quality/): Pledgivo security and code quality: what Salesforce Code Analyzer reports on this package, what each finding means, and the design behind it.
+- [FAQ](https://pledgivo.cloudalgo.com/faq/): Pledgivo FAQ: answers on editions, NPSP, Person Accounts, card data, webhooks, refunds and where your fundraising data lives in your Salesforce org.
+- [Release notes](https://pledgivo.cloudalgo.com/release-notes/): Every package version, newest first — what changed, whether it is released, and what an admin should do after upgrading.

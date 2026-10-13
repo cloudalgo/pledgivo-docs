@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://pledgivo.cloudalgo.com/</loc><lastmod>2026-10-13</lastmod></url>
+  <url><loc>https://pledgivo.cloudalgo.com/compare/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/concepts/campaigns/</loc><lastmod>2026-09-24</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/concepts/column-ratio/</loc><lastmod>2026-09-28</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/concepts/donations-payments/</loc><lastmod>2026-10-13</lastmod></url>
@@ -24,10 +25,12 @@
   <url><loc>https://pledgivo.cloudalgo.com/getting-started/settings-console-reference/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/getting-started/setup-assistant/</loc><lastmod>2026-09-25</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/campaign-posts/</loc><lastmod>2026-09-25</lastmod></url>
+  <url><loc>https://pledgivo.cloudalgo.com/guides/donations-in-salesforce/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/donors-console/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/email-branding/</loc><lastmod>2026-09-24</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/embed-donate-widget/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/first-campaign/</loc><lastmod>2026-10-13</lastmod></url>
+  <url><loc>https://pledgivo.cloudalgo.com/guides/fit/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/fundraisers-console/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/monitor-and-diagnose/</loc><lastmod>2026-09-24</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/guides/process-refund/</loc><lastmod>2026-10-13</lastmod></url>
@@ -37,6 +40,7 @@
   <url><loc>https://pledgivo.cloudalgo.com/guides/writing-a-campaign-story/</loc><lastmod>2026-09-28</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/pricing/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/release-notes/</loc><lastmod>2026-10-07</lastmod></url>
+  <url><loc>https://pledgivo.cloudalgo.com/security/</loc><lastmod>2026-10-13</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/support/</loc><lastmod>2026-09-01</lastmod></url>
   <url><loc>https://pledgivo.cloudalgo.com/videos/</loc><lastmod>2026-10-13</lastmod></url>
 </urlset>

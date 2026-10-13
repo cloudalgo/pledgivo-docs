@@ -34,6 +34,8 @@
    header sits in Material's page, so "Docs" is always the active item there. */
 body[data-section="home"] .site-nav [data-nav="product"],
 body[data-section="pricing"] .site-nav [data-nav="pricing"],
+body[data-section="compare"] .site-nav [data-nav="compare"],
+body[data-section="security"] .site-nav [data-nav="security"],
 [data-md-color-scheme] .site-nav [data-nav="docs"] { color: var(--fn-ink); }
 .site-head__cta { margin-left: auto; display: flex; gap: 10px; align-items: center; }
 /* The primary label becomes "Get it on AppExchange" at launch; it must stay on one line or it wraps into the wordmark on a phone. */

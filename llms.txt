@@ -6,6 +6,10 @@
 
 - [Pledgivo](https://pledgivo.cloudalgo.com/): Pledgivo runs donation pages, monthly giving and ticketed events inside your Salesforce org. Gifts go straight to your donor records with nothing to sync.
 - [Pricing](https://pledgivo.cloudalgo.com/pricing/): Pledgivo pricing: $49 per fundraising admin a month or $490 a year, after a 5-day trial. Three-licence minimum, unlimited donations, no percentage of gifts.
+- [Compare](https://pledgivo.cloudalgo.com/compare/): Pledgivo beside GoFundMe Pro, Givebutter, Fundraise Up, Donorbox and Nonprofit Cloud: fees, card processing and where donor data lives, with each source.
+- [Security](https://pledgivo.cloudalgo.com/security/): Where Pledgivo keeps donor data, how card details go to Stripe without touching Salesforce, which permissions apply, and the published scan responses.
+- [Is Pledgivo a fit?](https://pledgivo.cloudalgo.com/guides/fit/): Answer five short questions about your Salesforce edition, donor records, NPSP, payments and yearly giving, and see what Pledgivo supports in your setup today.
+- [Taking online donations in Salesforce](https://pledgivo.cloudalgo.com/guides/donations-in-salesforce/): Three ways to take online donations in Salesforce: a giving platform that syncs, your own build, or an app in your org. What each asks of you, with sources.
 
 ## Documentation
 

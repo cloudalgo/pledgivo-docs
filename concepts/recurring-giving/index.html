@@ -2366,7 +2366,8 @@ it as appropriate; then an administrator clears <strong>Pending Payment Intent</
 <li><strong>Change the fund</strong> — only funds the campaign actually offers are accepted. If the campaign
   wouldn't allow the requested fund, the change is refused rather than silently redirected to the
   campaign's default; a donor who asked for the scholarship fund should not end up funding
-  something else without being told.</li>
+  something else without being told. The whole gift then goes to the chosen fund: any split
+  across several funds is replaced by a single split for that one fund.</li>
 <li><strong>Skip the next payment</strong> — moves the next payment date on by one cycle without consuming an
   installment of a pledge term. Unavailable mid-dunning, where the schedule has a failed charge
   to resolve first, and while a renewal is still waiting on Stripe (above) — skipping would move
@@ -2376,6 +2377,12 @@ it as appropriate; then an administrator clears <strong>Pending Payment Intent</
   the card is read from Stripe's own record of that setup, so a card belonging to someone else's
   Stripe customer cannot be attached.</li>
 </ul>
+<p>A schedule's funds are held only in its <strong>Recurring Designations</strong> — one row per fund, so a gift to
+a single fund is one row for the whole amount. They are listed on the recurring gift's record page,
+and every installment is allocated from them. To set or change a schedule's fund by hand, use
+<strong>Change fund</strong> in <strong>Manage Recurring Gift</strong> (below): it only offers funds the campaign allows and
+writes a history row. A fundraiser with the right access can also add or edit a row directly in the
+<strong>Recurring Designations</strong> related list on the record page, which skips both of those checks.</p>
 <p>Every one of these writes a <code>Recurring_Donation_History__c</code> row. The schedule's own fields keep
 no history of their prior values, so that trail is the only record of what a donor changed and
 when — worth pointing a fundraiser at when they ask why a monthly gift is a different size than

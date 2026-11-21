@@ -2274,12 +2274,12 @@ top of the panel moves the ten steps to another.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Donor restricted key credential</strong></td>
+<td><strong>Donor Credential Name</strong></td>
 <td>Taking payments — the charge path a public donation page reaches</td>
 <td>Staff <em>and</em> your site guest user (step 6)</td>
 </tr>
 <tr>
-<td><strong>Admin restricted key credential</strong></td>
+<td><strong>Admin Credential Name</strong></td>
 <td>Back-office only: staff refunds, the refund/dispute reconcilers, the orphan-payment sweep, off-session recurring renewals, and <strong>Test connection</strong></td>
 <td>Staff who issue refunds and whoever owns the scheduled jobs — <strong>never</strong> the guest user</td>
 </tr>
@@ -2327,7 +2327,7 @@ them, and <strong>Test connection</strong> at the end is what proves them right.
 <div class="admonition danger">
 <p class="admonition-title">Coming back to change an account's credentials? Don't — add a new account</p>
 <p>Editing a saved payment account is fine for its label or its publishable key. Changing
-<strong>Donor restricted key credential</strong> or <strong>Admin restricted key credential</strong> so they point at a <em>different</em>
+<strong>Donor Credential Name</strong> or <strong>Admin Credential Name</strong> so they point at a <em>different</em>
 Stripe account is not: every saved card (<code>pm_…</code>) and every recurring schedule set up through
 this account can only be charged by the Stripe account that created it. Re-point the
 credentials and those charges start failing — silently, at the next renewal, not at the
@@ -2392,7 +2392,7 @@ the package ships:</p>
 <tr>
 <td>Named Credential (suggested <code>Stripe_Donor_Restricted</code> / <code>Stripe_Admin_Restricted</code>)</td>
 <td><strong>Yes — anything</strong></td>
-<td><strong>Must match</strong> the value you type in <strong>Donor restricted key credential</strong> / <strong>Admin restricted key credential</strong> on the Payment Account record, exactly</td>
+<td><strong>Must match</strong> the value you type in <strong>Donor Credential Name</strong> / <strong>Admin Credential Name</strong> on the Payment Account record, exactly</td>
 </tr>
 <tr>
 <td>Your two credential permission sets (suggested <code>Fundraising_Site_Guest_Access</code> / <code>Fundraising_Payments_Admin</code>)</td>

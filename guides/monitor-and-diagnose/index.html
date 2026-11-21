@@ -2214,7 +2214,7 @@ render dimmed rather than alarming.</p>
 </tr>
 <tr>
 <td><strong>Status</strong></td>
-<td>All statuses · Pending · Submitted · Payment Confirmed · Processing · Finalizing</td>
+<td>All statuses · Pending · Submitted · Processing</td>
 </tr>
 <tr>
 <td><strong>Created</strong></td>
@@ -2338,8 +2338,9 @@ or query <code>Log__c</code> directly.</p>
 <ol>
 <li>A donor says their gift never appeared. Open <strong>Donation Monitor</strong> and paste their email into
    <strong>Search</strong>.</li>
-<li>If a row comes back at <em>Payment Confirmed</em> with an error, that gift is paid and stuck. Copy its
-   <strong>correlation id</strong>.</li>
+<li>If a row comes back at <em>Submitted</em> with an error, that gift is paid and stuck. Copy its
+   <strong>correlation id</strong>. (A paid ticket order that is stuck shows <em>Processing</em> instead: the ticket
+   purchase service writes that status between its two finalize commits.)</li>
 <li>Open <strong>Diagnostic Logs</strong>, paste the correlation id into <strong>Search</strong>. Every entry the failing
    transaction wrote shares that id, so you get the whole story in order.</li>
 <li>Expand the stack trace on the error entry to find what actually threw.</li>

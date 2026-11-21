@@ -1793,7 +1793,7 @@
 <p class="fn-dek">Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>16 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
+<p><code>custom</code> · <code>15 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1860,16 +1860,10 @@ without the donor re-entering card details each cycle — see <a href="../recurr
 </thead>
 <tbody>
 <tr>
-<td><code>Bank_Name__c</code></td>
-<td>Bank_Name</td>
-<td>Text</td>
-<td>Bank name shown for ACH payment methods. Not populated for cards.</td>
-</tr>
-<tr>
 <td><code>Brand__c</code></td>
 <td>Brand</td>
 <td>Text</td>
-<td>Card network (Visa, Mastercard, Amex, Discover). Blank for ACH.</td>
+<td>Card network (Visa, Mastercard, Amex, Discover). Blank when the gateway returned none.</td>
 </tr>
 <tr>
 <td><code>Contact__c</code></td>
@@ -1887,13 +1881,13 @@ without the donor re-entering card details each cycle — see <a href="../recurr
 <td><code>Exp_Month__c</code></td>
 <td>Exp_Month</td>
 <td>Number</td>
-<td>Card expiry month, for display only. Blank for ACH.</td>
+<td>Card expiry month, for display only. Blank when the gateway returned none.</td>
 </tr>
 <tr>
 <td><code>Exp_Year__c</code></td>
 <td>Exp_Year</td>
 <td>Number</td>
-<td>Card expiry year, for display only. Blank for ACH.</td>
+<td>Card expiry year, for display only. Blank when the gateway returned none.</td>
 </tr>
 <tr>
 <td><code>Fingerprint__c</code></td>
@@ -1953,7 +1947,7 @@ without the donor re-entering card details each cycle — see <a href="../recurr
 <td><code>Type__c</code></td>
 <td>Type</td>
 <td>Picklist</td>
-<td>Card or US Bank Account (ACH).</td>
+<td>The kind of payment method. Always Card.</td>
 </tr>
 </tbody>
 </table>

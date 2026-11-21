@@ -2116,7 +2116,7 @@
 <h3>3.2 To Stripe</h3>
 <p>All Stripe API keys live only inside Named Credentials that the subscriber's administrator creates by hand in Setup. The package ships no Named Credential metadata and never stores, transmits or logs a key value. The <code>Authorization</code> header is injected by the platform at callout time and never appears in packaged source.</p>
 <p>The subscriber creates two Stripe <em>restricted</em> keys with audited minimal scopes. The <b>donor key</b>, reachable on the public path, holds write on Payment Intents, Setup Intents, Customers and Payment Methods, and <em>None</em> on Charges, Refunds and Balance — so the credential exposed to the guest path structurally cannot issue a refund. The <b>administrator key</b> adds write on Payment Intents, Charges and Refunds, and read on Balance, Disputes, Customers and Payment Methods. Two runtime probes in the setup console verify the administrator actually built the keys to those scopes, rather than trusting the instruction.</p>
-<p><code>Payment_Account__c.Stripe_Donor_Restricted_Key__c</code> is a Text(80) field that holds a Named Credential API <em>name</em>, never a key. It is consumed as <code>'callout:' + value</code>, and its field description states this verbatim.</p>
+<p><code>Payment_Account__c.Stripe_Donor_Credential__c</code> is a Text(80) field that holds a Named Credential API <em>name</em>, never a key. It is consumed as <code>'callout:' + value</code>, and its field description states this verbatim.</p>
 </div>
 
 <h2 id="4-encryption-on-data-transfer">4. Encryption on data transfer<a class="headerlink" href="#4-encryption-on-data-transfer" title="Permanent link">#</a></h2>

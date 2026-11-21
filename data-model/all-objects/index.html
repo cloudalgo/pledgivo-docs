@@ -2168,7 +2168,7 @@
 
 <h1 id="all-objects">All objects<a class="headerlink" href="#all-objects" title="Permanent link">#</a></h1>
 <p class="fn-dek">The complete packaged data model, generated straight from deployed metadata. For the visual map, see the <a href="../">interactive diagram</a>.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/objects</code></span><span><b>Generator</b><code>generate_data_model_docs.py</code></span><span><b>Objects</b><code>28</code></span><span><b>Relationships</b><code>45</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/objects</code></span><span><b>Generator</b><code>generate_data_model_docs.py</code></span><span><b>Objects</b><code>28</code></span><span><b>Relationships</b><code>44</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -2485,7 +2485,7 @@
 <td><code>Accept_Donations_After_End_Date__c</code></td>
 <td>Accept Donations After End Date</td>
 <td>Checkbox</td>
-<td>Leave checked to keep accepting gifts after the end date passes — useful for an appeal whose date is a milestone rather than a deadline. Uncheck it for a campaign that must genuinely stop, such as a time-boxed match or an event that has already happened; donors then see a "no longer accepting donations" message instead of the form. Existing recurring gifts keep renewing either way.<br><em>Docs: Only meaningful alongside a non-blank EndDate — a campaign with no end date is never closed by this field.  Deliberately independent of Status and of the Campaign_Closed__c formula: Status = 'Active' is the publicity gate (a non-Active campaign is invisible to guests entirely), Campaign_Closed__c is the console's display flag, and this field is the only one that decides whether an ended-but-still-Active campaign may take a payment.  Enforced server-side in CampaignService.assertAcceptingDonations, called from DonationService.createDonorAndIntent and EventRegistrationController.requireActiveCampaign; surfaced to the guest UI as the <code>acceptingDonations</code> key on the campaign payload so the form renders a closed state instead of failing at charge time.  Renewal of an ALREADY-ACTIVE recurring schedule is deliberately not gated — see RecurringRenewalBatch and Recurring_Behaviour_At_Goal__c / Recurring_Migration_Campaign__c, which own that policy.</em></td>
+<td>Leave checked to keep accepting gifts after the end date passes — useful for an appeal whose date is a milestone rather than a deadline. Uncheck it for a campaign that must genuinely stop, such as a time-boxed match or an event that has already happened; donors then see a "no longer accepting donations" message instead of the form. Existing recurring gifts keep renewing either way.<br><em>Docs: Only meaningful alongside a non-blank EndDate — a campaign with no end date is never closed by this field.  Deliberately independent of Status and of the Campaign_Closed__c formula: Status = 'Active' is the publicity gate (a non-Active campaign is invisible to guests entirely), Campaign_Closed__c is the console's display flag, and this field is the only one that decides whether an ended-but-still-Active campaign may take a payment.  Enforced server-side in CampaignService.assertAcceptingDonations, called from DonationService.createDonorAndIntent and EventRegistrationController.requireActiveCampaign; surfaced to the guest UI as the <code>acceptingDonations</code> key on the campaign payload so the form renders a closed state instead of failing at charge time.  Renewal of an ALREADY-ACTIVE recurring schedule is deliberately not gated — see RecurringRenewalBatch and Recurring_Behavior_At_Goal__c / Recurring_Migration_Campaign__c, which own that policy.</em></td>
 </tr>
 <tr>
 <td><code>Allow_Company_Match__c</code></td>
@@ -2527,7 +2527,7 @@
 <td><code>Amount_Raised__c</code></td>
 <td>Amount Raised</td>
 <td>Currency</td>
-<td>Total raised toward this campaign's goal so far. Calculated automatically — do not edit directly.<br><em>Docs: Apex-maintained, not a native roll-up (Opportunity to Campaign is a standard lookup, not master-detail). Recomputed by CampaignService.rollupCampaignTotals() from a fresh SUM query every time it runs, so it is always the source of truth rather than an incremental counter; called from the Opportunities domain on insert, on a Closed Won status change, on any post-close Amount change, and on a refund. A goal-crossing detected mid-rollup enqueues CancelGoalReachedRecurringQueueable when Recurring_Behaviour_At_Goal__c is Cancel.</em></td>
+<td>Total raised toward this campaign's goal so far. Calculated automatically — do not edit directly.<br><em>Docs: Apex-maintained, not a native roll-up (Opportunity to Campaign is a standard lookup, not master-detail). Recomputed by CampaignService.rollupCampaignTotals() from a fresh SUM query every time it runs, so it is always the source of truth rather than an incremental counter; called from the Opportunities domain on insert, on a Closed Won status change, on any post-close Amount change, and on a refund. A goal-crossing detected mid-rollup enqueues CancelGoalReachedRecurringQueueable when Recurring_Behavior_At_Goal__c is Cancel.</em></td>
 </tr>
 <tr>
 <td><code>Campaign_Closed__c</code></td>
@@ -2545,7 +2545,7 @@
 <td><code>Campaign_Subtype__c</code></td>
 <td>Campaign Subtype</td>
 <td>Picklist</td>
-<td>What kind of fundraiser this is. Crowdfunding runs toward a goal and shows donors a progress bar. Ongoing has no goal or end date and never closes on its own. Event sells tickets to a dated event instead of collecting gifts.<br><em>Docs: Read by CampaignService.getPublicExperienceConfig() to choose the guest shell composition, and by the campaign gallery for its badge/filter. Every value shares the single packaged Fundraising record type, so this picklist, not RecordTypeId, is the real behavioral switch — a maintainer adding a new fundraiser shape should add a value here, not a new record type.  The three labels below are the product's ONE vocabulary for these values and are mirrored verbatim in publicCampaignGallery's SUBTYPES, admFundraiserRecord's SUBTYPE pill, and the create wizard's two-question type step. Before 2026-08-23 each surface named General differently ("General Crowdfunding" here, "Campaign - general appeal" in the wizard, "Crowdfunding" in the gallery, "Campaign" in the console), so an admin could not match what they created to what the directory listed. Renaming one alone re-opens that gap.  General and Open_Donation render identically apart from the progress bar - see CampaignService.PROGRESS_BAR_SUBTYPES, which holds General alone. The distinction is the goal/deadline, not the layout, which is exactly what the labels say.  That distinction is enforced, not merely described: Campaigns.rejectGoalOnOngoing() refuses to save an Open_Donation campaign carrying a positive Goal_Amount__c (audit F-126, 2026-09-01), so the two values cannot converge on the same rendering. A record in that state is a contradiction rather than an unusual-but-valid one, and it is rejected rather than silently corrected so the admin's input is never destroyed without being reported.  The guard fires on the write that INTRODUCES the contradiction, not on every write to a row that has it. A record already in that state whose subtype and goal are both unchanged still accepts unrelated writes - refusing them would make it permanently un-editable, and because commitWork() is all-or-nothing one such row would fail an entire CampaignRollupBatch chunk of 200. Editing either half still rejects.</em></td>
+<td>What kind of fundraiser this is. Crowdfunding runs toward a goal and shows donors a progress bar. Ongoing has no goal or end date and never closes on its own. Event sells tickets to a dated event instead of collecting gifts.<br><em>Docs: Read by CampaignService.getPublicExperienceConfig() to choose the guest shell composition, and by the campaign gallery for its badge/filter. Every value shares the single packaged Fundraising record type, so this picklist, not RecordTypeId, is the real behavioral switch — a maintainer adding a new fundraiser shape should add a value here, not a new record type.  The three labels below are the product's ONE vocabulary for these values and are mirrored verbatim in publicCampaignGallery's SUBTYPES, admFundraiserRecord's SUBTYPE pill, and the create wizard's two-question type step. Before 2026-08-23 each surface named General differently ("General Crowdfunding" here, "Campaign - general appeal" in the wizard, "Crowdfunding" in the gallery, "Campaign" in the console), so an admin could not match what they created to what the directory listed. Renaming one alone re-opens that gap.  General and Open_Donation render identically apart from the progress bar - see CampaignPagePayload.PROGRESS_BAR_SUBTYPES, which holds General alone. The distinction is the goal/deadline, not the layout, which is exactly what the labels say.  That distinction is enforced, not merely described: Campaigns.rejectGoalOnOngoing() refuses to save an Open_Donation campaign carrying a positive Goal_Amount__c (audit F-126, 2026-09-01), so the two values cannot converge on the same rendering. A record in that state is a contradiction rather than an unusual-but-valid one, and it is rejected rather than silently corrected so the admin's input is never destroyed without being reported.  The guard fires on the write that INTRODUCES the contradiction, not on every write to a row that has it. A record already in that state whose subtype and goal are both unchanged still accepts unrelated writes - refusing them would make it permanently un-editable, and because commitWork() is all-or-nothing one such row would fail an entire CampaignRollupBatch chunk of 200. Editing either half still rejects.</em></td>
 </tr>
 <tr>
 <td><code>Capacity_Mode__c</code></td>
@@ -2593,13 +2593,13 @@
 <td><code>Default_Designation__c</code></td>
 <td>Default Designation</td>
 <td>Lookup → <code>Designation__c</code></td>
-<td>The fund this campaign supports. Its exact effect depends on the Designation Mode field above: the locked fund in Assigned mode, the pre-selected default in Selectable mode, or unused in All Active mode.<br><em>Docs: This field predates Designation_Mode__c/Allowed_Designation_Ids__c (2026-08) and is reused by the new mode-based resolution in CampaignDesignationService rather than replaced — see specs/04-data-model.md for the full three-mode contract. A blank value here in Assigned mode falls back to Settings__c.Default_Designation__c via SettingsService.defaultDesignationId(), then to an undesignated gift if that also fails to resolve — never a hardcoded fund.</em></td>
+<td>The fund this campaign supports. Its exact effect depends on the Designation Mode field above: the locked fund in Assigned mode, the pre-selected default in Selectable mode, or unused in All Active mode.<br><em>Docs: This field predates Designation_Mode__c/Allowed_Designation_Ids__c (2026-08) and is reused by the new mode-based resolution in CampaignDesignationService rather than replaced — see specs/04-data-model.md for the full three-mode contract. A blank value here in Assigned mode falls back to Settings__c.Default_Designation__c via GiftAmountSettings.defaultDesignationId(), then to an undesignated gift if that also fails to resolve — never a hardcoded fund.</em></td>
 </tr>
 <tr>
 <td><code>Design__c</code></td>
 <td>Design</td>
 <td>Lookup → <code>Campaign_Design__c</code></td>
-<td>Which saved design/theme to use for this campaign's public page. Leave blank to use the default design.<br><em>Docs: Resolved by CampaignService.resolveDesign()/selectDesignSystemMode(). The chosen design's theme JSON is normalized by CampaignService.normalizeThemeTokensJson() against the Theme_Token__mdt catalog before it ever reaches the guest page, so an admin cannot smuggle an arbitrary CSS var through a design record — only tokens present in that packaged catalog survive.</em></td>
+<td>Which saved design/theme to use for this campaign's public page. Leave blank to use the default design.<br><em>Docs: Resolved by CampaignDesignPayload.resolveDesign()/selectDesignSystemMode(). The chosen design's theme JSON is normalized by ThemeTokenSanitizer.normalizeThemeTokensJson() against the Theme_Token__mdt catalog before it ever reaches the guest page, so an admin cannot smuggle an arbitrary CSS var through a design record — only tokens present in that packaged catalog survive.</em></td>
 </tr>
 <tr>
 <td><code>Designation_Mode__c</code></td>
@@ -2707,7 +2707,7 @@
 <td><code>Goal_Amount__c</code></td>
 <td>Goal Amount</td>
 <td>Currency</td>
-<td>How much this campaign is aiming to raise. This drives the raised-of-goal progress bar donors see on the donation page and in embedded widgets — unless the page design has Show Progress Bar switched off. An Ongoing fundraiser has no target by definition and will not save with one: leave this blank there, and donors see the amount raised and the donor count instead. An Event campaign shows a ticket tier picker rather than a bar, so there the goal is for your own reporting only.<br><em>Docs: The bar's visibility rule lives in CampaignService.computeShowProgressBar (PROGRESS_BAR_SUBTYPES = {'General'}) and is the single authority: pfHero, dfForm and the embed widget all render from the server-computed showProgressBar flag rather than re-deciding the subtype themselves.  The help text spells the rule out because the field is on the layout for every subtype: before 2026-08-18 it promised "the public progress bar" unconditionally, which was false for an event.  Open Donation was in the set from 2026-08-18 (audit F-42) to 2026-09-01 (audit F-126). F-42 was closing a three-way disagreement in which an open-ended appeal with a goal drew a bar on the donation form while its hero and its embed drew none - but it settled it by blessing the goal-carrying "ongoing" campaign rather than by ruling it out, which left "86,000 of 140,000" renderable under an Ongoing badge.  F-126 removes the state instead of the disagreement: Campaigns.rejectGoalOnOngoing() refuses to save an Open_Donation campaign with a positive Goal_Amount__c, on every write path, so an Ongoing fundraiser has no goal for any surface to draw a bar from and all three agree by construction. The create wizard still hides this field in Ongoing mode (2026-08-23) and offers a one-click clear for a leftover value - that is now the guided path to a save the server would otherwise reject, not the only thing standing between the data and the state.  The guard fires on the write that INTRODUCES the contradiction, not on every write to a row that has it. A record already in that state whose subtype and goal are both unchanged still accepts unrelated writes - refusing them would make it permanently un-editable, and because commitWork() is all-or-nothing one such row would fail an entire CampaignRollupBatch chunk of 200. Editing either half still rejects.</em></td>
+<td>How much this campaign is aiming to raise. This drives the raised-of-goal progress bar donors see on the donation page and in embedded widgets — unless the page design has Show Progress Bar switched off. An Ongoing fundraiser has no target by definition and will not save with one: leave this blank there, and donors see the amount raised and the donor count instead. An Event campaign shows a ticket tier picker rather than a bar, so there the goal is for your own reporting only.<br><em>Docs: The bar's visibility rule lives in CampaignPagePayload.computeShowProgressBar (PROGRESS_BAR_SUBTYPES = {'General'}) and is the single authority: pfHero, dfForm and the embed widget all render from the server-computed showProgressBar flag rather than re-deciding the subtype themselves.  The help text spells the rule out because the field is on the layout for every subtype: before 2026-08-18 it promised "the public progress bar" unconditionally, which was false for an event.  Open Donation was in the set from 2026-08-18 (audit F-42) to 2026-09-01 (audit F-126). F-42 was closing a three-way disagreement in which an open-ended appeal with a goal drew a bar on the donation form while its hero and its embed drew none - but it settled it by blessing the goal-carrying "ongoing" campaign rather than by ruling it out, which left "86,000 of 140,000" renderable under an Ongoing badge.  F-126 removes the state instead of the disagreement: Campaigns.rejectGoalOnOngoing() refuses to save an Open_Donation campaign with a positive Goal_Amount__c, on every write path, so an Ongoing fundraiser has no goal for any surface to draw a bar from and all three agree by construction. The create wizard still hides this field in Ongoing mode (2026-08-23) and offers a one-click clear for a leftover value - that is now the guided path to a save the server would otherwise reject, not the only thing standing between the data and the state.  The guard fires on the write that INTRODUCES the contradiction, not on every write to a row that has it. A record already in that state whose subtype and goal are both unchanged still accepts unrelated writes - refusing them would make it permanently un-editable, and because commitWork() is all-or-nothing one such row would fail an entire CampaignRollupBatch chunk of 200. Editing either half still rejects.</em></td>
 </tr>
 <tr>
 <td><code>Header_Image_URL__c</code></td>
@@ -2743,13 +2743,13 @@
 <td><code>Public_URL__c</code></td>
 <td>Public URL</td>
 <td>Text</td>
-<td>The web address (or slug) for this campaign's public donation page.<br><em>Docs: Generated once from the campaign name by FundraiserAdminController.generateSlug() at creation time and only backfilled later if still blank — it is not regenerated when the campaign is renamed, so an old slug can outlive a name change. There is no unique-index enforcement on this field at the platform level; collision handling, if any, lives in the generation logic itself.</em></td>
+<td>The web address (or slug) for this campaign's public donation page.<br><em>Docs: Generated once from the campaign name by FundraiserForm.slug() at creation time and only backfilled later if still blank — it is not regenerated when the campaign is renamed, so an old slug can outlive a name change. There is no unique-index enforcement on this field at the platform level; collision handling, if any, lives in the generation logic itself.</em></td>
 </tr>
 <tr>
-<td><code>Recurring_Behaviour_At_Goal__c</code></td>
+<td><code>Recurring_Behavior_At_Goal__c</code></td>
 <td>Recurring Behavior At Goal</td>
 <td>Picklist</td>
-<td>What to do with active recurring gifts once this campaign hits its goal: keep charging or automatically cancel them.<br><em>Docs: The API name keeps the British "Behaviour" and the label does not, on purpose. The package standardised its user-visible copy on American spelling (audit finding F-83), but a field API name is frozen the moment a package version ships — renaming it would orphan every subscriber's stored value. A label is display-only and free to change, so the label was corrected and the API name was left alone. Do not "fix" the spelling of the fullName, the file name, or the Apex/permission-set references that follow it.  Checked by CampaignService.rollupCampaignTotals() at the moment it detects a newly-crossed goal. When set to Cancel, that rollup enqueues CancelGoalReachedRecurringQueueable, which cancels active Recurring_Donation__c records in chunks of 200 with Transaction Finalizer auto-recovery (chunk size halves on a governor LimitException, up to 4 retries) rather than cancelling inline, so a large campaign never blocks the rollup that triggered it.</em></td>
+<td>What to do with active recurring gifts once this campaign hits its goal: keep charging or automatically cancel them.<br><em>Docs: Checked by CampaignService.rollupCampaignTotals() at the moment it detects a newly-crossed goal. When set to Cancel, that rollup enqueues CancelGoalReachedRecurringQueueable, which cancels active Recurring_Donation__c records in chunks of 200 with Transaction Finalizer auto-recovery (chunk size halves on a governor LimitException, up to 4 retries) rather than cancelling inline, so a large campaign never blocks the rollup that triggered it.</em></td>
 </tr>
 <tr>
 <td><code>Recurring_Migration_Campaign__c</code></td>
@@ -2862,11 +2862,11 @@
 </tbody>
 </table>
 <h3 id="campaign-design">Campaign Design<a class="headerlink" href="#campaign-design" title="Permanent link">#</a></h3>
-<p><code>Campaign_Design__c</code> · <code>custom</code> · <code>38 fields</code> · <code>ReadWrite</code> · <code>Campaigns &amp; Content</code></p>
+<p><code>Campaign_Design__c</code> · <code>custom</code> · <code>36 fields</code> · <code>ReadWrite</code> · <code>Campaigns &amp; Content</code></p>
 <p>A reusable branding/theme configuration (colors, fonts, layout, form copy defaults) that can be applied to one or more Campaigns' public donation pages. There is no standard-object equivalent for shareable page theming, so it is modeled as a custom object. If a Campaign has no Design assigned, the record with Is_Default__c checked is used as fallback. Admin-configurable design overrides only — never hardcode a themeable value in a public component.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Theme_Tokens_JSON__c on this object is the only field whose overridable key set is governed by Theme_Token__mdt (see that object's doc note) — every other field here is a direct, always-present column read by CampaignService.buildPublicExperienceResult() and the setDesigns internal editor via SetupController. Records are shared across Campaigns many-to-one (one Design, many Campaigns), so editing a Design changes every Campaign that references it; there is intentionally no per-Campaign field override outside the JSON token layer.</p>
+<p>Theme_Tokens_JSON__c on this object is the only field whose overridable key set is governed by Theme_Token__mdt (see that object's doc note) — every other field here is a direct, always-present column read by CampaignPagePayload.experiencePayload() and the setDesigns internal editor via SetupDesignsController. Records are shared across Campaigns many-to-one (one Design, many Campaigns), so editing a Design changes every Campaign that references it; there is intentionally no per-Campaign field override outside the JSON token layer.</p>
 </div>
 <p><strong>Relationships</strong></p>
 <table>
@@ -2929,12 +2929,6 @@
 <td>Button color on hover, as a hex code. Leave blank to use an automatic shade of the button color.</td>
 </tr>
 <tr>
-<td><code>Button_Style__c</code></td>
-<td>Button Style</td>
-<td>Picklist</td>
-<td>No longer used. Public-page buttons are always filled; set their color with Button Color and Button Text Color instead.<br><em>Docs: INERT. publicFundraisingExperience.js's resolveButtonTokens() is now a no-op that returns null, so this field emits no CSS and the primary CTA is always filled.  Every consumer of the pf-btn CSS token group is a primary call to action, so Outline/Ghost could only strip the fill off the one button a donation page exists to get pressed, and on two of the packaged designs the flattened text failed WCAG AA.  CampaignService still passes the value through to the guest payload and the field still has its picklist; both are retained purely so an installed subscriber's stored value does not break on upgrade.  The per-field hex colors (Button_Color__c/Button_Hover_Color__c/Button_Text_Color__c) are unaffected and remain the way to restyle the button.</em></td>
-</tr>
-<tr>
 <td><code>Button_Text_Color__c</code></td>
 <td>Button Text Color</td>
 <td>Text</td>
@@ -2950,13 +2944,13 @@
 <td><code>Content_Max_Width__c</code></td>
 <td>Content Max Width</td>
 <td>Picklist</td>
-<td>How wide the page content should be on large screens.<br><em>Docs: One of the fixed named-preset columns (alongside Radius_Preset__c, Spacing_Density__c, Button_Style__c, Shadow_Style__c) that publicFundraisingExperience.js reads directly to resolve layout CSS variables; not part of the open-ended, CMDT-governed Theme_Tokens_JSON__c override map on this same object.</em></td>
+<td>How wide the page content should be on large screens.<br><em>Docs: One of the fixed named-preset columns (alongside Radius_Preset__c, Spacing_Density__c, Shadow_Style__c) that publicFundraisingExperience.js reads directly to resolve layout CSS variables; not part of the open-ended, CMDT-governed Theme_Tokens_JSON__c override map on this same object.</em></td>
 </tr>
 <tr>
 <td><code>Default_Hero_Image_URL__c</code></td>
 <td>Default_Hero_Image_URL</td>
 <td>Url</td>
-<td>Default hero image for campaigns using this design that don't set their own header image.<br><em>Docs: Read by both CampaignService.buildPublicExperienceResult() (guest donation page) and FundraiserAdminController (internal preview), and consumed client-side in publicFundraisingExperience.js and dfForm.js. A Campaign's own Header_Image_URL__c always wins when set; this field only fills the gap for campaigns on this design that never uploaded their own header image.</em></td>
+<td>Default hero image for campaigns using this design that don't set their own header image.<br><em>Docs: Read by both CampaignPagePayload.experiencePayload() (guest donation page) and FundraiserAdminController (internal preview), and consumed client-side in publicFundraisingExperience.js and dfForm.js. A Campaign's own Header_Image_URL__c always wins when set; this field only fills the gap for campaigns on this design that never uploaded their own header image.</em></td>
 </tr>
 <tr>
 <td><code>Description__c</code></td>
@@ -2974,7 +2968,7 @@
 <td><code>Exit_Intent_Enabled__c</code></td>
 <td>Exit Intent Enabled</td>
 <td>Checkbox</td>
-<td>When on, a donor who has chosen an amount but not yet paid sees a short "before you go" prompt if they move to close the tab. Shows at most once per visit, and never once payment has started.<br><em>Docs: Read by CampaignService.designToMap and honored in dfForm.js. The trigger is real pointer-based exit intent (cursor leaving through the top of the viewport), NOT the beforeunload event: browsers only ever render their own generic dialog from beforeunload and ignore any attempt to show custom UI, so a modal driven from that event cannot work. dfForm registers no beforeunload handler at all (the mid-payment "Leave site?" dialog was removed on 2026-09-25 because it fired as the page moved on after Give). Pointer-only by design: touch devices have no equivalent signal, and the substitutes (history traps, scroll heuristics) misfire often enough to be worse than not showing it.</em></td>
+<td>When on, a donor who has chosen an amount but not yet paid sees a short "before you go" prompt if they move to close the tab. Shows at most once per visit, and never once payment has started.<br><em>Docs: Read by CampaignDesignPayload.designToMap and honored in dfForm.js. The trigger is real pointer-based exit intent (cursor leaving through the top of the viewport), NOT the beforeunload event: browsers only ever render their own generic dialog from beforeunload and ignore any attempt to show custom UI, so a modal driven from that event cannot work. dfForm registers no beforeunload handler at all (the mid-payment "Leave site?" dialog was removed on 2026-09-25 because it fired as the page moved on after Give). Pointer-only by design: touch devices have no equivalent signal, and the substitutes (history traps, scroll heuristics) misfire often enough to be worse than not showing it.</em></td>
 </tr>
 <tr>
 <td><code>Exit_Intent_Headline__c</code></td>
@@ -3010,7 +3004,7 @@
 <td><code>Form_Builder_JSON__c</code></td>
 <td>Form Builder JSON</td>
 <td>LongTextArea</td>
-<td>Advanced: the block layout that builds this design's donation form and page content. Edited via the Page Designs setup panel, not directly.<br><em>Docs: The v2 replacement for the deprecated Page_Blocks_JSON__c: block objects carry a type, a step bucket (1 Compose / 2 Payment / 3 Thank You), an enabled flag, and per-type settings. Some block types have a forced step regardless of what is stored (see PageCanvasBlocks); PageCanvasBlocks.buildUnified() is also the back-compat seam that merges in any pre-migration Page_Blocks_JSON__c content for orgs that have not yet been re-saved through the block editor.</em></td>
+<td>Advanced: the block layout that builds this design's donation form and page content. Edited via the Page Designs setup panel, not directly.<br><em>Docs: The only block-list field on the design (a separate content-blocks field was retired before the first release): block objects carry a type, a step bucket (1 Compose / 2 Payment / 3 Thank You), an enabled flag, and per-type settings. Some block types have a forced step regardless of what is stored (see PageCanvasBlocks); PageCanvasBlocks.buildUnified() normalizes this field alone; there is no legacy merge.</em></td>
 </tr>
 <tr>
 <td><code>Form_Description_Default__c</code></td>
@@ -3046,7 +3040,7 @@
 <td><code>Heading_Font_Family__c</code></td>
 <td>Heading Font Family</td>
 <td>Picklist</td>
-<td>The heading font for the public page. Choose Inherit to match the body font.<br><em>Docs: This value set must stay identical to Font_Family__c's (plus the Inherit entry). Both are restricted picklists, so a theme or admin selecting a face present in one list but not the other fails to save rather than falling back.  Widened to 38 faces on 2026-08-05 - see the doc comment on Font_Family__c for the three-file lockstep required to add one.  Caveat specific to headings: Instrument Serif, DM Serif Display and IBM Plex Mono ship a 400 weight only, so a heading that asks for 600/700 gets a browser-synthesised faux bold. Avoid them in packaged theme heading slots (PostInstallHandler.themeSpecs() enforces this for the first two; the mono face is body/figure-oriented anyway). Every other face here is a variable font spanning at least 400-700.</em></td>
+<td>The heading font for the public page. Choose Inherit to match the body font.<br><em>Docs: This value set must stay identical to Font_Family__c's (plus the Inherit entry). Both are restricted picklists, so a theme or admin selecting a face present in one list but not the other fails to save rather than falling back.  Widened to 38 faces on 2026-08-05 - see the doc comment on Font_Family__c for the three-file lockstep required to add one.  Caveat specific to headings: Instrument Serif, DM Serif Display and IBM Plex Mono ship a 400 weight only, so a heading that asks for 600/700 gets a browser-synthesised faux bold. Avoid them in packaged theme heading slots (PackagedThemes.all() enforces this for the first two; the mono face is body/figure-oriented anyway). Every other face here is a variable font spanning at least 400-700.</em></td>
 </tr>
 <tr>
 <td><code>Is_Active__c</code></td>
@@ -3058,7 +3052,7 @@
 <td><code>Is_Default__c</code></td>
 <td>Is_Default</td>
 <td>Checkbox</td>
-<td>Makes this the fallback design for any campaign that doesn't have a design assigned. Only one design can be the default.<br><em>Docs: PostInstallHandler seeds exactly one packaged design with this set so a fresh org always has a usable default; SetupController.saveDesign() enforces single-default semantics by clearing the flag on every other design row whenever a save sets it true. CampaignDesignsSelector orders by this field descending so callers that need the org's default design can simply take the first row.</em></td>
+<td>Makes this the fallback design for any campaign that doesn't have a design assigned. Only one design can be the default.<br><em>Docs: PostInstallHandler seeds exactly one packaged design with this set so a fresh org always has a usable default; SetupDesignsController.setDefaultDesign() enforces single-default semantics by clearing the flag on every other design row when it moves the default. CampaignDesignsSelector orders by this field descending so callers that need the org's default design can simply take the first row.</em></td>
 </tr>
 <tr>
 <td><code>Link_Color__c</code></td>
@@ -3073,12 +3067,6 @@
 <td>Hex color used for secondary/muted text on the public page.</td>
 </tr>
 <tr>
-<td><code>Page_Blocks_JSON__c</code></td>
-<td>Page Blocks JSON</td>
-<td>LongTextArea</td>
-<td>Legacy field — page content blocks now live in Form Builder JSON. Kept only for backward compatibility.<br><em>Docs: Frozen, read-only from the editor's perspective: PageCanvasBlocks merges its content into the unified Form_Builder_JSON__c canvas at read time rather than the reverse, so a pre-migration design keeps rendering correctly without a one-time data migration job.</em></td>
-</tr>
-<tr>
 <td><code>Primary_Color__c</code></td>
 <td>Primary_Color</td>
 <td>Text</td>
@@ -3088,7 +3076,7 @@
 <td><code>Radius_Preset__c</code></td>
 <td>Radius Preset</td>
 <td>Picklist</td>
-<td>How rounded corners look across the public page, from square to pill-shaped.<br><em>Docs: Not part of the Theme_Token__mdt catalog; unlike Theme_Tokens_JSON__c overrides, this and the other named style-preset fields (Spacing_Density__c, Button_Style__c, Shadow_Style__c, Content_Max_Width__c) are read directly off the Campaign_Design__c record by publicFundraisingExperience.js, not resolved through the CSS-variable allowlist mechanism.</em></td>
+<td>How rounded corners look across the public page, from square to pill-shaped.<br><em>Docs: Not part of the Theme_Token__mdt catalog; unlike Theme_Tokens_JSON__c overrides, this and the other named style-preset fields (Spacing_Density__c, Shadow_Style__c, Content_Max_Width__c) are read directly off the Campaign_Design__c record by publicFundraisingExperience.js, not resolved through the CSS-variable allowlist mechanism.</em></td>
 </tr>
 <tr>
 <td><code>Shadow_Style__c</code></td>
@@ -3100,7 +3088,7 @@
 <td><code>Show_Progress_Bar__c</code></td>
 <td>Show_Progress_Bar</td>
 <td>Checkbox</td>
-<td>When on, campaigns using this design show the raised-of-goal progress bar. Campaigns with no goal set (Ongoing funds) and Event campaigns have no bar to show either way, so this only affects Crowdfunding campaigns.<br><em>Docs: CampaignService.computeShowProgressBar is the single authority: the bar renders when the subtype is in PROGRESS_BAR_SUBTYPES ({General}), the goal is greater than zero, AND this checkbox is not false. This field is therefore a veto only.  This description said "Open Donation campaigns never show the progress thermometer regardless of this setting" until 2026-08-23. That stopped being true when F-42 added Open_Donation to PROGRESS_BAR_SUBTYPES on 2026-08-18, and it was one reason an admin could not work out why an Ongoing page was showing a bar: the field help told them it was impossible. F-126 (2026-09-01) made the original claim true again from the other end - Campaigns.rejectGoalOnOngoing() refuses to save an Ongoing campaign with a goal, so there is nothing for a bar to draw against - and removed Open_Donation from the set. The wording is still deliberately not restored: what decides the bar is the goal, and stating the rule as a subtype ban is what left the description stranded the first time.</em></td>
+<td>When on, campaigns using this design show the raised-of-goal progress bar. Campaigns with no goal set (Ongoing funds) and Event campaigns have no bar to show either way, so this only affects Crowdfunding campaigns.<br><em>Docs: CampaignPagePayload.computeShowProgressBar is the single authority: the bar renders when the subtype is in PROGRESS_BAR_SUBTYPES ({General}), the goal is greater than zero, AND this checkbox is not false. This field is therefore a veto only.  This description said "Open Donation campaigns never show the progress thermometer regardless of this setting" until 2026-08-23. That stopped being true when F-42 added Open_Donation to PROGRESS_BAR_SUBTYPES on 2026-08-18, and it was one reason an admin could not work out why an Ongoing page was showing a bar: the field help told them it was impossible. F-126 (2026-09-01) made the original claim true again from the other end - Campaigns.rejectGoalOnOngoing() refuses to save an Ongoing campaign with a goal, so there is nothing for a bar to draw against - and removed Open_Donation from the set. The wording is still deliberately not restored: what decides the bar is the goal, and stating the rule as a subtype ban is what left the description stranded the first time.</em></td>
 </tr>
 <tr>
 <td><code>Spacing_Density__c</code></td>
@@ -3124,7 +3112,7 @@
 <td><code>Theme_Tokens_JSON__c</code></td>
 <td>Theme Tokens JSON</td>
 <td>LongTextArea</td>
-<td>Advanced: JSON overrides for specific design tokens not covered by the fields above. Only recognized token names are applied.<br><em>Docs: A second, independent customization mechanism from the named preset fields on this object (Radius_Preset__c, Button_Style__c, etc.): those are fixed, always-present columns, while this field is an open-ended override map validated at read time against the Theme_Token__mdt catalog.</em></td>
+<td>Advanced: JSON overrides for specific design tokens not covered by the fields above. Only recognized token names are applied.<br><em>Docs: A second, independent customization mechanism from the named preset fields on this object (Radius_Preset__c, Shadow_Style__c, etc.): those are fixed, always-present columns, while this field is an open-ended override map validated at read time against the Theme_Token__mdt catalog.</em></td>
 </tr>
 </tbody>
 </table>
@@ -3408,12 +3396,6 @@
 <td><a href="./#recurring-designation">Recurring Designation</a></td>
 <td>Lookup</td>
 </tr>
-<tr>
-<td>← in</td>
-<td><code>Designation__c</code> on Recurring Donation</td>
-<td><a href="./#recurring-donation">Recurring Donation</a></td>
-<td>Lookup</td>
-</tr>
 </tbody>
 </table>
 <p><strong>Fields</strong></p>
@@ -3518,7 +3500,7 @@
 <td><code>Opportunity__c</code></td>
 <td>Opportunity</td>
 <td>MasterDetail → <code>Opportunity</code></td>
-<td>The donation this fund split belongs to.<br><em>Docs: Populated for both one-time gifts (DonationService.createDesignationSplit at finalize) and recurring installments (RecurringDonationService.processRenewal at each charge) &#8212; there is no separate junction for recurring-installment splits; they land here too.</em></td>
+<td>The donation this fund split belongs to.<br><em>Docs: Populated for both one-time gifts (FinalizedGiftExtras.createDesignationSplits at finalize) and recurring installments (RecurringDonationService.processRenewal at each charge) &#8212; there is no separate junction for recurring-installment splits; they land here too.</em></td>
 </tr>
 <tr>
 <td><code>Percentage__c</code></td>
@@ -3855,7 +3837,7 @@
 <td><code>Company_Match_Status__c</code></td>
 <td>Company Match Status</td>
 <td>Picklist</td>
-<td>How far along the employer match is. Move it to Requested once the paperwork is filed with the employer, then Received when their gift arrives (record the amount in Company Match Amount) or Declined if they turn it down.<br><em>Docs: Stamped 'Pending' by DonationService.applyTributeAndMatch at finalize, at the same moment Company_Match__c is set — the two always move together, so a match flagged with no status means the row predates this field. Everything after Pending is a human judgement call and is left to staff; no Apex ever advances it. The "Pending Company Matches" list view and CompanyMatchService both key off Pending, so leaving a fulfilled match at Pending is what makes it keep showing up as outstanding work.</em></td>
+<td>How far along the employer match is. Move it to Requested once the paperwork is filed with the employer, then Received when their gift arrives (record the amount in Company Match Amount) or Declined if they turn it down.<br><em>Docs: Stamped 'Pending' by FinalizedGiftExtras.applyTributeAndMatch at finalize, at the same moment Company_Match__c is set — the two always move together, so a match flagged with no status means the row predates this field. Everything after Pending is a human judgement call and is left to staff; no Apex ever advances it. The "Pending Company Matches" list view and CompanyMatchService both key off Pending, so leaving a fulfilled match at Pending is what makes it keep showing up as outstanding work.</em></td>
 </tr>
 <tr>
 <td><code>Company_Match__c</code></td>
@@ -3927,7 +3909,7 @@
 <td><code>Donor_Covered_Fees__c</code></td>
 <td>Donor Covered Fees</td>
 <td>Checkbox</td>
-<td>Checked when the donor ticked "cover the processing fee" at checkout, so the amount on this gift includes that fee. Report on it to see how many of your donors opt in.<br><em>Docs: The take-up rate for fee coverage is the number an admin actually wants, and Fee_Amount__c &gt; 0 cannot supply it: a gift small enough that the computed fee rounds to zero would look like a decline. Written alongside Fee_Amount__c by DonationService.processOneTimeStagingRecord and RecurringDonationService.processRenewal, from Donation_Staging__c.Fee_Amount__c and Recurring_Donation__c.Donor_Covered_Fees__c respectively. Event orders never set it — fee coverage is not offered at ticket checkout.</em></td>
+<td>Checked when the donor ticked "cover the processing fee" at checkout, so the amount on this gift includes that fee. Report on it to see how many of your donors opt in.<br><em>Docs: The take-up rate for fee coverage is the number an admin actually wants, and Fee_Amount__c &gt; 0 cannot supply it: a gift small enough that the computed fee rounds to zero would look like a decline. Written alongside Fee_Amount__c by DonationFinalizer.processStaging and RecurringDonationService.processRenewal, from Donation_Staging__c.Fee_Amount__c and Recurring_Donation__c.Donor_Covered_Fees__c respectively. Event orders never set it — fee coverage is not offered at ticket checkout.</em></td>
 </tr>
 <tr>
 <td><code>Event_Amount__c</code></td>
@@ -3945,19 +3927,19 @@
 <td><code>Fee_Amount__c</code></td>
 <td>Fee Amount</td>
 <td>Currency</td>
-<td>Processing fee amount added by the donor, if fee coverage was selected. Included in the total Amount charged.<br><em>Docs: Written at finalize by DonationService.processOneTimeStagingRecord and RecurringDonationService.processRenewal from the value FeeCoverageService.computeFee() produced when the PaymentIntent was created. Since 2026-08-22 EventPurchaseService writes it too, from the staging row: a covered fee on a ticket order becomes its own zero-goods-value OpportunityLineItem, so Amount (which the platform derives from the lines) still equals the capture and this field is the slice of it the buyer added on top — the same convention as the donation path, not a special case.  The gross-up is true gross-up, not gift × percent — the processor charges its percentage on the total it captures, so a $100 gift under 2.9% + $0.30 carries a $3.30 fee, not $3.20. See FeeCoverageService for the formula; it is the only place it exists.  Reporting note: this is a component of Amount, not an addition to it. "Gift revenue" is Amount − Fee_Amount__c; Amount is what the card was charged.  Not the same thing as the Stripe fee the org itself absorbs on a donation where the donor declined to cover it, which never appears on the Opportunity at all.</em></td>
+<td>Processing fee amount added by the donor, if fee coverage was selected. Included in the total Amount charged.<br><em>Docs: Written at finalize by DonationFinalizer.processStaging and RecurringDonationService.processRenewal from the value FeeCoverageService.computeFee() produced when the PaymentIntent was created. Since 2026-08-22 EventPurchaseService writes it too, from the staging row: a covered fee on a ticket order becomes its own zero-goods-value OpportunityLineItem, so Amount (which the platform derives from the lines) still equals the capture and this field is the slice of it the buyer added on top — the same convention as the donation path, not a special case.  The gross-up is true gross-up, not gift × percent — the processor charges its percentage on the total it captures, so a $100 gift under 2.9% + $0.30 carries a $3.30 fee, not $3.20. See FeeCoverageService for the formula; it is the only place it exists.  Reporting note: this is a component of Amount, not an addition to it. "Gift revenue" is Amount − Fee_Amount__c; Amount is what the card was charged.  Not the same thing as the Stripe fee the org itself absorbs on a donation where the donor declined to cover it, which never appears on the Opportunity at all.</em></td>
 </tr>
 <tr>
 <td><code>Funds_Available_On__c</code></td>
 <td>Funds Available On</td>
 <td>Date</td>
-<td>When this gift's money becomes available to pay out to your bank. Set automatically by the processor; it is normally a few days after the gift date.<br><em>Docs: Written once at finalize by SettlementStampHelper.applyTo from the balance transaction's available_on, which is an epoch-SECONDS timestamp converted in StripeGateway.applySettlement and read in GMT. GMT is deliberate: the processor states availability against its own clock, and re-reading it in the running user's time zone would shift the date by a day for anyone west of UTC without making it any more true. This is the availability date, not the payout date. Funds become available on this date; when they actually leave for the bank depends on the org's payout schedule, which the package does not read.</em></td>
+<td>When this gift's money becomes available to pay out to your bank. Set automatically by the processor; it is normally a few days after the gift date.<br><em>Docs: Written once at finalize by SettlementStampHelper.applyTo from the balance transaction's available_on, which is an epoch-SECONDS timestamp converted in StripeIntents.applySettlement and read in GMT. GMT is deliberate: the processor states availability against its own clock, and re-reading it in the running user's time zone would shift the date by a day for anyone west of UTC without making it any more true. This is the availability date, not the payout date. Funds become available on this date; when they actually leave for the bank depends on the org's payout schedule, which the package does not read.</em></td>
 </tr>
 <tr>
 <td><code>Net_Donation_Amount__c</code></td>
 <td>Net Donation Amount</td>
 <td>Currency</td>
-<td>Tax-deductible amount of this gift, shown on the donor's receipt.<br><em>Docs: Written at finalize by DonationService.processOneTimeStagingRecord, EventPurchaseService. processEventStagingRecord, and RecurringDonationService.processRenewal.  A donor-covered processing fee (Fee_Amount__c) is deliberately NOT subtracted here. The charity received the whole charge and then paid its own processing cost out of it — the donor got nothing back — so the full amount stays deductible and subtracting the fee would under-report the deduction on every receipt that covers one. Only a genuine quid pro quo (the ticket fair-market value on event orders) reduces this figure.  Do not "fix" the apparent inconsistency with Fee_Amount__c by subtracting it.  ReceiptService still computes the deductible split itself from Event_Amount__c/ Event_Deductible_Amount__c rather than reading this field; the two agree by construction. Its only other consumer is lexOpportunityBreakdown.js (read-only display); remains editable on the Donation/Offline Donation/Grant layouts for manual correction.</em></td>
+<td>Tax-deductible amount of this gift, shown on the donor's receipt.<br><em>Docs: Written at finalize by DonationFinalizer.processStaging, EventOrderBuilder. finalizeNewOrder, and RecurringDonationService.processRenewal.  A donor-covered processing fee (Fee_Amount__c) is deliberately NOT subtracted here. The charity received the whole charge and then paid its own processing cost out of it — the donor got nothing back — so the full amount stays deductible and subtracting the fee would under-report the deduction on every receipt that covers one. Only a genuine quid pro quo (the ticket fair-market value on event orders) reduces this figure.  Do not "fix" the apparent inconsistency with Fee_Amount__c by subtracting it.  ReceiptService still computes the deductible split itself from Event_Amount__c/ Event_Deductible_Amount__c rather than reading this field; the two agree by construction. Its only other consumer is lexOpportunityBreakdown.js (read-only display); remains editable on the Donation/Offline Donation/Grant layouts for manual correction.</em></td>
 </tr>
 <tr>
 <td><code>Net_Settled_Amount__c</code></td>
@@ -3987,7 +3969,7 @@
 <td><code>Processor_Fee__c</code></td>
 <td>Processor Fee</td>
 <td>Currency</td>
-<td>The payment processor's cut of this charge, which your organization pays. Set automatically from the payment record; blank if the processor had not posted it yet.<br><em>Docs: Written once at finalize by SettlementStampHelper.applyTo, from the balance transaction expanded onto the PaymentIntent the reconciler was already fetching (see StripeGateway.applySettlement) — no extra callout on any payment path.  Blank vs zero is load-bearing. The processor posts its balance transaction when the charge settles, so a gift finalized in the same instant the charge succeeded, or an ACH debit still processing, legitimately has no figure yet. Writing 0 in that case would report a free charge, so the helper leaves the field alone instead.  Never treat blank as 0 in a rollup or a report — filter it out.  Do NOT confuse with Fee_Amount__c: that is money the DONOR added on top and is a component of Amount; this is money the PROCESSOR removed and is not in Amount at all. A single gift can carry both, and the two are not expected to be equal even when the donor covered the fee — the gross-up is computed from the org's configured rates, the actual fee from what the processor really charged for that specific card.</em></td>
+<td>The payment processor's cut of this charge, which your organization pays. Set automatically from the payment record; blank if the processor had not posted it yet.<br><em>Docs: Written once at finalize by SettlementStampHelper.applyTo, from the balance transaction expanded onto the PaymentIntent the reconciler was already fetching (see StripeIntents.applySettlement) — no extra callout on any payment path.  Blank vs zero is load-bearing. The processor posts its balance transaction when the charge settles, so a gift finalized in the same instant the charge succeeded, or an ACH debit still processing, legitimately has no figure yet. Writing 0 in that case would report a free charge, so the helper leaves the field alone instead.  Never treat blank as 0 in a rollup or a report — filter it out.  Do NOT confuse with Fee_Amount__c: that is money the DONOR added on top and is a component of Amount; this is money the PROCESSOR removed and is not in Amount at all. A single gift can carry both, and the two are not expected to be equal even when the donor covered the fee — the gross-up is computed from the org's configured rates, the actual fee from what the processor really charged for that specific card.</em></td>
 </tr>
 <tr>
 <td><code>Receipt_Number__c</code></td>
@@ -4059,7 +4041,7 @@
 <td><code>Tribute_Ecard_Requested__c</code></td>
 <td>Tribute Ecard Requested</td>
 <td>Checkbox</td>
-<td>Leave unchecked unless the donor explicitly asked you to notify the honoree or their family. Unchecked means no e-card is ever sent, even if a notification email address is filled in — so untick this rather than clearing the address when a donor changes their mind.<br><em>Docs: Added as a plain record of the donor's choice, but nothing read it until the 2026-08-07 gap audit (docs/gap-audit-2026-08-07.md, finding 1.1) found the e-card sending on the presence of Tribute_Notification_Email__c alone. Two writers keep it honest: DonationService.applyTributeAndMatch maps the form's tributeEcardRequested onto it, and dfForm clears the address whenever the box is unticked.</em></td>
+<td>Leave unchecked unless the donor explicitly asked you to notify the honoree or their family. Unchecked means no e-card is ever sent, even if a notification email address is filled in — so untick this rather than clearing the address when a donor changes their mind.<br><em>Docs: Added as a plain record of the donor's choice, but nothing read it until the 2026-08-07 gap audit (docs/gap-audit-2026-08-07.md, finding 1.1) found the e-card sending on the presence of Tribute_Notification_Email__c alone. Two writers keep it honest: FinalizedGiftExtras.applyTributeAndMatch maps the form's tributeEcardRequested onto it, and dfForm clears the address whenever the box is unticked.</em></td>
 </tr>
 <tr>
 <td><code>Tribute_Message__c</code></td>
@@ -4089,37 +4071,37 @@
 <td><code>URL_Parameters__c</code></td>
 <td>URL Parameters</td>
 <td>LongTextArea</td>
-<td>The full set of tracking parameters from the link the donor clicked, stored as JSON. Reference only — report on the UTM fields instead.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+<td>The full set of tracking parameters from the link the donor clicked, stored as JSON. Reference only — report on the UTM fields instead.<br><em>Docs: Set by FinalizedGiftExtras.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
 </tr>
 <tr>
 <td><code>UTM_Campaign__c</code></td>
 <td>UTM Campaign</td>
 <td>Text</td>
-<td>The marketing appeal name from the link, e.g. year-end-2026. This is the marketer's label, not the Salesforce Campaign — filled in automatically.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+<td>The marketing appeal name from the link, e.g. year-end-2026. This is the marketer's label, not the Salesforce Campaign — filled in automatically.<br><em>Docs: Set by FinalizedGiftExtras.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
 </tr>
 <tr>
 <td><code>UTM_Content__c</code></td>
 <td>UTM Content</td>
 <td>Text</td>
-<td>Which link or creative variant was clicked, for A/B tests. Filled in automatically — usually blank.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+<td>Which link or creative variant was clicked, for A/B tests. Filled in automatically — usually blank.<br><em>Docs: Set by FinalizedGiftExtras.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
 </tr>
 <tr>
 <td><code>UTM_Medium__c</code></td>
 <td>UTM Medium</td>
 <td>Text</td>
-<td>The channel that carried the link, e.g. email, cpc or social. Filled in automatically — leave it alone.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+<td>The channel that carried the link, e.g. email, cpc or social. Filled in automatically — leave it alone.<br><em>Docs: Set by FinalizedGiftExtras.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
 </tr>
 <tr>
 <td><code>UTM_Source__c</code></td>
 <td>UTM Source</td>
 <td>Text</td>
-<td>Where this gift came from, e.g. newsletter or facebook. Filled in automatically from the link the donor clicked — leave it alone.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+<td>Where this gift came from, e.g. newsletter or facebook. Filled in automatically from the link the donor clicked — leave it alone.<br><em>Docs: Set by FinalizedGiftExtras.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
 </tr>
 <tr>
 <td><code>UTM_Term__c</code></td>
 <td>UTM Term</td>
 <td>Text</td>
-<td>The paid-search keyword that led here, if any. Filled in automatically — usually blank.<br><em>Docs: Set by DonationService.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
+<td>The paid-search keyword that led here, if any. Filled in automatically — usually blank.<br><em>Docs: Set by FinalizedGiftExtras.applyAttribution() (one-time and event checkout) and copied onto every renewal installment by RecurringDonationService, so an installment carries the attribution of the signup that created it rather than of the night the renewal ran. Source is Donation_Staging__c.Options_JSON__c -&gt; attribution, normalized by AttributionCapture.</em></td>
 </tr>
 </tbody>
 </table>
@@ -4180,7 +4162,7 @@
 <p>Stores one record per set of gateway credentials the org has configured (e.g. a Stripe account used for general donations, or a second Stripe account restricted to one program). Admins create and manage these from the setup console with no metadata deployment required; each account's secret key lives in its own Named Credential and is only referenced here by name. Each campaign points at exactly one of these through Campaign.Payment_Account__c, which is the account every gift on that campaign settles to.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Sharing: Public Read/Write is deliberate (security change log D-4, 2026-09-25). Object access comes only from the package's staff permission sets, and staff need every account to run campaigns against it. A row holds a Named Credential's name, never a key (see Stripe_Donor_Restricted_Key__c), and only Fundraising_Admin can create or edit one; the Settings console checks object create/edit before it saves (D-2). Guest users are unaffected by this setting: the platform forces their org-wide default to Private (Secure guest user record access, enforced in every org since Winter '21), so a guest never reads another donor's row through it. Making this Private with View All in the staff sets is the same outcome with one more thing to keep in step; revisit it only together with an AGENTS.md Rule 7 run (security change log D-4).</p>
+<p>Sharing: Public Read/Write is deliberate (security change log D-4, 2026-09-25). Object access comes only from the package's staff permission sets, and staff need every account to run campaigns against it. A row holds a Named Credential's name, never a key (see Stripe_Donor_Credential__c), and only Fundraising_Admin can create or edit one; the Settings console checks object create/edit before it saves (D-2). Guest users are unaffected by this setting: the platform forces their org-wide default to Private (Secure guest user record access, enforced in every org since Winter '21), so a guest never reads another donor's row through it. Making this Private with View All in the staff sets is the same outcome with one more thing to keep in step; revisit it only together with an AGENTS.md Rule 7 run (security change log D-4).</p>
 <p>PaymentGatewayFactory is the join point between this object and the Apex that talks to the processor: it reads Gateway__c off the chosen account and looks the value up in PaymentGatewayRegistry, which returns the IPaymentGateway implementation used for the actual callout. Until 2026-08 that lookup went through a Payment_Gateway__mdt custom metadata type and a Type.forName() on a stored class name; the registry replaced it so an unshippable gateway value can't be configured and the class reference is checked by the compiler. Deactivating a Payment_Account__c (Is_Active__c = false) rather than deleting it is what keeps historical Opportunity/refund references intact.</p>
 </div>
 <p><strong>Relationships</strong></p>
@@ -4274,21 +4256,21 @@
 <td>Client-side publishable key. Safe to expose to the browser; not the secret key.<br><em>Docs: Required: the browser-side payment element cannot initialise without it, so an account missing this value renders a checkout that can never take a payment. It is also what Mode__c is derived from at save time (IPaymentGateway.classifyPublishableKey).</em></td>
 </tr>
 <tr>
-<td><code>Stripe_Admin_Restricted_Key__c \*</code></td>
-<td>Admin Restricted Key</td>
+<td><code>Stripe_Admin_Credential__c \*</code></td>
+<td>Admin Credential Name</td>
 <td>Text</td>
-<td>Named Credential API name holding the back-office key: a restricted key scoped to refunds, disputes and the reads the reconcilers need. Never use your full secret key, and never name the same credential as the donor field: the setup guide checks both and stays red. Grant it through a separate admin permission set to staff who issue refunds and to every user who owns a scheduled job (a job authenticates as its owner), never to your site guest user. Never re-point a live account; add a new one.<br><em>Docs: The field name says "Restricted Key" because that is what the credential it names must carry, and because the older name ("Admin Named Credential") said nothing at all about what kind of key the credential holds.  The full unrestricted sk_ key was accepted here until 2026-09-02 and is not any more (owner decision, same date). Nothing rejects it at save time - Salesforce never hands a saved secret back, so no field validation can see what the credential contains - so the constraint is enforced where the evidence actually exists: PaymentSetupGuideService.probeAdminRestrictedKey makes one read-only call through this credential, and an unrestricted key answers it instead of refusing it. That grades the step FAILED and keeps the account off "Ready to take payments" for as long as the key stays unscoped.  Renamed from Admin_Named_Credential__c on 2026-09-02. The value stored here is still a Credential API name and never a key - the "<em>Key__c" suffix describes the credential's role, not the field's contents.  Stripe's permission rows, as of the 2026-09-07 scope audit (docs/2026-09-07-stripe-restricted-key-scope-audit.md): Write on Payment Intents and on Charges and Refunds; Read on Balance, Payment Disputes, Customers and Payment Methods; None on Setup Intents, Accounts, Products and everything else. Test connection reads the refunds list on this credential and never the account profile, so no key is ever asked for Accounts Read and the button prints no account name by design.  Added 2026-08-11 to split one credential into two roles. Before this field, every Stripe callout ran on the single donor credential, and the setup guide told the admin to grant that one credential to the Experience Cloud guest user - so an anonymous visitor's principal could issue refunds.  Stripe_Donor_Restricted_Key__c is now the charge-only key the guest holds; this field is the back-office key nothing guest-reachable ever names.  Required for the same reason Stripe_Donor_Restricted_Key__c is: blank resolves the endpoint to 'callout:null', which fails when a refund is attempted rather than when the account is saved.  Re-pointing this at a different gateway account on a saved record is destructive, and nothing in the platform stops it: a saved pm</em> token is only ever chargeable by the gateway account that created it, so every saved card and every recurring schedule attached to this payment account stops working the moment the credential names a different account - and it stops working silently, at the next renewal rather than at save time.  The supported move is to add a NEW Payment_Account__c, re-point the campaigns at it, and uncheck Active on the old one. That is also why the console refuses to delete a payment account at all (see the PaymentAccounts domain): retiring one is deactivation, never deletion, and re-pointing its credentials is the same hazard wearing an edit's clothes.  The console shows this as a warning banner on every edit of a saved account - deliberately not gated on a dependent count, because a count taken at save time says nothing about the card saved a second later. Audit finding F-123c.</em></td>
+<td>Named Credential API name holding the back-office key: a restricted key scoped to refunds, disputes and the reads the reconcilers need. Never use your full secret key, and never name the same credential as the donor field: the setup guide checks both and stays red. Grant it through a separate admin permission set to staff who issue refunds and to every user who owns a scheduled job (a job authenticates as its owner), never to your site guest user. Never re-point a live account; add a new one.<br><em>Docs: The credential this field names must carry a RESTRICTED back-office key; the full unrestricted sk_ key is not an acceptable value (owner decision, 2026-09-02). Nothing rejects it at save time - Salesforce never hands a saved secret back, so no field validation can see what the credential contains - so the constraint is enforced where the evidence actually exists: PaymentSetupGuideService.probeAdminRestrictedKey makes one read-only call through this credential, and an unrestricted key answers it instead of refusing it. That grades the step FAILED and keeps the account off "Ready to take payments" for as long as the key stays unscoped. The value stored here is a Named Credential API name and never a key.  Stripe's permission rows, as of the 2026-09-07 scope audit (docs/2026-09-07-stripe-restricted-key-scope-audit.md): Write on Payment Intents and on Charges and Refunds; Read on Balance, Payment Disputes, Customers and Payment Methods; None on Setup Intents, Accounts, Products and everything else. Test connection reads the refunds list on this credential and never the account profile, so no key is ever asked for Accounts Read and the button prints no account name by design.  Added 2026-08-11 to split one credential into two roles. Before this field, every Stripe callout ran on the single donor credential, and the setup guide told the admin to grant that one credential to the Experience Cloud guest user - so an anonymous visitor's principal could issue refunds.  Stripe_Donor_Credential__c is now the charge-only key the guest holds; this field is the back-office key nothing guest-reachable ever names.  Required for the same reason Stripe_Donor_Credential__c is: blank resolves the endpoint to 'callout:null', which fails when a refund is attempted rather than when the account is saved.  Re-pointing this at a different gateway account on a saved record is destructive, and nothing in the platform stops it: a saved pm_ token is only ever chargeable by the gateway account that created it, so every saved card and every recurring schedule attached to this payment account stops working the moment the credential names a different account - and it stops working silently, at the next renewal rather than at save time.  The supported move is to add a NEW Payment_Account__c, re-point the campaigns at it, and uncheck Active on the old one. That is also why the console refuses to delete a payment account at all (see the PaymentAccounts domain): retiring one is deactivation, never deletion, and re-pointing its credentials is the same hazard wearing an edit's clothes.  The console shows this as a warning banner on every edit of a saved account - deliberately not gated on a dependent count, because a count taken at save time says nothing about the card saved a second later. Audit finding F-123c.</em></td>
 </tr>
 <tr>
-<td><code>Stripe_Donor_Restricted_Key__c \*</code></td>
-<td>Donor Restricted Key</td>
+<td><code>Stripe_Donor_Credential__c \*</code></td>
+<td>Donor Credential Name</td>
 <td>Text</td>
-<td>Named Credential API name holding a restricted key your site guest user is granted through the site permission set (the one carrying only this credential's principal), so it must never be able to refund: Write on Payment Intents, Setup Intents, Customers and Payment Methods, None on everything else (Charges and Refunds included). Store the name, never the key. Never re-point a live account at another gateway account: saved cards and recurring schedules then fail silently. Add a new account instead.<br><em>Docs: The field name says "Restricted Key" because that is what the credential it names must carry, and because the older name ("Public Named Credential") read as though the donor-facing key were a public, publishable one. It is not: it is a scoped secret key that simply happens to be the one an anonymous visitor's principal may use. The publishable pk_ key lives in Publishable_Key__c and is a separate thing entirely.  Renamed from Named_Credential__c on 2026-09-02. The value stored here is still a Named Credential API name and never a key - the "<em>Key__c" suffix describes the credential's role, not the field's contents.  Stripe's permission rows, as of the 2026-09-07 scope audit (docs/2026-09-07-stripe-restricted-key-scope-audit.md): Write on Payment Intents, Setup Intents, Customers and Payment Methods; None on Charges and Refunds, Balance, Payment Disputes, Accounts, Products and everything else. Stripe has ONE permission covering charges and refunds, and PaymentSetupGuideService.probeRestrictedKey proves the key holds no Write on it with an empty POST /v1/charges, which Stripe rejects on permission before it validates parameters (a key holding Write is rejected for the missing parameters instead), so nothing is ever created either way.  Charges and Refunds and Balance are None on this key, and that was measured, not assumed. StripeGateway.retrievePaymentIntent asks the gateway to expand latest_charge.balance_transaction on every payment-intent read, and until 2026-09-07 every surface said the key therefore needed Read on both rows. Phase 0 of the audit ran that read on a sandbox key with Write on the four rows above and nothing else: Stripe returned the intent with the charge and its balance transaction fully expanded, fee and net included. The expand is governed by the Payment Intents permission alone.  That matters because a key with Read on Charges and Refunds could still list every charge and refund on the account, which an anonymous visitor's principal has no business doing, and because the old /v1/refunds probe could not tell such a key from a minimal one (Stripe validates a refund's parameters before it checks permission). The read is reached from the guest donation and event-registration status polls as well as from StagingReconciliationBatch and RefundReconciliationBatch, so the same scope covers both the public and the back-office use.  StripeGateway builds its donor-facing callout endpoints as 'callout:' + Stripe_Donor_Restricted_Key__c. Back-office endpoints use Stripe_Admin_Restricted_Key__c instead - see that field's comment for why the pair was split on 2026-08-11. There is no package-level fallback credential, because the package stopped shipping Named Credentials in 2026-08 (a packaged credential can carry no secret, so it installed as a dead shell an admin still had to fill in). Every account names credentials the subscriber org owns, which is also what lets two accounts point at two different processor accounts. Required: blank makes the endpoint 'callout:null', which fails at the moment a donor pays rather than at the moment the account is saved.  Re-pointing this at a different gateway account on a saved record is destructive, and nothing in the platform stops it: a saved pm</em> token is only ever chargeable by the gateway account that created it, so every saved card and every recurring schedule attached to this payment account stops working the moment the credential names a different account - and it stops working silently, at the next renewal rather than at save time.  The supported move is to add a NEW Payment_Account__c, re-point the campaigns at it, and uncheck Active on the old one. That is also why the console refuses to delete a payment account at all (see the PaymentAccounts domain): retiring one is deactivation, never deletion, and re-pointing its credentials is the same hazard wearing an edit's clothes.  The console shows this as a warning banner on every edit of a saved account - deliberately not gated on a dependent count, because a count taken at save time says nothing about the card saved a second later. Audit finding F-123c.</em></td>
+<td>Named Credential API name holding a restricted key your site guest user is granted through the site permission set (the one carrying only this credential's principal), so it must never be able to refund: Write on Payment Intents, Setup Intents, Customers and Payment Methods, None on everything else (Charges and Refunds included). Store the name, never the key. Never re-point a live account at another gateway account: saved cards and recurring schedules then fail silently. Add a new account instead.<br><em>Docs: This is the credential the Experience Cloud site guest user is granted, so the key behind it is a scoped, charge-only secret key (see the permission rows below), not a public one. The publishable pk_ key lives in Publishable_Key__c and is a separate thing entirely. The value stored here is a Named Credential API name and never a key.  Stripe's permission rows, as of the 2026-09-07 scope audit (docs/2026-09-07-stripe-restricted-key-scope-audit.md): Write on Payment Intents, Setup Intents, Customers and Payment Methods; None on Charges and Refunds, Balance, Payment Disputes, Accounts, Products and everything else. Stripe has ONE permission covering charges and refunds, and PaymentSetupGuideService.probeRestrictedKey proves the key holds no Write on it with an empty POST /v1/charges, which Stripe rejects on permission before it validates parameters (a key holding Write is rejected for the missing parameters instead), so nothing is ever created either way.  Charges and Refunds and Balance are None on this key, and that was measured, not assumed. StripeGateway.retrievePaymentIntent asks the gateway to expand latest_charge.balance_transaction on every payment-intent read, and until 2026-09-07 every surface said the key therefore needed Read on both rows. Phase 0 of the audit ran that read on a sandbox key with Write on the four rows above and nothing else: Stripe returned the intent with the charge and its balance transaction fully expanded, fee and net included. The expand is governed by the Payment Intents permission alone.  That matters because a key with Read on Charges and Refunds could still list every charge and refund on the account, which an anonymous visitor's principal has no business doing, and because the old /v1/refunds probe could not tell such a key from a minimal one (Stripe validates a refund's parameters before it checks permission). The read is reached from the guest donation and event-registration status polls as well as from StagingReconciliationBatch and RefundReconciliationBatch, so the same scope covers both the public and the back-office use.  StripeGateway builds its donor-facing callout endpoints as 'callout:' + Stripe_Donor_Credential__c. Back-office endpoints use Stripe_Admin_Credential__c instead - see that field's comment for why the pair was split on 2026-08-11. There is no package-level fallback credential, because the package stopped shipping Named Credentials in 2026-08 (a packaged credential can carry no secret, so it installed as a dead shell an admin still had to fill in). Every account names credentials the subscriber org owns, which is also what lets two accounts point at two different processor accounts. Required: blank makes the endpoint 'callout:null', which fails at the moment a donor pays rather than at the moment the account is saved.  Re-pointing this at a different gateway account on a saved record is destructive, and nothing in the platform stops it: a saved pm_ token is only ever chargeable by the gateway account that created it, so every saved card and every recurring schedule attached to this payment account stops working the moment the credential names a different account - and it stops working silently, at the next renewal rather than at save time.  The supported move is to add a NEW Payment_Account__c, re-point the campaigns at it, and uncheck Active on the old one. That is also why the console refuses to delete a payment account at all (see the PaymentAccounts domain): retiring one is deactivation, never deletion, and re-pointing its credentials is the same hazard wearing an edit's clothes.  The console shows this as a warning banner on every edit of a saved account - deliberately not gated on a dependent count, because a count taken at save time says nothing about the card saved a second later. Audit finding F-123c.</em></td>
 </tr>
 </tbody>
 </table>
 <h3 id="payment-method">Payment Method<a class="headerlink" href="#payment-method" title="Permanent link">#</a></h3>
-<p><code>Payment_Method__c</code> · <code>custom</code> · <code>16 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
+<p><code>Payment_Method__c</code> · <code>custom</code> · <code>15 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
 <p>Stores a donor's saved payment method as a reference to a tokenized record in the payment gateway (e.g. a Stripe PaymentMethod/Customer ID), so the donor can reuse it for future one-time gifts or recurring installments without re-entering card details. Only non-sensitive display data (card brand, last 4 digits, expiry month/year) and gateway reference IDs are stored — the platform never stores the full card number, CVV, or bank account number.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4345,16 +4327,10 @@
 </thead>
 <tbody>
 <tr>
-<td><code>Bank_Name__c</code></td>
-<td>Bank_Name</td>
-<td>Text</td>
-<td>Bank name shown for ACH payment methods. Not populated for cards.</td>
-</tr>
-<tr>
 <td><code>Brand__c</code></td>
 <td>Brand</td>
 <td>Text</td>
-<td>Card network (Visa, Mastercard, Amex, Discover). Blank for ACH.</td>
+<td>Card network (Visa, Mastercard, Amex, Discover). Blank when the gateway returned none.</td>
 </tr>
 <tr>
 <td><code>Contact__c</code></td>
@@ -4372,13 +4348,13 @@
 <td><code>Exp_Month__c</code></td>
 <td>Exp_Month</td>
 <td>Number</td>
-<td>Card expiry month, for display only. Blank for ACH.</td>
+<td>Card expiry month, for display only. Blank when the gateway returned none.</td>
 </tr>
 <tr>
 <td><code>Exp_Year__c</code></td>
 <td>Exp_Year</td>
 <td>Number</td>
-<td>Card expiry year, for display only. Blank for ACH.</td>
+<td>Card expiry year, for display only. Blank when the gateway returned none.</td>
 </tr>
 <tr>
 <td><code>Fingerprint__c</code></td>
@@ -4438,7 +4414,7 @@
 <td><code>Type__c</code></td>
 <td>Type</td>
 <td>Picklist</td>
-<td>Card or US Bank Account (ACH).</td>
+<td>The kind of payment method. Always Card.</td>
 </tr>
 </tbody>
 </table>
@@ -4478,7 +4454,7 @@
 </tbody>
 </table>
 <h3 id="transaction-log">Transaction Log<a class="headerlink" href="#transaction-log" title="Permanent link">#</a></h3>
-<p><code>Transaction_Log__c</code> · <code>custom</code> · <code>8 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
+<p><code>Transaction_Log__c</code> · <code>custom</code> · <code>7 fields</code> · <code>ReadWrite</code> · <code>Donations &amp; Payments</code></p>
 <p>Immutable audit log of payment-gateway API calls the platform makes (create/retrieve PaymentIntent, charge off-session, refund, list-recent-succeeded). There is no inbound webhook in this package, so nothing is ever received here — every row records an outbound callout this org initiated and its outcome, used to reconcile finalized donations and diagnose failed charges.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -4550,12 +4526,6 @@
 <td>Opportunity</td>
 <td>Lookup → <code>Opportunity</code></td>
 <td>Related donation Opportunity, if applicable.</td>
-</tr>
-<tr>
-<td><code>Payload__c</code></td>
-<td>Payload</td>
-<td>LongTextArea</td>
-<td>Raw JSON response from the gateway callout, for troubleshooting.</td>
 </tr>
 <tr>
 <td><code>Processed_At__c</code></td>
@@ -4903,7 +4873,7 @@
 <h2 id="domain-recurring">Recurring Giving<a class="headerlink" href="#domain-recurring" title="Permanent link">#</a></h2>
 <h3 id="recurring-designation">Recurring Designation<a class="headerlink" href="#recurring-designation" title="Permanent link">#</a></h3>
 <p><code>Recurring_Designation__c</code> · <code>custom</code> · <code>4 fields</code> · <code>ControlledByParent</code> · <code>Recurring Giving</code></p>
-<p>Junction object between Recurring_Donation__c and Designation__c that stores the fund-allocation template a donor set on a recurring schedule. Each renewal installment copies these rows into Donation_Designation__c on the new Opportunity (allocated by Percentage__c against the captured amount), so recurring gifts carry multi-fund splits at parity with one-time gifts. Populated at schedule creation by RecurringDonationService.</p>
+<p>Junction object between Recurring_Donation__c and Designation__c that stores the fund-allocation template a donor set on a recurring schedule. Each renewal installment copies these rows into Donation_Designation__c on the new Opportunity (allocated by Percentage__c against the captured amount), so recurring gifts carry multi-fund splits at parity with one-time gifts. Populated at schedule creation, rescaled by an amount change and replaced by a fund change (RecurringDonationService); these rows are the only place a schedule holds its funds, a single-fund schedule being one row.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>DesignationSplits.allocateByPercentage is the actual renewal-time allocator (called from RecurringRenewalBatch/RecurringDonationService.processRenewal) &#8212; it distributes the captured installment amount across these Percentage__c rows, putting any rounding remainder on the last row so the split always sums exactly to the charged amount.</p>
@@ -4971,8 +4941,8 @@
 </tbody>
 </table>
 <h3 id="recurring-donation">Recurring Donation<a class="headerlink" href="#recurring-donation" title="Permanent link">#</a></h3>
-<p><code>Recurring_Donation__c</code> · <code>custom</code> · <code>40 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
-<p>Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
+<p><code>Recurring_Donation__c</code> · <code>custom</code> · <code>39 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p>Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to its funds through Recurring_Designation__c child rows (one row for a single-fund gift); each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Sharing: Public Read/Write is deliberate (security change log D-4, 2026-09-25). Object access comes only from the package's staff permission sets, and staff manage every schedule, not the ones they own. Schedules are created from guest gifts and advanced by the renewal job, so the owner is the site's default owner or a job user, never the fundraiser responsible. The two detail objects (Recurring_Designation__c, Recurring_Donation_History__c) are Controlled by Parent and follow this setting. Guest users are unaffected by this setting: the platform forces their org-wide default to Private (Secure guest user record access, enforced in every org since Winter '21), so a guest never reads another donor's row through it. Making this Private with View All in the staff sets is the same outcome with one more thing to keep in step; revisit it only together with an AGENTS.md Rule 7 run (security change log D-4).</p>
@@ -5000,12 +4970,6 @@
 <td>→ out</td>
 <td><code>Contact__c</code></td>
 <td><a href="./#contact">Contact</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>→ out</td>
-<td><code>Designation__c</code></td>
-<td><a href="./#designation">Designation</a></td>
 <td>Lookup</td>
 </tr>
 <tr>
@@ -5073,13 +5037,13 @@
 <td><code>Campaign__c</code></td>
 <td>Campaign</td>
 <td>Lookup → <code>Campaign</code></td>
-<td>The campaign this recurring gift supports.<br><em>Docs: Also the field CancelGoalReachedRecurringQueueable filters on when a campaign's goal is newly crossed with Recurring_Behaviour_At_Goal__c set to Cancel — every Active schedule pointing at that campaign is a candidate for bulk auto-cancellation, chunked at 200 with Transaction Finalizer retry.</em></td>
+<td>The campaign this recurring gift supports.<br><em>Docs: Also the field CancelGoalReachedRecurringQueueable filters on when a campaign's goal is newly crossed with Recurring_Behavior_At_Goal__c set to Cancel — every Active schedule pointing at that campaign is a candidate for bulk auto-cancellation, chunked at 200 with Transaction Finalizer retry.</em></td>
 </tr>
 <tr>
 <td><code>Cancellation_Reason__c</code></td>
 <td>Cancellation Reason</td>
 <td>Text</td>
-<td>Why this recurring donation was cancelled, if known.<br><em>Docs: Also populated by system-initiated cancellations, not just donor/admin ones — CancelGoalReachedRecurringQueueable calls RecurringDonationService.cancelSubscriptions() with a fixed reason string when Campaign.Recurring_Behaviour_At_Goal__c is Cancel and the campaign's goal is newly crossed, so a blank-looking manual cancel and an automatic goal-triggered one are both represented here, distinguishable only by the reason text.</em></td>
+<td>Why this recurring donation was cancelled, if known.<br><em>Docs: Also populated by system-initiated cancellations, not just donor/admin ones — CancelGoalReachedRecurringQueueable calls RecurringDonationService.cancelSubscriptions() with a fixed reason string when Campaign.Recurring_Behavior_At_Goal__c is Cancel and the campaign's goal is newly crossed, so a blank-looking manual cancel and an automatic goal-triggered one are both represented here, distinguishable only by the reason text.</em></td>
 </tr>
 <tr>
 <td><code>Contact__c</code></td>
@@ -5092,12 +5056,6 @@
 <td>Currency ISO Code</td>
 <td>Text</td>
 <td>Three-letter currency code for this recurring gift, e.g. USD.</td>
-</tr>
-<tr>
-<td><code>Designation__c</code></td>
-<td>Designation</td>
-<td>Lookup → <code>Designation__c</code></td>
-<td>The fund or program this recurring gift supports, if not split across multiple funds.</td>
 </tr>
 <tr>
 <td><code>Donor_Account__c</code></td>
@@ -5193,7 +5151,7 @@
 <td><code>NPSP_Recurring_Donation_Id__c</code></td>
 <td>NPSP Recurring Donation Id</td>
 <td>Text</td>
-<td>Internal reference to the mirrored NPSP recurring donation record; not for manual entry.<br><em>Docs: Part of the optional NPSP extension, detected at runtime via Schema.describeSObjects() rather than a hard package dependency — the core package works whether or not NPSP is installed. When present, this schedule maps to npe03__Recurring_Donation__c as a mirror, not a replacement; Designation__c/Recurring_Designation__c map to NPSP's GAU allocations separately.</em></td>
+<td>Internal reference to the mirrored NPSP recurring donation record; not for manual entry.<br><em>Docs: Part of the optional NPSP extension, detected at runtime via Schema.describeSObjects() rather than a hard package dependency — the core package works whether or not NPSP is installed. When present, this schedule maps to npe03__Recurring_Donation__c as a mirror, not a replacement; the schedule's Recurring_Designation__c fund rows map to NPSP's GAU allocations separately.</em></td>
 </tr>
 <tr>
 <td><code>Next_Payment_Date__c</code></td>
@@ -5205,7 +5163,7 @@
 <td><code>Next_Retry_Date__c</code></td>
 <td>Next Retry Date</td>
 <td>Date</td>
-<td>The next date a failed payment will automatically be retried.<br><em>Docs: Computed as today plus SettingsService.retryIntervalDays(), the same flat interval for every attempt — see the doc note on Retry_Attempt__c about the stale fixed 1/3/5-day cadence described elsewhere.</em></td>
+<td>The next date a failed payment will automatically be retried.<br><em>Docs: Computed as today plus DunningSettings.retryIntervalDays(), the same flat interval for every attempt — see the doc note on Retry_Attempt__c about the stale fixed 1/3/5-day cadence described elsewhere.</em></td>
 </tr>
 <tr>
 <td><code>Paused_Until__c</code></td>
@@ -5247,7 +5205,7 @@
 <td><code>Retry_Attempt__c</code></td>
 <td>Retry Attempt</td>
 <td>Number</td>
-<td>How many retry attempts have been made after a failed payment.<br><em>Docs: The description above states a fixed 1/3/5-day retry schedule; that is stale. The current implementation in RecurringDonationService.processRenewal uses a flat interval read from SettingsService.retryIntervalDays(), capped by SettingsService.maxFailedPaymentRetries(), not a hardcoded per-attempt day count. Trust the Apex over this description until it is corrected.</em></td>
+<td>How many retry attempts have been made after a failed payment.<br><em>Docs: The description above states a fixed 1/3/5-day retry schedule; that is stale. The current implementation in RecurringDonationService.processRenewal uses a flat interval read from DunningSettings.retryIntervalDays(), capped by DunningSettings.maxFailedPaymentRetries(), not a hardcoded per-attempt day count. Trust the Apex over this description until it is corrected.</em></td>
 </tr>
 <tr>
 <td><code>Status__c</code></td>
@@ -5358,7 +5316,7 @@
 <td><code>Event_Type__c</code></td>
 <td>Event Type</td>
 <td>Picklist</td>
-<td>What kind of event this history entry records.<br><em>Docs: Set by package automation today: Created (RecurringDonations.onAfterInsert) and the four self-service/term values added 2026-08-06 — Amount_Changed, Designation_Changed, Skipped and Completed, all written by RecurringDonationService. Paused, Resumed, Cancelled, Payment_Succeeded and Payment_Failed remain vocabulary only: those transitions mutate Recurring_Donation__c directly without appending a history row.</em></td>
+<td>What kind of event this history entry records.<br><em>Docs: Set by package automation: Created (RecurringDonations.onAfterInsert) and Amount_Changed, Designation_Changed, Skipped and Completed (RecurringDonationService). The pause, resume, cancel and renewal-payment transitions mutate Recurring_Donation__c directly without appending a history row, so those event types were removed from the picklist in the clean-slate rebuild rather than kept as unused vocabulary, as was the generic value no package code ever wrote (2026-11-20).</em></td>
 </tr>
 <tr>
 <td><code>Recurring_Donation__c</code></td>
@@ -5370,11 +5328,11 @@
 </table>
 <h2 id="domain-platform">Platform &amp; Settings<a class="headerlink" href="#domain-platform" title="Permanent link">#</a></h2>
 <h3 id="donationfinalized">Donation Finalized<a class="headerlink" href="#donationfinalized" title="Permanent link">#</a></h3>
-<p><code>DonationFinalized__e</code> · <code>event</code> · <code>7 fields</code> · <code>Platform &amp; Settings</code></p>
+<p><code>DonationFinalized__e</code> · <code>event</code> · <code>1 fields</code> · <code>Platform &amp; Settings</code></p>
 <p>Internal decoupling seam published after a donation successfully finalizes, so optional downstream processes (e.g. NPSP allocation sync) can react asynchronously without the finalize path depending on them. Publishes only after the finalize transaction commits (PublishAfterCommit); a publish failure is logged and never blocks the donation. Subscribed to by DonationFinalizedSubscriber.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Kept as a deliberate decoupling seam rather than a package boundary &#8212; the trigger dispatches to INpspSyncService.syncAllocations (Opportunity Ids only), a self-guarding no-op when the feature is inactive. New subscribers hang off this event rather than being wired into the donation-finalize path directly.</p>
+<p>Kept as a deliberate decoupling seam rather than a package boundary &#8212; the trigger dispatches to INpspSyncService.syncAllocations (Opportunity Ids only), a self-guarding no-op when the feature is inactive. New subscribers hang off this event rather than being wired into the donation-finalize path directly. The event carries only Opportunity_Id__c: every subscriber loads the gift from that Id, so the payload fields that nothing read (staging, campaign, contact, account, amount, options JSON) were removed before the first release.</p>
 </div>
 <p><strong>Relationships</strong></p>
 <p><em>No lookup/master-detail relationships to or from this object.</em></p>
@@ -5390,46 +5348,10 @@
 </thead>
 <tbody>
 <tr>
-<td><code>Account_Id__c</code></td>
-<td>Account Id</td>
-<td>Text</td>
-<td>18-character Account Id of the donor. Platform events store Ids as text, not lookups.</td>
-</tr>
-<tr>
-<td><code>Amount__c</code></td>
-<td>Amount</td>
-<td>Number</td>
-<td>Donation amount at the moment it finalized.</td>
-</tr>
-<tr>
-<td><code>Campaign_Id__c</code></td>
-<td>Campaign Id</td>
-<td>Text</td>
-<td>18-character Campaign Id, if the donation was tied to a campaign.</td>
-</tr>
-<tr>
-<td><code>Contact_Id__c</code></td>
-<td>Contact Id</td>
-<td>Text</td>
-<td>18-character Contact Id of the donor, when the org uses standard Contacts.<br><em>Docs: The built-in subscriber (NpspSyncService) does not read this field — it works from Opportunity_Id__c alone and re-queries donor identity itself when needed. It is carried on the event for other, more general-purpose subscribers that may be added later.</em></td>
-</tr>
-<tr>
 <td><code>Opportunity_Id__c</code></td>
 <td>Opportunity Id</td>
 <td>Text</td>
 <td>18-character Id of the Opportunity created for this donation.<br><em>Docs: The only field DonationFinalizedSubscriber.trigger itself reads &#8212; it builds the finalizedOppIds set passed to NpspSyncService.syncAllocations from this field alone.</em></td>
-</tr>
-<tr>
-<td><code>Options_JSON__c</code></td>
-<td>Options JSON</td>
-<td>LongTextArea</td>
-<td>Extra JSON context passed through to subscribers (e.g. attribution data captured from the donation URL). Not interpreted by the base package.<br><em>Docs: No built-in subscriber reads this today. dfForm captures an opaque <code>attributionRef</code> off the donation URL and DonationService stashes it here verbatim, so a future attribution subscriber has the context without the finalize path needing to know what it means.</em></td>
-</tr>
-<tr>
-<td><code>Staging_Id__c</code></td>
-<td>Staging Id</td>
-<td>Text</td>
-<td>18-character Id of the staging record this donation was finalized from.</td>
 </tr>
 </tbody>
 </table>
@@ -5464,13 +5386,13 @@
 <td><code>Allow_Tribute__c</code></td>
 <td>Allow_Tribute</td>
 <td>Checkbox</td>
-<td>Turn this off to switch tribute gifts off everywhere at once — no campaign will show the "in honor of / in memory of" section and no honoree e-cards will be sent. Leave it on to let each campaign decide for itself.<br><em>Docs: This was a write-once seed for new campaigns until 2026-08-07, when it became a real master switch (gap-audit-2026-08-07 §2.1 — an org had no way to stop honoree e-cards without editing every campaign). Because the field defaults to FALSE, that change would have turned tributes off on upgrade for orgs that never touched it, so PostInstallHandler. adoptTributeMasterSwitch flips it to true when any campaign is visibly using tributes. Enforced in CampaignService (masks the campaign payload) and DonationService (refuses the capture); see SettingsService.tributeEnabled for why both are needed.</em></td>
+<td>Turn this off to switch tribute gifts off everywhere at once — no campaign will show the "in honor of / in memory of" section and no honoree e-cards will be sent. Leave it on to let each campaign decide for itself.<br><em>Docs: Org-wide master switch: it gates every campaign. Enforced in CampaignService (masks the campaign payload) and DonationService (refuses the capture); see CampaignDefaultSettings.tributeEnabled for why both are needed.</em></td>
 </tr>
 <tr>
 <td><code>Allowed_Embed_Origins__c</code></td>
 <td>Allowed Embed Origins</td>
 <td>TextArea</td>
-<td>One origin per line or comma-separated, e.g. https://www.acme.org. Include scheme; no trailing slash.<br><em>Docs: Parsed by SettingsService.allowedEmbedOrigins() into a normalized (lower-cased, no trailing slash, scheme+host only) set, used as the CORS allowlist by the guest EmbedConfigResource. An empty value means no external origin may load the embed widget, not that all are allowed.</em></td>
+<td>One origin per line or comma-separated, e.g. https://www.acme.org. Include scheme; no trailing slash.<br><em>Docs: Parsed by PublicPageSettings.allowedEmbedOrigins() into a normalized (lower-cased, no trailing slash, scheme+host only) set, used as the CORS allowlist by the guest EmbedConfigResource. An empty value means no external origin may load the embed widget, not that all are allowed.</em></td>
 </tr>
 <tr>
 <td><code>Auto_Receipt_Enabled__c</code></td>
@@ -5482,7 +5404,7 @@
 <td><code>Brand_Primary_Color__c</code></td>
 <td>Email Brand Color (hex)</td>
 <td>Text</td>
-<td>Hex color (e.g. #25465f) used for the email letterhead, footer bar, and default buttons. Leave blank to use the built-in slate.<br><em>Docs: Hex color used only for transactional email chrome (letterhead, footer, buttons) via SettingsService.emailBrandColor(); a separate concern from Campaign_Design__c.Primary_Color__c, which brands the public donation page. Falls back to the Ember brand coral when blank.</em></td>
+<td>Hex color (e.g. #25465f) used for the email letterhead, footer bar, and default buttons. Leave blank to use the built-in slate.<br><em>Docs: Hex color used only for transactional email chrome (letterhead, footer, buttons) via EmailBrandSettings.emailBrandColor(); a separate concern from Campaign_Design__c.Primary_Color__c, which brands the public donation page. Falls back to the Ember brand coral when blank.</em></td>
 </tr>
 <tr>
 <td><code>Company_Match_Followup_Days__c</code></td>
@@ -5500,7 +5422,7 @@
 <td><code>Contact_Email__c</code></td>
 <td>Contact Email</td>
 <td>Email</td>
-<td>The address donors should write to when they have a question before giving.<br><em>Docs: Read through SettingsService.contactEmail(), never Settings__c.getInstance() directly. Deliberately separate from Reply_To_Email__c: that one is a transactional sender identity, this one is published on a public page for humans to write to.</em></td>
+<td>The address donors should write to when they have a question before giving.<br><em>Docs: Read through OrgContactSettings.contactEmail(), never Settings__c.getInstance() directly. Deliberately separate from Reply_To_Email__c: that one is a transactional sender identity, this one is published on a public page for humans to write to.</em></td>
 </tr>
 <tr>
 <td><code>Contact_Hours__c</code></td>
@@ -5524,13 +5446,13 @@
 <td><code>Default_Campaign_Type__c</code></td>
 <td>Default_Campaign_Type</td>
 <td>Text</td>
-<td>Pick the Campaign Type new fundraisers should be created with — this is the field standard Salesforce campaign reports group by. Many organizations add their own "Fundraising" or "Appeal" value first. Leave blank to keep whatever default your org already set.<br><em>Docs: Deliberately Text, not a picklist: Campaign.Type is a STANDARD picklist whose values are org-specific, and a packaged picklist could not offer the value a subscriber actually uses. The Settings console renders the org's live Campaign.Type entries with the getPicklistValues wire adapter instead, and SettingsService.defaultCampaignType() re-checks the stored value against the live describe before it is applied, so a value later removed from the picklist degrades to "leave the org default alone" rather than failing the create. Seeded to 'Other' on fresh install by PostInstallHandler (never on upgrade). Applied by FundraiserAdminController.CreateFundraiser only — an existing campaign's Type is never rewritten by an edit.</em></td>
+<td>Pick the Campaign Type new fundraisers should be created with — this is the field standard Salesforce campaign reports group by. Many organizations add their own "Fundraising" or "Appeal" value first. Leave blank to keep whatever default your org already set.<br><em>Docs: Deliberately Text, not a picklist: Campaign.Type is a STANDARD picklist whose values are org-specific, and a packaged picklist could not offer the value a subscriber actually uses. The Settings console renders the org's live Campaign.Type entries with the getPicklistValues wire adapter instead, and CampaignDefaultSettings.defaultCampaignType() re-checks the stored value against the live describe before it is applied, so a value later removed from the picklist degrades to "leave the org default alone" rather than failing the create. Seeded to 'Other' on fresh install by PostInstallHandler (never on upgrade). Applied by FundraiserAdminController.CreateFundraiser only — an existing campaign's Type is never rewritten by an edit.</em></td>
 </tr>
 <tr>
 <td><code>Default_Designation__c</code></td>
 <td>Default Designation</td>
 <td>Text</td>
-<td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so SettingsService.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
+<td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so GiftAmountSettings.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
 </tr>
 <tr>
 <td><code>Default_Hero_Image_URL__c</code></td>
@@ -5560,7 +5482,7 @@
 <td><code>Default_Suggested_Amounts__c</code></td>
 <td>Default_Suggested_Amounts</td>
 <td>Text</td>
-<td>Comma-separated list of suggested amounts, e.g. "25,50,100,250".<br><em>Docs: Read by SettingsService.defaultSuggestedAmounts(); returns null (not a hardcoded list) when unset so the donation form's fallback chain can tell "no org default configured" apart from "use this"; the chain is campaign-level Suggested_Amounts__c, then this field, then a client-side literal fallback.</em></td>
+<td>Comma-separated list of suggested amounts, e.g. "25,50,100,250".<br><em>Docs: Read by CampaignDefaultSettings.defaultSuggestedAmounts(); returns null (not a hardcoded list) when unset so the donation form's fallback chain can tell "no org default configured" apart from "use this"; the chain is campaign-level Suggested_Amounts__c, then this field, then a client-side literal fallback.</em></td>
 </tr>
 <tr>
 <td><code>Default_Thank_You_CTA_Label__c</code></td>
@@ -5590,13 +5512,13 @@
 <td><code>Donation_Sync_Campaign_Members__c</code></td>
 <td>Donation_Sync_Campaign_Members</td>
 <td>Checkbox</td>
-<td>When on, a donor who gives to a campaign is added as a Campaign Member on that campaign. Off by default — leave it off if you already add campaign members with your own automation.<br><em>Docs: The donation-side counterpart of Event_Sync_Campaign_Members__c, deliberately a SEPARATE switch: an org that wants event attendance in campaign reporting does not necessarily want every donor added too, and the two write paths run at different times (event orders sync inline in EventPurchaseService; donations sync off the DonationFinalized__e subscriber via CampaignMemberSyncService). Read through SettingsService.donationSyncCampaignMembers().</em></td>
+<td>When on, a donor who gives to a campaign is added as a Campaign Member on that campaign. Off by default — leave it off if you already add campaign members with your own automation.<br><em>Docs: The donation-side counterpart of Event_Sync_Campaign_Members__c, deliberately a SEPARATE switch: an org that wants event attendance in campaign reporting does not necessarily want every donor added too, and the two write paths run at different times (event orders sync inline in EventPurchaseService; donations sync off the DonationFinalized__e subscriber via CampaignMemberSyncService). Read through GiftAutomationSettings.donationSyncCampaignMembers().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Confirmation_Message__c</code></td>
 <td>Donor Portal Confirmation Message</td>
 <td>TextArea</td>
-<td>Tell donors to enter the 8-character code you emailed them, and that it is short-lived. Phrase it conditionally ("if a matching donor record exists, we've sent a code") — the screen looks the same for an address you have no record of, so wording that states a code was definitely sent would be untrue for those visitors and leave them waiting for an email that never comes. Leave blank to use the default wording.<br><em>Docs: How long the code lasts is Portal_Code_TTL_Minutes__c, and this copy deliberately quotes no number — an admin who changes that TTL would otherwise leave a stale figure on screen. Seeded at install and repaired on upgrade by PostInstallHandler.retireSupersededPortalCopy, which rewrites this field ONLY while it still holds a wording this package itself shipped (SettingsService.isSupersededPortalConfirmationMessage, which knows every generation including the retired magic-link one). Once an admin edits it, their words are theirs forever and no upgrade will touch them again. Read at runtime through SettingsService.donorPortalConfirmationMessage().</em></td>
+<td>Tell donors to enter the 8-character code you emailed them, and that it is short-lived. Phrase it conditionally ("if a matching donor record exists, we've sent a code") — the screen looks the same for an address you have no record of, so wording that states a code was definitely sent would be untrue for those visitors and leave them waiting for an email that never comes. Leave blank to use the default wording.<br><em>Docs: How long the code lasts is Portal_Code_TTL_Minutes__c, and this copy deliberately quotes no number — an admin who changes that TTL would otherwise leave a stale figure on screen. Seeded at install by PostInstallHandler.seedDefaultSettings, which only fills a blank field — once an admin edits it, their words are theirs and a re-seed never touches them. Read at runtime through PortalContentSettings.donorPortalConfirmationMessage().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Confirmation_Title__c</code></td>
@@ -5656,7 +5578,7 @@
 <td><code>Donor_Portal_Request_Subtitle__c</code></td>
 <td>Donor Portal Request Subtitle</td>
 <td>TextArea</td>
-<td>Tell donors what happens after they enter their email: you send an 8-character sign-in code to that address, which they type on the next screen to reach their gifts, recurring donations and receipts. Leave blank to use the default wording.<br><em>Docs: Seeded at install and repaired on upgrade by PostInstallHandler.retireSupersededPortalCopy, which rewrites this field ONLY while it still holds a wording this package itself shipped (SettingsService.isSupersededPortalRequestSubtitle). The moment an admin edits it, their words are theirs forever and no upgrade will touch them again — so an org that customized the old magic-link copy keeps describing a flow that no longer exists until someone rewrites it by hand. Read at runtime through SettingsService.donorPortalRequestSubtitle().</em></td>
+<td>Tell donors what happens after they enter their email: you send an 8-character sign-in code to that address, which they type on the next screen to reach their gifts, recurring donations and receipts. Leave blank to use the default wording.<br><em>Docs: Seeded at install by PostInstallHandler.seedDefaultSettings, which only fills a blank field — once an admin edits it, their words are theirs and a re-seed never touches them. Read at runtime through PortalContentSettings.donorPortalRequestSubtitle().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Request_Title__c</code></td>
@@ -5668,13 +5590,13 @@
 <td><code>Donor_Refund_Requests_Enabled__c</code></td>
 <td>Donor Refund Requests Enabled</td>
 <td>Checkbox</td>
-<td>Check this to let donors ask for a refund from their donor portal. Nothing is refunded automatically — each request lands in the Guest Requests tab for a person to approve and process. Leave unchecked if you would rather donors phone or email you.<br><em>Docs: Read by SettingsService.donorRefundRequestsEnabled(). Deliberately NOT inverted, unlike Refunds_Disabled__c: a Checkbox backfills to false on an upgraded org row, and false must mean "off" here so an existing org never starts inviting refund requests it did not ask for. Edited in the Refunds panel of the settings console (setRefunds), not the donor-portal panel, because it is bounded by the same master switch and window as staff-issued refunds.</em></td>
+<td>Check this to let donors ask for a refund from their donor portal. Nothing is refunded automatically — each request lands in the Guest Requests tab for a person to approve and process. Leave unchecked if you would rather donors phone or email you.<br><em>Docs: Read by RefundSettings.donorRefundRequestsEnabled(). Deliberately NOT inverted, unlike Refunds_Disabled__c: a Checkbox backfills to false on an upgraded org row, and false must mean "off" here so an existing org never starts inviting refund requests it did not ask for. Edited in the Refunds panel of the settings console (setRefunds), not the donor-portal panel, because it is bounded by the same master switch and window as staff-issued refunds.</em></td>
 </tr>
 <tr>
 <td><code>Dunning_Email_Frequency__c</code></td>
 <td>Dunning_Email_Frequency</td>
 <td>Number</td>
-<td>Number of days between payment-failure reminder emails, e.g. 3.<br><em>Docs: Read by SettingsService.dunningEmailFrequencyDays() (default 3 when unset). Throttles how often the same failed schedule can email its donor, mirroring the reAuthThrottleDays pattern in RecurringDonationService so a donor is never double-emailed within one cool-down window.</em></td>
+<td>Number of days between payment-failure reminder emails, e.g. 3.<br><em>Docs: Read by DunningSettings.dunningEmailFrequencyDays() (default 3 when unset). Throttles how often the same failed schedule can email its donor, mirroring the reAuthThrottleDays pattern in RecurringDonationService so a donor is never double-emailed within one cool-down window.</em></td>
 </tr>
 <tr>
 <td><code>EIN__c</code></td>
@@ -5710,7 +5632,7 @@
 <td><code>Embed_Disabled__c</code></td>
 <td>Embed Disabled</td>
 <td>Checkbox</td>
-<td>Tick this to switch off every donation widget you have embedded on outside websites. Those pages will show a short "not available" notice instead of the donation form, and no new gifts can come through them — your donation pages on your own site are unaffected. Leave it unticked (the normal setting) to keep embedding on. Use it if a widget is misbehaving or you need to stop external giving quickly.<br><em>Docs: Read by SettingsService.isEmbedEnabled() using the same inverted-boolean pattern as Refunds_Disabled__c: unchecked (the backfilled default) reads as enabled. Gates the guest EmbedConfigResource CORS-checked donation widget entirely, not just its styling.</em></td>
+<td>Tick this to switch off every donation widget you have embedded on outside websites. Those pages will show a short "not available" notice instead of the donation form, and no new gifts can come through them — your donation pages on your own site are unaffected. Leave it unticked (the normal setting) to keep embedding on. Use it if a widget is misbehaving or you need to stop external giving quickly.<br><em>Docs: Read by PublicPageSettings.isEmbedEnabled() using the same inverted-boolean pattern as Refunds_Disabled__c: unchecked (the backfilled default) reads as enabled. Gates the guest EmbedConfigResource CORS-checked donation widget entirely, not just its styling.</em></td>
 </tr>
 <tr>
 <td><code>Event_Deductible_Mode__c</code></td>
@@ -5740,7 +5662,7 @@
 <td><code>Event_Sync_Campaign_Members__c</code></td>
 <td>Event_Sync_Campaign_Members</td>
 <td>Checkbox</td>
-<td>When on, each ticket buyer/attendee is added as a Campaign Member for reporting. Off by default.<br><em>Docs: Opt-IN, not opt-out: off by default because writing a CampaignMember for every ticket attendee touches Campaign membership automation the subscriber org may already own. When on, finalizing an event order creates a CampaignMember for each attendee that resolved to a known donor — the seat's Contact__c, or the person contact behind its Donor_Account__c in a Person Account org. Reading only Contact__c meant no ticket buyer was ever added in a Person Account org, silently; see EventPurchaseService.campaignMemberContactIds.</em></td>
+<td>When on, each ticket buyer/attendee is added as a Campaign Member for reporting. Off by default.<br><em>Docs: Opt-IN, not opt-out: off by default because writing a CampaignMember for every ticket attendee touches Campaign membership automation the subscriber org may already own. When on, finalizing an event order creates a CampaignMember for each attendee that resolved to a known donor — the seat's Contact__c, or the person contact behind its Donor_Account__c in a Person Account org. Reading only Contact__c meant no ticket buyer was ever added in a Person Account org, silently; see EventOrderCompletion.campaignMemberContactIds.</em></td>
 </tr>
 <tr>
 <td><code>Experience_Network_Id__c</code></td>
@@ -5758,7 +5680,7 @@
 <td><code>Failed_Payment_Retries__c</code></td>
 <td>Failed_Payment_Retries</td>
 <td>Number</td>
-<td>Number of failed payment attempts allowed before a recurring gift is canceled, e.g. 3.<br><em>Docs: Read by SettingsService.maxFailedPaymentRetries() (default 3 when unset): the number of off-session retry attempts a recurring schedule gets before it is marked Failed and starts counting down Grace_Period_Days__c toward cancellation.</em></td>
+<td>Number of failed payment attempts allowed before a recurring gift is canceled, e.g. 3.<br><em>Docs: Read by DunningSettings.maxFailedPaymentRetries() (default 3 when unset): the number of off-session retry attempts a recurring schedule gets before it is marked Failed and starts counting down Grace_Period_Days__c toward cancellation.</em></td>
 </tr>
 <tr>
 <td><code>Fee_Coverage_Fixed__c</code></td>
@@ -5776,7 +5698,7 @@
 <td><code>Finalizer_Heartbeat__c</code></td>
 <td>Finalizer Heartbeat</td>
 <td>DateTime</td>
-<td>Machine-managed. Do not edit — the finalizer job stamps this every time it completes a pass, and the setup console reads it to tell you whether gifts are still being turned into records.<br><em>Docs: This exists because a scheduled-job COUNT cannot detect a job that is scheduled but not running. The setup console's "background jobs" check counts CronTrigger rows, which stay at 24/24 even when every run is aborting; this marker is written from inside the job itself, so it only advances when a pass genuinely completed.  The guest donation path reads it before creating a PaymentIntent, and answers two different questions from the one value. STALE (older than the threshold, but set): the pipeline was running and has paused, which recovers on its own, so the gift is still taken and a PIPELINE_STALE Transaction_Log__c row is written so the admin's Recent Errors panel and Get Started step both go red. NULL: no pass has EVER completed in this org, so nothing has demonstrated that a charged card becomes an Opportunity here — the donation form and the ticket page refuse the payment outright and say why, and the refusal lifts on the first completed pass because finish() stamps this field whether or not the pass had rows. Do not conflate the two: gating checkout on staleness would take a healthy org offline over a half-hour job pause.  Staleness threshold is SettingsService.finalizerStaleMinutes(), which is DERIVED from Finalizer_Interval_Minutes__c rather than fixed: three missed passes, never less than a 30-minute floor. At the packaged 5-minute cadence that is 30 minutes (six missed passes), unchanged; at the longest admin-selectable cadence of 60 minutes it is 180. It has to move with the cadence, or an org finalizing hourly reads as stale for half of every hour while working perfectly.</em></td>
+<td>Machine-managed. Do not edit — the finalizer job stamps this every time it completes a pass, and the setup console reads it to tell you whether gifts are still being turned into records.<br><em>Docs: This exists because a scheduled-job COUNT cannot detect a job that is scheduled but not running. The setup console's "background jobs" check counts CronTrigger rows, which stay at 24/24 even when every run is aborting; this marker is written from inside the job itself, so it only advances when a pass genuinely completed.  The guest donation path reads it before creating a PaymentIntent, and answers two different questions from the one value. STALE (older than the threshold, but set): the pipeline was running and has paused, which recovers on its own, so the gift is still taken and a PIPELINE_STALE Transaction_Log__c row is written so the admin's Recent Errors panel and Get Started step both go red. NULL: no pass has EVER completed in this org, so nothing has demonstrated that a charged card becomes an Opportunity here — the donation form and the ticket page refuse the payment outright and say why, and the refusal lifts on the first completed pass because finish() stamps this field whether or not the pass had rows. Do not conflate the two: gating checkout on staleness would take a healthy org offline over a half-hour job pause.  Staleness threshold is FinalizerSettings.finalizerStaleMinutes(), which is DERIVED from Finalizer_Interval_Minutes__c rather than fixed: three missed passes, never less than a 30-minute floor. At the packaged 5-minute cadence that is 30 minutes (six missed passes), unchanged; at the longest admin-selectable cadence of 60 minutes it is 180. It has to move with the cadence, or an org finalizing hourly reads as stale for half of every hour while working perfectly.</em></td>
 </tr>
 <tr>
 <td><code>Finalizer_Interval_Minutes__c</code></td>
@@ -5788,7 +5710,7 @@
 <td><code>Footer_Text__c</code></td>
 <td>Public Page Footer Text</td>
 <td>Text</td>
-<td>The line at the very bottom of your public pages, usually a copyright notice such as "© 2026 Your Organization". Campaigns can override it if one needs different wording.<br><em>Docs: Read through SettingsService.footerText(). Distinct from Receipt_Footer_Text__c, which is the legal block printed on receipts — this one is a single display line at the foot of a web page and carries no tax claim. Moved off Campaign_Design__c on 2026-08-12, where every packaged theme carried an identical copy of the same sentence.</em></td>
+<td>The line at the very bottom of your public pages, usually a copyright notice such as "© 2026 Your Organization". Campaigns can override it if one needs different wording.<br><em>Docs: Read through PublicPageSettings.footerText(). Distinct from Receipt_Footer_Text__c, which is the legal block printed on receipts — this one is a single display line at the foot of a web page and carries no tax claim. Moved off Campaign_Design__c on 2026-08-12, where every packaged theme carried an identical copy of the same sentence.</em></td>
 </tr>
 <tr>
 <td><code>From_Email__c</code></td>
@@ -5806,7 +5728,7 @@
 <td><code>Grace_Period_Days__c</code></td>
 <td>Grace_Period_Days</td>
 <td>Number</td>
-<td>Days to wait after the last failed attempt before canceling a recurring gift, e.g. 7.<br><em>Docs: Read by SettingsService.gracePeriodDays() (default 7 when unset). Counts days a recurring schedule may sit Failed (Failed_At__c) before RecurringAutoCancelBatch cancels it outright.</em></td>
+<td>Days to wait after the last failed attempt before canceling a recurring gift, e.g. 7.<br><em>Docs: Read by DunningSettings.gracePeriodDays() (default 7 when unset). Counts days a recurring schedule may sit Failed (Failed_At__c) before RecurringAutoCancelBatch cancels it outright.</em></td>
 </tr>
 <tr>
 <td><code>Guest_Intent_Campaign_Window_Minutes__c</code></td>
@@ -5842,7 +5764,7 @@
 <td><code>Inline_Video_Embeds_Enabled__c</code></td>
 <td>Inline Video Embeds Enabled</td>
 <td>Checkbox</td>
-<td>Play story videos directly on the public page instead of opening YouTube in a new tab. This only works after you create a CSP Trusted Site for https://www.youtube-nocookie.com yourself — see the Story media section of the Organization setup panel for the exact values. Leave off and videos show a poster card that links out, which needs no setup.<br><em>Docs: Read by SettingsService.inlineVideoEmbedsEnabled() and emitted to the guest page as the inlineVideoEnabled key on the CampaignService payload. Turning it on without creating the trusted site produces a blocked iframe, not an error, so the setup panel states the requirement next to the toggle rather than trying to detect it.</em></td>
+<td>Play story videos directly on the public page instead of opening YouTube in a new tab. This only works after you create a CSP Trusted Site for https://www.youtube-nocookie.com yourself — see the Story media section of the Organization setup panel for the exact values. Leave off and videos show a poster card that links out, which needs no setup.<br><em>Docs: Read by PublicPageSettings.inlineVideoEmbedsEnabled() and emitted to the guest page as the inlineVideoEnabled key on the CampaignService payload. Turning it on without creating the trusted site produces a blocked iframe, not an error, so the setup panel states the requirement next to the toggle rather than trying to detect it.</em></td>
 </tr>
 <tr>
 <td><code>Log_Level__c</code></td>
@@ -5854,19 +5776,19 @@
 <td><code>Max_Donation_Amount__c</code></td>
 <td>Maximum Donation Amount</td>
 <td>Number</td>
-<td>Largest gift amount accepted, e.g. 25000. Leave blank or 0 for no maximum.<br><em>Docs: Read by SettingsService.maxDonationAmount(); null or a non-positive value both mean no maximum is enforced, not zero.</em></td>
+<td>Largest gift amount accepted, e.g. 25000. Leave blank or 0 for no maximum.<br><em>Docs: Read by GiftAmountSettings.maxDonationAmount(); null or a non-positive value both mean no maximum is enforced, not zero.</em></td>
 </tr>
 <tr>
 <td><code>Min_Donation_Amount__c</code></td>
 <td>Minimum Donation Amount</td>
 <td>Number</td>
-<td>Smallest gift amount accepted, e.g. 5. Leave blank or 0 for no minimum.<br><em>Docs: Read by SettingsService.minDonationAmount(); null or a non-positive value both mean no minimum is enforced, not zero.</em></td>
+<td>Smallest gift amount accepted, e.g. 5. Leave blank or 0 for no minimum.<br><em>Docs: Read by GiftAmountSettings.minDonationAmount(); null or a non-positive value both mean no minimum is enforced, not zero.</em></td>
 </tr>
 <tr>
 <td><code>NPSP_Enabled__c</code></td>
 <td>NPSP_Enabled</td>
 <td>Checkbox</td>
-<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: Same detected-AND-enabled precedence as Person_Account_Enabled__c: SettingsService.npspEnabled() requires both this flag and the presence of NPSP's core recurring-donation object. Gates NPSP_GAU_Sync_Enabled__c and NPSP_Sync_Enabled__c, which cannot be true unless this is.</em></td>
+<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: Same detected-AND-enabled precedence as Person_Account_Enabled__c: OrgFeatureSettings.npspEnabled() requires both this flag and the presence of NPSP's core recurring-donation object. Gates NPSP_GAU_Sync_Enabled__c and NPSP_Sync_Enabled__c, which cannot be true unless this is.</em></td>
 </tr>
 <tr>
 <td><code>NPSP_GAU_Sync_Enabled__c</code></td>
@@ -5914,7 +5836,7 @@
 <td><code>Person_Account_Enabled__c</code></td>
 <td>Person_Account_Enabled</td>
 <td>Checkbox</td>
-<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SettingsService.detectAndUpdateOrgFeatures() and SetupController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. SettingsService.personAccountEnabled() would combine the two, but has no production caller — see the note above that method for why pointing isPersonAccountOrg() at it would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
+<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SettingsService.detectAndUpdateOrgFeatures() and SetupOrganizationController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. OrgFeatureSettings.personAccountEnabled() would combine the two, but has no production caller — see the note above that method for why pointing isPersonAccountOrg() at it would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
 </tr>
 <tr>
 <td><code>Portal_Code_Max_Per_Hour__c</code></td>
@@ -5938,13 +5860,13 @@
 <td><code>Portal_Token_TTL_Hours__c</code></td>
 <td>Portal Session Cap (Hours)</td>
 <td>Number</td>
-<td>The absolute limit on how long a donor-portal session can last, in hours, no matter how active the donor is. Leave blank for the 4-hour default. Capped at 168 (7 days) so a mis-set value can't make a session effectively permanent.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 4h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a session effectively permanent). This is the ABSOLUTE cap on the session, distinct from Portal_Idle_Timeout_Minutes__c (the sliding inactivity window) and Portal_Code_TTL_Minutes__c (the emailed sign-in code's own, much shorter, redemption window) - the three fields describe three different clocks in the 2026-09-05 auth redesign. Renamed from "Portal Link Expiry (Hours)" / default 3h in that redesign, when the donor-portal credential moved from a single emailed magic link to a short-lived code plus a session token; the prior doc comment describing a magic link's inbox-exposure window no longer applied.</em></td>
+<td>The absolute limit on how long a donor-portal session can last, in hours, no matter how active the donor is. Leave blank for the 4-hour default. Capped at 168 (7 days) so a mis-set value can't make a session effectively permanent.<br><em>Docs: Read by PortalSessionSettings.portalTokenTtlHours() (default 4h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a session effectively permanent). This is the ABSOLUTE cap on the session, distinct from Portal_Idle_Timeout_Minutes__c (the sliding inactivity window) and Portal_Code_TTL_Minutes__c (the emailed sign-in code's own, much shorter, redemption window) - the three fields describe three different clocks in the 2026-09-05 auth redesign. Renamed from "Portal Link Expiry (Hours)" / default 3h in that redesign, when the donor-portal credential moved from a single emailed magic link to a short-lived code plus a session token; the prior doc comment describing a magic link's inbox-exposure window no longer applied.</em></td>
 </tr>
 <tr>
 <td><code>Privacy_URL__c</code></td>
 <td>Privacy URL</td>
 <td>Url</td>
-<td>Web address of your privacy policy. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through SettingsService.privacyUrl(). Same 2026-08-12 move off Campaign_Design__c as Terms_URL__c, for the same reason. Campaign.Privacy_URL_Override__c wins when set.</em></td>
+<td>Web address of your privacy policy. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through PublicPageSettings.privacyUrl(). Same 2026-08-12 move off Campaign_Design__c as Terms_URL__c, for the same reason. Campaign.Privacy_URL_Override__c wins when set.</em></td>
 </tr>
 <tr>
 <td><code>Receipt_Email_Template__c</code></td>
@@ -6028,7 +5950,7 @@
 <td><code>Refunds_Disabled__c</code></td>
 <td>Refunds Disabled</td>
 <td>Checkbox</td>
-<td>Inverted field: leave UNCHECKED to keep refunds enabled (the default). Check this box ONLY to turn refunds OFF org-wide.<br><em>Docs: Read by SettingsService.refundsEnabled(), which inverts the stored value so a Checkbox that backfills to false on an upgraded org row is read as ENABLED with no migration step needed. Follow the same inverted pattern for any future org-wide kill switch rather than a directly-read Is_Enabled field.</em></td>
+<td>Inverted field: leave UNCHECKED to keep refunds enabled (the default). Check this box ONLY to turn refunds OFF org-wide.<br><em>Docs: Read by RefundSettings.refundsEnabled(), which inverts the stored value so a Checkbox that backfills to false on an upgraded org row is read as ENABLED with no migration step needed. Follow the same inverted pattern for any future org-wide kill switch rather than a directly-read Is_Enabled field.</em></td>
 </tr>
 <tr>
 <td><code>Reply_To_Email__c</code></td>
@@ -6040,37 +5962,37 @@
 <td><code>Retry_Interval_Days__c</code></td>
 <td>Retry_Interval_Days</td>
 <td>Number</td>
-<td>Days between automatic retry attempts for a failed recurring payment, e.g. 3.<br><em>Docs: Read by SettingsService.retryIntervalDays() (default 3 when unset). Cadence is flat: every retry waits the same number of days, there is no backoff curve.</em></td>
+<td>Days between automatic retry attempts for a failed recurring payment, e.g. 3.<br><em>Docs: Read by DunningSettings.retryIntervalDays() (default 3 when unset). Cadence is flat: every retry waits the same number of days, there is no backoff curve.</em></td>
 </tr>
 <tr>
 <td><code>Social_Facebook_URL__c</code></td>
 <td>Social — Facebook URL</td>
 <td>Url</td>
-<td>Full web address of your organization's Facebook page. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialFacebookUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
+<td>Full web address of your organization's Facebook page. Leave blank and that icon is not shown at all.<br><em>Docs: Read through PublicPageSettings.socialFacebookUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
 </tr>
 <tr>
 <td><code>Social_Instagram_URL__c</code></td>
 <td>Social — Instagram URL</td>
 <td>Url</td>
-<td>Full web address of your organization's Instagram profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialInstagramUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
+<td>Full web address of your organization's Instagram profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through PublicPageSettings.socialInstagramUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
 </tr>
 <tr>
 <td><code>Social_Share_Image_URL__c</code></td>
 <td>Social Share Image URL</td>
 <td>Url</td>
-<td>The picture that appears when someone shares one of your public pages on social media. Best at 1200x630 pixels. Leave blank to use the packaged default image.<br><em>Docs: Read through SettingsService.socialShareImageUrl(), which falls back to Default_Social_Share_Image_URL__c when this is blank. The two are deliberately separate: this one is the admin's choice, the Default_ one caches the ContentDistribution link to the packaged artwork that SettingsService.ensureDefaultImagesSeeded() creates, and an upgrade re-seeds the cache without ever touching an admin's own picture.</em></td>
+<td>The picture that appears when someone shares one of your public pages on social media. Best at 1200x630 pixels. Leave blank to use the packaged default image.<br><em>Docs: Read through PublicPageSettings.socialShareImageUrl(), which falls back to Default_Social_Share_Image_URL__c when this is blank. The two are deliberately separate: this one is the admin's choice, the Default_ one caches the ContentDistribution link to the packaged artwork that SettingsService.ensureDefaultImagesSeeded() creates, and an upgrade re-seeds the cache without ever touching an admin's own picture.</em></td>
 </tr>
 <tr>
 <td><code>Social_Twitter_URL__c</code></td>
 <td>Social — X (Twitter) URL</td>
 <td>Url</td>
-<td>Full web address of your organization's X (Twitter) profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialTwitterUrl(). The three social fields are separate rather than one multi-value field so the footer can render each network's own icon and omit the ones an org does not use, without parsing a delimited string on the guest path.</em></td>
+<td>Full web address of your organization's X (Twitter) profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through PublicPageSettings.socialTwitterUrl(). The three social fields are separate rather than one multi-value field so the footer can render each network's own icon and omit the ones an org does not use, without parsing a delimited string on the guest path.</em></td>
 </tr>
 <tr>
 <td><code>Soft_Credit_Automation_Enabled__c</code></td>
 <td>Soft_Credit_Automation_Enabled</td>
 <td>Checkbox</td>
-<td>When on, gifts given in honor of someone are automatically credited to that person, and a donor's household is credited alongside them. Turn it off if you assign soft credit yourself or with your own automation.<br><em>Docs: Starts ON for a fresh install, unlike Donation_Sync_Campaign_Members__c which is off for everyone. The difference is what each one writes: campaign membership creates rows in data an org may already own and report on, whereas soft credit only populates package fields that are blank until something fills them, so there is nothing for it to corrupt.  The &lt;defaultValue&gt; below governs NEW Settings rows only — Salesforce does not backfill a field default onto records that already exist, so an org upgrading into this release keeps the false its existing Settings row was created with and has to opt in.  That asymmetry is intentional: the package will not switch on a new automatic write in an org that is already configured.  PostInstallHandler.seedDefaultSettings() sets it explicitly on the fresh-install path so the intent does not rest on the platform default alone. Read through SettingsService.softCreditAutomationEnabled().</em></td>
+<td>When on, gifts given in honor of someone are automatically credited to that person, and a donor's household is credited alongside them. Turn it off if you assign soft credit yourself or with your own automation.<br><em>Docs: Starts ON for a fresh install, unlike Donation_Sync_Campaign_Members__c which is off for everyone. The difference is what each one writes: campaign membership creates rows in data an org may already own and report on, whereas soft credit only populates package fields that are blank until something fills them, so there is nothing for it to corrupt.  The &lt;defaultValue&gt; below governs NEW Settings rows only — Salesforce does not backfill a field default onto records that already exist, so an org upgrading into this release keeps the false its existing Settings row was created with and has to opt in.  That asymmetry is intentional: the package will not switch on a new automatic write in an org that is already configured.  PostInstallHandler.seedDefaultSettings() sets it explicitly on the fresh-install path so the intent does not rest on the platform default alone. Read through GiftAutomationSettings.softCreditAutomationEnabled().</em></td>
 </tr>
 <tr>
 <td><code>Support_Phone__c</code></td>
@@ -6088,7 +6010,7 @@
 <td><code>Terms_URL__c</code></td>
 <td>Terms URL</td>
 <td>Url</td>
-<td>Web address of your terms and conditions page. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through SettingsService.termsUrl(), never Settings__c.getInstance() directly. Lived on Campaign_Design__c until 2026-08-12, where switching a campaign from one theme to another silently changed which terms document donors were pointed at — a policy is a fact about the organization, not about a color scheme. Campaign.Terms_URL_Override__c wins when set; CampaignService.resolveIdentity owns that precedence, not this field.</em></td>
+<td>Web address of your terms and conditions page. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through PublicPageSettings.termsUrl(), never Settings__c.getInstance() directly. Lived on Campaign_Design__c until 2026-08-12, where switching a campaign from one theme to another silently changed which terms document donors were pointed at — a policy is a fact about the organization, not about a color scheme. Campaign.Terms_URL_Override__c wins when set; CampaignService.resolveIdentity owns that precedence, not this field.</em></td>
 </tr>
 </tbody>
 </table>
@@ -6224,7 +6146,7 @@
 <p>Structured, engineering-facing diagnostic log written by AppLogger — captures unhandled exceptions, warnings, and debug traces to help troubleshoot the package. Distinct from Transaction_Log__c, which is the append-only Stripe API-call audit ledger; Log__c exists for engineering diagnostics, not payment audit trail. Sharing model is Private, so records are visible only to admin/read-only roles by design.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>AppLogger is a deliberate, documented exception to the package's Unit-of-Work-only DML rule — it is static without sharing and inserts Log__c rows directly, guarded by a Limits.getDmlStatements() check so a logging call can never itself blow the DML-statement governor limit inside the transaction it is trying to describe. Persistence is gated by SettingsService.logLevel(), which reads Settings__c.Log_Level__c (OFF/ERROR/WARN/INFO/DEBUG); Debug_Logging__c on Settings__c only toggles the additional System.debug() echo and does not affect whether a row is written here.</p>
+<p>AppLogger is a deliberate, documented exception to the package's Unit-of-Work-only DML rule — it is static without sharing and inserts Log__c rows directly, guarded by a Limits.getDmlStatements() check so a logging call can never itself blow the DML-statement governor limit inside the transaction it is trying to describe. Persistence is gated by LogSettings.logLevel(), which reads Settings__c.Log_Level__c (OFF/ERROR/WARN/INFO/DEBUG); Debug_Logging__c on Settings__c only toggles the additional System.debug() echo and does not affect whether a row is written here.</p>
 </div>
 <p><strong>Relationships</strong></p>
 <p><em>No lookup/master-detail relationships to or from this object.</em></p>
@@ -6282,7 +6204,7 @@
 <p>One donor-portal sign-in session, spanning both phases of its life: created when a sign-in code is emailed to a donor, mutated in place when that code is redeemed for a browser session. Holds only SHA-256 hashes — no raw credential is ever stored. Written exclusively by the donor portal service; staff only ever revoke or purge rows.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Deliberately has NO trigger and NO fflib domain: the previous scheme stamped the token on Contact/Account and the Contacts domain's after-update CRUD re-check rolled the guest transaction back (spec P1). All writes are SYSTEM_MODE inside DonorPortalService, and the guest permission set carries no entry for this object at all. At most one row per donor is ever in Status Issued (enforced by the request path, which revokes outstanding Issued rows before inserting). Terminal rows (Expired/Revoked/Locked) are hard-deleted by RetentionPurgeBatch Target.PORTAL_TOKENS after 7 days.</p>
+<p>Deliberately has NO trigger and NO fflib domain: the previous scheme stamped the token on Contact/Account and the Contacts domain's after-update CRUD re-check rolled the guest transaction back (spec P1). All writes are SYSTEM_MODE inside DonorPortalService's helpers (PortalAccessCodes, PortalSessions), and the guest permission set carries no entry for this object at all. At most one row per donor is ever in Status Issued (enforced by the request path, which revokes outstanding Issued rows before inserting). Terminal rows (Expired/Revoked/Locked) are hard-deleted by RetentionPurgeBatch Target.PORTAL_TOKENS after 7 days.</p>
 <p>Search is ON and there is a tab, a layout and three list views, because Status__c's help text tells an administrator to set Revoked to end a live session and until all four existed there was no page on which to do it. Reports, activities, feeds and field history stay OFF: rows live at most seven days, carry nothing anyone would report on but hashes and clocks, and history tracking on a credential table only makes a second copy of the same values. The permission-set grants that make the tab usable are in Fundraising_Admin alone - Fundraising_User and Fundraising_ReadOnly have no access to this object at all.</p>
 </div>
 <p><strong>Relationships</strong></p>
@@ -6394,7 +6316,7 @@
 <p>Catalog of overridable public page-design CSS tokens. Package-controlled; records are protected and change only via package upgrade.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Single source of truth for which pf-prefixed CSS custom properties a Campaign_Design__c or per-campaign page-design record may override. There is no hand-synced allowlist elsewhere: CampaignService.normalizeThemeTokensJson() loads this catalog via ThemeTokensSelector and strips any JSON key the donor-facing guest shell would otherwise render, and the internal setDesigns editor reads the same catalog through SetupController.getThemeTokenCatalog() so the admin UI and the runtime validator can never drift. Records are packaged and protected, so the catalog only grows or changes across a package upgrade, never via subscriber-org admin action. Adding a new overridable token means adding a record here, not code elsewhere.</p>
+<p>Single source of truth for which pf-prefixed CSS custom properties a Campaign_Design__c or per-campaign page-design record may override. There is no hand-synced allowlist elsewhere: ThemeTokenSanitizer.normalizeThemeTokensJson() loads this catalog via ThemeTokensSelector and strips any JSON key the donor-facing guest shell would otherwise render, and the internal setDesigns editor reads the same catalog through SetupDesignsController.getThemeTokenCatalog() so the admin UI and the runtime validator can never drift. Records are packaged and protected, so the catalog only grows or changes across a package upgrade, never via subscriber-org admin action. Adding a new overridable token means adding a record here, not code elsewhere.</p>
 </div>
 <p><strong>Relationships</strong></p>
 <p><em>No lookup/master-detail relationships to or from this object.</em></p>
@@ -6413,13 +6335,13 @@
 <td><code>CSS_Var__c \*</code></td>
 <td>CSS Var</td>
 <td>Text</td>
-<td>CSS custom-property name this token controls, e.g. "--pf-brand-primary". Must start with --pf-.<br><em>Docs: This is the exact JSON key CampaignService.normalizeThemeTokensJson() matches a page design's Theme_Tokens_JSON__c override map against; a key not present in this catalog is stripped before the guest shell ever receives it, so there is no path to inject an arbitrary CSS custom property through a page-design record.</em></td>
+<td>CSS custom-property name this token controls, e.g. "--pf-brand-primary". Must start with --pf-.<br><em>Docs: This is the exact JSON key ThemeTokenSanitizer.normalizeThemeTokensJson() matches a page design's Theme_Tokens_JSON__c override map against; a key not present in this catalog is stripped before the guest shell ever receives it, so there is no path to inject an arbitrary CSS custom property through a page-design record.</em></td>
 </tr>
 <tr>
 <td><code>Data_Type__c</code></td>
 <td>Data Type</td>
 <td>Picklist</td>
-<td>Determines which input control the token editor shows for this token (color swatch, size field, etc.).<br><em>Docs: Also editor-only: it selects the input widget (color swatch vs. size field vs. raw text) shown in setDesigns, and is not consulted by CampaignService.normalizeThemeTokensJson() when validating an incoming override; that check is presence-in-catalog only, not type-checked.</em></td>
+<td>Determines which input control the token editor shows for this token (color swatch, size field, etc.).<br><em>Docs: Also editor-only: it selects the input widget (color swatch vs. size field vs. raw text) shown in setDesigns, and is not consulted by ThemeTokenSanitizer.normalizeThemeTokensJson() when validating an incoming override; that check is presence-in-catalog only, not type-checked.</em></td>
 </tr>
 <tr>
 <td><code>Default_Value__c</code></td>

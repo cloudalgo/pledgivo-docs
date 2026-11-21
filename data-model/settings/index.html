@@ -1836,13 +1836,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Allow_Tribute__c</code></td>
 <td>Allow_Tribute</td>
 <td>Checkbox</td>
-<td>Turn this off to switch tribute gifts off everywhere at once — no campaign will show the "in honor of / in memory of" section and no honoree e-cards will be sent. Leave it on to let each campaign decide for itself.<br><em>Docs: This was a write-once seed for new campaigns until 2026-08-07, when it became a real master switch (gap-audit-2026-08-07 §2.1 — an org had no way to stop honoree e-cards without editing every campaign). Because the field defaults to FALSE, that change would have turned tributes off on upgrade for orgs that never touched it, so PostInstallHandler. adoptTributeMasterSwitch flips it to true when any campaign is visibly using tributes. Enforced in CampaignService (masks the campaign payload) and DonationService (refuses the capture); see SettingsService.tributeEnabled for why both are needed.</em></td>
+<td>Turn this off to switch tribute gifts off everywhere at once — no campaign will show the "in honor of / in memory of" section and no honoree e-cards will be sent. Leave it on to let each campaign decide for itself.<br><em>Docs: Org-wide master switch: it gates every campaign. Enforced in CampaignService (masks the campaign payload) and DonationService (refuses the capture); see CampaignDefaultSettings.tributeEnabled for why both are needed.</em></td>
 </tr>
 <tr>
 <td><code>Allowed_Embed_Origins__c</code></td>
 <td>Allowed Embed Origins</td>
 <td>TextArea</td>
-<td>One origin per line or comma-separated, e.g. https://www.acme.org. Include scheme; no trailing slash.<br><em>Docs: Parsed by SettingsService.allowedEmbedOrigins() into a normalized (lower-cased, no trailing slash, scheme+host only) set, used as the CORS allowlist by the guest EmbedConfigResource. An empty value means no external origin may load the embed widget, not that all are allowed.</em></td>
+<td>One origin per line or comma-separated, e.g. https://www.acme.org. Include scheme; no trailing slash.<br><em>Docs: Parsed by PublicPageSettings.allowedEmbedOrigins() into a normalized (lower-cased, no trailing slash, scheme+host only) set, used as the CORS allowlist by the guest EmbedConfigResource. An empty value means no external origin may load the embed widget, not that all are allowed.</em></td>
 </tr>
 <tr>
 <td><code>Auto_Receipt_Enabled__c</code></td>
@@ -1854,7 +1854,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Brand_Primary_Color__c</code></td>
 <td>Email Brand Color (hex)</td>
 <td>Text</td>
-<td>Hex color (e.g. #25465f) used for the email letterhead, footer bar, and default buttons. Leave blank to use the built-in slate.<br><em>Docs: Hex color used only for transactional email chrome (letterhead, footer, buttons) via SettingsService.emailBrandColor(); a separate concern from Campaign_Design__c.Primary_Color__c, which brands the public donation page. Falls back to the Ember brand coral when blank.</em></td>
+<td>Hex color (e.g. #25465f) used for the email letterhead, footer bar, and default buttons. Leave blank to use the built-in slate.<br><em>Docs: Hex color used only for transactional email chrome (letterhead, footer, buttons) via EmailBrandSettings.emailBrandColor(); a separate concern from Campaign_Design__c.Primary_Color__c, which brands the public donation page. Falls back to the Ember brand coral when blank.</em></td>
 </tr>
 <tr>
 <td><code>Company_Match_Followup_Days__c</code></td>
@@ -1872,7 +1872,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Contact_Email__c</code></td>
 <td>Contact Email</td>
 <td>Email</td>
-<td>The address donors should write to when they have a question before giving.<br><em>Docs: Read through SettingsService.contactEmail(), never Settings__c.getInstance() directly. Deliberately separate from Reply_To_Email__c: that one is a transactional sender identity, this one is published on a public page for humans to write to.</em></td>
+<td>The address donors should write to when they have a question before giving.<br><em>Docs: Read through OrgContactSettings.contactEmail(), never Settings__c.getInstance() directly. Deliberately separate from Reply_To_Email__c: that one is a transactional sender identity, this one is published on a public page for humans to write to.</em></td>
 </tr>
 <tr>
 <td><code>Contact_Hours__c</code></td>
@@ -1896,13 +1896,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Default_Campaign_Type__c</code></td>
 <td>Default_Campaign_Type</td>
 <td>Text</td>
-<td>Pick the Campaign Type new fundraisers should be created with — this is the field standard Salesforce campaign reports group by. Many organizations add their own "Fundraising" or "Appeal" value first. Leave blank to keep whatever default your org already set.<br><em>Docs: Deliberately Text, not a picklist: Campaign.Type is a STANDARD picklist whose values are org-specific, and a packaged picklist could not offer the value a subscriber actually uses. The Settings console renders the org's live Campaign.Type entries with the getPicklistValues wire adapter instead, and SettingsService.defaultCampaignType() re-checks the stored value against the live describe before it is applied, so a value later removed from the picklist degrades to "leave the org default alone" rather than failing the create. Seeded to 'Other' on fresh install by PostInstallHandler (never on upgrade). Applied by FundraiserAdminController.CreateFundraiser only — an existing campaign's Type is never rewritten by an edit.</em></td>
+<td>Pick the Campaign Type new fundraisers should be created with — this is the field standard Salesforce campaign reports group by. Many organizations add their own "Fundraising" or "Appeal" value first. Leave blank to keep whatever default your org already set.<br><em>Docs: Deliberately Text, not a picklist: Campaign.Type is a STANDARD picklist whose values are org-specific, and a packaged picklist could not offer the value a subscriber actually uses. The Settings console renders the org's live Campaign.Type entries with the getPicklistValues wire adapter instead, and CampaignDefaultSettings.defaultCampaignType() re-checks the stored value against the live describe before it is applied, so a value later removed from the picklist degrades to "leave the org default alone" rather than failing the create. Seeded to 'Other' on fresh install by PostInstallHandler (never on upgrade). Applied by FundraiserAdminController.CreateFundraiser only — an existing campaign's Type is never rewritten by an edit.</em></td>
 </tr>
 <tr>
 <td><code>Default_Designation__c</code></td>
 <td>Default Designation</td>
 <td>Text</td>
-<td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so SettingsService.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
+<td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so GiftAmountSettings.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
 </tr>
 <tr>
 <td><code>Default_Hero_Image_URL__c</code></td>
@@ -1932,7 +1932,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Default_Suggested_Amounts__c</code></td>
 <td>Default_Suggested_Amounts</td>
 <td>Text</td>
-<td>Comma-separated list of suggested amounts, e.g. "25,50,100,250".<br><em>Docs: Read by SettingsService.defaultSuggestedAmounts(); returns null (not a hardcoded list) when unset so the donation form's fallback chain can tell "no org default configured" apart from "use this"; the chain is campaign-level Suggested_Amounts__c, then this field, then a client-side literal fallback.</em></td>
+<td>Comma-separated list of suggested amounts, e.g. "25,50,100,250".<br><em>Docs: Read by CampaignDefaultSettings.defaultSuggestedAmounts(); returns null (not a hardcoded list) when unset so the donation form's fallback chain can tell "no org default configured" apart from "use this"; the chain is campaign-level Suggested_Amounts__c, then this field, then a client-side literal fallback.</em></td>
 </tr>
 <tr>
 <td><code>Default_Thank_You_CTA_Label__c</code></td>
@@ -1962,13 +1962,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Donation_Sync_Campaign_Members__c</code></td>
 <td>Donation_Sync_Campaign_Members</td>
 <td>Checkbox</td>
-<td>When on, a donor who gives to a campaign is added as a Campaign Member on that campaign. Off by default — leave it off if you already add campaign members with your own automation.<br><em>Docs: The donation-side counterpart of Event_Sync_Campaign_Members__c, deliberately a SEPARATE switch: an org that wants event attendance in campaign reporting does not necessarily want every donor added too, and the two write paths run at different times (event orders sync inline in EventPurchaseService; donations sync off the DonationFinalized__e subscriber via CampaignMemberSyncService). Read through SettingsService.donationSyncCampaignMembers().</em></td>
+<td>When on, a donor who gives to a campaign is added as a Campaign Member on that campaign. Off by default — leave it off if you already add campaign members with your own automation.<br><em>Docs: The donation-side counterpart of Event_Sync_Campaign_Members__c, deliberately a SEPARATE switch: an org that wants event attendance in campaign reporting does not necessarily want every donor added too, and the two write paths run at different times (event orders sync inline in EventPurchaseService; donations sync off the DonationFinalized__e subscriber via CampaignMemberSyncService). Read through GiftAutomationSettings.donationSyncCampaignMembers().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Confirmation_Message__c</code></td>
 <td>Donor Portal Confirmation Message</td>
 <td>TextArea</td>
-<td>Tell donors to enter the 8-character code you emailed them, and that it is short-lived. Phrase it conditionally ("if a matching donor record exists, we've sent a code") — the screen looks the same for an address you have no record of, so wording that states a code was definitely sent would be untrue for those visitors and leave them waiting for an email that never comes. Leave blank to use the default wording.<br><em>Docs: How long the code lasts is Portal_Code_TTL_Minutes__c, and this copy deliberately quotes no number — an admin who changes that TTL would otherwise leave a stale figure on screen. Seeded at install and repaired on upgrade by PostInstallHandler.retireSupersededPortalCopy, which rewrites this field ONLY while it still holds a wording this package itself shipped (SettingsService.isSupersededPortalConfirmationMessage, which knows every generation including the retired magic-link one). Once an admin edits it, their words are theirs forever and no upgrade will touch them again. Read at runtime through SettingsService.donorPortalConfirmationMessage().</em></td>
+<td>Tell donors to enter the 8-character code you emailed them, and that it is short-lived. Phrase it conditionally ("if a matching donor record exists, we've sent a code") — the screen looks the same for an address you have no record of, so wording that states a code was definitely sent would be untrue for those visitors and leave them waiting for an email that never comes. Leave blank to use the default wording.<br><em>Docs: How long the code lasts is Portal_Code_TTL_Minutes__c, and this copy deliberately quotes no number — an admin who changes that TTL would otherwise leave a stale figure on screen. Seeded at install by PostInstallHandler.seedDefaultSettings, which only fills a blank field — once an admin edits it, their words are theirs and a re-seed never touches them. Read at runtime through PortalContentSettings.donorPortalConfirmationMessage().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Confirmation_Title__c</code></td>
@@ -2028,7 +2028,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Donor_Portal_Request_Subtitle__c</code></td>
 <td>Donor Portal Request Subtitle</td>
 <td>TextArea</td>
-<td>Tell donors what happens after they enter their email: you send an 8-character sign-in code to that address, which they type on the next screen to reach their gifts, recurring donations and receipts. Leave blank to use the default wording.<br><em>Docs: Seeded at install and repaired on upgrade by PostInstallHandler.retireSupersededPortalCopy, which rewrites this field ONLY while it still holds a wording this package itself shipped (SettingsService.isSupersededPortalRequestSubtitle). The moment an admin edits it, their words are theirs forever and no upgrade will touch them again — so an org that customized the old magic-link copy keeps describing a flow that no longer exists until someone rewrites it by hand. Read at runtime through SettingsService.donorPortalRequestSubtitle().</em></td>
+<td>Tell donors what happens after they enter their email: you send an 8-character sign-in code to that address, which they type on the next screen to reach their gifts, recurring donations and receipts. Leave blank to use the default wording.<br><em>Docs: Seeded at install by PostInstallHandler.seedDefaultSettings, which only fills a blank field — once an admin edits it, their words are theirs and a re-seed never touches them. Read at runtime through PortalContentSettings.donorPortalRequestSubtitle().</em></td>
 </tr>
 <tr>
 <td><code>Donor_Portal_Request_Title__c</code></td>
@@ -2040,13 +2040,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Donor_Refund_Requests_Enabled__c</code></td>
 <td>Donor Refund Requests Enabled</td>
 <td>Checkbox</td>
-<td>Check this to let donors ask for a refund from their donor portal. Nothing is refunded automatically — each request lands in the Guest Requests tab for a person to approve and process. Leave unchecked if you would rather donors phone or email you.<br><em>Docs: Read by SettingsService.donorRefundRequestsEnabled(). Deliberately NOT inverted, unlike Refunds_Disabled__c: a Checkbox backfills to false on an upgraded org row, and false must mean "off" here so an existing org never starts inviting refund requests it did not ask for. Edited in the Refunds panel of the settings console (setRefunds), not the donor-portal panel, because it is bounded by the same master switch and window as staff-issued refunds.</em></td>
+<td>Check this to let donors ask for a refund from their donor portal. Nothing is refunded automatically — each request lands in the Guest Requests tab for a person to approve and process. Leave unchecked if you would rather donors phone or email you.<br><em>Docs: Read by RefundSettings.donorRefundRequestsEnabled(). Deliberately NOT inverted, unlike Refunds_Disabled__c: a Checkbox backfills to false on an upgraded org row, and false must mean "off" here so an existing org never starts inviting refund requests it did not ask for. Edited in the Refunds panel of the settings console (setRefunds), not the donor-portal panel, because it is bounded by the same master switch and window as staff-issued refunds.</em></td>
 </tr>
 <tr>
 <td><code>Dunning_Email_Frequency__c</code></td>
 <td>Dunning_Email_Frequency</td>
 <td>Number</td>
-<td>Number of days between payment-failure reminder emails, e.g. 3.<br><em>Docs: Read by SettingsService.dunningEmailFrequencyDays() (default 3 when unset). Throttles how often the same failed schedule can email its donor, mirroring the reAuthThrottleDays pattern in RecurringDonationService so a donor is never double-emailed within one cool-down window.</em></td>
+<td>Number of days between payment-failure reminder emails, e.g. 3.<br><em>Docs: Read by DunningSettings.dunningEmailFrequencyDays() (default 3 when unset). Throttles how often the same failed schedule can email its donor, mirroring the reAuthThrottleDays pattern in RecurringDonationService so a donor is never double-emailed within one cool-down window.</em></td>
 </tr>
 <tr>
 <td><code>EIN__c</code></td>
@@ -2082,7 +2082,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Embed_Disabled__c</code></td>
 <td>Embed Disabled</td>
 <td>Checkbox</td>
-<td>Tick this to switch off every donation widget you have embedded on outside websites. Those pages will show a short "not available" notice instead of the donation form, and no new gifts can come through them — your donation pages on your own site are unaffected. Leave it unticked (the normal setting) to keep embedding on. Use it if a widget is misbehaving or you need to stop external giving quickly.<br><em>Docs: Read by SettingsService.isEmbedEnabled() using the same inverted-boolean pattern as Refunds_Disabled__c: unchecked (the backfilled default) reads as enabled. Gates the guest EmbedConfigResource CORS-checked donation widget entirely, not just its styling.</em></td>
+<td>Tick this to switch off every donation widget you have embedded on outside websites. Those pages will show a short "not available" notice instead of the donation form, and no new gifts can come through them — your donation pages on your own site are unaffected. Leave it unticked (the normal setting) to keep embedding on. Use it if a widget is misbehaving or you need to stop external giving quickly.<br><em>Docs: Read by PublicPageSettings.isEmbedEnabled() using the same inverted-boolean pattern as Refunds_Disabled__c: unchecked (the backfilled default) reads as enabled. Gates the guest EmbedConfigResource CORS-checked donation widget entirely, not just its styling.</em></td>
 </tr>
 <tr>
 <td><code>Event_Deductible_Mode__c</code></td>
@@ -2112,7 +2112,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Event_Sync_Campaign_Members__c</code></td>
 <td>Event_Sync_Campaign_Members</td>
 <td>Checkbox</td>
-<td>When on, each ticket buyer/attendee is added as a Campaign Member for reporting. Off by default.<br><em>Docs: Opt-IN, not opt-out: off by default because writing a CampaignMember for every ticket attendee touches Campaign membership automation the subscriber org may already own. When on, finalizing an event order creates a CampaignMember for each attendee that resolved to a known donor — the seat's Contact__c, or the person contact behind its Donor_Account__c in a Person Account org. Reading only Contact__c meant no ticket buyer was ever added in a Person Account org, silently; see EventPurchaseService.campaignMemberContactIds.</em></td>
+<td>When on, each ticket buyer/attendee is added as a Campaign Member for reporting. Off by default.<br><em>Docs: Opt-IN, not opt-out: off by default because writing a CampaignMember for every ticket attendee touches Campaign membership automation the subscriber org may already own. When on, finalizing an event order creates a CampaignMember for each attendee that resolved to a known donor — the seat's Contact__c, or the person contact behind its Donor_Account__c in a Person Account org. Reading only Contact__c meant no ticket buyer was ever added in a Person Account org, silently; see EventOrderCompletion.campaignMemberContactIds.</em></td>
 </tr>
 <tr>
 <td><code>Experience_Network_Id__c</code></td>
@@ -2130,7 +2130,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Failed_Payment_Retries__c</code></td>
 <td>Failed_Payment_Retries</td>
 <td>Number</td>
-<td>Number of failed payment attempts allowed before a recurring gift is canceled, e.g. 3.<br><em>Docs: Read by SettingsService.maxFailedPaymentRetries() (default 3 when unset): the number of off-session retry attempts a recurring schedule gets before it is marked Failed and starts counting down Grace_Period_Days__c toward cancellation.</em></td>
+<td>Number of failed payment attempts allowed before a recurring gift is canceled, e.g. 3.<br><em>Docs: Read by DunningSettings.maxFailedPaymentRetries() (default 3 when unset): the number of off-session retry attempts a recurring schedule gets before it is marked Failed and starts counting down Grace_Period_Days__c toward cancellation.</em></td>
 </tr>
 <tr>
 <td><code>Fee_Coverage_Fixed__c</code></td>
@@ -2148,7 +2148,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Finalizer_Heartbeat__c</code></td>
 <td>Finalizer Heartbeat</td>
 <td>DateTime</td>
-<td>Machine-managed. Do not edit — the finalizer job stamps this every time it completes a pass, and the setup console reads it to tell you whether gifts are still being turned into records.<br><em>Docs: This exists because a scheduled-job COUNT cannot detect a job that is scheduled but not running. The setup console's "background jobs" check counts CronTrigger rows, which stay at 24/24 even when every run is aborting; this marker is written from inside the job itself, so it only advances when a pass genuinely completed.  The guest donation path reads it before creating a PaymentIntent, and answers two different questions from the one value. STALE (older than the threshold, but set): the pipeline was running and has paused, which recovers on its own, so the gift is still taken and a PIPELINE_STALE Transaction_Log__c row is written so the admin's Recent Errors panel and Get Started step both go red. NULL: no pass has EVER completed in this org, so nothing has demonstrated that a charged card becomes an Opportunity here — the donation form and the ticket page refuse the payment outright and say why, and the refusal lifts on the first completed pass because finish() stamps this field whether or not the pass had rows. Do not conflate the two: gating checkout on staleness would take a healthy org offline over a half-hour job pause.  Staleness threshold is SettingsService.finalizerStaleMinutes(), which is DERIVED from Finalizer_Interval_Minutes__c rather than fixed: three missed passes, never less than a 30-minute floor. At the packaged 5-minute cadence that is 30 minutes (six missed passes), unchanged; at the longest admin-selectable cadence of 60 minutes it is 180. It has to move with the cadence, or an org finalizing hourly reads as stale for half of every hour while working perfectly.</em></td>
+<td>Machine-managed. Do not edit — the finalizer job stamps this every time it completes a pass, and the setup console reads it to tell you whether gifts are still being turned into records.<br><em>Docs: This exists because a scheduled-job COUNT cannot detect a job that is scheduled but not running. The setup console's "background jobs" check counts CronTrigger rows, which stay at 24/24 even when every run is aborting; this marker is written from inside the job itself, so it only advances when a pass genuinely completed.  The guest donation path reads it before creating a PaymentIntent, and answers two different questions from the one value. STALE (older than the threshold, but set): the pipeline was running and has paused, which recovers on its own, so the gift is still taken and a PIPELINE_STALE Transaction_Log__c row is written so the admin's Recent Errors panel and Get Started step both go red. NULL: no pass has EVER completed in this org, so nothing has demonstrated that a charged card becomes an Opportunity here — the donation form and the ticket page refuse the payment outright and say why, and the refusal lifts on the first completed pass because finish() stamps this field whether or not the pass had rows. Do not conflate the two: gating checkout on staleness would take a healthy org offline over a half-hour job pause.  Staleness threshold is FinalizerSettings.finalizerStaleMinutes(), which is DERIVED from Finalizer_Interval_Minutes__c rather than fixed: three missed passes, never less than a 30-minute floor. At the packaged 5-minute cadence that is 30 minutes (six missed passes), unchanged; at the longest admin-selectable cadence of 60 minutes it is 180. It has to move with the cadence, or an org finalizing hourly reads as stale for half of every hour while working perfectly.</em></td>
 </tr>
 <tr>
 <td><code>Finalizer_Interval_Minutes__c</code></td>
@@ -2160,7 +2160,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Footer_Text__c</code></td>
 <td>Public Page Footer Text</td>
 <td>Text</td>
-<td>The line at the very bottom of your public pages, usually a copyright notice such as "© 2026 Your Organization". Campaigns can override it if one needs different wording.<br><em>Docs: Read through SettingsService.footerText(). Distinct from Receipt_Footer_Text__c, which is the legal block printed on receipts — this one is a single display line at the foot of a web page and carries no tax claim. Moved off Campaign_Design__c on 2026-08-12, where every packaged theme carried an identical copy of the same sentence.</em></td>
+<td>The line at the very bottom of your public pages, usually a copyright notice such as "© 2026 Your Organization". Campaigns can override it if one needs different wording.<br><em>Docs: Read through PublicPageSettings.footerText(). Distinct from Receipt_Footer_Text__c, which is the legal block printed on receipts — this one is a single display line at the foot of a web page and carries no tax claim. Moved off Campaign_Design__c on 2026-08-12, where every packaged theme carried an identical copy of the same sentence.</em></td>
 </tr>
 <tr>
 <td><code>From_Email__c</code></td>
@@ -2178,7 +2178,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Grace_Period_Days__c</code></td>
 <td>Grace_Period_Days</td>
 <td>Number</td>
-<td>Days to wait after the last failed attempt before canceling a recurring gift, e.g. 7.<br><em>Docs: Read by SettingsService.gracePeriodDays() (default 7 when unset). Counts days a recurring schedule may sit Failed (Failed_At__c) before RecurringAutoCancelBatch cancels it outright.</em></td>
+<td>Days to wait after the last failed attempt before canceling a recurring gift, e.g. 7.<br><em>Docs: Read by DunningSettings.gracePeriodDays() (default 7 when unset). Counts days a recurring schedule may sit Failed (Failed_At__c) before RecurringAutoCancelBatch cancels it outright.</em></td>
 </tr>
 <tr>
 <td><code>Guest_Intent_Campaign_Window_Minutes__c</code></td>
@@ -2214,7 +2214,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Inline_Video_Embeds_Enabled__c</code></td>
 <td>Inline Video Embeds Enabled</td>
 <td>Checkbox</td>
-<td>Play story videos directly on the public page instead of opening YouTube in a new tab. This only works after you create a CSP Trusted Site for https://www.youtube-nocookie.com yourself — see the Story media section of the Organization setup panel for the exact values. Leave off and videos show a poster card that links out, which needs no setup.<br><em>Docs: Read by SettingsService.inlineVideoEmbedsEnabled() and emitted to the guest page as the inlineVideoEnabled key on the CampaignService payload. Turning it on without creating the trusted site produces a blocked iframe, not an error, so the setup panel states the requirement next to the toggle rather than trying to detect it.</em></td>
+<td>Play story videos directly on the public page instead of opening YouTube in a new tab. This only works after you create a CSP Trusted Site for https://www.youtube-nocookie.com yourself — see the Story media section of the Organization setup panel for the exact values. Leave off and videos show a poster card that links out, which needs no setup.<br><em>Docs: Read by PublicPageSettings.inlineVideoEmbedsEnabled() and emitted to the guest page as the inlineVideoEnabled key on the CampaignService payload. Turning it on without creating the trusted site produces a blocked iframe, not an error, so the setup panel states the requirement next to the toggle rather than trying to detect it.</em></td>
 </tr>
 <tr>
 <td><code>Log_Level__c</code></td>
@@ -2226,19 +2226,19 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Max_Donation_Amount__c</code></td>
 <td>Maximum Donation Amount</td>
 <td>Number</td>
-<td>Largest gift amount accepted, e.g. 25000. Leave blank or 0 for no maximum.<br><em>Docs: Read by SettingsService.maxDonationAmount(); null or a non-positive value both mean no maximum is enforced, not zero.</em></td>
+<td>Largest gift amount accepted, e.g. 25000. Leave blank or 0 for no maximum.<br><em>Docs: Read by GiftAmountSettings.maxDonationAmount(); null or a non-positive value both mean no maximum is enforced, not zero.</em></td>
 </tr>
 <tr>
 <td><code>Min_Donation_Amount__c</code></td>
 <td>Minimum Donation Amount</td>
 <td>Number</td>
-<td>Smallest gift amount accepted, e.g. 5. Leave blank or 0 for no minimum.<br><em>Docs: Read by SettingsService.minDonationAmount(); null or a non-positive value both mean no minimum is enforced, not zero.</em></td>
+<td>Smallest gift amount accepted, e.g. 5. Leave blank or 0 for no minimum.<br><em>Docs: Read by GiftAmountSettings.minDonationAmount(); null or a non-positive value both mean no minimum is enforced, not zero.</em></td>
 </tr>
 <tr>
 <td><code>NPSP_Enabled__c</code></td>
 <td>NPSP_Enabled</td>
 <td>Checkbox</td>
-<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: Same detected-AND-enabled precedence as Person_Account_Enabled__c: SettingsService.npspEnabled() requires both this flag and the presence of NPSP's core recurring-donation object. Gates NPSP_GAU_Sync_Enabled__c and NPSP_Sync_Enabled__c, which cannot be true unless this is.</em></td>
+<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: Same detected-AND-enabled precedence as Person_Account_Enabled__c: OrgFeatureSettings.npspEnabled() requires both this flag and the presence of NPSP's core recurring-donation object. Gates NPSP_GAU_Sync_Enabled__c and NPSP_Sync_Enabled__c, which cannot be true unless this is.</em></td>
 </tr>
 <tr>
 <td><code>NPSP_GAU_Sync_Enabled__c</code></td>
@@ -2286,7 +2286,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Person_Account_Enabled__c</code></td>
 <td>Person_Account_Enabled</td>
 <td>Checkbox</td>
-<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SettingsService.detectAndUpdateOrgFeatures() and SetupController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. SettingsService.personAccountEnabled() would combine the two, but has no production caller — see the note above that method for why pointing isPersonAccountOrg() at it would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
+<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SettingsService.detectAndUpdateOrgFeatures() and SetupOrganizationController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. OrgFeatureSettings.personAccountEnabled() would combine the two, but has no production caller — see the note above that method for why pointing isPersonAccountOrg() at it would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
 </tr>
 <tr>
 <td><code>Portal_Code_Max_Per_Hour__c</code></td>
@@ -2310,13 +2310,13 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Portal_Token_TTL_Hours__c</code></td>
 <td>Portal Session Cap (Hours)</td>
 <td>Number</td>
-<td>The absolute limit on how long a donor-portal session can last, in hours, no matter how active the donor is. Leave blank for the 4-hour default. Capped at 168 (7 days) so a mis-set value can't make a session effectively permanent.<br><em>Docs: Read by SettingsService.portalTokenTtlHours() (default 4h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a session effectively permanent). This is the ABSOLUTE cap on the session, distinct from Portal_Idle_Timeout_Minutes__c (the sliding inactivity window) and Portal_Code_TTL_Minutes__c (the emailed sign-in code's own, much shorter, redemption window) - the three fields describe three different clocks in the 2026-09-05 auth redesign. Renamed from "Portal Link Expiry (Hours)" / default 3h in that redesign, when the donor-portal credential moved from a single emailed magic link to a short-lived code plus a session token; the prior doc comment describing a magic link's inbox-exposure window no longer applied.</em></td>
+<td>The absolute limit on how long a donor-portal session can last, in hours, no matter how active the donor is. Leave blank for the 4-hour default. Capped at 168 (7 days) so a mis-set value can't make a session effectively permanent.<br><em>Docs: Read by PortalSessionSettings.portalTokenTtlHours() (default 4h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a session effectively permanent). This is the ABSOLUTE cap on the session, distinct from Portal_Idle_Timeout_Minutes__c (the sliding inactivity window) and Portal_Code_TTL_Minutes__c (the emailed sign-in code's own, much shorter, redemption window) - the three fields describe three different clocks in the 2026-09-05 auth redesign. Renamed from "Portal Link Expiry (Hours)" / default 3h in that redesign, when the donor-portal credential moved from a single emailed magic link to a short-lived code plus a session token; the prior doc comment describing a magic link's inbox-exposure window no longer applied.</em></td>
 </tr>
 <tr>
 <td><code>Privacy_URL__c</code></td>
 <td>Privacy URL</td>
 <td>Url</td>
-<td>Web address of your privacy policy. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through SettingsService.privacyUrl(). Same 2026-08-12 move off Campaign_Design__c as Terms_URL__c, for the same reason. Campaign.Privacy_URL_Override__c wins when set.</em></td>
+<td>Web address of your privacy policy. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through PublicPageSettings.privacyUrl(). Same 2026-08-12 move off Campaign_Design__c as Terms_URL__c, for the same reason. Campaign.Privacy_URL_Override__c wins when set.</em></td>
 </tr>
 <tr>
 <td><code>Receipt_Email_Template__c</code></td>
@@ -2400,7 +2400,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Refunds_Disabled__c</code></td>
 <td>Refunds Disabled</td>
 <td>Checkbox</td>
-<td>Inverted field: leave UNCHECKED to keep refunds enabled (the default). Check this box ONLY to turn refunds OFF org-wide.<br><em>Docs: Read by SettingsService.refundsEnabled(), which inverts the stored value so a Checkbox that backfills to false on an upgraded org row is read as ENABLED with no migration step needed. Follow the same inverted pattern for any future org-wide kill switch rather than a directly-read Is_Enabled field.</em></td>
+<td>Inverted field: leave UNCHECKED to keep refunds enabled (the default). Check this box ONLY to turn refunds OFF org-wide.<br><em>Docs: Read by RefundSettings.refundsEnabled(), which inverts the stored value so a Checkbox that backfills to false on an upgraded org row is read as ENABLED with no migration step needed. Follow the same inverted pattern for any future org-wide kill switch rather than a directly-read Is_Enabled field.</em></td>
 </tr>
 <tr>
 <td><code>Reply_To_Email__c</code></td>
@@ -2412,37 +2412,37 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Retry_Interval_Days__c</code></td>
 <td>Retry_Interval_Days</td>
 <td>Number</td>
-<td>Days between automatic retry attempts for a failed recurring payment, e.g. 3.<br><em>Docs: Read by SettingsService.retryIntervalDays() (default 3 when unset). Cadence is flat: every retry waits the same number of days, there is no backoff curve.</em></td>
+<td>Days between automatic retry attempts for a failed recurring payment, e.g. 3.<br><em>Docs: Read by DunningSettings.retryIntervalDays() (default 3 when unset). Cadence is flat: every retry waits the same number of days, there is no backoff curve.</em></td>
 </tr>
 <tr>
 <td><code>Social_Facebook_URL__c</code></td>
 <td>Social — Facebook URL</td>
 <td>Url</td>
-<td>Full web address of your organization's Facebook page. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialFacebookUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
+<td>Full web address of your organization's Facebook page. Leave blank and that icon is not shown at all.<br><em>Docs: Read through PublicPageSettings.socialFacebookUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
 </tr>
 <tr>
 <td><code>Social_Instagram_URL__c</code></td>
 <td>Social — Instagram URL</td>
 <td>Url</td>
-<td>Full web address of your organization's Instagram profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialInstagramUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
+<td>Full web address of your organization's Instagram profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through PublicPageSettings.socialInstagramUrl(). See Social_Twitter_URL__c for why the three networks are separate fields.</em></td>
 </tr>
 <tr>
 <td><code>Social_Share_Image_URL__c</code></td>
 <td>Social Share Image URL</td>
 <td>Url</td>
-<td>The picture that appears when someone shares one of your public pages on social media. Best at 1200x630 pixels. Leave blank to use the packaged default image.<br><em>Docs: Read through SettingsService.socialShareImageUrl(), which falls back to Default_Social_Share_Image_URL__c when this is blank. The two are deliberately separate: this one is the admin's choice, the Default_ one caches the ContentDistribution link to the packaged artwork that SettingsService.ensureDefaultImagesSeeded() creates, and an upgrade re-seeds the cache without ever touching an admin's own picture.</em></td>
+<td>The picture that appears when someone shares one of your public pages on social media. Best at 1200x630 pixels. Leave blank to use the packaged default image.<br><em>Docs: Read through PublicPageSettings.socialShareImageUrl(), which falls back to Default_Social_Share_Image_URL__c when this is blank. The two are deliberately separate: this one is the admin's choice, the Default_ one caches the ContentDistribution link to the packaged artwork that SettingsService.ensureDefaultImagesSeeded() creates, and an upgrade re-seeds the cache without ever touching an admin's own picture.</em></td>
 </tr>
 <tr>
 <td><code>Social_Twitter_URL__c</code></td>
 <td>Social — X (Twitter) URL</td>
 <td>Url</td>
-<td>Full web address of your organization's X (Twitter) profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through SettingsService.socialTwitterUrl(). The three social fields are separate rather than one multi-value field so the footer can render each network's own icon and omit the ones an org does not use, without parsing a delimited string on the guest path.</em></td>
+<td>Full web address of your organization's X (Twitter) profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through PublicPageSettings.socialTwitterUrl(). The three social fields are separate rather than one multi-value field so the footer can render each network's own icon and omit the ones an org does not use, without parsing a delimited string on the guest path.</em></td>
 </tr>
 <tr>
 <td><code>Soft_Credit_Automation_Enabled__c</code></td>
 <td>Soft_Credit_Automation_Enabled</td>
 <td>Checkbox</td>
-<td>When on, gifts given in honor of someone are automatically credited to that person, and a donor's household is credited alongside them. Turn it off if you assign soft credit yourself or with your own automation.<br><em>Docs: Starts ON for a fresh install, unlike Donation_Sync_Campaign_Members__c which is off for everyone. The difference is what each one writes: campaign membership creates rows in data an org may already own and report on, whereas soft credit only populates package fields that are blank until something fills them, so there is nothing for it to corrupt.  The &lt;defaultValue&gt; below governs NEW Settings rows only — Salesforce does not backfill a field default onto records that already exist, so an org upgrading into this release keeps the false its existing Settings row was created with and has to opt in.  That asymmetry is intentional: the package will not switch on a new automatic write in an org that is already configured.  PostInstallHandler.seedDefaultSettings() sets it explicitly on the fresh-install path so the intent does not rest on the platform default alone. Read through SettingsService.softCreditAutomationEnabled().</em></td>
+<td>When on, gifts given in honor of someone are automatically credited to that person, and a donor's household is credited alongside them. Turn it off if you assign soft credit yourself or with your own automation.<br><em>Docs: Starts ON for a fresh install, unlike Donation_Sync_Campaign_Members__c which is off for everyone. The difference is what each one writes: campaign membership creates rows in data an org may already own and report on, whereas soft credit only populates package fields that are blank until something fills them, so there is nothing for it to corrupt.  The &lt;defaultValue&gt; below governs NEW Settings rows only — Salesforce does not backfill a field default onto records that already exist, so an org upgrading into this release keeps the false its existing Settings row was created with and has to opt in.  That asymmetry is intentional: the package will not switch on a new automatic write in an org that is already configured.  PostInstallHandler.seedDefaultSettings() sets it explicitly on the fresh-install path so the intent does not rest on the platform default alone. Read through GiftAutomationSettings.softCreditAutomationEnabled().</em></td>
 </tr>
 <tr>
 <td><code>Support_Phone__c</code></td>
@@ -2460,7 +2460,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Terms_URL__c</code></td>
 <td>Terms URL</td>
 <td>Url</td>
-<td>Web address of your terms and conditions page. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through SettingsService.termsUrl(), never Settings__c.getInstance() directly. Lived on Campaign_Design__c until 2026-08-12, where switching a campaign from one theme to another silently changed which terms document donors were pointed at — a policy is a fact about the organization, not about a color scheme. Campaign.Terms_URL_Override__c wins when set; CampaignService.resolveIdentity owns that precedence, not this field.</em></td>
+<td>Web address of your terms and conditions page. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through PublicPageSettings.termsUrl(), never Settings__c.getInstance() directly. Lived on Campaign_Design__c until 2026-08-12, where switching a campaign from one theme to another silently changed which terms document donors were pointed at — a policy is a fact about the organization, not about a color scheme. Campaign.Terms_URL_Override__c wins when set; CampaignService.resolveIdentity owns that precedence, not this field.</em></td>
 </tr>
 </tbody>
 </table>

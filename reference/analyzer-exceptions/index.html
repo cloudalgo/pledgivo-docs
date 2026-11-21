@@ -1914,7 +1914,7 @@
 <h1 id="code-analyzer-exceptions">Code Analyzer Exceptions<a class="headerlink" href="#code-analyzer-exceptions" title="Permanent link">#</a></h1>
 <div class="ca-actions" markdown="0">
   <button type="button" class="ca-print" onclick="window.print()">Print / Save as PDF</button>
-  <span class="ca-stamp">Generated 2026-10-09 from a live scan</span>
+  <span class="ca-stamp">Generated 2026-11-21 from a live scan</span>
 </div>
 
 <p>This page exists for one purpose: to answer, in writing and in one place, <em>why</em> every
@@ -1947,23 +1947,23 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">914</td>
-<td>21 carrying a <code>Security</code> tag, justified below</td>
+<td style="text-align: right;">438</td>
+<td>20 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">130</td>
+<td style="text-align: right;">197</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">135</td>
+<td style="text-align: right;">195</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>1,201</strong></td>
-<td><strong>43 individually justified</strong></td>
+<td style="text-align: right;"><strong>852</strong></td>
+<td><strong>42 individually justified</strong></td>
 </tr>
 </tbody>
 </table>
@@ -2024,7 +2024,7 @@ defined in the triage file, not chosen per-run.</p>
 <tr>
 <td><code>base/main/default/classes/donor/domain/Contacts.cls</code></td>
 <td>52</td>
-<td>Donor rollup (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c), behind <code>suppressTriggerCrudCheck</code>, which only CampaignService's rollup commit sets and restores in <code>finally</code>. Without it a staff user who can edit a donation but not a Contact cannot close a gift.</td>
+<td>Donor rollup (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c), behind <code>suppressTriggerCrudCheck</code>, which only DonorTotalsRollup's Contact rollup commit sets and restores in <code>finally</code>. Without it a staff user who can edit a donation but not a Contact cannot close a gift.</td>
 </tr>
 <tr>
 <td><code>base/main/default/classes/recurring/domain/RecurringDonations.cls</code></td>
@@ -2113,11 +2113,11 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h3 id="field-names-that-merely-contain-sign-auth-token-or-credit">Field names that merely contain sign, auth, token or credit<a class="headerlink" href="#field-names-that-merely-contain-sign-auth-token-or-credit" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>False positive</strong> &middot; 10 findings &middot; <code>ProtectSensitiveData</code></p>
+<p class="ca-meta"><strong>False positive</strong> &middot; 9 findings &middot; <code>ProtectSensitiveData</code></p>
 
 <p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name matches a list of sensitive-looking substrings, and asks that such data be stored in Protected Custom Settings or Protected Custom Metadata instead.</p>
 <p><strong>Why it is not a defect here.</strong> These fields match on a substring of an ordinary English word and carry nothing sensitive. <code>Designation__c</code> and <code>Default_Designation__c</code> (the fund a gift is earmarked for) and <code>Campaign_Design__c.Theme_Tokens_JSON__c</code> match on <em>sign</em> and <em>token</em> — one is a lookup to a program, the other is a JSON map of CSS design-token overrides that the service layer filters against a packaged catalog. <code>Email_Signature__c</code> is the sign-off line printed on outbound email. <code>Re_Auth_Required__c</code> and <code>Re_Auth_Link_Sent_At__c</code> match on <em>auth</em> and are a checkbox and a timestamp recording that a donor must complete 3-D Secure on-session for a renewal and when they were last reminded. <code>Portal_Token_TTL_Hours__c</code> is a number of hours. <code>Soft_Credit_Automation_Enabled__c</code> matches on <em>credit</em> and is a feature toggle for soft-credit rollups; it has nothing to do with a payment card. A Protected Custom Setting could not hold any of them: they are per-record business data, and the two on <code>Settings__c</code> are admin-visible configuration that the Settings console edits.</p>
-<p><strong>How to verify.</strong> Each field's <code>&lt;description&gt;</code> in base/main/default/objects/ says what it holds. The package stores no secret in any Custom Setting, protected or not — the only credential-related field in the package, <code>Payment_Account__c.Stripe_Donor_Restricted_Key__c</code>, holds the API name of a Named Credential the subscriber administrator creates in Setup and is consumed as <code>'callout:' + name</code>, which is what the rule's remediation is for.</p>
+<p><strong>How to verify.</strong> Each field's <code>&lt;description&gt;</code> in base/main/default/objects/ says what it holds. The package stores no secret in any Custom Setting, protected or not — the only credential-related field in the package, <code>Payment_Account__c.Stripe_Donor_Credential__c</code>, holds the API name of a Named Credential the subscriber administrator creates in Setup and is consumed as <code>'callout:' + name</code>, which is what the rule's remediation is for.</p>
 <table>
 <thead>
 <tr>
@@ -2141,11 +2141,6 @@ defined in the triage file, not chosen per-run.</p>
 <td><code>base/main/default/objects/Recurring_Designation__c/fields/Designation__c.field-meta.xml</code></td>
 <td>1</td>
 <td>Lookup to the fund a recurring split supports; matches on <em>sign</em>.</td>
-</tr>
-<tr>
-<td><code>base/main/default/objects/Recurring_Donation__c/fields/Designation__c.field-meta.xml</code></td>
-<td>1</td>
-<td>Single-fund lookup on a recurring schedule; matches on <em>sign</em>.</td>
 </tr>
 <tr>
 <td><code>base/main/default/objects/Recurring_Donation__c/fields/Re_Auth_Link_Sent_At__c.field-meta.xml</code></td>
@@ -2183,8 +2178,8 @@ defined in the triage file, not chosen per-run.</p>
 <p class="ca-meta"><strong>Working as designed</strong> &middot; 3 findings &middot; <code>ProtectSensitiveData</code></p>
 
 <p><strong>What the rule flags.</strong> PMD's ProtectSensitiveData (AppExchange rule set) flags a custom field whose API name contains <em>key</em>, expecting the value to be a secret that belongs in a Protected Custom Setting or Protected Custom Metadata.</p>
-<p><strong>Why it is not a defect here.</strong> <code>Stripe_Donor_Restricted_Key__c</code> and <code>Stripe_Admin_Restricted_Key__c</code> are Text(80) fields holding the <strong>API name</strong> of a Named Credential the subscriber admin built by hand in Setup, and Apex consumes them as <code>'callout:' + name</code>. The key itself is inside the Named Credential and is never readable from Apex, a field, or the UI. The fields are per-Payment-Account rather than org-wide because one org can run several gateway accounts (for example one per legal entity), which a hierarchy setting cannot model. <code>Publishable_Key__c</code> holds Stripe's publishable key, which Stripe designs to be embedded in browser-side code and is sent to every donor's browser by construction; it authorises nothing on its own.</p>
-<p><strong>How to verify.</strong> Both restricted-key fields say in their <code>&lt;description&gt;</code> that they hold a name and that an unrestricted secret key is not an acceptable value for the credential behind it; <code>StripeGateway.cls</code> builds the endpoint as <code>'callout:' + acct.Stripe_Donor_Restricted_Key__c</code>. The package ships no Named Credential and stores no key in any field, setting, metadata record, static resource or Apex literal: the subscriber administrator creates the credential in Setup and the field records only its API name.</p>
+<p><strong>Why it is not a defect here.</strong> <code>Stripe_Donor_Credential__c</code> and <code>Stripe_Admin_Credential__c</code> are Text(80) fields holding the <strong>API name</strong> of a Named Credential the subscriber admin built by hand in Setup, and Apex consumes them as <code>'callout:' + name</code>. The key itself is inside the Named Credential and is never readable from Apex, a field, or the UI. The fields are per-Payment-Account rather than org-wide because one org can run several gateway accounts (for example one per legal entity), which a hierarchy setting cannot model. <code>Publishable_Key__c</code> holds Stripe's publishable key, which Stripe designs to be embedded in browser-side code and is sent to every donor's browser by construction; it authorises nothing on its own.</p>
+<p><strong>How to verify.</strong> Both restricted-key fields say in their <code>&lt;description&gt;</code> that they hold a name and that an unrestricted secret key is not an acceptable value for the credential behind it; <code>StripeGateway.cls</code> (<code>init</code>) builds both endpoints as <code>'callout:' + acct.Stripe_Donor_Credential__c</code> and <code>'callout:' + acct.Stripe_Admin_Credential__c</code>. The package ships no Named Credential and stores no key in any field, setting, metadata record, static resource or Apex literal: the subscriber administrator creates the credential in Setup and the field records only its API name.</p>
 <table>
 <thead>
 <tr>
@@ -2200,12 +2195,12 @@ defined in the triage file, not chosen per-run.</p>
 <td>Stripe publishable key — designed to be sent to the browser; secret key is never in a field.</td>
 </tr>
 <tr>
-<td><code>base/main/default/objects/Payment_Account__c/fields/Stripe_Admin_Restricted_Key__c.field-meta.xml</code></td>
+<td><code>base/main/default/objects/Payment_Account__c/fields/Stripe_Admin_Credential__c.field-meta.xml</code></td>
 <td>1</td>
 <td>Text(80): API name of the Named Credential holding the back-office restricted key.</td>
 </tr>
 <tr>
-<td><code>base/main/default/objects/Payment_Account__c/fields/Stripe_Donor_Restricted_Key__c.field-meta.xml</code></td>
+<td><code>base/main/default/objects/Payment_Account__c/fields/Stripe_Donor_Credential__c.field-meta.xml</code></td>
 <td>1</td>
 <td>Text(80): API name of the Named Credential holding the charge-only restricted key.</td>
 </tr>
@@ -2254,7 +2249,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 1,158 findings are Moderate, Low and Info style and maintainability
+<p>The other 810 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2267,34 +2262,14 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 </thead>
 <tbody>
 <tr>
-<td><code>pmd:ExcessiveParameterList</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">161</td>
-</tr>
-<tr>
-<td><code>pmd:CyclomaticComplexity</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">158</td>
-</tr>
-<tr>
 <td><code>cpd:DetectCopyPasteForApex</code></td>
 <td>Info</td>
-<td style="text-align: right;">113</td>
+<td style="text-align: right;">154</td>
 </tr>
 <tr>
-<td><code>pmd:CognitiveComplexity</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">107</td>
-</tr>
-<tr>
-<td><code>pmd:AvoidBooleanMethodParameters</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">104</td>
-</tr>
-<tr>
-<td><code>pmd:FieldNamingConventions</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">76</td>
+<td><code>pmd:ApexDoc</code></td>
+<td>Low</td>
+<td style="text-align: right;">79</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-unsupported-hooks-slds2</code></td>
@@ -2302,14 +2277,19 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">70</td>
 </tr>
 <tr>
+<td><code>pmd:AvoidBooleanMethodParameters</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr>
+<td><code>pmd:FieldNamingConventions</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">58</td>
+</tr>
+<tr>
 <td><code>eslint:@salesforce-ux/slds/enforce-sds-to-slds-hooks</code></td>
 <td>Low</td>
 <td style="text-align: right;">54</td>
-</tr>
-<tr>
-<td><code>pmd:NcssCount</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">50</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
@@ -2317,9 +2297,14 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">46</td>
 </tr>
 <tr>
-<td><code>eslint:@lwc/lwc-platform/no-inline-disable</code></td>
+<td><code>pmd:CyclomaticComplexity</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">33</td>
+<td style="text-align: right;">42</td>
+</tr>
+<tr>
+<td><code>pmd:ExcessiveParameterList</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">40</td>
 </tr>
 <tr>
 <td><code>pmd:ClassNamingConventions</code></td>
@@ -2327,18 +2312,28 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">33</td>
 </tr>
 <tr>
+<td><code>pmd:CognitiveComplexity</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr>
 <td><code>pmd:AvoidHardcodingId</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">27</td>
 </tr>
 <tr>
-<td><code>pmd:PropertyNamingConventions</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">19</td>
+<td><code>regex:NoTrailingWhitespace</code></td>
+<td>Info</td>
+<td style="text-align: right;">21</td>
 </tr>
 <tr>
 <td><code>cpd:DetectCopyPasteForJavascript</code></td>
 <td>Info</td>
+<td style="text-align: right;">19</td>
+</tr>
+<tr>
+<td><code>pmd:PropertyNamingConventions</code></td>
+<td>Moderate</td>
 <td style="text-align: right;">19</td>
 </tr>
 </tbody>
@@ -2360,7 +2355,7 @@ does not follow.</p>
 <tbody>
 <tr>
 <td>Generated</td>
-<td>2026-10-09</td>
+<td>2026-11-21</td>
 </tr>
 <tr>
 <td>Triage source</td>
@@ -2380,7 +2375,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>1,201 (after declared path exclusions)</td>
+<td>852 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

@@ -1983,7 +1983,7 @@
 
 <h2 id="1-how-every-outbound-request-is-built">1. How every outbound request is built<a class="headerlink" href="#1-how-every-outbound-request-is-built" title="Permanent link">#</a></h2>
 <div class="submission-doc" markdown="0">
-<p>All outbound calls are issued by a single private method, <code>StripeGateway.rawRequest</code> — the only <code>setEndpoint</code> in the package — so the header set below is identical on every request in this document.</p>
+<p>All outbound calls are issued by a single method, <code>StripeHttp.send</code> (reached through <code>StripeHttp.rawRequest</code>) — the only <code>setEndpoint</code> in the package — so the header set below is identical on every request in this document.</p>
 <table>
   <tr><th style="width:18%">Header</th><th style="width:26%">Value</th><th>Set by</th></tr>
   <tr><td><code>Authorization</code></td><td><code>Bearer rk_live_&lt;restricted key&gt;</code></td><td>The platform, from the Named Credential. Never set in packaged code and never visible to it. The key value does not appear in any packaged file, field, custom setting, static resource or log.</td></tr>

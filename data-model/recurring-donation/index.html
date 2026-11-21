@@ -1793,7 +1793,7 @@
 <p class="fn-dek">Represents a donor's ongoing recurring giving schedule (subscription profile) supporting a campaign. This package self-manages the billing schedule: a daily scheduler charges each installment off-session against a saved Stripe payment method, so there is no native Stripe subscription object involved. Related to the donor via the dual Contact/Person-Account lookup pattern and to Designation__c/Recurring_Designation__c for fund allocation; each state change or payment attempt is logged to a child Recurring_Donation_History__c record.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>40 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
+<p><code>custom</code> · <code>39 fields</code> · <code>ReadWrite</code> · <code>Recurring Giving</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1828,12 +1828,6 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>→ out</td>
 <td><code>Contact__c</code></td>
 <td><a href="../all-objects/#contact">Contact</a></td>
-<td>Lookup</td>
-</tr>
-<tr>
-<td>→ out</td>
-<td><code>Designation__c</code></td>
-<td><a href="../all-objects/#designation">Designation</a></td>
 <td>Lookup</td>
 </tr>
 <tr>
@@ -1904,13 +1898,13 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td><code>Campaign__c</code></td>
 <td>Campaign</td>
 <td>Lookup → <code>Campaign</code></td>
-<td>The campaign this recurring gift supports.<br><em>Docs: Also the field CancelGoalReachedRecurringQueueable filters on when a campaign's goal is newly crossed with Recurring_Behaviour_At_Goal__c set to Cancel — every Active schedule pointing at that campaign is a candidate for bulk auto-cancellation, chunked at 200 with Transaction Finalizer retry.</em></td>
+<td>The campaign this recurring gift supports.<br><em>Docs: Also the field CancelGoalReachedRecurringQueueable filters on when a campaign's goal is newly crossed with Recurring_Behavior_At_Goal__c set to Cancel — every Active schedule pointing at that campaign is a candidate for bulk auto-cancellation, chunked at 200 with Transaction Finalizer retry.</em></td>
 </tr>
 <tr>
 <td><code>Cancellation_Reason__c</code></td>
 <td>Cancellation Reason</td>
 <td>Text</td>
-<td>Why this recurring donation was cancelled, if known.<br><em>Docs: Also populated by system-initiated cancellations, not just donor/admin ones — CancelGoalReachedRecurringQueueable calls RecurringDonationService.cancelSubscriptions() with a fixed reason string when Campaign.Recurring_Behaviour_At_Goal__c is Cancel and the campaign's goal is newly crossed, so a blank-looking manual cancel and an automatic goal-triggered one are both represented here, distinguishable only by the reason text.</em></td>
+<td>Why this recurring donation was cancelled, if known.<br><em>Docs: Also populated by system-initiated cancellations, not just donor/admin ones — CancelGoalReachedRecurringQueueable calls RecurringDonationService.cancelSubscriptions() with a fixed reason string when Campaign.Recurring_Behavior_At_Goal__c is Cancel and the campaign's goal is newly crossed, so a blank-looking manual cancel and an automatic goal-triggered one are both represented here, distinguishable only by the reason text.</em></td>
 </tr>
 <tr>
 <td><code>Contact__c</code></td>
@@ -1923,12 +1917,6 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Currency ISO Code</td>
 <td>Text</td>
 <td>Three-letter currency code for this recurring gift, e.g. USD.</td>
-</tr>
-<tr>
-<td><code>Designation__c</code></td>
-<td>Designation</td>
-<td>Lookup → <code>Designation__c</code></td>
-<td>The fund or program this recurring gift supports, if not split across multiple funds.</td>
 </tr>
 <tr>
 <td><code>Donor_Account__c</code></td>
@@ -2024,7 +2012,7 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td><code>NPSP_Recurring_Donation_Id__c</code></td>
 <td>NPSP Recurring Donation Id</td>
 <td>Text</td>
-<td>Internal reference to the mirrored NPSP recurring donation record; not for manual entry.<br><em>Docs: Part of the optional NPSP extension, detected at runtime via Schema.describeSObjects() rather than a hard package dependency — the core package works whether or not NPSP is installed. When present, this schedule maps to npe03__Recurring_Donation__c as a mirror, not a replacement; Designation__c/Recurring_Designation__c map to NPSP's GAU allocations separately.</em></td>
+<td>Internal reference to the mirrored NPSP recurring donation record; not for manual entry.<br><em>Docs: Part of the optional NPSP extension, detected at runtime via Schema.describeSObjects() rather than a hard package dependency — the core package works whether or not NPSP is installed. When present, this schedule maps to npe03__Recurring_Donation__c as a mirror, not a replacement; the schedule's Recurring_Designation__c fund rows map to NPSP's GAU allocations separately.</em></td>
 </tr>
 <tr>
 <td><code>Next_Payment_Date__c</code></td>
@@ -2036,7 +2024,7 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td><code>Next_Retry_Date__c</code></td>
 <td>Next Retry Date</td>
 <td>Date</td>
-<td>The next date a failed payment will automatically be retried.<br><em>Docs: Computed as today plus SettingsService.retryIntervalDays(), the same flat interval for every attempt — see the doc note on Retry_Attempt__c about the stale fixed 1/3/5-day cadence described elsewhere.</em></td>
+<td>The next date a failed payment will automatically be retried.<br><em>Docs: Computed as today plus DunningSettings.retryIntervalDays(), the same flat interval for every attempt — see the doc note on Retry_Attempt__c about the stale fixed 1/3/5-day cadence described elsewhere.</em></td>
 </tr>
 <tr>
 <td><code>Paused_Until__c</code></td>
@@ -2078,7 +2066,7 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td><code>Retry_Attempt__c</code></td>
 <td>Retry Attempt</td>
 <td>Number</td>
-<td>How many retry attempts have been made after a failed payment.<br><em>Docs: The description above states a fixed 1/3/5-day retry schedule; that is stale. The current implementation in RecurringDonationService.processRenewal uses a flat interval read from SettingsService.retryIntervalDays(), capped by SettingsService.maxFailedPaymentRetries(), not a hardcoded per-attempt day count. Trust the Apex over this description until it is corrected.</em></td>
+<td>How many retry attempts have been made after a failed payment.<br><em>Docs: The description above states a fixed 1/3/5-day retry schedule; that is stale. The current implementation in RecurringDonationService.processRenewal uses a flat interval read from DunningSettings.retryIntervalDays(), capped by DunningSettings.maxFailedPaymentRetries(), not a hardcoded per-attempt day count. Trust the Apex over this description until it is corrected.</em></td>
 </tr>
 <tr>
 <td><code>Status__c</code></td>

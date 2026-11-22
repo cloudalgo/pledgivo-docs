@@ -5704,7 +5704,7 @@
 <td><code>Finalizer_Interval_Minutes__c</code></td>
 <td>Finalizer Interval (Minutes)</td>
 <td>Number</td>
-<td>How often the background job that turns paid checkouts into donation records runs, in minutes. Lower means donations appear sooner but uses more of your org's 100 scheduled-job slots; 5 minutes uses 12 slots, 15 minutes uses 4. Change this from Settings then Scheduled Jobs rather than editing it here.<br><em>Docs: Added for audit finding F-119. Before it existed the cadence dropdown on the Scheduled Jobs panel wrote only to CronTrigger, so the next PostInstallHandler.scheduleJobs() call — an upgrade, the Health Check Fix button, or any settings save — re-added the missing 5-minute offsets and silently reverted the admin's choice, while expectedJobCount() went on grading against 12 finalizer entries and reported a permanent shortfall.</em></td>
+<td>How often the background job that turns paid checkouts into donation records runs, in minutes. Lower means donations appear sooner. The job uses one of your org's 100 scheduled-job slots whatever you choose. Change this from Settings then Scheduled Jobs rather than editing it here.<br><em>Docs: Added for audit finding F-119. Before it existed the cadence dropdown on the Scheduled Jobs panel wrote only to CronTrigger, so the next PostInstallHandler.scheduleJobs() call re-added the missing 5-minute offsets and silently reverted the admin's choice. Since 2026-11-21 the family is one self-rescheduling job rather than one hourly job per minute offset, and each run reads this value when it books the next.</em></td>
 </tr>
 <tr>
 <td><code>Footer_Text__c</code></td>
@@ -5758,7 +5758,7 @@
 <td><code>Heartbeat_Interval_Minutes__c</code></td>
 <td>Heartbeat Interval (Minutes)</td>
 <td>Number</td>
-<td>How often the alarm that watches for a stalled donation pipeline runs, in minutes. 15 minutes is the default and uses 4 of your org's 100 scheduled-job slots. Change this from Settings then Scheduled Jobs rather than editing it here.<br><em>Docs: These entries start at :03 rather than :00 so a heartbeat never fires in the same minute as a finalizer. Every allowed interval is greater than 3, so that offset stays valid at any cadence. Audit finding F-119.</em></td>
+<td>How often the alarm that watches for a stalled donation pipeline runs, in minutes. 15 minutes is the default. The alarm uses one of your org's 100 scheduled-job slots whatever you choose. Change this from Settings then Scheduled Jobs rather than editing it here.<br><em>Docs: The heartbeat books each next run from the moment its current run starts, so it no longer keeps the fixed :03 offset the per-minute layout used to keep it out of the finalizer's minute. The two jobs touch different rows, so sharing a minute costs nothing. Audit finding F-119; one-job layout since 2026-11-21.</em></td>
 </tr>
 <tr>
 <td><code>Inline_Video_Embeds_Enabled__c</code></td>

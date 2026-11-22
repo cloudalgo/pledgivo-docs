@@ -994,10 +994,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend" class="md-nav__link">
+  <a href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-often-the-job-runs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The cadence is a trade between how fresh your data is and how many job slots you spend
+        The cadence is a trade between how fresh your data is and how often the job runs
       
     </span>
   </a>
@@ -2342,10 +2342,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend" class="md-nav__link">
+  <a href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-often-the-job-runs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The cadence is a trade between how fresh your data is and how many job slots you spend
+        The cadence is a trade between how fresh your data is and how often the job runs
       
     </span>
   </a>
@@ -3276,8 +3276,8 @@ Record Type than the packaged default.</p>
 <tbody>
 <tr>
 <td>Scheduled Jobs</td>
-<td>Counts the cron entries the package expects — the donation finalizer, the reconciliation heartbeat, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep, and the nightly campaign-total rebuild. It confirms they are <strong>scheduled</strong>, which is not the same as running; <strong>Gifts Being Recorded</strong> below is the row that knows the difference. Once a payment account exists it also answers a second question in the same sentence: can the jobs that call the gateway <strong>authenticate</strong>? A named-principal callout runs as the job's owner, so it goes <strong>red</strong> and names that owner when they hold no permission set granting an external credential principal — the state in which every refund, renewal and sweep fails silently while the count stays green. A package cannot see <em>which</em> credential a grant belongs to, so when every owner is granted the row keeps its colour and asks you to confirm the grant is on the credential your payment account names</td>
-<td><strong>Fix</strong> schedules whatever is missing and re-owns any job whose owner no longer resolves. Safe to click at any time — a job that exists and is running is left alone, cadence included. It also appears for a stranded owner, but <strong>only if you yourself hold a credential grant</strong> — the repair is to reschedule the jobs under your login, which helps nobody if your login cannot authenticate either. If it isn't shown, grant the principal first (see <a href="../after-you-install/#grant-the-credential">Grant the credential</a>)</td>
+<td>Counts the scheduled jobs the package expects — the donation finalizer, the reconciliation heartbeat, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep, and the nightly campaign-total rebuild — and checks that the finalizer's and heartbeat's next run is booked within its interval plus five minutes (<strong>red</strong> when one has no next run, <strong>amber</strong> when it is booked outside that window). It confirms they are <strong>scheduled</strong>, which is not the same as running; <strong>Gifts Being Recorded</strong> below is the row that knows the difference. Once a payment account exists it also answers a second question in the same sentence: can the jobs that call the gateway <strong>authenticate</strong>? A named-principal callout runs as the job's owner, so it goes <strong>red</strong> and names that owner when they hold no permission set granting an external credential principal — the state in which every refund, renewal and sweep fails silently while the count stays green. A package cannot see <em>which</em> credential a grant belongs to, so when every owner is granted the row keeps its colour and asks you to confirm the grant is on the credential your payment account names</td>
+<td><strong>Fix</strong> schedules whatever is missing, replaces a finalizer or heartbeat job whose next run is outside its window, and re-owns any job whose owner no longer resolves. Safe to click at any time — a job that exists and is running is left alone, cadence included. It also appears for a stranded owner, but <strong>only if you yourself hold a credential grant</strong> — the repair is to reschedule the jobs under your login, which helps nobody if your login cannot authenticate either. If it isn't shown, grant the principal first (see <a href="../after-you-install/#grant-the-credential">Grant the credential</a>)</td>
 </tr>
 <tr>
 <td>Gifts Being Recorded</td>
@@ -3323,66 +3323,63 @@ the "Copy CLI command" action on Site &amp; Domain. Run the CLI command yourself
 from the Site &amp; Domain panel.</p>
 </div>
 <h3 id="scheduled-jobs-system-scheduled-jobs">Scheduled Jobs (<code>System → Scheduled Jobs</code>)<a class="headerlink" href="#scheduled-jobs-system-scheduled-jobs" title="Permanent link">#</a></h3>
-<p>Controls the package's background cron schedule. The two cadences it can change are stored on
+<p>Controls the package's background schedule. The two cadences it can change are stored on
 <code>Settings__c</code> (<strong>Finalizer Interval (Minutes)</strong> and <strong>Heartbeat Interval (Minutes)</strong>); everything
-else on this panel acts on cron entries directly.</p>
+else on this panel acts on scheduled jobs directly.</p>
 <p>Every scheduled job appears as a card showing what it does, when it runs, and whether it is
 waiting or paused. The two <strong>families</strong> — Donation Finalizer and Reconciliation Heartbeat —
-expand to a cadence editor, because they need to run more often than once an hour and Salesforce
-can only express that as several jobs spaced across the hour (which is why one family shows a
-dozen rows; they are not duplicates). Every other job runs on a fixed schedule and its card is
+expand to a cadence editor, because they need to run more often than once an hour, which
+Salesforce cannot express as a repeating schedule. Each is therefore <strong>one job that books its own
+next run</strong>: every run first books the next one an interval ahead, then does its work, so a run
+that fails still leaves the next one booked. If Salesforce refuses a booking, the job retries once
+an hour later. Its card shows that one booked run, and warns when there is none — a family with no
+next run will not start again by itself, so press <strong>Schedule missing jobs</strong> here or <strong>Fix</strong> on the
+Health Check's Scheduled Jobs row. Every other job runs on a fixed schedule and its card is
 read-only: to move one, use Salesforce <strong>Setup → Scheduled Jobs</strong> and search for the job name
 printed at the bottom of its card.</p>
-<h4 id="the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend">The cadence is a trade between how fresh your data is and how many job slots you spend<a class="headerlink" href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-many-job-slots-you-spend" title="Permanent link">#</a></h4>
+<h4 id="the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-often-the-job-runs">The cadence is a trade between how fresh your data is and how often the job runs<a class="headerlink" href="#the-cadence-is-a-trade-between-how-fresh-your-data-is-and-how-often-the-job-runs" title="Permanent link">#</a></h4>
 <p>A Salesforce org can hold <strong>100 scheduled jobs in total</strong> — across every package and everything
-your own admins have scheduled. At the shipped cadences this package occupies <strong>24 of them</strong>: 12
-for the Donation Finalizer (every 5 minutes), 4 for the Reconciliation Heartbeat (every 15), and 8
-fixed single jobs. That is the largest single thing on the panel, and it is adjustable:</p>
+your own admins have scheduled. This package occupies <strong>10 of them</strong> at any cadence: one for the
+Donation Finalizer, one for the Reconciliation Heartbeat, three for the guest-request sweep and
+five fixed single jobs. The cadence decides how soon a gift becomes a record:</p>
 <table>
 <thead>
 <tr>
 <th>Finalizer interval</th>
-<th>Jobs used</th>
 <th>What a donor's gift looks like</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>5 min (default)</td>
-<td>12</td>
 <td>The donation record appears within about five minutes of the payment</td>
 </tr>
 <tr>
 <td>10 min</td>
-<td>6</td>
 <td>Within about ten minutes</td>
 </tr>
 <tr>
 <td>15 min</td>
-<td>4</td>
 <td>Within about fifteen minutes</td>
 </tr>
 <tr>
 <td>20 min</td>
-<td>3</td>
 <td>Within about twenty minutes</td>
 </tr>
 <tr>
 <td>30 min</td>
-<td>2</td>
 <td>Within about half an hour</td>
 </tr>
 <tr>
 <td>60 min</td>
-<td>1</td>
 <td>Up to an hour</td>
 </tr>
 </tbody>
 </table>
 <p>The delay is real but it is not a payment delay: the donor is charged and sees their thank-you page
 immediately, and the finalizer is what turns that charge into the Contact and Opportunity your staff
-see in Salesforce. Nothing is lost while it waits. Widen the interval if you are short of job slots;
-keep it at 5 if your team works from the donation records as gifts arrive.</p>
+see in Salesforce. Nothing is lost while it waits. Widening the interval frees no job slots; keep it
+at 5 if your team works from the donation records as gifts arrive.</p>
 <p>Widening the finalizer costs one more thing, less obvious than the delay: it is also how quickly
 the console notices a pipeline that has genuinely <strong>stopped</strong>. That alarm waits three missed passes
 and never less than 30 minutes — so at the default cadence it speaks up after 30 minutes, and on an
@@ -3390,8 +3387,12 @@ hourly finalizer after three hours. It has to scale that way, or an org finalizi
 report itself broken for half of every hour while working perfectly.</p>
 <p>The Reconciliation Heartbeat is a safety net rather than a donor-facing path, so it can safely run
 less often than the Finalizer.</p>
-<p>Both intervals must divide the hour evenly (5, 10, 15, 20, 30 or 60). A value typed straight into
-the Custom Setting that is not on that list is ignored and the packaged default is used instead.</p>
+<p>Both intervals must be one of 5, 10, 15, 20, 30 or 60. A value typed straight into the Custom
+Setting that is not on that list is ignored and the packaged default is used instead. Saving a new
+interval on this panel aborts the job's booked run and books the next one at the new interval
+straight away. The Health Check's Scheduled Jobs row checks that each family's next run is booked
+within its interval plus five minutes: red when a family has no next run, amber when it is booked
+outside that window.</p>
 <table>
 <thead>
 <tr>
@@ -3404,12 +3405,12 @@ the Custom Setting that is not on that list is ignored and the packaged default 
 <tr>
 <td><strong>Schedule missing jobs</strong> (panel header, and the button on the empty state)</td>
 <td>Schedules every background job the package expects — the finalizer and heartbeat families, recurring billing, retention purge, refund/dispute reconciliation, the Stripe payment sweep and the nightly campaign-total rebuild</td>
-<td>Immediate, and safe to click at any time. A job that exists <strong>and is running</strong> is left exactly as it is, cadence included. A job whose owner no longer resolves — which is every job a fresh install created, since the post-install script runs as a system user the org cannot reach — is aborted and rescheduled under your login. That second behaviour is the whole reason to press this after a fresh install. Same action as <strong>Fix</strong> on the Health Check row and the Get Started button, which reads "Restart the background jobs" when the jobs exist but are dead. If the panel is empty, this is the only control that can start the schedule — the cadence editor only appears once a family has jobs to edit.</td>
+<td>Immediate, and safe to click at any time. A job that exists <strong>and is running</strong> is left exactly as it is, cadence included. A job whose owner no longer resolves — which is every job a fresh install created, since the post-install script runs as a system user the org cannot reach — is aborted and rescheduled under your login. That second behaviour is the whole reason to press this after a fresh install. Same action as <strong>Fix</strong> on the Health Check row and the Get Started button, which reads "Restart the background jobs" when the jobs exist but are dead. If a family's job is missing, its card says so and this button books it.</td>
 </tr>
 <tr>
 <td>"Run every" cadence + <strong>Save</strong> (per job family)</td>
 <td>Reschedules how often the Donation Finalizer / Reconciliation Heartbeat jobs fire, <strong>and stores the choice</strong> on <code>Settings__c</code> so upgrades, Health Check fixes and settings saves all keep it</td>
-<td>Immediate. Clearing the old entries and creating the new ones is one action, so a save that fails leaves the family as it was rather than scheduled nowhere. Re-saving the same interval is safe.</td>
+<td>Immediate. Aborting the booked run and booking the next one at the new interval is one action, and re-saving the same interval is safe. If Salesforce refuses the booking, the panel shows the error and the Health Check row turns red with its Fix button.</td>
 </tr>
 <tr>
 <td><strong>Run now</strong> — Recurring donations</td>

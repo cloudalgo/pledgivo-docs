@@ -2509,7 +2509,7 @@ is on screen; hovering pauses it, and touching any control hands it back to you 
 <div class="fn-steps">
 <figure class="fn-step" data-title="Get Started, near the end"><img src="../../assets/images/gs-01-get-started-console.png" alt="Get Started panel reading 6 of 7 complete with one step left" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The console at the end of a real setup: <b>6 / 7 Complete</b> — <i>"One step left before this org is ready to take donations. It is walked through on another panel."</i> Steps 1 and 2 are <span class="fn-chip">DONE</span> with their evidence quoted from the org — "2 user(s) hold Fundraising Admin or Fundraising User", and a mapping line reading N of N — and step 3, <b>Activate your donation site</b>, is the one still open. Nothing here was ticked by hand.</figcaption></figure>
 <figure class="fn-step" data-title="Steps 3 to 5"><img src="../../assets/images/gs-02-get-started-site-payment.png" alt="Get Started steps 3, 4 and 5 with their live evidence lines" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The middle of the checklist. Step 3 is <b>Partly done</b> and says exactly why — <i>Site "Fundraising" exists but is not activated yet (status: UnderConstruction)</i>. Step 4 is done, "1 active payment account(s) configured". Step 5 is done and carries a <span class="fn-chip">SETUP ONLY</span> flag with a <b>Do this in Setup</b> block: the app can verify the grant but can never make it for you.</figcaption></figure>
-<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled". Shown here after the restart; on a fresh install this row is amber until the jobs are re-owned. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter. (This screenshot predates the second optional step, <b>Add the two grants the permission sets cannot give</b>, which now sits just above it.)</figcaption></figure>
+<figure class="fn-step" data-title="Steps 6, 7 and the optional one"><img src="../../assets/images/gs-03-get-started-grant-jobs.png" alt="Get Started steps 6 and 7 plus the optional third-party content step" loading="lazy" decoding="async"><figcaption><b>What it shows.</b> The tail of the list. <b>Start the background jobs</b> — "24 of 24 background jobs are scheduled" (this screenshot predates the one-job-per-family layout; a current org reads 10 of 10). Shown here after the restart; on a fresh install this row is amber until the jobs are re-owned. <b>Set your organization name and logo</b> — 'Public pages show "Acme Nonprofit"'. Below the seven sits the optional <b>Trust the content hosts you actually use</b>, marked <span class="fn-chip">OPTIONAL</span> and <span class="fn-chip">SETUP ONLY</span>. Optional steps never move the counter. (This screenshot predates the second optional step, <b>Add the two grants the permission sets cannot give</b>, which now sits just above it.)</figcaption></figure>
 </div>
 
 <div class="fn-status-strip">
@@ -2930,27 +2930,32 @@ one exists, the donation form cannot take money and the guide cannot grade itsel
 <p>Full walkthrough: <a href="../connecting-stripe/">Connecting Stripe</a>.</p>
 <h2 id="background-jobs">8. Background jobs<a class="headerlink" href="#background-jobs" title="Permanent link">#</a></h2>
 <p>Donations are finalized, payments swept, refunds reconciled, and campaign totals repaired by
-scheduled Apex — <strong>24 cron entries</strong> on the settings a fresh install ships with. The install
-creates all 24, and the step still reports "24 of 24 background jobs are scheduled".
+scheduled Apex — <strong>10 scheduled jobs</strong>, out of the 100 Salesforce allows an org. The install
+creates all 10, and the step still reports "10 of 10 background jobs are scheduled".
 <strong>Press the button anyway.</strong></p>
 <div class="admonition note">
-<p class="admonition-title">24 is the default, not a fixed number</p>
-<p>Salesforce has no sub-hourly schedule, so a job that runs every five minutes is really twelve
-separate cron entries an hour apart in start time. Two of the families let you choose that
-cadence — see <a href="#job-cadence">the table below</a> — and the count moves with it: putting the
-finalizer on 15 minutes replaces its twelve entries with four, and the step then reports
-16 of 16. The console always grades your org against the cadence you chose, never against 24.</p>
+<p class="admonition-title">The two five- and fifteen-minute jobs book their own next run</p>
+<p>Salesforce has no sub-hourly repeating schedule, so the finalizer and the heartbeat are each
+<strong>one job that books its own next run</strong> every time it runs: it reserves the next run one
+interval ahead first, then does its work, so a pass that fails still leaves the next one
+booked. Changing their cadence — see <a href="#job-cadence">the table below</a> — changes how far ahead
+each run books the next, never how many jobs there are. The step also checks that each of
+the two has a next run booked within its cadence plus five minutes, and goes red if one has
+none. If Salesforce refuses a booking, the job tries once more an hour later, which covers the
+hour repeated when the clocks go back. If a job still shows no next run, it will not start
+again by itself: press <strong>Fix</strong> on the Health Check's Scheduled Jobs row (or this step's
+button) to book it.</p>
 </div>
 <div class="admonition warning">
 <p class="admonition-title">This is the one step a fresh install does not finish for you</p>
 <p>A scheduled job belongs to whoever scheduled it, and <code>CronTrigger.OwnerId</code> is stamped when the
 job is created and never changes afterwards. The post-install script runs as a Salesforce
-system user your org cannot reach — so the 24 jobs it creates are real cron entries owned by a
+system user your org cannot reach — so the 10 jobs it creates are real scheduled jobs owned by a
 user that no longer resolves. They are scheduled, they sit at <code>WAITING</code> on the right cadence,
 and every pass dies the moment it starts: an owner holding no permission set cannot see the
 objects the jobs read, so the query the batch opens with throws before it reads a row. The
 count is honest and reassuring and tells you nothing about the thing that matters.</p>
-<p>Measured on a virgin org: all 24 jobs owned by an unreachable user, ten consecutive batch
+<p>Measured on a virgin org: every job owned by an unreachable user, ten consecutive batch
 runs, zero successes, and the finalizer marker still empty half an hour later. Re-owned, the
 very next pass completed and stamped the marker. The failure is
 silent — the unhandled-exception notice goes to a mailbox that does not exist.</p>
@@ -2974,7 +2979,7 @@ authenticate. A named-principal callout runs as the <strong>owner of the job</st
 someone holding no permission set that grants the external credential's principal fails every
 single time it fires — refunds and chargebacks never come back, recurring gifts never charge,
 and a payment taken but not recorded is never swept up. Every cron row still reads <code>WAITING</code>,
-on time, and the job count still reads 24 of 24.</p>
+on time, and the job count still reads 10 of 10.</p>
 <p>So do <a href="#grant-the-credential">step 6</a> before this one, and press <strong>Restart the background jobs</strong>
 while logged in as a user who holds that grant — the jobs are rescheduled under whoever
 presses it. The <strong>Scheduled Jobs</strong> health row checks this from that point on: it names the
@@ -2988,7 +2993,7 @@ confirm the grant is on the credential your payment account names.</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Confirm this step is green before you share a donation link</p>
-<p>The <code>Finalizer-&lt;m&gt;</code> family is what turns a confirmed card payment into an Opportunity, a
+<p>The <code>Finalizer</code> job is what turns a confirmed card payment into an Opportunity, a
 donor record and a receipt. With the finalizer stopped, a donor's card is still charged and
 they still land on the thank-you page reading "your receipt is on its way" — but nothing is
 created in Salesforce. The gift waits as a <code>Donation Staging</code> record and finalizes on the
@@ -3015,7 +3020,7 @@ means the jobs are not running and nothing is waiting on them; red means gifts a
 </div>
 <div class="admonition tip">
 <p class="admonition-title">A green job count is not proof the jobs are running</p>
-<p>"24 of 24 background jobs are scheduled" says the cron entries exist — a job that is
+<p>"10 of 10 background jobs are scheduled" says the jobs exist — a job that is
 scheduled but fails on every fire still counts. The console therefore reads a second signal:
 the finalizer stamps the time each time it <em>completes</em> a pass, and if that stamp is too old
 this step goes red regardless of the job count. That is the number to trust.</p>
@@ -3024,8 +3029,9 @@ passes, and never less than 30 minutes</strong>. On the default five-minute fina
 minutes, six missed passes. On an hourly one it is three hours. A fixed threshold could not
 work here: 30 minutes is shorter than a single pass at the slowest cadence, so an org
 finalizing hourly would have reported itself broken for half of every hour while working
-perfectly. Slowing the finalizer therefore buys you slower detection as well as fewer jobs —
-that is the trade, and it is the reason the default is five minutes.</p>
+perfectly. Slowing the finalizer therefore buys you slower detection and slower records, and
+nothing else — it uses one scheduled-job slot at any cadence — which is why the default is
+five minutes.</p>
 </div>
 <p>You need this step after a fresh install, if some jobs were aborted (a deployment that touched a
 scheduled class will do it), or if the post-install script did not complete. Settings console →
@@ -3035,12 +3041,12 @@ button either way. <strong>Scheduled Jobs</strong> has the per-job breakdown and
 a healthy org changes nothing: a job that exists <em>and is running</em> keeps its schedule, including a
 cadence you customized. A job whose owner no longer resolves is aborted and recreated under you.</p>
 <p>To confirm a gift really landed, open <strong>Donation Monitor</strong>: it lists every staging record still
-waiting, and warns at the top when the <code>Finalizer</code> family is not scheduled.</p>
+waiting, and warns at the top when the <code>Finalizer</code> job is not scheduled.</p>
 <h3 id="job-cadence">The families, and which cadences you can change<a class="headerlink" href="#job-cadence" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
-<th>Family</th>
+<th>Job</th>
 <th>Count</th>
 <th>Cadence</th>
 <th>Yours to change?</th>
@@ -3048,15 +3054,15 @@ waiting, and warns at the top when the <code>Finalizer</code> family is not sche
 </thead>
 <tbody>
 <tr>
-<td><code>Finalizer-&lt;m&gt;</code></td>
-<td>12</td>
-<td>Every 5 minutes</td>
+<td><code>Finalizer</code></td>
+<td>1</td>
+<td>Every 5 minutes — each run books the next</td>
 <td><strong>Yes</strong> — 5, 10, 15, 20, 30 or 60</td>
 </tr>
 <tr>
-<td><code>ReconciliationHeartbeat-&lt;m&gt;</code></td>
-<td>4</td>
-<td>Every 15 minutes</td>
+<td><code>ReconciliationHeartbeat</code></td>
+<td>1</td>
+<td>Every 15 minutes — each run books the next</td>
 <td><strong>Yes</strong> — same six choices</td>
 </tr>
 <tr>
@@ -3085,16 +3091,16 @@ waiting, and warns at the top when the <code>Finalizer</code> family is not sche
 </tr>
 </tbody>
 </table>
-<p>Counts and cadences above are the defaults. Change the two settable ones in <strong>Settings →
-System → Scheduled Jobs</strong>, which shows what each cadence costs you in cron entries before you
-save it — Salesforce caps an org at 100 scheduled Apex jobs in total, and this app is not the
-only thing in your org competing for them.</p>
+<p>Cadences above are the defaults; the counts do not change with them. Change the two settable
+ones in <strong>Settings → System → Scheduled Jobs</strong>: saving aborts the job's booked run and books the
+next one at the new cadence straight away. Salesforce caps an org at 100 scheduled Apex jobs in
+total, and this app takes 10 of them whatever cadences you choose.</p>
 <div class="admonition warning">
 <p class="admonition-title">The finalizer is the one to leave alone unless you have a reason</p>
 <p>It is what turns a confirmed card payment into a donation record, so its cadence is the delay
 a donor's gift waits before it appears in Salesforce — and, as described above, it also sets
-how long a genuinely stopped pipeline stays quiet before the console says so. Widen it to free
-up cron slots, not to tidy the list.</p>
+how long a genuinely stopped pipeline stays quiet before the console says so. Widening it frees
+no scheduled-job slots, so widen it only to cut how often the job runs.</p>
 </div>
 <h2 id="branding">9. Organization name and logo<a class="headerlink" href="#branding" title="Permanent link">#</a></h2>
 <p>Your organization name and logo appear on the donation form, the receipt email, and the donor

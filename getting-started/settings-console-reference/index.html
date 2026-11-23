@@ -2415,7 +2415,7 @@ run, or not at all).</p>
 <p class="admonition-title">How to read "Behavior on update"</p>
 <ul>
 <li><strong>Immediate</strong> — the very next Apex transaction/page load sees the new value. <code>Settings__c</code>
-  is a Hierarchy Custom Setting; saving it commits instantly with no platform-cache delay.</li>
+  is a single settings record; saving it commits instantly with no platform-cache delay.</li>
 <li><strong>Immediate, but browser-cached</strong> — the server-side value changes instantly, but the
   specific screen that displays it uses a cacheable (<code>@AuraEnabled(cacheable=true)</code>) wire, so
   an already-open browser tab may keep showing the old value until it reloads or its cache is
@@ -3469,7 +3469,7 @@ worked troubleshooting sequence see
 <tr>
 <td><strong>Retry now</strong> (per row)</td>
 <td>Re-checks the donation's payment status with Stripe and finalizes/expires it accordingly</td>
-<td>Immediate. This only re-reads the existing payment's current status from Stripe — it never submits a new charge, so retrying cannot cause a double charge. If the payment actually succeeded but finalizing keeps failing (e.g. a validation rule), the record is deliberately never auto-expired, so retrying repeatedly is safe — it just won't self-resolve until whatever is blocking finalization is fixed.</td>
+<td>Queued as a background job, so the row updates shortly after the click (press Refresh). This only re-reads the existing payment's current status from Stripe — it never submits a new charge, so retrying cannot cause a double charge. If the payment actually succeeded but finalizing keeps failing (e.g. a validation rule), the record is deliberately never auto-expired, so retrying repeatedly is safe — it just won't self-resolve until whatever is blocking finalization is fixed.</td>
 </tr>
 </tbody>
 </table>

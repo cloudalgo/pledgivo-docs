@@ -5356,11 +5356,13 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>106 fields</code> · <code>Platform &amp; Settings</code></p>
-<p>Package configuration settings</p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>107 fields</code> · <code>ReadWrite</code> · <code>Platform &amp; Settings</code></p>
+<p>The fundraising app's org-wide configuration: one record, edited through the Settings console. It is a custom object rather than a custom setting so that permission sets decide who may read and edit it: Fundraising_Admin reads and edits it, Fundraising_User and Fundraising_ReadOnly read it, and the guest user is never granted it. Sharing is Public Read/Write because the record is org configuration every staff user reads, and who may edit it is decided by the object permission alone.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Tier 1 of the three-tier settings model documented in specs/04-data-model.md. Tier 2 is Payment_Account__c (one record per set of connected processor credentials — it replaced the Payment_Gateway__mdt CMDT tier in 2026-08), Tier 3 is Named Credentials (secrets never live here). As a Hierarchy Custom Setting it resolves Org Defaults, falling back per profile or user only if a future release needs per-role overrides; today every read goes through the Org Default row via SettingsService, which exposes one typed accessor per field or field group rather than callers reading Settings__c.getOrgDefaults() directly, so a field rename or a default-value change only needs one code change.</p>
+<p>Tier 1 of the three-tier settings model: Tier 2 is Payment_Account__c (one record per set of connected processor credentials), Tier 3 is Named Credentials (secrets never live here). Until Sprint 3 of the clean-slate rebuild (2026-11) this was a Hierarchy Custom Setting with the same API name and the same fields. A custom setting cannot be granted by a permission set: any user could read it, and writing its org-default row needed Customize Application, which no packaged set can carry, so every write ran in system mode behind a custom-permission gate. As a custom object the platform enforces both: a staff read runs in user mode and needs one of the three package sets, and the Settings console saves in user mode with Fundraising_Admin's Edit. Guest pages, jobs and the install handler read it in system mode, each with its reason (access decision log D5).</p>
+<p>Exactly one record. Singleton__c is required, unique and defaults to ORG, so a second insert fails on the unique index instead of creating a shadow row. Every read goes through SettingsSelector.current (cached per transaction, per access mode) by way of the Settings accessor, and feature code reads one value through the typed concern classes (LogSettings, EmailSettings, SiteUrlSettings and the rest). The install handler creates the record (SettingsSeeder.seedOrgDefaults).</p>
+<p>Org-wide default Public Read/Write (sharingModel ReadWrite; owner ruling 2026-11-23). The row holds configuration, not donor data, and every staff user reads it, so record sharing must not stand between a user and the one record: the object permission is the whole gate. Fundraising_Admin holds Read/Edit, the other two staff sets Read, and no set holds Create or Delete (the install seeder creates the record in system mode). It was Public Read Only until the fresh-org check of 2026-11-22 showed that this refuses a user-mode update by anyone but the record's owner, who in a subscriber org is the package install user, so no Fundraising_Admin could save settings. External users get Private, the platform's floor for guest and portal users; guest pages read the row in system mode.</p>
 </div>
 <p>See the <a href="../settings/">full reference page</a> for this object.</p>
 <p><strong>Relationships</strong></p>
@@ -5416,13 +5418,13 @@
 <td><code>Company_Match_Task_Owner_Id__c</code></td>
 <td>Company Match Task Owner Id</td>
 <td>Text</td>
-<td>The 18-character Salesforce User Id of the person who chases employer matches. Leave blank and each follow-up task goes to the owner of the campaign the gift came in on, which is the right answer for most organizations.<br><em>Docs: A Text field rather than a lookup because Custom Settings cannot hold relationship fields — this is the platform's constraint, not a design preference, and it is why CompanyMatchService validates the Id against an active User before using it instead of trusting the stored value. Storing a User Id in config is not the "no hardcoded Ids" violation the security checklist targets: the value is admin-entered per org, never shipped in source.</em></td>
+<td>The 18-character Salesforce User Id of the person who chases employer matches. Leave blank and each follow-up task goes to the owner of the campaign the gift came in on, which is the right answer for most organizations.<br><em>Docs: A Text field rather than a lookup because Settings__c was a Custom Setting, which cannot hold relationship fields, when this field was created; it kept its type, and that is why CompanyMatchService validates the Id against an active User before using it instead of trusting the stored value. Storing a User Id in config is not the "no hardcoded Ids" violation the security checklist targets: the value is admin-entered per org, never shipped in source.</em></td>
 </tr>
 <tr>
 <td><code>Contact_Email__c</code></td>
 <td>Contact Email</td>
 <td>Email</td>
-<td>The address donors should write to when they have a question before giving.<br><em>Docs: Read through OrgContactSettings.contactEmail(), never Settings__c.getInstance() directly. Deliberately separate from Reply_To_Email__c: that one is a transactional sender identity, this one is published on a public page for humans to write to.</em></td>
+<td>The address donors should write to when they have a question before giving.<br><em>Docs: Read through OrgContactSettings.contactEmail(), never a direct Settings.current() read directly. Deliberately separate from Reply_To_Email__c: that one is a transactional sender identity, this one is published on a public page for humans to write to.</em></td>
 </tr>
 <tr>
 <td><code>Contact_Hours__c</code></td>
@@ -5452,7 +5454,7 @@
 <td><code>Default_Designation__c</code></td>
 <td>Default Designation</td>
 <td>Text</td>
-<td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Hierarchy Custom Settings cannot hold relationship fields, so GiftAmountSettings.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
+<td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Settings__c was a Hierarchy Custom Setting, which cannot hold relationship fields, when the field was created, so GiftAmountSettings.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
 </tr>
 <tr>
 <td><code>Default_Hero_Image_URL__c</code></td>
@@ -5638,7 +5640,7 @@
 <td><code>Event_Deductible_Mode__c</code></td>
 <td>Event_Deductible_Mode</td>
 <td>Text</td>
-<td>Controlled values: "Fair Market Value" or "Percentage". Custom Settings do not support the Picklist field type, so this is enforced in Apex rather than a valueSet.<br><em>Docs: Stored as free-text rather than a Picklist because Hierarchy Custom Settings cannot hold that field type; EventPurchaseService enforces the two valid values ("Fair Market Value", "Percentage") case-insensitively and falls back to Fair Market Value with a warning on any other stored text, rather than silently treating an unrecognized value as fully deductible.</em></td>
+<td>Controlled values: "Fair Market Value" or "Percentage". The field is text, so the app checks the value rather than a picklist.<br><em>Docs: Stored as free-text rather than a Picklist because Settings__c was a Hierarchy Custom Setting, which cannot hold that field type, when the field was created; EventPurchaseService enforces the two valid values ("Fair Market Value", "Percentage") case-insensitively and falls back to Fair Market Value with a warning on any other stored text, rather than silently treating an unrecognized value as fully deductible.</em></td>
 </tr>
 <tr>
 <td><code>Event_Donation_Product_Id__c</code></td>
@@ -5836,7 +5838,7 @@
 <td><code>Person_Account_Enabled__c</code></td>
 <td>Person_Account_Enabled</td>
 <td>Checkbox</td>
-<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SettingsService.detectAndUpdateOrgFeatures() and SetupOrganizationController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. OrgFeatureSettings.personAccountEnabled() would combine the two, but has no production caller — see the note above that method for why pointing isPersonAccountOrg() at it would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
+<td>Read-only. Automatically detected — do not set manually.<br><em>Docs: A detection MIRROR for the setup console, not a switch and not a runtime gate. Written only by SetupOrganizationController.detectOrgFeatures(), and shown read-only in the setOrganization panel so an admin can see what the app detected. Nothing in the donation, receipt or portal paths reads it: every runtime Person Account branch goes through DonorResolutionService.isPersonAccountOrg(), a pure Account.IsPersonAccount describe that never touches this record. The unused OrgFeatureSettings.personAccountEnabled() getter that would have combined the two was deleted — see the note in OrgFeatureSettings for why pointing isPersonAccountOrg() at this field would be unsafe while this field defaults to false and is not seeded at install. Never branch on this field directly.</em></td>
 </tr>
 <tr>
 <td><code>Portal_Code_Max_Per_Hour__c</code></td>
@@ -5908,7 +5910,7 @@
 <td><code>Record_Type_Mapping_Chunk_1__c</code></td>
 <td>Record Type Mapping Chunk 1</td>
 <td>Text</td>
-<td>Machine-managed. Do not edit — this stores part of the record-type mapping configuration and is only ever changed by the Setup console's record-type mapping screen.<br><em>Docs: Part of a 4-field chunked storage scheme for RecordTypeMappingService's compact-encoded mapping table (field separator U+00A7 "§", slot separator U+00B6 "¶") — replaces the former Record_Type_Mapping__c custom object, deleted 2026-08-03 because Custom Settings fields cap at 255 chars and don't support Long Text Area, so a dedicated Long-Text-capable object was the only other option; chunking across Settings__c fields was chosen instead to avoid a second custom object.</em></td>
+<td>Machine-managed. Do not edit — this stores part of the record-type mapping configuration and is only ever changed by the Setup console's record-type mapping screen.<br><em>Docs: Part of a 4-field chunked storage scheme for RecordTypeMappingService's compact-encoded mapping table (field separator U+00A7 "§", slot separator U+00B6 "¶") — replaces the former Record_Type_Mapping__c custom object, deleted 2026-08-03 because Settings__c was then a Custom Setting, whose fields cap at 255 chars and don't support Long Text Area, so a dedicated Long-Text-capable object was the only other option; chunking across Settings__c fields was chosen instead to avoid a second custom object.</em></td>
 </tr>
 <tr>
 <td><code>Record_Type_Mapping_Chunk_2__c</code></td>
@@ -5965,6 +5967,12 @@
 <td>Days between automatic retry attempts for a failed recurring payment, e.g. 3.<br><em>Docs: Read by DunningSettings.retryIntervalDays() (default 3 when unset). Cadence is flat: every retry waits the same number of days, there is no backoff curve.</em></td>
 </tr>
 <tr>
+<td><code>Singleton__c \*</code></td>
+<td>Singleton</td>
+<td>Text</td>
+<td>Always ORG. This value marks the one settings record the app uses; do not change it.<br><em>Docs: Required, unique (case-insensitive) and defaulting to ORG, so a plain insert gets the value without the caller setting it, and a second insert fails with DUPLICATE_VALUE. The validation rule Singleton_Must_Be_ORG refuses any other value, so an admin cannot edit the record out of the app's reach. It is not an external Id: the settings writers save by record Id through Dml. SettingsSelector.current filters on SettingsSelector.SINGLETON_KEY. A required field takes no fieldPermissions (the platform rejects them and treats the field as readable and editable wherever the object is), so no permission set lists it. Named Singleton_Key__c until S3-T1b fix round 1: a field name containing "key" trips the AppExchange analyzer's ProtectSensitiveData rule, and the merge gate allows no suppression. Pinned by SettingsSelector_Test.secondRecordRejected and SettingsSelector_Test.singletonValidation_refusesAnyValueButOrg.</em></td>
+</tr>
+<tr>
 <td><code>Social_Facebook_URL__c</code></td>
 <td>Social — Facebook URL</td>
 <td>Url</td>
@@ -6010,7 +6018,7 @@
 <td><code>Terms_URL__c</code></td>
 <td>Terms URL</td>
 <td>Url</td>
-<td>Web address of your terms and conditions page. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through PublicPageSettings.termsUrl(), never Settings__c.getInstance() directly. Lived on Campaign_Design__c until 2026-08-12, where switching a campaign from one theme to another silently changed which terms document donors were pointed at — a policy is a fact about the organization, not about a color scheme. Campaign.Terms_URL_Override__c wins when set; CampaignService.resolveIdentity owns that precedence, not this field.</em></td>
+<td>Web address of your terms and conditions page. Donors see it as a link at the bottom of every public page. Leave blank if you do not publish one — the link is simply left out.<br><em>Docs: Read through PublicPageSettings.termsUrl(), never a direct Settings.current() read. Lived on Campaign_Design__c until 2026-08-12, where switching a campaign from one theme to another silently changed which terms document donors were pointed at — a policy is a fact about the organization, not about a color scheme. Campaign.Terms_URL_Override__c wins when set; CampaignService.resolveIdentity owns that precedence, not this field.</em></td>
 </tr>
 </tbody>
 </table>

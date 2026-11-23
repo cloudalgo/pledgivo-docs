@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A three-tier settings model — a runtime-editable custom setting, a packaged gateway registry in code, and secrets in credentials your org creates.">
+        <meta name="description" content="A three-tier settings model — one runtime-editable settings record, a packaged gateway registry in code, and secrets in credentials your org creates.">
       
       
       
@@ -101,7 +101,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Settings & integrations - Pledgivo" />
-<meta property="og:description" content="A three-tier settings model — a runtime-editable custom setting, a packaged gateway registry in code, and secrets in credentials your org creates." />
+<meta property="og:description" content="A three-tier settings model — one runtime-editable settings record, a packaged gateway registry in code, and secrets in credentials your org creates." />
 <meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/settings-integrations.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -109,7 +109,7 @@
 <meta property="og:url" content="https://pledgivo.cloudalgo.com/concepts/settings-integrations/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Settings & integrations - Pledgivo" />
-<meta property="twitter:description" content="A three-tier settings model — a runtime-editable custom setting, a packaged gateway registry in code, and secrets in credentials your org creates." />
+<meta property="twitter:description" content="A three-tier settings model — one runtime-editable settings record, a packaged gateway registry in code, and secrets in credentials your org creates." />
 <meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/concepts/settings-integrations.png" />
 </head>
   
@@ -1963,7 +1963,7 @@
 <tbody>
 <tr>
 <td>1</td>
-<td><code>Settings__c</code> (Hierarchy Custom Setting)</td>
+<td><code>Settings__c</code> (a custom object holding exactly one record)</td>
 <td>Admins, at runtime, from the Settings console</td>
 <td>Everything an admin should be able to tune without a deploy — retry counts, grace periods, feature toggles, thank-you copy</td>
 </tr>
@@ -1986,9 +1986,17 @@ admin should be able to change the recurring retry count without a code deploy, 
 never be able to (or need to) directly edit which Apex class handles Stripe calls, and a
 secret key should never be readable through a SOQL query or a debug log.</p>
 <h2 id="settings__c-in-practice">Settings__c in practice<a class="headerlink" href="#settings__c-in-practice" title="Permanent link">#</a></h2>
-<p><code>Settings__c</code> is a Hierarchy Custom Setting, which means it supports org-wide defaults with
-optional profile- or user-level overrides, though in practice nearly everything is configured
-at the org-default level through the <a href="../../getting-started/setup-assistant/">Settings console</a>.
+<p><code>Settings__c</code> is a custom object that holds exactly one record for the whole org, created when
+the package is installed and edited through the
+<a href="../../getting-started/setup-assistant/">Settings console</a>. There are no per-profile or per-user
+overrides: every user, page and job reads the same record. Who may see and change it is set by
+the package's permission sets — <strong>Fundraising Admin</strong> reads and edits it, <strong>Fundraising User</strong>
+and <strong>Fundraising Read Only</strong> read it — so a staff user who holds none of the three cannot open
+the fundraising consoles that depend on it. None of the sets can create or delete the record:
+the package creates it when it is installed, and the Settings console only ever updates it. If
+the record is ever missing, reinstalling or upgrading the package recreates it; a Fundraising
+Admin who is not a system administrator cannot save settings until it exists. Donors never get access to it; the public pages read
+the few values they need on the server.
 It covers refunds, recurring/dunning behavior, event defaults, logging verbosity, Experience
 Cloud/embed toggles, donor portal copy, and organization display defaults.</p>
 <p>Two of its fields describe your payment processor rather than your fundraising:

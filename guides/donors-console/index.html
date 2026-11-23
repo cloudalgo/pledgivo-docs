@@ -2369,6 +2369,10 @@ long a code lasts. From there:</p>
 </ul>
 <p>If the donor has no email address, or something else stops a code being issued, the panel says so
 before you press anything rather than failing afterwards.</p>
+<p>Both buttons need the <strong>Issue Portal Links</strong> custom permission, which <code>Fundraising_Admin</code> and
+<code>Fundraising_User</code> include. A user without it gets "You are not authorized to issue portal access
+codes." and nothing is written. A new code also replaces any code the donor still holds, including
+one the donor asked for on the public sign-in page, so only the newest code works.</p>
 <p>See <a href="../publish-donor-portal/">Publish the donor portal</a> for how the portal itself is set up.</p>
 <h3 id="print-or-email-a-receipt">Print or email a receipt<a class="headerlink" href="#print-or-email-a-receipt" title="Permanent link">#</a></h3>
 <p>Every gift that reached the bank carries <strong>Print</strong> and <strong>Email</strong> next to it in the <strong>Donations</strong>

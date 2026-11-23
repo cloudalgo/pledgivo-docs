@@ -2725,7 +2725,8 @@ how long it has been waiting, and its expiry window. For an event order the word
 <em>held until</em>, and an expired hold names how many seats it is still keeping off sale — the number
 that decides whether you release it now or after the event.</p>
 <p><strong>Retry now</strong> re-runs the same reconciliation the scheduled job performs, for that one row, instead
-of waiting for the next pass. It is safe to press twice.</p>
+of waiting for the next pass. It completes in the background: the click only queues the retry, so
+press <strong>Refresh</strong> a moment later to see the new status. It is safe to press twice.</p>
 <p>:::warning The banner that outranks everything else
 If the page shows <strong>"The finalizer job isn't scheduled"</strong>, stop reading the rows. Nothing in the
 list can advance until that job runs, so a growing list means nothing more than a stopped clock —

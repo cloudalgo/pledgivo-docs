@@ -1914,7 +1914,7 @@
 <h1 id="code-analyzer-exceptions">Code Analyzer Exceptions<a class="headerlink" href="#code-analyzer-exceptions" title="Permanent link">#</a></h1>
 <div class="ca-actions" markdown="0">
   <button type="button" class="ca-print" onclick="window.print()">Print / Save as PDF</button>
-  <span class="ca-stamp">Generated 2026-11-22 from a live scan</span>
+  <span class="ca-stamp">Generated 2026-11-23 from a live scan</span>
 </div>
 
 <p>This page exists for one purpose: to answer, in writing and in one place, <em>why</em> every
@@ -1947,22 +1947,22 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">437</td>
+<td style="text-align: right;">392</td>
 <td>20 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">213</td>
+<td style="text-align: right;">289</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">199</td>
+<td style="text-align: right;">197</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>871</strong></td>
+<td style="text-align: right;"><strong>900</strong></td>
 <td><strong>42 individually justified</strong></td>
 </tr>
 </tbody>
@@ -2107,7 +2107,7 @@ defined in the triage file, not chosen per-run.</p>
 </tr>
 <tr>
 <td><code>base/main/default/pages/stripePaymentReturn.page</code></td>
-<td>40</td>
+<td>41</td>
 <td>Same tag on the 3-D Secure / bank-authentication return page, which must call Stripe.js to read the redirect result.</td>
 </tr>
 </tbody>
@@ -2249,7 +2249,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 829 findings are Moderate, Low and Info style and maintainability
+<p>The other 858 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2262,14 +2262,14 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 </thead>
 <tbody>
 <tr>
-<td><code>cpd:DetectCopyPasteForApex</code></td>
-<td>Info</td>
-<td style="text-align: right;">155</td>
-</tr>
-<tr>
 <td><code>pmd:ApexDoc</code></td>
 <td>Low</td>
-<td style="text-align: right;">95</td>
+<td style="text-align: right;">170</td>
+</tr>
+<tr>
+<td><code>cpd:DetectCopyPasteForApex</code></td>
+<td>Info</td>
+<td style="text-align: right;">153</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-unsupported-hooks-slds2</code></td>
@@ -2279,12 +2279,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:AvoidBooleanMethodParameters</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">60</td>
-</tr>
-<tr>
-<td><code>pmd:FieldNamingConventions</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">57</td>
+<td style="text-align: right;">56</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/enforce-sds-to-slds-hooks</code></td>
@@ -2292,19 +2287,19 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">54</td>
 </tr>
 <tr>
+<td><code>pmd:FieldNamingConventions</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">53</td>
+</tr>
+<tr>
 <td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
 <td>Low</td>
 <td style="text-align: right;">46</td>
 </tr>
 <tr>
-<td><code>pmd:CyclomaticComplexity</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">42</td>
-</tr>
-<tr>
 <td><code>pmd:ExcessiveParameterList</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">40</td>
+<td style="text-align: right;">34</td>
 </tr>
 <tr>
 <td><code>pmd:ClassNamingConventions</code></td>
@@ -2312,19 +2307,24 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">33</td>
 </tr>
 <tr>
-<td><code>pmd:CognitiveComplexity</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">31</td>
-</tr>
-<tr>
 <td><code>pmd:AvoidHardcodingId</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">27</td>
 </tr>
 <tr>
+<td><code>pmd:CyclomaticComplexity</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">24</td>
+</tr>
+<tr>
 <td><code>regex:NoTrailingWhitespace</code></td>
 <td>Info</td>
 <td style="text-align: right;">24</td>
+</tr>
+<tr>
+<td><code>pmd:CognitiveComplexity</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">20</td>
 </tr>
 <tr>
 <td><code>cpd:DetectCopyPasteForJavascript</code></td>
@@ -2355,7 +2355,7 @@ does not follow.</p>
 <tbody>
 <tr>
 <td>Generated</td>
-<td>2026-11-22</td>
+<td>2026-11-23</td>
 </tr>
 <tr>
 <td>Triage source</td>
@@ -2375,7 +2375,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>871 (after declared path exclusions)</td>
+<td>900 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

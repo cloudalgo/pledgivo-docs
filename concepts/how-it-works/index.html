@@ -2122,7 +2122,7 @@
       "more": { "text": "Donations & payments", "href": "../donations-payments/" } },
     { "id": "settings", "kind": "data", "x": 20, "y": 394, "w": 150, "h": 68,
       "tag": "Settings · logs", "title": "Settings & logs", "sub": "Settings__c · Log__c\nTransaction_Log__c",
-      "body": "Settings__c is a hierarchy custom setting that holds every switch on the Settings tab: site URL and paths, job timing, checkout limits, refund window, portal timeouts and retention. Log__c holds diagnostic logs at the level you choose. Transaction_Log__c is the payment audit trail. Nothing here holds a secret.",
+      "body": "Settings__c is the one settings record that holds every switch on the Settings tab: site URL and paths, job timing, checkout limits, refund window, portal timeouts and retention. Log__c holds diagnostic logs at the level you choose. Transaction_Log__c is the payment audit trail. Nothing here holds a secret.",
       "code": ["Settings__c", "SettingsService", "AppLogger", "Log__c", "Transaction_Log__c"],
       "more": { "text": "Settings & integrations", "href": "../settings-integrations/" } },
     { "id": "sub", "kind": "apex", "x": 240, "y": 394, "w": 150, "h": 68,
@@ -2379,7 +2379,7 @@ heartbeat. That stops a new org from taking money that no job would ever record.
 </tr>
 </tbody>
 </table>
-<p>Every outcome writes a <code>Transaction_Log__c</code> row, and the <strong>Donation Monitor</strong> tab lists rows that are stuck. Its <em>Retry now</em> button runs the same logic for one row. Finalizing is keyed on the Stripe PaymentIntent Id, so the batch, the retry button and the hourly sweep can all reach the same payment without ever recording it twice.</p>
+<p>Every outcome writes a <code>Transaction_Log__c</code> row, and the <strong>Donation Monitor</strong> tab lists rows that are stuck. Its <em>Retry now</em> button queues a background job (<code>StagingRetryQueueable</code>) that runs the same logic for one row. Finalizing is keyed on the Stripe PaymentIntent Id, so the batch, the retry button and the hourly sweep can all reach the same payment without ever recording it twice.</p>
 <p>A recurring signup has one extra wait. The Finalizer holds gift #1 for up to 10 minutes while the browser saves the card for reuse. In the same transaction as that first Opportunity, it creates the <code>Recurring_Donation__c</code> schedule as <em>Active</em>. If the card details never arrive, gift #1 is still recorded, as a one-time gift.</p>
 <h2 id="3-after-the-gift">3 · After the gift<a class="headerlink" href="#3-after-the-gift" title="Permanent link">#</a></h2>
 <p>Once a gift has been saved, <code>DonationService</code> publishes <strong><code>DonationFinalized__e</code></strong>. It is a high-volume platform event delivered only after the transaction commits. Its trigger runs as <strong>Automated Process</strong>, in a transaction of its own, and does four things in order:</p>
@@ -2395,7 +2395,7 @@ heartbeat. That stops a new org from taking money that no job would ever record.
 <ul>
 <li><strong>Licence check first.</strong> Every tab asks <code>LicenseService</code> whether the user holds a seat before it shows anything. This check <em>fails open</em>: only a definite "no seat" answer blocks a user, and any platform error lets them in. Public pages never check for a seat.</li>
 <li><strong>The user's own access.</strong> Controllers read through FFLib selectors and write through a Unit of Work, both enforcing the signed-in user's sharing, object and field permissions.</li>
-<li><strong>Two actions need an extra permission.</strong> Refunds need the <code>Process_Refunds</code> custom permission, and pausing, changing or stopping a recurring gift needs <code>Manage_Recurring_Gifts</code>.</li>
+<li><strong>Three actions need an extra permission.</strong> Refunds need the <code>Process_Refunds</code> custom permission, pausing, changing or stopping a recurring gift needs <code>Manage_Recurring_Gifts</code>, and issuing a donor-portal access code needs <code>Issue_Portal_Links</code>.</li>
 </ul>
 <h2 id="5-money-that-moves-later">5 · Money that moves later<a class="headerlink" href="#5-money-that-moves-later" title="Permanent link">#</a></h2>
 <p>Each Stripe account (<code>Payment_Account__c</code>) is reached through <strong>two Named Credentials that you create</strong>; the package ships neither. The <em>donor key</em> covers checkout: creating customers and payments, and reading payment status. The <em>back-office key</em> covers everything that moves money later, or that lists your Stripe account's history.</p>

@@ -2234,7 +2234,8 @@ how long it has been waiting, and its expiry window. For an event order the word
 that decides whether you release it now or after the event.</p>
 <h3 id="retry-now">Retry now<a class="headerlink" href="#retry-now" title="Permanent link">#</a></h3>
 <p><strong>Retry now</strong> re-checks that donation's payment status with Stripe and finalizes or expires it
-accordingly.</p>
+accordingly. It does this as a background job: the click returns as soon as the retry is queued,
+and the row's new status appears when you press <strong>Refresh</strong> a moment later.</p>
 <div class="admonition note">
 <p class="admonition-title">Retry cannot double-charge</p>
 <p>It only re-reads the existing payment's current status from Stripe — it never submits a new

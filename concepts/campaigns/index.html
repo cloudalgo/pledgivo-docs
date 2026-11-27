@@ -2268,6 +2268,10 @@ year-end push turns it on. The rate itself is org-wide — see
 </ol>
 <p>Admins build this in <strong>Settings → Experience Cloud → Designs</strong>, using the Page Canvas
 composer — drag blocks into Step 1, leave Step 2 alone, customize Step 3.</p>
+<p><strong>A design a campaign uses cannot be deleted.</strong> <code>Campaign.Design__c</code> is a lookup that refuses the
+delete, so the Page Designs panel answers "this design is in use by a campaign" instead of deleting
+it, even when some of the campaigns using the design are ones the person deleting cannot see. Choose
+another design on those campaigns first (or clear the field), then delete.</p>
 <p><strong>Content blocks render beside the story, not inside the form.</strong> Since the two-column page landed,
 the rich text, images, video, testimonials and galleries you arrange in Step 1 render in the wide
 column under the story — in the order you arranged them — rather than interleaved between the

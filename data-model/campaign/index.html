@@ -2019,7 +2019,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Design__c</code></td>
 <td>Design</td>
 <td>Lookup → <code>Campaign_Design__c</code></td>
-<td>Which saved design/theme to use for this campaign's public page. Leave blank to use the default design.<br><em>Docs: Resolved by CampaignDesignPayload.resolveDesign()/selectDesignSystemMode(). The chosen design's theme JSON is normalized by ThemeTokenSanitizer.normalizeThemeTokensJson() against the Theme_Token__mdt catalog before it ever reaches the guest page, so an admin cannot smuggle an arbitrary CSS var through a design record — only tokens present in that packaged catalog survive.</em></td>
+<td>Which saved design/theme to use for this campaign's public page. Leave blank to use the default design. A design that a campaign uses cannot be deleted; choose another design here first.<br><em>Docs: deleteConstraint is Restrict (owner ruling R5, 2026-11-23): the platform, not Apex, is the guard against deleting a design a campaign uses. Under SetNull the delete would blank the lookup on every campaign, and a count read in the deleting user's own sharing could not see the campaigns they cannot see. CampaignsSelector.countByDesignId only words the refusal for the campaigns the user can see. Resolved by CampaignDesignPayload.resolveDesign()/selectDesignSystemMode(). The chosen design's theme JSON is normalized by ThemeTokenSanitizer.normalizeThemeTokensJson() against the Theme_Token__mdt catalog before it ever reaches the guest page, so an admin cannot smuggle an arbitrary CSS var through a design record — only tokens present in that packaged catalog survive.</em></td>
 </tr>
 <tr>
 <td><code>Designation_Mode__c</code></td>

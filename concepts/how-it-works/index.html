@@ -2229,7 +2229,7 @@
       "steps": [
         { "edge": "e_tab", "text": "A staff user opens one of the tabs: Donation Monitor, Fundraisers, Donors, Diagnostic Logs or Settings." },
         { "edge": "e_gate", "text": "The tab first asks LicenseService for a seat. Only a definite 'no seat' answer blocks it; any error lets the user in." },
-        { "edge": "e_read", "text": "Reads go through FFLib selectors and writes go through a Unit of Work, both enforcing the user's own access." },
+        { "edge": "e_read", "text": "Reads go through selectors and writes go through a Unit of Work, both running in the user's own access mode." },
         { "edge": "e_refund", "text": "Refunds and recurring-gift changes each need their own custom permission: Process_Refunds and Manage_Recurring_Gifts." }
       ],
       "more": { "text": "Security & code quality", "href": "../security-and-code-quality/" } },
@@ -2394,7 +2394,7 @@ heartbeat. That stops a new org from taking money that no job would ever record.
 <p>Staff work in five Lightning tabs: <strong>Donation Monitor</strong>, <strong>Fundraisers</strong>, <strong>Donors</strong>, <strong>Diagnostic Logs</strong> and <strong>Settings</strong>. They also get record pages for campaigns, gifts, donors and recurring schedules, and actions such as <em>Refund</em>, <em>Resend receipt</em>, <em>Manage recurring gift</em> and <em>Send portal link</em>.</p>
 <ul>
 <li><strong>Licence check first.</strong> Every tab asks <code>LicenseService</code> whether the user holds a seat before it shows anything. This check <em>fails open</em>: only a definite "no seat" answer blocks a user, and any platform error lets them in. Public pages never check for a seat.</li>
-<li><strong>The user's own access.</strong> Controllers read through FFLib selectors and write through a Unit of Work, both enforcing the signed-in user's sharing, object and field permissions.</li>
+<li><strong>The user's own access.</strong> Controllers read through selectors and write through a Unit of Work, both running in the signed-in user's own access mode, so the platform enforces their sharing, object and field permissions.</li>
 <li><strong>Three actions need an extra permission.</strong> Refunds need the <code>Process_Refunds</code> custom permission, pausing, changing or stopping a recurring gift needs <code>Manage_Recurring_Gifts</code>, and issuing a donor-portal access code needs <code>Issue_Portal_Links</code>.</li>
 </ul>
 <h2 id="5-money-that-moves-later">5 · Money that moves later<a class="headerlink" href="#5-money-that-moves-later" title="Permanent link">#</a></h2>

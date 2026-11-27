@@ -1800,17 +1800,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configurationdisabletriggercrudsecurity-in-a-rollup-domain-constructor" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration.disableTriggerCRUDSecurity() in a rollup domain constructor
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#style-and-performance-findings-inside-vendored-fflib" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1914,7 +1903,7 @@
 <h1 id="code-analyzer-exceptions">Code Analyzer Exceptions<a class="headerlink" href="#code-analyzer-exceptions" title="Permanent link">#</a></h1>
 <div class="ca-actions" markdown="0">
   <button type="button" class="ca-print" onclick="window.print()">Print / Save as PDF</button>
-  <span class="ca-stamp">Generated 2026-11-23 from a live scan</span>
+  <span class="ca-stamp">Generated 2026-11-27 from a live scan</span>
 </div>
 
 <p>This page exists for one purpose: to answer, in writing and in one place, <em>why</em> every
@@ -1947,23 +1936,23 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">392</td>
-<td>20 carrying a <code>Security</code> tag, justified below</td>
+<td style="text-align: right;">369</td>
+<td>17 carrying a <code>Security</code> tag, justified below</td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">289</td>
+<td style="text-align: right;">296</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Info</td>
-<td style="text-align: right;">197</td>
+<td style="text-align: right;">190</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>900</strong></td>
-<td><strong>42 individually justified</strong></td>
+<td style="text-align: right;"><strong>877</strong></td>
+<td><strong>39 individually justified</strong></td>
 </tr>
 </tbody>
 </table>
@@ -1998,38 +1987,6 @@ defined in the triage file, not chosen per-run.</p>
 <td><code>base/main/default/classes/fflib/fflib_QueryFactoryTest.cls</code></td>
 <td>269</td>
 <td>Catches the expected <code>InvalidFieldException</code>; the following <code>catch (Exception e)</code> fails the test on any other type.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="configurationdisabletriggercrudsecurity-in-a-rollup-domain-constructor">Configuration.disableTriggerCRUDSecurity() in a rollup domain constructor<a class="headerlink" href="#configurationdisabletriggercrudsecurity-in-a-rollup-domain-constructor" title="Permanent link">#</a></h3>
-<p class="ca-meta"><strong>Working as designed</strong> &middot; 3 findings &middot; <code>ApexDangerousMethods</code></p>
-
-<p><strong>What the rule flags.</strong> PMD's ApexDangerousMethods flags <code>Configuration.disableTriggerCRUDSecurity()</code>, which turns off FFLib's own CRUD assertion inside the trigger layer.</p>
-<p><strong>Why it is not a defect here.</strong> The FFLib domain layer re-asserts <code>isCreateable()</code> on every record even when the DML is running in SYSTEM_MODE, which makes an internally-triggered rollup fail for any user who cannot directly create the rolled-up record. These two domains recompute totals only—<code>Designation__c</code> and recurring-donation aggregates—and the call scopes the opt-out to the FFLib trigger check alone. The DML itself still runs under the platform's rules; the platform's own CRUD, FLS and sharing enforcement is untouched. Without it, a non-admin donation write silently stops rolling up fund totals.</p>
-<p><strong>How to verify.</strong> Both call sites are annotated in place. In <code>RecurringDonations</code> the call sits behind an explicit <code>suppressTriggerCrudCheck</code> flag rather than being unconditional. The wider reasoning—that field permissions are inert without object access on a master-detail detail object—is written in the <code>EventTicketTypesSelector</code> class header, which ships in the package: a detail of a standard object cannot be granted by a packaged permission set (Salesforce ignores standard-object permissions at install, cited below), so its field permissions are inert and <code>isCreateable()</code> is false for every user without Modify All Data.</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Line(s)</th>
-<th>Detail</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>base/main/default/classes/donation/domain/DonationDesignations.cls</code></td>
-<td>36</td>
-<td>Designation total rollup. Without the opt-out the rollup silently stops recomputing fund totals for non-admin users.</td>
-</tr>
-<tr>
-<td><code>base/main/default/classes/donor/domain/Contacts.cls</code></td>
-<td>52</td>
-<td>Donor rollup (Total_Donated__c, Gift_Count__c, Last_Donation_Date__c), behind <code>suppressTriggerCrudCheck</code>, which only DonorTotalsRollup's Contact rollup commit sets and restores in <code>finally</code>. Without it a staff user who can edit a donation but not a Contact cannot close a gift.</td>
-</tr>
-<tr>
-<td><code>base/main/default/classes/recurring/domain/RecurringDonations.cls</code></td>
-<td>61</td>
-<td>Same call, behind the explicit <code>suppressTriggerCrudCheck</code> flag rather than unconditional.</td>
 </tr>
 </tbody>
 </table>
@@ -2249,7 +2206,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 858 findings are Moderate, Low and Info style and maintainability
+<p>The other 838 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -2264,22 +2221,17 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:ApexDoc</code></td>
 <td>Low</td>
-<td style="text-align: right;">170</td>
+<td style="text-align: right;">176</td>
 </tr>
 <tr>
 <td><code>cpd:DetectCopyPasteForApex</code></td>
 <td>Info</td>
-<td style="text-align: right;">153</td>
+<td style="text-align: right;">141</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/no-unsupported-hooks-slds2</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">70</td>
-</tr>
-<tr>
-<td><code>pmd:AvoidBooleanMethodParameters</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">56</td>
 </tr>
 <tr>
 <td><code>eslint:@salesforce-ux/slds/enforce-sds-to-slds-hooks</code></td>
@@ -2292,19 +2244,29 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">53</td>
 </tr>
 <tr>
+<td><code>pmd:AvoidBooleanMethodParameters</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">48</td>
+</tr>
+<tr>
 <td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
 <td>Low</td>
 <td style="text-align: right;">46</td>
 </tr>
 <tr>
-<td><code>pmd:ExcessiveParameterList</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">34</td>
-</tr>
-<tr>
 <td><code>pmd:ClassNamingConventions</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">33</td>
+</tr>
+<tr>
+<td><code>pmd:ExcessiveParameterList</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">29</td>
+</tr>
+<tr>
+<td><code>regex:NoTrailingWhitespace</code></td>
+<td>Info</td>
+<td style="text-align: right;">29</td>
 </tr>
 <tr>
 <td><code>pmd:AvoidHardcodingId</code></td>
@@ -2314,17 +2276,7 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <tr>
 <td><code>pmd:CyclomaticComplexity</code></td>
 <td>Moderate</td>
-<td style="text-align: right;">24</td>
-</tr>
-<tr>
-<td><code>regex:NoTrailingWhitespace</code></td>
-<td>Info</td>
-<td style="text-align: right;">24</td>
-</tr>
-<tr>
-<td><code>pmd:CognitiveComplexity</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">20</td>
+<td style="text-align: right;">22</td>
 </tr>
 <tr>
 <td><code>cpd:DetectCopyPasteForJavascript</code></td>
@@ -2335,6 +2287,11 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td><code>pmd:PropertyNamingConventions</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">19</td>
+</tr>
+<tr>
+<td><code>pmd:CognitiveComplexity</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">16</td>
 </tr>
 </tbody>
 </table>
@@ -2355,7 +2312,7 @@ does not follow.</p>
 <tbody>
 <tr>
 <td>Generated</td>
-<td>2026-11-23</td>
+<td>2026-11-27</td>
 </tr>
 <tr>
 <td>Triage source</td>
@@ -2375,7 +2332,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>900 (after declared path exclusions)</td>
+<td>877 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

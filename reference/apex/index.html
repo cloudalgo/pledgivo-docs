@@ -4391,6 +4391,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-dmlexecutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DmlExecutions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-iunitofwork" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7356,7 +7367,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and layer. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>427</code></span><span><b>Test classes</b><code>318</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>428</code></span><span><b>Test classes</b><code>319</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7393,7 +7404,7 @@
 <li>
 <p><strong><a href="#domain-framework">Framework</a></strong></p>
 <hr />
-<p>16 classes</p>
+<p>17 classes</p>
 <p><a href="#domain-framework-root">Core</a></p>
 </li>
 <li>
@@ -11175,10 +11186,10 @@
 <p>Split out of <a href="#apex-setupcontroller"><code>SetupController</code></a> on 2026-08-14, in the same change that moved the monitor from a <a href="#apex-settings"><code>Settings</code></a>-console panel to its own Lightning tab. The two methods below are unchanged; what changed is who may call them.</p>
 <p>SetupController is granted to Fundraising_Admin ONLY, and deliberately so — it is the single Apex entry point behind all 16 settings-console panels, so granting it to reach the monitor would have handed program staff the entire console (its absence from Fundraising_User carries a "must not be added back" note saying exactly that).</p>
 <p>Watching the finalize pipeline is daily operational work for the same staff who work donations, so it needs a grant of its own with nothing else behind it. The surface here is narrow by construction: one read of non-terminal staging rows, and one retry that queues the scheduled reconciliation for a single record. Neither takes any caller-supplied filter or field list, so widening this grant widens nothing else.</p>
-<p>Test seam, null in every real context — shipped behavior is always the CronTrigger query in isFinalizerScheduled() below. It exists because that query reads org state, not transactional data: a Finalizer job created by <a href="#apex-postinstallhandler-schedulejobs"><code>PostInstallHandler.scheduleJobs</code></a> is visible from inside a test transaction and no rollback removes it. The "pipeline stopped" test therefore used to assert that the org has no Finalizer job at all, which is true only BEFORE the package is configured — so the suite went red in precisely the correctly configured orgs it exists to protect (audit F-43, 2026-08-18). The positive case still exercises the real query by scheduling a job; only the negative case sets this.</p>
 <p>Returns { rows, rowLimit, schedulerScheduled } rather than a bare list. Every row here is waiting on <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a>, so when the Finalizer family is not scheduled the whole page is measuring a stopped clock — an admin reading a growing list has no way to tell "payments are failing" from "the job that resolves them was aborted".</p>
 <p>needsAttention splits the list the same way: only a row the donor actually confirmed, or one carrying an error, or an expired ticket hold still holding seats, is a problem — a plain Pending row is an abandoned checkout nobody was charged for, and counting those as stuck made a healthy org look broken (25 rows, 21 of them merely abandoned).</p>
 <p>expiresAt, reservationReleased and seatsHeld feed the page's one filterable list: each row prints its own expiry window, and an expired ticket hold names how many seats it is still keeping off sale. needsAttention is what the page's Show filter switches on, so the abandoned/needs-attention split stays a server-side rule with a single definition.</p>
+<p>The query reads org state, not transactional data: a Finalizer job created by <a href="#apex-postinstallhandler-schedulejobs"><code>PostInstallHandler.scheduleJobs</code></a> is visible from inside a test transaction and no rollback removes it. A test of the "pipeline stopped" case therefore answers the named count (<a href="#apex-crontriggersselector-countlivebyjobname"><code>CronTriggersSelector.countLiveByJobName</code></a>) instead of asserting the org has no job.</p>
 <p>Queues a <a href="#apex-stagingretryqueueable"><code>StagingRetryQueueable</code></a>, which runs the exact same callout + outcome logic as the scheduled reconciliation pass for one record, so an admin does not have to wait for the next Finalizer tick. It is therefore idempotent in the same way that pass is — a row already finalized simply resolves again. The step runs as a background job, never in the staff user's own transaction (owner ruling, 2026-11-22), so the click returns at once and the row's new status shows on the next refresh.</p>
 <p>Because that job runs in system context, the action first asks <a href="#apex-donationstagingselector-selectidsvisibletouser"><code>DonationStagingSelector.selectIdsVisibleToUser</code></a> (USER_MODE) whether the running user can see the row, and refuses with one message for "missing" and "not yours" alike, so the answer never confirms that a hidden row exists (owner decision D-3). The donor-portal retry is a different path with its own token check and is not affected.</p>
 </div>
@@ -17530,6 +17541,7 @@
 <p>No permission checks of its own: USER_MODE is the check, and the platform refuses a row the user may not create, edit or delete. A system mode is the deliberate, reasoned bypass: the line that writes <code>DataAccess.Mode.SYSTEM_*</code> carries a <code>// SYSTEM_MODE: &lt;with|without&gt; sharing — &lt;reason&gt;:</code> line, which scripts/lint/security-review-scan.py enforces.</p>
 <p>Three private runners execute the DML: a user-mode runner, and a <code>with sharing</code> and a <code>without sharing</code> system-mode runner. In system mode record sharing follows the class that runs the statement, so a SYSTEM_WITH_SHARING write keeps sharing even when the class that calls Dml is <code>without sharing</code>.</p>
 <p>upsertRows matches on Id only. The platform runs an upsert only on a list whose runtime type is concrete (a List&lt;Account&gt;, not a List&lt;SObject&gt; built empty), so the caller passes a typed list.</p>
+<p>Recording, the write-side counterpart of <a href="#apex-query"><code>Query</code></a>.executed: under Test.isRunningTest(), every call to one of the six members is recorded as a Dml.Execution (the member, the SObject type, the mode and the row count) once requireMode has accepted the mode and before the DML runs, so a write that then throws is still listed, and a null mode, which never reaches a runner, is not. Dml.executed() returns every recorded write in the transaction, oldest first; Dml.executed(type) only those of one SObject type. A list of several types is recorded once per type, in first-row order, each with its own row count; an empty list is recorded once with the list's own type (null for a List&lt;SObject&gt;) and a count of 0. Outside a test nothing is recorded or retained, so a large batch holds no extra heap and production behaviour is unchanged. It records and never fakes: the DML always runs. <a href="#apex-unitofwork"><code>UnitOfWork</code></a> commits through these members, so a Unit of Work commit is recorded too, one Execution per type and operation. The record is kept in <a href="#apex-dmlexecutions"><code>DmlExecutions</code></a>, as Query's is in <a href="#apex-querymocks"><code>QueryMocks</code></a>, so Dml keeps to the analyzer's class-complexity limit.</p>
 </div>
 <table>
 <thead>
@@ -17593,6 +17605,46 @@
 <tr>
 <td><a id="apex-dml-deleterows"></a><code>deleteRows(1 arg)</code></td>
 <td><code>List&lt;Database.DeleteResult&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-dmlexecutions">DmlExecutions<a class="headerlink" href="#apex-dmlexecutions" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p class="fn-entry__src"><code>framework/<wbr>DmlExecutions.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>The test-time record behind <a href="#apex-dml"><code>Dml</code></a>.executed: one Dml.Execution per SObject type in every write made through Dml. It records only while Test.isRunningTest(); outside a test it keeps nothing.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Split out of <a href="#apex-dml"><code>Dml</code></a>, as <a href="#apex-querymocks"><code>QueryMocks</code></a> is out of <a href="#apex-query"><code>Query</code></a>, so Dml keeps to the analyzer's class-complexity limit; Dml's own members (executed, executed(type)) are the API, and this class is how the record is kept. It holds the Executions only, never the rows.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-dmlexecutions-executed"></a><code>executed(0 args)</code></td>
+<td><code>List&lt;[Dml](#apex-dml).Execution&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-dmlexecutions-executed"></a><code>executed(1 arg)</code></td>
+<td><code>List&lt;[Dml](#apex-dml).Execution&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-dmlexecutions-record"></a><code>record(3 args)</code></td>
+<td><code>void</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -23813,6 +23865,7 @@
 <p>The class is WITH SHARING and touches no records. It reads the settings row through <a href="#apex-settings-current"><code>Settings.current</code></a> in the mode of whoever called: a guest reads it without sharing (the guest set holds no grant on the row), a staff user in user mode.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
+<p>Test seam, never assigned by production code. Auth.CommunitiesUtil.isGuestUser() is true only for a site guest user, which exists only in an org with an Experience site, so without this the guest arm of doExecute() ran only where a site had been built. A test sets it to true to run that arm (as the test user, in any org) and to false to run the staff arm without depending on who is running the test.</p>
 <p>Dual-use (access decision log D7): a guest reads the settings row without sharing (the guest set holds no grant on it) and a staff user reads it in user mode. The mode is written as a literal in each arm of the isGuestUser() branch, never held in a variable, so the access-log check can read it. The portal route is relative to the site root. Every public bundle builds its "Manage your giving" link as basePath + portalPath through c/pfSitePath; this is the one place the admin-configured path reaches the browser.</p>
 </div>
 <table>
@@ -24907,6 +24960,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>The top layer of a four-class hierarchy split out on 2026-11-20 — <a href="#apex-stripeprincipallookup"><code>StripePrincipalLookup</code></a> → <a href="#apex-guestcredentialaccess"><code>GuestCredentialAccess</code></a> → <a href="#apex-guestsiteaccess"><code>GuestSiteAccess</code></a> → CommunityService. This layer owns the site itself (status, listing, resolution by Id, the guest user); the guest permission-set, Campaign-read and payment-credential checks are inherited, and their seams stay overridable from one CommunityService subclass. Which of several matching sites to report is <a href="#apex-networkpicker"><code>NetworkPicker</code></a>'s call.</p>
 <p>The four Network fields this class reads, carried as a plain object rather than the SObject the query returns. The seams below hand back NetworkRow so a test can stub them WITHOUT fabricating a Network record: the Network type does not exist in an org where Digital Experiences is off, and JSON.deserialize(..., SObject.class) of an absent type throws a message-less JSONException — which getSiteStatus() then swallows into exists=false, so the stub failed silently and eight tests failed for a reason that had nothing to do with the logic under test. Mapping to NetworkRow happens AFTER the query, so a real org without the feature still throws inside the seam exactly as before, which is what isDigitalExperiencesEnabled() detects.</p>
+<p>The one ConnectApi call behind listSites(), a protected seam in the style of queryNetworks() so a test hands the loop the communities a real org would report. ConnectApi cannot be mocked, and an org with no Experience site returns nothing, so without this the mapping body ran only where a site had been built.</p>
 <p>Shared by checkGuestPermissionSet() and checkStripeCredentialAccess() — both need the same site's guest user, resolved by the exact-name convention "&lt;Site Name&gt; Site Guest User" (see checkGuestPermissionSet()'s header for why an exact match, not LIKE). @TestVisible protected virtual, like queryNetworks()/ queryNetworkById(), so a test can hand back an arbitrary user Id — a real Guest-licensed User cannot be created from Apex DML, so checkStripeCredentialAccess()'s "assignedToGuest=true" test path has no other way to reach the assignment-count query without asserting on org state.</p>
 <p>More than one active Guest user matching the name convention is treated the same as zero — UNRESOLVABLE, not "pick the first one". A Salesforce Site (Visualforce) and an Experience site can share a display name, so an arbitrary row would let steps 4-6 report a false Done off the wrong guest user while real donations keep failing. LIMIT 2 (not 1) is what makes that ambiguity detectable at all — see I1 in the 2026-08-10 site-setup-guide-redesign final review.</p>
 </div>
@@ -25149,9 +25203,8 @@
 <p>Two conditions gate the substitution, and both are the platform's, not ours:
 - IsVerified: an unverified address cannot be used as a sender.
 - IsAllowAllProfiles: donor mail is sent from contexts with no ordinary profile — the site guest user, a scheduled batch, an @future. Using an address restricted to selected profiles from one of those fails the send outright, so an address that is not shared with all profiles is treated as unusable and ignored rather than risked. When either fails we fall back to today's behavior (running user + display name) — a misconfigured From address must never cost a donor their receipt. The <a href="#apex-settings"><code>Settings</code></a> console's Health Check reports which of the two is missing.</p>
-<p>OrgWideEmailAddress cannot be created by a test (setup object, requires a real address verification round-trip), so the query is stubbed rather than seeded.</p>
 <p>setOrgWideEmailAddressId and setSenderDisplayName are mutually exclusive — the platform rejects a message that sets a display name on top of an org-wide address ("The object's DisplayName field cannot be set if the setSenderDisplayName field is already set"). When a From address is in effect the name donors see is the one on the OrgWideEmailAddress record, and Settings__c.From_Name__c is intentionally not applied.</p>
-<p>OrgWideEmailAddress is org email configuration with no sharing model, read through <a href="#apex-orgwideemailaddressesselector"><code>OrgWideEmailAddressesSelector</code></a>. A system mode is required, not convenient: the guest user and the Automated Process user have no read on this setup object, and a USER_MODE read would throw exactly where receipts are sent from. The entry point chooses it: the staff actions pass SYSTEM_WITH_SHARING (<code>setup-object</code>), the jobs SYSTEM_WITHOUT_SHARING (<code>job</code>).</p>
+<p>OrgWideEmailAddress is org email configuration with no sharing model, read through <a href="#apex-orgwideemailaddressesselector"><code>OrgWideEmailAddressesSelector</code></a>. A system mode is required, not convenient: the guest user and the Automated Process user have no read on this setup object, and a USER_MODE read would throw exactly where receipts are sent from. Tests answer it by name (<a href="#apex-query"><code>Query</code></a>.mockFor on <a href="#apex-orgwideemailaddressesselector-selectbyaddress"><code>OrgWideEmailAddressesSelector.selectByAddress</code></a>), because an OrgWideEmailAddress cannot be created by a test (setup object, real address verification round-trip). The entry point chooses it: the staff actions pass SYSTEM_WITH_SHARING (<code>setup-object</code>), the jobs SYSTEM_WITHOUT_SHARING (<code>job</code>).</p>
 </div>
 <table>
 <thead>
@@ -25436,7 +25489,7 @@
 <p>A named-principal callout authenticates as the RUNNING user, and a scheduled job runs as whoever scheduled it. So every gateway-touching job — the finalizer job, recurring billing, the Stripe payment sweep, refund/dispute reconciliation — fails outright unless its owner holds a permission set that grants an external credential principal. F-67 fixed WHO owns the jobs (a reachable admin instead of the post-install system user); it could not fix whether that admin is entitled, because a package cannot assign onto its own managed permission set. Nothing else in the console notices: the count row reads green, every CronTrigger reads WAITING and on time, and the only trace of a failed run is an ERROR row in Diagnostic Logs.</p>
 <p>GREEN IS NOT REACHABLE HERE, deliberately. SetupEntityAccess names the permission set that carries a grant but its SetupEntityId points at an ExternalCredentialParameter, which standard SOQL cannot query — so "this owner holds a grant" is provable and "this owner holds the RIGHT grant" is not. The best case is therefore a sentence and no color at all (see CONFIRM_REACH) — the same honest-limits framing that <a href="#apex-setupguidegrantsteps-steppermissionset"><code>SetupGuideGrantSteps.stepPermissionSet</code></a> uses.</p>
 <p>Returns null — no clause at all — when there is no active payment account (nothing to reach yet) or when any read fails. A question this row cannot answer must not be able to turn the row red on its own.</p>
-<p>THREE SEAMS, not protected virtual methods like <a href="#apex-paymentsetupguideservice"><code>PaymentSetupGuideService</code></a>'s, because this check is static. Same reason though: no test can schedule a job under another user, create a SetupEntityAccess row, or assign a managed permission set, so the only way to exercise the verdicts is to hand the logic the org state a real install would have.</p>
+<p>NO TEST SEAMS. No test can schedule a job under another user, create a SetupEntityAccess row, or assign a managed permission set, so the three reads below are answered by name instead (<a href="#apex-crontriggersselector-selectownersbyjobnames"><code>CronTriggersSelector.selectOwnersByJobNames</code></a>, <a href="#apex-setupentityaccessselector"><code>SetupEntityAccessSelector</code></a>. selectCredentialGrantSetIds, <a href="#apex-permissionsetassignmentsselector-selectassigneesbysetsandusers"><code>PermissionSetAssignmentsSelector.selectAssigneesBySetsAndUsers</code></a>), which hands the logic the org state a real install would have and runs the real read bodies in every org.</p>
 <p>CONFIRM is not a color. It is the best case this check can reach — the owner holds a grant, and no package can prove it is the right one — so it contributes its sentence and leaves the row's status alone. Coloring it amber would leave a correctly configured org permanently warning about something its admin cannot resolve from that screen, which is exactly the loud-and-unactionable alarm F-53 removed one row below.</p>
 <p>SetupEntityType 'ExternalCredentialParameter' is the grant an admin makes under a permission set's External Credential Principal Access. Parent is the permission set; SetupEntityId is the parameter, and that object is not queryable in standard SOQL — which is the whole reason no grant here can be tied to a particular credential.</p>
 </div>
@@ -26259,8 +26312,6 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-setupcontroller"><code>SetupController</code></a> on 2026-11-20. The Health Check's Scheduled Jobs and Gifts Being Recorded rows and the Get Started background-jobs step all read their facts here, so the two panels cannot disagree about the same pipeline.</p>
-<p>A FOURTH SEAM, and the only one here that exists for the sake of the tests rather than the platform. The three gateway seams on <a href="#apex-gatewayreachcheck"><code>GatewayReachCheck</code></a> stand in for org state no test can create; this one stands in for org state every org has a different amount of. countPipelineJobs reads real CronTrigger rows, so every verdict built on it depends on whether the org running the test happens to have its pipeline scheduled — and the scheduled_jobs row ORs the count into canFix, which means a count of zero offers the Fix button on the count alone and masks whatever the entitlement half decided.</p>
-<p>That is not hypothetical: test_runHealthCheck_strandedOwnerWhoIsNotMe asserted canFix false, passed in a configured scratch org where all the jobs are scheduled, and failed in the fresh org that builds the package version, where none of them are. It went unnoticed because the two package versions before it were built without validation, so no build had run the test since it was written. A test that can only pass in an org someone has already configured is not testing the package.</p>
 <p>This was a hardcoded 21 until 2026-08-17. The three guest-request sweep jobs were added to scheduleJobs() afterwards and the literal was not, so a correctly-scheduled org reported "24/21 jobs are scheduled" under a green tick — arithmetic that reads as a defect to the admin looking at it. Deriving it from <a href="#apex-postinstallhandler-expectedjobcount"><code>PostInstallHandler.expectedJobCount</code></a>() means the two cannot drift again.</p>
 <p>This was a hardcoded 7 until 2026-08-20 (F-95, raised a second time as F-102). Product2.Event_Ticket_Type took the package's default slots from seven to eight and the literal was not moved, so a correctly seeded org reported "8/7 mapping records present" — and, worse than the nonsense fraction, the grade threshold was the same literal: an org that had lost exactly one of its eight mappings still graded Healthy and was never offered the re-seed fix, so the check could not detect the single condition it exists for. Derived from <a href="#apex-postinstallhandler"><code>PostInstallHandler</code></a> now, the way expectedPipelineJobs() above already was.</p>
 <p>Counts jobs that are still LIVE, not just jobs sitting in WAITING. CronTrigger.State cycles WAITING → ACQUIRED → EXECUTING and back on every single fire, per the CronTrigger Object Reference (Summer '26 / API 67.0), so a <code>State = 'WAITING'</code> filter under-counts whichever job happens to be mid-fire.</p>
@@ -26268,8 +26319,8 @@
 <p>The live test is instead — the row exists, it is not in one of the three terminal states, and it either has a next fire time or is firing right now. The last clause is for the self-rescheduling family jobs: each is a one-shot cron, so while it runs it has no next fire time of its own and the run it books is not visible until that run commits. COMPLETE is documented as "fired and is not scheduled to fire again"; DELETED and ERROR speak for themselves. A job removed with System.abortJob() leaves no CronTrigger row at all, which this counts as missing — correctly. Source: https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_crontrigger.htm</p>
 <p>"On time" is a window, not a count: the next run must fall no later than one interval plus <a href="#apex-jobcadencesettings"><code>JobCadenceSettings</code></a>.NEXT_RUN_GRACE_MINUTES from now (a booking further out means the cadence the admin chose is not the one running) and no earlier than the grace before now (a run that far overdue means the platform has stopped picking the job up). A job the platform is firing right now is on time by definition — it books its successor first.</p>
 <p>A missing family is red: nothing will finalize a gift (Finalizer) or raise the alarm about it (heartbeat) until someone restarts it. A late one is amber: it still exists and may yet fire. Either way the Fix button is offered, and <a href="#apex-familyjobchain-abortstalledfamilyjobs"><code>FamilyJobChain.abortStalledFamilyJobs</code></a>() replaces exactly what this grades as late.</p>
-<p>One read for both families, keyed by name. Test seam: familyJobsOverride, for the same reason as pipelineJobCountOverride — the real rows are org state.</p>
-<p>Worse-of-two, so folding the entitlement clause into the count row can only ever make it more alarming — a green count is dragged to red by a stranded owner, and a red count is never softened by an entitled one. Only the failing verdict is passed through; see GatewayReachCheck.CONFIRM_REACH for why the best case deliberately does not color anything.</p>
+<p>One read for both families, keyed by name. Tests answer it by name with <a href="#apex-query"><code>Query</code></a>.mockFor('<a href="#apex-crontriggersselector-selectstatusbyjobnames"><code>CronTriggersSelector.selectStatusByJobNames</code></a>', ...), because the real rows are org state.</p>
+<p>Worse-of-two, so folding the entitlement clause into the count row can only ever make it more alarming — a green count is dragged to red by a stranded owner, and a red count is never softened by an entitled one. Only the failing verdict is passed through; see <a href="#apex-gatewayreachcheck"><code>GatewayReachCheck</code></a>.CONFIRM_REACH for why the best case deliberately does not color anything.</p>
 <p>One verdict shared by the health-check panel and the Get Started step so the two can never disagree about how bad things are. Returns a status AND its sentence together, because the two are one judgement: a caller that picked its own color and borrowed this text is how the two rows drifted apart in the first place.</p>
 <p>THREE states, not two (audit F-53). <a href="#apex-finalizersettings-isfinalizerpipelinestale"><code>FinalizerSettings.isFinalizerPipelineStale</code></a>() folds "never reported in" into "stale" on purpose — for the guest donation path, a pipeline that has never run is exactly as dead as one that stopped, and that caller only needs the boolean. The console needs the distinction, because the two states differ in what is at RISK, not in what is broken. Every fresh install sits on never-ran with zero gifts taken, so rendering it as "gifts are charged but NOT recorded" made the loudest alarm in the console wrong on literally every install — and an alarm that cries wolf on day one is how the next real one gets ignored. It is still a warning, still carries the Fix button, and still says plainly that the jobs will not run until the admin restarts them: F-67 established that a fresh install schedules them under a system user the org cannot reach, so this is real work, just not yet a loss.</p>
 <p>The damage number comes from the staging rows themselves — confirmed gifts with a PaymentIntent that no Opportunity was ever created for — because "gifts are being charged but not recorded" is only actionable with a count attached, and because a count of zero is what separates a fresh install from an org that is losing money.</p>
@@ -28022,7 +28073,6 @@
 <p>Days-to-expiry at or under which the Health Check turns the package_license row amber. Thirty days matches the renewal-notice window on the publisher's billing site.</p>
 <p>A blocked user's reason, consumed by uiLicenseNotice to choose its copy. Only ever meaningful when isCurrentUserLicensed() is false.</p>
 <p>The PackageLicense.Status value an LMA free-trial licence carries; trialInfo() keys on it.</p>
-<p>Test seam for the PackageLicense read: the object cannot be inserted, so tests hand the summary path a synthetic row (or none) instead of depending on the org they run in.</p>
 <p>Test seam for the final verdict (the <a href="#apex-settingsservice"><code>SettingsService</code></a> *Override idiom) — packaged tests must pass in both a licensed and an unlicensed org, so they pin the answer rather than depend on the org the suite happens to run in.</p>
 <p>Test seam for the namespace lookup: the dev org describes to an empty prefix, so forcing one here is the only way a test can reach the UserInfo call (and its fail-open catch — 'pledgivo' is not an installed licence in the dev org, so the platform call throws and the catch is exercised for real).</p>
 <p>PackageLicense.Status is documented as Active, Expired, Free or Trial; the platform flips it to Expired when the LMA licence lapses, so the status is trusted alongside the date, and a suspended LMA licence is reported as Suspended by the same field.</p>

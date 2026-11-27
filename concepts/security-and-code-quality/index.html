@@ -2119,10 +2119,10 @@ build script does.</p>
 <p><strong>1,200 total</strong>, down from 22,064 on 2 September. Almost none of that drop came from switching
 rules off. Most of it was fixed in the code:</p>
 <ul>
-<li><strong>Every public class, method and property now has an ApexDoc block</strong>, vendored FFLib and the
-  test classes included (2,411 findings on 28 September, now 11: missing <code>@param</code>/<code>@return</code> tags on private helpers in two test classes).</li>
+<li><strong>Every public class, method and property now has an ApexDoc block</strong>, the test classes and a
+  since-removed vendored library included (2,411 findings on 28 September, now 11: missing <code>@param</code>/<code>@return</code> tags on private helpers in two test classes).</li>
 <li><strong>Field declarations come before methods</strong> in every class (0 remaining).</li>
-<li><strong>The vendored FFLib source was normalised</strong> to the package's own whitespace, brace and
+<li><strong>The Apex source, including a vendored library that has since been removed, was normalised</strong> to the package's own whitespace, brace and
   annotation-casing style (<code>NoMixedIndentation</code>, <code>NoTrailingWhitespace</code> and
   <code>AnnotationsNamingConventions</code> are all at 0). That reformatting changed layout only, and the
   full Apex suite passes on the result.</li>
@@ -2204,17 +2204,17 @@ for style. What matters is the severity split above, and the findings below.</p>
   (<code>UnitOfWorkFake</code>, <code>Mock</code>, <code>Query.executed</code>), for example <code>Assert.areEqual(1, uow.commitCount())</code>.
   The rule is widened to accept this repo's named assertion helpers (<code>assert*</code>), which carry the
   assertion for whole families of tests; a test that calls neither is still reported. Across <code>base/</code>
-  it reports only the vendored <code>fflib/</code> test classes, which are deleted in Sprint 6.</li>
+  the only classes it reported were a vendored library's own tests, deleted in Sprint 6.</li>
 <li><strong><code>EmptyStatementBlock</code></strong> reported 123 empty bodies that the language or the architecture
   requires: overrides of a deliberately abstract hook, interface methods a class does not need,
   virtual hooks, and private no-arg constructors. Retuned to skip those shapes, it still reports
   every empty <code>if</code>, loop or plain method, and finds 4: the explicit no-arg constructors of two
-  vendored FFLib error classes.</li>
+  error classes in a since-removed vendored library.</li>
 </ul>
 <p>Both rules are still enforcing: a method named badly and a test that neither asserts nor verifies
 are both still reported. That was checked against a deliberately bad fixture rather than assumed,
 because a mis-registered custom rule and a correctly-registered one look identical on a clean
-tree — both produce zero findings. The 15 that remain are all in vendored FFLib's own tests.</p>
+tree — both produce zero findings. The 15 that remained at that scan were all in that vendored library's own tests.</p>
 <h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
 <p>The analyzer tags 24 findings across the whole package as security-relevant (scan of 2026-09-28,
 <code>AppExchange</code> + <code>Recommended:Security</code> rule selectors — the same command the AppExchange reviewer
@@ -2242,27 +2242,14 @@ triage record or annotated in the code itself.</p>
 <td><code>Payment_Account__c</code>, <code>Donation_Staging__c</code>, <code>Guest_Request__c</code>, <code>Portal_Access_Token__c</code>, <code>Recurring_Donation__c</code>, <code>Settings__c</code> and three <code>Designation__c</code> fields</td>
 <td>A substring match on the field name (<code>Key</code>, <code>Token</code>, <code>Hash</code>, <code>Sign…</code>, <code>Auth</code>). Three hold a Named Credential's <em>name</em> (never a key), five hold hashes or single-use capability tokens that are worthless outside the flow that issued them, and the other ten are <code>Designation</code>, <code>Re_Auth…</code>, <code>Email_Signature</code>, <code>Soft_Credit_Automation…</code> — no secret in any of them.</td>
 </tr>
-<tr>
-<td>Moderate</td>
-<td><code>ApexDangerousMethods</code> (3)</td>
-<td><code>DonationDesignations</code>, <code>RecurringDonations</code>, <code>Contacts</code></td>
-<td>Disables the FFLib trigger-layer CRUD re-check on a rollup that reads and writes only its own totals. The DML itself still runs under the platform's access rules.</td>
-</tr>
-<tr>
-<td>Moderate</td>
-<td><code>ApexSharingViolations</code></td>
-<td><code>fflib_SObjectUnitOfWork</code></td>
-<td>Vendored FFLib. The access level is supplied by whoever constructs the Unit of Work, so the decision is made one level up, where the analyzer can't follow it.</td>
-</tr>
 </tbody>
 </table>
-<p>Three findings that used to appear in this table are gone rather than justified: the ticket page's
+<p>Findings that used to appear in this table are gone rather than justified: the <code>ApexDangerousMethods</code> and <code>ApexSharingViolations</code> entries, which came from a vendored library's trigger CRUD check and Unit of Work and went when the package's own framework replaced it, the ticket page's
 <code>innerHTML</code> write (the QR code is now a template-bound <code>&lt;svg&gt;</code> path, so there is no DOM sink at
 all), and eight credential-shaped identifier names that were renamed to say what they actually
 hold (a Named Credential <em>endpoint</em>, a setup-checklist label, an email closing).</p>
-<p>The other 20 High findings are none of them security-tagged: every one of them is inside
-vendored FFLib, which this package carries as source so that installing it does not force you to
-install a library first.</p>
+<p>The other 20 High findings are none of them security-tagged: every one of them was inside
+a vendored third-party library that this package carried as source and has since removed.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a
 <a href="../../reference/analyzer-exceptions/">Code Analyzer exceptions report</a> listing each finding it does
 not fix, what the rule flags, why it is not a defect here, and how to check that for yourself

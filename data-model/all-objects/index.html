@@ -4682,7 +4682,7 @@
 <p>Defines one purchasable ticket tier for a specific event (Campaign), such as "General Admission" or "VIP Table," including its price, capacity, sale window, and tax-deductible split. Master-Detail to Campaign so a tier is removed along with its event and its sales roll up into the event's Tickets_Sold__c total; optionally linked to a reusable Product2 ticket-type template that seeds its defaults.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>EventTicketTypesSelector takes a raw-SOQL FOR UPDATE row lock on the selected tiers during reservation (WITH SYSTEM_MODE, since the caller is the guest-context EventPurchaseService and fflib's QueryFactory builder can't express FOR UPDATE) — this is what prevents two concurrent checkouts from both reserving the last seat in a limited-capacity tier.</p>
+<p>EventTicketTypesSelector.selectByIdForUpdate takes a FOR UPDATE row lock on the selected tiers during reservation, through the framework's Query.forUpdate() rather than hand-written SOQL. The caller passes the access mode; the guest seat reservation (TicketReservation) passes SYSTEM_WITHOUT_SHARING, since this is a master-detail detail of Campaign and a guest has no access of its own. The lock is what prevents two concurrent checkouts from both reserving the last seat in a limited-capacity tier.</p>
 </div>
 <p><strong>Relationships</strong></p>
 <table>

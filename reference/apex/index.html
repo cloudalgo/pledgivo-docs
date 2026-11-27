@@ -7,7 +7,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Every packaged Apex class, grouped by domain and FFLib layer, generated from deployed source.">
+        <meta name="description" content="Every packaged Apex class, grouped by domain and layer, generated from deployed source.">
       
       
       
@@ -98,7 +98,7 @@
   
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Apex Reference - Pledgivo" />
-<meta property="og:description" content="Every packaged Apex class, grouped by domain and FFLib layer, generated from deployed source." />
+<meta property="og:description" content="Every packaged Apex class, grouped by domain and layer, generated from deployed source." />
 <meta property="og:image" content="https://pledgivo.cloudalgo.com/assets/images/social/reference/apex.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
@@ -106,7 +106,7 @@
 <meta property="og:url" content="https://pledgivo.cloudalgo.com/reference/apex/" />
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:title" content="Apex Reference - Pledgivo" />
-<meta property="twitter:description" content="Every packaged Apex class, grouped by domain and FFLib layer, generated from deployed source." />
+<meta property="twitter:description" content="Every packaged Apex class, grouped by domain and layer, generated from deployed source." />
 <meta property="twitter:image" content="https://pledgivo.cloudalgo.com/assets/images/social/reference/apex.png" />
 </head>
   
@@ -7061,6 +7061,72 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-qrcodewords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrCodewords
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-qrdataplacer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrDataPlacer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-qrmasking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrMasking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-qrmatrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrMatrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-qrpenalty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrPenalty
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-qrreedsolomon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QrReedSolomon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-recordaccess" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7278,8 +7344,8 @@
 <p class="fn-eyebrow">Code Reference</p>
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
-<p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>420</code></span><span><b>Test classes</b><code>318</code></span></p>
+<p class="fn-dek">Every packaged Apex class, grouped by domain and layer. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>426</code></span><span><b>Test classes</b><code>318</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7352,7 +7418,7 @@
 <li>
 <p><strong><a href="#domain-shared">Shared</a></strong></p>
 <hr />
-<p>32 classes</p>
+<p>38 classes</p>
 <p><a href="#domain-shared-root">Core</a> · <a href="#domain-shared-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-shared-selector">Selectors</a></p>
 </li>
 </ul>
@@ -7544,7 +7610,7 @@
 </div>
 <div class="fn-entry__body">
 <p>CampaignPostController — admin API behind the two campaign authoring panels: admCampaignUpdatesTab (text updates) and admCampaignDocumentsTab (downloadable files).</p>
-<p>Reads via <a href="#apex-campaignpostsselector"><code>CampaignPostsSelector</code></a>; all DML runs through <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a> and the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
+<p>Reads via <a href="#apex-campaignpostsselector"><code>CampaignPostsSelector</code></a>; all DML runs through <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a> and the Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>One controller serves two panels because one object (Campaign_Post__c) backs both — see that object's header for why. Every method therefore takes a postType and passes it straight through to the service, which scopes the query and the Campaign visibility toggle by it. The panels stay independent: neither can read, edit or delete the other's rows, and neither ever sends a type the admin chose — each panel hardcodes its own.</p>
@@ -7737,7 +7803,7 @@
 </div>
 <div class="fn-entry__body">
 <p>FundraiserAdminController — internal admin console for launching and managing fundraisers (<a href="#apex-campaigns"><code>Campaigns</code></a>). Lets staff create a whole fundraiser in one flow — Campaign + linked page design + fund (Designation, existing or new) — without opening multiple Salesforce objects.</p>
-<p>Reads via <a href="#apex-campaignsselector"><code>CampaignsSelector</code></a>/<a href="#apex-designationsselector"><code>DesignationsSelector</code></a>/<a href="#apex-campaigndesignsselector"><code>CampaignDesignsSelector</code></a>; all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
+<p>Reads via <a href="#apex-campaignsselector"><code>CampaignsSelector</code></a>/<a href="#apex-designationsselector"><code>DesignationsSelector</code></a>/<a href="#apex-campaigndesignsselector"><code>CampaignDesignsSelector</code></a>; all DML runs through the Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
 <p><a href="#apex-fundraiserform-apply"><code>FundraiserForm.apply</code></a> is also the enforcement point for story normalization: it routes every wizard save through <a href="#apex-campaignservice-normalizestorymarkdown"><code>CampaignService.normalizeStoryMarkdown</code></a> before Story__c is written.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -7803,7 +7869,7 @@
 </div>
 <div class="fn-entry__body">
 <p>FundraiserDetailController — powers the fundraiser record view in the admin console. Returns a summary + overview aggregates (for the charts) and paginated related lists (donations, recurring gifts, tickets) so each tab lazy-loads on demand.</p>
-<p>All SOQL runs through selectors (aggregate/count queries excepted — the fflib QueryFactory can't express them). Every @AuraEnabled returns the { success, data/error } envelope. The overview payload, the activity feed and the donor-name lookup live in <a href="#apex-fundraiserdetailpayload"><code>FundraiserDetailPayload</code></a>, <a href="#apex-fundraiseractivityfeed"><code>FundraiserActivityFeed</code></a> and <a href="#apex-fundraiserdonornames"><code>FundraiserDonorNames</code></a>.</p>
+<p>All SOQL runs through selectors (aggregate/count queries excepted — the plain <a href="#apex-query"><code>Query</code></a> chain can't express them). Every @AuraEnabled returns the { success, data/error } envelope. The overview payload, the activity feed and the donor-name lookup live in <a href="#apex-fundraiserdetailpayload"><code>FundraiserDetailPayload</code></a>, <a href="#apex-fundraiseractivityfeed"><code>FundraiserActivityFeed</code></a> and <a href="#apex-fundraiserdonornames"><code>FundraiserDonorNames</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This is a view of GIFTS, not an event log. The package writes no per-gift event record, so each line describes the state one Opportunity is in now, dated by the event that put it there: a refund by Refund_Date__c, a failure by LastModifiedDate, an arrival by CreatedDate. A gift that was refunded appears once, as a refund - it is not two lines. There is deliberately no reason text on a failure: Payment_Status__c is all an Opportunity records, and no decline-reason field exists on it. Recurring schedules do carry Recurring_Donation__c.Last_Error__c, which belongs on the recurring record.</p>
@@ -8013,7 +8079,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads Campaign_Post__c rows for the fundraisers console (user mode) and the public donation/event page (system mode).</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The guest method mirrors <a href="#apex-campaigndesignsselector-selectbyid"><code>CampaignDesignsSelector.selectById</code></a> — a system-mode read without sharing is what actually lets an unauthenticated visitor read a published post, because the Guest licence holds no sharing on Campaign_Post__c. The user-mode methods deliberately do not filter on Is_Published__c: an admin editing a campaign needs to see drafts, and a guest must never see them. Each query's mode is stated at the call; there is no inner <code>without sharing</code> runner any more, because <a href="#apex-query"><code>Query</code></a> runs system-mode reads in a runner that declares its own sharing.</p>
@@ -8075,7 +8141,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads Campaign rows for the guest site (system mode, publicity-gated), the fundraisers console (user mode) and the nightly rollup batch, and owns the master-side visibility gate that Event_Ticket_Type__c reads depend on.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Every method names the mode its access decision log row decided, and a method reached from contexts with different rules (selectById, selectByIdSystemMode, selectWithCustomQuestions, selectWithDesignations, selectWithFaqs) takes the mode from its entry point: a guest action passes SYSTEM_WITHOUT_SHARING (<code>guest</code>), a job or rollup trigger passes SYSTEM_WITHOUT_SHARING (<code>job</code>, <code>rollup</code>), a staff action passes USER_MODE, and the one recurring-gift write action its <code>Manage_Recurring_Gifts</code> custom permission authorises passes SYSTEM_WITH_SHARING. Reads that keep <code>Security.stripInaccessible(READABLE)</code> after the query re-apply the guest set's field grants; it is a no-op after a user-mode read.</p>
@@ -8393,7 +8459,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads Content_Template__c rows — the shared FAQ and custom-question library — for the admin editors (user mode) and the guest donation/finalize path (system mode).</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Content_Template__c is one shared object reused for two purposes, distinguished only by RecordType — 'FAQ' (consumed by <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a>) and 'Custom_Question' (consumed by <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a>). selectActiveByRecordType is generic across both; selectByIds is the resolver for a campaign's Selected_*_Ids__c JSON array, and it takes its mode from the entry point: the guest donation form, the embed REST resource and the finalize jobs pass SYSTEM_WITHOUT_SHARING, a staff editor passes USER_MODE.</p>
@@ -8506,7 +8572,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for the protected Theme_Token__mdt catalog that lists every CSS custom property a page-design record may override.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>selectAll() is the single source of truth for which CSS custom properties a page-design record is allowed to override — Theme_Token__mdt is a protected, packaged CMDT type (143 records), changeable only via package upgrade. Two real consumers: <a href="#apex-campaignservice"><code>CampaignService</code></a>'s guest runtime (normalizeThemeTokensJson strips any key this catalog doesn't list) and <a href="#apex-themetokencatalogservice"><code>ThemeTokenCatalogService</code></a> for the internal setDesigns editor. There is no separate hand-synced allowlist anywhere else — add a Theme_Token__mdt record to make a new style overridable.</p>
@@ -8673,7 +8739,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Service behind the reusable FAQ library: resolves a campaign's selected FAQ templates, lists the active library, and persists the admin editor's selection back onto the Campaign.</p>
-<p>FFLib role: Service (<a href="#apex-icampaignfaqservice"><code>ICampaignFaqService</code></a>), resolved through <a href="#apex-application"><code>Application</code></a>.Service.</p>
+<p>Layer role: Service (<a href="#apex-icampaignfaqservice"><code>ICampaignFaqService</code></a>), resolved through <a href="#apex-application"><code>Application</code></a>.Service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Structural twin of <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a> — same three-method shape and the same two-phase saveSelection (create new Content_Template__c rows first so their Ids exist, THEN the campaign's own selection fields are updated), differing only by RecordType ('FAQ' here, 'Custom_Question' there) and target fields (Campaign.FAQ_Ids__c/FAQs_Active__c vs Campaign.Custom_Question_Ids__c/Custom_Questions_Active__c). Formerly backed by a standalone Campaign_FAQ__c object; merged into Campaign fields (2026-08) since it only ever held a single selection row per campaign.</p>
@@ -8849,7 +8915,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Keeps each Document post's stored file details (URL, type, size) in step with the file attached to it, and refuses to publish a Document that has no stored file link.</p>
-<p>FFLib role: Service helper — static, called by <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a> and <a href="#apex-campaignpostfilestamp"><code>CampaignPostFileStamp</code></a>.</p>
+<p>Layer role: Service helper — static, called by <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a> and <a href="#apex-campaignpostfilestamp"><code>CampaignPostFileStamp</code></a>.</p>
 <p>The file objects it reads (ContentDocument, ContentDocumentLink, ContentVersion, ContentDistribution) are read through their selectors, never with inline SOQL; the access mode of each read is decided at the selector or by the entry point.</p>
 <p>A system mode on every file-object read: standard object, package cannot grant. A 2GP permission set cannot ship a grant on ContentDocumentLink, ContentVersion, ContentDocument or ContentDistribution (AGENTS.md, Change Management), so a USER_MODE read would depend on a manual admin step the install cannot verify. Each query is keyed by Ids the caller already holds — the posts being saved or deleted, the ContentVersion Ids just inserted, or the ContentDocument Ids attached to those posts — so no row outside the post's own attachment is reachable. The full explanation is on CampaignPostService's class header.</p>
 <div class="fn-docnote">
@@ -8901,7 +8967,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The plan for retiring the files a post is letting go of: which files are the post's to delete, which are only detached, and which public links must die either way. Built before anything is written; <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a>.FileRetirement executes it.</p>
-<p>FFLib role: Service helper — it only reads, and it is built by CampaignPostService.FileRetirement, which owns every statement that deletes. The read of EVERY link of the files (including links to records the acting user cannot see) is made by that class and passed in, so the one without-sharing read stays beside the delete it serves.</p>
+<p>Layer role: Service helper — it only reads, and it is built by CampaignPostService.FileRetirement, which owns every statement that deletes. The read of EVERY link of the files (including links to records the acting user cannot see) is made by that class and passed in, so the one without-sharing read stays beside the delete it serves.</p>
 <p>The file objects it reads (ContentDocument, ContentDocumentLink, ContentVersion, ContentDistribution) are read through their selectors, never with inline SOQL; the access mode of each read is decided at the selector or by the entry point.</p>
 <p>A system mode on every file-object read: standard object, package cannot grant. A 2GP permission set cannot ship a grant on ContentDocumentLink, ContentVersion, ContentDocument or ContentDistribution (AGENTS.md, Change Management), so a USER_MODE read would depend on a manual admin step the install cannot verify. Each query is keyed by Ids the caller already holds — the posts being saved or deleted, the ContentVersion Ids just inserted, or the ContentDocument Ids attached to those posts — so no row outside the post's own attachment is reachable. The full explanation is on CampaignPostService's class header.</p>
 <div class="fn-docnote">
@@ -8951,7 +9017,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Works out which Document posts a batch of newly inserted <a href="#apex-contentversions"><code>ContentVersions</code></a> belongs to, and what to stamp on them: the file's public URL, type and size, plus the superseded files to retire once the stamp has committed.</p>
-<p>FFLib role: Service helper — static, called by <a href="#apex-campaignpostservice-stampfromversions"><code>CampaignPostService.stampFromVersions</code></a> from the ContentVersion after-insert trigger. It resolves and prepares; the stamp commit itself stays in <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a> so the Unit of Work and the stampInProgress flag sit beside each other.</p>
+<p>Layer role: Service helper — static, called by <a href="#apex-campaignpostservice-stampfromversions"><code>CampaignPostService.stampFromVersions</code></a> from the ContentVersion after-insert trigger. It resolves and prepares; the stamp commit itself stays in <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a> so the Unit of Work and the stampInProgress flag sit beside each other.</p>
 <p>The file objects it reads (ContentDocument, ContentDocumentLink, ContentVersion, ContentDistribution) are read through their selectors, never with inline SOQL; the access mode of each read is decided at the selector or by the entry point.</p>
 <p>A system mode on every file-object read: standard object, package cannot grant. A 2GP permission set cannot ship a grant on ContentDocumentLink, ContentVersion, ContentDocument or ContentDistribution (AGENTS.md, Change Management), so a USER_MODE read would depend on a manual admin step the install cannot verify. Each query is keyed by Ids the caller already holds — the posts being saved or deleted, the ContentVersion Ids just inserted, or the ContentDocument Ids attached to those posts — so no row outside the post's own attachment is reachable. The full explanation is on CampaignPostService's class header.</p>
 <div class="fn-docnote">
@@ -9000,7 +9066,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Resolves the public download URL of each ContentVersion a Document post serves, minting the ContentDistribution that carries it when none exists yet.</p>
-<p>FFLib role: Service helper — static, called by <a href="#apex-campaignpostfiledetails"><code>CampaignPostFileDetails</code></a> and <a href="#apex-campaignpostfilestamp"><code>CampaignPostFileStamp</code></a>.</p>
+<p>Layer role: Service helper — static, called by <a href="#apex-campaignpostfiledetails"><code>CampaignPostFileDetails</code></a> and <a href="#apex-campaignpostfilestamp"><code>CampaignPostFileStamp</code></a>.</p>
 <p>The file objects it reads (ContentDocument, ContentDocumentLink, ContentVersion, ContentDistribution) are read through their selectors, never with inline SOQL; the access mode of each read is decided at the selector or by the entry point.</p>
 <p>A system mode on every file-object read: standard object, package cannot grant. A 2GP permission set cannot ship a grant on ContentDocumentLink, ContentVersion, ContentDocument or ContentDistribution (AGENTS.md, Change Management), so a USER_MODE read would depend on a manual admin step the install cannot verify. Each query is keyed by Ids the caller already holds — the posts being saved or deleted, the ContentVersion Ids just inserted, or the ContentDocument Ids attached to those posts — so no row outside the post's own attachment is reachable. The full explanation is on <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a>'s class header.</p>
 <p>The one write that is NOT system mode is the public link itself: ContentDistribution is inserted in USER_MODE, so the platform's "Create Public Links" permission decides whether the uploader may publish the file to the internet. A user without it gets a post with no link, and the Documents panel says why.</p>
@@ -9036,7 +9102,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Renders a campaign's published Campaign_Post__c rows as the two lists the public page shows (a document shelf and an update timeline), and formats a file size for both that page and the admin Documents editor.</p>
-<p>FFLib role: Service helper — static, called by <a href="#apex-campaignpostservice-getpublicposts"><code>CampaignPostService.getPublicPosts</code></a> and <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a>. Touches no file object and no database: it only shapes rows its caller has already read.</p>
+<p>Layer role: Service helper — static, called by <a href="#apex-campaignpostservice-getpublicposts"><code>CampaignPostService.getPublicPosts</code></a> and <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a>. Touches no file object and no database: it only shapes rows its caller has already read.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-campaignpostservice"><code>CampaignPostService</code></a> to keep that class inside the analyzer's complexity limits. No file object is touched here — see <a href="#apex-campaignpostservice-getpublicposts"><code>CampaignPostService.getPublicPosts</code></a> for why the public page plays back stored file details instead of querying files.</p>
@@ -9075,7 +9141,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Turns published Campaign_Post__c rows into the two lists the public page renders: a document shelf and an update timeline. Also keeps each Document post's stored file details in step with the file attached to it.</p>
-<p>FFLib role: Service. Its file work is split across helpers so each class stays inside the analyzer's complexity limits: <a href="#apex-campaignpostpublicview"><code>CampaignPostPublicView</code></a> shapes the public lists, <a href="#apex-campaignpostfiledetails"><code>CampaignPostFileDetails</code></a> keeps the stored details in step, <a href="#apex-campaignpostpubliclinks"><code>CampaignPostPublicLinks</code></a> mints the public links, <a href="#apex-campaignpostfilestamp"><code>CampaignPostFileStamp</code></a> prepares the stamp for a newly attached file and <a href="#apex-campaignpostfileplan"><code>CampaignPostFilePlan</code></a> plans the retirement of a file a post lets go of. What stays here is the entry points, the commits, and the one retirement class whose without-sharing statements are scoped to this file.</p>
+<p>Layer role: Service. Its file work is split across helpers so each class stays inside the analyzer's complexity limits: <a href="#apex-campaignpostpublicview"><code>CampaignPostPublicView</code></a> shapes the public lists, <a href="#apex-campaignpostfiledetails"><code>CampaignPostFileDetails</code></a> keeps the stored details in step, <a href="#apex-campaignpostpubliclinks"><code>CampaignPostPublicLinks</code></a> mints the public links, <a href="#apex-campaignpostfilestamp"><code>CampaignPostFileStamp</code></a> prepares the stamp for a newly attached file and <a href="#apex-campaignpostfileplan"><code>CampaignPostFilePlan</code></a> plans the retirement of a file a post lets go of. What stays here is the entry points, the commits, and the one retirement class whose without-sharing statements are scoped to this file.</p>
 <p>The file objects (ContentDocument, ContentDocumentLink, ContentVersion, ContentDistribution) are read through their selectors and written through <a href="#apex-dml"><code>Dml</code></a>. The public-link insert is immediate, not Unit of Work deferred, because DistributionPublicUrl is populated by the platform only after commit — a UoW-deferred insert could not return the URL in the same transaction, which is the whole point of the call.</p>
 <p>A system mode on every file-object read: standard object, package cannot grant. A 2GP permission set cannot ship a grant on ContentDocumentLink, ContentVersion or ContentDistribution (AGENTS.md, Change Management), so a USER_MODE read would depend on a manual admin step the install cannot verify. Each query is keyed by the Campaign_Post__c Ids, ContentVersion Ids or ContentDocument Ids the caller already holds — the record being saved, or the file just attached to it — so no row outside the post's own attachment is reachable, and nothing read here leaves the transaction except the file details stamped onto that same post.</p>
 <p>The one write that is NOT system mode is the public link itself: ContentDistribution is inserted in USER_MODE, so the platform's "Create Public Links" permission decides whether the uploader may publish the file to the internet. A user without it gets a post with no link, and the Documents panel says why.</p>
@@ -9197,7 +9263,7 @@
 <p class="fn-entry__src"><code>campaign/<wbr>service/<wbr>CampaignService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Service behind the guest campaign and event pages: resolves a campaign from its public slug or Id and hands it to the page payload builders, decides whether a campaign is still taking gifts, and fronts the campaign and donor rollups. FFLib role: service.</p>
+<p>Service behind the guest campaign and event pages: resolves a campaign from its public slug or Id and hands it to the page payload builders, decides whether a campaign is still taking gifts, and fronts the campaign and donor rollups. Layer role: service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The entry point for the guest campaign/event experience. Real consumers: <a href="#apex-campaigncontroller"><code>CampaignController</code></a>, <a href="#apex-embedconfigresource"><code>EmbedConfigResource</code></a>, and <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.GetEventCampaign on the read side; <a href="#apex-donationformcontroller"><code>DonationFormController</code></a>, <a href="#apex-opportunities"><code>Opportunities</code></a> (domain), and <a href="#apex-donorsummaryrollupbatch"><code>DonorSummaryRollupBatch</code></a> on the write/rollup side.</p>
@@ -9378,7 +9444,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The row-level helpers behind <a href="#apex-campaigntemplateselection"><code>CampaignTemplateSelection</code></a>: reading the flags and ids an editor row carries, listing the ids in row order, and refusing a template outside the selection's library.</p>
-<p>FFLib role: Service helper — static, no abstract hooks of its own; CampaignTemplateSelection passes in everything that varies by selection (the record type, the nouns, the template field keys).</p>
+<p>Layer role: Service helper — static, no abstract hooks of its own; CampaignTemplateSelection passes in everything that varies by selection (the record type, the nouns, the template field keys).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-campaigntemplateselection"><code>CampaignTemplateSelection</code></a> to keep that class inside the analyzer's per-class complexity limit. Inherited sharing, like the class it serves: the one read here (<a href="#apex-contenttemplatesselector-selectbyids"><code>ContentTemplatesSelector.selectByIds</code></a>) runs under whatever sharing the calling service ran under.</p>
@@ -9429,7 +9495,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Shared engine behind a campaign's selection from the reusable Content_Template__c library: resolves the JSON id list a Campaign stores into ordered templates, and persists the admin editor's selection (new templates, edits to reused ones, the Campaign's own id list). <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a> and <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a> each supply a subclass naming their record type, template fields and Campaign selection fields.</p>
-<p>FFLib role: Service helper — not registered with <a href="#apex-application"><code>Application</code></a>.Service; used only by the two selection services.</p>
+<p>Layer role: Service helper — not registered with <a href="#apex-application"><code>Application</code></a>.Service; used only by the two selection services.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Extracted from <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a> and <a href="#apex-customquestionservice"><code>CustomQuestionService</code></a>, which were structural twins differing only by record type, template fields and Campaign target fields. The sharing keyword is inherited so the Units of Work below run under exactly the sharing the calling service ran under before the extraction; both commits are user-mode anyway. A save is two commits: new templates first so their Ids exist, then the Campaign's selection fields. One savepoint spans both, so a rejected campaign update also takes back the templates inserted for it instead of leaving orphans in the shared library.</p>
@@ -9590,7 +9656,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Manages the custom donation-form questions a campaign selects from the shared Content_Template__c library, for the admin editor and the donation path.</p>
-<p>FFLib role: Service.</p>
+<p>Layer role: Service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Structural twin of <a href="#apex-campaignfaqservice"><code>CampaignFaqService</code></a> — same three-method shape and the same two-phase saveSelection (new Content_Template__c rows committed first so their Ids exist, THEN the campaign's own selection fields are updated), differing only by RecordType ('Custom_Question' here, 'FAQ' there) and target fields (Campaign.Custom_Question_Ids__c/ Custom_Questions_Active__c vs Campaign.FAQ_Ids__c/FAQs_Active__c). Consumed by <a href="#apex-campaignquestioncontroller"><code>CampaignQuestionController</code></a> and, at donation time, by <a href="#apex-donationservice"><code>DonationService</code></a> when resolving submitted answers against the campaign's active questions. Formerly backed by a standalone Custom_Question__c object; merged into Campaign fields (2026-08) since it only ever held a single selection row per campaign.</p>
@@ -9869,7 +9935,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Contract for resolving which funds a campaign offers on its donation form and for filtering donor-submitted splits down to those funds.</p>
-<p>FFLib role: Service interface.</p>
+<p>Layer role: Service interface.</p>
 </div>
 </div>
 <div class="fn-entry">
@@ -9890,7 +9956,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Service contract for turning published Campaign_Post__c rows into the public page's document shelf and update timeline, and for keeping each Document post's stored file details in step with the file actually attached to it.</p>
-<p>FFLib role: Service interface.</p>
+<p>Layer role: Service interface.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The three admin methods below back <a href="#apex-campaignpostcontroller"><code>CampaignPostController</code></a>, which is what the Updates and Documents editors call. They take a postType because one object serves both panels and neither may see the other's rows — see the object's own header for why it is one object.</p>
@@ -9910,7 +9976,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Contract for reading a campaign's public configuration by slug or Id and for rolling up campaign and donor totals after donations change.</p>
-<p>FFLib role: Service interface.</p>
+<p>Layer role: Service interface.</p>
 </div>
 </div>
 <div class="fn-entry">
@@ -10227,7 +10293,7 @@
 <p class="fn-entry__src"><code>campaign/<wbr>service/<wbr>ThemeTokenCatalogService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Shapes the Theme_Token__mdt catalog into the grouped, labelled list the page-design editor renders. FFLib role: service layer, resolved through the <a href="#apex-application"><code>Application</code></a> factory.</p>
+<p>Shapes the Theme_Token__mdt catalog into the grouped, labelled list the page-design editor renders. Layer role: service layer, resolved through the <a href="#apex-application"><code>Application</code></a> factory.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Internal-editor counterpart to <a href="#apex-themetokensanitizer-normalizethemetokensjson"><code>ThemeTokenSanitizer.normalizeThemeTokensJson</code></a> — both read the same <a href="#apex-themetokensselector-selectall"><code>ThemeTokensSelector.selectAll</code></a>() catalog, but this one shapes it for the setDesigns admin UI (grouped, labeled, with an example value) while normalizeThemeTokensJson uses it as a guest-runtime allowlist. Exposed to the editor via <a href="#apex-setupdesignscontroller-getthemetokencatalog"><code>SetupDesignsController.getThemeTokenCatalog</code></a>().</p>
@@ -10610,7 +10676,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-refundreconcileapplier-sendpostcommitnotifications">RefundReconcileApplier.sendPostCommitNotifications()</a></td>
+<td><em>calls:</em> <a href="#apex-refundservice-refund">RefundService.refund()</a>, <a href="#apex-refundreconcileapplier-sendpostcommitnotifications">RefundReconcileApplier.sendPostCommitNotifications()</a>, <a href="#apex-settings-current">Settings.current()</a>, <a href="#apex-dml-upsertrows">Dml.upsertRows()</a>, <a href="#apex-settingsselector-clearcache">SettingsSelector.clearCache()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -10670,7 +10736,7 @@
 </div>
 <div class="fn-entry__body">
 <p>One staging row's reconcile outcome, split out of <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a>: given the row and what Stripe said about its PaymentIntent (or why Stripe could not be asked), finalize a succeeded payment, close a canceled or expired unpaid one, leave a pending one for the next pass, and write the Transaction_Log__c audit row in every case.</p>
-<p>FFLib role: async helper of StagingReconciliationBatch (execute and reconcileOne). Finalizing goes through <a href="#apex-idonationservice"><code>IDonationService</code></a> / <a href="#apex-ieventpurchaseservice"><code>IEventPurchaseService</code></a>; the staging status and audit writes are direct system-mode DML, as they were in the batch.</p>
+<p>Layer role: async helper of StagingReconciliationBatch (execute and reconcileOne). Finalizing goes through <a href="#apex-idonationservice"><code>IDonationService</code></a> / <a href="#apex-ieventpurchaseservice"><code>IEventPurchaseService</code></a>; the staging status and audit writes are direct system-mode DML, as they were in the batch.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>PAY-4: a stale Processing event row is finished through the same finalizeSucceededEventStaging call as a Submitted one; its findExistingOrder path repairs the existing order instead of creating a second. The canceled, TTL and error-expiry branches below all skip a Processing row.</p>
@@ -10820,7 +10886,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Background job behind the staff "Retry now" button on the Donation Pipeline Monitor. It runs the same single-record reconciliation as one row of the scheduled finalizer pass, so a staff click never executes the reconciler's job-mode code synchronously in the user's own transaction.</p>
-<p>FFLib role: async job. <a href="#apex-donationmonitorcontroller-retrydonationstagingnow"><code>DonationMonitorController.retryDonationStagingNow</code></a> enqueues it after its own visibility check; execute() hands the id to <a href="#apex-stagingreconciliationbatch-reconcileone"><code>StagingReconciliationBatch.reconcileOne</code></a>, which retrieves the PaymentIntent (hence Database.AllowsCallouts) and applies the outcome.</p>
+<p>Layer role: async job. <a href="#apex-donationmonitorcontroller-retrydonationstagingnow"><code>DonationMonitorController.retryDonationStagingNow</code></a> enqueues it after its own visibility check; execute() hands the id to <a href="#apex-stagingreconciliationbatch-reconcileone"><code>StagingReconciliationBatch.reconcileOne</code></a>, which retrieves the PaymentIntent (hence Database.AllowsCallouts) and applies the outcome.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Enqueued from <a href="#apex-donationmonitorcontroller-retrydonationstagingnow"><code>DonationMonitorController.retryDonationStagingNow</code></a> (owner ruling, 2026-11-22), which replaced a synchronous call to <a href="#apex-stagingreconciliationbatch-reconcileone"><code>StagingReconciliationBatch.reconcileOne</code></a>. Moving the step into a job means the reconciler's job-mode reads and writes are only ever reached from a job, never from a staff action. The click therefore returns at once and the row updates shortly afterwards; the monitor's refresh shows the new status.</p>
@@ -10972,7 +11038,7 @@
 </div>
 <div class="fn-entry__body">
 <p>DonationMonitorController — backs the lexDonationMonitor tab (Donation Pipeline Monitor).</p>
-<p>FFLib role: controller. Reads Donation_Staging__c through <a href="#apex-donationstagingselector"><code>DonationStagingSelector</code></a> and writes nothing itself; "Retry now" enqueues <a href="#apex-stagingretryqueueable"><code>StagingRetryQueueable</code></a>, which runs <a href="#apex-stagingreconciliationbatch-reconcileone"><code>StagingReconciliationBatch.reconcileOne</code></a> as a background job.</p>
+<p>Layer role: controller. Reads Donation_Staging__c through <a href="#apex-donationstagingselector"><code>DonationStagingSelector</code></a> and writes nothing itself; "Retry now" enqueues <a href="#apex-stagingretryqueueable"><code>StagingRetryQueueable</code></a>, which runs <a href="#apex-stagingreconciliationbatch-reconcileone"><code>StagingReconciliationBatch.reconcileOne</code></a> as a background job.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-setupcontroller"><code>SetupController</code></a> on 2026-08-14, in the same change that moved the monitor from a <a href="#apex-settings"><code>Settings</code></a>-console panel to its own Lightning tab. The two methods below are unchanged; what changed is who may call them.</p>
@@ -11066,7 +11132,7 @@
 </div>
 <div class="fn-entry__body">
 <p>ReceiptAdminController — backs the lexResendReceipt RecordAction on Opportunity.</p>
-<p>FFLib role: controller. Reads through selectors, writes nothing; the send itself is delegated to <a href="#apex-ireceiptservice"><code>IReceiptService</code></a>.resendReceipt.</p>
+<p>Layer role: controller. Reads through selectors, writes nothing; the send itself is delegated to <a href="#apex-ireceiptservice"><code>IReceiptService</code></a>.resendReceipt.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Kept separate from <a href="#apex-receiptcontroller"><code>ReceiptController</code></a> on purpose. That class is <code>without sharing</code> and guest- reachable (it serves the public token-addressed receipt page), so a staff-only method placed there would run without sharing for no reason and widen a guest-facing surface. This one is <code>with sharing</code>: staff can only resend a receipt for a donation they can already see.</p>
@@ -11104,7 +11170,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Guest controller that renders a donation receipt addressed only by its unguessable receipt token, for the public confirmation page.</p>
-<p>FFLib role: Controller.</p>
+<p>Layer role: Controller.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Backs the publicDonationReceipt LWC. Receipt_Token__c is stamped by <a href="#apex-opportunities-setreceipttoken"><code>Opportunities.setReceiptToken</code></a> on every package donation, so this controller never needs (and never accepts) an Opportunity Id.</p>
@@ -11136,7 +11202,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Staff-facing controller for issuing and inspecting refunds on a donation.</p>
-<p>FFLib role: Controller.</p>
+<p>Layer role: Controller.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Backs the lexRefundDonation RecordAction and the admFundraiserRecord refund panel. Gated by the Process_Refunds custom permission, checked in RefundAction.doValidate — and checked ONLY there. <a href="#apex-refundservice-refund"><code>RefundService.refund</code></a> contains no permission check of its own, so this controller is the single thing standing between a user and a real Stripe refund, not the outer half of a pair. Any future second entry point into <a href="#apex-refundservice"><code>RefundService</code></a> must carry its own Process_Refunds check; adding one and forgetting the check issues live refunds to a user who was never granted them.</p>
@@ -11382,7 +11448,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The rollup half of the <a href="#apex-opportunities"><code>Opportunities</code></a> domain: works out WHICH campaigns, donors and funds a batch of changed gifts invalidates, and recomputes each once through <a href="#apex-campaignservice"><code>CampaignService</code></a> and <a href="#apex-donationdesignations"><code>DonationDesignations</code></a>.</p>
-<p>FFLib role: Domain helper — static, called only from the Opportunities trigger handler. With sharing, like the domain; the rollups themselves are requested in SYSTEM_MODE (see the reason at each call), because the package maintains these totals for whoever saved the gift.</p>
+<p>Layer role: Domain helper — static, called only from the Opportunities trigger handler. With sharing, like the domain; the rollups themselves are requested in SYSTEM_MODE (see the reason at each call), because the package maintains these totals for whoever saved the gift.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-opportunities"><code>Opportunities</code></a>, which keeps the trigger events, the defaults and the stamps. Everything here answers one question — which parents' totals did these gifts move — and every method takes the package-record-type gifts the domain already filtered.</p>
@@ -11457,7 +11523,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The before-save half of the <a href="#apex-opportunities"><code>Opportunities</code></a> domain: the checks and stamps that keep a gift's payment account, receipt serial and soft-credit provenance honest.</p>
-<p>FFLib role: Domain helper — static, called only from the Opportunities trigger handler. With sharing, like the domain; the one record-type read is SYSTEM_MODE so a trigger side effect runs for every writer (see the reason at the call).</p>
+<p>Layer role: Domain helper — static, called only from the Opportunities trigger handler. With sharing, like the domain; the one record-type read is SYSTEM_MODE so a trigger side effect runs for every writer (see the reason at the call).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-opportunities"><code>Opportunities</code></a>. Each method takes the gifts it works on: the package-record-type ones the domain already filtered, or — for the payment-account rule — every record in the trigger, because that rule is keyed on the Donation record type alone.</p>
@@ -11514,7 +11580,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads a campaign's Opportunity (donation) rows and totals: the Campaign rollup's aggregates and the fundraiser console's gift pages, activity feed, counts and fund-split aggregates.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> on 2026-11-27 with every query unchanged, so each selector stays within the public-surface budget. Campaign-level Opportunity reads: the donor count and amount raised the Campaign rollup writes, and the paged gifts, activity feed, counts and fund-split aggregates the fundraiser console shows. It is a second selector on Opportunity, beside OpportunitiesSelector, so it names itself in selectorName() and shares that selector's field list.</p>
@@ -11684,7 +11750,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for Designation__c (funds), serving both staff reads and the guest donation form.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Two of the three reads take their mode from the entry point (the entry point decides): the guest donation form, the donor portal, the reconciliation jobs and the REST embed pass SYSTEM_WITHOUT_SHARING (<code>guest</code> or <code>job</code>), a staff action passes USER_MODE, and the one recurring-gift write action that its <code>Manage_Recurring_Gifts</code> custom permission authorises passes SYSTEM_WITH_SHARING. Both keep <code>Security.stripInaccessible(READABLE)</code> after the read, which re-applies the guest set's field grants; it is a no-op after a user-mode read. selectById is the staff read by Id, always user mode, typed as List&lt;Designation__c&gt;.</p>
@@ -11834,7 +11900,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads one donor's Opportunity (donation) rows and giving totals: the record-page summary, the Donors console, the annual giving statement, the donor portal, and the per-donor rollup aggregates.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> on 2026-11-27 with every query unchanged, so each selector stays within the public-surface budget. One donor's giving: the lifetime summary, the one-time total and the giving chart on the record page, the Donors console's gift list, the annual giving statement, and the donor portal's history, events and totals; plus the per-donor rollup aggregates. A donor is named by its Contact Id and its Account Id, one of them null (the dual-field Person Account convention). It is a second selector on Opportunity, beside OpportunitiesSelector, so it names itself in selectorName() and shares that selector's field list.</p>
@@ -12000,7 +12066,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads one Opportunity (donation) for the page or action that shows it: the guest receipt, tickets and thank-you pages by receipt token, the staff receipt panels, and the refund paths.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> on 2026-11-27 with every query unchanged, so each selector stays within the public-surface budget. Reads one gift for the page or action that shows it: the guest receipt, tickets and thank-you pages by receipt token, the staff receipt and resend panels, and the refund paths. It is a second selector on Opportunity, beside OpportunitiesSelector, so it names itself in selectorName() and shares that selector's field list.</p>
@@ -12174,7 +12240,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads Opportunity (donation) rows by Id and for the job, trigger and email paths; user mode for staff reads, system mode where the caller is a job or a trigger with no sharing of its own.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The base Opportunity selector: the by-Id reads, the payment-intent probe the reconciliation and repair paths use, the donor-contact reads the notice emails and the company-match, soft-credit and campaign-member syncs run, and the installment list of a recurring schedule. The rest of the Opportunity reads are split by who asks: <a href="#apex-giftreceiptsselector"><code>GiftReceiptsSelector</code></a> (receipt, ticket, thank-you and refund reads), <a href="#apex-donorgiftsselector"><code>DonorGiftsSelector</code></a> (one donor's giving, the portal, the statement) and <a href="#apex-campaigngiftsselector"><code>CampaignGiftsSelector</code></a> (a campaign's totals and the fundraiser console). The three name themselves in selectorName(), so this selector owns the plain <code>Opportunity.selectRecordsById</code> name; all four share this class's field list.</p>
@@ -12183,7 +12249,7 @@
 <p>ContactId + AccountId are the two halves of the Person Account dual-lookup, resolved by <a href="#apex-donorresolutionservice-resolvereceiptcontactid"><code>DonorResolutionService.resolveReceiptContactId</code></a> into the Contact the tribute template merges from. This used to select Account.Name instead of AccountId, because the e-card body was assembled in Apex and needed a display name; the body now lives in a packaged EmailTemplate that merges {!Contact.*} directly, so the name is no longer read here.</p>
 <p>What must NOT come back is Contact.FirstName or any other "Contact." path — Opportunity.ContactId has no relationshipName (Schema describe returns null for it), so the query is rejected at runtime with "Didn't understand relationship 'Contact'". Because the whole tribute send is best-effort, that failure is swallowed and shows up only as a tribute e-card that silently never arrives. Account traverses fine; only Contact doesn't.</p>
 <p>No WHERE clause beyond the id set — unlike the campaign-member sync, there is no single condition that identifies a candidate. A gift may qualify for a tribute credit, a household credit, both, or neither, and the three soft-credit slots are filled independently, so <a href="#apex-softcreditservice"><code>SoftCreditService</code></a> has to see every row and decide per slot.</p>
-<p>The framework's <a href="#apex-query"><code>Query</code></a> asserts no object access of its own, so a guest-context read fails only if the mode is user mode. (The fflib selector this replaced asserted Opportunity read at BUILD time for the running user and threw "Permission to access an Opportunity denied." under the guest user before the query ran, so the refund-request staff alert never sent from 2026-08-14 to 2026-09-27; the handler logged a WARN and the donor still saw "Refund request sent". Same fix as <a href="#apex-paymentmethodsselector-selectbydonorsystem"><code>PaymentMethodsSelector.selectByDonorSystem</code></a>.)</p>
+<p>The framework's <a href="#apex-query"><code>Query</code></a> asserts no object access of its own, so a guest-context read fails only if the mode is user mode. (The earlier query-factory selector this replaced asserted Opportunity read at BUILD time for the running user and threw "Permission to access an Opportunity denied." under the guest user before the query ran, so the refund-request staff alert never sent from 2026-08-14 to 2026-09-27; the handler logged a WARN and the donor still saw "Refund request sent". Same fix as <a href="#apex-paymentmethodsselector-selectbydonorsystem"><code>PaymentMethodsSelector.selectByDonorSystem</code></a>.)</p>
 </div>
 <table>
 <thead>
@@ -12354,7 +12420,7 @@
 <p class="fn-entry__src"><code>donation/<wbr>service/<wbr>CampaignMemberSyncService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Adds donors to the Campaign their gift came in on as Campaign Members, so campaign response can be reported with the standard Salesforce campaign tools instead of a custom rollup. FFLib Service layer — registered as <a href="#apex-icampaignmembersyncservice"><code>ICampaignMemberSyncService</code></a> in <a href="#apex-application"><code>Application</code></a>.</p>
+<p>Adds donors to the Campaign their gift came in on as Campaign Members, so campaign response can be reported with the standard Salesforce campaign tools instead of a custom rollup. Service layer — registered as <a href="#apex-icampaignmembersyncservice"><code>ICampaignMemberSyncService</code></a> in <a href="#apex-application"><code>Application</code></a>.</p>
 <p>Driven by <a href="#apex-donationfinalizedsubscriberhandler"><code>DonationFinalizedSubscriberHandler</code></a>, one isolated seam among several on the DonationFinalized__e event.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -12394,7 +12460,7 @@
 <p class="fn-entry__src"><code>donation/<wbr>service/<wbr>CompanyMatchService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Turns a donor's "my employer will match this" tick into work someone will actually do: a follow-up Task for staff and an instructions email for the donor. FFLib Service layer — registered as <a href="#apex-icompanymatchservice"><code>ICompanyMatchService</code></a> in <a href="#apex-application"><code>Application</code></a>, so callers resolve it through the factory and tests can mock it.</p>
+<p>Turns a donor's "my employer will match this" tick into work someone will actually do: a follow-up Task for staff and an instructions email for the donor. Service layer — registered as <a href="#apex-icompanymatchservice"><code>ICompanyMatchService</code></a> in <a href="#apex-application"><code>Application</code></a>, so callers resolve it through the factory and tests can mock it.</p>
 <p>Driven by <a href="#apex-donationfinalizedsubscriberhandler"><code>DonationFinalizedSubscriberHandler</code></a>, one isolated seam among several on the DonationFinalized__e event.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -12474,7 +12540,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The staff evidence-due alert for an open card dispute: a plain-text message to the Opportunity owner and the org reply-to address, bulked into one send. Best-effort. Reached through <a href="#apex-receiptservice-senddisputealerts"><code>ReceiptService.sendDisputeAlerts</code></a>.</p>
-<p>FFLib role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
+<p>Layer role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Bulk send behind <a href="#apex-receiptservice-senddisputealerts"><code>ReceiptService.sendDisputeAlerts</code></a>, for <a href="#apex-refundreconciliationbatch"><code>RefundReconciliationBatch</code></a>. Same reasoning as <a href="#apex-donationnoticeemails-sendrefundnoticesforjob"><code>DonationNoticeEmails.sendRefundNoticesForJob</code></a>: Messaging.sendEmail is capped at 10 INVOCATIONS per transaction, so alerting per Opportunity in a loop put an uncatchable LimitException between the batch and its own error handling once a chunk detected an eleventh new chargeback. Disputes are rare enough that the old loop would have survived most runs, which is precisely why this needed fixing rather than watching: the day it broke would be the day a processor-side incident opened a burst of chargebacks — exactly when the alerts matter most.</p>
@@ -12667,7 +12733,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The bulked donor notices that follow a gift: employer-match instructions and refund notifications. Each set is sent in ONE Messaging.sendEmail invocation (the per-transaction cap counts invocations), best-effort. Reached through <a href="#apex-receiptservice-sendcompanymatchinstructions"><code>ReceiptService.sendCompanyMatchInstructions</code></a> and sendRefundNotification(s).</p>
-<p>FFLib role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
+<p>Layer role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Builds every message for the set with a fixed number of queries, whatever its size: the donors in one selector call (selectDonorContactByIds, as the refund notices do), the template text and the settings record once per transaction (<a href="#apex-receipttemplates"><code>ReceiptTemplates</code></a>, <a href="#apex-settingsselector"><code>SettingsSelector</code></a>). It used to read the donor once per gift. Split from the send so a test can assert the query count without spending the org's daily email allocation.</p>
@@ -12718,7 +12784,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The automatic receipts: the tax receipt for a finalized one-time donation and the ticket confirmation for a finalized event order. Both are best-effort; a failed send is logged and swallowed. Reached through <a href="#apex-receiptservice-senddonationreceipt"><code>ReceiptService.sendDonationReceipt</code></a> / sendEventTicketReceipt.</p>
-<p>FFLib role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
+<p>Layer role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -12760,7 +12826,7 @@
 <p class="fn-entry__src"><code>donation/<wbr>service/<wbr>DonationService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Guest donation pipeline: opens a Stripe PaymentIntent behind a Donation_Staging__c row, reports the intent's status back to the donor's browser, and finalizes a succeeded staging into the donor, Opportunity, designation splits, custom answers and the DonationFinalized__e event. FFLib role: service.</p>
+<p>Guest donation pipeline: opens a Stripe PaymentIntent behind a Donation_Staging__c row, reports the intent's status back to the donor's browser, and finalizes a succeeded staging into the donor, Opportunity, designation splits, custom answers and the DonationFinalized__e event. Layer role: service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>finalizeSucceededStaging is the SOLE creator of donation <a href="#apex-opportunities"><code>Opportunities</code></a> and is idempotent on Stripe_Payment_Intent_Id__c, so it is safe to call from more than one path: <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> (the normal webhook-free finalizer) and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> (the orphaned-PaymentIntent repair path) both invoke it directly. It publishes DonationFinalized__e (consumed by DonationFinalizedSubscriber consumed by <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a>) and calls <a href="#apex-receiptservice"><code>ReceiptService</code></a> for the donor-facing email.</p>
@@ -12839,7 +12905,7 @@
 <p class="fn-entry__src"><code>donation/<wbr>service/<wbr>FeeCoverageService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Donor-covered processing fees. Decides whether a campaign offers the option, and computes the amount to add on top of a gift so the org nets the full gift after the payment processor takes its cut. FFLib Service layer; resolve via <a href="#apex-application"><code>Application</code></a>.Service, never <code>new</code>.</p>
+<p>Donor-covered processing fees. Decides whether a campaign offers the option, and computes the amount to add on top of a gift so the org nets the full gift after the payment processor takes its cut. Service layer; resolve via <a href="#apex-application"><code>Application</code></a>.Service, never <code>new</code>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This class is the ONLY place the fee formula lives. Every write path that charges a donor-covered fee — <a href="#apex-donationservice-createdonorandintent"><code>DonationService.createDonorAndIntent</code></a> for one-time gifts and recurring signups, <a href="#apex-recurringrenewalbatch"><code>RecurringRenewalBatch</code></a> for every later renewal — calls computeFee here rather than carrying its own arithmetic, so a rate change in Settings__c reaches all of them at once.</p>
@@ -13131,7 +13197,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Contract for raising employer-match follow-ups after a donation is finalized.</p>
-<p>FFLib role: Service interface.</p>
+<p>Layer role: Service interface.</p>
 </div>
 </div>
 <div class="fn-entry">
@@ -13204,7 +13270,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Service contract for Salesforce-initiated Stripe refunds against donation <a href="#apex-opportunities"><code>Opportunities</code></a>.</p>
-<p>FFLib role: Service.</p>
+<p>Layer role: Service.</p>
 </div>
 </div>
 <div class="fn-entry">
@@ -13305,7 +13371,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Issues the unique, per-tax-year serial number printed on every official tax receipt (PREFIX-YEAR-NNNNNN), locking the Receipt_Sequence__c counter row so no two gifts share one.</p>
-<p>FFLib role: Service (<a href="#apex-ireceiptnumberservice"><code>IReceiptNumberService</code></a>), resolved through <a href="#apex-application"><code>Application</code></a>.Service.</p>
+<p>Layer role: Service (<a href="#apex-ireceiptnumberservice"><code>IReceiptNumberService</code></a>), resolved through <a href="#apex-application"><code>Application</code></a>.Service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Issues the serial number printed on every official tax receipt, in the form PREFIX-YEAR-NNNNNN (RCPT-2026-000142). Called by the three paths that finalize a paid gift — <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a>, <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a> and <a href="#apex-recurringdonationservice-processrenewal"><code>RecurringDonationService.processRenewal</code></a> — immediately before the gift is registered on the Unit of Work, so the number is committed by the time the receipt email merges it.</p>
@@ -13345,7 +13411,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The staff-initiated receipt resend behind the Resend Receipt quick action. Unlike every other send it throws a donor-safe reason instead of swallowing, because the staff member who pressed the button needs to be told. Reached through <a href="#apex-receiptservice-resendreceipt"><code>ReceiptService.resendReceipt</code></a>.</p>
-<p>FFLib role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
+<p>Layer role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The eligibility rules live in <a href="#apex-receiptservice-resendblockreason"><code>ReceiptService.resendBlockReason</code></a> and are read a second time by <a href="#apex-receiptadmincontroller-getresendcontext"><code>ReceiptAdminController.getResendContext</code></a>, which uses them to gray the button out with a reason rather than letting staff click into an error. That controller read is the courtesy; this call is the enforcement — a caller that skips the panel still gets checked.</p>
@@ -13382,7 +13448,7 @@
 <p class="fn-entry__src"><code>donation/<wbr>service/<wbr>ReceiptService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Sends every outbound donor and staff email in the package — receipts, recurring-gift notices, refund and dispute alerts, tribute e-cards. FFLib role: service layer; every send is best-effort.</p>
+<p>Sends every outbound donor and staff email in the package — receipts, recurring-gift notices, refund and dispute alerts, tribute e-cards. Layer role: service layer; every send is best-effort.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Every outbound donor/staff email in the package funnels through this class — donation and event-ticket receipts, recurring confirmation/failed-payment/dunning/re-auth notices, dispute alerts, and tribute notifications. Callers include <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a>, <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>, <a href="#apex-recurringrenewalbatch"><code>RecurringRenewalBatch</code></a>, and <a href="#apex-refundreconciliationbatch"><code>RefundReconciliationBatch</code></a>. Every send method is best-effort: a template/limit/missing-email failure is logged via <a href="#apex-applogger"><code>AppLogger</code></a> and swallowed so it can never roll back an already-finalized donation or payment. This class is the entry point; the sends live in focused helpers it delegates to — <a href="#apex-donationreceiptemails"><code>DonationReceiptEmails</code></a> (automatic receipts), <a href="#apex-receiptresend"><code>ReceiptResend</code></a> (staff resend), <a href="#apex-donationnoticeemails"><code>DonationNoticeEmails</code></a> (company-match and refund notices), <a href="#apex-disputealertemails"><code>DisputeAlertEmails</code></a>, <a href="#apex-tributenotificationemails"><code>TributeNotificationEmails</code></a>, with templates resolved by <a href="#apex-receipttemplates"><code>ReceiptTemplates</code></a>. The recurring-schedule notices stay here.</p>
@@ -13543,7 +13609,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Resolves the packaged (or admin-configured) EmailTemplate a donor email is sent with, and builds the Contact-targeted templated message every receipt-style send shares.</p>
-<p>FFLib role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a> and the email classes split out of it.</p>
+<p>Layer role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a> and the email classes split out of it.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>How the settings reach the email. The packaged templates carry {{settings.X}} tokens (see <a href="#apex-settingstokens"><code>SettingsTokens</code></a>), which only Apex can fill. So an active Classic text, HTML or custom template's subject and bodies are read once per transaction (<a href="#apex-emailtemplatesselector"><code>EmailTemplatesSelector</code></a>), the tokens are filled in that raw text, and the message is marked setTreatBodiesAsTemplate(true): the platform merges {!Contact.*} and the record's fields at send, exactly as setTemplateId did. No query per message, which matters on the bulk paths that build one message per gift (<a href="#apex-donationnoticeemails"><code>DonationNoticeEmails</code></a>, the receipt batches). The message's getters are never called before the send. Measured in the dev org on 2026-11-23: calling getSubject() on a treat-as-template message before Messaging.sendEmail left that field's merge fields unresolved in the sent message object, while a message whose getters were not called came back merged; the first version filled the tokens through the message's getters and hit exactly that. Filling before the merge also means donor-entered data never passes through the token fill on this path. A template that is not a Classic text, HTML or custom one (an admin's Lightning or Visualforce template named in Receipt_Email_Template__c) is sent by Id as before: it carries no package tokens. So is an inactive template, so the platform refuses it exactly as it did before instead of sending a template an admin switched off.</p>
@@ -13832,7 +13898,7 @@
 <p class="fn-entry__src"><code>donation/<wbr>service/<wbr>SoftCreditService.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Assigns soft credit to finalized donations — recognition for a gift that someone else paid for. FFLib Service layer — registered as <a href="#apex-isoftcreditservice"><code>ISoftCreditService</code></a> in <a href="#apex-application"><code>Application</code></a>.</p>
+<p>Assigns soft credit to finalized donations — recognition for a gift that someone else paid for. Service layer — registered as <a href="#apex-isoftcreditservice"><code>ISoftCreditService</code></a> in <a href="#apex-application"><code>Application</code></a>.</p>
 <p>Driven by <a href="#apex-donationfinalizedsubscriberhandler"><code>DonationFinalizedSubscriberHandler</code></a>, one isolated seam among several on the DonationFinalized__e event.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -13913,7 +13979,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The tribute e-card: the notice to an honoree (or their family) when a donor gave in honor or in memory of someone and asked for a card. Rendered from an admin-editable packaged template and addressed to the address the donor typed. Best-effort. Reached through <a href="#apex-receiptservice-sendtributenotification"><code>ReceiptService.sendTributeNotification</code></a>.</p>
-<p>FFLib role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
+<p>Layer role: service helper of <a href="#apex-receiptservice"><code>ReceiptService</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out from send for the same reason as <a href="#apex-disputealertemails"><code>DisputeAlertEmails</code></a>.buildForRow — Messaging.sendEmail is metered against the org's DAILY email allocation even inside a test, so a test that depends on a successful send starts failing once a suite run exhausts it. The addressing is the thing worth asserting: the message must reach the honoree's address and no one else.</p>
@@ -13957,7 +14023,7 @@
 <p class="fn-entry__src"><code>donation/<wbr>staging/<wbr>DonationStagingSelector.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Selector for Donation_Staging__c, the pending-donation session row a guest checkout creates before any money moves. FFLib role: selector. Each read states the mode its entry point decided: the unauthenticated guest (addressing a row only by its capability token) and the scheduled reconciliation jobs read in SYSTEM_WITHOUT_SHARING, the guest throttle's counters are <code>rollup</code>, and the staff monitor reads (selectNonTerminalForAdmin, selectIdsVisibleToUser) run in USER_MODE.</p>
+<p>Selector for Donation_Staging__c, the pending-donation session row a guest checkout creates before any money moves. Layer role: selector. Each read states the mode its entry point decided: the unauthenticated guest (addressing a row only by its capability token) and the scheduled reconciliation jobs read in SYSTEM_WITHOUT_SHARING, the guest throttle's counters are <code>rollup</code>, and the staff monitor reads (selectNonTerminalForAdmin, selectIdsVisibleToUser) run in USER_MODE.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Donation_Staging__c is the pending-donation session record created by <a href="#apex-donationformcontroller-createdonorandintent"><code>DonationFormController.createDonorAndIntent</code></a> and addressed only by its unguessable Access_Token__c — never by Id — until <a href="#apex-donationservice-finalizesucceededstaging"><code>DonationService.finalizeSucceededStaging</code></a> links it to a real Opportunity. Every caller is the unauthenticated guest, a scheduled reconciliation job or, for the two monitor reads, a staff user who holds the object by permission set; the Guest licence holds no sharing on the object, so a guest read is system mode without sharing.</p>
@@ -14071,7 +14137,7 @@
 </div>
 <div class="fn-entry__body">
 <p>DonorConsoleController — powers the Donors console list (lexDonorsConsole).</p>
-<p>FFLib role: Controller. Every read goes through a selector; every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
+<p>Layer role: Controller. Every read goes through a selector; every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
 <p>A "donor" here is deliberately narrower than a Contact: someone with a won gift on the rollup (Gift_Count__c &gt; 0) or an Active recurring commitment. The test lives in the selector layer so the list, the counts and the segments can never disagree about who is in the console.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -14112,8 +14178,8 @@
 </div>
 <div class="fn-entry__body">
 <p>DonorDetailController — powers the donor record view in the Donors console (admDonorRecord).</p>
-<p>FFLib role: Controller. Returns a summary header plus lazily-loaded related lists (gifts, recurring schedules, fund designations, event seats, guest requests), each on its own @AuraEnabled method so a section costs a query only once the admin opens it.</p>
-<p>All SOQL runs through selectors (aggregates and COUNT() excepted — the fflib QueryFactory cannot express them). Every @AuraEnabled returns the { success, data/error } envelope.</p>
+<p>Layer role: Controller. Returns a summary header plus lazily-loaded related lists (gifts, recurring schedules, fund designations, event seats, guest requests), each on its own @AuraEnabled method so a section costs a query only once the admin opens it.</p>
+<p>All SOQL runs through selectors (aggregates and COUNT() excepted — the plain <a href="#apex-query"><code>Query</code></a> chain cannot express them). Every @AuraEnabled returns the { success, data/error } envelope.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p><strong>Every method here starts by resolving the donor under USER_MODE, and that is the security gate, not a convenience read.</strong> Three of the reads below are SYSTEM_MODE at the selector layer and cannot be anything else:</p>
@@ -14556,7 +14622,7 @@
 </div>
 <div class="fn-entry__body">
 <p>ContactDonorListSelector — Selector for the Contact arm of the Donors console list: one page of donors and the count behind each segment chip, in a standard (non-Person-Account) org.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-contactsselector"><code>ContactsSelector</code></a> on 2026-11-20 with both queries unchanged (selectDonorsPaged, countDonors), so each selector stays within the public-surface budget. Its only caller is <a href="#apex-donorconsolecontroller"><code>DonorConsoleController</code></a>, which builds it with <code>new ContactDonorListSelector()</code>; a test mocks a query by name with <a href="#apex-query"><code>Query</code></a>.mockFor. It is the second selector on Contact, beside ContactsSelector, so it overrides selectorName() and its base read gets a name of its own; it shares that selector's field list.</p>
@@ -14880,7 +14946,7 @@
 <div class="fn-entry__body">
 <p>The donor portal's token-scoped actions on the donor's own recurring gifts and saved cards: pause, resume, cancel, retry, change amount or fund, skip a payment, re-card, restart, and removing a wallet card. Every one proves ownership from the validated session before it hands the change to <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>.</p>
 <p><a href="#apex-donorportalservice"><code>DonorPortalService</code></a> extends this class, so these methods are part of its <a href="#apex-idonorportalservice"><code>IDonorPortalService</code></a> surface unchanged; they live here only so the two halves of that surface can be read separately.</p>
-<p>FFLib role: the recurring/wallet half of the DonorPortalService service.</p>
+<p>Layer role: the recurring/wallet half of the DonorPortalService service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Every recurring-management mutation (pause/resume/cancel/retryNow/updateCard/reinstate) delegates to <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a> after requireOwnership's IDOR check — this class owns donor scoping only, never the Stripe subscription logic itself.</p>
@@ -15119,7 +15185,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Single entry point for finding or creating a donor by email under either account model, so callers never branch on IsPersonAccount themselves.</p>
-<p>FFLib role: Service.</p>
+<p>Layer role: Service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The single entry point for the Person Account dual-field donor strategy — <a href="#apex-donationservice"><code>DonationService</code></a>, <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>, <a href="#apex-paymentmethodservice"><code>PaymentMethodService</code></a>, <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, and the donor portal (<a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a>/<a href="#apex-donorportalservice"><code>DonorPortalService</code></a>) all resolve or create a donor through resolveOrCreateDonor rather than branching on IsPersonAccount directly. DonorContext exposes contactId/accountId as computed getters (falling back to the pre-existing Id when the donor already existed) so a caller can read the resolved Id immediately after uow.commitWork() without a second query.</p>
@@ -15189,7 +15255,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The donor portal's credentials: minting and hashing the emailed access code, the one-Issued-row supersede, and redeeming a code for a bearer session token (single use, five-attempt lockout, one failure string for every failure mode). Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose class header holds the full model; verifyAccessCode delegates to verify here.</p>
-<p>FFLib role: service helper of DonorPortalService. Reads through <a href="#apex-portalaccesstokensselector"><code>PortalAccessTokensSelector</code></a> and the Contacts/Accounts selectors; writes Portal_Access_Token__c with direct system-mode DML.</p>
+<p>Layer role: service helper of DonorPortalService. Reads through <a href="#apex-portalaccesstokensselector"><code>PortalAccessTokensSelector</code></a> and the Contacts/Accounts selectors; writes Portal_Access_Token__c with direct system-mode DML.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>hash even when no donor matches -</p>
@@ -15269,7 +15335,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The donor portal's sign-in code email and its link: the HTML body (every interpolated value escaped, brand colours format-checked), and the configured portal URL the mail and the staff panel both point at. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose portalLinkBase and staffLinkBlockReason delegate here.</p>
-<p>FFLib role: service helper of DonorPortalService. No SOQL or DML.</p>
+<p>Layer role: service helper of DonorPortalService. No SOQL or DML.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Assembly only, no send — shared by the silent guest path (<a href="#apex-portalcoderequests"><code>PortalCodeRequests</code></a>.sendCodeEmail) and the staff path (<a href="#apex-portalstaffcodes"><code>PortalStaffCodes</code></a>.buildDonorAccessCode), which differ solely in what they do when the send itself fails. Subject is plain text and never carries donor-controlled content, so it needs no HTML escaping; the body does, and that escaping lives entirely in buildCodeEmailBody.</p>
@@ -15330,7 +15396,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The public "email me a sign-in code" request: the guest-path throttle and site-URL checks run synchronously and identically for every address, and everything that depends on whether the address matched a donor runs later in AccessCodeRequestJob, so neither the response nor its timing tells an attacker which addresses are on file. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose requestAccessCode delegates to request here.</p>
-<p>FFLib role: service helper of DonorPortalService. Reads through <a href="#apex-portalaccesstokensselector"><code>PortalAccessTokensSelector</code></a>.</p>
+<p>Layer role: service helper of DonorPortalService. Reads through <a href="#apex-portalaccesstokensselector"><code>PortalAccessTokensSelector</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>A donor requests a code by email; if a donor record matches, an 8-char Crockford base32 code is minted, its SHA-256 hash is written onto a NEW Portal_Access_Token__c row (never onto the donor record itself — see the class-level Portal_Access_Token__c spec), and the raw code is emailed. Verifying the code turns this Issued row into an Active session; it never authorizes access by itself.</p>
@@ -15383,7 +15449,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The signed-in donor's portal home page: identity, lifetime and this-year totals, giving years, fund split, recurring gifts, giving history with refund-request state, events and saved cards. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose getDashboard delegates here.</p>
-<p>FFLib role: service helper of DonorPortalService. Every read is a donor-scoped system-mode selector call keyed on the validated session's donor ids.</p>
+<p>Layer role: service helper of DonorPortalService. Every read is a donor-scoped system-mode selector call keyed on the validated session's donor ids.</p>
 <table>
 <thead>
 <tr>
@@ -15415,7 +15481,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The "Your events" panel of the donor portal: the donor's paid ticket orders split into upcoming and past, with valid and unnamed seat counts and the state of any guest-naming request. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>'s dashboard build.</p>
-<p>FFLib role: service helper of <a href="#apex-portaldashboardbuilder"><code>PortalDashboardBuilder</code></a>. Reads through <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> and <a href="#apex-eventattendeesselector"><code>EventAttendeesSelector</code></a> in system mode, one bulk query each.</p>
+<p>Layer role: service helper of <a href="#apex-portaldashboardbuilder"><code>PortalDashboardBuilder</code></a>. Reads through <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> and <a href="#apex-eventattendeesselector"><code>EventAttendeesSelector</code></a> in system mode, one bulk query each.</p>
 <table>
 <thead>
 <tr>
@@ -15447,7 +15513,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The "Where it went" chart of the donor portal: lifetime giving as fund shares, net of refunds, largest first, with everything past the top four rolled into "Other funds". Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>'s dashboard build.</p>
-<p>FFLib role: service helper of <a href="#apex-portaldashboardbuilder"><code>PortalDashboardBuilder</code></a>. Reads through <a href="#apex-donationdesignationsselector"><code>DonationDesignationsSelector</code></a> in system mode.</p>
+<p>Layer role: service helper of <a href="#apex-portaldashboardbuilder"><code>PortalDashboardBuilder</code></a>. Reads through <a href="#apex-donationdesignationsselector"><code>DonationDesignationsSelector</code></a> in system mode.</p>
 <table>
 <thead>
 <tr>
@@ -15474,7 +15540,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The guest names a donor submits for an event order, checked before they are queued: the JSON off the wire is size-capped and parsed, and each entry is matched against the order's own seats (a seat that is not on the order, is refunded or is already named is dropped). The accepted entries are rebuilt from the order's rows, never echoed from the browser.</p>
-<p>FFLib role: service helper of <a href="#apex-portalguestnaming"><code>PortalGuestNaming</code></a>. No SOQL or DML.</p>
+<p>Layer role: service helper of <a href="#apex-portalguestnaming"><code>PortalGuestNaming</code></a>. No SOQL or DML.</p>
 <table>
 <thead>
 <tr>
@@ -15506,7 +15572,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The donor half of "I'll name them later": lists the still-valid seats of one of the donor's own event orders and queues the names they type as a Guest_Request__c, which <a href="#apex-attendeenaminghandler"><code>AttendeeNamingHandler</code></a> applies under privileged access. Nothing here writes Event_Attendee__c. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose getOrderSeats / submitAttendeeNames delegate here.</p>
-<p>FFLib role: service helper of DonorPortalService. Reads through <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> and <a href="#apex-eventattendeesselector"><code>EventAttendeesSelector</code></a> in system mode; queues through <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a>.</p>
+<p>Layer role: service helper of DonorPortalService. Reads through <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> and <a href="#apex-eventattendeesselector"><code>EventAttendeesSelector</code></a> in system mode; queues through <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The donor half of "I'll name them later". The buyer skipped the guest-details step at checkout, so the seats exist with no names on them; this is where they come back and fill them in. Nothing here writes to Event_Attendee__c: the donor runs as the Guest User, which can never hold Edit on it, so the names are queued as a Guest_Request__c and applied under privileged access by <a href="#apex-attendeenaminghandler"><code>AttendeeNamingHandler</code></a>.</p>
@@ -15552,7 +15618,7 @@
 </div>
 <div class="fn-entry__body">
 <p>What the donor portal's two queued requests (guest names, refund request) share: the donor's address read from the verified session, the idempotency key, and the donor-facing request state.</p>
-<p>FFLib role: service helper of the portal request classes. Reads through <a href="#apex-contactsselector"><code>ContactsSelector</code></a> and <a href="#apex-accountsselector"><code>AccountsSelector</code></a> in system mode.</p>
+<p>Layer role: service helper of the portal request classes. Reads through <a href="#apex-contactsselector"><code>ContactsSelector</code></a> and <a href="#apex-accountsselector"><code>AccountsSelector</code></a> in system mode.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>GUEST path, used by submitAttendeeNames and submitRefundRequest after validateToken and requireOwnedOrder / requireOwnedDonation have proven the session and the gift's ownership, so the Ids come from the verified session, never from the request. SYSTEM_MODE reads for both arms: the guest user has no Account access at all, and the USER_MODE staff read this path used to share threw "sObject type 'Account' is not supported", which failed every refund request and attendee-naming submission from a Person Account donor.</p>
@@ -15603,7 +15669,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The donor half of "I need this gift back": queues a refund request against one of the donor's own gifts as a Guest_Request__c that parks at Awaiting Review for a person. Nothing here refunds anything. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose submitRefundRequest delegates here.</p>
-<p>FFLib role: service helper of DonorPortalService. Reads through <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> in system mode; queues through <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a>.</p>
+<p>Layer role: service helper of DonorPortalService. Reads through <a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a> in system mode; queues through <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The donor half of "I need this gift back". Nothing here refunds anything and nothing here can: the request is queued as a Guest_Request__c and parks at Awaiting Review for a person, who issues the refund from the donation record if they agree. See <a href="#apex-refundrequesthandler"><code>RefundRequestHandler</code></a>.</p>
@@ -15644,7 +15710,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The donor portal's bearer session: validating a session token against its absolute cap and sliding idle window (either failure expires the row and returns the one failure string), extending the idle window after the action has run, and donor sign-out. One instance per portal request, held by <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose validateToken / recordSessionUse / endSession delegate here.</p>
-<p>FFLib role: service helper of DonorPortalService. Reads through <a href="#apex-portalaccesstokensselector"><code>PortalAccessTokensSelector</code></a>; writes Portal_Access_Token__c with direct system-mode DML.</p>
+<p>Layer role: service helper of DonorPortalService. Reads through <a href="#apex-portalaccesstokensselector"><code>PortalAccessTokensSelector</code></a>; writes Portal_Access_Token__c with direct system-mode DML.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Read-only calls (getDashboard, etc.) go through here on every page load, so without this guard every donor click becomes a DML transaction just to refresh a sliding window that barely moved. Two minutes is small enough that the idle window (<a href="#apex-portalsessionsettings"><code>PortalSessionSettings</code></a> .portalIdleTimeoutMinutes()) still reflects genuine recent activity to within a couple of minutes, and large enough that a donor rapidly navigating the portal skips almost every write.</p>
@@ -15701,7 +15767,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Staff-issued donor portal access codes, behind <a href="#apex-donorportaladmincontroller"><code>DonorPortalAdminController</code></a>: the send twin emails the code and withholds it, the show twin returns it for reading out and sends nothing. Both re-read the donor in the staff user's own mode first and refuse a donor that user cannot see. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose issueAccessCodeForDonor / createAccessCodeForDonor delegate here.</p>
-<p>FFLib role: service helper of DonorPortalService. USER_MODE reads through <a href="#apex-contactsselector"><code>ContactsSelector</code></a> and <a href="#apex-accountsselector"><code>AccountsSelector</code></a>; the code row is minted by <a href="#apex-portalaccesscodes"><code>PortalAccessCodes</code></a>.</p>
+<p>Layer role: service helper of DonorPortalService. USER_MODE reads through <a href="#apex-contactsselector"><code>ContactsSelector</code></a> and <a href="#apex-accountsselector"><code>AccountsSelector</code></a>; the code row is minted by <a href="#apex-portalaccesscodes"><code>PortalAccessCodes</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The no-send twin. Staff who already have the donor on the phone do not need a mail round trip, and a donor with no address on file cannot be mailed at all — but the code itself mints either way, so refusing to produce one would strand exactly the donor who needs staff help most. Code minting is identical to the send path, which is why the panel warns before either one and offers neither twice.</p>
@@ -15749,7 +15815,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Removing a saved card from the donor's own wallet: a soft remove (never a delete, never a Stripe callout), refused while a live recurring gift still bills the card, with the default flag moved to the next usable card. Split out of <a href="#apex-donorportalservice"><code>DonorPortalService</code></a>, whose removeWalletCard delegates here.</p>
-<p>FFLib role: service helper of DonorPortalService. Reads through <a href="#apex-paymentmethodsselector"><code>PaymentMethodsSelector</code></a> and <a href="#apex-recurringdonationsselector"><code>RecurringDonationsSelector</code></a> in system mode; writes Payment_Method__c with direct system-mode DML.</p>
+<p>Layer role: service helper of DonorPortalService. Reads through <a href="#apex-paymentmethodsselector"><code>PaymentMethodsSelector</code></a> and <a href="#apex-recurringdonationsselector"><code>RecurringDonationsSelector</code></a> in system mode; writes Payment_Method__c with direct system-mode DML.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Idempotent by design — a card already flagged Removed__c returns quietly instead of throwing, because the client may retry a request whose response it never saw. Ownership is resolved through selectByDonorSystem (the UNFILTERED donor-scoped read) rather than selectValidByDonorSystem precisely so the already-removed case is distinguishable from the not-yours case. Promoting a replacement default matters beyond cosmetics: <a href="#apex-paymentmethodservice-savewalletcard"><code>PaymentMethodService.saveWalletCard</code></a> decides a new card's Is_Default__c from whether the donor already has one, so a wallet left with no default silently makes the next saved card default too.</p>
@@ -15787,7 +15853,7 @@
 </div>
 <div class="fn-entry__body">
 <p>EventCheckInController — admin API behind the record view "Check-In" tab. Lists the attendee roster for an event campaign and flips each seat's Event_Attendee__c.Check_In_Status__c (Registered ⇄ Checked-In / No-show) at the door.</p>
-<p>Reads via <a href="#apex-eventattendeesselector"><code>EventAttendeesSelector</code></a> (USER_MODE, staff-facing); all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
+<p>Reads via <a href="#apex-eventattendeesselector"><code>EventAttendeesSelector</code></a> (USER_MODE, staff-facing); all DML runs through the Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
 <p>Scope: check-in only mutates Check_In_Status__c — never the seat's identity, order, or ticket tier. 'Cancelled' (refunded) is NOT a settable target here: a seat is voided by a refund, not by a door scan, so the door can only move a seat between Registered / Checked-In / No-show. A seat already Cancelled is left untouched.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -15824,7 +15890,7 @@
 </div>
 <div class="fn-entry__body">
 <p>EventTicketAdminController — admin API behind the record view "Tickets" tab. Manages per-event ticket tiers (Event_Ticket_Type__c) and their reusable Product2.</p>
-<p>Reads via <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a>; all DML runs through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
+<p>Reads via <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a>; all DML runs through the Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>().</p>
 <p>Scope note (Slice C, Task 1): after the tier's Product2/Event_Ticket_Type__c commit via UoW, saveTicketType/saveTicketTypes call <a href="#apex-pricebookservice-ensureentriesfor"><code>PricebookService.ensureEntriesFor</code></a>() (direct SOQL/DML, not UoW — PricebookEntry can't be registered against an unsaved Product2) so purchase-time OpportunityLineItems have a PricebookEntry to reference. Price__c on the junction remains the price source of truth — the PricebookEntry.UnitPrice is only a required placeholder.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -16127,7 +16193,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for Event_Ticket_Type__c (ticket tiers). Every read is a system mode because the object's master-detail parent is standard Campaign, so callers gate on the parent's visibility.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Every query here reasons about Event_Ticket_Type__c's OWD (Master-Detail child of Campaign, Private): selectByCampaign, selectById and selectByCampaignIdsWithTicketsSold are SYSTEM_WITH_SHARING (<code>master-detail</code>) for staff and trigger reads, while the guest and batch variants (selectActiveForSaleByCampaignAsGuest, selectByIdAsSystem, selectByIdForUpdate) are SYSTEM_WITHOUT_SHARING because a guest or a batch/scheduler user has no direct FLS/sharing on this object and would silently get zero rows under USER_MODE rather than an error. selectByIdForUpdate backs the seat-reservation flow (<a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>); its FOR UPDATE row lock is the query's forUpdate() clause, and its mode comes from the entry point.</p>
@@ -16222,7 +16288,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for OpportunityLineItem — the priced order lines of an event ticket purchase, read in system mode for the repair path.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Same system-mode rationale as <a href="#apex-eventattendeesselector-selectbyopportunityidsassystem"><code>EventAttendeesSelector.selectByOpportunityIdsAsSystem</code></a> — this is the order-line half of the same batch/scheduler repair read, called alongside it so the reconciliation path sees both the attendee rows and their priced order lines regardless of the running user's FLS. The mode is the entry point's: the jobs pass SYSTEM_WITHOUT_SHARING (<code>job</code>) and the refund action SYSTEM_WITH_SHARING (<code>custom-permission</code>).</p>
@@ -16494,7 +16560,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The first-finalize path of a paid event order: one Opportunity, one line item per tier (plus the add-on and fee lines), one Event_Attendee__c per seat, then the seat links, the Completed stamp and the ticket receipt. Two commits with the staging's Processing stamp between them; a failure after the first is recovered by <a href="#apex-eventorderrepair"><code>EventOrderRepair</code></a> on the next reconcile pass.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Writes through system-mode Units of Work.</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Writes through system-mode Units of Work.</p>
 <table>
 <thead>
 <tr>
@@ -16526,7 +16592,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The second commit of an event finalize, shared by the first-finalize and repair paths: stamp each seat's ticket-line link, mark the staging Completed and linked, commit, then run the optional CampaignMember sync for the order's attendees.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Commits the Unit of Work it is given; the CampaignMember sync is direct system-mode DML, as it was in EventPurchaseService.</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Commits the Unit of Work it is given; the CampaignMember sync is direct system-mode DML, as it was in EventPurchaseService.</p>
 <table>
 <thead>
 <tr>
@@ -16553,7 +16619,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The checks an event finalize makes before anything commits, each a named failure rather than a raw platform error: the order's line total must equal the Stripe capture, the donation add-on must not be negative (both stamped on the staging's Finalization_Error__c), and the Product2 records the lines need — each tier's product, the seeded add-on and fee products — must exist.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Writes the error stamp through a system-mode Unit of Work.</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Writes the error stamp through a system-mode Unit of Work.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>A negative donation add-on is refused at finalize as well as at checkout (<a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.CreateTicketIntent). Options_JSON__c is guest-supplied, and a negative add-on means the buyer was charged less than the tickets cost, so the order must not finalize whatever else lines up. The reason is stamped on Finalization_Error__c for the admin, the same way a line-total mismatch is. Only the sign is re-checked here, not the org min/max: by now the money has been captured, and an admin changing the bounds after the checkout must not strand a legitimate paid order. The reservation-release path still parses the row normally, so the held seats go back on sale.</p>
@@ -16614,7 +16680,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The line items of an event order: one per ticket tier with its non-deductible (goods and services) amount worked out under the org's deductible mode, plus the fully deductible donation add-on and donor-covered fee lines. Registered on the order's Unit of Work, never committed here.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a> (via <a href="#apex-eventorderbuilder"><code>EventOrderBuilder</code></a>).</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a> (via <a href="#apex-eventorderbuilder"><code>EventOrderBuilder</code></a>).</p>
 <table>
 <thead>
 <tr>
@@ -16656,7 +16722,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The idempotent half of event finalize: finds the Opportunity a prior run already recorded for a staging and repairs what that run left missing (seats, seat links, the staging's Completed stamp and the CampaignMember sync) without touching the money.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Writes through a system-mode Unit of Work.</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Writes through a system-mode Unit of Work.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>PAY-4 follow-on (2026-09-25): the repair used to stamp Completed as soon as seats existed, which is precisely the state a crash between UoW #1 and UoW #2 leaves behind: seats committed, none linked to their OLI, no CampaignMember sync. The reconciler then closed the order with those gaps baked in. It now finishes UoW #2 instead. A second repair is a no-op: the staging is Completed and every linkable seat is linked, so nothing is registered, nothing commits, and the sync (which skips existing members) is not re-run.</p>
@@ -16697,7 +16763,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The ticket selection a paid event staging carries in Options_JSON__c: quantity per tier (summed when a tier repeats), tiers in first-pick order, the attendee rows and the donation add-on. Split out of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>, which reads it on the finalize, repair and release paths.</p>
-<p>FFLib role: service helper of EventPurchaseService. Reads tiers through <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a>.</p>
+<p>Layer role: service helper of EventPurchaseService. Reads tiers through <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -16805,7 +16871,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The seat-to-ticket-line links of an event order (Event_Attendee__c.Opportunity_Line_Item__c): the links the first finalize writes in its second commit, and the ones a repair finds missing on an order a prior run left half-finished.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Reads line items through <a href="#apex-opportunitylineitemsselector"><code>OpportunityLineItemsSelector</code></a>; no DML.</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Reads line items through <a href="#apex-opportunitylineitemsselector"><code>OpportunityLineItemsSelector</code></a>; no DML.</p>
 <table>
 <thead>
 <tr>
@@ -16847,7 +16913,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Plans the seats of an event order from its selection: one Event_Attendee__c draft per seat, in tier order, with the attendee's name and e-mail bounded and checked. Shared by the first-finalize path and the repair path, which differ only in how the drafts are linked and saved.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. No SOQL or DML.</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. No SOQL or DML.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Finalize-time backstop for the D-5 limits. The controller refuses an over-long name or a malformed attendee e-mail before the charge, so these branches only fire for a staging row written before that check existed. The card is already captured here, so the seat is kept and the bad value is trimmed (name) or dropped (e-mail) rather than failing the whole paid order.</p>
@@ -16925,7 +16991,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Tier stock (Event_Ticket_Type__c.Quantity_Sold__c) moves for the event-purchase paths: a released hold and a refunded sale give seats back, a hold re-taken at finalize takes them again.</p>
-<p>FFLib role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Locks tiers through <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a> and registers on the caller's Unit of Work.</p>
+<p>Layer role: service helper of <a href="#apex-eventpurchaseservice"><code>EventPurchaseService</code></a>. Locks tiers through <a href="#apex-eventtickettypesselector"><code>EventTicketTypesSelector</code></a> and registers on the caller's Unit of Work.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>One tier-stock mutation for every caller: a hold release and a sale release pass a negative sign, a re-taken hold passes a positive one. The result is clamped at zero so a stale or duplicated line can never push Quantity_Sold__c negative, and a tier deleted since the hold or sale is skipped — there is nothing left to give back or re-take.</p>
@@ -17028,7 +17094,7 @@
 </div>
 <div class="fn-entry__body">
 <p>PricebookService — ensures the Standard + "Fundraising Events" PricebookEntry pair exists for a ticket (or donation) Product2, so an OpportunityLineItem can reference it. OLI.UnitPrice is set per-line from the tier price, so the entry UnitPrice is only a required placeholder.</p>
-<p>Deliberately uses direct SOQL/DML (NOT the FFLib Unit of Work): PricebookEntry/Pricebook2 are setup objects, not part of the donor/event Domain graph, and must be committed independently (in some cases before the caller's own UoW transaction, e.g. right after a Product2 insert) — they don't belong in a Domain/Selector/UoW layer built around Opportunity/Campaign records.</p>
+<p>Deliberately uses direct SOQL/DML (NOT the Unit of Work): PricebookEntry/Pricebook2 are setup objects, not part of the donor/event Domain graph, and must be committed independently (in some cases before the caller's own UoW transaction, e.g. right after a Product2 insert) — they don't belong in a Domain/Selector/UoW layer built around Opportunity/Campaign records.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>WITHOUT SHARING is required, not a shortcut.</p>
@@ -18267,7 +18333,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Guest-facing controller for the public event page: loads the event campaign and its ticket tiers, reserves seats and stages a ticket purchase.</p>
-<p>FFLib role: Controller.</p>
+<p>Layer role: Controller.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Ticket-purchase counterpart to the base donation flow — GetEventCampaign delegates to <a href="#apex-icampaignservice"><code>ICampaignService</code></a>.getEventCampaignConfig (the form payload plus the optional story / documents / updates / FAQ sections, because a ticket page is a whole page rather than an embedded form), and GetEventTickets/<a href="#apex-eventavailabilityservice-computeavailability"><code>EventAvailabilityService.computeAvailability</code></a> mirror the tier-availability math the guest event page renders. createTicketIntent is the most complex write path in either domain folder: see its own doc block for the lock-ordering and idempotency-retry design.</p>
@@ -18337,7 +18403,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Queueable fast path that processes freshly submitted Guest_Request__c rows off the visitor's transaction; <a href="#apex-guestrequestsweepbatch"><code>GuestRequestSweepBatch</code></a> picks up anything it never reaches.</p>
-<p>FFLib role: Async job.</p>
+<p>Layer role: Async job.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Enqueued by <a href="#apex-guestrequestservice-submit"><code>GuestRequestService.submit</code></a> so a visitor's page returns immediately instead of waiting on a handler. It is the fast path, not the reliable one: if it never runs — the queueable limit was already spent, the enqueuing transaction rolled back — the row is simply still Pending and <a href="#apex-guestrequestsweepbatch"><code>GuestRequestSweepBatch</code></a> collects it. Nothing here retries, because the sweep already is the retry.</p>
@@ -18374,7 +18440,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Safety-net batch that picks up guest requests still Pending after the grace period and pushes them through <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a>.</p>
-<p>FFLib role: Batch (async job).</p>
+<p>Layer role: Batch (async job).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This is what makes the queue reliable; <a href="#apex-guestrequestqueueable"><code>GuestRequestQueueable</code></a> only makes it fast. Every way the immediate path can be lost — the queueable limit already spent, the enqueuing transaction rolled back, a handler that failed with attempts still on the clock — ends with a row sitting Pending, and this picks it up.</p>
@@ -18479,7 +18545,7 @@
 </div>
 <div class="fn-entry__body">
 <p>GuestRequestController — staff API behind the record-page guest-request panel.</p>
-<p>The panel renders on two objects and scopes itself from whichever record it is placed on: an Opportunity lists that one gift's requests, a Campaign lists every request raised against the campaign. Reads go through <a href="#apex-guestrequestsselector"><code>GuestRequestsSelector</code></a>; the two writes run through the FFLib Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
+<p>The panel renders on two objects and scopes itself from whichever record it is placed on: an Opportunity lists that one gift's requests, a Campaign lists every request raised against the campaign. Reads go through <a href="#apex-guestrequestsselector"><code>GuestRequestsSelector</code></a>; the two writes run through the Unit of Work. Every @AuraEnabled returns the { success, data/error } envelope via <a href="#apex-controlleraction"><code>ControllerAction</code></a>.</p>
 <p>SECURITY — read this before adding a method. GuestRequestsSelector is SYSTEM_MODE throughout (it has to be: the guest user holds no access to the object, and the sweep's scheduling user need not), so it will happily return any request to anyone who knows an id. The gate is requireVisible() below, and it belongs on EVERY entry point. A guest request carries the donor's email address and, on a refund request, the sentence they wrote explaining why they want their money back — a method that skips the gate has built an IDOR that leaks exactly that.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -18523,7 +18589,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The row shape the guest-request panel and record page render, shared by both reads of <a href="#apex-guestrequestcontroller"><code>GuestRequestController</code></a> so the panel scopes and the record page cannot drift into different payloads for the same request.</p>
-<p>FFLib role: Service helper — static payload builder, not registered with <a href="#apex-application"><code>Application</code></a>.Service. With sharing, like its only caller: every read below goes through a USER_MODE selector, so a gift or donor the running user cannot see simply does not come back.</p>
+<p>Layer role: Service helper — static payload builder, not registered with <a href="#apex-application"><code>Application</code></a>.Service. With sharing, like its only caller: every read below goes through a USER_MODE selector, so a gift or donor the running user cannot see simply does not come back.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-guestrequestcontroller"><code>GuestRequestController</code></a> to keep each class inside the analyzer's complexity limits. GuestRequestController still owns the authorization gate (requireVisible) and the three entry points; this class only shapes rows from requests the caller has already gated.</p>
@@ -18575,7 +18641,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads an "I'll name them later" payload (Guest_Request__c.Payload_JSON__c) into the seats it names. Used by <a href="#apex-attendeenaminghandler"><code>AttendeeNamingHandler</code></a> to apply the names and by its submittedNames read-back.</p>
-<p>FFLib role: none, a plain parser with no SOQL or DML.</p>
+<p>Layer role: none, a plain parser with no SOQL or DML.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The seat cap is not a governor-limit hedge — an order cannot hold more seats than the checkout allowed. It is there because Payload_JSON__c arrived from an unauthenticated browser, and a payload naming 50,000 seats must be refused rather than parsed.</p>
@@ -18607,7 +18673,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Applies an "I'll name them later" submission: fills in the guest names on the seats of one ticket order.</p>
-<p>FFLib role: service-layer strategy, resolved by <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> for Request_Type__c = Attendee_Names. Owns its own DML because the write happens under the guest user's async context, where object-level Edit on Event_Attendee__c is not obtainable — the Guest License cannot hold it — so the update has to run as system rather than through a user-mode path.</p>
+<p>Layer role: service-layer strategy, resolved by <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> for Request_Type__c = Attendee_Names. Owns its own DML because the write happens under the guest user's async context, where object-level Edit on Event_Attendee__c is not obtainable — the Guest License cannot hold it — so the update has to run as system rather than through a user-mode path.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>D-6 — the latest list of names for an order wins. Each submission from the portal is its own Guest_Request__c (the idempotency key covers the payload, so a corrected list is a new row, not a duplicate), and the handler only ever fills BLANK seats. Without this rule, two lists queued for one order race: whichever runs first names the seats, and the other finds them taken and is silently ignored — so a donor's correction could lose to the mistake it was meant to fix, depending only on which row the queue claimed first. <a href="#apex-attendeenamingsupersession"><code>AttendeeNamingSupersession</code></a> enforces it; Declined is the existing status reused for "superseded": it is terminal, it is never retried, and the donor-facing message says why. No new picklist value was added. The payload is read by <a href="#apex-attendeenamepayload"><code>AttendeeNamePayload</code></a>.</p>
@@ -18654,7 +18720,7 @@
 </div>
 <div class="fn-entry__body">
 <p>D-6 for attendee naming: the latest list of names for an order wins. Decides whether a naming request has been superseded by a newer one, and closes the older Pending ones.</p>
-<p>FFLib role: service helper of <a href="#apex-attendeenaminghandler"><code>AttendeeNamingHandler</code></a>. Reads through <a href="#apex-guestrequestsselector"><code>GuestRequestsSelector</code></a> and writes through a system-mode Unit of Work.</p>
+<p>Layer role: service helper of <a href="#apex-attendeenaminghandler"><code>AttendeeNamingHandler</code></a>. Reads through <a href="#apex-guestrequestsselector"><code>GuestRequestsSelector</code></a> and writes through a system-mode Unit of Work.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The rule is enforced here, in the system-context processor, and not when the guest submits: the guest insert path runs as the Guest user, which can never hold Edit on Guest_Request__c, and the submit path should stay a plain insert. Two halves:
@@ -18692,7 +18758,7 @@
 </div>
 <div class="fn-entry__body">
 <p>What a handler decided about one guest request: the status the row should end in, plus, when that status is not a success, a sentence safe to show the visitor who raised it.</p>
-<p>FFLib role: none — a plain value object passed between <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a> and the handlers.</p>
+<p>Layer role: none — a plain value object passed between <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a> and the handlers.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p><code>message</code> is read back to the DONOR on the public dashboard, not only to an admin, so a handler must write something a member of the public can act on: no record ids, no class names, no stack traces. The detail an engineer needs goes to <a href="#apex-applogger"><code>AppLogger</code></a> instead.</p>
@@ -18738,7 +18804,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Maps a Guest_Request__c.Request_Type__c value to the handler that processes it.</p>
-<p>FFLib role: a service-layer factory. Deliberately a plain Apex switch rather than a Custom Metadata registry resolved through Type.forName(): the set of request types is small, changes only when this package ships new code, and a compile-time switch means a typo is a build error instead of a row that sits Pending forever. It also keeps every handler visible to the compiler, so no handler can be deleted without the router failing to compile.</p>
+<p>Layer role: a service-layer factory. Deliberately a plain Apex switch rather than a Custom Metadata registry resolved through Type.forName(): the set of request types is small, changes only when this package ships new code, and a compile-time switch means a typo is a build error instead of a row that sits Pending forever. It also keeps every handler visible to the compiler, so no handler can be deleted without the router failing to compile.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Adding a Request_Type__c picklist value is half the work — the other half is a case here. A value with no case is refused at routing time, so the two cannot drift apart unnoticed: the request fails loudly with a message an admin can act on rather than being silently skipped by every sweep.</p>
@@ -18775,7 +18841,7 @@
 </div>
 <div class="fn-entry__body">
 <p>One request type's processing rules. Implementations are resolved by <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> and run under privileged access, minutes after an unauthenticated visitor submitted the row.</p>
-<p>FFLib role: a service-layer strategy — a handler may call selectors and services, and owns its own DML for the records it changes.</p>
+<p>Layer role: a service-layer strategy — a handler may call selectors and services, and owns its own DML for the records it changes.</p>
 <p>The contract every implementation must keep:</p>
 <ul>
 <li>Act only on Subject_Id__c. That id was written by Apex after it validated the visitor's access token. Taking a target id out of Payload_JSON__c instead would be an IDOR with an async delay bolted on.</li>
@@ -18841,7 +18907,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Screens a donor's "please refund this gift" ask and parks it for a person.</p>
-<p>FFLib role: service-layer strategy, resolved by <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> for Request_Type__c = Refund_Request.</p>
+<p>Layer role: service-layer strategy, resolved by <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> for Request_Type__c = Refund_Request.</p>
 <p>This handler deliberately moves no money. It re-checks that the gift could still be refunded, tells the organization a request is waiting, tells the donor it was received, and leaves the row at Awaiting Review — a refund is issued by a human from the donation record, via <a href="#apex-refundcontroller"><code>RefundController</code></a>, which is where the Process_Refunds custom permission is enforced (<a href="#apex-refundservice"><code>RefundService</code></a> itself does not re-check it). No unauthenticated visitor's say-so reaches an automated refund path.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -18896,7 +18962,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for Guest_Request__c — the queue of requests raised from the public site.</p>
-<p>FFLib role: Selector. Each read states its mode, and the entry point decides it: the unauthenticated guest user holds no field-level access to this object at all, by design (see Fundraising_GuestDonor), and the user the sweep and purge batches run as (whoever scheduled them) need not hold any grant on it, so those two read in SYSTEM_WITHOUT_SHARING; the staff record-page panel and the console read in USER_MODE, so the platform checks the running user's CRUD, FLS and sharing.</p>
+<p>Layer role: Selector. Each read states its mode, and the entry point decides it: the unauthenticated guest user holds no field-level access to this object at all, by design (see Fundraising_GuestDonor), and the user the sweep and purge batches run as (whoever scheduled them) need not hold any grant on it, so those two read in SYSTEM_WITHOUT_SHARING; the staff record-page panel and the console read in USER_MODE, so the platform checks the running user's CRUD, FLS and sharing.</p>
 <p>Because the guest and job reads do not enforce sharing or FLS, the authorization gate lives in the caller: <a href="#apex-donorportalservice"><code>DonorPortalService</code></a> resolves the visitor's access token to a donor, works out which records that donor owns, and only then asks this selector about those ids. A caller that passes in an id a visitor supplied has built an IDOR — nothing in this class will stop it.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -18976,7 +19042,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The read-and-close half of <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a>: the newest request per subject (for the donor dashboard and the staff panels), and closing requests parked for a person once the decision was made elsewhere.</p>
-<p>FFLib role: service helper of GuestRequestService, which delegates latestBySubject and resolveAwaitingReview here. Reads through <a href="#apex-guestrequestsselector"><code>GuestRequestsSelector</code></a>.</p>
+<p>Layer role: service helper of GuestRequestService, which delegates latestBySubject and resolveAwaitingReview here. Reads through <a href="#apex-guestrequestsselector"><code>GuestRequestsSelector</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The typed read exists because one subject can carry requests of more than one kind: an event order is both a ticket order (Attendee_Names) and a Closed Won gift that shows in the giving history (Refund_Request). Without the filter, the history row would report "Awaiting review" from a naming request the donor made about their guest list, which is true of the order and nonsense next to the gift. Pass null to mean "whatever is newest".</p>
@@ -19017,7 +19083,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The run half of <a href="#apex-guestrequestservice"><code>GuestRequestService</code></a>: claims Pending guest requests, runs each through the handler <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> resolves, and writes the outcome back (a retryable failure returns the row to Pending, which is the retry).</p>
-<p>FFLib role: service helper of GuestRequestService, which delegates process() here.</p>
+<p>Layer role: service helper of GuestRequestService, which delegates process() here.</p>
 <table>
 <thead>
 <tr>
@@ -19050,7 +19116,7 @@
 </div>
 <div class="fn-entry__body">
 <p>The lifecycle of a public request: queue it, claim it, run its handler, close it.</p>
-<p>FFLib role: Service. It owns the queue mechanics and knows nothing about what any particular request means — that lives in the <a href="#apex-iguestrequesthandler"><code>IGuestRequestHandler</code></a> implementations <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> resolves.</p>
+<p>Layer role: Service. It owns the queue mechanics and knows nothing about what any particular request means — that lives in the <a href="#apex-iguestrequesthandler"><code>IGuestRequestHandler</code></a> implementations <a href="#apex-guestrequestrouter"><code>GuestRequestRouter</code></a> resolves.</p>
 <p><code>without sharing</code> because the two callers have no sharing to inherit that would help: the unauthenticated guest submitting a request, and the scheduled job sweeping the queue. The check that matters happened before submit() was ever called — see the note on Submission.subjectId.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -19139,7 +19205,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Payment gateway abstraction every donation, recurring, refund and reconciliation path codes against, returning gateway-neutral <a href="#apex-gatewayresult"><code>GatewayResult</code></a> DTOs.</p>
-<p>FFLib role: Service interface.</p>
+<p>Layer role: Service interface.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This is the payment gateway abstraction the rest of the package codes against — <a href="#apex-donationservice"><code>DonationService</code></a>, <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>, <a href="#apex-refundservice"><code>RefundService</code></a>, and the reconciliation batches all depend on IPaymentGateway, never on <a href="#apex-stripegateway"><code>StripeGateway</code></a> directly. <a href="#apex-paymentgatewayfactory"><code>PaymentGatewayFactory</code></a> resolves a concrete instance per Payment_Account__c by looking the account's Gateway__c picklist value up in <a href="#apex-paymentgatewayregistry"><code>PaymentGatewayRegistry</code></a> — adding a second gateway means writing a new implementation, adding one line to that registry and one value to the picklist, not touching any caller. Every method returns a <a href="#apex-gatewayresult"><code>GatewayResult</code></a> DTO rather than a gateway-native shape, so callers and tests never see Stripe's (or any future gateway's) JSON structures. StripeGateway is currently the only implementation.</p>
@@ -19198,7 +19264,7 @@
 <p>Resolves the <a href="#apex-ipaymentgateway"><code>IPaymentGateway</code></a> implementation for a Payment_Account__c record, and answers the two account-level questions callers need before charging: is any gateway connected, and is there exactly one.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>mockGateway is the injection point every test in the package uses to stub out real Stripe callouts — a test assigns PaymentGatewayFactory.mockGateway directly (it is @TestVisible) to an fflib-mocks stub of <a href="#apex-ipaymentgateway"><code>IPaymentGateway</code></a>, and getByAccount() returns it instead of resolving a real Payment_Account__c, gated by Test.isRunningTest() so production code never picks up a stray mock.</p>
+<p>mockGateway is the injection point every test in the package uses to stub out real Stripe callouts — a test assigns PaymentGatewayFactory.mockGateway directly (it is @TestVisible) to a framework Mock stub of <a href="#apex-ipaymentgateway"><code>IPaymentGateway</code></a>, and getByAccount() returns it instead of resolving a real Payment_Account__c, gated by Test.isRunningTest() so production code never picks up a stray mock.</p>
 <p>There is deliberately NO getDefault()/"first active account" entry point. One existed until 2026-08-10 and every caller of it was a latent multi-account bug: the orphan sweep only ever recovered payments on the alphabetically-first account, and the refund and event-registration fallbacks could charge or refund against the wrong Stripe account entirely. Callers that have no account context must iterate every active Payment_Account__c (see <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> and <a href="#apex-refundreconciliationbatch"><code>RefundReconciliationBatch</code></a>) rather than guessing at one.</p>
 <p>Exists so the jobs that are SCHEDULED AT INSTALL can no-op silently on an org where no gateway has been connected yet, instead of logging a gateway error on every hourly fire — an alarm for a condition that is simply "not configured yet" trains admins to ignore the log. Scheduling those jobs at install is what makes reconciliation work in a subscriber org at all; before, only an unpackaged dev script scheduled them.</p>
 <p>This replaced getDefault()'s "first active account" rule on 2026-08-10. The distinction is the whole point: with one connected account there is nothing to choose and the answer is certain, so an Opportunity with no Payment_Account__c stamp still refunds and an event campaign with a blank Payment_Account__c still checks out. With two or more, ANY answer is a guess — and a wrong guess here refunds or charges against the wrong processor account, which fails at the processor at best and moves the wrong org's money at worst. So this returns null and the caller must stop and say so, rather than pick alphabetically.</p>
@@ -19386,7 +19452,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Reads Payment_Method__c (saved cards) for the staff console, the wallet service and the token-authorized donor portal, choosing the access level per caller.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Three access levels, three different callers — picking the wrong one silently breaks a donor-facing flow rather than throwing. selectValidByDonor and selectDetailById are USER_MODE for internal Lightning contexts where a logged-in user's own sharing/FLS should apply. selectValidByDonorSystem and selectByDonorSystem are SYSTEM_MODE because their only callers are the token-authorized donor portal and the guest recurring-signup path — neither is a real logged-in Salesforce user, so USER_MODE would return zero rows.</p>
@@ -19525,7 +19591,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Maintains Payment_Method__c wallet rows for the donor portal's saved-card list, deduplicating against the donor's existing cards.</p>
-<p>FFLib role: Service.</p>
+<p>Layer role: Service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Payment_Method__c is display/dedup metadata for the donor portal's saved-card list, not the billing-critical record — the Stripe payment method id actually charged for a renewal lives on Recurring_Donation__c.Stripe_Payment_Method_Id__c, stamped directly by the caller. That split matters because saveWalletCard() leaves an existing wallet row untouched on a dedup match rather than refreshing it: Guest User licenses can never be granted object-level Edit (a hard Salesforce platform restriction, not a policy choice), and every caller of this method runs in guest context. The single exception is reinstateIfRemoved() below — see its header for why a re-added card has to be written back and why that one write is safe.</p>
@@ -19581,7 +19647,7 @@
 <div class="fn-entry__body">
 <p>PaymentSetupGuideService — grades the credentials an admin built by hand in Setup against what the account's gateway actually needs, one step at a time.</p>
 <p>The package creates no credential (owner decision, 2026-08-10: an org may hold several gateway accounts, and a secret must never travel through an @AuraEnabled method), so the <a href="#apex-settings"><code>Settings</code></a> → Payments panel is a guide rather than a wizard: it states the exact values, then this service reads back whatever a managed package is allowed to read and names whichever field is wrong. Every value it checks against comes from <a href="#apex-paymentgatewayregistry"><code>PaymentGatewayRegistry</code></a>.CredentialShape, so the instructions the panel prints and the check that grades them can never disagree.</p>
-<p>FFLib service layer. Registered as <a href="#apex-ipaymentsetupguideservice"><code>IPaymentSetupGuideService</code></a> in <a href="#apex-application"><code>Application</code></a>.cls; reached from <a href="#apex-setupcontroller-getpaymentsetupguide"><code>SetupController.getPaymentSetupGuide</code></a>.</p>
+<p>Service layer. Registered as <a href="#apex-ipaymentsetupguideservice"><code>IPaymentSetupGuideService</code></a> in <a href="#apex-application"><code>Application</code></a>.cls; reached from <a href="#apex-setupcontroller-getpaymentsetupguide"><code>SetupController.getPaymentSetupGuide</code></a>.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>An account names TWO credentials — a restricted, guest-reachable one that may only take a payment (Stripe_Donor_Credential__c) and a full-access one for refunds and back-office work (Stripe_Admin_Credential__c). Steps 1-4 are the same build performed twice, so each of them renders one sub-row per credential under 'credentials' and takes the WORSE of the two as its own status. Grading only the donor one would leave a broken admin credential invisible until the first refund failed, and a green step sitting above a red sub-row is the exact dishonesty this panel exists to avoid.</p>
@@ -20990,7 +21056,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Controller for the staff-facing "Manage Recurring Gift" panel — the internal counterpart to the donor's self-serve portal. Exposes the mid-life schedule changes a fundraiser may need to make on a donor's behalf (pause, resume, skip one payment, retry a failed charge, change the amount, change the fund, reinstate a stopped gift, switch it to another card the donor has already saved), each gated by the Manage_Recurring_Gifts custom permission.</p>
-<p>FFLib role: controller. Holds no business logic — every method delegates to <a href="#apex-irecurringdonationservice"><code>IRecurringDonationService</code></a>, which owns the rules about which transitions a schedule may make.</p>
+<p>Layer role: controller. Holds no business logic — every method delegates to <a href="#apex-irecurringdonationservice"><code>IRecurringDonationService</code></a>, which owns the rules about which transitions a schedule may make.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Cancellation is deliberately NOT here. It already has its own action + LWC (<a href="#apex-stoprecurringdonationcontroller"><code>StopRecurringDonationController</code></a> / lexStopRecurringDonation) because it is terminal and requires a reason; folding it into this panel would have put an irreversible action one click away from six reversible ones.</p>
@@ -21155,7 +21221,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for the fundraiser console's view of a campaign's recurring schedules: one page of them, how many there are, and how many people hold a live one.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-recurringdonationsselector"><code>RecurringDonationsSelector</code></a> on 2026-11-20 with the three queries unchanged (selectByCampaignPaged, countByCampaign, countLiveDonorsByCampaign), so each selector stays within the public-surface budget. Its only caller is <a href="#apex-fundraiserdetailcontroller"><code>FundraiserDetailController</code></a> (through <a href="#apex-fundraiserdetailpayload"><code>FundraiserDetailPayload</code></a>). It is the second selector on Recurring_Donation__c, beside RecurringDonationsSelector, so it names itself in selectorName() and the base read by Id gets a name of its own; it shares that selector's field list.</p>
@@ -21272,7 +21338,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for Recurring_Donation__c, serving the renewal batch, the staff consoles and the token-authorized donor portal.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>selectDueForRenewalLocator's WHERE clause has two branches: normal due-today schedules (Next_Retry_Date__c = null) and schedules already mid dunning-retry cycle (Next_Retry_Date__c &lt;= today). Next_Retry_Date__c being non-null is what routes a schedule into the retry branch instead of the normal one — <a href="#apex-recurringdonationservice"><code>RecurringDonationService</code></a>. processRenewal is what sets and clears it. selectByDonorSystem and selectByStripeCustomerId are the two system-mode reads (see the class comment above) used by the donor portal and the self-managed-signup idempotency check, respectively. selectByIdSystem takes its mode from the entry point: the donor portal passes SYSTEM_WITHOUT_SHARING (<code>guest</code>), a recurring-gift write action its <code>Manage_Recurring_Gifts</code> custom permission authorises passes SYSTEM_WITH_SHARING. This is the first of two selectors on Recurring_Donation__c; <a href="#apex-recurringcampaigngiftsselector"><code>RecurringCampaignGiftsSelector</code></a> is the second and carries its own query names.</p>
@@ -22000,7 +22066,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>This method used to create the whole schedule inline, which could never work: the guest user has no Create on Contact or Recurring_Donation__c, and the domain triggers of the time re-asserted object CRUD <em>regardless</em> of the DML's AccessLevel — so a SYSTEM_MODE insert still threw "Permission to create an Contact denied". That trigger check is gone, but Guest Users can never be granted that Create (platform restriction) and the schedule is created by a job, so staging-only stays the correct shape, and it matches the one-time path exactly.</p>
-<p>This catch is load-bearing only in an NPSP org, which is why its absence survived so long. Without NPSP the method returns at its getGlobalDescribe type guard and nothing can throw; with NPSP it proceeds to <a href="#apex-recurringdonationsselector-selectbyid"><code>RecurringDonationsSelector.selectById</code></a>, whose fflib base asserts object read at query-BUILD time — so a caller not holding Fundraising_Admin took an uncaught CrudException mid-finalize. Note the callers here are <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> running as their batch owner, NOT the Automated Process user that drives the DonationFinalized__e seam, so the Automated-Process reasoning used elsewhere in the NPSP path does not apply. Found by the Rule 7 NPSP org run, 2026-09-01.</p>
+<p>This catch is load-bearing only in an NPSP org, which is why its absence survived so long. Without NPSP the method returns at its getGlobalDescribe type guard and nothing can throw; with NPSP it proceeds to <a href="#apex-recurringdonationsselector-selectbyid"><code>RecurringDonationsSelector.selectById</code></a>, whose query-factory base asserted object read at query-BUILD time — so a caller not holding Fundraising_Admin took an uncaught CrudException mid-finalize. Note the callers here are <a href="#apex-stagingreconciliationbatch"><code>StagingReconciliationBatch</code></a> and <a href="#apex-stripepaymentsweep"><code>StripePaymentSweep</code></a> running as their batch owner, NOT the Automated Process user that drives the DonationFinalized__e seam, so the Automated-Process reasoning used elsewhere in the NPSP path does not apply. Found by the Rule 7 NPSP org run, 2026-09-01.</p>
 </div>
 <table>
 <thead>
@@ -22534,7 +22600,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Contract for the read-only panels the package places on standard and custom record pages.</p>
-<p>FFLib role: Service interface.</p>
+<p>Layer role: Service interface.</p>
 </div>
 </div>
 <div class="fn-entry">
@@ -23693,7 +23759,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for Campaign_Design__c — user-mode reads for the page-design editor and guest-mode reads for the public experience shell.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>The staff methods (selectAll, selectActiveHeroImageUrls) run in user mode; selectById takes its mode from the entry point; selectDefault is the guest shell's own read. They look alike but serve different callers — the setup console's page-design editor and the public donation experience shell. Campaign_Design__c has a Private OWD for the guest user, who holds no sharing on it, so a guest read runs SYSTEM_WITHOUT_SHARING (<code>guest</code>): system mode lifts CRUD and FLS and the framework's without-sharing runner lifts sharing, which the selector's old <code>without sharing</code> SystemModeQuery inner class used to do. The caller applies Security.stripInaccessible after a guest read, which re-applies the guest set's field grants.</p>
@@ -24945,7 +25011,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Stamps the shared sender identity onto every outbound donor email — the From address, the sender display name, and the reply-to — so <a href="#apex-receiptservice"><code>ReceiptService</code></a>, <a href="#apex-refundrequesthandler"><code>RefundRequestHandler</code></a> and <a href="#apex-donorportalservice"><code>DonorPortalService</code></a> cannot drift apart on who a donor thinks the message came from.</p>
-<p>FFLib role: stateless helper service. It is deliberately static rather than a registered <a href="#apex-application"><code>Application</code></a>.Service binding — it resolves org email configuration, has no domain graph behind it, and is called from inside message-building loops where a factory lookup buys nothing.</p>
+<p>Layer role: stateless helper service. It is deliberately static rather than a registered <a href="#apex-application"><code>Application</code></a>.Service binding — it resolves org email configuration, has no domain graph behind it, and is called from inside message-building loops where a factory lookup buys nothing.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Apex cannot invent a From address. Messaging.SingleEmailMessage sends from the RUNNING USER unless it is handed the Id of an OrgWideEmailAddress, so Settings__c.From_Email__c is only ever a LOOKUP KEY for one of those records — never the sender itself. Before 2026-08-19 nothing read the field at all and every donor email went out from whichever user or scheduled job happened to trigger it.</p>
@@ -25866,7 +25932,7 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-settingsservice"><code>SettingsService</code></a>, which keeps ensureDefaultLogoSeeded(), ensureDefaultImagesSeeded(), uploadOrgLogo() and removeOrgLogo() on <a href="#apex-isettingsservice"><code>ISettingsService</code></a> (so callers and their test mocks are unchanged) and hands each one to the method here. Every read and write of the settings row goes back through that ISettingsService, so saveSettings() stays the one place Settings__c is upserted.</p>
-<p>ContentVersion/ContentDistribution are file-handling utility objects, not part of any fflib-registered SObject graph — same rationale as the Settings__c direct-upsert exception in <a href="#apex-settingsservice-savesettings"><code>SettingsService.saveSettings</code></a>() (and <a href="#apex-applogger"><code>AppLogger</code></a>'s direct Log__c insert): routing one-off file plumbing through the <a href="#apex-unitofwork"><code>UnitOfWork</code></a> would add nothing but ceremony. DML/SOQL here are deliberate.</p>
+<p>ContentVersion/ContentDistribution are file-handling utility objects, not part of any Unit-of-Work-registered SObject graph — same rationale as the Settings__c direct-upsert exception in <a href="#apex-settingsservice-savesettings"><code>SettingsService.saveSettings</code></a>() (and <a href="#apex-applogger"><code>AppLogger</code></a>'s direct Log__c insert): routing one-off file plumbing through the <a href="#apex-unitofwork"><code>UnitOfWork</code></a> would add nothing but ceremony. DML/SOQL here are deliberate.</p>
 <p>They ship as packaged static resources and are served from the org's own &lt;org&gt;.file.force.com domain, which a guest LWR site allows in img-src with no CSP Trusted Site. That is the whole reason for the ContentDistribution round trip: a remotely-hosted stock photo would need a packaged CspTrustedSite, and every packaged trusted site shows up in the install-time "Approve Third-Party Access" dialog — which this package deliberately keeps to Stripe only.</p>
 <p>WITHOUT SHARING, deliberately and narrowly. Seeding runs from <a href="#apex-postinstallhandler"><code>PostInstallHandler</code></a>, which executes as a per-package system user, and in that context a <code>with sharing</code> class cannot resolve StaticResource at all — the query dies with "sObject type 'StaticResource' is not supported" and the whole install used to abort there. Found 2026-08-09 by install-testing into a real subscriber org; it is invisible in a dev org, where an admin can read the resource in any sharing mode.</p>
 <p>This class is the ONLY part of logo handling that runs without sharing, and it only ever touches the package's own packaged resources plus the documents it creates from them. Admin- and donor-supplied images stay on the USER_MODE path in storeUploadedLogo() — do not route them through here.</p>
@@ -27690,7 +27756,7 @@
 </div>
 <div class="fn-entry__body">
 <p>DiagnosticLogController — backs the lexDiagnosticLogs tab (Diagnostic Logs).</p>
-<p>FFLib role: controller. Reads Log__c through <a href="#apex-logsselector"><code>LogsSelector</code></a> and writes nothing at all; the only other values it returns are the two Settings__c reads that decide whether the list can be trusted (the persisted log level, and how long entries survive before the retention purge).</p>
+<p>Layer role: controller. Reads Log__c through <a href="#apex-logsselector"><code>LogsSelector</code></a> and writes nothing at all; the only other values it returns are the two Settings__c reads that decide whether the list can be trusted (the persisted log level, and how long entries survive before the retention purge).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-setupcontroller"><code>SetupController</code></a> on 2026-08-15, in the same change that moved the "Recent diagnostic logs" list out of the <a href="#apex-settings"><code>Settings</code></a>-console Logging panel and onto its own Lightning tab — the same treatment, and for the same reason, as <a href="#apex-donationmonitorcontroller"><code>DonationMonitorController</code></a> the day before.</p>
@@ -27727,8 +27793,8 @@
 </div>
 <div class="fn-entry__body">
 <p>GuestAction — base for every controller action an unauthenticated visitor can reach.</p>
-<p><a href="#apex-controlleraction"><code>ControllerAction</code></a>'s default hands the raw platform message back to the caller, which is the right default for an internal Lightning screen staffed by an admin: it makes a failure diagnosable without opening the log. On a public page it is an information leak. An uncaught fflib CRUD failure prints an internal object API name, a record id and an Apex stack trace straight onto the screen of whoever loaded the URL — no login required, and search engines and support-ticket screenshots carry it further.</p>
-<p>Extend this instead of ControllerAction whenever the action is reachable from a lightningCommunity__* bundle. <a href="#apex-appexception"><code>AppException</code></a> — the package's own, donor-worded validation ("Enter an amount greater than zero.") — is passed through unchanged, because that text exists precisely to be read by a donor. Everything else (DmlException, QueryException, fflib's DomainException, a null dereference) collapses to one neutral sentence. <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() has already written the real message and stack trace to <a href="#apex-applogger"><code>AppLogger</code></a> before this is called, so nothing is lost to whoever has to debug it.</p>
+<p><a href="#apex-controlleraction"><code>ControllerAction</code></a>'s default hands the raw platform message back to the caller, which is the right default for an internal Lightning screen staffed by an admin: it makes a failure diagnosable without opening the log. On a public page it is an information leak. An uncaught CRUD failure prints an internal object API name, a record id and an Apex stack trace straight onto the screen of whoever loaded the URL — no login required, and search engines and support-ticket screenshots carry it further.</p>
+<p>Extend this instead of ControllerAction whenever the action is reachable from a lightningCommunity__* bundle. <a href="#apex-appexception"><code>AppException</code></a> — the package's own, donor-worded validation ("Enter an amount greater than zero.") — is passed through unchanged, because that text exists precisely to be read by a donor. Everything else (DmlException, QueryException, a domain-layer exception, a null dereference) collapses to one neutral sentence. <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>() has already written the real message and stack trace to <a href="#apex-applogger"><code>AppLogger</code></a> before this is called, so nothing is lost to whoever has to debug it.</p>
 <p>Validation errors added with addError() are NOT affected — they never travel this path, and "Amount is required" still reaches the donor verbatim.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -27745,7 +27811,7 @@
 </div>
 <div class="fn-entry__body">
 <p>GuestThrottleService — the rate limit in front of every guest-initiated checkout intent.</p>
-<p>FFLib role: Service. Read-only by construction — it counts through a Selector and writes nothing, so a throttled attempt leaves no trace of its own to be flooded in turn.</p>
+<p>Layer role: Service. Read-only by construction — it counts through a Selector and writes nothing, so a throttled attempt leaves no trace of its own to be flooded in turn.</p>
 <p>The endpoints it guards are unauthenticated by design: anyone who can load a campaign page can ask the package to open a PaymentIntent. Two distinct abuses follow from that, and they need different keys, which is why there are two limits rather than one:</p>
 <ul>
 <li>Card testing. A carder pushes a stolen list through one address, learns which numbers are live from the decline codes, and leaves the subscriber holding the authorization fees. The per-email limit is what makes that expensive, so it is keyed per campaign as well — a real donor who gives to two appeals in the same minute is not the target.</li>
@@ -28122,15 +28188,15 @@
 </div>
 <div class="fn-entry__body">
 <p>QrCodeEncoder — encodes a short string as a QR symbol and emits it as inline SVG.</p>
-<p>Shared utility, not an FFLib layer: a pure function with no SObject, SOQL or DML surface. Byte mode, error-correction level M, versions 1-6 selected automatically.</p>
+<p>Shared utility, not a Selector, Domain or Service layer: a pure function with no SObject, SOQL or DML surface. Byte mode, error-correction level M, versions 1-6 selected automatically. The public entry point of the encoder; each encoding stage lives in its own <code>Qr*</code> class.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Written from scratch rather than pulled from a library because the package's CSP trusts no script CDN, and because a QR has to be generated somewhere the print sheet and the receipt email can both reach — which rules out encoding it in the browser.</p>
 <p>Output is monochrome SVG path data with the quiet zone baked into the viewBox.</p>
 <p>It carries no theme token and no color of its own on purpose: a themed QR is a QR that fails at the door, and a page that tightens padding would otherwise eat the quiet zone the scanner needs.</p>
 <p>Versions stop at 6 so no version-information block is required — a ticket reference is about a dozen characters, and version 6 at ECC M holds 108. Above capacity this throws rather than truncating: a truncated symbol still scans, just to the wrong ticket.</p>
+<p>This class is the public facade and the SVG writer. The encoding itself runs in stages, one class each, in this order: <code>QrCodewords</code> (payload bytes, version choice, data codewords and their interleave), <code>QrReedSolomon</code> (the error-correction codewords), <code>QrMatrix</code> (the grid and its function patterns), <code>QrDataPlacer</code> (the zigzag data placement), <code>QrMasking</code> (the eight masks and the format information) and <code>QrPenalty</code> (the four scoring rules that pick the mask).</p>
 <p>toSvgParts is what publicThankYou binds: LWC templates can bind <code>viewBox</code> and <code>d</code> attributes on real &lt;svg&gt;/&lt;path&gt; elements, so the page renders the code without innerHTML or lwc:dom="manual" (the AppExchange scan's <code>no-inner-html</code> rule).</p>
-<p>Apex exposes no byte array, so UTF-8 bytes come out of a hex round-trip through Blob. Encoding the string's characters directly would corrupt any payload outside ASCII. The nibbles are looked up by hand because Integer.valueOf has no radix overload.</p>
 </div>
 <table>
 <thead>
@@ -28167,17 +28233,250 @@
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
+<h4 id="apex-qrcodewords">QrCodewords<a class="headerlink" href="#apex-qrcodewords" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>QrCodewords.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>QrCodewords — turns a payload into the interleaved data and error-correction codewords of a QR symbol.</p>
+<p>Shared utility, not a Selector, Domain or Service layer: a pure function with no SObject, SOQL or DML surface. One stage of <code>QrCodeEncoder</code>: byte mode, error-correction level M, versions 1-6.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Owns the version capacity table, so it is also where a payload above version 6 is refused: <code>pickVersion</code> throws rather than truncating, because a truncated symbol still scans, just to the wrong ticket.</p>
+<p>The codeword sequence is the mode indicator, the 8-bit character count, the payload bytes, a terminator and the alternating pad pair, split into blocks, each block extended by <code>QrReedSolomon</code>, then interleaved one codeword per block in turn.</p>
+<p>Apex exposes no byte array, so UTF-8 bytes come out of a hex round-trip through Blob. Encoding the string's characters directly would corrupt any payload outside ASCII. The nibbles are looked up by hand because Integer.valueOf has no radix overload.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-qrcodewords-utf8bytes"></a><code>utf8Bytes(1 arg)</code></td>
+<td><code>List&lt;Integer&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-qrcodewords-pickversion"></a><code>pickVersion(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-qrcodewords-build"></a><code>build(2 args)</code></td>
+<td><code>List&lt;Integer&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-qrreedsolomon-errorcorrection">QrReedSolomon.errorCorrection()</a>, <a href="#apex-preconditions-checkargument">Preconditions.checkArgument()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-qrcodewords-appendbits"></a><code>appendBits(3 args)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-qrdataplacer">QrDataPlacer<a class="headerlink" href="#apex-qrdataplacer" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>QrDataPlacer.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>QrDataPlacer — writes a symbol's codewords into its matrix in the QR zigzag placement order.</p>
+<p>Shared utility, not a Selector, Domain or Service layer: an in-memory step with no SObject, SOQL or DML surface. One stage of <code>QrCodeEncoder</code>, run once on the <code>QrMatrix</code> built by <code>QrMatrix.forVersion</code>.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The walk runs in two-module-wide columns from the right edge, alternating upward and downward, stepping over the vertical timing line at column 6 and over every module the matrix reserves. Bits past the end of the codewords are the spec's remainder bits, all 0.</p>
+<p>The bit cursor is instance state, which is why this is an object rather than a static helper: it carries the position across the whole walk.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-qrdataplacer-place"></a><code>place(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-qrcodewords-appendbits">QrCodewords.appendBits()</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-qrmasking">QrMasking<a class="headerlink" href="#apex-qrmasking" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>QrMasking.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>QrMasking — applies the eight QR mask patterns, writes the format information, and keeps the cheapest.</p>
+<p>Shared utility, not a Selector, Domain or Service layer: a pure function with no SObject, SOQL or DML surface. One stage of <code>QrCodeEncoder</code>; scores each candidate with <code>QrPenalty</code>.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Every mask is applied to a copy, scored, and the cheapest kept; on a tie the lower mask id wins. Deterministic: the same text always yields the same symbol, so a reprinted ticket matches the one already held.</p>
+<p>Format information is the 15-bit BCH string for ECC level M and the chosen mask, written twice: around the top-left finder, and split between the other two. <code>QrCodeEncoder_Test</code> checks the string for all eight masks against ISO/IEC 18004 Table C.1, checks every bit of both copies at its Figure 25 position (bit 0 at row 0, column 8; bit 14 at row 8, column 0 and at row size-1, column 8) in a version-1 and a version-6 matrix, checks that the dark module at row size-8, column 8 survives, and pins two whole symbols module for module against an independent encoder.</p>
+<p>Before 2026-11-27 both copies were written transposed (row and column swapped) and the second copy overwrote the dark module, so a scanner read the format word bit-reversed.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-qrmasking-bestmasked"></a><code>bestMasked(1 arg)</code></td>
+<td><code>[QrMatrix](#apex-qrmatrix)</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-qrpenalty-score">QrPenalty.score()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-qrmasking-formatbits"></a><code>formatBits(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-qrmatrix">QrMatrix<a class="headerlink" href="#apex-qrmatrix" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>QrMatrix.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>QrMatrix — the module grid of one QR symbol, laid out with its function patterns.</p>
+<p>Shared utility, not a Selector, Domain or Service layer: an in-memory value with no SObject, SOQL or DML surface. One stage of <code>QrCodeEncoder</code>, and the state every later stage (<code>QrDataPlacer</code>, <code>QrMasking</code>, <code>QrPenalty</code>) works on.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p><code>forVersion</code> lays down everything that is not data: the three finder patterns with their separators, the timing lines, the alignment patterns, the always-dark module, and the format-information strips (reserved as light until <code>QrMasking</code> writes them). It then records which modules those are in <code>reserved</code>, so data placement and masking skip them.</p>
+<p>A module holds 1 (dark), 0 (light) or -1 (not yet placed). Masked copies share the <code>reserved</code> map of the matrix they were copied from.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-qrmatrix-forversion"></a><code>forVersion(1 arg)</code></td>
+<td><code>[QrMatrix](#apex-qrmatrix)</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-qrpenalty">QrPenalty<a class="headerlink" href="#apex-qrpenalty" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>QrPenalty.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>QrPenalty — the four QR penalty rules that decide which mask a symbol keeps. Lowest score wins.</p>
+<p>Shared utility, not a Selector, Domain or Service layer: a pure function with no SObject, SOQL or DML surface. One stage of <code>QrCodeEncoder</code>; <code>QrMasking</code> scores every masked candidate with it.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Rule 1 penalises runs of five or more same-colored modules in a row or column; rule 2 every 2x2 block of one color; rule 3 the finder-lookalike 1:1:3:1:1 sequence with four light modules on one side, which would confuse a scanner's locator; rule 4 the deviation from an even split of dark and light, in 5% steps from the multiples of 5% either side of the dark share. Until 2026-11-27 rule 4 scored a 40-45% dark share as 0 instead of 10; no ticket payload measured changed mask when it was corrected.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-qrpenalty-score"></a><code>score(1 arg)</code></td>
+<td><code>Integer</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-qrreedsolomon">QrReedSolomon<a class="headerlink" href="#apex-qrreedsolomon" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>shared/<wbr>QrReedSolomon.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>QrReedSolomon — GF(256) arithmetic and the Reed-Solomon error-correction codewords of a QR symbol.</p>
+<p>Shared utility, not a Selector, Domain or Service layer: pure arithmetic with no SObject, SOQL or DML surface. One stage of <code>QrCodeEncoder</code>; <code>QrCodewords</code> calls it once per data block.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The field is GF(256) under the QR polynomial x^8 + x^4 + x^3 + x^2 + 1 (285). Multiplication goes through log/antilog tables built once per transaction, on first use.</p>
+<p><code>QrCodeEncoder_Test</code> checks the generator against the published ISO/IEC 18004 Annex A table and checks the codewords by long division with an independent multiply, so an arithmetic error here fails a test rather than producing a symbol that looks right and does not scan.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-qrreedsolomon-generatorpolynomial"></a><code>generatorPolynomial(1 arg)</code></td>
+<td><code>List&lt;Integer&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-qrreedsolomon-errorcorrection"></a><code>errorCorrection(2 args)</code></td>
+<td><code>List&lt;Integer&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="apex-recordaccess">RecordAccess<a class="headerlink" href="#apex-recordaccess" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public with sharing</code></p>
 <p class="fn-entry__src"><code>shared/<wbr>RecordAccess.cls</code></p>
 </div>
 <div class="fn-entry__body">
 <p>RecordAccess — answers the two access questions a describe call cannot: may the running user EDIT these particular records, and may they mint a public link to a file?</p>
-<p>FFLib role: shared static utility (not registered in <a href="#apex-application"><code>Application</code></a> — it has no state and no behaviour worth mocking; tests exercise it through a real user).</p>
+<p>Layer role: shared static utility (not registered in <a href="#apex-application"><code>Application</code></a> — it has no state and no behaviour worth mocking; tests exercise it through a real user).</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Why it exists. Until 2026-09-25 the Unit of Work committed at SYSTEM_MODE inside a <code>without sharing</code> inner class, so registerDirty() saved a record the running user could only read. A staff commit now runs in <a href="#apex-dataaccess"><code>DataAccess</code></a>.Mode.USER_MODE (or a system mode with sharing), so the platform enforces sharing; these gates stay as defence in depth and as the source of the friendly error before the DML. Object-level permission is checkable by describe and <a href="#apex-controlleraction"><code>ControllerAction</code></a> does that; RECORD-level edit is not — only UserRecordAccess answers it, and it accounts for sharing rules, the role hierarchy, teams and Modify All the same way the platform would. Code that writes on a user's behalf asks here before it registers the write.</p>
-<p>Deliberate FFLib exception: UserRecordAccess and PermissionSetAssignment are platform access objects with no package selector (UserRecordAccess rejects the ORDER BY every fflib QueryFactory appends), so both are read inline, here and nowhere else.</p>
+<p>Deliberate framework exception: UserRecordAccess and PermissionSetAssignment are platform access objects with no package selector (UserRecordAccess rejects the ORDER BY a framework <a href="#apex-query"><code>Query</code></a> appends), so both are read inline, here and nowhere else.</p>
 <p>UserRecordAccess answers at most 200 RecordIds per query; larger sets are chunked. Not final only so a test can shrink it and prove the chunking with two records.</p>
 <p>Test seam, empty in every real context. Controller and service tests that mock the Campaign selector work with generated Ids that exist in no table, so UserRecordAccess can never call them editable; a test adds its fake Id here to reach the code after the gate. The gate itself is proven against real records and real users in RecordAccess_Test.</p>
 <p>Every fundraiser-console write — the Story tab, ticket tiers (and the Product a new tier creates), FAQ and question selections, fundraiser edit, the active toggle and the updates/documents visibility toggle — goes through the Unit of Work, which commits in SYSTEM_MODE. Before this gate, seeing a campaign was enough to change it (readiness finding F-11; owner decision D-1, option a, 2026-09-25). Callers keep their own visibility check FIRST, so a campaign the user cannot see is still reported as "not found" and this message never confirms a hidden record exists.</p>
@@ -28418,7 +28717,7 @@
 <div class="fn-entry__body">
 <p>Builds the finalized-gift half of the thank-you payload, and the pieces both halves share: the page footer, the campaign read and the impact line.</p>
 <p>INHERITED SHARING: runs only inside <a href="#apex-thankyoucontroller"><code>ThankYouController</code></a>.GetThankYou, and takes that guest action's sharing exactly as the code did before it was split out; it declares no sharing of its own.</p>
-<p>FFLib role: Service helper — static payload builder, not registered with <a href="#apex-application"><code>Application</code></a>.Service.</p>
+<p>Layer role: Service helper — static payload builder, not registered with <a href="#apex-application"><code>Application</code></a>.Service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-thankyoucontroller"><code>ThankYouController</code></a> so that class keeps the token handling and the ticket deck, and this one keeps the finalized-gift payload. giftSummary and pendingSummary return ONE key set (see ThankYouController), so the three members both halves need — footerFor, campaignById and impactLine — are public here and <a href="#apex-thankyoupendingsummary"><code>ThankYouPendingSummary</code></a> calls them rather than keeping a second copy.</p>
@@ -28476,7 +28775,7 @@
 <div class="fn-entry__body">
 <p>Builds the pending half of the thank-you payload: the confirmation rendered from the Donation_Staging__c row the donor's own checkout wrote, before the finalizer has made a gift.</p>
 <p>INHERITED SHARING: runs only inside <a href="#apex-thankyoucontroller"><code>ThankYouController</code></a>.GetThankYou, and takes that guest action's sharing exactly as the code did before it was split out; it declares no sharing of its own.</p>
-<p>FFLib role: Service helper — static payload builder, not registered with <a href="#apex-application"><code>Application</code></a>.Service.</p>
+<p>Layer role: Service helper — static payload builder, not registered with <a href="#apex-application"><code>Application</code></a>.Service.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-thankyoucontroller"><code>ThankYouController</code></a>. It returns the same key set <a href="#apex-thankyougiftsummary-build"><code>ThankYouGiftSummary.build</code></a> does, with the finalizer-only keys null, and reuses that class's footer, campaign read and impact line so the two payloads cannot drift apart.</p>
@@ -28514,7 +28813,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Deletes rows past the retention window from one append-only table per run, chosen by the Target the scheduler passes in.</p>
-<p>FFLib role: Async job.</p>
+<p>Layer role: Async job.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Adding a value here needs a matching case in start() AND a Database.executeBatch line in <a href="#apex-retentionpurgescheduler"><code>RetentionPurgeScheduler</code></a> — a target nothing schedules is a table that still grows forever. Adding one does NOT need the scheduler restructured to stay under the 5-concurrent-batch limit: past five, a submitted batch waits in the Apex Flex Queue as Holding and starts when a slot frees. See the note on <a href="#apex-retentionpurgescheduler-execute"><code>RetentionPurgeScheduler.execute</code></a> for the real ceiling.</p>
@@ -28696,10 +28995,10 @@
 </div>
 <div class="fn-entry__body">
 <p>Selector for Log__c, reading diagnostic logs back under the running admin's access.</p>
-<p>FFLib role: Selector.</p>
+<p>Layer role: Selector.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Asymmetric with <a href="#apex-applogger"><code>AppLogger</code></a> by design: AppLogger inserts Log__c directly (without sharing, no UoW — see that class) so a log write never fails because of the calling user's access, but reads here go through the normal fflib selector (user mode) because reading logs back — e.g. <a href="#apex-diagnosticlogcontroller"><code>DiagnosticLogController</code></a> behind the Diagnostic Logs tab — is a staff-facing action that should respect the running admin's FLS/sharing like any other read.</p>
+<p>Asymmetric with <a href="#apex-applogger"><code>AppLogger</code></a> by design: AppLogger inserts Log__c directly (without sharing, no UoW — see that class) so a log write never fails because of the calling user's access, but reads here go through the normal selector path (user mode) because reading logs back — e.g. <a href="#apex-diagnosticlogcontroller"><code>DiagnosticLogController</code></a> behind the Diagnostic Logs tab — is a staff-facing action that should respect the running admin's FLS/sharing like any other read.</p>
 <p>That asymmetry is why the tab is granted only to permission sets holding viewAllRecords on Log__c: the object is Private and AppLogger owns each row as whoever ran the transaction, so a user without it sees only their own sessions — a partial list that reads as a clean org.</p>
 </div>
 <table>

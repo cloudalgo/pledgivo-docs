@@ -4435,6 +4435,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-queryschemacheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QuerySchemaCheck
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-sobjectdomain" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7268,7 +7279,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and FFLib layer. The vendored <code>fflib-apex-mocks</code>/<code>apex-common</code> library is excluded. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>419</code></span><span><b>Test classes</b><code>319</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>420</code></span><span><b>Test classes</b><code>318</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7305,7 +7316,7 @@
 <li>
 <p><strong><a href="#domain-framework">Framework</a></strong></p>
 <hr />
-<p>15 classes</p>
+<p>16 classes</p>
 <p><a href="#domain-framework-root">Core</a></p>
 </li>
 <li>
@@ -12118,7 +12129,8 @@
 <p>The selector for the NPSP allocation object, which exists only in an org with NPSP installed.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>The type is resolved by describe: the package has no static dependency on NPSP, and in an org without it sObjectType() is null and every query throws, which <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a> never reaches because it is gated on NPSP detection.</p>
+<p>The type is resolved by describe: the package has no static dependency on NPSP, and in an org without it sObjectType() is null and every query throws when it runs, which <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a> never reaches because it is gated on NPSP detection. The columns are selected by token from the org's describe rather than as default fields, for the same reason.</p>
+<p>The object and Opportunity-lookup names are @TestVisible seams that default to NPSP's own names and that production code never assigns. They are the only copy: NpspSyncService reads the allocation type and the lookup's name from this selector. NpspSyncService_Test aims them at Donation_Designation__c, which has the allocation's shape. The where clause names the lookup by its describe name, never by the seam's raw text.</p>
 </div>
 <table>
 <thead>
@@ -12137,6 +12149,11 @@
 <tr>
 <td><a id="apex-npspallocationsselector-defaultfields"></a><code>defaultFields(0 args)</code></td>
 <td><code>List&lt;Schema.SObjectField&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-npspallocationsselector-opportunityfieldname"></a><code>opportunityFieldName(0 args)</code></td>
+<td><code>String</code></td>
 <td></td>
 </tr>
 <tr>
@@ -13209,6 +13226,10 @@
 <div class="fn-entry__body">
 <p>NpspRecurringMirror — maps a Recurring_Donation__c schedule onto an NPSP npe03__Recurring_Donation__c, adapting to the org's legacy (RD1) or Enhanced (RD2) field shape at runtime.</p>
 <p>Split out of <a href="#apex-npspsyncservice"><code>NpspSyncService</code></a>, which decides which schedules to mirror and does the DML. NPSP is an optional dependency, so the record type and its fields are reached only through generic SObject.put on names that exist in the org's describe; nothing here references an NPSP type at compile time.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The NPSP field names are a @TestVisible seam, keyed by what each field holds and defaulting to NPSP's own names; production code never assigns it. NpspSyncService_Test points some of the keys at the matching Recurring_Donation__c fields (the closest real fit in this package: a schedule with a donor, amount, frequency, campaign and status) and leaves the rest on NPSP names the stand-in lacks, which is how it proves that a field absent from the org's describe is skipped, as an RD2 field is in an RD1 org.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -13239,6 +13260,7 @@
 <p><code>without sharing</code>: it runs from the DonationFinalized__e platform-event subscriber (the Automated Process user) and must write NPSP records the running user has no sharing/CRUD grant on — our permission sets can't grant FLS on another package's fields. Writes are best-effort: an NPSP validation/trigger rejection is logged and swallowed so it can never roll back an already-charged donation.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
+<p>The NPSP object and field names are @TestVisible seams that default to NPSP's own names; production code never assigns them, and each name has one seam: the allocation type and its Opportunity lookup are read from <a href="#apex-npspallocationsselector"><code>NpspAllocationsSelector</code></a>, the GAU and amount fields and the recurring type are here, and the recurring field names are <a href="#apex-npsprecurringmirror"><code>NpspRecurringMirror</code></a>'s. NpspSyncService_Test aims them at this package's own objects (Donation_Designation__c for an allocation, Recurring_Donation__c for the recurring mirror), so the building, mapping, de-duplication and stamping logic runs in an org without NPSP. That proves the logic on a renamed copy, not NPSP's real schema; the Rule 7 npsp and pa-npsp orgs (probes 20/21) remain the proof that the writes land on NPSP itself.</p>
 <p>The sibling read in alreadyAllocated pins SYSTEM_MODE for the same reason.</p>
 </div>
 <table>
@@ -17402,13 +17424,14 @@
 <p class="fn-entry__src"><code>framework/<wbr>Query.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>The framework's query builder. It renders SOQL from describe names, runs it through the runner for its <a href="#apex-dataaccess"><code>DataAccess</code></a>.Mode (USER_MODE unless mode() says otherwise), and, in tests, returns the rows or exception registered for its name instead of querying.</p>
+<p>The framework's query builder. It renders SOQL from describe names, runs it through the runner for its <a href="#apex-dataaccess"><code>DataAccess</code></a>.Mode (USER_MODE unless mode() says otherwise), and, in tests, returns the rows or exception registered for its name instead of querying. A schema error found while building is thrown when the query runs, after a test's mock has had the chance to answer.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Build: of(SObjectType); field, fields, path, paths; whereClause, bind, binds; orderBy, orderByNullsLast; limitTo, offset, forUpdate; one level of child(...); mode(...); named(...). Execute: toList, toObject, toCount, toLocator, toSOQL. Aggregates go through the static aggregate(soql, binds, mode), or aggregate(name).run(soql, binds, mode) for one a test can mock, the only hand-written SOQL left; its mode is required, and a null one throws IllegalArgumentException as a save does (<a href="#apex-dml-requiremode"><code>Dml.requireMode</code></a>). A builder query's mode() is optional: user mode by default. The clause members and toSOQL() are inherited from <a href="#apex-queryclauses"><code>QueryClauses</code></a>, which renders the SOQL; this class decides how it runs.</p>
+<p>The schema is checked when a query runs, not while it is built. A field, path, child relationship or SObject type that does not resolve is held by the builder and thrown as the same Query.InvalidFieldException, with the same message, when the SOQL is rendered: by toSOQL(), and by toList, toObject, toCount and toLocator before any SOQL is sent. The aggregates take hand-written SOQL and have no builder clauses to check. A named query a test mocked is answered before it is rendered, so the mock returns its rows (and is recorded) in an org without the field or type. A query that is not mocked, or has no name, throws first, as it did when the build threw: before its binds are merged and before it is recorded, so Query.executed lists only queries that were answered or rendered.</p>
 <p>No permission checks of its own: USER_MODE is the check, and the platform throws a QueryException for an object or field the user cannot read. A system mode is the deliberate, reasoned bypass: the line that writes <code>DataAccess.Mode.SYSTEM_*</code> carries a <code>// SYSTEM_MODE: &lt;with|without&gt; sharing — &lt;reason&gt;:</code> line, which scripts/lint/security-review-scan.py enforces.</p>
 <p>Three private runners execute the SOQL: a user-mode runner, and a <code>with sharing</code> and a <code>without sharing</code> system-mode runner. In system mode record sharing follows the class that runs the query, so a SYSTEM_WITH_SHARING query keeps sharing even when the class that calls Query is <code>without sharing</code>.</p>
-<p>Mocking: in a test, mockFor(name, rows) or mockFor(name, exception) makes every query named that way return those rows (toList, toObject, toCount, and a named aggregate) or throw that exception, without touching the database. AggregateResult cannot be constructed or deserialized with values, so an aggregate is mocked with an empty list or with rows a real aggregate returned in the test's setup; a row that is not an AggregateResult throws a TypeException. The registry is read only when Test.isRunningTest(), and only for a named query; an unnamed query is never mocked. toLocator is never mocked, because a QueryLocator cannot be built from rows. Names follow <code>&lt;Selector&gt;.&lt;method&gt;</code>.</p>
+<p>Mocking: in a test, mockFor(name, rows) or mockFor(name, exception) makes every query named that way return those rows (toList, toObject, toCount, and a named aggregate) or throw that exception, without touching the database. AggregateResult cannot be constructed or deserialized with values, so an aggregate is mocked with an empty list or with rows a real aggregate returned in the test's setup; a row that is not an AggregateResult throws a TypeException. The registry is read only when Test.isRunningTest(), and only for a named query; an unnamed query is never mocked. The mock answers before the schema check, so a selector whose field or type exists only in some org shapes (Person Accounts, multi-currency) is testable in any org. toLocator is never mocked, because a QueryLocator cannot be built from rows. Names follow <code>&lt;Selector&gt;.&lt;method&gt;</code>.</p>
 <p>Recording: under the same Test.isRunningTest() guard every named execution (toList, toObject, toCount, toLocator, the named aggregate) is recorded, mocked or not, as a Query.Execution: the name, the mode exactly as given (null when mode(null) was called, which runs in user mode), and a shallow copy of the binds it ran with. The registry and the record live in <a href="#apex-querymocks"><code>QueryMocks</code></a>. Query.executed(name) returns them oldest first, so a service test on mocked rows can still assert how many times a selector method ran, in which mode, and with which Ids.</p>
 </div>
 <table>
@@ -17438,11 +17461,6 @@
 <tr>
 <td><a id="apex-query-child"></a><code>child(2 args)</code></td>
 <td><code>[Query](#apex-query)</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-queryfieldpaths-childrelationship">QueryFieldPaths.childRelationship()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -17526,13 +17544,14 @@
 <p class="fn-entry__src"><code>framework/<wbr>QueryClauses.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>The clause-building half of <a href="#apex-query"><code>Query</code></a>, extended by Query only: the select list, child queries, where clause and binds, orderings, limit, offset and lock, and the SOQL they render. Feature code never names this class; it calls these members on a Query, which every build method returns.</p>
+<p>The clause-building half of <a href="#apex-query"><code>Query</code></a>, extended by Query only: the select list, child queries, where clause and binds, orderings, limit, offset and lock, and the SOQL they render. A schema error found while building is held and thrown when the SOQL is rendered. Feature code never names this class; it calls these members on a Query, which every build method returns.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p><a href="#apex-query"><code>Query</code></a> extends this class so that the builder and the runner each stay small; the split is internal, and Query adds child(...), which validates and attaches a child query to the fields declared here. The split exists because the plan's member list on one class exceeds the Code Analyzer ExcessivePublicCount limit, and the merge gate takes no recorded analyzer exception. Query is the only subclass: every build method returns the Query it was called on, as <code>(Query) this</code>, so any other subclass would throw a TypeException, and a chain reads <code>Query.of(...).path(...).whereClause(...).toList()</code>.</p>
 <p>Values are only ever bound. A where clause names its values as <code>:name</code> and bind() supplies them; nothing a caller passes is concatenated into the SOQL except the where clause text itself. LIMIT and OFFSET render as the integers given.</p>
 <p>Fields and paths are rendered from describe (<a href="#apex-queryfieldpaths"><code>QueryFieldPaths</code></a>) and selected once each, compared without regard to case; a field token must belong to the query's own SObject type. The select list is sorted, and <code>Id</code> is selected when nothing else is. An ORDER BY term always says where nulls sort: orderBy() renders <code>NULLS FIRST</code>, which is SOQL's own default in both directions, and orderByNullsLast() renders <code>NULLS LAST</code>. So a raw <code>ORDER BY x DESC</code> is orderBy(x, DESCENDING). Clause order is SELECT (child queries last in the select list), FROM, WHERE, ORDER BY, LIMIT, OFFSET, FOR UPDATE.</p>
 <p>A child query renders every clause it was given inside the parent and contributes its binds to the parent's (one bind namespace per query): a bind name the parent or another child also uses must carry the same value, or the query throws when it runs. It runs in the parent's mode, its own mode and name are not used, and it cannot hold a child of its own. Query does not police SOQL's subquery rules: the platform rejects, for example, FOR UPDATE on a child.</p>
+<p>Schema problems are held, not thrown, while the query is built (<a href="#apex-queryschemacheck"><code>QuerySchemaCheck</code></a>): a null SObject type, a field token of another type, a path or child relationship that does not resolve, and an invalid child query each become a held Query.InvalidFieldException, and every later build call skips its describe work. The held exception is thrown, unchanged, when the SOQL is rendered: toSOQL(), and so toList, toObject, toCount and toLocator before any SOQL is sent. A query a test mocked by name is answered before it is rendered, so it returns its rows in an org without the field or type. Of two held errors (a child query built with one, then a parent with another) the one raised first is thrown, which is the one the chain would have stopped at.</p>
 </div>
 <table>
 <thead>
@@ -17702,8 +17721,85 @@
 <td></td>
 </tr>
 <tr>
+<td><a id="apex-querymocks-answers"></a><code>answers(1 arg)</code></td>
+<td><code>Boolean</code></td>
+<td></td>
+</tr>
+<tr>
 <td><a id="apex-querymocks-answer"></a><code>answer(4 args)</code></td>
 <td><code>List&lt;SObject&gt;</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-queryschemacheck">QuerySchemaCheck<a class="headerlink" href="#apex-queryschemacheck" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p class="fn-entry__src"><code>framework/<wbr>QuerySchemaCheck.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>The schema check behind one <a href="#apex-query"><code>Query</code></a>: it resolves the query's fields, paths and child relationships through describe while the query is built, and holds the first Query.InvalidFieldException instead of throwing it, for Query to throw when the query is rendered or run.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Split out of <a href="#apex-queryclauses"><code>QueryClauses</code></a> so the builder keeps to the analyzer's class-complexity limit, as <a href="#apex-querymocks"><code>QueryMocks</code></a> is split out of <a href="#apex-query"><code>Query</code></a>. Feature code never names it.</p>
+<p>Holding the error is what lets a test mock a query by name in an org that lacks one of its fields or its SObject type: the mock answers before the query is rendered, and rendering is where the held error is thrown. Real execution still fails before any SOQL is sent, with the exception the build call raised, unchanged.</p>
+<p>Once an error is held, later resolutions do no describe work and return null. When a child query is attached, its check reports to the parent's, so an error the child takes later reaches the parent. Of two held errors the one raised first wins (a transaction-wide counter orders them): it is the one a chain that threw would have stopped at.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-queryschemacheck-token"></a><code>token(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-queryschemacheck-path"></a><code>path(1 arg)</code></td>
+<td><code>String</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-queryschemacheck-childnamed"></a><code>childNamed(2 args)</code></td>
+<td><code>Schema.ChildRelationship</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-queryfieldpaths-childrelationship">QueryFieldPaths.childRelationship()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-queryschemacheck-childoftype"></a><code>childOfType(2 args)</code></td>
+<td><code>Schema.ChildRelationship</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-queryfieldpaths-childrelationship">QueryFieldPaths.childRelationship()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-queryschemacheck-hold"></a><code>hold(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-queryschemacheck-reportto"></a><code>reportTo(1 arg)</code></td>
+<td><code>void</code></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-queryschemacheck-throwifheld"></a><code>throwIfHeld(0 args)</code></td>
+<td><code>void</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -17800,6 +17896,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>Concrete selectors only: no selector interfaces and no factory. A caller writes <code>new OpportunitiesSelector().selectOpenByCampaign(ids)</code>, and a test mocks the query by name with <a href="#apex-query"><code>Query</code></a>.mockFor('&lt;Selector&gt;.&lt;method&gt;', rows) instead of replacing the selector.</p>
 <p>newQuery() returns <a href="#apex-query-of"><code>Query.of</code></a>(sObjectType()) with defaultFields() and, in a multi-currency org on an object that has it, CurrencyIsoCode, which <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a> and <a href="#apex-campaigntotalsrollup"><code>CampaignTotalsRollup</code></a> rely on. It applies no ordering and no mode: each selector method states its own ORDER BY, and the query runs in USER_MODE unless the method calls mode(). A system-mode method writes its <code>// SYSTEM_MODE: &lt;with|without&gt; sharing — &lt;reason&gt;:</code> line where it writes the mode.</p>
+<p>A selector whose object exists only in some orgs (CurrencyType with multiple currencies, an NPSP object) resolves sObjectType() by describe and returns null where it is absent. newQuery() then starts Query.of(null), which holds the error, and skips the multi-currency field; the read throws Query.InvalidFieldException when it runs, unless a test mocked its name. Such a selector returns no tokens from defaultFields(), since it has none to give, and names its columns by path in each method (<a href="#apex-currencytypesselector"><code>CurrencyTypesSelector</code></a>). selectRecordsById needs a real type: its name and default order come from describe.</p>
 <p>selectRecordsById(ids) is the one query the base runs: the untyped user-mode read by Id, ordered by defaultOrderBy() ascending. It is named <code>&lt;selectorName()&gt;.selectRecordsById</code>. selectorName() defaults to the object's API name, with the namespace prefix where the object carries one (<code>Log__c.selectRecordsById</code>), which is unique while an object has one selector. An object can have more than one, with different default fields: Contact (<a href="#apex-contactsselector"><code>ContactsSelector</code></a>, <a href="#apex-contactdonorlistselector"><code>ContactDonorListSelector</code></a>), Recurring_Donation__c (<a href="#apex-recurringdonationsselector"><code>RecurringDonationsSelector</code></a>, <a href="#apex-recurringcampaigngiftsselector"><code>RecurringCampaignGiftsSelector</code></a>), Campaign (<a href="#apex-campaignsselector"><code>CampaignsSelector</code></a>, <a href="#apex-eventcampaignsselector"><code>EventCampaignsSelector</code></a>) and Opportunity (<a href="#apex-opportunitiesselector"><code>OpportunitiesSelector</code></a>, <a href="#apex-giftreceiptsselector"><code>GiftReceiptsSelector</code></a>, <a href="#apex-donorgiftsselector"><code>DonorGiftsSelector</code></a>, <a href="#apex-campaigngiftsselector"><code>CampaignGiftsSelector</code></a>). Every selector after the first overrides selectorName() to return its class name, so its base read gets a name of its own. A test builds the mock key with selectRecordsByIdQueryName(), never as a literal: from the token for a default-named selector, or from an instance for any selector. A selector's own typed <code>selectById</code> (for example one that returns List&lt;Opportunity&gt;, or a system-mode read with its reason) is a separate selector method with its own <code>&lt;Selector&gt;.&lt;method&gt;</code> name, and never falls through to this user-mode base read.</p>
 <p>defaultOrderBy() is the object's name field when it has one that is not encrypted, otherwise CreatedDate, otherwise Id; it is computed once per SObject type per transaction. A selector may override it with another single field path.</p>
 </div>
@@ -28509,7 +28606,7 @@
 <p>The selector for CurrencyType, which exists only in an org with Multiple Currencies enabled.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>The type is resolved by describe: a static CurrencyType reference would not compile in a single-currency org and would break the managed-package install everywhere. There sObjectType() is null and every query throws; <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a> and <a href="#apex-currencyrates"><code>CurrencyRates</code></a> catch it and fall back. CurrencyType is org configuration with no sharing model and no packageable grant, and the guest user who most needs the answer has no access, so the reads take the entry point's mode: guest and jobs without sharing, the staff and trigger arms with sharing (<code>platform-object</code>).</p>
+<p>The type is resolved by describe: a static CurrencyType reference would not compile in a single-currency org and would break the managed-package install everywhere. There sObjectType() is null, so the columns are named by path rather than as default-field tokens, and every query throws <a href="#apex-query"><code>Query</code></a>.InvalidFieldException when it runs; <a href="#apex-currencyresolver"><code>CurrencyResolver</code></a> and <a href="#apex-currencyrates"><code>CurrencyRates</code></a> catch it and fall back. A test that mocks a query by name gets its rows in any org, because the mock answers before the schema is checked. CurrencyType is org configuration with no sharing model and no packageable grant, and the guest user who most needs the answer has no access, so the reads take the entry point's mode: guest and jobs without sharing, the staff and trigger arms with sharing (<code>platform-object</code>).</p>
 </div>
 <table>
 <thead>

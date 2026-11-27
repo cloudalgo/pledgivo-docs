@@ -2200,10 +2200,11 @@ for style. What matters is the severity split above, and the findings below.</p>
   test suite, which is a deliberate convention, not an accident — 2,601 findings, none of them
   actionable. Retuned to this project's <code>testPattern</code>, it reports none.</li>
 <li><strong><code>ApexUnitTestClassShouldHaveAsserts</code></strong> only recognises <code>System.assert*</code> and <code>Assert.*</code>. Most
-  service, domain and selector tests here assert through fflib-apex-mocks, where
-  <code>mocks.verify(uow, 1).commitWork()</code> <em>is</em> the assertion — it throws when the interaction did not
-  happen. PMD counted 200 mock-verified tests as having none. Widened to accept mock verification
-  and this repo's named assertion helpers, it reports 15.</li>
+  service, domain and selector tests assert through the framework's own doubles
+  (<code>UnitOfWorkFake</code>, <code>Mock</code>, <code>Query.executed</code>), for example <code>Assert.areEqual(1, uow.commitCount())</code>.
+  The rule is widened to accept this repo's named assertion helpers (<code>assert*</code>), which carry the
+  assertion for whole families of tests; a test that calls neither is still reported. Across <code>base/</code>
+  it reports only the vendored <code>fflib/</code> test classes, which are deleted in Sprint 6.</li>
 <li><strong><code>EmptyStatementBlock</code></strong> reported 123 empty bodies that the language or the architecture
   requires: overrides of a deliberately abstract hook, interface methods a class does not need,
   virtual hooks, and private no-arg constructors. Retuned to skip those shapes, it still reports

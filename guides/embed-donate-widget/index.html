@@ -2127,9 +2127,15 @@ cannot leak styles into your site.</p>
 <li>A design/branding change in Salesforce updates the embedded widget automatically — no
   re-copying the snippet. Re-copy only if you switch embed type, change a button's label,
   or point it at a different campaign.</li>
-<li>Deactivating the campaign (or turning off the org-wide embedding switch) shows a brief
-  "no longer available" message in place of the widget — no need to touch the website's
-  code either way.</li>
+<li>Deactivating the campaign shows "This campaign has ended or could not be found." in place
+  of the widget, and turning off the org-wide embedding switch shows "Donations are currently
+  unavailable." No need to touch the website's code either way.</li>
+<li>A campaign that has stopped taking gifts after its end date, or an org that cannot take
+  payments right now, shows a short message instead of the Give button, so a donor is not sent
+  to a donation page that will turn them away.</li>
+<li>Changes reach the widget within about a minute. The campaign's settings may be cached
+  for up to 60 seconds, so a new gift's total, a design change or the
+  embedding switch can take that long to show on the external site.</li>
 </ul>
 <div class="admonition tip">
 <p class="admonition-title">Marketing tags carry over from the host page</p>
@@ -2155,8 +2161,11 @@ Experience Cloud donation page — never on the embedding site.</p>
    confirm both the script line and the widget element were pasted, using a Custom
    HTML/Code block rather than a rich-text field.</li>
 </ol>
-<p>If neither applies, confirm the campaign is still Active and that the org-wide embedding
-switch hasn't been turned off.</p>
+<p>If neither applies, confirm the campaign is still Active, that the org-wide embedding
+switch hasn't been turned off, and that the site's <strong>Experience Site URL</strong> is filled in under
+<strong>Settings → Experience Cloud → Site &amp; Domain</strong>. Without it the widget has no donation page to
+send donors to, so it shows "Donations are currently unavailable." rather than a link that
+would point at your own website.</p>
 <h2 id="related">Related<a class="headerlink" href="#related" title="Permanent link">#</a></h2>
 <div class="grid cards">
 <ul>

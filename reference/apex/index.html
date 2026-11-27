@@ -2116,6 +2116,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#apex-campaignembedpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CampaignEmbedPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#apex-campaignfaqservice" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7345,7 +7356,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and layer. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>426</code></span><span><b>Test classes</b><code>318</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>427</code></span><span><b>Test classes</b><code>318</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7358,7 +7369,7 @@
 <li>
 <p><strong><a href="#domain-campaign">Campaign</a></strong></p>
 <hr />
-<p>63 classes</p>
+<p>64 classes</p>
 <p><a href="#domain-campaign-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-campaign-controller">Controllers</a> · <a href="#domain-campaign-domain">Domains</a> · <a href="#domain-campaign-selector">Selectors</a> · <a href="#domain-campaign-service">Services</a></p>
 </li>
 <li>
@@ -7756,7 +7767,58 @@
 <p>Guest REST endpoint that serves the read-only embed configuration for a campaign to the external donation widget, emitting CORS headers only for admin-allowlisted origins.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>Backs the embedWidget static resource (an external &lt;script&gt; tag any third-party site can drop in) — this is the ONLY REST-callable surface in this domain; every other public read goes through @AuraEnabled/LWC on the Experience site. Reuses <a href="#apex-campaignservice-getpublicexperienceconfig"><code>CampaignService.getPublicExperienceConfig</code></a> so the embed widget and the full Experience donation page never drift on theme tokens, FAQs, or ticket tiers. CORS is opt-in per request Origin against Settings__c.Allowed_Embed_Origins__c (managed on the setup screen via <a href="#apex-embedcontroller"><code>EmbedController</code></a>) — there is no wildcard fallback.</p>
+<p>Backs the embedWidget static resource (an external &lt;script&gt; tag any third-party site can drop in) — this is the ONLY REST-callable surface in this domain; every other public read goes through @AuraEnabled/LWC on the Experience site. It serves <a href="#apex-icampaignservice"><code>ICampaignService</code></a>.getEmbedConfig, an embed-only projection with plain, namespace-free keys (see <a href="#apex-campaignembedpayload-build"><code>CampaignEmbedPayload.build</code></a>), not the Experience page's payload. CORS is opt-in per request Origin against Settings__c.Allowed_Embed_Origins__c (managed on the setup screen via <a href="#apex-embedcontroller"><code>EmbedController</code></a>) — there is no wildcard fallback. CORS is not access control: the endpoint answers every caller, curl included, and only a browser decides whether a page may read the body. The body is public campaign display data by design.</p>
+<p><strong>The locked surface is the class name, the urlMapping and <code>global static void doGet()</code>.</strong> A <code>void</code> method writing RestContext.response keeps the JSON body out of the Apex API, so the body is versioned by its own <code>apiVersion</code> field (and the widget's <code>?v=1</code>), not by the platform. Add nothing global here: every global member is permanent once released. Version 1 is the only version: a request with no <code>v</code>, <code>v=1</code>, or any other value (<code>v=99</code>) gets the v1 body, and <code>apiVersion</code> in the body says which shape was served, so a client checks that rather than trusting its own request. A later version that needs a different body branches on <code>v</code> here and keeps answering an absent <code>v</code> with v1.</p>
+<p>Responses, every one of which carries <code>apiVersion</code> and <code>Vary: Origin</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Status</th>
+<th><code>code</code></th>
+<th>Cache-Control</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Config served</td>
+<td>200</td>
+<td>(none)</td>
+<td><code>private, max-age=60</code></td>
+</tr>
+<tr>
+<td>Master switch off (Embed_Disabled__c)</td>
+<td>200</td>
+<td><code>disabled</code></td>
+<td><code>no-store</code></td>
+</tr>
+<tr>
+<td>No slug in the path</td>
+<td>400</td>
+<td><code>missing_slug</code></td>
+<td><code>no-store</code></td>
+</tr>
+<tr>
+<td>No published campaign behind the slug</td>
+<td>404</td>
+<td><code>not_found</code></td>
+<td><code>no-store</code></td>
+</tr>
+<tr>
+<td>Site URL not configured, so no absolute handoff exists</td>
+<td>503</td>
+<td><code>unavailable</code></td>
+<td><code>no-store</code></td>
+</tr>
+<tr>
+<td>Anything unexpected (logged via <a href="#apex-applogger"><code>AppLogger</code></a>)</td>
+<td>500</td>
+<td><code>unavailable</code></td>
+<td><code>no-store</code></td>
+</tr>
+</tbody>
+</table>
+<p>Why <code>private, max-age=60</code> on a success, and not <code>public</code>: the body holds no personal data and is the same for every caller except the CORS header, which <code>Vary: Origin</code> covers, so a visitor's own browser may reuse it for a minute (repeat page views, several widgets on one page). It is kept out of SHARED caches because the Salesforce site edge adds its own <code>Set-Cookie</code> headers (BrowserId, CookieConsentPolicy) to every guest response, measured with curl against a scratch-org site on 2026-11-27; a shared cache storing that response could replay one visitor's BrowserId to the next. <code>private</code> rules that out, and with it any cache that ignores Vary. The edge itself reported <code>x-sfdc-edge-cache: none</code>, so nothing between the site and the browser was relieving Apex anyway. The cost is staleness: a gift or a newly ticked Embed_Disabled__c reaches a visitor who already loaded the widget within sixty seconds. Errors are <code>no-store</code> (the platform widens it to its own <code>no-cache,must-revalidate,max-age=0,no-store,private</code>), so a campaign published a moment later, or a fixed site URL, shows at once.</p>
 </div>
 <table>
 <thead>
@@ -7774,7 +7836,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-publicpagesettings-isembedenabled">PublicPageSettings.isEmbedEnabled()</a>, <a href="#apex-settings-current">Settings.current()</a>, <a href="#apex-siteurlsettings-donationpagepath">SiteUrlSettings.donationPagePath()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-publicpagesettings-allowedembedorigins">PublicPageSettings.allowedEmbedOrigins()</a></td>
+<td><em>calls:</em> <a href="#apex-publicpagesettings-isembedenabled">PublicPageSettings.isEmbedEnabled()</a>, <a href="#apex-applogger-error">AppLogger.error()</a>, <a href="#apex-siteurlsettings-donationpagepath">SiteUrlSettings.donationPagePath()</a>, <a href="#apex-settings-current">Settings.current()</a>, <a href="#apex-publicpagesettings-allowedembedorigins">PublicPageSettings.allowedEmbedOrigins()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -8732,6 +8794,48 @@
 </div>
 <div class="fn-entry">
 <div class="fn-entry__id">
+<h4 id="apex-campaignembedpayload">CampaignEmbedPayload<a class="headerlink" href="#apex-campaignembedpayload" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public inherited sharing</code></p>
+<p class="fn-entry__src"><code>campaign/<wbr>service/<wbr>CampaignEmbedPayload.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Builds the embed widget's payload, version 1, for <a href="#apex-embedconfigresource"><code>EmbedConfigResource</code></a>: plain literal keys only, and only what the widget renders. Layer role: payload builder.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>The embed widget's payload, version 1, served cross-origin by <a href="#apex-embedconfigresource"><code>EmbedConfigResource</code></a>. Built from literal keys only and never from an SObject, for two reasons:</p>
+<ul>
+<li><strong>Namespace.</strong> JSON.serialize writes an SObject's runtime API names, so a raw Campaign reaches a subscriber org's widget as <code>pledgivo__Amount_Raised__c</code>, and a widget reading <code>Amount_Raised__c</code> gets undefined: no progress bar and the wrong preset amounts. That was the live defect in the first build of this endpoint, which served getPublicExperienceConfig. Literal keys come out the same in every org.</li>
+<li><strong>Minimisation.</strong> Every key a third-party page can read becomes something someone may depend on. This carries what widget-src/src/widget.jsx renders and nothing else: no posts, FAQs, questions, designations, contact details, fee rates, or record Ids other than each ticket tier's, which the handoff URL needs.</li>
+</ul>
+<p>The key set is pinned by EmbedConfigResource_Test. Adding a key is safe for every reader; renaming or removing one is a breaking change that needs a new apiVersion. Building it reads no posts, FAQs, questions or designations, so a widget load costs the campaign, its design, a few settings and, for an event, its ticket tiers. Split out of <a href="#apex-campaignpagepayload"><code>CampaignPagePayload</code></a> on 2026-11-27 so that class stays within its complexity budget; it still owns the progress-bar rule and the ticket-tier read this one reuses.</p>
+<p>The same precedence the on-site form applies in dfForm.js: the campaign's own amounts, then the org default, and an empty list when neither parses, which tells the widget to use its built-in presets. Parsed here so a reader gets numbers, not a comma string.</p>
+<p>The fourteen design values the widget's styles.js buildCssVars reads, renamed to plain keys. The page-design map carries forty, including the design record's Id, the form builder JSON and the exit-intent copy, none of which the widget renders. themeTokens is the already-allowlisted override map (<a href="#apex-themetokensanitizer"><code>ThemeTokenSanitizer</code></a>), parsed to an object so a reader does not have to decode JSON inside JSON, and cut to CSS custom properties only (keys starting <code>--</code>). The sanitiser also carries <code>googleFontUrl</code> / <code>googleFontsUrl</code> up from a <code>{ "tokens": {...} }</code> design, and those PRESERVED keys skip its value check, because the hosted shell loads them as a font link rather than writing them into a style. The widget writes every themeTokens entry into an inline <code>style</code> on a third-party page, where a <code>;</code> in such a value would inject declarations, and it loads no web fonts, so nothing that is not a <code>--</code> token reaches it.</p>
+</div>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-campaignembedpayload-build"></a><code>build(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-campaigndesignpayload-resolvedesign">CampaignDesignPayload.resolveDesign()</a>, <a href="#apex-campaigndesignpayload-formcontent">CampaignDesignPayload.formContent()</a>, <a href="#apex-currencyresolver-forcampaign">CurrencyResolver.forCampaign()</a>, <a href="#apex-campaignpagepayload-computeshowprogressbar">CampaignPagePayload.computeShowProgressBar()</a>, <a href="#apex-campaignservice-isacceptingdonations">CampaignService.isAcceptingDonations()</a>, <a href="#apex-finalizersettings-checkoutblockedreason">FinalizerSettings.checkoutBlockedReason()</a>, <a href="#apex-finalizersettings-ischeckoutblocked">FinalizerSettings.isCheckoutBlocked()</a>, <a href="#apex-orgcontactsettings-orglogourl">OrgContactSettings.orgLogoUrl()</a>, <a href="#apex-campaigndesignpayload-designtomap">CampaignDesignPayload.designToMap()</a>, <a href="#apex-campaignpagepayload-buildtickettiers">CampaignPagePayload.buildTicketTiers()</a>, <a href="#apex-campaigndefaultsettings-defaultsuggestedamounts">CampaignDefaultSettings.defaultSuggestedAmounts()</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
 <h4 id="apex-campaignfaqservice">CampaignFaqService<a class="headerlink" href="#apex-campaignfaqservice" title="Permanent link">#</a></h4>
 <p><code>class</code> · <code>public inherited sharing</code></p>
 <p>implements <a href="#apex-icampaignfaqservice">ICampaignFaqService</a></p>
@@ -8858,7 +8962,7 @@
 <p>Moved out of <a href="#apex-campaignservice"><code>CampaignService</code></a> on 2026-11-20 with no change to any key or value; CampaignService resolves the campaign and hands it here. The design half lives in <a href="#apex-campaigndesignpayload"><code>CampaignDesignPayload</code></a>, the organization identity in <a href="#apex-campaignpageidentity"><code>CampaignPageIdentity</code></a>.</p>
 <p>The formContent map carries BOTH the resolved 'title' and the raw 'titleOverride' (Campaign.Form_Title_Override__c, blank when unset). They look redundant and are not: 'title' has already collapsed override-or-org-default into one string, and the embed widget needs to tell the two apart so it can lead with the campaign's name on a third-party site without discarding a heading an admin deliberately typed (F-40, 2026-08-18). The hosted donation page still reads 'title' and is unchanged.</p>
 <p>Subtypes whose public surfaces may carry the goal progress bar. General only, as of 2026-09-01 (gap audit F-126). Open_Donation was added 2026-08-18 (F-42) on the premise that "an open-ended appeal that bothers to set a goal wants the same crowdfunding affordance" — that premise is now false by construction: <a href="#apex-campaigns"><code>Campaigns</code></a>.rejectGoalOnOngoing() refuses to save an Open_Donation campaign with a positive Goal_Amount__c, so an Ongoing fundraiser can never have a goal for a bar to draw from. Leaving it in the set would be a branch that can no longer be reached. The hero/embed/form disagreement F-42 was really about is fixed the same way — with no goal anywhere, all three agree on no bar. Event_Fundraiser stays out — a ticketed event's progress is seats, not dollars.</p>
-<p>Deliberately WITHOUT the shell payload's sections/posts/contact keys. This is the form-only payload (embed, standalone donation form, event registration); the story/tabs/contact band are rendered by publicFundraisingExperience, which loads getPublicExperienceConfig instead. Adding them here would run a file query and a ContentDistribution insert on every embed load for data nothing on this path renders. If a form-only entry point ever grows those sections, move the three keys into a shared helper rather than duplicating the resolvers.</p>
+<p>Deliberately WITHOUT the shell payload's sections/posts/contact keys. This is the form-only payload (standalone donation form, event registration); the story/tabs/contact band are rendered by publicFundraisingExperience, which loads getPublicExperienceConfig instead. Adding them here would run a file query and a ContentDistribution insert on every form load for data nothing on this path renders. If a form-only entry point ever grows those sections, move the three keys into a shared helper rather than duplicating the resolvers. The embed widget uses neither this nor the shell payload: it has its own, <a href="#apex-campaignembedpayload"><code>CampaignEmbedPayload</code></a>.</p>
 <p>The two keys that turn a payload into a page with sections: what content exists (<code>posts</code>) and which sections may show it (<code>sections</code>). One helper, two callers — the donation shell and the event ticket page — so a campaign's Show_Documents__c means the same thing on both, and a change to the "empty tab is worse than no tab" rule in resolveSections cannot land on one page and miss the other.</p>
 <p>An in-memory mask, never persisted — the Campaign is a queried row that no Unit of Work ever registers, so the admin's per-campaign choice survives the switch being flipped off and comes back untouched when it is flipped on again. Overwriting the stored field instead would silently destroy that choice across every campaign in the org.</p>
 <p>description + highlightLabel are what the tier card renders under and above its name. They are emitted here for the same reason the sale state is: this payload and <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>'s must describe a tier identically, or the same tier reads differently depending on which surface loaded it.</p>
@@ -8901,6 +9005,21 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-campaignpostservice-newinstance">CampaignPostService.newInstance()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpagepayload-buildtickettiers"></a><code>buildTicketTiers(1 arg)</code></td>
+<td><code>List&lt;Map&lt;String, Object&gt;&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-eventavailabilityservice-computeavailability">EventAvailabilityService.computeAvailability()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignpagepayload-computeshowprogressbar"></a><code>computeShowProgressBar(3 args)</code></td>
+<td><code>Boolean</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -9268,6 +9387,8 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>The entry point for the guest campaign/event experience. Real consumers: <a href="#apex-campaigncontroller"><code>CampaignController</code></a>, <a href="#apex-embedconfigresource"><code>EmbedConfigResource</code></a>, and <a href="#apex-eventregistrationcontroller"><code>EventRegistrationController</code></a>.GetEventCampaign on the read side; <a href="#apex-donationformcontroller"><code>DonationFormController</code></a>, <a href="#apex-opportunities"><code>Opportunities</code></a> (domain), and <a href="#apex-donorsummaryrollupbatch"><code>DonorSummaryRollupBatch</code></a> on the write/rollup side.</p>
 <p>Split on 2026-11-20 with no change to any payload, rollup or sanitized story: <a href="#apex-campaignpagepayload"><code>CampaignPagePayload</code></a> builds the form and shell payloads, <a href="#apex-campaigndesignpayload"><code>CampaignDesignPayload</code></a> the design half, <a href="#apex-campaignpageidentity"><code>CampaignPageIdentity</code></a> the organization identity and thank-you CTA, <a href="#apex-themetokensanitizer"><code>ThemeTokenSanitizer</code></a> validates theme-token JSON, <a href="#apex-storysanitizer"><code>StorySanitizer</code></a> cleans story markdown, and <a href="#apex-campaigntotalsrollup"><code>CampaignTotalsRollup</code></a> / <a href="#apex-donortotalsrollup"><code>DonorTotalsRollup</code></a> maintain the totals. The public static methods below stay as one-line delegates so no caller changed.</p>
+<p>Public rather than private because EmbedConfigResource answers its 404 with this same line: the embed endpoint gets "no such campaign" as a null from getEmbedConfig, not as an exception, so it can tell that case apart from a failure without matching on message text.</p>
+<p>The embed widget's payload. Unlike the other slug readers it answers "no such campaign" with null rather than CAMPAIGN_NOT_FOUND: its one caller, EmbedConfigResource, turns null into a 404 with a machine-readable code, and an exception there means something went wrong, which is a different status.</p>
 <p>The event ticket page. It loads the form payload — an event registration IS a donation form whose narrow column sells seats — and then the section keys on top, because the page it renders is a whole page rather than an embedded form: a gala has a story, a sponsorship deck to download and an FAQ about parking, exactly as a campaign does.</p>
 <p>This is the "form-only entry point that grew those sections" formPayload's closing comment anticipated, and it resolves them the way that comment asked — through sectionData(), shared verbatim with the donation shell — rather than by widening formPayload, which would put a file query and a ContentDistribution insert on every embedded-form load for data no embed renders.</p>
 <p>EndDate was presentation-only until 2026-08-06 — the public page counted down to it, the Fundraisers console tagged the row "Ended", and the donation form went on charging cards forever. That is right for an appeal whose date is a milestone and wrong for a time-boxed match or an event that already happened, so the choice is per campaign rather than global. The default is "keep accepting", which is why the field is phrased as a permission rather than a deadline: an org upgrading into this release sees no behavior change at all until an admin unchecks the box on a specific campaign.</p>
@@ -9299,6 +9420,16 @@
 <tr>
 <td></td>
 <td><em>calls:</em> <a href="#apex-campaignpagepayload-experiencepayload">CampaignPagePayload.experiencePayload()</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a id="apex-campaignservice-getembedconfig"></a><code>getEmbedConfig(1 arg)</code></td>
+<td><code>Map&lt;String, Object&gt;</code></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td><em>calls:</em> <a href="#apex-campaignembedpayload-build">CampaignEmbedPayload.build()</a></td>
 <td></td>
 </tr>
 <tr>

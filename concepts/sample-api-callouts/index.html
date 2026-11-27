@@ -2186,22 +2186,38 @@ HTTP/1.1 403 Forbidden          <span class="ok">&lt;-- PASS: the key holds noth
 
 <h2 id="6-inbound-the-one-endpoint-this-package-exposes">6. Inbound — the one endpoint this package exposes<a class="headerlink" href="#6-inbound-the-one-endpoint-this-package-exposes" title="Permanent link">#</a></h2>
 <div class="submission-doc" markdown="0">
-<div class="endpoint"><span class="key none">NO AUTH · READ-ONLY</span><span class="path">GET /services/apexrest/pledgivo/embed/config</span></div>
-<p class="note"><code>EmbedConfigResource</code> — the only <code>global</code> class in the package (1 of 293). Served by the subscriber's own Salesforce Site. Returns campaign display configuration to the embeddable donation widget hosted on a third-party website.</p>
-<pre>GET https://&lt;subscriber-site&gt;/services/apexrest/pledgivo/embed/config?campaignId=&lt;id&gt;
+<div class="endpoint"><span class="key none">NO AUTH · READ-ONLY</span><span class="path">GET /services/apexrest/pledgivo/embed/config/{campaign slug}?v=1</span></div>
+<p class="note"><code>EmbedConfigResource</code> — the only <code>global</code> class in the package. Served by the subscriber's own Salesforce Site. Returns the display configuration of one published campaign to the embeddable donation widget hosted on a third-party website. The campaign is named by its public URL slug, the last path segment; <code>v=1</code> asks for version 1 of the response, which the body confirms in <code>apiVersion</code>. Version 1 is the only version today, so a request with no <code>v</code>, or with any other value, also receives version 1; a client reads <code>apiVersion</code> rather than trusting its own request.</p>
+<pre>GET https://&lt;subscriber-site&gt;/services/apexrest/pledgivo/embed/config/winter-appeal?v=1
 Origin: https://www.example-charity.org
 Accept: application/json
 
 HTTP/1.1 200 OK
 Content-Type: application/json
 Access-Control-Allow-Origin: https://www.example-charity.org
-{ "success": true,
-  "data": { "campaignName": "Winter Appeal", "goalAmount": 25000, "currency": "USD",
-            "suggestedAmounts": [25, 50, 100], "themeTokens": { "--pf-brand-primary": "#C4462F" } } }
+Vary: Origin
+Cache-Control: private, max-age=60
+{ "apiVersion": 1, "embedEnabled": true,
+  "handoffUrl": "https://&lt;subscriber-site&gt;/fundraising/donate?slug=winter-appeal",
+  "config": { "name": "Winter Appeal", "title": "Make your gift", "titleOverride": null,
+              "subtype": "General", "currencyCode": "USD", "showProgressBar": true,
+              "amountRaised": 8400, "goalAmount": 25000, "suggestedAmounts": [25, 50, 100],
+              "acceptingDonations": true, "checkoutBlocked": false,
+              "logoUrl": "https://www.example-charity.org/logo.png",
+              "design": { "primaryColor": "#C4462F", "buttonColor": "#C4462F", <span class="c">… 11 more colour and shape values …</span>
+                          "themeTokens": { "--pf-brand-primary": "#C4462F" } },
+              "ticketTiers": [] } }
 
-HTTP/1.1 200 OK        <span class="c">&lt;-- origin not on the subscriber's allowlist</span>
-{ "success": false, "error": "This request could not be completed." }</pre>
-<p class="note"><b>Security properties.</b> GET only, no write path. Returns no donor records and no personal data of any kind. Answers only origins on the subscriber's own allowlist in <code>Settings__c</code>. Requires no authentication by design — it serves public campaign display data to a public web page — and it sanitizes its own error text by hand rather than relying on the shared <code>ControllerAction</code> wrapper, because it is read by third-party JavaScript. Theme tokens are validated against a protected custom metadata catalogue before being emitted.</p>
+HTTP/1.1 200 OK        <span class="c">&lt;-- origin not on the subscriber's allowlist: same body, no Access-Control-Allow-Origin,</span>
+Vary: Origin           <span class="c">    so the browser refuses to let the page read it</span>
+Cache-Control: private, max-age=60
+
+HTTP/1.1 404 Not Found <span class="c">&lt;-- unknown or unpublished campaign (the two answer identically)</span>
+Cache-Control: no-store
+{ "apiVersion": 1, "embedEnabled": true, "code": "not_found",
+  "error": "We could not find that campaign. It may have ended, or the link may be out of date." }</pre>
+<p class="note"><b>Error codes.</b> Every answer other than a served configuration carries <code>apiVersion</code>, <code>embedEnabled</code>, a machine-readable <code>code</code> and a donor-worded <code>error</code>, with <code>Cache-Control: no-store</code>: <code>disabled</code> (200, <code>embedEnabled: false</code>, the subscriber has switched embedding off), <code>missing_slug</code> (400), <code>not_found</code> (404) and <code>unavailable</code> (503 when the subscriber has not configured an absolute https site URL, so no hand-off link can be built; 500 for anything unexpected). Event campaigns fill <code>ticketTiers</code> with <code>{ id, name, price, remaining, saleState }</code> per tier; the tier Id is the only record Id in the response, and the hand-off link carries it.</p>
+<p class="note"><b>Security properties.</b> GET only, no write path: no DML on campaign or donor data; an unexpected failure writes one diagnostic <code>Log__c</code> row. Returns no donor records and no personal data of any kind, and only the keys the widget renders: no posts, FAQs, questions, designations, contact details or fee rates. CORS is not access control, and the endpoint does not treat it as such: it answers every caller, a server-side script included, with the same public campaign display data the hosted campaign page shows; <code>Access-Control-Allow-Origin</code> is sent only to origins on the subscriber's own allowlist in <code>Settings__c</code>, never as a wildcard, so only a page on one of those origins can read the body in a browser. <code>Vary: Origin</code> goes on every response, because the CORS header depends on the request origin. A served configuration may be reused by the visitor's own browser for 60 seconds (<code>private</code>): the body holds nothing per visitor, but it is kept out of shared caches because the Salesforce site adds its own <code>Set-Cookie</code> headers to every guest response, and a shared cache must not replay those to another visitor. Requires no authentication by design — it serves public campaign display data to a public web page — and it sanitizes its own error text by hand rather than relying on the shared <code>ControllerAction</code> wrapper, because it is read by third-party JavaScript: only package-authored messages pass through, and anything else becomes one generic line, with the detail logged inside the org. Theme tokens are validated against a protected custom metadata catalogue before being emitted.</p>
 </div>
 
 <h2 id="7-endpoints-this-package-does-not-call">7. Endpoints this package does not call<a class="headerlink" href="#7-endpoints-this-package-does-not-call" title="Permanent link">#</a></h2>

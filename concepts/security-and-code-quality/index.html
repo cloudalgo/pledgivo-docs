@@ -2323,6 +2323,30 @@ that a rule added in a new analyzer release surfaces against unchanged code.</p>
 <li><strong>High findings are capped at the current count.</strong> A pull request that adds one fails. Raising
   the cap is a deliberate, reviewed act that has to arrive with a written verdict for the new
   finding — it can't be nudged up to turn a build green.</li>
+<li><strong>Every finding count is held to an exact number.</strong> A second scan covers the package, the embed
+  widget source, the marketing site and the repository's scripts (the weekly Graph Engine job is
+  separate) and compares the count of each rule with <code>scripts/lint/findings-budget.json</code>. A rule
+  above its number fails the pull request, a rule that is not in the file has a number of zero, and
+  a rule <em>below</em> its number fails as well, so a fix lowers its number in the same pull request and
+  a narrowed scan cannot pass as progress. Copy-paste is counted in duplicated lines, and every kind
+  of suppression (inline markers, including the analyzer's own, ESLint rules turned off or ignored,
+  the analyzer exceptions, and the ignores, bulk suppressions and disabled rules in the analyzer's
+  own configuration) has a number of its own, so none can be added to make a count fall. What each
+  suppression covers is written out as an explicit, sorted list in the same file, and a
+  suppression may only shrink in a pull request, never grow: any entry the main branch's list does
+  not have fails the build as a new or widened suppression, so widening a file pattern or swapping
+  the rule it covers cannot pass. The analyzer's engine settings (and the content of the rulesets
+  they name) and the ESLint options are hashed into a number, so changing a knob such as the
+  copy-paste detector's minimum size or loosening a ruleset shows up as a budget change in the pull
+  request instead of passing silently. The scan also fails if an analyzer engine did not run, if
+  its log cannot be recognised, or if an engine could not read a file that is not on the recorded
+  list. Such a file is fixed so the engine can read it, never added to the list: the usual causes
+  are a <code>#!</code> line or non-ASCII punctuation in a <code>.mjs</code> file (the copy-paste detector cannot read
+  them) and an optional <code>catch {</code> binding (the analyzer's JavaScript parser for PMD cannot). A pull request
+  cannot raise a number above, or drop a key from, the budget on the main branch; a changed hash is
+  flagged with a warning on the pull request (engine settings do change legitimately) and has to be
+  explained in its description. Deliberate lint fixtures, which are bad code on purpose
+  to prove that each of the repository's own lints fires, are counted separately and never fixed.</li>
 <li><strong>The analyzer version is pinned</strong>, so a red build always means new code, never a new rule
   quietly appearing.</li>
 <li><strong>Auto-fixes are never applied wholesale</strong> — the SLDS rule above is the reason.</li>

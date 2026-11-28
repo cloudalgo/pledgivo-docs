@@ -1620,6 +1620,39 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#the-whole-repository-counted-to-the-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The whole repository, counted to the finding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-remains-rule-by-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What remains, rule by rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules-that-are-switched-off-and-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules that are switched off, and why
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1933,6 +1966,39 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#the-whole-repository-counted-to-the-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The whole repository, counted to the finding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-remains-rule-by-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What remains, rule by rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rules-that-are-switched-off-and-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rules that are switched off, and why
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2080,12 +2146,12 @@ demonstrably needs. A guest submission is written as a staging row and picked up
 job running in an authenticated context — a guest cannot create a Contact or an Opportunity, and
 cannot read one back.</p>
 <h2 id="the-latest-scan">The latest scan<a class="headerlink" href="#the-latest-scan" title="Permanent link">#</a></h2>
-<p class="fn-chip">Scanned 28 September 2026 · Code Analyzer 0.53.0 · rule selector <code>Recommended</code></p>
+<p class="fn-chip">Scanned 28 November 2026 · Code Analyzer 0.53.0 (CLI plugin 5.16.0) · rule selectors <code>Recommended</code> + <code>AppExchange</code></p>
 
 <p>Engines: PMD, ESLint (including the LWC and SLDS rule sets), CPD, RetireJS, and Code Analyzer's
-regex engine. Scope is <code>base/</code> — the packaged source, and only that. The gate measures what a
-subscriber installs, so a red build always means the product has a problem, never that a local
-build script does.</p>
+regex engine. The table below is scoped to <code>base/</code>, the packaged source, and only that. The gate
+measures what a subscriber installs, so a red build always means the product has a problem, never
+that a local build script does. The next section widens the lens to the whole repository.</p>
 <table>
 <thead>
 <tr>
@@ -2100,121 +2166,213 @@ build script does.</p>
 </tr>
 <tr>
 <td>High</td>
-<td>22</td>
+<td>2</td>
 </tr>
 <tr>
 <td>Moderate</td>
-<td>923</td>
+<td>10</td>
 </tr>
 <tr>
 <td>Low</td>
-<td>129</td>
+<td>85</td>
 </tr>
 <tr>
 <td>Info</td>
-<td>126</td>
+<td>98</td>
 </tr>
 </tbody>
 </table>
-<p><strong>1,200 total</strong>, down from 22,064 on 2 September. Almost none of that drop came from switching
-rules off. Most of it was fixed in the code:</p>
-<ul>
-<li><strong>Every public class, method and property now has an ApexDoc block</strong>, the test classes and a
-  since-removed vendored library included (2,411 findings on 28 September, now 11: missing <code>@param</code>/<code>@return</code> tags on private helpers in two test classes).</li>
-<li><strong>Field declarations come before methods</strong> in every class (0 remaining).</li>
-<li><strong>The Apex source, including a vendored library that has since been removed, was normalised</strong> to the package's own whitespace, brace and
-  annotation-casing style (<code>NoMixedIndentation</code>, <code>NoTrailingWhitespace</code> and
-  <code>AnnotationsNamingConventions</code> are all at 0). That reformatting changed layout only, and the
-  full Apex suite passes on the result.</li>
-<li><strong>Unused local variables are gone</strong> (110 on 28 September, now 0). Where the discarded call
-  mattered (a matcher registration, a call expected to throw), the call was kept and only the
-  variable dropped.</li>
-</ul>
-<p>Two rules are disabled in <code>code-analyzer.yml</code>, and each has its reason written next to it. Neither
-is a security rule, and neither runs under the <code>AppExchange</code> + <code>Recommended:Security</code> selectors
-the AppExchange reviewer uses:</p>
+<p><strong>195 total</strong>, down from 1,200 on 28 September. The two High findings are the Stripe.js script
+tag described <a href="#every-security-tagged-finding-and-what-it-is">below</a>. Run against only the
+<code>AppExchange</code> and <code>Recommended:Security</code> selectors, which is the command the AppExchange reviewer
+runs, the scan returns exactly those two findings and nothing else.</p>
+<p>What changed since September was fixed in the code, not switched off. Every public class, method
+and property in the shipped Apex has an ApexDoc block, unused local variables are gone, field
+declarations come before methods, and a vendored third-party library the package used to carry as
+source has been removed along with its findings.</p>
+<h3 id="the-whole-repository-counted-to-the-finding">The whole repository, counted to the finding<a class="headerlink" href="#the-whole-repository-counted-to-the-finding" title="Permanent link">#</a></h3>
+<p>The table above is the gate, and it stops at <code>base/</code>. A second scan, the
+<a href="#how-it-stays-this-way">findings ratchet</a>, covers everything the repository ships or builds
+with: the package, the embed widget source, the marketing site and the repository's scripts. It
+runs the analyzer three times (every engine except ESLint over all four places, then ESLint
+twice, with and without the Lightning Web Components rule set) and merges them into one count.
+Today that count is:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Findings</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Real findings</strong></td>
+<td><strong>197</strong></td>
+</tr>
+<tr>
+<td>Raw findings</td>
+<td>493</td>
+</tr>
+<tr>
+<td>Deliberate lint fixtures</td>
+<td>296</td>
+</tr>
+</tbody>
+</table>
+<p>The fixtures are bad code on purpose: each one proves that a lint in the repository still fires
+when it should. They are counted separately, never fixed, and never part of the real total.</p>
+<p>Sprint 6B set out to burn the real count down. It started at <strong>556</strong> real findings (850 raw, 294
+of them fixtures) and stands at <strong>197</strong> on <code>main</code> today. The ratchet is what keeps it there: every
+rule has an exact budget, so a rule above its number fails the pull request and a rule below its
+number fails too, which forces each fix to lower its own number. No suppression can be added to
+make a count fall, because every kind of suppression has a number of its own and the list of what
+each one covers may only shrink. Every engine has to have run, and each run's list of applied
+rules may only shrink. The full mechanism is described under
+<a href="#how-it-stays-this-way">How it stays this way</a>.</p>
+<h3 id="what-remains-rule-by-rule">What remains, rule by rule<a class="headerlink" href="#what-remains-rule-by-rule" title="Permanent link">#</a></h3>
+<p>The 197 real findings, by rule:</p>
 <table>
 <thead>
 <tr>
 <th>Rule</th>
-<th>Findings when disabled</th>
-<th>Why it does not apply here</th>
+<th>Findings</th>
+<th>Where</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ApexDoc</code></td>
+<td>82</td>
+<td>Test classes and test helpers only</td>
+<td>Deferred until the test-suite trim lands, so the work goes only to the tests that stay</td>
+</tr>
+<tr>
+<td><code>DetectCopyPasteForApex</code></td>
+<td>79</td>
+<td>77 in test code, 2 in the framework</td>
+<td>The 77 wait for the test-suite trim. The 2 are an owner decision, below</td>
+</tr>
+<tr>
+<td><code>DetectCopyPasteForJavascript</code></td>
+<td>21</td>
+<td>19 in packaged LWC, 2 in e2e scripts</td>
+<td>Being fixed in an open Sprint 6B task</td>
+</tr>
+<tr>
+<td><code>no-inline-disable</code></td>
+<td>6</td>
+<td>Packaged LWC</td>
+<td>Being fixed in the same open task</td>
+</tr>
+<tr>
+<td><code>no-slds-namespace-for-custom-hooks</code></td>
+<td>3</td>
+<td><code>uiDialogStyles.css</code></td>
+<td>Owner decision, below</td>
+</tr>
+<tr>
+<td><code>no-unsupported-hooks-slds2</code></td>
+<td>3</td>
+<td><code>uiDialogStyles.css</code></td>
+<td>Owner decision, below</td>
+</tr>
+<tr>
+<td><code>LoadJavaScriptHtmlScript</code></td>
+<td>2</td>
+<td><code>stripePayment.page</code>, <code>stripePaymentReturn.page</code></td>
+<td>Owner decision, below</td>
+</tr>
+<tr>
+<td><code>no-community-import</code></td>
+<td>1</td>
+<td><code>pfSitePath</code></td>
+<td>Owner decision, below</td>
+</tr>
+</tbody>
+</table>
+<p>Every remaining finding is either being fixed in an open Sprint 6B task or is a recorded owner
+decision. None is left behind for style. The decisions:</p>
+<ul>
+<li><strong>The two Stripe.js findings.</strong> Stripe requires its script to load from <code>js.stripe.com</code>, never
+  bundled or pinned, for PCI reasons. This is the one external script in the package and the one
+  exception to the rule that nothing external loads. It runs in a Visualforce iframe that holds
+  no Salesforce session.</li>
+<li><strong>The framework's two copy-paste findings.</strong> The <code>with sharing</code> and <code>without sharing</code> runners
+  in the framework's <code>Dml</code> and <code>Query</code> classes differ only by the sharing keyword, and the
+  keyword is the behaviour: a runner that does not declare its own keyword would silently
+  inherit its caller's. The analyzer counts the duplication; it cannot be removed without
+  removing the guarantee, so it stays counted rather than suppressed.</li>
+<li><strong><code>pfSitePath</code>'s <code>@salesforce/community</code> import.</strong> The platform requires that import to
+  resolve a site's base path, and the Apex alternative reintroduces a bug the import fixed. It
+  stays as a counted finding.</li>
+<li><strong>The three SLDS 1 styling hooks in <code>uiDialogStyles.css</code>.</strong> SLDS 2 has no equivalent for them,
+  and keeping them means orgs still on SLDS 1 render the dialogs exactly as before. Each hook is
+  reported by two rules, which is why three hooks appear as six findings.</li>
+</ul>
+<h3 id="rules-that-are-switched-off-and-why">Rules that are switched off, and why<a class="headerlink" href="#rules-that-are-switched-off-and-why" title="Permanent link">#</a></h3>
+<p>Five rules are disabled in <code>code-analyzer.yml</code>, each with its reason written next to it. None is
+a security rule, and none runs under the <code>AppExchange</code> + <code>Recommended:Security</code> selectors the
+AppExchange reviewer uses. The counts below are what each rule reports when it is switched back
+on, measured on <code>base/</code> in the same scan:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Findings when enabled</th>
+<th>Why it is off</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>slds/no-hardcoded-values-slds2</code></td>
-<td>12,606</td>
+<td>12,673</td>
 <td>Asks for every literal CSS value to become an SLDS styling hook. This package styles with its own <code>--pf-*</code> tokens, where the literal is the <em>fallback half</em> of the <code>var(--token, value)</code> pattern: a campaign's own branding wins when it sets a token, and the intended design renders when it doesn't. The rule cannot be satisfied without giving up theming, and <strong>its auto-fix would break every campaign that overrides a token.</strong></td>
 </tr>
 <tr>
 <td><code>ApexUnitTestClassShouldHaveRunAs</code></td>
-<td>3,064</td>
-<td>Reports every test method that doesn't wrap itself in <code>System.runAs</code>. That's one finding per method, and none of them is in shipped code. Tests whose result depends on who is running them (CRUD/FLS, sharing, guest access) already run as a constructed user.</td>
+<td>2,517</td>
+<td>Reports every test method that doesn't wrap itself in <code>System.runAs</code>: one finding per method, none in shipped code. Tests whose result depends on who is running them (CRUD/FLS, sharing, guest access) already run as a constructed user.</td>
+</tr>
+<tr>
+<td><code>MethodNamingConventions</code></td>
+<td>2,727</td>
+<td>Rejects the <code>test_thing_doesThing</code> naming the whole test suite uses on purpose. Replaced by a retuned copy of the same rule, below.</td>
+</tr>
+<tr>
+<td><code>ApexUnitTestClassShouldHaveAsserts</code></td>
+<td>45</td>
+<td>Only recognises <code>System.assert*</code> and <code>Assert.*</code>, not this repository's named assertion helpers. Replaced by a retuned copy, below.</td>
+</tr>
+<tr>
+<td><code>EmptyStatementBlock</code></td>
+<td>115</td>
+<td>Flags empty bodies that the language or the architecture requires. Replaced by a retuned copy, below.</td>
 </tr>
 </tbody>
 </table>
-<p>What remains is mostly design-size advice:</p>
-<table>
-<thead>
-<tr>
-<th>Rule</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>CyclomaticComplexity</code></td>
-<td>157</td>
-</tr>
-<tr>
-<td><code>ExcessiveParameterList</code></td>
-<td>170</td>
-</tr>
-<tr>
-<td><code>CognitiveComplexity</code></td>
-<td>103</td>
-</tr>
-<tr>
-<td><code>DetectCopyPasteForApex</code></td>
-<td>105</td>
-</tr>
-<tr>
-<td><code>AvoidBooleanMethodParameters</code></td>
-<td>98</td>
-</tr>
-<tr>
-<td><code>FieldNamingConventions</code></td>
-<td>77</td>
-</tr>
-</tbody>
-</table>
-<p>None of those six is a defect. The last two ask for renamed fields and changed method signatures
-on classes a released version already ships, so they are left as they are rather than changed
-for style. What matters is the severity split above, and the findings below.</p>
 <h3 id="three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Three rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
-<p><code>code-analyzer.yml</code> re-registers three PMD rules through a custom ruleset
-(<code>scripts/lint/pmd/pledgivo-conventions.xml</code>) so that they test what they are meant to test:</p>
+<p><code>code-analyzer.yml</code> switches off the last three rules above and re-registers each one through a
+custom ruleset (<code>scripts/lint/pmd/pledgivo-conventions.xml</code>) so that it tests what it is meant to
+test:</p>
 <ul>
-<li><strong><code>MethodNamingConventions</code></strong> rejected the <code>test_thing_doesThing</code> naming used throughout the
-  test suite, which is a deliberate convention, not an accident — 2,601 findings, none of them
-  actionable. Retuned to this project's <code>testPattern</code>, it reports none.</li>
-<li><strong><code>ApexUnitTestClassShouldHaveAsserts</code></strong> only recognises <code>System.assert*</code> and <code>Assert.*</code>. Most
-  service, domain and selector tests assert through the framework's own doubles
-  (<code>UnitOfWorkFake</code>, <code>Mock</code>, <code>Query.executed</code>), for example <code>Assert.areEqual(1, uow.commitCount())</code>.
-  The rule is widened to accept this repo's named assertion helpers (<code>assert*</code>), which carry the
-  assertion for whole families of tests; a test that calls neither is still reported. Across <code>base/</code>
-  the only classes it reported were a vendored library's own tests, deleted in Sprint 6.</li>
-<li><strong><code>EmptyStatementBlock</code></strong> reported 123 empty bodies that the language or the architecture
-  requires: overrides of a deliberately abstract hook, interface methods a class does not need,
-  virtual hooks, and private no-arg constructors. Retuned to skip those shapes, it still reports
-  every empty <code>if</code>, loop or plain method, and finds 4: the explicit no-arg constructors of two
-  error classes in a since-removed vendored library.</li>
+<li><strong><code>MethodNamingConventions</code></strong> is retuned to this project's <code>testPattern</code>, so the deliberate
+  <code>test_thing_doesThing</code> convention passes while a badly named production method is still
+  reported.</li>
+<li><strong><code>ApexUnitTestClassShouldHaveAsserts</code></strong> is widened to accept this repository's named assertion
+  helpers (<code>assert*</code>), which carry the assertion for whole families of tests, for example the
+  framework's own doubles (<code>UnitOfWorkFake</code>, <code>Mock</code>, <code>Query.executed</code>). A test that calls neither
+  an assertion nor a helper is still reported.</li>
+<li><strong><code>EmptyStatementBlock</code></strong> is retuned to skip the shapes the language or the architecture
+  requires: overrides of a deliberately abstract hook, methods of a class that implements an
+  interface, virtual hooks, private no-arg constructors, and a no-arg constructor beside another
+  constructor. It still reports every empty <code>if</code>, loop or plain method.</li>
 </ul>
-<p>Both rules are still enforcing: a method named badly and a test that neither asserts nor verifies
-are both still reported. That was checked against a deliberately bad fixture rather than assumed,
-because a mis-registered custom rule and a correctly-registered one look identical on a clean
-tree — both produce zero findings. The 15 that remained at that scan were all in that vendored library's own tests.</p>
+<p>On this tree the three retuned rules report nothing, so none of them appears in the 197. They
+are still enforcing: a method named
+badly and a test that neither asserts nor verifies are both still reported. That was checked
+against a deliberately bad fixture rather than assumed, because a mis-registered custom rule and
+a correctly-registered one look identical on a clean tree — both produce zero findings.</p>
 <h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
 <p>The analyzer tags 2 findings across the whole package as security-relevant (scan of 2026-11-28,
 <code>AppExchange</code> + <code>Recommended:Security</code> rule selectors — the same command the AppExchange reviewer
@@ -2250,8 +2408,9 @@ two Named Credential name fields are <code>Stripe_Donor_Callout_Name__c</code> a
 <code>Session_Digest__c</code>, and the checkout's capability token is <code>Checkout_Capability__c</code>. Their labels
 and descriptions still use the plain words ("Access Token", "Code Hash"), so an admin reading a
 field still sees what it is.</p>
-<p>The other 20 High findings are none of them security-tagged: every one of them was inside
-a vendored third-party library that this package carried as source and has since removed.</p>
+<p>These two are the only High findings left. The 20 others that the September scan reported were
+none of them security-tagged: every one was inside a vendored third-party library that this
+package carried as source and has since removed.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a
 <a href="../../reference/analyzer-exceptions/">Code Analyzer exceptions report</a> listing each finding it does
 not fix, what the rule flags, why it is not a defect here, and how to check that for yourself

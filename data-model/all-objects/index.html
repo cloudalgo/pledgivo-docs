@@ -4229,7 +4229,7 @@
 <td><code>Gateway__c</code></td>
 <td>Gateway</td>
 <td>Picklist</td>
-<td>The payment processor these credentials belong to. Only processors this app supports are listed.<br><em>Docs: The value set here is kept identical to the keys of PaymentGatewayRegistry, which holds the IPaymentGateway class for each gateway. PaymentGatewayFactory reads this field and asks the registry for the implementation, so adding a gateway means adding BOTH a registry entry and a value here. PaymentGatewayRegistry_Test.test_registryMatchesGatewayPicklist fails the build if the two ever drift apart.</em></td>
+<td>The payment processor these credentials belong to. Only processors this app supports are listed.<br><em>Docs: The value set here is kept identical to the keys of PaymentGatewayRegistry, which holds the IPaymentGateway class for each gateway. PaymentGatewayFactory reads this field and asks the registry for the implementation, so adding a gateway means adding BOTH a registry entry and a value here. No test compares the two, so change them together.</em></td>
 </tr>
 <tr>
 <td><code>Is_Active__c</code></td>
@@ -5970,7 +5970,7 @@
 <td><code>Singleton__c \*</code></td>
 <td>Singleton</td>
 <td>Text</td>
-<td>Always ORG. This value marks the one settings record the app uses; do not change it.<br><em>Docs: Required, unique (case-insensitive) and defaulting to ORG, so a plain insert gets the value without the caller setting it, and a second insert fails with DUPLICATE_VALUE. The validation rule Singleton_Must_Be_ORG refuses any other value, so an admin cannot edit the record out of the app's reach. It is not an external Id: the settings writers save by record Id through Dml. SettingsSelector.current filters on SettingsSelector.SINGLETON_KEY. A required field takes no fieldPermissions (the platform rejects them and treats the field as readable and editable wherever the object is), so no permission set lists it. Named Singleton_Key__c until S3-T1b fix round 1: a field name containing "key" trips the AppExchange analyzer's ProtectSensitiveData rule, and the merge gate allows no suppression. Pinned by SettingsSelector_Test.secondRecordRejected and SettingsSelector_Test.singletonValidation_refusesAnyValueButOrg.</em></td>
+<td>Always ORG. This value marks the one settings record the app uses; do not change it.<br><em>Docs: Required, unique (case-insensitive) and defaulting to ORG, so a plain insert gets the value without the caller setting it, and a second insert fails with DUPLICATE_VALUE. The validation rule Singleton_Must_Be_ORG refuses any other value, so an admin cannot edit the record out of the app's reach. It is not an external Id: the settings writers save by record Id through Dml. SettingsSelector.current filters on SettingsSelector.SINGLETON_KEY. A required field takes no fieldPermissions (the platform rejects them and treats the field as readable and editable wherever the object is), so no permission set lists it. Named Singleton_Key__c until S3-T1b fix round 1: a field name containing "key" trips the AppExchange analyzer's ProtectSensitiveData rule, and the merge gate allows no suppression.</em></td>
 </tr>
 <tr>
 <td><code>Social_Facebook_URL__c</code></td>

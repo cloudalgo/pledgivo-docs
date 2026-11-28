@@ -1881,12 +1881,12 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td>Moderate</td>
-<td style="text-align: right;">77</td>
+<td style="text-align: right;">10</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
 <td>Low</td>
-<td style="text-align: right;">182</td>
+<td style="text-align: right;">85</td>
 <td>Style and maintainability only—see <em>What is not in this report</em></td>
 </tr>
 <tr>
@@ -1896,7 +1896,7 @@ go stale: it is either current or the build is red.</p>
 </tr>
 <tr>
 <td><strong>Total</strong></td>
-<td style="text-align: right;"><strong>360</strong></td>
+<td style="text-align: right;"><strong>196</strong></td>
 <td><strong>2 individually justified</strong></td>
 </tr>
 </tbody>
@@ -1941,7 +1941,7 @@ defined in the triage file, not chosen per-run.</p>
 </tbody>
 </table>
 <h2 id="what-is-not-in-this-report">What is not in this report<a class="headerlink" href="#what-is-not-in-this-report" title="Permanent link">#</a></h2>
-<p>The other 358 findings are Moderate, Low and Info style and maintainability
+<p>The other 194 findings are Moderate, Low and Info style and maintainability
 rules that carry no <code>Security</code> tag. They are not individually justified because none of
 them describes a behaviour a reviewer would act on. The largest groups, for completeness:</p>
 <table>
@@ -1964,21 +1964,6 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td style="text-align: right;">79</td>
 </tr>
 <tr>
-<td><code>eslint:@salesforce-ux/slds/no-unsupported-hooks-slds2</code></td>
-<td>Moderate</td>
-<td style="text-align: right;">70</td>
-</tr>
-<tr>
-<td><code>eslint:@salesforce-ux/slds/enforce-sds-to-slds-hooks</code></td>
-<td>Low</td>
-<td style="text-align: right;">54</td>
-</tr>
-<tr>
-<td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
-<td>Low</td>
-<td style="text-align: right;">46</td>
-</tr>
-<tr>
 <td><code>cpd:DetectCopyPasteForJavascript</code></td>
 <td>Info</td>
 <td style="text-align: right;">19</td>
@@ -1987,6 +1972,16 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 <td><code>eslint:@lwc/lwc-platform/no-inline-disable</code></td>
 <td>Moderate</td>
 <td style="text-align: right;">6</td>
+</tr>
+<tr>
+<td><code>eslint:@salesforce-ux/slds/no-slds-namespace-for-custom-hooks</code></td>
+<td>Low</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr>
+<td><code>eslint:@salesforce-ux/slds/no-unsupported-hooks-slds2</code></td>
+<td>Moderate</td>
+<td style="text-align: right;">3</td>
 </tr>
 <tr>
 <td><code>eslint:@lwc/lwc-platform/no-community-import</code></td>
@@ -2000,9 +1995,10 @@ them describes a behaviour a reviewer would act on. The largest groups, for comp
 </tr>
 </tbody>
 </table>
-<p>The single largest group is the SLDS hardcoded-value rule. Those hits are the <em>fallback</em>
-half of the <code>var(--pf-token, value)</code> pattern this package requires everywhere a themeable
-value appears: the token wins when a campaign sets it, and the fallback renders the
+<p>The SLDS hardcoded-value rule (<code>no-hardcoded-values-slds2</code>) is not in the table because it is
+disabled in the analyzer configuration, so none of its hits are counted. Its hits would be the
+<em>fallback</em> half of the <code>var(--pf-token, value)</code> pattern this package requires everywhere a
+themeable value appears: the token wins when a campaign sets it, and the fallback renders the
 intended design when it does not. Taking the rule's suggested fix would replace those
 fallbacks and break per-campaign theming, so it is a rule this codebase deliberately
 does not follow.</p>
@@ -2037,7 +2033,7 @@ does not follow.</p>
 </tr>
 <tr>
 <td>Findings in scan</td>
-<td>360 (after declared path exclusions)</td>
+<td>196 (after declared path exclusions)</td>
 </tr>
 </tbody>
 </table>

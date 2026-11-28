@@ -1793,7 +1793,7 @@
 <p class="fn-dek">The single settings record backing every configurable behavior in the package — Stripe routing, receipts, dunning, event defaults, and more.</p>
 
 <!-- AUTOGEN:META:START -->
-<p><code>custom</code> · <code>107 fields</code> · <code>ReadWrite</code> · <code>Platform &amp; Settings</code></p>
+<p><code>custom</code> · <code>106 fields</code> · <code>ReadWrite</code> · <code>Platform &amp; Settings</code></p>
 <!-- AUTOGEN:META:END -->
 
 <h2 id="why-it-exists">Why it exists<a class="headerlink" href="#why-it-exists" title="Permanent link">#</a></h2>
@@ -1894,12 +1894,6 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Data Retention (Days)</td>
 <td>Number</td>
 <td>How many days of diagnostic logs, Stripe call logs, and completed checkout records to keep before they are automatically and permanently deleted, e.g. 90. Lower this to reduce data storage; raise it to keep history longer.</td>
-</tr>
-<tr>
-<td><code>Debug_Logging__c</code></td>
-<td>Debug_Logging</td>
-<td>Checkbox</td>
-<td>Turns on extra System.debug() output for troubleshooting. Does not control what is saved to the Log object — see Log Level for that.<br><em>Docs: Legacy flag: controls only the AppLogger System.debug() console echo. It does NOT gate Log__c persistence any more; that is Log_Level__c's job. Keep both in mind when a Log__c record is expected but missing: check Log_Level__c, not this field.</em></td>
 </tr>
 <tr>
 <td><code>Default_Campaign_Type__c</code></td>
@@ -2229,7 +2223,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td><code>Log_Level__c</code></td>
 <td>Log Level</td>
 <td>Text</td>
-<td>OFF, ERROR, WARN, INFO, or DEBUG. Blank defaults to ERROR.<br><em>Docs: Authoritative for AppLogger persistence (OFF/ERROR/WARN/INFO/DEBUG, blank treated as ERROR). Supersedes the legacy Debug_Logging__c checkbox, which now only toggles a System.debug() echo and no longer controls whether a Log__c record is written.</em></td>
+<td>OFF, ERROR, WARN, INFO, or DEBUG. Blank defaults to ERROR.<br><em>Docs: The only logging switch: AppLogger persists an entry to Log__c when its level is at or above this one (OFF/ERROR/WARN/INFO/DEBUG, blank treated as ERROR). The package writes nothing to the Apex debug log; at DEBUG every entry is stored and can be read on the Diagnostic Logs tab.</em></td>
 </tr>
 <tr>
 <td><code>Max_Donation_Amount__c</code></td>

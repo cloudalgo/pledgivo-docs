@@ -5356,7 +5356,7 @@
 </tbody>
 </table>
 <h3 id="settings">Fundraising Settings<a class="headerlink" href="#settings" title="Permanent link">#</a></h3>
-<p><code>Settings__c</code> · <code>custom</code> · <code>107 fields</code> · <code>ReadWrite</code> · <code>Platform &amp; Settings</code></p>
+<p><code>Settings__c</code> · <code>custom</code> · <code>106 fields</code> · <code>ReadWrite</code> · <code>Platform &amp; Settings</code></p>
 <p>The fundraising app's org-wide configuration: one record, edited through the Settings console. It is a custom object rather than a custom setting so that permission sets decide who may read and edit it: Fundraising_Admin reads and edits it, Fundraising_User and Fundraising_ReadOnly read it, and the guest user is never granted it. Sharing is Public Read/Write because the record is org configuration every staff user reads, and who may edit it is decided by the object permission alone.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
@@ -5443,12 +5443,6 @@
 <td>Data Retention (Days)</td>
 <td>Number</td>
 <td>How many days of diagnostic logs, Stripe call logs, and completed checkout records to keep before they are automatically and permanently deleted, e.g. 90. Lower this to reduce data storage; raise it to keep history longer.</td>
-</tr>
-<tr>
-<td><code>Debug_Logging__c</code></td>
-<td>Debug_Logging</td>
-<td>Checkbox</td>
-<td>Turns on extra System.debug() output for troubleshooting. Does not control what is saved to the Log object — see Log Level for that.<br><em>Docs: Legacy flag: controls only the AppLogger System.debug() console echo. It does NOT gate Log__c persistence any more; that is Log_Level__c's job. Keep both in mind when a Log__c record is expected but missing: check Log_Level__c, not this field.</em></td>
 </tr>
 <tr>
 <td><code>Default_Campaign_Type__c</code></td>
@@ -5778,7 +5772,7 @@
 <td><code>Log_Level__c</code></td>
 <td>Log Level</td>
 <td>Text</td>
-<td>OFF, ERROR, WARN, INFO, or DEBUG. Blank defaults to ERROR.<br><em>Docs: Authoritative for AppLogger persistence (OFF/ERROR/WARN/INFO/DEBUG, blank treated as ERROR). Supersedes the legacy Debug_Logging__c checkbox, which now only toggles a System.debug() echo and no longer controls whether a Log__c record is written.</em></td>
+<td>OFF, ERROR, WARN, INFO, or DEBUG. Blank defaults to ERROR.<br><em>Docs: The only logging switch: AppLogger persists an entry to Log__c when its level is at or above this one (OFF/ERROR/WARN/INFO/DEBUG, blank treated as ERROR). The package writes nothing to the Apex debug log; at DEBUG every entry is stored and can be read on the Diagnostic Logs tab.</em></td>
 </tr>
 <tr>
 <td><code>Max_Donation_Amount__c</code></td>
@@ -6154,7 +6148,7 @@
 <p>Structured, engineering-facing diagnostic log written by AppLogger — captures unhandled exceptions, warnings, and debug traces to help troubleshoot the package. Distinct from Transaction_Log__c, which is the append-only Stripe API-call audit ledger; Log__c exists for engineering diagnostics, not payment audit trail. Sharing model is Private, so records are visible only to admin/read-only roles by design.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>AppLogger is a deliberate, documented exception to the package's Unit-of-Work-only DML rule — it is static without sharing and inserts Log__c rows directly, guarded by a Limits.getDmlStatements() check so a logging call can never itself blow the DML-statement governor limit inside the transaction it is trying to describe. Persistence is gated by LogSettings.logLevel(), which reads Settings__c.Log_Level__c (OFF/ERROR/WARN/INFO/DEBUG); Debug_Logging__c on Settings__c only toggles the additional System.debug() echo and does not affect whether a row is written here.</p>
+<p>AppLogger is a deliberate, documented exception to the package's Unit-of-Work-only DML rule — it is static without sharing and inserts Log__c rows directly, guarded by a Limits.getDmlStatements() check so a logging call can never itself blow the DML-statement governor limit inside the transaction it is trying to describe. Persistence is gated by LogSettings.logLevel(), which reads Settings__c.Log_Level__c (OFF/ERROR/WARN/INFO/DEBUG). AppLogger writes nothing to the Apex debug log: this object is its only sink.</p>
 </div>
 <p><strong>Relationships</strong></p>
 <p><em>No lookup/master-detail relationships to or from this object.</em></p>

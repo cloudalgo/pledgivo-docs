@@ -2718,12 +2718,7 @@ Anonymous giving may return as a real, end-to-end feature in a later release.</p
 <tr>
 <td>Log level</td>
 <td>Minimum severity the package's internal logger persists to a queryable log record (Off / Error / Warn / Info / Debug)</td>
-<td>Immediate — takes effect on the very next log call anywhere in the org, not just from this console</td>
-</tr>
-<tr>
-<td>Debug echo to Apex debug log</td>
-<td>Also mirrors log calls into <code>System.debug</code> for live viewing in Developer Console</td>
-<td>Immediate. <strong>Does not</strong> change what's persisted as a queryable log record — that's Log level's job exclusively. Turning this on will not make more log history appear on the Diagnostic Logs tab.</td>
+<td>Immediate — takes effect on the very next log call anywhere in the org, not just from this console. <strong>Not stored at any level:</strong> an entry raised while a page is reading data it caches (a cacheable read, which cannot write records), and an entry whose own log record fails to save.</td>
 </tr>
 <tr>
 <td>Purge after (days)</td>

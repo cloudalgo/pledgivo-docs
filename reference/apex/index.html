@@ -18638,6 +18638,8 @@
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Enqueued by <a href="#apex-guestrequestservice-submit"><code>GuestRequestService.submit</code></a> so a visitor's page returns immediately instead of waiting on a handler. It is the fast path, not the reliable one: if it never runs — the queueable limit was already spent, the enqueuing transaction rolled back — the row is simply still Pending and <a href="#apex-guestrequestsweepbatch"><code>GuestRequestSweepBatch</code></a> collects it. Nothing here retries, because the sweep already is the retry.</p>
+<p>The job attaches a Transaction Finalizer that only LOGS. A handler's catchable exception is already caught and logged per request by <a href="#apex-guestrequestrunner"><code>GuestRequestRunner</code></a>; what nothing could record was an uncatchable governor limit, which rolls the whole job back and leaves the rows Pending without a trace. The finalizer writes that failure to Log__c. It deliberately does not re-enqueue: a retry from here would race the sweep for the same Pending rows, and the sweep already retries them.</p>
+<p>Transaction Finalizer for this job. It runs in a fresh transaction with its own governor pool after the job ends, and on an unhandled exception writes the job id, the platform's message and the request Ids to Log__c (against the request when there is one, which is always the case today: GuestRequestService.submit enqueues one request per job). The platform's message is logged as-is, as GuestRequestRunner logs a handler's exception: for the governor limits this exists to catch it is a fixed platform sentence, but for any other unhandled exception it is whatever the platform wrote. It goes only to the internal Log__c, which staff read on the Diagnostic Logs tab and no guest response ever carries; the package sanitises error text where it reaches a client (<a href="#apex-guestaction"><code>GuestAction</code></a>), not in its own log.</p>
 </div>
 <table>
 <thead>
@@ -18655,7 +18657,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a></td>
+<td><em>calls:</em> <a href="#apex-guestrequestservice-newinstance">GuestRequestService.newInstance()</a>, <a href="#apex-applogger-error">AppLogger.error()</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -26075,7 +26077,7 @@
 <p class="fn-entry__src"><code>setup/<wbr>service/<wbr>LogSettings.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Static readers for the logging and data-retention settings on Settings__c: the minimum severity <a href="#apex-applogger"><code>AppLogger</code></a> persists, whether it also echoes to System.debug(), and the age at which <a href="#apex-retentionpurgebatch"><code>RetentionPurgeBatch</code></a> deletes old rows.</p>
+<p>Static readers for the logging and data-retention settings on Settings__c: the minimum severity <a href="#apex-applogger"><code>AppLogger</code></a> persists and the age at which <a href="#apex-retentionpurgebatch"><code>RetentionPurgeBatch</code></a> deletes old rows.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Split out of <a href="#apex-settingsservice"><code>SettingsService</code></a>, which keeps the instance read/write path (<a href="#apex-isettingsservice"><code>ISettingsService</code></a>). Every accessor here is a static, typed read of the org-wide Settings__c row with a matching <code>@TestVisible</code> *Override field where tests need to stub it; callers must never read <a href="#apex-settings-current"><code>Settings.current</code></a>(...) themselves. Kept dependency-light on purpose: <a href="#apex-applogger"><code>AppLogger</code></a> reads it on every log call, so it must not reach the <a href="#apex-application"><code>Application</code></a> factory or any selector.</p>
@@ -26092,16 +26094,6 @@
 <tr>
 <td><a id="apex-logsettings-loglevel"></a><code>logLevel(0 args)</code></td>
 <td><code>String</code></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td><em>calls:</em> <a href="#apex-settings-current">Settings.current()</a></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-logsettings-debugloggingenabled"></a><code>debugLoggingEnabled(0 args)</code></td>
-<td><code>Boolean</code></td>
 <td></td>
 </tr>
 <tr>
@@ -27613,10 +27605,11 @@
 <p class="fn-entry__src"><code>shared/<wbr>AppLogger.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>AppLogger — the package's persistent logger. Writes Log__c rows at or above the admin-configured threshold, tagged with a per-transaction correlation id, from any context including guest and scheduled jobs.</p>
+<p>AppLogger — the package's persistent logger. Writes Log__c rows at or above the admin-configured threshold, tagged with a per-transaction correlation id, from any context including guest and scheduled jobs. Log__c is its only sink: an entry raised in a request that cannot write (a cacheable @AuraEnabled read, which runs with a DML limit of 0) is not stored anywhere.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
 <p>Two deliberate gotchas for anyone modifying this class: (1) <code>without sharing</code> + a direct <code>insert</code> (not <a href="#apex-application"><code>Application</code></a>.<a href="#apex-unitofwork"><code>UnitOfWork</code></a>) is required because a log call can happen from inside a UoW commit's own catch block — routing through the UoW here would risk a circular/nested commit; (2) the DML-limit guard in write() exists because cacheable @AuraEnabled methods run with a DML limit of 0 — without that guard, logging a caught exception from a cacheable method would itself throw a LimitException and mask the original error the log call was trying to capture.</p>
+<p>What that guard costs: an entry logged inside a cacheable read, or in any request that has already spent its DML statements, is dropped and recorded nowhere, at every Log Level. Until 2026-11-28 an admin could see those entries live by turning on a System.debug echo; the owner retired the echo that day and accepted this loss. To diagnose a cacheable read, reproduce the failure through a non-cacheable path (a save, a job) or read the debug log the platform writes for the user.</p>
 <p>The record-linked form takes one Entry rather than four arguments: <code>AppLogger.error(new AppLogger.Entry(ctx, msg, stack).forRecord(recordId))</code>. The row it writes is the one the four-argument overload wrote, field for field.</p>
 </div>
 <table>

@@ -1653,10 +1653,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
+  <a href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Three rules are measured against this project's conventions, not PMD's defaults
+        Two rules are measured against this project's conventions, not PMD's defaults
       
     </span>
   </a>
@@ -1999,10 +1999,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
+  <a href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Three rules are measured against this project's conventions, not PMD's defaults
+        Two rules are measured against this project's conventions, not PMD's defaults
       
     </span>
   </a>
@@ -2311,7 +2311,7 @@ decision. None is left behind for style. The decisions:</p>
   reported by two rules, which is why three hooks appear as six findings.</li>
 </ul>
 <h3 id="rules-that-are-switched-off-and-why">Rules that are switched off, and why<a class="headerlink" href="#rules-that-are-switched-off-and-why" title="Permanent link">#</a></h3>
-<p>Five rules are disabled in <code>code-analyzer.yml</code>, each with its reason written next to it. None is
+<p>Four rules are disabled in <code>code-analyzer.yml</code>, each with its reason written next to it. None is
 a security rule, and none runs under the <code>AppExchange</code> + <code>Recommended:Security</code> selectors the
 AppExchange reviewer uses. The counts below are what each rule reports when it is switched back
 on, measured on <code>base/</code> in the same scan:</p>
@@ -2340,39 +2340,36 @@ on, measured on <code>base/</code> in the same scan:</p>
 <td>Rejects the <code>test_thing_doesThing</code> naming the whole test suite uses on purpose. Replaced by a retuned copy of the same rule, below.</td>
 </tr>
 <tr>
-<td><code>ApexUnitTestClassShouldHaveAsserts</code></td>
-<td>45</td>
-<td>Only recognises <code>System.assert*</code> and <code>Assert.*</code>, not this repository's named assertion helpers. Replaced by a retuned copy, below.</td>
-</tr>
-<tr>
 <td><code>EmptyStatementBlock</code></td>
 <td>115</td>
 <td>Flags empty bodies that the language or the architecture requires. Replaced by a retuned copy, below.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Three rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#three-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
-<p><code>code-analyzer.yml</code> switches off the last three rules above and re-registers each one through a
+<h3 id="two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults">Two rules are measured against this project's conventions, not PMD's defaults<a class="headerlink" href="#two-rules-are-measured-against-this-projects-conventions-not-pmds-defaults" title="Permanent link">#</a></h3>
+<p><code>code-analyzer.yml</code> switches off the last two rules above and re-registers each one through a
 custom ruleset (<code>scripts/lint/pmd/pledgivo-conventions.xml</code>) so that it tests what it is meant to
 test:</p>
 <ul>
 <li><strong><code>MethodNamingConventions</code></strong> is retuned to this project's <code>testPattern</code>, so the deliberate
   <code>test_thing_doesThing</code> convention passes while a badly named production method is still
   reported.</li>
-<li><strong><code>ApexUnitTestClassShouldHaveAsserts</code></strong> is widened to accept this repository's named assertion
-  helpers (<code>assert*</code>), which carry the assertion for whole families of tests, for example the
-  framework's own doubles (<code>UnitOfWorkFake</code>, <code>Mock</code>, <code>Query.executed</code>). A test that calls neither
-  an assertion nor a helper is still reported.</li>
 <li><strong><code>EmptyStatementBlock</code></strong> is retuned to skip the shapes the language or the architecture
   requires: overrides of a deliberately abstract hook, methods of a class that implements an
   interface, virtual hooks, private no-arg constructors, and a no-arg constructor beside another
   constructor. It still reports every empty <code>if</code>, loop or plain method.</li>
 </ul>
-<p>On this tree the three retuned rules report nothing, so none of them appears in the 197. They
-are still enforcing: a method named
-badly and a test that neither asserts nor verifies are both still reported. That was checked
-against a deliberately bad fixture rather than assumed, because a mis-registered custom rule and
-a correctly-registered one look identical on a clean tree — both produce zero findings.</p>
+<p>On this tree the two retuned rules report nothing, so neither appears in the total. They are
+still enforcing: a method named badly and an empty <code>if</code> body are both still reported. That was
+checked against a deliberately bad fixture rather than assumed, because a mis-registered custom
+rule and a correctly-registered one look identical on a clean tree — both produce zero findings.</p>
+<p><code>ApexUnitTestClassShouldHaveAsserts</code> runs as PMD ships it (owner ruling 2026-11-28). It recognises
+only <code>System.assert*</code> and <code>Assert.*</code> in the test method itself, and until that date it was
+disabled in favour of a retuned copy that also accepted this repository's named <code>assert*</code>
+helpers. The 45 tests that asserted only inside such a helper now assert the helper's result in
+their own body: a request a test pins byte for byte, a "nothing was written" check on the fake
+Unit of Work, a refusal envelope. So the shipped rule reports none, and a test with no assertion
+fails the findings ratchet.</p>
 <h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
 <p>The analyzer tags 2 findings across the whole package as security-relevant (scan of 2026-11-28,
 <code>AppExchange</code> + <code>Recommended:Security</code> rule selectors — the same command the AppExchange reviewer

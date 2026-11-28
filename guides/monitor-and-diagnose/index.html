@@ -2292,6 +2292,12 @@ Settings console decides <em>what</em> gets written; this tab is where you read 
 <p>The page reads both settings back from <code>Settings__c</code> and says which case applies, rather than
 leaving you to guess. Getting this wrong is how an investigation ends early on a switch that was
 never on.</p>
+<p>Two things are never in this list, at any log level. A problem raised while a page is only
+<em>reading</em> data it caches cannot be written down, because the platform lets such a read change no
+records; and if writing a log entry itself fails (for example because the org's data storage is
+full), that failure is lost too, so that logging can never break the page that called it. When a
+read-only page misbehaves and this list stays empty, reproduce the problem through an action that
+saves something, where its entry can be recorded.</p>
 <h3 id="reading-a-row">Reading a row<a class="headerlink" href="#reading-a-row" title="Permanent link">#</a></h3>
 <p>Each entry shows its severity as a coloured pill, the class and method that logged it, the message,
 and the timestamp with a relative age ("14m ago"). Where the entry has them, it also carries a

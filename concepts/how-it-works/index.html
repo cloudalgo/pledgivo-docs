@@ -2092,7 +2092,7 @@
       "tag": "Apex · GuestAction", "title": "Guest controllers", "sub": "DonationForm · Event\nDonorPortal · Receipt",
       "runs": "the site's guest user (no seat, no sharing to inherit)",
       "body": "Every Apex method a public page can call. Each one extends GuestAction, which passes deliberate messages through and turns any other error into one generic sentence; the real error goes to the log. Receipt, thank-you and ticket pages find their record by an unguessable token, never by a record Id sent from the browser.",
-      "code": ["DonationFormController", "EventRegistrationController", "DonorPortalController", "ReceiptController", "GuestAction"] },
+      "code": ["DonationFormController", "EventRegistrationController", "DonorPortalController", "DonorPortalRecurringController", "ReceiptController", "GuestAction"] },
     { "id": "intent", "kind": "apex", "x": 460, "y": 164, "w": 150, "h": 68,
       "tag": "Apex · service", "title": "Start a payment", "sub": "DonationService\nGuestThrottleService",
       "runs": "the site's guest user",

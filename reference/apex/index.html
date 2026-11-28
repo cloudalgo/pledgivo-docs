@@ -3610,6 +3610,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#apex-donorportalrecurringcontroller" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DonorPortalRecurringController
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apex-donorportaltokenaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DonorPortalTokenAction
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -7160,17 +7182,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apex-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#apex-securetokens" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -7367,7 +7378,7 @@
 
 <h1 id="apex-reference">Apex Reference<a class="headerlink" href="#apex-reference" title="Permanent link">#</a></h1>
 <p class="fn-dek">Every packaged Apex class, grouped by domain and layer. Return types, extends/implements, and qualified method calls link to their definitions on this page when they resolve to another packaged class.</p>
-<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>428</code></span><span><b>Test classes</b><code>359</code></span></p>
+<p class="fn-platemeta"><span><b>Source</b><code>base/main/default/classes</code></span><span><b>Generator</b><code>generate_apex_docs.py</code></span><span><b>Classes</b><code>429</code></span><span><b>Test classes</b><code>358</code></span></p>
 
 <div class="admonition note">
 <p class="admonition-title">Generated file</p>
@@ -7392,7 +7403,7 @@
 <li>
 <p><strong><a href="#domain-donor">Donor</a></strong></p>
 <hr />
-<p>27 classes</p>
+<p>29 classes</p>
 <p><a href="#domain-donor-controller">Controllers</a> · <a href="#domain-donor-selector">Selectors</a> · <a href="#domain-donor-service">Services</a></p>
 </li>
 <li>
@@ -7440,7 +7451,7 @@
 <li>
 <p><strong><a href="#domain-shared">Shared</a></strong></p>
 <hr />
-<p>38 classes</p>
+<p>37 classes</p>
 <p><a href="#domain-shared-root">Core</a> · <a href="#domain-shared-async">Async (Batch/Queueable/Schedulable)</a> · <a href="#domain-shared-selector">Selectors</a></p>
 </li>
 </ul>
@@ -11033,6 +11044,7 @@
 <p class="fn-docnote__label">Docs note</p>
 <p>Enqueued from <a href="#apex-donationmonitorcontroller-retrydonationstagingnow"><code>DonationMonitorController.retryDonationStagingNow</code></a> (owner ruling, 2026-11-22), which replaced a synchronous call to <a href="#apex-stagingreconciliationbatch-reconcileone"><code>StagingReconciliationBatch.reconcileOne</code></a>. Moving the step into a job means the reconciler's job-mode reads and writes are only ever reached from a job, never from a staff action. The click therefore returns at once and the row updates shortly afterwards; the monitor's refresh shows the new status.</p>
 <p>A failure inside the job (row deleted meanwhile, an unexpected exception) is logged to Log__c through <a href="#apex-applogger"><code>AppLogger</code></a> rather than rethrown — there is no caller left to show it to.</p>
+<p>Transaction Finalizer for this job. execute() already logs every catchable exception, so the only way the job can fail is an uncatchable governor limit (the reconciler makes a Stripe callout and writes several rows). The finalizer runs in a fresh transaction with its own governor pool and writes that failure to Log__c against the staging row, where the diagnostic-logs console shows it. It logs the job id and the platform's message only.</p>
 </div>
 <table>
 <thead>
@@ -11676,7 +11688,7 @@
 <p>Deliberately NOT limited to the transition into Closed Won. Any save of an unnumbered Closed Won gift stamps it, so gifts that predate this change get their number the next time anyone touches them, rather than needing a migration script that would consume a block of numbers for records nobody was looking at.</p>
 <p>Every package record type is numbered — Donation, Offline Donation and Grant alike. A Closed Won gift is money received whatever route it arrived by, and an offline gift that printed "—" where the gateway ones printed a serial was the original reason this method exists. (Until 2026-08-21 a Pledge record type was excluded here as unpaid by definition; the record type has since been withdrawn in favour of Offline Donation, which is paid, so the exclusion went with it rather than being retargeted.) Non-package record types are still excluded by filterToPackageRecordTypes like every other handler here — the package must not write to an org's pre-existing sales pipeline.</p>
 <p>Runs in the BEFORE context on purpose. Stamping a field on a record the platform is already saving costs no DML and cannot recurse; doing it after insert would mean an extra update per gift and a re-entrant trigger for a value that was knowable all along.</p>
-<p><a href="#apex-records"><code>Records</code></a> where an individual soft credit came from, which is what lets SoftCreditService promise never to overwrite a staff member's entry. The service writes the lookup and Soft_Credit_Source__c = 'Tribute Honoree' in one save, so its own writes arrive with the source already changed; a person editing the record in the UI changes the lookup and nothing else, and that difference is the whole signal this method reads.</p>
+<p>Records where an individual soft credit came from, which is what lets SoftCreditService promise never to overwrite a staff member's entry. The service writes the lookup and Soft_Credit_Source__c = 'Tribute Honoree' in one save, so its own writes arrive with the source already changed; a person editing the record in the UI changes the lookup and nothing else, and that difference is the whole signal this method reads.</p>
 <p>Clearing the lookup clears the source with it — provenance for a credit that no longer exists would be stale the moment it was left behind, and would make the next automated pass treat an empty slot as spoken for.</p>
 </div>
 <table>
@@ -13720,12 +13732,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-receiptstatushelper-resolve"></a><code>resolve(4 args)</code></td>
-<td><code>ReceiptStatus</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-receiptstatushelper-resolve"></a><code>resolve(5 args)</code></td>
+<td><a id="apex-receiptstatushelper-resolve"></a><code>resolve(1 arg)</code></td>
 <td><code>ReceiptStatus</code></td>
 <td></td>
 </tr>
@@ -13735,7 +13742,7 @@
 <td></td>
 </tr>
 <tr>
-<td><a id="apex-receiptstatushelper-legalstatement"></a><code>legalStatement(4 args)</code></td>
+<td><a id="apex-receiptstatushelper-legalstatement"></a><code>legalStatement(2 args)</code></td>
 <td><code>String</code></td>
 <td></td>
 </tr>
@@ -14451,10 +14458,7 @@
 <div class="fn-entry__body">
 <p>Guest-facing controller for the emailed-access-code donor portal.</p>
 <p>A donor requests a code by email (requestAccessCode), redeems it for a bearer session token (verifyAccessCode), and every subsequent data method takes that opaque session token, re-validates it server-side, and scopes all work to the resolved donor — no client-supplied record id is trusted. Every @AuraEnabled method delegates to a <a href="#apex-controlleraction"><code>ControllerAction</code></a> inner class, so the { success, data / error } envelope, try/catch, and <a href="#apex-applogger"><code>AppLogger</code></a> wiring live in ONE place (<a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>()) — never inline here. requestAccessCode and endSession are deliberately enumeration-safe (see their action classes); verifyAccessCode is the one action on this controller that lets a specific, generic <a href="#apex-appexception"><code>AppException</code></a> surface as the error envelope (see <a href="#apex-guestaction"><code>GuestAction</code></a>.callerSafeMessage).</p>
-<div class="fn-docnote">
-<p class="fn-docnote__label">Docs note</p>
-<p>The session touch is written after perform(): several actions call Stripe, and a callout after uncommitted DML throws. finally, so a failed action still counts as use.</p>
-</div>
+<p>The token-scoped actions here cover the dashboard, event orders, refund requests and giving statements; managing a recurring gift or the card behind it is <a href="#apex-donorportalrecurringcontroller"><code>DonorPortalRecurringController</code></a>'s, on the same session token. Both build their token actions on <a href="#apex-donorportaltokenaction"><code>DonorPortalTokenAction</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -14514,78 +14518,122 @@
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-donorportalrecurringcontroller">DonorPortalRecurringController<a class="headerlink" href="#apex-donorportalrecurringcontroller" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public with sharing</code></p>
+<p class="fn-entry__src"><code>donor/<wbr>controller/<wbr>DonorPortalRecurringController.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Guest-facing controller for the donor portal's recurring-gift management: pause, resume, cancel, retry, reinstate, change the amount or fund, skip the next payment, and manage the card a gift is charged to (including the donor's saved wallet cards).</p>
+<p>Every method takes the opaque session token minted by <a href="#apex-donorportalcontroller-verifyaccesscode"><code>DonorPortalController.verifyAccessCode</code></a>, re-validates it server-side through <a href="#apex-donorportaltokenaction"><code>DonorPortalTokenAction</code></a>, and scopes all work to the resolved donor; the recurring-gift and card Ids the donor sends are ownership-checked against that donor in the service. Every @AuraEnabled method delegates to a <a href="#apex-controlleraction"><code>ControllerAction</code></a> inner class, so the { success, data / error } envelope, try/catch and <a href="#apex-applogger"><code>AppLogger</code></a> wiring live in <a href="#apex-controlleraction-run"><code>ControllerAction.run</code></a>(), and <a href="#apex-guestaction"><code>GuestAction</code></a> decides what a failure may say.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Split out of <a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a> on 2026-11-28 (Sprint 6B), which had grown to 24 public methods. The seam is the portal's own: sign-in, the dashboard, event orders and giving statements stay on DonorPortalController; everything that changes a recurring gift or the card behind it lives here. Both run on the same session token, through the shared <a href="#apex-donorportaltokenaction"><code>DonorPortalTokenAction</code></a> base, and both are granted to the guest permission set.</p>
+</div>
+<table>
+<thead>
 <tr>
-<td><a id="apex-donorportalcontroller-pauserecurring"></a><code>pauseRecurring(2 args)</code></td>
+<th>Method</th>
+<th>Returns</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a id="apex-donorportalrecurringcontroller-pauserecurring"></a><code>pauseRecurring(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-resumerecurring"></a><code>resumeRecurring(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-resumerecurring"></a><code>resumeRecurring(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-cancelrecurring"></a><code>cancelRecurring(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-cancelrecurring"></a><code>cancelRecurring(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-retrynowrecurring"></a><code>retryNowRecurring(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-retrynowrecurring"></a><code>retryNowRecurring(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-changerecurringamount"></a><code>changeRecurringAmount(3 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-changerecurringamount"></a><code>changeRecurringAmount(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-changerecurringdesignation"></a><code>changeRecurringDesignation(3 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-changerecurringdesignation"></a><code>changeRecurringDesignation(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-skipnextrecurringpayment"></a><code>skipNextRecurringPayment(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-skipnextrecurringpayment"></a><code>skipNextRecurringPayment(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-getrecurringfundoptions"></a><code>getRecurringFundOptions(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-getrecurringfundoptions"></a><code>getRecurringFundOptions(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-updatecard"></a><code>updateCard(3 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-updatecard"></a><code>updateCard(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-updatecardfromwallet"></a><code>updateCardFromWallet(3 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-updatecardfromwallet"></a><code>updateCardFromWallet(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-removewalletcard"></a><code>removeWalletCard(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-removewalletcard"></a><code>removeWalletCard(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-reinstaterecurring"></a><code>reinstateRecurring(3 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-reinstaterecurring"></a><code>reinstateRecurring(3 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-getcurrentcard"></a><code>getCurrentCard(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-getcurrentcard"></a><code>getCurrentCard(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 <tr>
-<td><a id="apex-donorportalcontroller-createcardsetupintent"></a><code>createCardSetupIntent(2 args)</code></td>
+<td><a id="apex-donorportalrecurringcontroller-createcardsetupintent"></a><code>createCardSetupIntent(2 args)</code></td>
 <td><code>Map&lt;String, Object&gt;</code></td>
 <td><code>@AuraEnabled</code></td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="fn-entry">
+<div class="fn-entry__id">
+<h4 id="apex-donorportaltokenaction">DonorPortalTokenAction<a class="headerlink" href="#apex-donorportaltokenaction" title="Permanent link">#</a></h4>
+<p><code>class</code> · <code>public abstract inherited sharing</code></p>
+<p>extends <a href="#apex-guestaction">GuestAction</a></p>
+<p class="fn-entry__src"><code>donor/<wbr>controller/<wbr>DonorPortalTokenAction.cls</code></p>
+</div>
+<div class="fn-entry__body">
+<p>Base for every token-scoped donor-portal action, on both portal controllers (<a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a> and <a href="#apex-donorportalrecurringcontroller"><code>DonorPortalRecurringController</code></a>): require the bearer session token minted by verifyAccessCode, resolve the donor context server-side, then hand off to perform(). No client-supplied record id is trusted — the resolved context is the only authority.</p>
+<p>Layer role: controller action base. It extends <a href="#apex-guestaction"><code>GuestAction</code></a>, so what a failure may say to the caller is decided there, the same rule as every other public surface in the package.</p>
+<div class="fn-docnote">
+<p class="fn-docnote__label">Docs note</p>
+<p>Split out of <a href="#apex-donorportalcontroller"><code>DonorPortalController</code></a> (where it was the private inner TokenAction) when the portal's recurring-gift and card actions moved to <a href="#apex-donorportalrecurringcontroller"><code>DonorPortalRecurringController</code></a>, so both controllers validate the token and record the session's use through this one class.</p>
+<p><code>inherited sharing</code>, like <a href="#apex-guestaction"><code>GuestAction</code></a> and <a href="#apex-controlleraction"><code>ControllerAction</code></a>: this base reads and writes nothing itself, so the sharing context stays whatever the subclassing controller declares (both are <code>with sharing</code>). The reads and writes are the services', in their own modes.</p>
+<p>The session touch is written after perform(): several actions call Stripe, and a callout after uncommitted DML throws. finally, so a failed action still counts as use.</p>
+</div>
 </div>
 </div>
 <h3 id="domain-donor-selector">Selectors<a class="headerlink" href="#domain-donor-selector" title="Permanent link">#</a></h3>
@@ -18062,10 +18110,10 @@
 <p class="fn-entry__src"><code>framework/<wbr>SObjectDomain.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>The framework's domain base. A domain is a concrete class that extends it, names its SObject type and overrides the trigger hooks it handles; <a href="#apex-triggerdispatcher"><code>TriggerDispatcher</code></a> builds it from its no-argument constructor, sets <a href="#apex-records"><code>Records</code></a> and calls the hooks for the trigger operation.</p>
+<p>The framework's domain base. A domain is a concrete class that extends it, names its SObject type and overrides the trigger hooks it handles; <a href="#apex-triggerdispatcher"><code>TriggerDispatcher</code></a> builds it from its no-argument constructor, sets Records and calls the hooks for the trigger operation.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>One domain class per object, built two ways and no other: <a href="#apex-triggerdispatcher-run"><code>TriggerDispatcher.run</code></a> builds it from its public no-argument constructor and sets <a href="#apex-records"><code>Records</code></a>, and a service that runs domain logic outside a trigger constructs it directly, <code>new Campaigns(records)</code>. There are no Constructor inner classes, no DomainFactory and no domain interfaces, so a concrete domain declares both constructors.</p>
+<p>One domain class per object, built two ways and no other: <a href="#apex-triggerdispatcher-run"><code>TriggerDispatcher.run</code></a> builds it from its public no-argument constructor and sets Records, and a service that runs domain logic outside a trigger constructs it directly, <code>new Campaigns(records)</code>. There are no Constructor inner classes, no DomainFactory and no domain interfaces, so a concrete domain declares both constructors.</p>
 <p>The hooks run in a fixed order. Before insert calls onApplyDefaults() then onBeforeInsert(); after insert calls onValidate() then onAfterInsert(); after update calls onValidate(existing) then onAfterUpdate(existing). The other operations call their one hook. Records is the new rows, except before and after delete, where it is the old rows.</p>
 <p>There is no trigger CRUD check. A save in user mode is checked by the platform, and a system-mode save is a reasoned bypass at its own call site. There is no re-entry guard either: a rollup that updates rows of its own object runs its domain again.</p>
 <p>The field is declared <code>records</code>, the casing the naming rule asks for. Apex names are case-insensitive, so <code>Records</code>, the spelling feature domains use, is the same field.</p>
@@ -18211,10 +18259,10 @@
 <p class="fn-entry__src"><code>framework/<wbr>TriggerDispatcher.cls</code></p>
 </div>
 <div class="fn-entry__body">
-<p>Runs a trigger through its domain. A trigger is one line, <code>TriggerDispatcher.run(Campaigns.class);</code>: run reads the trigger context, builds the domain from its no-argument constructor, sets <a href="#apex-records"><code>Records</code></a> and calls the domain's hooks for the operation in <a href="#apex-sobjectdomain"><code>SObjectDomain</code></a>'s fixed order.</p>
+<p>Runs a trigger through its domain. A trigger is one line, <code>TriggerDispatcher.run(Campaigns.class);</code>: run reads the trigger context, builds the domain from its no-argument constructor, sets Records and calls the domain's hooks for the operation in <a href="#apex-sobjectdomain"><code>SObjectDomain</code></a>'s fixed order.</p>
 <div class="fn-docnote">
 <p class="fn-docnote__label">Docs note</p>
-<p>dispatch() is the core and takes the trigger context as a Context value, so a test drives every operation with no DML; run() only copies Trigger.operationType, Trigger.new, Trigger.old and Trigger.oldMap into a Context and passes it on. <a href="#apex-records"><code>Records</code></a> is Trigger.new, except before and after delete, where it is Trigger.old.</p>
+<p>dispatch() is the core and takes the trigger context as a Context value, so a test drives every operation with no DML; run() only copies Trigger.operationType, Trigger.new, Trigger.old and Trigger.oldMap into a Context and passes it on. Records is Trigger.new, except before and after delete, where it is Trigger.old.</p>
 <p>No CRUD check and no re-entry guard (design r2 §7.5). A save in user mode is checked by the platform; a system-mode save is a reasoned bypass at its call site. A hook that saves rows of its own object (a rollup) runs the trigger, and so its domain, again.</p>
 <p>bypass(SObjectType) turns an object's domain off for the rest of the transaction, until clearBypass. It is set only in code, for tests and controlled bulk paths: there is no setting, permission or custom metadata that switches it. A bypassed run returns before the domain is built. The bypass is one flag per object, not a count: it does not nest, so an inner bypass/clearBypass pair turns the domain back on for an outer bypass too, and it does not clear itself, so a caller clears it in a finally block.</p>
 <p>The domain class must extend <a href="#apex-sobjectdomain"><code>SObjectDomain</code></a> and have a public no-argument constructor, and its sObjectType() must be the trigger's object. Each mistake throws DispatchException naming the class, so a mis-wired trigger fails its first save instead of skipping its domain.</p>
@@ -28317,7 +28365,7 @@
 </div>
 <div class="fn-entry__body">
 <p>Guard clause utilities (Guava-style). Use in service/domain/selector methods to fail fast with a meaningful message instead of a cryptic NullPointerException.</p>
-<p>Usage: Preconditions.checkNotNull(contactId, 'contactId is required'); Preconditions.checkArgument(amount &gt; 0, 'amount must be positive, got: {0}', new List&lt;Object&gt;{ amount }); Preconditions.checkNotBlank(email, 'email is required');</p>
+<p>Usage: Preconditions.checkNotNull(contactId, 'contactId is required'); Preconditions.checkNotBlank(email, 'email is required'); if (amount &lt;= 0) { throw new Preconditions.PreconditionException('amount must be positive'); }</p>
 <table>
 <thead>
 <tr>
@@ -28335,21 +28383,6 @@
 <tr>
 <td><a id="apex-preconditions-checknotblank"></a><code>checkNotBlank(2 args)</code></td>
 <td><code>String</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-preconditions-checkargument"></a><code>checkArgument(2 args)</code></td>
-<td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-preconditions-checkargument"></a><code>checkArgument(3 args)</code></td>
-<td><code>void</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-preconditions-checkstate"></a><code>checkState(2 args)</code></td>
-<td><code>void</code></td>
 <td></td>
 </tr>
 <tr>
@@ -28453,7 +28486,7 @@
 </tr>
 <tr>
 <td></td>
-<td><em>calls:</em> <a href="#apex-qrreedsolomon-errorcorrection">QrReedSolomon.errorCorrection()</a>, <a href="#apex-preconditions-checkargument">Preconditions.checkArgument()</a></td>
+<td><em>calls:</em> <a href="#apex-qrreedsolomon-errorcorrection">QrReedSolomon.errorCorrection()</a></td>
 <td></td>
 </tr>
 <tr>
@@ -28708,69 +28741,6 @@
 <tr>
 <td><a id="apex-recordaccess-cancreatepubliclinks"></a><code>canCreatePublicLinks(0 args)</code></td>
 <td><code>Boolean</code></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="fn-entry">
-<div class="fn-entry__id">
-<h4 id="apex-records">Records<a class="headerlink" href="#apex-records" title="Permanent link">#</a></h4>
-<p><code>class</code> · <code>public with sharing</code></p>
-<p class="fn-entry__src"><code>shared/<wbr>Records.cls</code></p>
-</div>
-<div class="fn-entry__body">
-<p>Small, type-agnostic helpers over lists of SObjects: collect Ids, group by a field, find what changed, read across a relationship, and chunk a list.</p>
-<p>Every helper takes the field once and works for any SObject type, so callers do not each keep a private "collect the Ids" loop. Nothing here queries or writes; it only reshapes records the caller already holds, so it needs no sharing or FLS decision of its own.</p>
-<p>Usage: Set&lt;Id&gt; donorIds = Records.ids(opps, Opportunity.ContactId); Map&lt;Id, List&lt;SObject&gt;&gt; byDonor = Records.groupById(opps, Opportunity.ContactId); List&lt;SObject&gt; moved = Records.changed(newOpps, oldMap, Opportunity.StageName); Object name = Records.valueOf(opp, 'Campaign.Name');</p>
-<div class="fn-docnote">
-<p class="fn-docnote__label">Docs note</p>
-<p>A list built with <code>new List&lt;SObject&gt;()</code> cannot later be cast to List&lt;Opportunity&gt;, which would make every result here unusable to a caller holding a typed list. clone() keeps the source list's concrete type and clear() empties it, so the result casts back cleanly.</p>
-<p>One loop for both entry points: a field is either an SObjectField token or a dot-notation path, and read() is the only place that tells them apart — so the Id collectors, the grouping helpers and valueOf() can never disagree about what a "field" means.</p>
-</div>
-<table>
-<thead>
-<tr>
-<th>Method</th>
-<th>Returns</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a id="apex-records-ids"></a><code>ids(2 args)</code></td>
-<td><code>Set&lt;Id&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-records-idsat"></a><code>idsAt(2 args)</code></td>
-<td><code>Set&lt;Id&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-records-groupbyid"></a><code>groupById(2 args)</code></td>
-<td><code>Map&lt;Id, List&lt;SObject&gt;&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-records-groupbytext"></a><code>groupByText(2 args)</code></td>
-<td><code>Map&lt;String, List&lt;SObject&gt;&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-records-changed"></a><code>changed(4 args)</code></td>
-<td><code>List&lt;SObject&gt;</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-records-valueof"></a><code>valueOf(2 args)</code></td>
-<td><code>Object</code></td>
-<td></td>
-</tr>
-<tr>
-<td><a id="apex-records-split"></a><code>split(2 args)</code></td>
-<td><code>List&lt;List&lt;SObject&gt;&gt;</code></td>
 <td></td>
 </tr>
 </tbody>

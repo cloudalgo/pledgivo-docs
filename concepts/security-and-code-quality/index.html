@@ -2216,10 +2216,10 @@ are both still reported. That was checked against a deliberately bad fixture rat
 because a mis-registered custom rule and a correctly-registered one look identical on a clean
 tree — both produce zero findings. The 15 that remained at that scan were all in that vendored library's own tests.</p>
 <h2 id="every-security-tagged-finding-and-what-it-is">Every security-tagged finding, and what it is<a class="headerlink" href="#every-security-tagged-finding-and-what-it-is" title="Permanent link">#</a></h2>
-<p>The analyzer tags 24 findings across the whole package as security-relevant (scan of 2026-09-28,
+<p>The analyzer tags 2 findings across the whole package as security-relevant (scan of 2026-11-28,
 <code>AppExchange</code> + <code>Recommended:Security</code> rule selectors — the same command the AppExchange reviewer
-runs). All of them are listed here with a verdict; each one is also recorded in the project's
-triage record or annotated in the code itself.</p>
+runs). Both are listed here with a verdict, and both are also recorded in the project's triage
+record and annotated in the code itself.</p>
 <table>
 <thead>
 <tr>
@@ -2236,18 +2236,20 @@ triage record or annotated in the code itself.</p>
 <td><code>stripePayment.page</code>, <code>stripePaymentReturn.page</code></td>
 <td>The one external script the package loads is Stripe.js, which Stripe requires to be loaded from <code>js.stripe.com</code> and never bundled or pinned, for PCI reasons. It runs in a Visualforce iframe that holds no Salesforce session.</td>
 </tr>
-<tr>
-<td>Moderate</td>
-<td><code>ProtectSensitiveData</code> (18)</td>
-<td><code>Payment_Account__c</code>, <code>Donation_Staging__c</code>, <code>Guest_Request__c</code>, <code>Portal_Access_Token__c</code>, <code>Recurring_Donation__c</code>, <code>Settings__c</code> and three <code>Designation__c</code> fields</td>
-<td>A substring match on the field name (<code>Key</code>, <code>Token</code>, <code>Hash</code>, <code>Sign…</code>, <code>Auth</code>). Three hold a Named Credential's <em>name</em> (never a key), five hold hashes or single-use capability tokens that are worthless outside the flow that issued them, and the other ten are <code>Designation</code>, <code>Re_Auth…</code>, <code>Email_Signature</code>, <code>Soft_Credit_Automation…</code> — no secret in any of them.</td>
-</tr>
 </tbody>
 </table>
 <p>Findings that used to appear in this table are gone rather than justified: the <code>ApexDangerousMethods</code> and <code>ApexSharingViolations</code> entries, which came from a vendored library's trigger CRUD check and Unit of Work and went when the package's own framework replaced it, the ticket page's
 <code>innerHTML</code> write (the QR code is now a template-bound <code>&lt;svg&gt;</code> path, so there is no DOM sink at
-all), and eight credential-shaped identifier names that were renamed to say what they actually
-hold (a Named Credential <em>endpoint</em>, a setup-checklist label, an email closing).</p>
+all), eight credential-shaped identifier names that were renamed to say what they actually
+hold (a Named Credential <em>endpoint</em>, a setup-checklist label, an email closing), and the 17
+<code>ProtectSensitiveData</code> findings. That rule reads nothing but a custom field's API name, and matched
+substrings such as <code>Sign</code> (in <code>Designation</code>), <code>Cred</code> (in <code>Credit</code>), <code>Token</code>, <code>Key</code> and <code>Hash</code>. Each
+field was renamed before the first release to say what it holds: the fund lookups are <code>Fund__c</code>, the
+two Named Credential name fields are <code>Stripe_Donor_Callout_Name__c</code> and
+<code>Stripe_Admin_Callout_Name__c</code>, the portal's SHA-256 fields are <code>Code_Digest__c</code> and
+<code>Session_Digest__c</code>, and the checkout's capability token is <code>Checkout_Capability__c</code>. Their labels
+and descriptions still use the plain words ("Access Token", "Code Hash"), so an admin reading a
+field still sees what it is.</p>
 <p>The other 20 High findings are none of them security-tagged: every one of them was inside
 a vendored third-party library that this package carried as source and has since removed.</p>
 <p><strong>Every one of them is written up individually.</strong> The package publishes a

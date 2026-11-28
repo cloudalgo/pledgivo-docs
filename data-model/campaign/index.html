@@ -2013,7 +2013,7 @@ tickets, and FAQs are all separate records that reference this one, not fields o
 <td><code>Default_Designation__c</code></td>
 <td>Default Designation</td>
 <td>Lookup → <code>Designation__c</code></td>
-<td>The fund this campaign supports. Its exact effect depends on the Designation Mode field above: the locked fund in Assigned mode, the pre-selected default in Selectable mode, or unused in All Active mode.<br><em>Docs: This field predates Designation_Mode__c/Allowed_Designation_Ids__c (2026-08) and is reused by the new mode-based resolution in CampaignDesignationService rather than replaced — see specs/04-data-model.md for the full three-mode contract. A blank value here in Assigned mode falls back to Settings__c.Default_Designation__c via GiftAmountSettings.defaultDesignationId(), then to an undesignated gift if that also fails to resolve — never a hardcoded fund.</em></td>
+<td>The fund this campaign supports. Its exact effect depends on the Designation Mode field above: the locked fund in Assigned mode, the pre-selected default in Selectable mode, or unused in All Active mode.<br><em>Docs: This field predates Designation_Mode__c/Allowed_Designation_Ids__c (2026-08) and is reused by the new mode-based resolution in CampaignDesignationService rather than replaced — see specs/04-data-model.md for the full three-mode contract. A blank value here in Assigned mode falls back to Settings__c.Default_Fund_Id__c via GiftAmountSettings.defaultDesignationId(), then to an undesignated gift if that also fails to resolve — never a hardcoded fund.</em></td>
 </tr>
 <tr>
 <td><code>Design__c</code></td>

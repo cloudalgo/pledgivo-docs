@@ -2818,7 +2818,7 @@ place a blank mode is blocked.</p>
 and it fails safe rather than fails loud: if an allowed fund was later deactivated or deleted,
 it's silently dropped from the list rather than breaking the donation page; if every configured
 fund turns out to be invalid, the campaign falls back to the org-wide default fund
-(<code>Settings__c.Default_Designation__c</code>) and finally to an undesignated gift. A donor never sees
+(<code>Settings__c.Default_Fund_Id__c</code>) and finally to an undesignated gift. A donor never sees
 an error because of stale fund configuration — worst case, the picker just offers fewer choices
 than intended, which is a config problem for an admin to notice and fix, not something that
 should ever block a gift. The same resolved scope is enforced server-side on submit

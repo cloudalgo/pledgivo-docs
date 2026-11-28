@@ -2051,18 +2051,6 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Set automatically when a renewal payment is still being processed by Stripe. The next run checks that payment rather than charging again. If it stays set for more than three days, the schedule stops retrying and Last Error asks staff to review the payment in Stripe.<br><em>Docs: Security change log D-18 (2026-09-25). An off-session renewal can come back from Stripe still in flight (status processing). Before this field existed the renewal job re-sent the charge with the same idempotency key to find out how it ended, but Stripe answers a repeated key with the response it saved the first time, not the payment's current state, so the job could never see the payment settle, and once the key expired after 24 hours the next run created a second payment beside the first. Storing the PaymentIntent id lets the job read the live payment instead (IPaymentGateway.retrievePaymentIntent) and never charge again while an earlier payment for the same period might still complete. RecurringDonationService.processRenewal is the only writer. It clears the field on every settled outcome (succeeded, declined, canceled, needs authentication). A value that is still set with no Next_Retry_Date__c marks a schedule parked for staff review: the payment has not settled after three days. RecurringDonationsSelector's due condition skips those schedules and ReconciliationHeartbeat counts them in its admin alert. The three staff permission sets grant read only. A person editing the value would either repeat a charge (by clearing it) or read a different payment (by changing it). The guest permission set carries no grant.</em></td>
 </tr>
 <tr>
-<td><code>Re_Auth_Link_Sent_At__c</code></td>
-<td>Re-Auth Link Sent At</td>
-<td>DateTime</td>
-<td>When a re-authentication email was last sent to the donor.</td>
-</tr>
-<tr>
-<td><code>Re_Auth_Required__c</code></td>
-<td>Re-Auth Required</td>
-<td>Checkbox</td>
-<td>Whether the donor needs to re-authenticate their card before the next charge can go through.<br><em>Docs: Set by RecurringDonationService.processRenewal's requiresAction branch and excluded from the renewal batch's selection query (RecurringDonationsSelector) alongside Mandate_Accepted__c and Status__c — a schedule needing re-auth is simply skipped by the batch, not retried, until a donor completes 3-D Secure and this is cleared.</em></td>
-</tr>
-<tr>
 <td><code>Retry_Attempt__c</code></td>
 <td>Retry Attempt</td>
 <td>Number</td>
@@ -2085,6 +2073,18 @@ schedule, while individual installments can override it via <code>Recurring_Desi
 <td>Stripe Payment Method Id</td>
 <td>Text</td>
 <td>Internal Stripe reference for the saved card charged each cycle; not for manual entry.</td>
+</tr>
+<tr>
+<td><code>Three_D_Secure_Link_Sent_At__c</code></td>
+<td>Re-Auth Link Sent At</td>
+<td>DateTime</td>
+<td>When a re-authentication email was last sent to the donor.</td>
+</tr>
+<tr>
+<td><code>Three_D_Secure_Required__c</code></td>
+<td>Re-Auth Required</td>
+<td>Checkbox</td>
+<td>Whether the donor needs to re-authenticate their card before the next charge can go through.<br><em>Docs: Set by RecurringDonationService.processRenewal's requiresAction branch and excluded from the renewal batch's selection query (RecurringDonationsSelector) alongside Mandate_Accepted__c and Status__c — a schedule needing re-auth is simply skipped by the batch, not retried, until a donor completes 3-D Secure and this is cleared.</em></td>
 </tr>
 <tr>
 <td><code>URL_Parameters__c</code></td>

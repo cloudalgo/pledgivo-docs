@@ -1854,6 +1854,12 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>When on, a receipt email is sent automatically as soon as a donation closes. Turn off to send receipts manually.</td>
 </tr>
 <tr>
+<td><code>Auto_Soft_Recognition_Enabled__c</code></td>
+<td>Soft Credit Automation Enabled</td>
+<td>Checkbox</td>
+<td>When on, gifts given in honor of someone are automatically credited to that person, and a donor's household is credited alongside them. Turn it off if you assign soft credit yourself or with your own automation.<br><em>Docs: Starts ON for a fresh install, unlike Donation_Sync_Campaign_Members__c which is off for everyone. The difference is what each one writes: campaign membership creates rows in data an org may already own and report on, whereas soft credit only populates package fields that are blank until something fills them, so there is nothing for it to corrupt.  The &lt;defaultValue&gt; below governs NEW Settings rows only — Salesforce does not backfill a field default onto records that already exist, so an org upgrading into this release keeps the false its existing Settings row was created with and has to opt in.  That asymmetry is intentional: the package will not switch on a new automatic write in an org that is already configured.  PostInstallHandler.seedDefaultSettings() sets it explicitly on the fresh-install path so the intent does not rest on the platform default alone. Read through GiftAutomationSettings.softCreditAutomationEnabled().</em></td>
+</tr>
+<tr>
 <td><code>Brand_Primary_Color__c</code></td>
 <td>Email Brand Color (hex)</td>
 <td>Text</td>
@@ -1902,7 +1908,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Pick the Campaign Type new fundraisers should be created with — this is the field standard Salesforce campaign reports group by. Many organizations add their own "Fundraising" or "Appeal" value first. Leave blank to keep whatever default your org already set.<br><em>Docs: Deliberately Text, not a picklist: Campaign.Type is a STANDARD picklist whose values are org-specific, and a packaged picklist could not offer the value a subscriber actually uses. The Settings console renders the org's live Campaign.Type entries with the getPicklistValues wire adapter instead, and CampaignDefaultSettings.defaultCampaignType() re-checks the stored value against the live describe before it is applied, so a value later removed from the picklist degrades to "leave the org default alone" rather than failing the create. Seeded to 'Other' on fresh install by PostInstallHandler (never on upgrade). Applied by FundraiserAdminController.CreateFundraiser only — an existing campaign's Type is never rewritten by an edit.</em></td>
 </tr>
 <tr>
-<td><code>Default_Designation__c</code></td>
+<td><code>Default_Fund_Id__c</code></td>
 <td>Default Designation</td>
 <td>Text</td>
 <td>18-character Id of the fund/designation to credit when a donor does not choose one. Leave blank for no default.<br><em>Docs: Stored as text, not a Lookup, because Settings__c was a Hierarchy Custom Setting, which cannot hold relationship fields, when the field was created, so GiftAmountSettings.defaultDesignationId() casts it to Id at read time and swallows a blank/malformed value back to null rather than throwing.</em></td>
@@ -2070,16 +2076,16 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Hex color (e.g. #F4EDE0) for the outer email canvas behind the message card. Blank = built-in warm parchment.</td>
 </tr>
 <tr>
+<td><code>Email_Closing_Line__c</code></td>
+<td>Email Signature</td>
+<td>TextArea</td>
+<td>Sign-off shown above the footer on every email (e.g. "With gratitude, The Rivergate team"). Leave blank to use the default.</td>
+</tr>
+<tr>
 <td><code>Email_Heading_Color__c</code></td>
 <td>Email Heading Color (hex)</td>
 <td>Text</td>
 <td>Hex color (e.g. #1C2B46) for email headings, the gift amount, ledger values, and the footer background. Blank = built-in Midnight.</td>
-</tr>
-<tr>
-<td><code>Email_Signature__c</code></td>
-<td>Email Signature</td>
-<td>TextArea</td>
-<td>Sign-off shown above the footer on every email (e.g. "With gratitude, The Rivergate team"). Leave blank to use the default.</td>
 </tr>
 <tr>
 <td><code>Embed_Disabled__c</code></td>
@@ -2310,7 +2316,7 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Minutes of inactivity before an open donor-portal session is signed out. Leave blank for 30. Values outside 5-120 are adjusted automatically.</td>
 </tr>
 <tr>
-<td><code>Portal_Token_TTL_Hours__c</code></td>
+<td><code>Portal_Session_Cap_Hours__c</code></td>
 <td>Portal Session Cap (Hours)</td>
 <td>Number</td>
 <td>The absolute limit on how long a donor-portal session can last, in hours, no matter how active the donor is. Leave blank for the 4-hour default. Capped at 168 (7 days) so a mis-set value can't make a session effectively permanent.<br><em>Docs: Read by PortalSessionSettings.portalTokenTtlHours() (default 4h when unset/non-positive, hard-capped at 168h/7 days so a mis-set value cannot make a session effectively permanent). This is the ABSOLUTE cap on the session, distinct from Portal_Idle_Timeout_Minutes__c (the sliding inactivity window) and Portal_Code_TTL_Minutes__c (the emailed sign-in code's own, much shorter, redemption window) - the three fields describe three different clocks in the 2026-09-05 auth redesign. Renamed from "Portal Link Expiry (Hours)" / default 3h in that redesign, when the donor-portal credential moved from a single emailed magic link to a short-lived code plus a session token; the prior doc comment describing a magic link's inbox-exposure window no longer applied.</em></td>
@@ -2446,12 +2452,6 @@ run, new-records-only, or (for a few) no effect yet — see the
 <td>Social — X (Twitter) URL</td>
 <td>Url</td>
 <td>Full web address of your organization's X (Twitter) profile. Leave blank and that icon is not shown at all.<br><em>Docs: Read through PublicPageSettings.socialTwitterUrl(). The three social fields are separate rather than one multi-value field so the footer can render each network's own icon and omit the ones an org does not use, without parsing a delimited string on the guest path.</em></td>
-</tr>
-<tr>
-<td><code>Soft_Credit_Automation_Enabled__c</code></td>
-<td>Soft_Credit_Automation_Enabled</td>
-<td>Checkbox</td>
-<td>When on, gifts given in honor of someone are automatically credited to that person, and a donor's household is credited alongside them. Turn it off if you assign soft credit yourself or with your own automation.<br><em>Docs: Starts ON for a fresh install, unlike Donation_Sync_Campaign_Members__c which is off for everyone. The difference is what each one writes: campaign membership creates rows in data an org may already own and report on, whereas soft credit only populates package fields that are blank until something fills them, so there is nothing for it to corrupt.  The &lt;defaultValue&gt; below governs NEW Settings rows only — Salesforce does not backfill a field default onto records that already exist, so an org upgrading into this release keeps the false its existing Settings row was created with and has to opt in.  That asymmetry is intentional: the package will not switch on a new automatic write in an org that is already configured.  PostInstallHandler.seedDefaultSettings() sets it explicitly on the fresh-install path so the intent does not rest on the platform default alone. Read through GiftAutomationSettings.softCreditAutomationEnabled().</em></td>
 </tr>
 <tr>
 <td><code>Support_Phone__c</code></td>

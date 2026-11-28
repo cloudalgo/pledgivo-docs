@@ -2327,7 +2327,27 @@ that a rule added in a new analyzer release surfaces against unchanged code.</p>
   finding — it can't be nudged up to turn a build green.</li>
 <li><strong>Every finding count is held to an exact number.</strong> A second scan covers the package, the embed
   widget source, the marketing site and the repository's scripts (the weekly Graph Engine job is
-  separate) and compares the count of each rule with <code>scripts/lint/findings-budget.json</code>. A rule
+  separate) and compares the count of each rule with <code>scripts/lint/findings-budget.json</code>. It is
+  three analyzer runs merged into one count: every engine except ESLint over all four places, ESLint
+  over the package with the Lightning Web Components rule set, and ESLint over the rest (the widget
+  source, the marketing site, the scripts) with that rule set switched off, because those files are
+  not Lightning Web Components. The second configuration is generated from the first and the check
+  fails unless the two differ in exactly that one setting. Switching the Lightning rule set off also
+  takes 23 other ESLint rules out of that third run, which is a decision and is written down: the four
+  <code>import/*</code> rules (the widget's esbuild build and the marketing site's Astro build already reject an
+  import that does not resolve), the 18 <code>jest/*</code> rules (the repository has no Jest), and
+  <code>@salesforce/lightning/valid-apex-method-invocation</code> (it only applies to Lightning Web Components).
+  The rule list each run really applied is read from the analyzer's own log and written out, sorted,
+  in the budget file, and must match it exactly; against the main branch, a rule that a run used to
+  apply and no longer does fails the check by name, while an added rule does not, so a plugin upgrade
+  that drops a rule fails loudly. The merge never counts a finding twice
+  (a finding that two runs both report fails the check), each run has to show that its engines ran
+  on the targets it is defined to scan and that its own log is complete, and a report or log is tied
+  to its run by file name. The analyzer's ESLint configuration is expected to be plain data, and a check
+  of its text acts as a tripwire for accidental reads of the engine's state (it is not a proof, since a
+  text check over JavaScript can never be complete); the rule list above is the real control. One case
+  the list cannot see is a configuration computed inside the engine that turns a rule off for some files
+  only while the rule stays on elsewhere, so a change to that file is reviewed by a person. A rule
   above its number fails the pull request, a rule that is not in the file has a number of zero, and
   a rule <em>below</em> its number fails as well, so a fix lowers its number in the same pull request and
   a narrowed scan cannot pass as progress. Copy-paste is counted in duplicated lines, and every kind
